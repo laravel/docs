@@ -2750,13 +2750,13 @@ class NumberService
 
 $service = new NumberService;
 
-$service->all();
-$service->all(); // (cached result)
+$service->all(); // result1 (for $service instance)
+$service->all(); // (cached result1)
 
 $secondService = new NumberService;
 
-$secondService->all();
-$secondService->all(); // (cached result)
+$secondService->all(); // result2 (for $secondService instance)
+$secondService->all(); // (cached result2)
 ```
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
