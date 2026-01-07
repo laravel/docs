@@ -1216,6 +1216,7 @@ The following table contains all of the available column modifiers. This list do
 | `->default($value)`                 | Specify a "default" value for the column.                                                      |
 | `->first()`                         | Place the column "first" in the table (MariaDB / MySQL).                                       |
 | `->from($integer)`                  | Set the starting value of an auto-incrementing field (MariaDB / MySQL / PostgreSQL).           |
+| `->instant()`                       | Add or modify the column using an instant operation (MySQL).                                   |
 | `->invisible()`                     | Make the column "invisible" to `SELECT *` queries (MariaDB / MySQL).                           |
 | `->nullable($value = true)`         | Allow `NULL` values to be inserted into the column.                                            |
 | `->storedAs($expression)`           | Create a stored generated column (MariaDB / MySQL / PostgreSQL / SQLite).                      |
@@ -1272,6 +1273,19 @@ $table->after('password', function (Blueprint $table) {
     $table->string('city');
 });
 ```
+
+<a name="instant-column-operations"></a>
+#### Instant Column Operations
+
+When using MySQL, you may chain the `instant` modifier onto a column definition to indicate that the column should be added or modified using MySQL's "instant" algorithm. This algorithm allows certain schema changes to be performed without a full table rebuild, making them nearly instantaneous regardless of table size:
+
+```php
+$table->string('name')->nullable()->instant();
+```
+
+Instant column additions can only append columns to the end of the table, so the `instant` modifier cannot be combined with the `after` or `first` modifiers. In addition, the algorithm does not support all column types or operations. If the requested operation is incompatible, MySQL will raise an error.
+
+Please refer to [MySQL's documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) to determine which operations are compatible with instant column modifications.
 
 <a name="modifying-columns"></a>
 ### Modifying Columns
@@ -1403,6 +1417,17 @@ Laravel's schema builder blueprint class provides methods for creating each type
 | `$table->spatialIndex('location');`              | Adds a spatial index (except SQLite).                          |
 
 </div>
+
+<a name="online-index-creation"></a>
+#### Online Index Creation
+
+By default, creating an index on a large table can lock the table and block reads or writes while the index is being built. When using PostgreSQL or SQL Server, you may chain the `online` method onto an index definition to create the index without locking the table, allowing your application to continue reading and writing data during index creation:
+
+```php
+$table->string('email')->unique()->online();
+```
+
+When using PostgreSQL, this adds the `CONCURRENTLY` option to the index creation statement. When using SQL Server, this adds the `WITH (online = on)` option.
 
 <a name="renaming-indexes"></a>
 ### Renaming Indexes
