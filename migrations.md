@@ -1218,6 +1218,7 @@ The following table contains all of the available column modifiers. This list do
 | `->from($integer)`                  | Set the starting value of an auto-incrementing field (MariaDB / MySQL / PostgreSQL).           |
 | `->instant()`                       | Add or modify the column using an instant operation (MySQL).                                   |
 | `->invisible()`                     | Make the column "invisible" to `SELECT *` queries (MariaDB / MySQL).                           |
+| `->lock($mode)`                     | Specify a lock mode for the column operation (MySQL).                                          |
 | `->nullable($value = true)`         | Allow `NULL` values to be inserted into the column.                                            |
 | `->storedAs($expression)`           | Create a stored generated column (MariaDB / MySQL / PostgreSQL / SQLite).                      |
 | `->unsigned()`                      | Set `INTEGER` columns as `UNSIGNED` (MariaDB / MySQL).                                         |
@@ -1286,6 +1287,23 @@ $table->string('name')->nullable()->instant();
 Instant column additions can only append columns to the end of the table, so the `instant` modifier cannot be combined with the `after` or `first` modifiers. In addition, the algorithm does not support all column types or operations. If the requested operation is incompatible, MySQL will raise an error.
 
 Please refer to [MySQL's documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) to determine which operations are compatible with instant column modifications.
+
+<a name="ddl-locking"></a>
+#### DDL Locking
+
+When using MySQL, you may chain the `lock` modifier onto column, index, or foreign key definitions to control table locking during schema operations. MySQL supports several lock modes: `none` allows concurrent reads and writes, `shared` allows concurrent reads but blocks writes, `exclusive` blocks all concurrent access, and `default` lets MySQL choose the most appropriate mode:
+
+```php
+$table->string('name')->lock('none');
+
+$table->index('email')->lock('shared');
+```
+
+If the requested lock mode is incompatible with the operation, MySQL will raise an error. The `lock` modifier may be combined with the `instant` modifier to further optimize schema changes:
+
+```php
+$table->string('name')->instant()->lock('none');
+```
 
 <a name="modifying-columns"></a>
 ### Modifying Columns
