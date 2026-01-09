@@ -893,6 +893,9 @@ ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 
 In new Laravel applications, the `database` connection is defined as the default queue. You may specify a different default queue connection by changing the `QUEUE_CONNECTION` environment variable in your application's `.env` file.
 
+> [!NOTE]
+Batched jobs should use the `Illuminate\Queue\InteractsWithQueue` trait to ensure that batch metadata such as pending jobs, failed jobs, and completion timestamps are properly tracked and updated. Without this trait, the batch's progress tracking may not function properly. For more information on queue interactions, see the [event documentation](/docs/{{version}}/events#manually-interacting-with-the-queue).
+
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
 
