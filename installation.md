@@ -244,6 +244,11 @@ The installer will auto-detect your IDE and AI agents, allowing you to opt into 
 > [!NOTE]
 > To learn more about Boost, check out the [Laravel Boost repository on GitHub](https://github.com/laravel/boost).
 
+<a name="adding-custom-ai-guidelines"></a>
+#### Adding Custom AI Guidelines
+
+To augment Laravel Boost with your own custom AI guidelines, add `.blade.php` or `.md` files to your application's `.ai/guidelines/*` directory. These files will automatically be included with Laravel Boost's guidelines when you run `boost:install`.
+
 <a name="next-steps"></a>
 ## Next Steps
 
