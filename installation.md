@@ -45,6 +45,14 @@ Laravel is incredibly scalable. Thanks to the scaling-friendly nature of PHP and
 
 Need extreme scaling? Platforms like [Laravel Cloud](https://cloud.laravel.com) allow you to run your Laravel application at nearly limitless scale.
 
+#### An Agent Ready Framework
+
+Laravel's opinionated conventions and well-defined structure make it an ideal framework for [AI assisted development](/docs/{{version}}/ai) using tools like Cursor and Claude Code. When you ask an AI agent to add a controller, it knows exactly where to place it. When you need a new migration, the naming conventions and file locations are predictable. This consistency eliminates the guesswork that often trips up AI tools in more flexible frameworks.
+
+Beyond file organization, Laravel's expressive syntax and comprehensive documentation give AI agents the context they need to generate accurate, idiomatic code. Features like Eloquent relationships, form requests, and middleware follow patterns that agents can reliably understand and replicate. The result is AI-generated code that looks like it was written by a seasoned Laravel developer, not stitched together from generic PHP snippets.
+
+To learn more about why Laravel is the perfect choice for AI assisted development, check out our documentation on [agentic development](/docs/{{version}}/ai).
+
 #### A Community Framework
 
 Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
