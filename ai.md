@@ -74,11 +74,10 @@ Boost exposes a comprehensive set of tools to AI agents via the Model Context Pr
 
 Boost includes a comprehensive set of AI guidelines specifically crafted for the Laravel ecosystem. These guidelines teach AI agents how to write idiomatic Laravel code, follow framework conventions, and avoid common pitfalls. Guidelines are composable and version-aware, meaning agents receive instructions appropriate for your exact package versions.
 
-Guidelines are available for over 16 packages in the Laravel ecosystem, including:
+Guidelines are available for Laravel itself and over 16 packages in the Laravel ecosystem, including:
 
 <div class="content-list" markdown="1">
 
-- Laravel Framework (10.x, 11.x, and 12.x)
 - Livewire (2.x, 3.x, and 4.x)
 - Inertia.js (React and Vue variants)
 - Tailwind CSS (3.x and 4.x)
