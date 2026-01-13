@@ -13,8 +13,8 @@
 - [Cache Tags](#cache-tags)
 - [Atomic Locks](#atomic-locks)
     - [Managing Locks](#managing-locks)
-    - [Without Overlapping](#without-overlapping)
     - [Managing Locks Across Processes](#managing-locks-across-processes)
+    - [Locks and Function Invocations](#locks-and-function-invocations)
 - [Cache Failover](#cache-failover)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
     - [Writing the Driver](#writing-the-driver)
@@ -502,27 +502,6 @@ Cache::lock('foo', 10)->block(5, function () {
 });
 ```
 
-<a name="without-overlapping"></a>
-### Without Overlapping
-
-The `withoutOverlapping` method provides a simpler syntax for executing a callback while holding an atomic lock:
-
-```php
-Cache::withoutOverlapping('foo', function () {
-    // Lock acquired for 600 seconds after waiting a maximum of 10 seconds...
-});
-```
-
-By default, the lock will be held for a maximum of 600 seconds, and the method will wait up to 10 seconds to acquire the lock. You may customize these values by passing additional arguments to the method:
-
-```php
-Cache::withoutOverlapping('foo', function () {
-    // Lock acquired for 120 seconds after waiting a maximum of 5 seconds...
-}, lockSeconds: 120, waitSeconds: 5);
-```
-
-If the lock cannot be acquired within the specified wait time, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown.
-
 <a name="managing-locks-across-processes"></a>
 ### Managing Locks Across Processes
 
@@ -551,6 +530,27 @@ If you would like to release a lock without respecting its current owner, you ma
 ```php
 Cache::lock('processing')->forceRelease();
 ```
+
+<a name="locks-and-function-invocations"></a>
+### Locks and Function Invocations
+
+The `withoutOverlapping` method provides a simple syntax for executing a given closure while holding an atomic lock, allowing you to ensure only one instance of the closure is running at a given time across your entire infrastructure:
+
+```php
+Cache::withoutOverlapping('foo', function () {
+    // Lock acquired for 600 seconds after waiting a maximum of 10 seconds...
+});
+```
+
+By default, the lock will be held for a maximum of 600 seconds, and the method will wait up to 10 seconds to acquire the lock. You may customize these values by passing additional arguments to the method:
+
+```php
+Cache::withoutOverlapping('foo', function () {
+    // Lock acquired for 120 seconds after waiting a maximum of 5 seconds...
+}, lockSeconds: 120, waitSeconds: 5);
+```
+
+If the lock cannot be acquired within the specified wait time, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown.
 
 <a name="cache-failover"></a>
 ## Cache Failover
