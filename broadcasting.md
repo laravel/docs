@@ -1283,6 +1283,45 @@ useEchoPresence("posts", "PostPublished", (e) => {
 </script>
 ```
 
+<a name="react-vue-connection-status"></a>
+#### Connection Status
+
+You may retrieve the current WebSocket connection status using the `useConnectionStatus` hook, which provides reactive status that automatically updates when the connection state changes:
+
+```js tab=React
+import { useConnectionStatus } from "@laravel/echo-react";
+
+function ConnectionIndicator() {
+    const status = useConnectionStatus();
+
+    return <div>Connection: {status}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useConnectionStatus } from "@laravel/echo-vue";
+
+const status = useConnectionStatus();
+</script>
+
+<template>
+    <div>Connection: {{ status }}</div>
+</template>
+```
+
+The possible status values are:
+
+<div class="content-list" markdown="1">
+
+- `connected` - Successfully connected to the WebSocket server.
+- `connecting` - Initial connection attempt in progress.
+- `reconnecting` - Attempting to reconnect after a disconnection.
+- `disconnected` - Not connected and not attempting to reconnect.
+- `failed` - Connection failed and won't retry.
+
+</div>
+
 <a name="presence-channels"></a>
 ## Presence Channels
 
