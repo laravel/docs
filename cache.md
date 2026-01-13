@@ -204,7 +204,7 @@ The `increment` and `decrement` methods may be used to adjust the value of integ
 
 ```php
 // Initialize the value if it does not exist...
-Cache::add('key', 0, now()->addHours(4));
+Cache::add('key', 0, now()->plus(hours: 4));
 
 // Increment or decrement the value...
 Cache::increment('key');
@@ -278,7 +278,7 @@ Cache::put('key', 'value');
 Instead of passing the number of seconds as an integer, you may also pass a `DateTime` instance representing the desired expiration time of the cached item:
 
 ```php
-Cache::put('key', 'value', now()->addMinutes(10));
+Cache::put('key', 'value', now()->plus(minutes: 10));
 ```
 
 <a name="store-if-not-present"></a>
@@ -386,7 +386,7 @@ If you provide an array of key / value pairs and an expiration time to the funct
 ```php
 cache(['key' => 'value'], $seconds);
 
-cache(['key' => 'value'], now()->addMinutes(10));
+cache(['key' => 'value'], now()->plus(minutes: 10));
 ```
 
 When the `cache` function is called without any arguments, it returns an instance of the `Illuminate\Contracts\Cache\Factory` implementation, allowing you to call other caching methods:
@@ -533,7 +533,7 @@ Cache::lock('processing')->forceRelease();
 <a name="cache-failover"></a>
 ## Cache Failover
 
-The `failover` cache driver provides automatic failover functionality when interacting with the cache. If the primary cache store fails for any reason, Laravel will automatically attempt to use the next configured store in the list. This is particularly useful for ensuring high availability in production environments where cache reliability is critical.
+The `failover` cache driver provides automatic failover functionality when interacting with the cache. If the primary cache store of the `failover` store fails for any reason, Laravel will automatically attempt to use the next configured store in the list. This is particularly useful for ensuring high availability in production environments where cache reliability is critical.
 
 To configure a failover cache store, specify the `failover` driver and provide an array of store names to attempt in order. By default, Laravel includes an example failover configuration in your application's `config/cache.php` configuration file:
 
@@ -547,7 +547,7 @@ To configure a failover cache store, specify the `failover` driver and provide a
 ],
 ```
 
-Once you have configured a store that uses the `failover` driver, you will probably want to set the failover store as your default cache store in your application's `.env` file:
+Once you have configured a store that uses the `failover` driver, you will need to set the failover store as your default cache store in your application's `.env` file to make use of the failover functionality:
 
 ```ini
 CACHE_STORE=failover

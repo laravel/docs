@@ -179,7 +179,7 @@ When queueing notifications, a queued job will be created for each recipient and
 If you would like to delay the delivery of the notification, you may chain the `delay` method onto your notification instantiation:
 
 ```php
-$delay = now()->addMinutes(10);
+$delay = now()->plus(minutes: 10);
 
 $user->notify((new InvoicePaid($invoice))->delay($delay));
 ```
@@ -188,8 +188,8 @@ You may pass an array to the `delay` method to specify the delay amount for spec
 
 ```php
 $user->notify((new InvoicePaid($invoice))->delay([
-    'mail' => now()->addMinutes(5),
-    'sms' => now()->addMinutes(10),
+    'mail' => now()->plus(minutes: 5),
+    'sms' => now()->plus(minutes: 10),
 ]));
 ```
 
@@ -204,8 +204,8 @@ Alternatively, you may define a `withDelay` method on the notification class its
 public function withDelay(object $notifiable): array
 {
     return [
-        'mail' => now()->addMinutes(5),
-        'sms' => now()->addMinutes(10),
+        'mail' => now()->plus(minutes: 5),
+        'sms' => now()->plus(minutes: 10),
     ];
 }
 ```
@@ -356,7 +356,7 @@ public function backoff(): int
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(5);
+    return now()->plus(minutes: 5);
 }
 ```
 

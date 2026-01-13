@@ -39,6 +39,7 @@
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers and Deployment](#queue-workers-and-deployment)
     - [Job Expirations and Timeouts](#job-expirations-and-timeouts)
+    - [Pausing and Resuming Queue Workers](#pausing-and-resuming-queue-workers)
 - [Supervisor Configuration](#supervisor-configuration)
 - [Dealing With Failed Jobs](#dealing-with-failed-jobs)
     - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
@@ -716,7 +717,7 @@ public function middleware(): array
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(30);
+    return now()->plus(minutes: 30);
 }
 ```
 
@@ -890,7 +891,7 @@ ProcessPodcast::dispatchIf($accountActive, $podcast);
 ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 ```
 
-In new Laravel applications, the `database` driver is the default queue driver. You may specify a different queue driver within your application's `config/queue.php` configuration file.
+In new Laravel applications, the `database` connection is defined as the default queue. You may specify a different default queue connection by changing the `QUEUE_CONNECTION` environment variable in your application's `.env` file.
 
 <a name="delayed-dispatching"></a>
 ### Delayed Dispatching
@@ -919,7 +920,7 @@ class PodcastController extends Controller
         // ...
 
         ProcessPodcast::dispatch($podcast)
-            ->delay(now()->addMinutes(10));
+            ->delay(now()->plus(minutes: 10));
 
         return redirect('/podcasts');
     }
@@ -1315,7 +1316,7 @@ use DateTime;
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(10);
+    return now()->plus(minutes: 10);
 }
 ```
 
@@ -1528,7 +1529,7 @@ $user->notify($invoicePaid);
 <a name="queue-failover"></a>
 ### Queue Failover
 
-The `failover` queue driver provides automatic failover functionality when pushing jobs to the queue. If the primary queue connection fails for any reason, Laravel will automatically attempt to push the job to the next configured connection in the list. This is particularly useful for ensuring high availability in production environments where queue reliability is critical.
+The `failover` queue driver provides automatic failover functionality when pushing jobs to the queue. If the primary queue connection of the `failover` configuration fails for any reason, Laravel will automatically attempt to push the job to the next configured connection in the list. This is particularly useful for ensuring high availability in production environments where queue reliability is critical.
 
 To configure a failover queue connection, specify the `failover` driver and provide an array of connection names to attempt in order. By default, Laravel includes an example failover configuration in your application's `config/queue.php` configuration file:
 
@@ -1543,7 +1544,7 @@ To configure a failover queue connection, specify the `failover` driver and prov
 ],
 ```
 
-Once you have configured a connection that uses the `failover` driver, you will probably want to set the failover connection as your default queue connection in your application's `.env` file:
+Once you have configured a connection that uses the `failover` driver, you will need to set the failover connection as your default queue connection in your application's `.env` file to make use of the failover functionality:
 
 ```ini
 QUEUE_CONNECTION=failover
@@ -1561,7 +1562,7 @@ php artisan queue:work database
 
 When a queue connection operation fails and failover is activated, Laravel will dispatch the `Illuminate\Queue\Events\QueueFailedOver` event, allowing you to report or log that a queue connection has failed.
 
-> [!TIP]
+> [!NOTE]
 > If you use Laravel Horizon, remember that Horizon manages Redis queues only. If your failover list includes `database`, you should run a regular `php artisan queue:work database` process alongside Horizon.
 
 <a name="error-handling"></a>
@@ -1591,7 +1592,7 @@ By default, the `release` method will release the job back onto the queue for im
 ```php
 $this->release(10);
 
-$this->release(now()->addSeconds(10));
+$this->release(now()->plus(seconds: 10));
 ```
 
 <a name="manually-failing-a-job"></a>
@@ -2290,6 +2291,64 @@ The `retry_after` configuration option and the `--timeout` CLI option are differ
 
 > [!WARNING]
 > The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a frozen job is always terminated before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
+
+<a name="pausing-and-resuming-queue-workers"></a>
+### Pausing and Resuming Queue Workers
+
+Sometimes you may need to temporarily prevent a queue worker from processing new jobs without stopping the worker entirely. For example, you may want to pause job processing during system maintenance. Laravel provides the `queue:pause` and `queue:continue` Artisan commands to pause and resume queue workers.
+
+To pause a specific queue, provide the queue connection name and the queue name:
+
+```shell
+php artisan queue:pause database:default
+```
+
+In this example, `database` is the queue connection name and `default` is the queue name. Once a queue is paused, any workers processing jobs from that queue will continue to finish their current job, but will not pick up any new jobs until the queue is resumed.
+
+To resume processing jobs on a paused queue, use the `queue:continue` command:
+
+```shell
+php artisan queue:continue database:default
+```
+
+After resuming a queue, workers will begin processing new jobs from that queue immediately. Note that pausing a queue does not stop the worker process itself - it only prevents the worker from processing new jobs from the specified queue.
+
+<a name="worker-restart-and-pause-signals"></a>
+#### Worker Restart and Pause Signals
+
+By default, queue workers poll the cache driver for restart and pause signals on each job iteration. While this polling is essential for responding to `queue:restart` and `queue:pause` commands, it does introduce a small performance overhead.
+
+If you need to optimize performance and don't require these interruption features, you may disable this polling globally by calling the `withoutInterruptionPolling` method on the `Queue` facade. This should typically be done in the `boot` method of your `AppServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Queue;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Queue::withoutInterruptionPolling();
+}
+```
+
+Alternatively, you may disable restart or pause polling individually by setting the static `$restartable` or `$pausable` properties on the `Illuminate\Queue\Worker` class:
+
+```php
+use Illuminate\Queue\Worker;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Worker::$restartable = false;
+    Worker::$pausable = false;
+}
+```
+
+> [!WARNING]
+> When interruption polling is disabled, workers will not respond to `queue:restart` or `queue:pause` commands (depending on which features are disabled).
 
 <a name="supervisor-configuration"></a>
 ## Supervisor Configuration

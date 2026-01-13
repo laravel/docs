@@ -397,17 +397,17 @@ return Http::post(/* ... */)->throw(function (Response $response, RequestExcepti
 })->json();
 ```
 
-By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateRequestExceptionsAt` and `dontTruncateRequestExceptions` methods when configuring your application's exception handling behavior in your `bootstrap/app.php` file:
+By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateAt` and `dontTruncate` methods when configuring your application's registered behavior in your `bootstrap/app.php` file:
 
 ```php
-use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Http\Client\RequestException;
 
-->withExceptions(function (Exceptions $exceptions): void {
+->registered(function (): void {
     // Truncate request exception messages to 240 characters...
-    $exceptions->truncateRequestExceptionsAt(240);
+    RequestException::truncateAt(240);
 
     // Disable request exception message truncation...
-    $exceptions->dontTruncateRequestExceptions();
+    RequestException::dontTruncate();
 })
 ```
 
@@ -752,9 +752,11 @@ Http::fake([
 To test your application's behavior if a `Illuminate\Http\Client\RequestException` is thrown, you may use the `failedRequest` method:
 
 ```php
-Http::fake([
-    'github.com/*' => Http::failedRequest(['code' => 'not_found'], 404),
-]);
+$this->mock(GithubService::class);
+    ->shouldReceive('getUser')
+    ->andThrow(
+        Http::failedRequest(['code' => 'not_found'], 404)
+    );
 ```
 
 <a name="faking-response-sequences"></a>

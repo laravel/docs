@@ -4,7 +4,7 @@
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
-    - [Dates](#dates)
+    - [Dates and Time](#dates)
     - [Deferred Functions](#deferred-functions)
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
@@ -1291,7 +1291,7 @@ $classes = Arr::toCssClasses($array);
 <a name="method-array-to-css-styles"></a>
 #### `Arr::toCssStyles()` {.collection-method}
 
-The `Arr::toCssStyles` conditionally compiles a CSS style string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+The `Arr::toCssStyles` method conditionally compiles a CSS style string. The method accepts an array of CSS declarations where the array key contains the CSS declaration you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the compiled CSS style string:
 
 ```php
 use Illuminate\Support\Arr;
@@ -2407,7 +2407,7 @@ You may add items to the cache by passing an array of key / value pairs to the f
 ```php
 cache(['key' => 'value'], 300);
 
-cache(['key' => 'value'], now()->addSeconds(10));
+cache(['key' => 'value'], now()->plus(seconds: 10));
 ```
 
 <a name="method-class-uses-recursive"></a>
@@ -3194,7 +3194,7 @@ Sometimes, you may want to benchmark the execution of a callback while still obt
 ```
 
 <a name="dates"></a>
-### Dates
+### Dates and Time
 
 Laravel includes [Carbon](https://carbon.nesbot.com/docs/), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:
 
@@ -3210,7 +3210,32 @@ use Illuminate\Support\Carbon;
 $now = Carbon::now();
 ```
 
+Laravel also augments `Carbon` instances with `plus` and `minus` methods, allowing easy manipulation of the instance's date and time:
+
+```php
+return now()->plus(minutes: 5);
+return now()->plus(hours: 8);
+return now()->plus(weeks: 4);
+
+return now()->minus(minutes: 5);
+return now()->minus(hours: 8);
+return now()->minus(weeks: 4);
+```
+
 For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).
+
+<a name="interval-functions"></a>
+#### Interval Functions
+
+Laravel also offers `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `weeks`, `months`, and `years` functions that return `CarbonInterval` instances, which extend PHP's [DateInterval](https://www.php.net/manual/en/class.dateinterval.php) class. These functions may be used anywhere that Laravel accepts a `DateInterval` instance:
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+use function Illuminate\Support\{minutes};
+
+Cache::put('metrics', $metrics, minutes(10));
+```
 
 <a name="deferred-functions"></a>
 ### Deferred Functions
@@ -3441,7 +3466,7 @@ Sleep::for(500)->milliseconds();
 Sleep::for(5000)->microseconds();
 
 // Pause execution until a given time...
-Sleep::until(now()->addMinute());
+Sleep::until(now()->plus(minutes: 1));
 
 // Alias of PHP's native "sleep" function...
 Sleep::sleep(2);
@@ -3613,7 +3638,7 @@ $uri = Uri::of('https://example.com/path');
 $uri = Uri::to('/dashboard');
 $uri = Uri::route('users.show', ['user' => 1]);
 $uri = Uri::signedRoute('users.show', ['user' => 1]);
-$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::temporarySignedRoute('user.index', now()->plus(minutes: 5));
 $uri = Uri::action([UserController::class, 'index']);
 $uri = Uri::action(InvokableController::class);
 

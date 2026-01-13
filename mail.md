@@ -111,7 +111,7 @@ Next, set the `default` option in your application's `config/mail.php` configura
 
 ```php
 'postmark' => [
-    'key' => env('POSTMARK_API_TOKEN'),
+    'key' => env('POSTMARK_API_KEY'),
 ],
 ```
 
@@ -231,10 +231,10 @@ To accomplish this, you should define a mailer within your application's `mail` 
 ],
 ```
 
-Once your failover mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:
+Once you have configured a mailer that uses the `failover` transport, you will need to set the failover mailer as your default mailer in your application's `.env` file to make use of the failover functionality:
 
-```php
-'default' => env('MAIL_MAILER', 'failover'),
+```ini
+MAIL_MAILER=failover
 ```
 
 <a name="round-robin-configuration"></a>
@@ -977,7 +977,7 @@ If you wish to delay the delivery of a queued email message, you may use the `la
 Mail::to($request->user())
     ->cc($moreUsers)
     ->bcc($evenMoreUsers)
-    ->later(now()->addMinutes(10), new OrderShipped($order));
+    ->later(now()->plus(minutes: 10), new OrderShipped($order));
 ```
 
 <a name="pushing-to-specific-queues"></a>
@@ -1323,6 +1323,12 @@ Mail::assertNothingQueued();
 Mail::assertQueuedCount(3);
 ```
 
+You can also assert the total number of mailables that have been sent or queued using the `assertOutgoingCount` method:
+
+```php
+Mail::assertOutgoingCount(3);
+```
+
 You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
 
 ```php
@@ -1341,6 +1347,7 @@ Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) 
            $mail->hasReplyTo('...') &&
            $mail->hasFrom('...') &&
            $mail->hasSubject('...') &&
+           $mail->hasMetadata('order_id', $mail->order->id);
            $mail->usesMailer('ses');
 });
 ```

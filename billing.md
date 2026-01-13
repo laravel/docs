@@ -1704,7 +1704,7 @@ You may also choose to cancel the subscription at a specific moment in time:
 
 ```php
 $user->subscription('default')->cancelAt(
-    now()->addDays(10)
+    now()->plus(days: 10)
 );
 ```
 
@@ -1758,7 +1758,7 @@ The `trialUntil` method allows you to provide a `DateTime` instance that specifi
 use Illuminate\Support\Carbon;
 
 $user->newSubscription('default', 'price_monthly')
-    ->trialUntil(Carbon::now()->addDays(10))
+    ->trialUntil(Carbon::now()->plus(days: 10))
     ->create($paymentMethod);
 ```
 
@@ -1807,7 +1807,7 @@ use App\Models\User;
 
 $user = User::create([
     // ...
-    'trial_ends_at' => now()->addDays(10),
+    'trial_ends_at' => now()->plus(days: 10),
 ]);
 ```
 
@@ -1858,12 +1858,12 @@ $subscription = User::find(1)->subscription('default');
 
 // End the trial 7 days from now...
 $subscription->extendTrial(
-    now()->addDays(7)
+    now()->plus(days: 7)
 );
 
 // Add an additional 5 days to the trial...
 $subscription->extendTrial(
-    $subscription->trial_ends_at->addDays(5)
+    $subscription->trial_ends_at->plus(days: 5)
 );
 ```
 

@@ -291,7 +291,7 @@ You can access the session cache through the `cache` method on the session:
 $discount = $request->session()->cache()->get('discount');
 
 $request->session()->cache()->put(
-    'discount', 10, now()->addMinutes(5)
+    'discount', 10, now()->plus(minutes: 5)
 );
 ```
 

@@ -10,6 +10,7 @@
 - [Tools](#tools)
     - [Creating Tools](#creating-tools)
     - [Tool Input Schemas](#tool-input-schemas)
+    - [Tool Output Schemas](#tool-output-schemas)
     - [Validating Tool Arguments](#validating-tool-arguments)
     - [Tool Dependency Injection](#tool-dependency-injection)
     - [Tool Annotations](#tool-annotations)
@@ -24,11 +25,14 @@
     - [Prompt Responses](#prompt-responses)
 - [Resources](#resources)
     - [Creating Resources](#creating-resources)
+    - [Resource Templates](#resource-templates)
     - [Resource URI and MIME Type](#resource-uri-and-mime-type)
     - [Resource Request](#resource-request)
     - [Resource Dependency Injection](#resource-dependency-injection)
+    - [Resource Annotations](#resource-annotations)
     - [Conditional Resource Registration](#conditional-resource-registration)
     - [Resource Responses](#resource-responses)
+- [Metadata](#metadata)
 - [Authentication](#authentication)
     - [OAuth 2.1](#oauth)
     - [Sanctum](#sanctum)
@@ -174,7 +178,7 @@ Tools enable your server to expose functionality that AI clients can call. They 
 
 namespace App\Mcp\Tools;
 
-use Illuminate\JsonSchema\JsonSchema;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Tool;
@@ -201,7 +205,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, \Illuminate\JsonSchema\JsonSchema>
+     * @return array<string, \Illuminate\JsonSchema\Type\Type>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -288,14 +292,14 @@ class CurrentWeatherTool extends Tool
 <a name="tool-input-schemas"></a>
 ### Tool Input Schemas
 
-Tools can define input schemas to specify what arguments they accept from AI clients. Use Laravel's `Illuminate\JsonSchema\JsonSchema` builder to define your tool's input requirements:
+Tools can define input schemas to specify what arguments they accept from AI clients. Use Laravel's `Illuminate\Contracts\JsonSchema\JsonSchema` builder to define your tool's input requirements:
 
 ```php
 <?php
 
 namespace App\Mcp\Tools;
 
-use Illuminate\JsonSchema\JsonSchema;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Server\Tool;
 
 class CurrentWeatherTool extends Tool
@@ -303,7 +307,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, JsonSchema>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -316,6 +320,45 @@ class CurrentWeatherTool extends Tool
                 ->enum(['celsius', 'fahrenheit'])
                 ->description('The temperature units to use.')
                 ->default('celsius'),
+        ];
+    }
+}
+```
+
+<a name="tool-output-schemas"></a>
+### Tool Output Schemas
+
+Tools can define [output schemas](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#output-schema) to specify the structure of their responses. This enables better integration with AI clients that need parseable tool results. Use the `outputSchema` method to define your tool's output structure:
+
+```php
+<?php
+
+namespace App\Mcp\Tools;
+
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    /**
+     * Get the tool's output schema.
+     *
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
+     */
+    public function outputSchema(JsonSchema $schema): array
+    {
+        return [
+            'temperature' => $schema->number()
+                ->description('Temperature in Celsius')
+                ->required(),
+
+            'conditions' => $schema->string()
+                ->description('Weather conditions')
+                ->required(),
+
+            'humidity' => $schema->integer()
+                ->description('Humidity percentage')
+                ->required(),
         ];
     }
 }
@@ -451,6 +494,25 @@ Available annotations include:
 | `#[IsIdempotent]`  | boolean | Indicates repeated calls with same arguments have no additional effect (when not read-only).   |
 | `#[IsOpenWorld]`   | boolean | Indicates the tool may interact with external entities.                                        |
 
+Annotation values can be explicitly set using boolean arguments:
+
+```php
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsIdempotent;
+use Laravel\Mcp\Server\Tool;
+
+#[IsReadOnly(true)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
+#[IsIdempotent(true)]
+class CurrentWeatherTool extends Tool
+{
+    //
+}
+```
+
 <a name="conditional-tool-registration"></a>
 ### Conditional Tool Registration
 
@@ -529,6 +591,30 @@ public function handle(Request $request): array
         Response::text('**Detailed Forecast**\n- Morning: 65°F\n- Afternoon: 78°F\n- Evening: 70°F')
     ];
 }
+```
+
+<a name="structured-responses"></a>
+#### Structured Responses
+
+Tools can return [structured content](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#structured-content) using the `structured` method. This provides parseable data for AI clients while maintaining backward compatibility with a JSON-encoded text representation:
+
+```php
+return Response::structured([
+    'temperature' => 22.5,
+    'conditions' => 'Partly cloudy',
+    'humidity' => 65,
+]);
+```
+
+If you need to provide custom text alongside structured content, use the `withStructuredContent` method on the response factory:
+
+```php
+return Response::make(
+    Response::text('Weather is 22.5°C and sunny')
+)->withStructuredContent([
+    'temperature' => 22.5,
+    'conditions' => 'Sunny',
+]);
 ```
 
 <a name="streaming-responses"></a>
@@ -919,6 +1005,115 @@ class WeatherGuidelinesResource extends Resource
 > [!NOTE]
 > The description is a critical part of the resource's metadata, as it helps AI models understand when and how to use the resource effectively.
 
+<a name="resource-templates"></a>
+### Resource Templates
+
+[Resource templates](https://modelcontextprotocol.io/specification/2025-06-18/server/resources#resource-templates) enable your server to expose dynamic resources that match URI patterns with variables. Instead of defining a static URI for each resource, you can create a single resource that handles multiple URIs based on a template pattern.
+
+<a name="creating-resource-templates"></a>
+#### Creating Resource Templates
+
+To create a resource template, implement the `HasUriTemplate` interface on your resource class and define a `uriTemplate` method that returns a `UriTemplate` instance:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Contracts\HasUriTemplate;
+use Laravel\Mcp\Server\Resource;
+use Laravel\Mcp\Support\UriTemplate;
+
+class UserFileResource extends Resource implements HasUriTemplate
+{
+    /**
+     * The resource's description.
+     */
+    protected string $description = 'Access user files by ID';
+
+    /**
+     * The resource's MIME type.
+     */
+    protected string $mimeType = 'text/plain';
+
+    /**
+     * Get the URI template for this resource.
+     */
+    public function uriTemplate(): UriTemplate
+    {
+        return new UriTemplate('file://users/{userId}/files/{fileId}');
+    }
+
+    /**
+     * Handle the resource request.
+     */
+    public function handle(Request $request): Response
+    {
+        $userId = $request->get('userId');
+        $fileId = $request->get('fileId');
+
+        // Fetch and return the file content...
+
+        return Response::text($content);
+    }
+}
+```
+
+When a resource implements the `HasUriTemplate` interface, it will be registered as a resource template rather than a static resource. AI clients can then request resources using URIs that match the template pattern, and the variables from the URI will be automatically extracted and made available in your resource's `handle` method.
+
+<a name="uri-template-syntax"></a>
+#### URI Template Syntax
+
+URI templates use placeholders enclosed in curly braces to define variable segments in the URI:
+
+```php
+new UriTemplate('file://users/{userId}');
+new UriTemplate('file://users/{userId}/files/{fileId}');
+new UriTemplate('https://api.example.com/{version}/{resource}/{id}');
+```
+
+<a name="accessing-template-variables"></a>
+#### Accessing Template Variables
+
+When a URI matches your resource template, the extracted variables are automatically merged into the request and can be accessed using the `get` method:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Contracts\HasUriTemplate;
+use Laravel\Mcp\Server\Resource;
+use Laravel\Mcp\Support\UriTemplate;
+
+class UserProfileResource extends Resource implements HasUriTemplate
+{
+    public function uriTemplate(): UriTemplate
+    {
+        return new UriTemplate('file://users/{userId}/profile');
+    }
+
+    public function handle(Request $request): Response
+    {
+        // Access the extracted variable
+        $userId = $request->get('userId');
+
+        // Access the full URI if needed
+        $uri = $request->uri();
+
+        // Fetch user profile...
+
+        return Response::text("Profile for user {$userId}");
+    }
+}
+```
+
+The `Request` object provides both the extracted variables and the original URI that was requested, giving you full context for processing the resource request.
+
 <a name="resource-uri-and-mime-type"></a>
 ### Resource URI and MIME Type
 
@@ -1029,6 +1224,39 @@ class WeatherGuidelinesResource extends Resource
 }
 ```
 
+<a name="resource-annotations"></a>
+### Resource Annotations
+
+You may enhance your resources with [annotations](https://modelcontextprotocol.io/specification/2025-06-18/schema#resourceannotations) to provide additional metadata to AI clients. Annotations are added to resources via attributes:
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Enums\Role;
+use Laravel\Mcp\Server\Annotations\Audience;
+use Laravel\Mcp\Server\Annotations\LastModified;
+use Laravel\Mcp\Server\Annotations\Priority;
+use Laravel\Mcp\Server\Resource;
+
+#[Audience(Role::User)]
+#[LastModified('2025-01-12T15:00:58Z')]
+#[Priority(0.9)]
+class UserDashboardResource extends Resource
+{
+    //
+}
+```
+
+Available annotations include:
+
+| Annotation       | Type           | Description                                                                                     |
+| ---------------- | -------------- | ----------------------------------------------------------------------------------------------- |
+| `#[Audience]`    | Role or array  | Specifies the intended audience (`Role::User`, `Role::Assistant`, or both).                    |
+| `#[Priority]`    | float          | A numerical score between 0.0 and 1.0 indicating resource importance.                          |
+| `#[LastModified]`| string         | An ISO 8601 timestamp showing when the resource was last updated.                               |
+
 <a name="conditional-resource-registration"></a>
 ### Conditional Resource Registration
 
@@ -1114,6 +1342,63 @@ To indicate an error occurred during resource retrieval, use the `error()` metho
 
 ```php
 return Response::error('Unable to fetch weather data for the specified location.');
+```
+
+<a name="metadata"></a>
+## Metadata
+
+Laravel MCP also supports the `_meta` field as defined in the [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/basic#meta), which is required by certain MCP clients or integrations. Metadata can be applied to all MCP primitives, including tools, resources, and prompts, as well as their responses.
+
+You can attach metadata to individual response content using the `withMeta` method:
+
+```php
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+
+/**
+ * Handle the tool request.
+ */
+public function handle(Request $request): Response
+{
+    return Response::text('The weather is sunny.')
+        ->withMeta(['source' => 'weather-api', 'cached' => true]);
+}
+```
+
+For result-level metadata that applies to the entire response envelope, wrap your responses with `Response::make` and call `withMeta` on the returned response factory instance:
+
+```php
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\ResponseFactory;
+
+/**
+ * Handle the tool request.
+ */
+public function handle(Request $request): ResponseFactory
+{
+    return Response::make(
+        Response::text('The weather is sunny.')
+    )->withMeta(['request_id' => '12345']);
+}
+```
+
+To attach metadata to a tool, resource, or prompt itself, define a `$meta` property on the class:
+
+```php
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    protected string $description = 'Fetches the current weather forecast.';
+
+    protected ?array $meta = [
+        'version' => '2.0',
+        'author' => 'Weather Team',
+    ];
+
+    // ...
+}
 ```
 
 <a name="authentication"></a>

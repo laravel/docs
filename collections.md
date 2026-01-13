@@ -82,6 +82,8 @@ Collection::macro('toLocale', function (string $locale) {
 $collection = collect(['first', 'second']);
 
 $translated = $collection->toLocale('es');
+
+// ['primero', 'segundo'];
 ```
 
 <a name="available-methods"></a>
@@ -4254,7 +4256,7 @@ The `takeUntilTimeout` method returns a new lazy collection that will enumerate 
 
 ```php
 $lazyCollection = LazyCollection::times(INF)
-    ->takeUntilTimeout(now()->addMinute());
+    ->takeUntilTimeout(now()->plus(minutes: 1));
 
 $lazyCollection->each(function (int $number) {
     dump($number);

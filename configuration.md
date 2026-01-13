@@ -158,6 +158,32 @@ If your application has multiple environment files, such as `.env` and `.env.sta
 php artisan env:encrypt --env=staging
 ```
 
+<a name="readable-variable-names"></a>
+#### Readable Variable Names
+
+When encrypting your environment file, you may use the `--readable` option to retain visible variable names while encrypting their values:
+
+```shell
+php artisan env:encrypt --readable
+```
+
+This will produce an encrypted file with the following format:
+
+```ini
+APP_NAME=eyJpdiI6...
+APP_ENV=eyJpdiI6...
+APP_KEY=eyJpdiI6...
+APP_DEBUG=eyJpdiI6...
+APP_URL=eyJpdiI6...
+```
+
+Using the readable format allows you to see which environment variables exist without exposing sensitive data. It also makes reviewing pull requests much easier since you can see which variables were added, removed, or renamed without needing to decrypt the file.
+
+When decrypting environment files, Laravel automatically detects which format was used, so no additional options are needed for the `env:decrypt` command.
+
+> [!NOTE]
+> When using the `--readable` option, comments, and blank lines from the original environment file are not included in the encrypted output.
+
 <a name="decryption"></a>
 #### Decryption
 

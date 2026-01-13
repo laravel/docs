@@ -1675,7 +1675,7 @@ Of course, like calls to the query builder's `where` method, you may also specif
 
 ```php
 $posts = Post::whereRelation(
-    'comments', 'created_at', '>=', now()->subHour()
+    'comments', 'created_at', '>=', now()->minus(hours: 1)
 )->get();
 ```
 
