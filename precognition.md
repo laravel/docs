@@ -555,7 +555,7 @@ client.use(window.axios)
 <a name="validating-arrays"></a>
 ## Validating Arrays
 
-You may use wildcards to validate fields within arrays or nested objects. Each `*` matches a single path segment.
+You may use wildcards to validate fields within arrays or nested objects. Each `*` matches a single path segment:
 
 ```js
 // Validate email for all users in an array...
