@@ -538,11 +538,11 @@ The `withoutOverlapping` method provides a simple syntax for executing a given c
 
 ```php
 Cache::withoutOverlapping('foo', function () {
-    // Lock acquired for 600 seconds after waiting a maximum of 10 seconds...
+    // Lock acquired after waiting a maximum of 10 seconds...
 });
 ```
 
-By default, the lock will be held for a maximum of 600 seconds, and the method will wait up to 10 seconds to acquire the lock. You may customize these values by passing additional arguments to the method:
+By default, the lock will not be released until the closure finishes executing, and the method will wait up to 10 seconds to acquire the lock. You may customize these values by passing additional arguments to the method:
 
 ```php
 Cache::withoutOverlapping('foo', function () {
