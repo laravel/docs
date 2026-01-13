@@ -48,6 +48,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::dot](#method-array-dot)
 [Arr::every](#method-array-every)
 [Arr::except](#method-array-except)
+[Arr::exceptValues](#method-array-except-values)
 [Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::flatten](#method-array-flatten)
@@ -68,6 +69,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::mapSpread](#method-array-map-spread)
 [Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
+[Arr::onlyValues](#method-array-only-values)
 [Arr::partition](#method-array-partition)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
@@ -424,6 +426,33 @@ $array = ['name' => 'Desk', 'price' => 100];
 $filtered = Arr::except($array, ['price']);
 
 // ['name' => 'Desk']
+```
+
+<a name="method-array-except-values"></a>
+#### `Arr::exceptValues()` {.collection-method}
+
+The `Arr::exceptValues` method removes the specified values from an array:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['foo', 'bar', 'baz', 'qux'];
+
+$filtered = Arr::exceptValues($array, ['foo', 'baz']);
+
+// ['bar', 'qux']
+```
+
+You may also pass `true` to the `strict` argument to use strict type comparisons when filtering:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [1, '1', 2, '2'];
+
+$filtered = Arr::exceptValues($array, [1, 2], strict: true);
+
+// ['1', '2']
 ```
 
 <a name="method-array-exists"></a>
@@ -830,6 +859,33 @@ $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 $slice = Arr::only($array, ['name', 'price']);
 
 // ['name' => 'Desk', 'price' => 100]
+```
+
+<a name="method-array-only-values"></a>
+#### `Arr::onlyValues()` {.collection-method}
+
+The `Arr::onlyValues` method returns only the specified values from an array:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['foo', 'bar', 'baz', 'qux'];
+
+$filtered = Arr::onlyValues($array, ['foo', 'baz']);
+
+// ['foo', 'baz']
+```
+
+You may also pass `true` to the `strict` argument to use strict type comparisons when filtering:
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [1, '1', 2, '2'];
+
+$filtered = Arr::onlyValues($array, [1, 2], strict: true);
+
+// [1, 2]
 ```
 
 <a name="method-array-partition"></a>
