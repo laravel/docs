@@ -236,6 +236,7 @@ The majority of the frontend code is located in the `resources/views` directory.
 resources/views
 ├── components            # Reusable components
 ├── flux                  # Customized Flux components
+├── layouts               # Application layouts
 ├── pages                 # Livewire pages
 ├── partials              # Reusable Blade partials
 ├── dashboard.blade.php   # Authenticated user dashboard
