@@ -120,6 +120,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [concat](#method-concat)
 [contains](#method-contains)
 [containsOneItem](#method-containsoneitem)
+[containsManyItems](#method-containsmanyitems)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [countBy](#method-countBy)
@@ -597,6 +598,29 @@ collect(['1', '2'])->containsOneItem();
 collect([1, 2, 3])->containsOneItem(fn (int $item) => $item === 2);
 
 // true
+```
+
+<a name="method-containsmanyitems"></a>
+#### `containsManyItems()` {.collection-method}
+
+The `containsManyItems` method determines whether the collection contains multiple items:
+
+```php
+collect([])->containsManyItems(); // false
+collect(['1'])->containsManyItems(); // false
+collect(['1', '2'])->containsManyItems(); // true
+```
+
+You may also pass a callback to determine if multiple items in the collection match a given condition:
+
+```php
+collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 1);
+
+// true
+
+collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 5);
+
+// false
 ```
 
 <a name="method-containsstrict"></a>
