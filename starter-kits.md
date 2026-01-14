@@ -228,37 +228,32 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 <a name="livewire-customization"></a>
 ### Livewire
 
-Our Livewire starter kit is built with Livewire 3, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
-
-#### Livewire and Volt
+Our Livewire starter kit is built with Livewire 4, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
 
 The majority of the frontend code is located in the `resources/views` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
 
 ```text
 resources/views
-├── components            # Reusable Livewire components
+├── components            # Reusable components
 ├── flux                  # Customized Flux components
-├── livewire              # Livewire pages
+├── layouts               # Application layouts
+├── pages                 # Livewire pages
 ├── partials              # Reusable Blade partials
 ├── dashboard.blade.php   # Authenticated user dashboard
 ├── welcome.blade.php     # Guest user welcome page
 ```
 
-#### Traditional Livewire Components
-
-The frontend code is located in the `resources/views` directory, while the `app/Livewire` directory contains the corresponding backend logic for the Livewire components.
-
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
 
-The Livewire starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
+The Livewire starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
 
 ```blade
-<x-layouts.app.header>
+<x-layouts::app.header>
     <flux:main container>
         {{ $slot }}
     </flux:main>
-</x-layouts.app.header>
+</x-layouts::app.header>
 ```
 
 <a name="livewire-authentication-page-layout-variants"></a>
@@ -266,12 +261,12 @@ The Livewire starter kit includes two different primary layouts for you to choos
 
 The authentication pages included with the Livewire starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
 
-To change your authentication layout, modify the layout that is used by your application's `resources/views/components/layouts/auth.blade.php` file:
+To change your authentication layout, modify the layout that is used by your application's `resources/views/layouts/auth.blade.php` file:
 
 ```blade
-<x-layouts.auth.split>
+<x-layouts::auth.split>
     {{ $slot }}
-</x-layouts.auth.split>
+</x-layouts::auth.split>
 ```
 
 <a name="authentication"></a>
