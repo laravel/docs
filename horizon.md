@@ -479,6 +479,7 @@ You may gracefully terminate the Horizon process using the `horizon:terminate` A
 php artisan horizon:terminate
 ```
 
+<a name="automatically-restarting-horizon"></a>
 #### Automatically Restarting Horizon
 
 During local development, you may run the `horizon:listen` command. When using the `horizon:listen` command, you don't have to manually restart Horizon when you want to reload your updated code. Before using this feature, you should ensure that [Node](https://nodejs.org) is installed within your local development environment. In addition, you should install the [Chokidar](https://github.com/paulmillr/chokidar) file-watching library within your project:
