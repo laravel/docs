@@ -425,7 +425,7 @@ public function boot(): void
 }
 ```
 
-Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified publish location. Since users will typically need to overwrite the assets every time the package is updated, you may use the `--force` flag:
+Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified publish location. Since users will typically need to overwrite the assets every time the package is updated, they may use the `--force` flag:
 
 ```shell
 php artisan vendor:publish --tag=public --force
