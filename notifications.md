@@ -843,7 +843,7 @@ use Illuminate\Mail\Mailable;
 public function toMail(object $notifiable): Mailable
 {
     $address = $notifiable instanceof AnonymousNotifiable
-        ? $notifiable->routeNotificationFor('mail')
+        ? array_keys($notifiable->routeNotificationFor('mail'))
         : $notifiable->email;
 
     return (new InvoicePaidMailable($this->invoice))
