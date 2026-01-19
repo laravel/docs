@@ -3726,7 +3726,7 @@ $string = Str::of('tony stark')
 // 'Tony Stark'
 ```
 
-If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the string does not contain the given value.
+If necessary, you may pass another closure as the third parameter. The closure will be invoked if the string does not contain the given value.
 
 You may also pass an array of values to determine if the given string contains any of the values in the array:
 
@@ -3759,7 +3759,7 @@ $string = Str::of('tony stark')
 // 'Tony Stark'
 ```
 
-If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
+If necessary, you may pass another closure as the third parameter. The closure will be invoked if the condition parameter evaluates to `false`.
 
 <a name="method-fluent-str-when-doesnt-end-with"></a>
 #### `whenDoesntEndWith` {.collection-method}
