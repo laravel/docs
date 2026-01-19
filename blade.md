@@ -595,8 +595,6 @@ To include the first view that exists from a given array of views, you may use t
 If you would like to include a view without inheriting any variables from the parent view, you may use the `@includeIsolated` directive. The included view will only have access to variables you explicitly pass:
 
 ```blade
-{{-- Only $user will be available in the included view --}}
-{{-- Other variables from the parent view will not be inherited --}}
 @includeIsolated('view.name', ['user' => $user])
 ```
 
