@@ -32,6 +32,7 @@
 - [Image Validation Now Excludes SVGs](#image-validation)
 - [Local Filesystem Disk Default Root Path](#local-filesystem-disk-default-root-path)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
+- [Database Constructor Signature Changes](#database-constructor-signature-changes)
 - [Nested Array Request Merging](#nested-array-request-merging)
 
 </div>
@@ -182,12 +183,48 @@ $tables = Schema::getTableListing(schema: 'main', schemaQualified: false);
 
 The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
 
-<a name="updated-blueprint-constructor-signature"></a>
-#### Updated `Blueprint` Constructor Signature
+<a name="database-constructor-signature-changes"></a>
+#### Database Constructor Signature Changes
 
 **Likelihood Of Impact: Very Low**
 
-The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects an instance of `Illuminate\Database\Connection` as its first argument.
+In Laravel 12, several low-level database classes now require an `Illuminate\Database\Connection` instance to be provided via their constructors.
+
+##### Blueprint
+
+The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects a `Connection` instance as its first argument.
+
+This primarily affects applications or packages that manually instantiate `Blueprint` instances.
+
+##### Grammar
+
+The constructor of the `Illuminate\Database\Grammar` class now also requires a `Connection` instance.
+
+In previous versions, the connection was assigned after construction using the `setConnection()` method. This method has been removed in Laravel 12.
+
+```php
+// Laravel <= 11.x
+$grammar = new MySqlGrammar;
+$grammar->setConnection($connection);
+
+// Laravel >= 12.x
+$grammar = new MySqlGrammar($connection);
+````
+
+In addition, the following APIs have been removed or deprecated:
+
+* The `Grammar::setConnection()` method has been removed
+* The `Connection::withTablePrefix()` method has been removed
+* The `Grammar::getTablePrefix()` and `setTablePrefix()` methods are deprecated
+* The `Blueprint::getPrefix()` method is deprecated
+
+When working with table prefixes, you should now retrieve them directly from the database connection:
+
+```php
+$prefix = $connection->getTablePrefix();
+```
+
+If you maintain custom database drivers, schema builders, or grammar implementations, you should review their constructors and ensure a `Connection` instance is provided.
 
 <a name="eloquent"></a>
 ### Eloquent
