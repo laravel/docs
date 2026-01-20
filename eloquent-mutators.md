@@ -674,7 +674,7 @@ As the final length of the encrypted text is not predictable and is longer than 
 <a name="key-rotation"></a>
 #### Key Rotation
 
-As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key.
+As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you may [gracefully do so](/docs/{{version}}/encryption#gracefully-rotating-encryption-keys).
 
 <a name="query-time-casting"></a>
 ### Query Time Casting
