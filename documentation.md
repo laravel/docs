@@ -1,3 +1,8 @@
+<!--
+Laravel Version: 12.x
+Source: https://laravel.com/docs/12.x
+-->
+
 - ## Prologue
     - [Release Notes](/docs/{{version}}/releases)
     - [Upgrade Guide](/docs/{{version}}/upgrade)

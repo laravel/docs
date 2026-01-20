@@ -1,3 +1,8 @@
+<!--
+Laravel Version: 12.x
+Source: https://laravel.com/docs/12.x
+-->
+
 # Upgrade Guide
 
 - [Upgrading To 12.0 From 11.x](#upgrade-12.0)

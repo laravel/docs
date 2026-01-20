@@ -1,3 +1,8 @@
+<!--
+Laravel Version: 12.x
+Source: https://laravel.com/docs/12.x
+-->
+
 # Laravel Documentation
 
 You can find the online version of the Laravel documentation at [https://laravel.com/docs](https://laravel.com/docs)
