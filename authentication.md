@@ -371,7 +371,7 @@ if (Auth::viaRemember()) {
 <a name="authenticate-a-user-instance"></a>
 #### Authenticate a User Instance
 
-If you need to set an existing user instance as the currently authenticated user, you may pass the user instance to the `Auth` facade's `login` method. The given user instance must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\Models\User` model included with Laravel already implements this interface. This method of authentication is useful when you already have a valid user instance, such as directly after a user registers with your application:
+If you need to set an existing user instance as the currently authenticated user, you may pass the user instance to the `Auth` facade's `login` method. The given user instance must be an implementation of the `Illuminate\Contracts\Auth\Identity\StatefulIdentifiable` [contract](/docs/{{version}}/contracts). The `App\Models\User` model included with Laravel already implements this interface. This method of authentication is useful when you already have a valid user instance, such as directly after a user registers with your application:
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -741,63 +741,125 @@ Finally, you may reference this provider in your `guards` configuration:
 <a name="the-user-provider-contract"></a>
 ### The User Provider Contract
 
-`Illuminate\Contracts\Auth\UserProvider` implementations are responsible for fetching an `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, MongoDB, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent the authenticated user:
+Laravel's user provider contracts define how users are retrieved from persistent storage system, such as MySQL, MongoDB, etc. The provider system has is a composite of focused interfaces, allowing you to implement only the functionality your authentication system requires:
 
-Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
+| Contract | Purpose |
+| --- | --- |
+| `BasicUserProvider` | Retrieves users by their unique identifier |
+| `CredentialsUserProvider` | Retrieves and validates users by credentials (password) |
+| `RecallerUserProvider` | Retrieves users by "remember me" token |
+| `StatefulUserProvider` | Combines all three for full stateful authentication |
+
+> [!NOTE]
+> The `Illuminate\Contracts\Auth\UserProvider` interface is deprecated and now extends `StatefulUserProvider` for backward compatibility.
+
+For most applications using session-based authentication, you should implement `Illuminate\Contracts\Auth\Providers\StatefulUserProvider`:
 
 ```php
 <?php
 
-namespace Illuminate\Contracts\Auth;
+namespace Illuminate\Contracts\Auth\Providers;
 
-interface UserProvider
+interface StatefulUserProvider extends BasicUserProvider, RecallerUserProvider, CredentialsUserProvider
 {
-    public function retrieveById($identifier);
-    public function retrieveByToken($identifier, $token);
-    public function updateRememberToken(Authenticatable $user, $token);
-    public function retrieveByCredentials(array $credentials);
-    public function validateCredentials(Authenticatable $user, array $credentials);
-    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false);
 }
 ```
 
-The `retrieveById` function typically receives a key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
+Let's examine the individual provider contracts:
 
-The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, typically stored in a database column like `remember_token`. As with the previous method, the `Authenticatable` implementation with a matching token value should be returned by this method.
+#### BasicUserProvider
 
-The `updateRememberToken` method updates the `$user` instance's `remember_token` with the new `$token`. A fresh token is assigned to users on a successful "remember me" authentication attempt or when the user is logging out.
+The `retrieveById` function receives a key representing the user, such as an auto-incrementing ID from a MySQL database. The `Identifiable` implementation matching the ID should be retrieved and returned by the method.
 
-The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to authenticate with an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition that searches for a user record with a "username" matching the value of `$credentials['username']`. The method should return an implementation of `Authenticatable`. **This method should not attempt to do any password validation or authentication.**
+```php
+public function retrieveById($identifier);
+```
 
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method will typically use the `Hash::check` method to compare the value of `$user->getAuthPassword()` to the value of `$credentials['password']`. This method should return `true` or `false` indicating whether the password is valid.
+#### RecallerUserProvider
 
-The `rehashPasswordIfRequired` method should rehash the given `$user`'s password if required and supported. For example, this method will typically use the `Hash::needsRehash` method to determine if the `$credentials['password']` value needs to be rehashed. If the password needs to be rehashed, the method should use the `Hash::make` method to rehash the password and update the user's record in the underlying persistent storage.
+The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`. The `updateRememberToken` method updates the user's `remember_token` with a new `$token` on successful "remember me" authentication or logout.
+
+```php
+public function retrieveByToken($identifier, $token);
+public function updateRememberToken(Identifiable $user, $token);
+```
+
+#### CredentialsUserProvider
+
+The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method. The method should query the underlying persistent storage for the user matching those credentials. **This method should not attempt to do any password validation or authentication.**
+
+The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. This method will typically use the `Hash::check` method to compare the value of `$user->getAuthPassword()` to the value of `$credentials['password']`.
+
+The `rehashPasswordIfRequired` method should rehash the user's password if required and supported.
+
+```php
+public function retrieveByCredentials(array $credentials);
+public function validateCredentials(Identifiable $user, array $credentials);
+public function rehashPasswordIfRequired(Identifiable $user, array $credentials, bool $force = false);
+```
 
 <a name="the-authenticatable-contract"></a>
 ### The Authenticatable Contract
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, user providers should return implementations of this interface from the `retrieveById`, `retrieveByToken`, and `retrieveByCredentials` methods:
+Now that we have explored the user provider contracts, let's take a look at the user identity contracts. Like the provider contracts, the user identity system has been decomposed into focused interfaces:
+
+| Contract | Purpose |
+| --- | --- |
+| `Identifiable` | Core user identification (ID, identifier name) |
+| `HasPassword` | Password-based authentication methods |
+| `Rememberable` | "Remember me" token management |
+| `StatefulIdentifiable` | Combines all three for full stateful authentication |
+
+> [!NOTE]
+> The `Illuminate\Contracts\Auth\Authenticatable` interface is deprecated and now extends `StatefulIdentifiable` for backward compatibility.
+
+For most applications using session-based authentication, your user model should implement `Illuminate\Contracts\Auth\Identity\StatefulIdentifiable`:
 
 ```php
 <?php
 
-namespace Illuminate\Contracts\Auth;
+namespace Illuminate\Contracts\Auth\Identity;
 
-interface Authenticatable
+interface StatefulIdentifiable extends Identifiable, HasPassword, Rememberable
 {
-    public function getAuthIdentifierName();
-    public function getAuthIdentifier();
-    public function getAuthPasswordName();
-    public function getAuthPassword();
-    public function getRememberToken();
-    public function setRememberToken($value);
-    public function getRememberTokenName();
 }
 ```
 
-This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" column for the user and the `getAuthIdentifier` method should return the "primary key" of the user. When using a MySQL back-end, this would likely be the auto-incrementing primary key assigned to the user record. The `getAuthPasswordName` method should return the name of the user's password column. The `getAuthPassword` method should return the user's hashed password.
+Let's examine the individual identity contracts:
 
-This interface allows the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes an `App\Models\User` class in the `app/Models` directory which implements this interface.
+#### Identifiable
+
+The most fundamental contract. The `getAuthIdentifierName` method returns the name of the "primary key" column, and `getAuthIdentifier` returns the "primary key" value. The `getAuthIdentifierForBroadcasting` method returns the identifier used for broadcasting channels.
+
+```php
+public function getAuthIdentifierName();
+public function getAuthIdentifier();
+public function getAuthIdentifierForBroadcasting();
+```
+
+This contract is sufficient for stateless guards like API token authentication where you only need to identify the user.
+
+#### HasPassword
+
+For password-based authentication. The `getAuthPasswordName` method returns the name of the password column, and `getAuthPassword` returns the user's hashed password.
+
+```php
+public function getAuthPasswordName();
+public function getAuthPassword();
+```
+
+#### Rememberable
+
+For "remember me" functionality. These methods manage the remember token used to maintain persistent sessions.
+
+```php
+public function getRememberToken();
+public function setRememberToken($value);
+public function getRememberTokenName();
+```
+
+These interfaces allow the authentication system to work with any "user" class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes an `App\Models\User` class in the `app/Models` directory which implements `StatefulIdentifiable`.
+
 
 <a name="automatic-password-rehashing"></a>
 ## Automatic Password Rehashing
