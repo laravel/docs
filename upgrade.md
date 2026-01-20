@@ -32,7 +32,6 @@
 - [Image Validation Now Excludes SVGs](#image-validation)
 - [Local Filesystem Disk Default Root Path](#local-filesystem-disk-default-root-path)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
-- [Database Constructor Signature Changes](#database-constructor-signature-changes)
 - [Nested Array Request Merging](#nested-array-request-merging)
 
 </div>
@@ -190,17 +189,15 @@ The `db:table` and `db:show` commands now output the results of all schemas on M
 
 In Laravel 12, several low-level database classes now require an `Illuminate\Database\Connection` instance to be provided via their constructors.
 
-##### Blueprint
+**These changes are primarily applicable to database package maintainers - it is extremely unlikely any of these changes affect normal application development.**
 
-The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects a `Connection` instance as its first argument.
+`Illuminate\Database\Schema\Blueprint`
 
-This primarily affects applications or packages that manually instantiate `Blueprint` instances.
+The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects a `Connection` instance as its first argument. This primarily affects applications or packages that manually instantiate `Blueprint` instances.
 
-##### Grammar
+`Illuminate\Database\Grammar`
 
-The constructor of the `Illuminate\Database\Grammar` class now also requires a `Connection` instance.
-
-In previous versions, the connection was assigned after construction using the `setConnection()` method. This method has been removed in Laravel 12.
+The constructor of the `Illuminate\Database\Grammar` class also now requires a `Connection` instance. In previous versions, the connection was assigned after construction using the `setConnection()` method. This method has been removed in Laravel 12:
 
 ```php
 // Laravel <= 11.x
@@ -213,10 +210,14 @@ $grammar = new MySqlGrammar($connection);
 
 In addition, the following APIs have been removed or deprecated:
 
-* The `Grammar::setConnection()` method has been removed
-* The `Connection::withTablePrefix()` method has been removed
-* The `Grammar::getTablePrefix()` and `setTablePrefix()` methods are deprecated
-* The `Blueprint::getPrefix()` method is deprecated
+<div class="content-list" markdown="1">
+
+- The `Blueprint::getPrefix()` method is deprecated.
+- The `Connection::withTablePrefix()` method has been removed.
+- The `Grammar::getTablePrefix()` and `setTablePrefix()` methods are deprecated.
+- The `Grammar::setConnection()` method has been removed.
+
+</div>
 
 When working with table prefixes, you should now retrieve them directly from the database connection:
 
