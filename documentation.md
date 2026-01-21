@@ -74,6 +74,9 @@
     - [API Resources](/docs/{{version}}/eloquent-resources)
     - [Serialization](/docs/{{version}}/eloquent-serialization)
     - [Factories](/docs/{{version}}/eloquent-factories)
+- ## AI
+    - [Boost](/docs/{{version}}/boost)
+    - [MCP](/docs/{{version}}/mcp)
 - ## Testing
     - [Getting Started](/docs/{{version}}/testing)
     - [HTTP Tests](/docs/{{version}}/http-tests)
@@ -90,7 +93,6 @@
     - [Folio](/docs/{{version}}/folio)
     - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
-    - [MCP](/docs/{{version}}/mcp)
     - [Mix](/docs/{{version}}/mix)
     - [Octane](/docs/{{version}}/octane)
     - [Passport](/docs/{{version}}/passport)
