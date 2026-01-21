@@ -122,7 +122,7 @@ Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools
 ### Available MCP Tools
 
 | Name                       | Notes                                                                                                          |
-| -------------------------- |----------------------------------------------------------------------------------------------------------------|
+|----------------------------|----------------------------------------------------------------------------------------------------------------|
 | Application Info           | Read PHP & Laravel versions, database engine, list of ecosystem packages with versions, and Eloquent models    |
 | Browser Logs               | Read logs and errors from the browser                                                                          |
 | Database Connections       | Inspect available database connections, including the default connection                                       |
@@ -172,28 +172,28 @@ AI guidelines are composable instruction files that are loaded upfront to provid
 
 Laravel Boost includes AI guidelines for the following packages and frameworks. The `core` guidelines provide generic, generalized advice to the AI for the given package that is applicable across all versions.
 
-| Package | Versions Supported     |
-|---------|------------------------|
-| Core & Boost | core                   |
-| Laravel Framework | core, 10.x, 11.x, 12.x |
-| Livewire | core, 2.x, 3.x, 4.x    |
-| Flux UI | core, free, pro        |
-| Folio | core                   |
-| Herd | core                   |
-| Inertia Laravel | core, 1.x, 2.x         |
-| Inertia React | core, 1.x, 2.x         |
-| Inertia Vue | core, 1.x, 2.x         |
-| Inertia Svelte | core, 1.x, 2.x         |
-| MCP | core                   |
-| Pennant | core                   |
-| Pest | core, 3.x, 4.x         |
-| PHPUnit | core                   |
-| Pint | core                   |
-| Sail | core                   |
-| Tailwind CSS | core, 3.x, 4.x         |
-| Livewire Volt | core                   |
-| Wayfinder | core                   |
-| Enforce Tests | conditional            |
+| Package            | Versions Supported     |
+|--------------------|------------------------|
+| Core & Boost       | core                   |
+| Laravel Framework  | core, 10.x, 11.x, 12.x |
+| Livewire           | core, 2.x, 3.x, 4.x    |
+| Flux UI            | core, free, pro        |
+| Folio              | core                   |
+| Herd               | core                   |
+| Inertia Laravel    | core, 1.x, 2.x         |
+| Inertia React      | core, 1.x, 2.x         |
+| Inertia Vue        | core, 1.x, 2.x         |
+| Inertia Svelte     | core, 1.x, 2.x         |
+| MCP                | core                   |
+| Pennant            | core                   |
+| Pest               | core, 3.x, 4.x         |
+| PHPUnit            | core                   |
+| Pint               | core                   |
+| Sail               | core                   |
+| Tailwind CSS       | core, 3.x, 4.x         |
+| Livewire Volt      | core                   |
+| Wayfinder          | core                   |
+| Enforce Tests      | conditional            |
 
 > **Note:** To keep your AI guidelines up-to-date, see the [Keeping Boost Resources Up-to-Date](#keeping-boost-resources-up-to-date) section.
 
@@ -243,20 +243,22 @@ When you run `boost:install` and select skills as a feature, skills are automati
 <a name="available-skills"></a>
 ### Available Skills
 
-| Skill | Package |
-|-------|---------|
-| livewire-development | Livewire |
-| pest-testing | Pest |
-| fluxui-development | Flux UI |
-| inertia-react-development | Inertia React |
-| inertia-vue-development | Inertia Vue |
-| inertia-svelte-development | Inertia Svelte |
-| tailwindcss-development | Tailwind CSS |
-| folio-routing | Folio |
-| volt-development | Volt |
-| pennant-development | Pennant |
-| mcp-development | MCP |
-| wayfinder-development | Wayfinder |
+| Skill                        | Package      |
+|------------------------------|--------------|
+| livewire-development         | Livewire     |
+| pest-testing                 | Pest         |
+| fluxui-development           | Flux UI      |
+| inertia-react-development    | Inertia React|
+| inertia-vue-development      | Inertia Vue  |
+| inertia-svelte-development   | Inertia Svelte|
+| tailwindcss-development      | Tailwind CSS |
+| folio-routing                | Folio        |
+| volt-development             | Volt         |
+| pennant-development          | Pennant      |
+| mcp-development              | MCP          |
+| wayfinder-development        | Wayfinder    |
+
+> **Note:** To keep your skills up-to-date, see the [Keeping Boost Resources Up-to-Date](#keeping-boost-resources-up-to-date) section.
 
 <a name="custom-skills"></a>
 ### Custom Skills
@@ -299,12 +301,8 @@ Use this skill when working with PackageName features...
 - Feature 1: [clear & short description].
 - Feature 2: [clear & short description]. Example usage:
 
-```php
 $result = PackageName::featureTwo($param1, $param2);
 ```
-```
-
-> **Note:** To keep your skills up-to-date, see the [Keeping Boost Resources Up-to-Date](#keeping-boost-resources-up-to-date) section.
 
 <a name="documentation-api"></a>
 ## Documentation API
@@ -313,16 +311,16 @@ Laravel Boost includes a Documentation API that provides AI agents with access t
 
 The `Search Docs` MCP tool allows agents to query the Laravel hosted documentation API service to retrieve documentation based on your installed packages.
 
-| Package | Versions Supported |
-|---------|--------------------|
+| Package         | Versions Supported |
+|-----------------|--------------------|
 | Laravel Framework | 10.x, 11.x, 12.x   |
-| Filament | 2.x, 3.x, 4.x, 5.x |
-| Flux UI | 2.x Free, 2.x Pro  |
-| Inertia | 1.x, 2.x           |
-| Livewire | 1.x, 2.x, 3.x, 4.x |
-| Nova | 4.x, 5.x           |
-| Pest | 3.x, 4.x           |
-| Tailwind CSS | 3.x, 4.x           |
+| Filament        | 2.x, 3.x, 4.x, 5.x |
+| Flux UI         | 2.x Free, 2.x Pro  |
+| Inertia         | 1.x, 2.x           |
+| Livewire        | 1.x, 2.x, 3.x, 4.x |
+| Nova            | 4.x, 5.x           |
+| Pest            | 3.x, 4.x           |
+| Tailwind CSS    | 3.x, 4.x           |
 
 <a name="extending-boost"></a>
 ## Extending Boost
