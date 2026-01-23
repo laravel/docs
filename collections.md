@@ -119,7 +119,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
-[containsOneItem](#method-containsoneitem)
 [containsManyItems](#method-containsmanyitems)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
@@ -155,6 +154,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
+[hasSole](#method-hassole)
 [implode](#method-implode)
 [intersect](#method-intersect)
 [intersectUsing](#method-intersectusing)
@@ -576,29 +576,6 @@ $collection->contains('product', 'Bookcase');
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [containsStrict](#method-containsstrict) method to filter using "strict" comparisons.
 
 For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
-
-<a name="method-containsoneitem"></a>
-#### `containsOneItem()` {.collection-method}
-
-The `containsOneItem` method determines whether the collection contains a single item:
-
-```php
-collect([])->containsOneItem();
-
-// false
-
-collect(['1'])->containsOneItem();
-
-// true
-
-collect(['1', '2'])->containsOneItem();
-
-// false
-
-collect([1, 2, 3])->containsOneItem(fn (int $item) => $item === 2);
-
-// true
-```
 
 <a name="method-containsmanyitems"></a>
 #### `containsManyItems()` {.collection-method}
@@ -1459,6 +1436,25 @@ $collection->hasAny(['product', 'price']);
 $collection->hasAny(['name', 'price']);
 
 // false
+```
+
+<a name="method-hassole"></a>
+#### `hasSole()` {.collection-method}
+
+The `hasSole` method determines if the collection contains a single item, optionally matching the given criteria:
+
+```php
+collect([])->hasSole();
+
+// false
+
+collect(['1'])->hasSole();
+
+// true
+
+collect([1, 2, 3])->hasSole(fn (int $item) => $item === 2);
+
+// true
 ```
 
 <a name="method-implode"></a>
