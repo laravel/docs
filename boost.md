@@ -17,6 +17,7 @@
     - [Custom Skills](#custom-skills)
     - [Overriding Built-in Skills](#overriding-built-in-skills)
     - [Third-Party Package Skills](#third-party-package-skills)
+- [Guidelines vs. Skills](#guidelines-vs-skills)
 - [Documentation API](#documentation-api)
 - [Extending Boost](#extending-boost)
     - [Adding Support for Other IDEs / AI Agents](#adding-support-for-other-ides-ai-agents)
@@ -303,6 +304,21 @@ Use this skill when working with PackageName features...
 
 $result = PackageName::featureTwo($param1, $param2);
 ```
+
+<a name="guidelines-vs-skills"></a>
+## Guidelines vs. Skills
+
+Laravel Boost provides two distinct ways to give AI agents context about your application: **guidelines** and **skills**.
+
+**Guidelines** are loaded upfront when the AI agent starts, providing essential context about Laravel conventions and best practices that applies broadly across your codebase.
+
+**Skills** are activated on-demand when working on specific tasks, containing detailed patterns for particular domains (like Livewire components or Pest tests). Loading skills only when relevant reduces context bloat and improves code quality.
+
+| Aspect | Guidelines | Skills |
+|--------|------------|--------|
+| Loading | Upfront, always present | On-demand, when relevant |
+| Scope | Broad, foundational | Focused, task-specific |
+| Purpose | Core conventions & best practices | Detailed implementation patterns |
 
 <a name="documentation-api"></a>
 ## Documentation API
