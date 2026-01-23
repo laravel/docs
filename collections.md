@@ -155,6 +155,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
+[hasSole](#method-hassole)
 [implode](#method-implode)
 [intersect](#method-intersect)
 [intersectUsing](#method-intersectusing)
@@ -1459,6 +1460,25 @@ $collection->hasAny(['product', 'price']);
 $collection->hasAny(['name', 'price']);
 
 // false
+```
+
+<a name="method-hassole"></a>
+#### `hasSole()` {.collection-method}
+
+The `hasSole` method determines if the collection contains a single item, optionally matching the given criteria:
+
+```php
+collect([])->hasSole();
+
+// false
+
+collect(['1'])->hasSole();
+
+// true
+
+collect([1, 2, 3])->hasSole(fn (int $item) => $item === 2);
+
+// true
 ```
 
 <a name="method-implode"></a>
