@@ -264,7 +264,7 @@ When you run `boost:install` and select skills as a feature, skills are automati
 <a name="custom-skills"></a>
 ### Custom Skills
 
-To create your own custom skills, add a `SKILL.md` file to your application's `.ai/skills/{skill-name}/` directory. When you run `boost:install`, your custom skills will be installed alongside Boost's built-in skills.
+To create your own custom skills, add a `SKILL.md` file to your application's `.ai/skills/{skill-name}/` directory. When you run `boost:udpate`, your custom skills will be installed alongside Boost's built-in skills.
 
 For example, to create a custom skill for your application's domain logic:
 
@@ -277,12 +277,12 @@ For example, to create a custom skill for your application's domain logic:
 
 You can override Boost's built-in skills by creating your own custom skills with matching names. When you create a custom skill that matches an existing Boost skill name, Boost will use your custom version instead of the built-in one.
 
-For example, to override Boost's `livewire-development` skill, create a file at `.ai/skills/livewire-development/SKILL.md`. When you run `boost:install`, Boost will include your custom skill instead of the default one.
+For example, to override Boost's `livewire-development` skill, create a file at `.ai/skills/livewire-development/SKILL.md`. When you run `boost:update`, Boost will include your custom skill instead of the default one.
 
 <a name="third-party-package-skills"></a>
 ### Third-Party Package Skills
 
-If you maintain a third-party package and would like Boost to include skills for it, you can do so by adding a `resources/boost/skills/{skill-name}/SKILL.md` file to your package. When users of your package run `php artisan boost:install`, Boost will automatically install your skills.
+If you maintain a third-party package and would like Boost to include skills for it, you can do so by adding a `resources/boost/skills/{skill-name}/SKILL.md` file to your package. When users of your package run `php artisan boost:install`, Based on user prefrence Boost will automatically install your skills.
 
 Boost Skills support the [Agent Skills format](https://agentskills.io/what-are-skills) and should be structured as a folder containing a `SKILL.md` file with YAML frontmatter and Markdown instructions. The `SKILL.md` file must include required frontmatter (`name` and `description`) and can optionally include scripts, templates, and reference materials. Skills should outline any required file structure or conventions, and explain how to create or use its main features (with example commands or code snippets). Keep them concise, actionable, and focused on best practices so AI can generate correct code for your users. Here is an example:
 
