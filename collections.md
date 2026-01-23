@@ -581,7 +581,7 @@ For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) me
 <a name="method-containsoneitem"></a>
 #### `containsOneItem()` {.collection-method}
 
-The `containsOneItem` method determines whether the collection contains a single item:
+The `containsOneItem` method is an alias for the [hasSole](#method-hassole) method.
 
 ```php
 collect([])->containsOneItem();
