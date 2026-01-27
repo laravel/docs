@@ -1032,7 +1032,7 @@ For the inverse of `except`, see the [only](#method-only) method.
 <a name="method-filter"></a>
 #### `filter()` {.collection-method}
 
-The `filter` method filters the collection using the given callback, keeping only those items that pass a given truth test:
+The `filter` method filters the collection using the given callback, keeping only those items that pass a given truth test. The original collection keys are preserved:
 
 ```php
 $collection = collect([1, 2, 3, 4]);
@@ -1042,6 +1042,14 @@ $filtered = $collection->filter(function (int $value, int $key) {
 });
 
 $filtered->all();
+
+// [2 => 3, 3 => 4]
+```
+
+If you would like to reindex the filtered results, you may use the values method:
+
+```php
+$filtered->values()->all();
 
 // [3, 4]
 ```
