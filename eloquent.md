@@ -1908,7 +1908,9 @@ $user->saveQuietly();
 You may also "update", "delete", "soft delete", "restore", and "replicate" a given model without dispatching any events:
 
 ```php
+$user->updateQuietly();
 $user->deleteQuietly();
 $user->forceDeleteQuietly();
 $user->restoreQuietly();
+$user->replicateQuietly();
 ```
