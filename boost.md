@@ -73,7 +73,7 @@ claude mcp add -s local -t stdio laravel-boost php artisan boost:mcp
 Codex support is typically enabled automatically. If you find it isn't, open a shell in the project's directory and run the following command:
 
 ```shell
-codex mcp add -- php artisan boost:mcp
+codex mcp add laravel-boost -- php "artisan" "boost:mcp"
 ```
 
 #### Gemini CLI
