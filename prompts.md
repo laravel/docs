@@ -6,8 +6,6 @@
     - [Text](#text)
     - [Textarea](#textarea)
     - [Number](#number)
-        - [Required Values](#number-required)
-        - [Additional Validation](#number-validation)
     - [Password](#password)
     - [Confirm](#confirm)
     - [Select](#select)
