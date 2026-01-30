@@ -2769,8 +2769,11 @@ test('orders can be shipped', function () {
     // Assert a job was pushed to a given queue...
     Queue::assertPushedOn('queue-name', ShipOrder::class);
 
+    // Assert a job was pushed
+    Queue::assertPushed(ShipOrder::class);
+
     // Assert a job was pushed twice...
-    Queue::assertPushed(ShipOrder::class, 2);
+    Queue::assertPushedTimes(ShipOrder::class, 2);
 
     // Assert a job was not pushed...
     Queue::assertNotPushed(AnotherJob::class);
@@ -2810,8 +2813,11 @@ class ExampleTest extends TestCase
         // Assert a job was pushed to a given queue...
         Queue::assertPushedOn('queue-name', ShipOrder::class);
 
+        // Assert a job was pushed
+        Queue::assertPushed(ShipOrder::class);
+
         // Assert a job was pushed twice...
-        Queue::assertPushed(ShipOrder::class, 2);
+        Queue::assertPushedTimes(ShipOrder::class, 2);
 
         // Assert a job was not pushed...
         Queue::assertNotPushed(AnotherJob::class);
@@ -2856,7 +2862,7 @@ test('orders can be shipped', function () {
     // Perform order shipping...
 
     // Assert a job was pushed twice...
-    Queue::assertPushed(ShipOrder::class, 2);
+    Queue::assertPushedTimes(ShipOrder::class, 2);
 });
 ```
 
@@ -2870,7 +2876,7 @@ public function test_orders_can_be_shipped(): void
     // Perform order shipping...
 
     // Assert a job was pushed twice...
-    Queue::assertPushed(ShipOrder::class, 2);
+    Queue::assertPushedTimes(ShipOrder::class, 2);
 }
 ```
 
