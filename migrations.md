@@ -1447,6 +1447,9 @@ $table->string('email')->unique()->online();
 
 When using PostgreSQL, this adds the `CONCURRENTLY` option to the index creation statement. When using SQL Server, this adds the `WITH (online = on)` option.
 
+> [!WARNING]
+> PostgreSQL does not support creating indexes concurrently inside transactions. The migration in which you attempt to create an index concurrently must have the `$withinTransaction` property set to `false`.
+
 <a name="renaming-indexes"></a>
 ### Renaming Indexes
 
