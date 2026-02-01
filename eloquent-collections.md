@@ -325,7 +325,7 @@ $users = $users->unique();
 ```
 
 <a name="method-withoutAppends"></a>
-#### `withoutAppends($attributes)` {.collection-method}
+#### `withoutAppends()` {.collection-method}
 
 The `withoutAppends` method temporarily removes all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
 
