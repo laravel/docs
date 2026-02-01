@@ -217,6 +217,12 @@ return $user->mergeAppends(['is_admin', 'status'])->toArray();
 return $user->setAppends(['is_admin'])->toArray();
 ```
 
+Likewise, if you would like to remove all appended properties from a model, you may use the `withoutAppends` method:
+
+```php
+return $user->withoutAppends()->toArray();
+```
+
 <a name="date-serialization"></a>
 ## Date Serialization
 
