@@ -127,23 +127,23 @@ Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools
 <a name="available-mcp-tools"></a>
 ### Available MCP Tools
 
-| Name                       | Notes                                                                                                          |
-|----------------------------|----------------------------------------------------------------------------------------------------------------|
-| Application Info           | Read PHP & Laravel versions, database engine, list of ecosystem packages with versions, and Eloquent models    |
-| Browser Logs               | Read logs and errors from the browser                                                                          |
-| Database Connections       | Inspect available database connections, including the default connection                                       |
-| Database Query             | Execute a query against the database                                                                           |
-| Database Schema            | Read the database schema                                                                                       |
-| Get Absolute URL           | Convert relative path URIs to absolute so agents generate valid URLs                                           |
-| Get Config                 | Get a value from the configuration files using "dot" notation                                                  |
-| Last Error                 | Read the last error from the application's log files                                                           |
-| List Artisan Commands      | Inspect the available Artisan commands                                                                         |
-| List Available Config Keys | Inspect the available configuration keys                                                                       |
-| List Available Env Vars    | Inspect the available environment variable keys                                                                |
-| List Routes                | Inspect the application's routes                                                                               |
-| Read Log Entries           | Read the last N log entries                                                                                    |
-| Search Docs                | Query the Laravel hosted documentation API service to retrieve documentation based on installed packages       |
-| Tinker                     | Execute arbitrary code within the context of the application                                                   |
+| Name                       | Notes                                                                                                       |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Application Info           | Read PHP & Laravel versions, database engine, list of ecosystem packages with versions, and Eloquent models |
+| Browser Logs               | Read logs and errors from the browser                                                                       |
+| Database Connections       | Inspect available database connections, including the default connection                                    |
+| Database Query             | Execute a query against the database                                                                        |
+| Database Schema            | Read the database schema                                                                                    |
+| Get Absolute URL           | Convert relative path URIs to absolute so agents generate valid URLs                                        |
+| Get Config                 | Get a value from the configuration files using "dot" notation                                               |
+| Last Error                 | Read the last error from the application's log files                                                        |
+| List Artisan Commands      | Inspect the available Artisan commands                                                                      |
+| List Available Config Keys | Inspect the available configuration keys                                                                    |
+| List Available Env Vars    | Inspect the available environment variable keys                                                             |
+| List Routes                | Inspect the application's routes                                                                            |
+| Read Log Entries           | Read the last N log entries                                                                                 |
+| Search Docs                | Query the Laravel hosted documentation API service to retrieve documentation based on installed packages    |
+| Tinker                     | Execute arbitrary code within the context of the application                                                |
 
 <a name="manually-registering-the-mcp-server"></a>
 ### Manually Registering the MCP Server
@@ -178,28 +178,28 @@ AI guidelines are composable instruction files that are loaded upfront to provid
 
 Laravel Boost includes AI guidelines for the following packages and frameworks. The `core` guidelines provide generic, generalized advice to the AI for the given package that is applicable across all versions.
 
-| Package            | Versions Supported     |
-|--------------------|------------------------|
-| Core & Boost       | core                   |
-| Laravel Framework  | core, 10.x, 11.x, 12.x |
-| Livewire           | core, 2.x, 3.x, 4.x    |
-| Flux UI            | core, free, pro        |
-| Folio              | core                   |
-| Herd               | core                   |
-| Inertia Laravel    | core, 1.x, 2.x         |
-| Inertia React      | core, 1.x, 2.x         |
-| Inertia Vue        | core, 1.x, 2.x         |
-| Inertia Svelte     | core, 1.x, 2.x         |
-| MCP                | core                   |
-| Pennant            | core                   |
-| Pest               | core, 3.x, 4.x         |
-| PHPUnit            | core                   |
-| Pint               | core                   |
-| Sail               | core                   |
-| Tailwind CSS       | core, 3.x, 4.x         |
-| Livewire Volt      | core                   |
-| Wayfinder          | core                   |
-| Enforce Tests      | conditional            |
+| Package           | Versions Supported     |
+| ----------------- | ---------------------- |
+| Core & Boost      | core                   |
+| Laravel Framework | core, 10.x, 11.x, 12.x |
+| Livewire          | core, 2.x, 3.x, 4.x    |
+| Flux UI           | core, free, pro        |
+| Folio             | core                   |
+| Herd              | core                   |
+| Inertia Laravel   | core, 1.x, 2.x         |
+| Inertia React     | core, 1.x, 2.x         |
+| Inertia Vue       | core, 1.x, 2.x         |
+| Inertia Svelte    | core, 1.x, 2.x         |
+| MCP               | core                   |
+| Pennant           | core                   |
+| Pest              | core, 3.x, 4.x         |
+| PHPUnit           | core                   |
+| Pint              | core                   |
+| Sail              | core                   |
+| Tailwind CSS      | core, 3.x, 4.x         |
+| Livewire Volt     | core                   |
+| Wayfinder         | core                   |
+| Enforce Tests     | conditional            |
 
 > **Note:** To keep your AI guidelines up-to-date, see the [Keeping Boost Resources Updated](#keeping-boost-resources-updated) section.
 
@@ -249,20 +249,20 @@ When you run `boost:install` and select skills as a feature, skills are automati
 <a name="available-skills"></a>
 ### Available Skills
 
-| Skill                        | Package      |
-|------------------------------|--------------|
-| fluxui-development           | Flux UI      |
-| folio-routing                | Folio        |
-| inertia-react-development    | Inertia React|
-| inertia-svelte-development   | Inertia Svelte|
-| inertia-vue-development      | Inertia Vue  |
-| livewire-development         | Livewire     |
-| mcp-development              | MCP          |
-| pennant-development          | Pennant      |
-| pest-testing                 | Pest         |
-| tailwindcss-development      | Tailwind CSS |
-| volt-development             | Volt         |
-| wayfinder-development        | Wayfinder    |
+| Skill                      | Package        |
+| -------------------------- | -------------- |
+| fluxui-development         | Flux UI        |
+| folio-routing              | Folio          |
+| inertia-react-development  | Inertia React  |
+| inertia-svelte-development | Inertia Svelte |
+| inertia-vue-development    | Inertia Vue    |
+| livewire-development       | Livewire       |
+| mcp-development            | MCP            |
+| pennant-development        | Pennant        |
+| pest-testing               | Pest           |
+| tailwindcss-development    | Tailwind CSS   |
+| volt-development           | Volt           |
+| wayfinder-development      | Wayfinder      |
 
 > **Note:** To keep your skills up-to-date, see the [Keeping Boost Resources Updated](#keeping-boost-resources-updated) section.
 
@@ -321,10 +321,10 @@ Laravel Boost provides two distinct ways to give AI agents context about your ap
 
 **Skills** are activated on-demand when working on specific tasks, containing detailed patterns for particular domains (like Livewire components or Pest tests). Loading skills only when relevant reduces context bloat and improves code quality.
 
-| Aspect | Guidelines | Skills |
-|--------|------------|--------|
-| **Loaded** | Upfront, always present | On-demand, when relevant |
-| **Scope** | Broad, foundational | Focused, task-specific |
+| Aspect      | Guidelines                        | Skills                           |
+| ----------- | --------------------------------- | -------------------------------- |
+| **Loaded**  | Upfront, always present           | On-demand, when relevant         |
+| **Scope**   | Broad, foundational               | Focused, task-specific           |
 | **Purpose** | Core conventions & best practices | Detailed implementation patterns |
 
 <a name="documentation-api"></a>
@@ -334,16 +334,16 @@ Laravel Boost includes a Documentation API that provides AI agents with access t
 
 The `Search Docs` MCP tool allows agents to query the Laravel hosted documentation API service to retrieve documentation based on your installed packages. Boost's AI guidelines and skills will automatically instruct your coding agent to use this API.
 
-| Package         | Versions Supported |
-|-----------------|--------------------|
+| Package           | Versions Supported |
+| ----------------- | ------------------ |
 | Laravel Framework | 10.x, 11.x, 12.x   |
-| Filament        | 2.x, 3.x, 4.x, 5.x |
-| Flux UI         | 2.x Free, 2.x Pro  |
-| Inertia         | 1.x, 2.x           |
-| Livewire        | 1.x, 2.x, 3.x, 4.x |
-| Nova            | 4.x, 5.x           |
-| Pest            | 3.x, 4.x           |
-| Tailwind CSS    | 3.x, 4.x           |
+| Filament          | 2.x, 3.x, 4.x, 5.x |
+| Flux UI           | 2.x Free, 2.x Pro  |
+| Inertia           | 1.x, 2.x           |
+| Livewire          | 1.x, 2.x, 3.x, 4.x |
+| Nova              | 4.x, 5.x           |
+| Pest              | 3.x, 4.x           |
+| Tailwind CSS      | 3.x, 4.x           |
 
 <a name="extending-boost"></a>
 ## Extending Boost
