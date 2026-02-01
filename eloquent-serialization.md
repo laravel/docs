@@ -223,6 +223,12 @@ Likewise, if you would like to remove all appended properties from a model, you 
 return $user->withoutAppends()->toArray();
 ```
 
+If you would like to check whether the attribute has been appended, you may use the `hasAppended` method:
+
+```php
+return $user->hasAppended('is_admin');
+```
+
 <a name="date-serialization"></a>
 ## Date Serialization
 
