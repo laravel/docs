@@ -166,34 +166,17 @@ class Flight extends Model
 }
 ```
 
-In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that Eloquent will automatically cast the primary key to an integer. If you wish to use a non-incrementing or a non-numeric primary key you may use the `WithoutIncrementing` attribute on your model:
+In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that Eloquent will automatically cast the primary key to an integer. If you wish to use a non-incrementing or a non-numeric primary key, you should specify the `type` and `incrementing` arguments on the `PrimaryKey` attribute:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\WithoutIncrementing;
+use Illuminate\Database\Eloquent\Attributes\PrimaryKey;
 use Illuminate\Database\Eloquent\Model;
 
-#[WithoutIncrementing]
-class Flight extends Model
-{
-    // ...
-}
-```
-
-If your model's primary key is not an integer, you may use the `KeyType` attribute to specify the primary key type:
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Attributes\KeyType;
-use Illuminate\Database\Eloquent\Model;
-
-#[KeyType('string')]
+#[PrimaryKey('uuid', type: 'string', incrementing: false)]
 class Flight extends Model
 {
     // ...
