@@ -25,6 +25,7 @@
 - [Password Rehashing](#password-rehashing)
 - [Per-Second Rate Limiting](#per-second-rate-limiting)
 - [Spatie Once Package](#spatie-once-package)
+- [Event Service Provider](#event-service-provider)
 
 </div>
 
@@ -128,7 +129,7 @@ However, we do **not recommend** that Laravel 10 applications upgrading to Larav
 
 **Likelihood Of Impact: Low**
 
-Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed. 
+Laravel 11 will automatically rehash your user's passwords during authentication if your hashing algorithm's "work factor" has been updated since the password was last hashed.
 
 Typically, this should not disrupt your application; however, if your `User` model's "password" field has a name other than `password`, you should specify the field's name via the model's `authPasswordName` property:
 
@@ -436,6 +437,27 @@ public function scalar($query, $bindings = [], $useReadPdo = true);
 **Likelihood Of Impact: Medium**
 
 Laravel 11 supports both Carbon 2 and Carbon 3. Carbon is a date manipulation library utilized extensively by Laravel and packages throughout the ecosystem. If you upgrade to Carbon 3, be aware that `diffIn*` methods now return floating-point numbers and may return negative values to indicate time direction, which is a significant change from Carbon 2. Review Carbon's [change log](https://github.com/briannesbitt/Carbon/releases/tag/3.0.0) and [documentation](https://carbon.nesbot.com/docs/#api-carbon-3) for detailed information on how to handle these and other changes.
+
+<a name="event-service-provider"></a>
+### Event Service Provider
+
+**Likelihood Of Impact: Medium**
+
+Laravel 11 uses automatic event discovery by default. If you are upgrading from Laravel 10 and wish to keep using your existing `App\Providers\EventServiceProvider`, you should remove `App\Providers\EventServiceProvider` from your `bootstrap/providers.php` file to avoid duplicate event listener registration:
+
+```php
+return [
+    App\Providers\AppServiceProvider::class,
+    // App\Providers\EventServiceProvider::class,
+];
+```
+Alternatively, you may keep your `EventServiceProvider` in `bootstrap/providers.php` and disable auto-discovery in your `bootstrap/app.php` file with:
+
+```php
+->withEvents(discover: false)
+```
+
+For more information on event listeners, please consult the [events documentation](/docs/{{version}}/events).
 
 <a name="mail"></a>
 ### Mail
