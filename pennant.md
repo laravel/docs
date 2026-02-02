@@ -157,22 +157,18 @@ $instance = Feature::instance(NewApi::class);
 
 #### Customizing the Stored Feature Name
 
-By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may specify a `$name` property on the feature class. The value of this property will be stored in place of the class name:
+By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may add the `Name` attribute on the feature class. The value of this attribute will be stored in place of the class name:
 
 ```php
 <?php
 
 namespace App\Features;
 
+use Laravel\Pennant\Attributes\Name;
+
+#[Name('new-api')]
 class NewApi
 {
-    /**
-     * The stored name of the feature.
-     *
-     * @var string
-     */
-    public $name = 'new-api';
-
     // ...
 }
 ```
