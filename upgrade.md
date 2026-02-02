@@ -443,7 +443,7 @@ Laravel 11 supports both Carbon 2 and Carbon 3. Carbon is a date manipulation li
 
 **Likelihood Of Impact: Medium**
 
-Laravel 11 uses automatic event discovery by default. If you are upgrading from Laravel 10 you should remove `App\Providers\EventServiceProvider` from your `bootstrap/providers.php` file to avoid duplicate event listener registration:
+Laravel 11 enables automatic event discovery by default. If you are upgrading from Laravel 10, you should remove `App\Providers\EventServiceProvider` from your `bootstrap/providers.php` file to avoid duplicate event listener registration:
 
 ```php
 return [
@@ -451,7 +451,8 @@ return [
     // App\Providers\EventServiceProvider::class,
 ];
 ```
-Alternatively, you may keep your `EventServiceProvider` in `bootstrap/providers.php` and disable auto-discovery in your `bootstrap/app.php` file with:
+
+Automatic discovery only registers listeners in your application's `app/Listeners` directory. If you prefer to keep your `EventServiceProvider` and manually register listeners, you should disable automatic discovery in your `bootstrap/app.php` file:
 
 ```php
 ->withEvents(discover: false)
