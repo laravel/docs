@@ -27,7 +27,7 @@ test('something can be mocked', function () {
     $this->instance(
         Service::class,
         Mockery::mock(Service::class, function (MockInterface $mock) {
-            $mock->shouldReceive('process')->once();
+            $mock->expects('process');
         })
     );
 });
@@ -43,7 +43,7 @@ public function test_something_can_be_mocked(): void
     $this->instance(
         Service::class,
         Mockery::mock(Service::class, function (MockInterface $mock) {
-            $mock->shouldReceive('process')->once();
+            $mock->expects('process');
         })
     );
 }
@@ -56,7 +56,7 @@ use App\Service;
 use Mockery\MockInterface;
 
 $mock = $this->mock(Service::class, function (MockInterface $mock) {
-    $mock->shouldReceive('process')->once();
+    $mock->expects('process');
 });
 ```
 
@@ -67,7 +67,7 @@ use App\Service;
 use Mockery\MockInterface;
 
 $mock = $this->partialMock(Service::class, function (MockInterface $mock) {
-    $mock->shouldReceive('process')->once();
+    $mock->expects('process');
 });
 ```
 
@@ -111,7 +111,7 @@ class UserController extends Controller
 }
 ```
 
-We can mock the call to the `Cache` facade by using the `shouldReceive` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
+We can mock the call to the `Cache` facade by using the `expects` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
 
 ```php tab=Pest
 <?php
@@ -119,8 +119,7 @@ We can mock the call to the `Cache` facade by using the `shouldReceive` method, 
 use Illuminate\Support\Facades\Cache;
 
 test('get index', function () {
-    Cache::shouldReceive('get')
-        ->once()
+    Cache::expects('get')
         ->with('key')
         ->andReturn('value');
 
@@ -142,8 +141,7 @@ class UserControllerTest extends TestCase
 {
     public function test_get_index(): void
     {
-        Cache::shouldReceive('get')
-            ->once()
+        Cache::expects('get')
             ->with('key')
             ->andReturn('value');
 
@@ -167,21 +165,21 @@ If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html
 
 use Illuminate\Support\Facades\Cache;
 
-test('values are be stored in cache', function () {
+test('values are stored in cache', function () {
     Cache::spy();
 
     $response = $this->get('/');
 
     $response->assertStatus(200);
 
-    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
+    Cache::shouldHaveReceived('put')->with('name', 'Taylor', 10);
 });
 ```
 
 ```php tab=PHPUnit
 use Illuminate\Support\Facades\Cache;
 
-public function test_values_are_be_stored_in_cache(): void
+public function test_values_are_stored_in_cache(): void
 {
     Cache::spy();
 
@@ -189,7 +187,7 @@ public function test_values_are_be_stored_in_cache(): void
 
     $response->assertStatus(200);
 
-    Cache::shouldHaveReceived('put')->once()->with('name', 'Taylor', 10);
+    Cache::shouldHaveReceived('put')->with('name', 'Taylor', 10);
 }
 ```
 
@@ -213,7 +211,7 @@ test('time can be manipulated', function () {
     $this->travel(-5)->hours();
 
     // Travel to an explicit time...
-    $this->travelTo(now()->subHours(6));
+    $this->travelTo(now()->minus(hours: 6));
 
     // Return back to the present time...
     $this->travelBack();
@@ -236,7 +234,7 @@ public function test_time_can_be_manipulated(): void
     $this->travel(-5)->hours();
 
     // Travel to an explicit time...
-    $this->travelTo(now()->subHours(6));
+    $this->travelTo(now()->minus(hours: 6));
 
     // Return back to the present time...
     $this->travelBack();
@@ -250,7 +248,7 @@ $this->travel(5)->days(function () {
     // Test something five days into the future...
 });
 
-$this->travelTo(now()->subDays(10), function () {
+$this->travelTo(now()->mins(days: 10), function () {
     // Test something during a given moment...
 });
 ```

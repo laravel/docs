@@ -9,6 +9,7 @@
     - [Flash Data](#flash-data)
     - [Deleting Data](#deleting-data)
     - [Regenerating the Session ID](#regenerating-the-session-id)
+- [Session Cache](#session-cache)
 - [Session Blocking](#session-blocking)
 - [Adding Custom Session Drivers](#adding-custom-session-drivers)
     - [Implementing the Driver](#implementing-the-driver)
@@ -33,7 +34,7 @@ The session `driver` configuration option defines where session data will be sto
 - `file` - sessions are stored in `storage/framework/sessions`.
 - `cookie` - sessions are stored in secure, encrypted cookies.
 - `database` - sessions are stored in a relational database.
-- `memcached` / `redis` - sessions are stored in one of these fast, cache based stores.
+- `memcached` / `redis` - sessions are stored in one of these fast, cache-based stores.
 - `dynamodb` - sessions are stored in AWS DynamoDB.
 - `array` - sessions are stored in a PHP array and will not be persisted.
 
@@ -277,6 +278,25 @@ If you need to regenerate the session ID and remove all data from the session in
 $request->session()->invalidate();
 ```
 
+<a name="session-cache"></a>
+## Session Cache
+
+Laravel's session cache provides a convenient way to cache data that is scoped to an individual user session. Unlike the global application cache, session cache data is automatically isolated per session and is cleaned up when the session expires or is destroyed. The session cache supports all the familiar [Laravel cache methods](/docs/{{version}}/cache) like `get`, `put`, `remember`, `forget`, and more, but scoped to the current session.
+
+The session cache is perfect for storing temporary, user-specific data that you want to persist across multiple requests within the same session, but don't need to store permanently. This includes things like form data, temporary calculations, API responses, or any other ephemeral data that should be tied to a specific user's session.
+
+You can access the session cache through the `cache` method on the session:
+
+```php
+$discount = $request->session()->cache()->get('discount');
+
+$request->session()->cache()->put(
+    'discount', 10, now()->plus(minutes: 5)
+);
+```
+
+For more information on Laravel's cache methods, consult the [cache documentation](/docs/{{version}}/cache).
+
 <a name="session-blocking"></a>
 ## Session Blocking
 
@@ -342,7 +362,7 @@ Since the purpose of these methods is not readily understandable, here is an ove
 - The `open` method would typically be used in file based session store systems. Since Laravel ships with a `file` session driver, you will rarely need to put anything in this method. You can simply leave this method empty.
 - The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed.
 - The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you.
-- The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB or another storage system of your choice.  Again, you should not perform any serialization - Laravel will have already handled that for you.
+- The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB or another storage system of your choice. Again, you should not perform any serialization - Laravel will have already handled that for you.
 - The `destroy` method should remove the data associated with the `$sessionId` from persistent storage.
 - The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty.
 

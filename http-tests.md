@@ -12,6 +12,7 @@
 - [Testing File Uploads](#testing-file-uploads)
 - [Testing Views](#testing-views)
     - [Rendering Blade and Components](#rendering-blade-and-components)
+- [Caching Routes](#caching-routes)
 - [Available Assertions](#available-assertions)
     - [Response Assertions](#response-assertions)
     - [Authentication Assertions](#authentication-assertions)
@@ -258,7 +259,13 @@ class ExampleTest extends TestCase
 You may also specify which guard should be used to authenticate the given user by passing the guard name as the second argument to the `actingAs` method. The guard that is provided to the `actingAs` method will also become the default guard for the duration of the test:
 
 ```php
-$this->actingAs($user, 'web')
+$this->actingAs($user, 'web');
+```
+
+If you would like to ensure the request is unauthenticated, you may use the `actingAsGuest` method:
+
+```php
+$this->actingAsGuest();
 ```
 
 <a name="debugging-responses"></a>
@@ -272,11 +279,9 @@ After making a test request to your application, the `dump`, `dumpHeaders`, and 
 test('basic test', function () {
     $response = $this->get('/');
 
-    $response->dumpHeaders();
-
-    $response->dumpSession();
-
     $response->dump();
+    $response->dumpHeaders();
+    $response->dumpSession();
 });
 ```
 
@@ -296,11 +301,9 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->dumpHeaders();
-
-        $response->dumpSession();
-
         $response->dump();
+        $response->dumpHeaders();
+        $response->dumpSession();
     }
 }
 ```
@@ -439,6 +442,12 @@ $this->assertThrows(
     fn () => (new ProcessOrder)->execute(),
     fn (OrderInvalid $e) => $e->orderId() === 123;
 );
+```
+
+The `assertDoesntThrow` method may be used to assert that the code within a given closure does not throw any exceptions:
+
+```php
+$this->assertDoesntThrow(fn () => (new ProcessOrder)->execute());
 ```
 
 <a name="testing-json-apis"></a>
@@ -930,6 +939,51 @@ $view = $this->component(Profile::class, ['name' => 'Taylor']);
 $view->assertSee('Taylor');
 ```
 
+<a name="caching-routes"></a>
+## Caching Routes
+
+Before a test runs, Laravel boots a fresh instance of the application, including collecting all defined routes. If your applications have many route files, you may wish to add the `Illuminate\Foundation\Testing\WithCachedRoutes` trait to your test cases. On tests which use this trait, routes are built once and stored in memory, meaning the route collection process is only run once for all tests in your suite:
+
+```php tab=Pest
+<?php
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+
+pest()->use(WithCachedRoutes::class);
+
+test('basic example', function () {
+    $this->get(action([UserController::class, 'index']));
+
+    // ...
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+use Tests\TestCase;
+
+class BasicTest extends TestCase
+{
+    use WithCachedRoutes;
+
+    /**
+     * A basic functional test example.
+     */
+    public function test_basic_example(): void
+    {
+        $response = $this->get(action([UserController::class, 'index']));
+
+        // ...
+    }
+}
+```
+
 <a name="available-assertions"></a>
 ## Available Assertions
 
@@ -955,6 +1009,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 [assertAccepted](#assert-accepted)
 [assertBadRequest](#assert-bad-request)
+[assertClientError](#assert-client-error)
 [assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
@@ -970,6 +1025,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertFound](#assert-found)
 [assertGone](#assert-gone)
 [assertHeader](#assert-header)
+[assertHeaderContains](#assert-header-contains)
 [assertHeaderMissing](#assert-header-missing)
 [assertInternalServerError](#assert-internal-server-error)
 [assertJson](#assert-json)
@@ -997,6 +1053,9 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertPaymentRequired](#assert-payment-required)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
+[assertRedirectBack](#assert-redirect-back)
+[assertRedirectBackWithErrors](#assert-redirect-back-with-errors)
+[assertRedirectBackWithoutErrors](#assert-redirect-back-without-errors)
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
@@ -1030,6 +1089,15 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 
 </div>
 
+<a name="assert-accepted"></a>
+#### assertAccepted
+
+Assert that the response has an accepted (202) HTTP status code:
+
+```php
+$response->assertAccepted();
+```
+
 <a name="assert-bad-request"></a>
 #### assertBadRequest
 
@@ -1039,13 +1107,13 @@ Assert that the response has a bad request (400) HTTP status code:
 $response->assertBadRequest();
 ```
 
-<a name="assert-accepted"></a>
-#### assertAccepted
+<a name="assert-client-error"></a>
+#### assertClientError
 
-Assert that the response has an accepted (202) HTTP status code:
+Assert that the response has a client error (>= 400, < 500) HTTP status code:
 
 ```php
-$response->assertAccepted();
+$response->assertClientError();
 ```
 
 <a name="assert-conflict"></a>
@@ -1108,7 +1176,7 @@ $response->assertCreated();
 Assert that the given string is not contained within the response returned by the application. This assertion will automatically escape the given string unless you pass a second argument of `false`:
 
 ```php
-$response->assertDontSee($value, $escaped = true);
+$response->assertDontSee($value, $escape = true);
 ```
 
 <a name="assert-dont-see-text"></a>
@@ -1117,7 +1185,7 @@ $response->assertDontSee($value, $escaped = true);
 Assert that the given string is not contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. This method will pass the response content to the `strip_tags` PHP function before making the assertion:
 
 ```php
-$response->assertDontSeeText($value, $escaped = true);
+$response->assertDontSeeText($value, $escape = true);
 ```
 
 <a name="assert-download"></a>
@@ -1189,6 +1257,15 @@ Assert that the given header and value is present on the response:
 
 ```php
 $response->assertHeader($headerName, $value = null);
+```
+
+<a name="assert-header-contains"></a>
+#### assertHeaderContains
+
+Assert that the given header contains a given substring value:
+
+```php
+$response->assertHeaderContains($headerName, $value);
 ```
 
 <a name="assert-header-missing"></a>
@@ -1535,6 +1612,35 @@ Assert that the response is a redirect to the given URI:
 $response->assertRedirect($uri = null);
 ```
 
+<a name="assert-redirect-back"></a>
+#### assertRedirectBack
+
+Assert whether the response is redirecting back to the previous page:
+
+```php
+$response->assertRedirectBack();
+```
+
+<a name="assert-redirect-back-with-errors"></a>
+#### assertRedirectBackWithErrors
+
+Assert whether the response is redirecting back to the previous page and the [session has the given errors](#assert-session-has-errors):
+
+```php
+$response->assertRedirectBackWithErrors(
+    array $keys = [], $format = null, $errorBag = 'default'
+);
+```
+
+<a name="assert-redirect-back-without-errors"></a>
+#### assertRedirectBackWithoutErrors
+
+Assert whether the response is redirecting back to the previous page and the session does not contain any error messages:
+
+```php
+$response->assertRedirectBackWithoutErrors();
+```
+
 <a name="assert-redirect-contains"></a>
 #### assertRedirectContains
 
@@ -1577,7 +1683,7 @@ $response->assertRequestTimeout();
 Assert that the given string is contained within the response. This assertion will automatically escape the given string unless you pass a second argument of `false`:
 
 ```php
-$response->assertSee($value, $escaped = true);
+$response->assertSee($value, $escape = true);
 ```
 
 <a name="assert-see-in-order"></a>
@@ -1586,7 +1692,7 @@ $response->assertSee($value, $escaped = true);
 Assert that the given strings are contained in order within the response. This assertion will automatically escape the given strings unless you pass a second argument of `false`:
 
 ```php
-$response->assertSeeInOrder(array $values, $escaped = true);
+$response->assertSeeInOrder(array $values, $escape = true);
 ```
 
 <a name="assert-see-text"></a>
@@ -1595,7 +1701,7 @@ $response->assertSeeInOrder(array $values, $escaped = true);
 Assert that the given string is contained within the response text. This assertion will automatically escape the given string unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
 
 ```php
-$response->assertSeeText($value, $escaped = true);
+$response->assertSeeText($value, $escape = true);
 ```
 
 <a name="assert-see-text-in-order"></a>
@@ -1604,7 +1710,7 @@ $response->assertSeeText($value, $escaped = true);
 Assert that the given strings are contained in order within the response text. This assertion will automatically escape the given strings unless you pass a second argument of `false`. The response content will be passed to the `strip_tags` PHP function before the assertion is made:
 
 ```php
-$response->assertSeeTextInOrder(array $values, $escaped = true);
+$response->assertSeeTextInOrder(array $values, $escape = true);
 ```
 
 <a name="assert-server-error"></a>

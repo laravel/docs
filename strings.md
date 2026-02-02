@@ -48,10 +48,13 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::doesntContain](#method-str-doesnt-contain)
+[Str::doesntEndWith](#method-str-doesnt-end-with)
+[Str::doesntStartWith](#method-str-doesnt-start-with)
 [Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
 [Str::finish](#method-str-finish)
+[Str::fromBase64](#method-str-from-base64)
 [Str::headline](#method-str-headline)
 [Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
@@ -67,6 +70,9 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::lower](#method-str-lower)
 [Str::markdown](#method-str-markdown)
 [Str::mask](#method-str-mask)
+[Str::match](#method-str-match)
+[Str::matchAll](#method-str-match-all)
+[Str::isMatch](#method-str-is-match)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -106,6 +112,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::rtrim](#method-str-rtrim)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
+[Str::ucwords](#method-str-ucwords)
 [Str::upper](#method-str-upper)
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
@@ -143,13 +150,20 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [chopEnd](#method-fluent-str-chop-end)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
+[decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[doesntContain](#method-fluent-str-doesnt-contain)
+[doesntEndWith](#method-fluent-str-doesnt-end-with)
+[doesntStartWith](#method-fluent-str-doesnt-start-with)
+[encrypt](#method-fluent-str-encrypt)
 [endsWith](#method-fluent-str-ends-with)
 [exactly](#method-fluent-str-exactly)
 [excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[fromBase64](#method-fluent-str-from-base64)
+[hash](#method-fluent-str-hash)
 [headline](#method-fluent-str-headline)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
@@ -206,17 +220,21 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [title](#method-fluent-str-title)
 [toBase64](#method-fluent-str-to-base64)
 [toHtmlString](#method-fluent-str-to-html-string)
+[toUri](#method-fluent-str-to-uri)
 [transliterate](#method-fluent-str-transliterate)
 [trim](#method-fluent-str-trim)
 [ltrim](#method-fluent-str-ltrim)
 [rtrim](#method-fluent-str-rtrim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
+[ucwords](#method-fluent-str-ucwords)
 [unwrap](#method-fluent-str-unwrap)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenContains](#method-fluent-str-when-contains)
 [whenContainsAll](#method-fluent-str-when-contains-all)
+[whenDoesntEndWith](#method-fluent-str-when-doesnt-end-with)
+[whenDoesntStartWith](#method-fluent-str-when-doesnt-start-with)
 [whenEmpty](#method-fluent-str-when-empty)
 [whenNotEmpty](#method-fluent-str-when-not-empty)
 [whenStartsWith](#method-fluent-str-when-starts-with)
@@ -464,7 +482,7 @@ $url = Str::chopEnd('laravel.com/index.php', ['/index.html', '/index.php']);
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
 
-The `Str::contains` method determines if the given string contains the given value. By default this method is case sensitive:
+The `Str::contains` method determines if the given string contains the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -520,7 +538,7 @@ $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: t
 <a name="method-str-doesnt-contain"></a>
 #### `Str::doesntContain()` {.collection-method}
 
-The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default this method is case sensitive:
+The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -535,7 +553,7 @@ You may also pass an array of values to determine if the given string doesn't co
 ```php
 use Illuminate\Support\Str;
 
-$doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+$doesntContain = Str::doesntContain('This is name', ['my', 'framework']);
 
 // true
 ```
@@ -571,6 +589,54 @@ use Illuminate\Support\Str;
 $result = Str::deduplicate('The---Laravel---Framework', '-');
 
 // The-Laravel-Framework
+```
+
+<a name="method-str-doesnt-end-with"></a>
+#### `Str::doesntEndWith()` {.collection-method}
+
+The `Str::doesntEndWith` method determines if the given string doesn't end with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntEndWith('This is my name', 'dog');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string doesn't end with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntEndWith('This is my name', ['this', 'foo']);
+
+// true
+
+$result = Str::doesntEndWith('This is my name', ['name', 'foo']);
+
+// false
+```
+
+<a name="method-str-doesnt-start-with"></a>
+#### `Str::doesntStartWith()` {.collection-method}
+
+The `Str::doesntStartWith` method determines if the given string doesn't begin with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntStartWith('This is my name', 'That');
+
+// true
+```
+
+If an array of possible values is passed, the `doesntStartWith` method will return `true` if the string doesn't begin with any of the given values:
+
+```php
+$result = Str::doesntStartWith('This is my name', ['What', 'That', 'There']);
+
+// true
 ```
 
 <a name="method-ends-with"></a>
@@ -645,6 +711,19 @@ $adjusted = Str::finish('this/string', '/');
 $adjusted = Str::finish('this/string/', '/');
 
 // this/string/
+```
+
+<a name="method-str-from-base64"></a>
+#### `Str::fromBase64()` {.collection-method}
+
+The `Str::fromBase64` method decodes the given Base64 string:
+
+```php
+use Illuminate\Support\Str;
+
+$decoded = Str::fromBase64('TGFyYXZlbA==');
+
+// Laravel
 ```
 
 <a name="method-str-headline"></a>
@@ -814,6 +893,20 @@ $isUuid = Str::isUuid('laravel');
 // false
 ```
 
+You may also validate that the given UUID matches a UUID specification by version (1, 3, 4, 5, 6, 7, or 8):
+
+```php
+use Illuminate\Support\Str;
+
+$isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', version: 4);
+
+// true
+
+$isUuid = Str::isUuid('a0a2a2d2-0b87-4a18-83f2-2529882be2de', version: 1);
+
+// false
+```
+
 <a name="method-kebab-case"></a>
 #### `Str::kebab()` {.collection-method}
 
@@ -950,6 +1043,65 @@ $string = Str::mask('taylor@example.com', '*', -15, 3);
 // tay***@example.com
 ```
 
+<a name="method-str-match"></a>
+#### `Str::match()` {.collection-method}
+
+The `Str::match` method will return the portion of a string that matches a given regular expression pattern:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::match('/bar/', 'foo bar');
+
+// 'bar'
+
+$result = Str::match('/foo (.*)/', 'foo bar');
+
+// 'bar'
+```
+
+<a name="method-str-match-all"></a>
+#### `Str::matchAll()` {.collection-method}
+
+The `Str::matchAll` method will return a collection containing the portions of a string that match a given regular expression pattern:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/bar/', 'bar foo bar');
+
+// collect(['bar', 'bar'])
+```
+
+If you specify a matching group within the expression, Laravel will return a collection of the first matching group's matches:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/f(\w*)/', 'bar fun bar fly');
+
+// collect(['un', 'ly']);
+```
+
+If no matches are found, an empty collection will be returned.
+
+<a name="method-str-is-match"></a>
+#### `Str::isMatch()` {.collection-method}
+
+The `Str::isMatch` method will return `true` if the string matches a given regular expression:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::isMatch('/foo (.*)/', 'foo bar');
+
+// true
+
+$result = Str::isMatch('/foo (.*)/', 'laravel');
+
+// false
+```
+
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}
 
@@ -1032,7 +1184,7 @@ $password = Str::password(12);
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
 
-The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `Str::plural` method converts a singular word string to its plural form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -1060,10 +1212,20 @@ $singular = Str::plural('child', 1);
 // child
 ```
 
+The `prependCount` argument may be provided to prefix the pluralized string with the formatted `$count`:
+
+```php
+use Illuminate\Support\Str;
+
+$label = Str::plural('car', 1000, prependCount: true);
+
+// 1,000 cars
+```
+
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
-The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `Str::pluralStudly` method converts a singular word string formatted in studly caps case to its plural form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -1183,7 +1345,14 @@ $replaced = Str::replace('11.x', '12.x', $string);
 The `replace` method also accepts a `caseSensitive` argument. By default, the `replace` method is case sensitive:
 
 ```php
-Str::replace('Framework', 'Laravel', caseSensitive: false);
+$replaced = Str::replace(
+    'php',
+    'Laravel',
+    'PHP Framework for Web Artisans',
+    caseSensitive: false
+);
+
+// Laravel Framework for Web Artisans
 ```
 
 <a name="method-str-replace-array"></a>
@@ -1306,7 +1475,7 @@ $reversed = Str::reverse('Hello World');
 <a name="method-str-singular"></a>
 #### `Str::singular()` {.collection-method}
 
-The `Str::singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `Str::singular` method converts a string to its singular form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -1586,6 +1755,19 @@ use Illuminate\Support\Str;
 $segments = Str::ucsplit('FooBar');
 
 // [0 => 'Foo', 1 => 'Bar']
+```
+
+<a name="method-str-ucwords"></a>
+#### `Str::ucwords()` {.collection-method}
+
+The `Str::ucwords` method converts the first character of each word in the given string to uppercase:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::ucwords('laravel framework');
+
+// Laravel Framework
 ```
 
 <a name="method-str-upper"></a>
@@ -2034,7 +2216,7 @@ $url = Str::of('http://laravel.com')->chopEnd(['.com', '.io']);
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
-The `contains` method determines if the given string contains the given value. By default this method is case sensitive:
+The `contains` method determines if the given string contains the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -2087,6 +2269,21 @@ $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCas
 // true
 ```
 
+<a name="method-fluent-str-decrypt"></a>
+#### `decrypt` {.collection-method}
+
+The `decrypt` method [decrypts](/docs/{{version}}/encryption) the encrypted string:
+
+```php
+use Illuminate\Support\Str;
+
+$decrypted = $encrypted->decrypt();
+
+// 'secret'
+```
+
+For the inverse of `decrypt`, see the [encrypt](#method-fluent-str-encrypt) method.
+
 <a name="method-fluent-str-deduplicate"></a>
 #### `deduplicate` {.collection-method}
 
@@ -2132,6 +2329,102 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 
 // '/foo'
 ```
+
+<a name="method-fluent-str-doesnt-contain"></a>
+#### `doesntContain()` {.collection-method}
+
+The `doesntContain` method determines if the given string does not contain the given value. This method is the inverse of the [contains](#method-fluent-str-contains) method. By default, this method is case sensitive:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain('my');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string does not contain any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain(['my', 'framework']);
+
+// true
+```
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is my name')->doesntContain('MY', ignoreCase: true);
+
+// false
+```
+
+<a name="method-fluent-str-doesnt-end-with"></a>
+#### `doesntEndWith` {.collection-method}
+
+The `doesntEndWith` method determines if the given string doesn't end with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntEndWith('dog');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string doesn't end with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntEndWith(['this', 'foo']);
+
+// true
+
+$result = Str::of('This is my name')->doesntEndWith(['name', 'foo']);
+
+// false
+```
+
+<a name="method-fluent-str-doesnt-start-with"></a>
+#### `doesntStartWith` {.collection-method}
+
+The `doesntStartWith` method determines if the given string doesn't begin with the given value:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntStartWith('That');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string doesn't start with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntStartWith(['What', 'That', 'There']);
+
+// true
+```
+
+<a name="method-fluent-str-encrypt"></a>
+#### `encrypt` {.collection-method}
+
+The `encrypt` method [encrypts](/docs/{{version}}/encryption) the string:
+
+```php
+use Illuminate\Support\Str;
+
+$encrypted = Str::of('secret')->encrypt();
+```
+
+For the inverse of `encrypt`, see the [decrypt](#method-fluent-str-decrypt) method.
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}
@@ -2231,6 +2524,32 @@ $adjusted = Str::of('this/string')->finish('/');
 $adjusted = Str::of('this/string/')->finish('/');
 
 // this/string/
+```
+
+<a name="method-fluent-str-from-base64"></a>
+#### `fromBase64` {.collection-method}
+
+The `fromBase64` method decodes the given Base64 string:
+
+```php
+use Illuminate\Support\Str;
+
+$decoded = Str::of('TGFyYXZlbA==')->fromBase64();
+
+// Laravel
+```
+
+<a name="method-fluent-str-hash"></a>
+#### `hash` {.collection-method}
+
+The `hash` method hashes the string using the given [algorithm](https://www.php.net/manual/en/function.hash-algos.php):
+
+```php
+use Illuminate\Support\Str;
+
+$hashed = Str::of('secret')->hash(algorithm: 'sha256');
+
+// '2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b'
 ```
 
 <a name="method-fluent-str-headline"></a>
@@ -2420,6 +2739,20 @@ $result = Str::of('5ace9ab9-e9cf-4ec6-a19d-5881212a452c')->isUuid();
 // true
 
 $result = Str::of('Taylor')->isUuid();
+
+// false
+```
+
+You may also validate that the given UUID matches a UUID specification by version (1, 3, 4, 5, 6, 7, or 8):
+
+```php
+use Illuminate\Support\Str;
+
+$isUuid = Str::of('a0a2a2d2-0b87-4a18-83f2-2529882be2de')->isUuid(version: 4);
+
+// true
+
+$isUuid = Str::of('a0a2a2d2-0b87-4a18-83f2-2529882be2de')->isUuid(version: 1);
 
 // false
 ```
@@ -2711,7 +3044,7 @@ $closure = Str::of('foo')->pipe(function (Stringable $str) {
 <a name="method-fluent-str-plural"></a>
 #### `plural` {.collection-method}
 
-The `plural` method converts a singular word string to its plural form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `plural` method converts a singular word string to its plural form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -2725,7 +3058,7 @@ $plural = Str::of('child')->plural();
 // children
 ```
 
-You may provide an integer as a second argument to the function to retrieve the singular or plural form of the string:
+You may provide an integer argument to the function to retrieve the singular or plural form of the string:
 
 ```php
 use Illuminate\Support\Str;
@@ -2737,6 +3070,16 @@ $plural = Str::of('child')->plural(2);
 $plural = Str::of('child')->plural(1);
 
 // child
+```
+
+You may provide the `prependCount` argument to prefix the pluralized string with the formatted `$count`:
+
+```php
+use Illuminate\Support\Str;
+
+$label = Str::of('car')->plural(1000, prependCount: true);
+
+// 1,000 cars
 ```
 
 <a name="method-fluent-str-position"></a>
@@ -2777,7 +3120,7 @@ The `remove` method removes the given value or array of values from the string:
 ```php
 use Illuminate\Support\Str;
 
-$string = Str::of('Arkansas is quite beautiful!')->remove('quite');
+$string = Str::of('Arkansas is quite beautiful!')->remove('quite ');
 
 // Arkansas is beautiful!
 ```
@@ -2934,7 +3277,7 @@ $collection = Str::of('filename.jpg')->scan('%[^.].%s');
 <a name="method-fluent-str-singular"></a>
 #### `singular` {.collection-method}
 
-The `singular` method converts a string to its singular form. This function supports [any of the languages support by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
+The `singular` method converts a string to its singular form. This function supports [any of the languages supported by Laravel's pluralizer](/docs/{{version}}/localization#pluralization-language):
 
 ```php
 use Illuminate\Support\Str;
@@ -3026,6 +3369,16 @@ The `startsWith` method determines if the given string begins with the given val
 use Illuminate\Support\Str;
 
 $result = Str::of('This is my name')->startsWith('This');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string starts with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->startsWith(['This', 'That']);
 
 // true
 ```
@@ -3193,6 +3546,17 @@ use Illuminate\Support\Str;
 $htmlString = Str::of('Nuno Maduro')->toHtmlString();
 ```
 
+<a name="method-fluent-str-to-uri"></a>
+#### `toUri` {.collection-method}
+
+The `toUri` method converts the given string to an instance of [Illuminate\Support\Uri](/docs/{{version}}/helpers#uri):
+
+```php
+use Illuminate\Support\Str;
+
+$uri = Str::of('https://example.com')->toUri();
+```
+
 <a name="method-fluent-str-transliterate"></a>
 #### `transliterate` {.collection-method}
 
@@ -3280,7 +3644,20 @@ use Illuminate\Support\Str;
 
 $string = Str::of('Foo Bar')->ucsplit();
 
-// collect(['Foo', 'Bar'])
+// collect(['Foo ', 'Bar'])
+```
+
+<a name="method-fluent-str-ucwords"></a>
+#### `ucwords` {.collection-method}
+
+The `ucwords` method converts the first character of each word in the given string to uppercase:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::of('laravel framework')->ucwords();
+
+// Laravel Framework
 ```
 
 <a name="method-fluent-str-unwrap"></a>
@@ -3349,7 +3726,7 @@ $string = Str::of('tony stark')
 // 'Tony Stark'
 ```
 
-If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the string does not contain the given value.
+If necessary, you may pass another closure as the third parameter. The closure will be invoked if the string does not contain the given value.
 
 You may also pass an array of values to determine if the given string contains any of the values in the array:
 
@@ -3382,7 +3759,39 @@ $string = Str::of('tony stark')
 // 'Tony Stark'
 ```
 
-If necessary, you may pass another closure as the third parameter to the `when` method. This closure will execute if the condition parameter evaluates to `false`.
+If necessary, you may pass another closure as the third parameter. The closure will be invoked if the condition parameter evaluates to `false`.
+
+<a name="method-fluent-str-when-doesnt-end-with"></a>
+#### `whenDoesntEndWith` {.collection-method}
+
+The `whenDoesntEndWith` method invokes the given closure if the string doesn't end with the given sub-string. The closure will receive the fluent string instance:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('disney world')->whenDoesntEndWith('land', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Disney World'
+```
+
+<a name="method-fluent-str-when-doesnt-start-with"></a>
+#### `whenDoesntStartWith` {.collection-method}
+
+The `whenDoesntStartWith` method invokes the given closure if the string doesn't start with the given sub-string. The closure will receive the fluent string instance:
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('disney world')->whenDoesntStartWith('sea', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Disney World'
+```
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {.collection-method}

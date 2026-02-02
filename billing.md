@@ -52,17 +52,17 @@
     - [Charge With Invoice](#charge-with-invoice)
     - [Creating Payment Intents](#creating-payment-intents)
     - [Refunding Charges](#refunding-charges)
+- [Invoices](#invoices)
+    - [Retrieving Invoices](#retrieving-invoices)
+    - [Upcoming Invoices](#upcoming-invoices)
+    - [Previewing Subscription Invoices](#previewing-subscription-invoices)
+    - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Checkout](#checkout)
     - [Product Checkouts](#product-checkouts)
     - [Single Charge Checkouts](#single-charge-checkouts)
     - [Subscription Checkouts](#subscription-checkouts)
     - [Collecting Tax IDs](#collecting-tax-ids)
     - [Guest Checkouts](#guest-checkouts)
-- [Invoices](#invoices)
-    - [Retrieving Invoices](#retrieving-invoices)
-    - [Upcoming Invoices](#upcoming-invoices)
-    - [Previewing Subscription Invoices](#previewing-subscription-invoices)
-    - [Generating Invoice PDFs](#generating-invoice-pdfs)
 - [Handling Failed Payments](#handling-failed-payments)
     - [Confirming Payments](#confirming-payments)
 - [Strong Customer Authentication (SCA)](#strong-customer-authentication)
@@ -82,7 +82,7 @@
 When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md).
 
 > [!WARNING]
-> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 15 utilizes Stripe API version `2023-10-16`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
+> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 16 utilizes Stripe API version `2025-06-30.basil`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
 
 <a name="installation"></a>
 ## Installation
@@ -612,7 +612,7 @@ public function stripeName(): string|null
 }
 ```
 
-Similarly, you may override the `stripeEmail`, `stripePhone`, `stripeAddress`, and `stripePreferredLocales` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
+Similarly, you may override the `stripeEmail`, `stripePhone` (20 character maximum), `stripeAddress`, and `stripePreferredLocales` methods. These methods will sync information to their corresponding customer parameters when [updating the Stripe customer object](https://stripe.com/docs/api/customers/update). If you wish to take total control over the customer information sync process, you may override the `syncStripeCustomerDetails` method.
 
 <a name="billing-portal"></a>
 ### Billing Portal
@@ -1704,7 +1704,7 @@ You may also choose to cancel the subscription at a specific moment in time:
 
 ```php
 $user->subscription('default')->cancelAt(
-    now()->addDays(10)
+    now()->plus(days: 10)
 );
 ```
 
@@ -1755,10 +1755,10 @@ This method will set the trial period ending date on the subscription record wit
 The `trialUntil` method allows you to provide a `DateTime` instance that specifies when the trial period should end:
 
 ```php
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 $user->newSubscription('default', 'price_monthly')
-    ->trialUntil(Carbon::now()->addDays(10))
+    ->trialUntil(Carbon::now()->plus(days: 10))
     ->create($paymentMethod);
 ```
 
@@ -1807,7 +1807,7 @@ use App\Models\User;
 
 $user = User::create([
     // ...
-    'trial_ends_at' => now()->addDays(10),
+    'trial_ends_at' => now()->plus(days: 10),
 ]);
 ```
 
@@ -1858,12 +1858,12 @@ $subscription = User::find(1)->subscription('default');
 
 // End the trial 7 days from now...
 $subscription->extendTrial(
-    now()->addDays(7)
+    now()->plus(days: 7)
 );
 
 // Add an additional 5 days to the trial...
 $subscription->extendTrial(
-    $subscription->trial_ends_at->addDays(5)
+    $subscription->trial_ends_at->plus(days: 5)
 );
 ```
 
@@ -1921,7 +1921,7 @@ php artisan cashier:webhook --disabled
 Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version}}/csrf), you should ensure that Laravel does not attempt to validate the CSRF token for incoming Stripe webhooks. To accomplish this, you should exclude `stripe/*` from CSRF protection in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->validateCsrfTokens(except: [
         'stripe/*',
     ]);
@@ -2448,7 +2448,7 @@ Route::get('/product-checkout', function (Request $request) {
 });
 ```
 
-After a guest checkout has been completed, Stripe can dispatch a `checkout.session.completed` webhook event, so make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to actually send this event to your application. Once the webhook has been enabled within the Stripe dashboard, you may [handle the webhook with Cashier](#handling-stripe-webhooks). The object contained in the webhook payload will be a [`checkout` object](https://stripe.com/docs/api/checkout/sessions/object) that you may inspect in order to fulfill your customer's order.
+After a guest checkout has been completed, Stripe can dispatch a `checkout.session.completed` webhook event, so make sure to [configure your Stripe webhook](https://dashboard.stripe.com/webhooks) to actually send this event to your application. Once the webhook has been enabled within the Stripe dashboard, you may [handle the webhook with Cashier](#handling-stripe-webhooks). The object contained in the webhook payload will be a [checkout object](https://stripe.com/docs/api/checkout/sessions/object) that you may inspect in order to fulfill your customer's order.
 
 <a name="handling-failed-payments"></a>
 ## Handling Failed Payments

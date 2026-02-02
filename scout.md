@@ -33,7 +33,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
+[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver-based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
 Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), [Typesense](https://typesense.org), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
 
@@ -71,7 +71,7 @@ class Post extends Model
 <a name="queueing"></a>
 ### Queueing
 
-While not strictly required to use Scout, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
+When using an engine that is not the `database` or `collection` engine, you should strongly consider configuring a [queue driver](/docs/{{version}}/queues) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
 
 Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
 
@@ -168,7 +168,7 @@ Additional settings and schema definitions for your Typesense collections can be
 <a name="preparing-data-for-storage-in-typesense"></a>
 #### Preparing Data for Storage in Typesense
 
-When utilizing Typesense, your searchable model's must define a `toSearchableArray` method that casts your model's primary key to a string and creation date to a UNIX timestamp:
+When utilizing Typesense, your searchable models must define a `toSearchableArray` method that casts your model's primary key to a string and creation date to a UNIX timestamp:
 
 ```php
 /**
@@ -176,7 +176,7 @@ When utilizing Typesense, your searchable model's must define a `toSearchableArr
  *
  * @return array<string, mixed>
  */
-public function toSearchableArray()
+public function toSearchableArray(): array
 {
     return array_merge($this->toArray(),[
         'id' => (string) $this->id,
@@ -427,7 +427,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Engines\Engine;
-use Laravel\Scout\EngineManager;
+use Laravel\Scout\Scout;
 use Laravel\Scout\Searchable;
 
 class User extends Model
@@ -439,7 +439,7 @@ class User extends Model
      */
     public function searchableUsing(): Engine
     {
-        return app(EngineManager::class)->engine('meilisearch');
+        return Scout::engine('meilisearch');
     }
 }
 ```
@@ -464,7 +464,7 @@ Enabling this feature will also pass the request's IP address and your authentic
 > [!WARNING]
 > The database engine currently supports MySQL and PostgreSQL.
 
-If your application interacts with small to medium sized databases or has a light workload, you may find it more convenient to get started with Scout's "database" engine. The database engine will use "where like" clauses and full text indexes when filtering results from your existing database to determine the applicable search results for your query.
+The `database` engine is the fastest way to get started with Laravel Scout, and uses MySQL / PostgreSQL full-text indexes and "where like" clauses when filtering results from your existing database to determine the applicable search results for your query.
 
 To use the database engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `database`, or specify the `database` driver directly in your application's `scout` configuration file:
 
@@ -522,7 +522,7 @@ Once you have specified the collection driver as your preferred driver, you may 
 
 On first glance, the "database" and "collections" engines are fairly similar. They both interact directly with your database to retrieve search results. However, the collection engine does not utilize full text indexes or `LIKE` clauses to find matching records. Instead, it pulls all possible records and uses Laravel's `Str::is` helper to determine if the search string exists within the model attribute values.
 
-The collection engine is the most portable search engine as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is less efficient than Scout's database engine.
+The collection engine is the most portable search engine as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is much less efficient than Scout's database engine.
 
 <a name="indexing"></a>
 ## Indexing
@@ -534,6 +534,12 @@ If you are installing Scout into an existing project, you may already have datab
 
 ```shell
 php artisan scout:import "App\Models\Post"
+```
+
+The `scout:queue-import` command may be used to import all of your existing records using [queued jobs](/docs/{{version}}/queues):
+
+```shell
+php artisan scout:queue-import "App\Models\Post" --chunk=500
 ```
 
 The `flush` command may be used to remove all of a model's records from your search indexes:
@@ -754,7 +760,7 @@ $orders = Order::search('Star Trek')->raw();
 <a name="custom-indexes"></a>
 #### Custom Indexes
 
-Search queries will typically be performed on the index specified by the model's [`searchableAs`](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
+Search queries will typically be performed on the index specified by the model's [searchableAs](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
 
 ```php
 $orders = Order::search('Star Trek')

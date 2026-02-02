@@ -95,7 +95,20 @@ The new factory class will be placed in your `database/factories` directory.
 
 Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait in order to instantiate a factory instance for that model.
 
-The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
+The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may add the `UseFactory` attribute to the model to manually specify the model's factory:
+
+```php
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Database\Factories\Administration\FlightFactory;
+
+#[UseFactory(FlightFactory::class)]
+class Flight extends Model
+{
+    // ...
+}
+```
+
+Alternatively, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
 
 ```php
 use Database\Factories\Administration\FlightFactory;
@@ -319,12 +332,14 @@ $users = User::factory()
     ->create();
 ```
 
-Within a sequence closure, you may access the `$index` or `$count` properties on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far, while the `$count` property contains the total number of times the sequence will be invoked:
+Within a sequence closure, you may access the `$index` property on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far:
 
 ```php
 $users = User::factory()
     ->count(10)
-    ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
+    ->state(new Sequence(
+        fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index],
+    ))
     ->create();
 ```
 
@@ -365,7 +380,7 @@ $user = User::factory()
     ->create();
 ```
 
-Of course, you may perform state manipulations on the related models. In addition, you may pass a closure based state transformation if your state change requires access to the parent model:
+Of course, you may perform state manipulations on the related models. In addition, you may pass a closure-based state transformation if your state change requires access to the parent model:
 
 ```php
 $user = User::factory()
@@ -400,7 +415,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may provide a closure based state transformation if your state change requires access to the parent model:
+You may provide a closure-based state transformation if your state change requires access to the parent model:
 
 ```php
 $user = User::factory()
@@ -483,7 +498,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may provide a closure based state transformation if your state change requires access to the related model:
+You may provide a closure-based state transformation if your state change requires access to the related model:
 
 ```php
 $user = User::factory()
@@ -503,7 +518,7 @@ If you already have model instances that you would like to be attached to the mo
 ```php
 $roles = Role::factory()->count(3)->create();
 
-$user = User::factory()
+$users = User::factory()
     ->count(3)
     ->hasAttached($roles, ['active' => true])
     ->create();
@@ -553,7 +568,7 @@ Polymorphic "many to many" (`morphToMany` / `morphedByMany`) relationships may b
 use App\Models\Tag;
 use App\Models\Video;
 
-$videos = Video::factory()
+$video = Video::factory()
     ->hasAttached(
         Tag::factory()->count(3),
         ['public' => true]
@@ -564,7 +579,7 @@ $videos = Video::factory()
 Of course, the magic `has` method may also be used to create polymorphic "many to many" relationships:
 
 ```php
-$videos = Video::factory()
+$video = Video::factory()
     ->hasTags(3, ['public' => true])
     ->create();
 ```

@@ -11,6 +11,8 @@
     - [Guzzle Middleware](#guzzle-middleware)
     - [Guzzle Options](#guzzle-options)
 - [Concurrent Requests](#concurrent-requests)
+    - [Request Pooling](#request-pooling)
+    - [Request Batching](#request-batching)
 - [Macros](#macros)
 - [Testing](#testing)
     - [Faking Responses](#faking-responses)
@@ -57,7 +59,7 @@ The `Illuminate\Http\Client\Response` object also implements the PHP `ArrayAcces
 return Http::get('http://example.com/users/1')['name'];
 ```
 
-In addition to the response methods listed above, the following methods may be used to determine if the response has a given status code:
+In addition to the response methods listed above, the following methods may be used to determine if the response has a specific status code:
 
 ```php
 $response->ok() : bool;                  // 200 OK
@@ -87,7 +89,7 @@ The HTTP client also allows you to construct request URLs using the [URI templat
 Http::withUrlParameters([
     'endpoint' => 'https://laravel.com',
     'page' => 'docs',
-    'version' => '11.x',
+    'version' => '12.x',
     'topic' => 'validation',
 ])->get('{+endpoint}/{page}/{version}/{topic}');
 ```
@@ -133,7 +135,7 @@ Alternatively, the `withQueryParameters` method may be used:
 Http::retry(3, 100)->withQueryParameters([
     'name' => 'Taylor',
     'page' => 1,
-])->get('http://example.com/users')
+])->get('http://example.com/users');
 ```
 
 <a name="sending-form-url-encoded-requests"></a>
@@ -251,7 +253,7 @@ $response = Http::timeout(3)->get(/* ... */);
 
 If the given timeout is exceeded, an instance of `Illuminate\Http\Client\ConnectionException` will  be thrown.
 
-You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method:
+You may specify the maximum number of seconds to wait while trying to connect to a server using the `connectTimeout` method. The default is 10 seconds:
 
 ```php
 $response = Http::connectTimeout(3)->get(/* ... */);
@@ -395,16 +397,24 @@ return Http::post(/* ... */)->throw(function (Response $response, RequestExcepti
 })->json();
 ```
 
-By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateRequestExceptionsAt` and `dontTruncateRequestExceptions` methods when configuring your application's exception handling behavior in your `bootstrap/app.php` file:
+By default, `RequestException` messages are truncated to 120 characters when logged or reported. To customize or disable this behavior, you may utilize the `truncateAt` and `dontTruncate` methods when configuring your application's registered behavior in your `bootstrap/app.php` file:
 
 ```php
-->withExceptions(function (Exceptions $exceptions) {
+use Illuminate\Http\Client\RequestException;
+
+->registered(function (): void {
     // Truncate request exception messages to 240 characters...
-    $exceptions->truncateRequestExceptionsAt(240);
+    RequestException::truncateAt(240);
 
     // Disable request exception message truncation...
-    $exceptions->dontTruncateRequestExceptions();
+    RequestException::dontTruncate();
 })
+```
+
+Alternatively, you may customize the exception truncation behavior per request using the `truncateExceptionsAt` method:
+
+```php
+return Http::truncateExceptionsAt(240)->post(/* ... */);
 ```
 
 <a name="guzzle-middleware"></a>
@@ -492,6 +502,9 @@ public function boot(): void
 
 Sometimes, you may wish to make multiple HTTP requests concurrently. In other words, you want several requests to be dispatched at the same time instead of issuing the requests sequentially. This can lead to substantial performance improvements when interacting with slow HTTP APIs.
 
+<a name="request-pooling"></a>
+### Request Pooling
+
 Thankfully, you may accomplish this using the `pool` method. The `pool` method accepts a closure which receives an `Illuminate\Http\Client\Pool` instance, allowing you to easily add requests to the request pool for dispatching:
 
 ```php
@@ -524,6 +537,14 @@ $responses = Http::pool(fn (Pool $pool) => [
 return $responses['first']->ok();
 ```
 
+The maximum concurrency of the request pool may be controlled by providing the `concurrency` argument to the `pool` method. This value determines the maximum number of HTTP requests that may be concurrently in-flight while processing the request pool:
+
+```php
+$responses = Http::pool(fn (Pool $pool) => [
+    // ...
+], concurrency: 5);
+```
+
 <a name="customizing-concurrent-requests"></a>
 #### Customizing Concurrent Requests
 
@@ -542,6 +563,97 @@ $responses = Http::pool(fn (Pool $pool) => [
     $pool->withHeaders($headers)->get('http://laravel.test/test'),
     $pool->withHeaders($headers)->get('http://laravel.test/test'),
 ]);
+```
+
+<a name="request-batching"></a>
+### Request Batching
+
+Another way of working with concurrent requests in Laravel is to use the `batch` method. Like the `pool` method, it accepts a closure which receives an `Illuminate\Http\Client\Batch` instance, allowing you to easily add requests to the request pool for dispatching, but it also allows you to define completion callbacks:
+
+```php
+use Illuminate\Http\Client\Batch;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->get('http://localhost/first'),
+    $batch->get('http://localhost/second'),
+    $batch->get('http://localhost/third'),
+])->before(function (Batch $batch) {
+    // The batch has been created but no requests have been initialized...
+})->progress(function (Batch $batch, int|string $key, Response $response) {
+    // An individual request has completed successfully...
+})->then(function (Batch $batch, array $results) {
+    // All requests completed successfully...
+})->catch(function (Batch $batch, int|string $key, Response|RequestException|ConnectionException $response) {
+    // First batch request failure detected...
+})->finally(function (Batch $batch, array $results) {
+    // The batch has finished executing...
+})->send();
+```
+
+Like the `pool` method, you can use the `as` method to name your requests:
+
+```php
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->as('first')->get('http://localhost/first'),
+    $batch->as('second')->get('http://localhost/second'),
+    $batch->as('third')->get('http://localhost/third'),
+])->send();
+```
+
+After a `batch` is started by calling the `send` method, you can't add new requests to it. Trying to do so will result in a `Illuminate\Http\Client\BatchInProgressException` exception being thrown.
+
+The maximum concurrency of the request batch may be controlled via the `concurrency` method. This value determines the maximum number of HTTP requests that may be concurrently in-flight while processing the request batch:
+
+```php
+$responses = Http::batch(fn (Batch $batch) => [
+    // ...
+])->concurrency(5)->send();
+```
+
+<a name="inspecting-batches"></a>
+#### Inspecting Batches
+
+The `Illuminate\Http\Client\Batch` instance that is provided to batch completion callbacks has a variety of properties and methods to assist you in interacting with and inspecting a given batch of requests:
+
+```php
+// The number of requests assigned to the batch...
+$batch->totalRequests;
+ 
+// The number of requests that have not been processed yet...
+$batch->pendingRequests;
+ 
+// The number of requests that have failed...
+$batch->failedRequests;
+
+// The number of requests that have been processed thus far...
+$batch->processedRequests();
+
+// Indicates if the batch has finished executing...
+$batch->finished();
+
+// Indicates if the batch has request failures...
+$batch->hasFailures();
+```
+<a name="deferring-batches"></a>
+#### Deferring Batches
+
+When the `defer` method is invoked, the batch of requests is not executed immediately. Instead, Laravel will execute the batch after the current application request's HTTP response has been sent to the user, keeping your application feeling fast and responsive:
+
+```php
+use Illuminate\Http\Client\Batch;
+use Illuminate\Support\Facades\Http;
+
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->get('http://localhost/first'),
+    $batch->get('http://localhost/second'),
+    $batch->get('http://localhost/third'),
+])->then(function (Batch $batch, array $results) {
+    // All requests completed successfully...
+})->defer();
 ```
 
 <a name="macros"></a>
@@ -592,7 +704,7 @@ $response = Http::post(/* ... */);
 <a name="faking-specific-urls"></a>
 #### Faking Specific URLs
 
-Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. Any requests made to URLs that have not been faked will actually be executed. You may use the `Http` facade's `response` method to construct stub / fake responses for these endpoints:
+Alternatively, you may pass an array to the `fake` method. The array's keys should represent URL patterns that you wish to fake and their associated responses. The `*` character may be used as a wildcard character. You may use the `Http` facade's `response` method to construct stub / fake responses for these endpoints:
 
 ```php
 Http::fake([
@@ -604,7 +716,7 @@ Http::fake([
 ]);
 ```
 
-If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:
+Any requests made to URLs that have not been faked will actually be executed. If you would like to specify a fallback URL pattern that will stub all unmatched URLs, you may use a single `*` character:
 
 ```php
 Http::fake([
@@ -627,7 +739,7 @@ Http::fake([
 ```
 
 <a name="faking-connection-exceptions"></a>
-#### Faking Connection Exceptions
+#### Faking Exceptions
 
 Sometimes you may need to test your application's behavior if the HTTP client encounters an `Illuminate\Http\Client\ConnectionException` when attempting to make a request. You can instruct the HTTP client to throw a connection exception using the `failedConnection` method:
 
@@ -635,6 +747,16 @@ Sometimes you may need to test your application's behavior if the HTTP client en
 Http::fake([
     'github.com/*' => Http::failedConnection(),
 ]);
+```
+
+To test your application's behavior if a `Illuminate\Http\Client\RequestException` is thrown, you may use the `failedRequest` method:
+
+```php
+$this->mock(GithubService::class);
+    ->shouldReceive('getUser')
+    ->andThrow(
+        Http::failedRequest(['code' => 'not_found'], 404)
+    );
 ```
 
 <a name="faking-response-sequences"></a>
@@ -683,27 +805,6 @@ use Illuminate\Http\Client\Request;
 Http::fake(function (Request $request) {
     return Http::response('Hello World', 200);
 });
-```
-
-<a name="preventing-stray-requests"></a>
-### Preventing Stray Requests
-
-If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
-
-```php
-use Illuminate\Support\Facades\Http;
-
-Http::preventStrayRequests();
-
-Http::fake([
-    'github.com/*' => Http::response('ok'),
-]);
-
-// An "ok" response is returned...
-Http::get('https://github.com/laravel/framework');
-
-// An exception is thrown...
-Http::get('https://laravel.com');
 ```
 
 <a name="inspecting-requests"></a>
@@ -807,6 +908,45 @@ $recorded = Http::recorded(function (Request $request, Response $response) {
 });
 ```
 
+<a name="preventing-stray-requests"></a>
+### Preventing Stray Requests
+
+If you would like to ensure that all requests sent via the HTTP client have been faked throughout your individual test or complete test suite, you can call the `preventStrayRequests` method. After calling this method, any requests that do not have a corresponding fake response will throw an exception rather than making the actual HTTP request:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::preventStrayRequests();
+
+Http::fake([
+    'github.com/*' => Http::response('ok'),
+]);
+
+// An "ok" response is returned...
+Http::get('https://github.com/laravel/framework');
+
+// An exception is thrown...
+Http::get('https://laravel.com');
+```
+
+Sometimes, you may wish to prevent most stray requests while still allowing specific requests to execute. To accomplish this, you may pass an array of URL patterns to the `allowStrayRequests` method. Any request matching one of the given patterns will be allowed, while all other requests will continue to throw an exception:
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::preventStrayRequests();
+
+Http::allowStrayRequests([
+    'http://127.0.0.1:5000/*',
+]);
+
+// This request is executed...
+Http::get('http://127.0.0.1:5000/generate');
+
+// An exception is thrown...
+Http::get('https://laravel.com');
+```
+
 <a name="events"></a>
 ## Events
 
@@ -820,7 +960,7 @@ use Illuminate\Http\Client\Events\RequestSending;
 class LogRequest
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(RequestSending $event): void
     {

@@ -1042,8 +1042,10 @@ Below is a list of all available validation rules and their function:
 [Array](#rule-array)
 [Between](#rule-between)
 [Contains](#rule-contains)
+[Doesnt Contain](#rule-doesnt-contain)
 [Distinct](#rule-distinct)
 [In Array](#rule-in-array)
+[In Array Keys](#rule-in-array-keys)
 [List](#rule-list)
 [Max](#rule-max)
 [Min](#rule-min)
@@ -1073,6 +1075,7 @@ Below is a list of all available validation rules and their function:
 
 [Between](#rule-between)
 [Dimensions](#rule-dimensions)
+[Encoding](#rule-encoding)
 [Extensions](#rule-extensions)
 [File](#rule-file)
 [Image](#rule-image)
@@ -1096,6 +1099,7 @@ Below is a list of all available validation rules and their function:
 
 <div class="collection-method-list" markdown="1">
 
+[Any Of](#rule-anyof)
 [Bail](#rule-bail)
 [Exclude](#rule-exclude)
 [Exclude If](#rule-exclude-if)
@@ -1116,6 +1120,8 @@ Below is a list of all available validation rules and their function:
 [Present With All](#rule-present-with-all)
 [Prohibited](#rule-prohibited)
 [Prohibited If](#rule-prohibited-if)
+[Prohibited If Accepted](#rule-prohibited-if-accepted)
+[Prohibited If Declined](#rule-prohibited-if-declined)
 [Prohibited Unless](#rule-prohibited-unless)
 [Prohibits](#rule-prohibits)
 [Required](#rule-required)
@@ -1162,7 +1168,7 @@ Instead of passing a date string to be evaluated by `strtotime`, you may specify
 'finish_date' => 'required|date|after:start_date'
 ```
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1173,7 +1179,7 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
-The `afterToday` and `todayOrAfter` methods may be used to fluently express the date must be after today or or today or after, respectively:
+The `afterToday` and `todayOrAfter` methods may be used to fluently express the date and must be after today, or today or after, respectively:
 
 ```php
 'start_date' => [
@@ -1187,7 +1193,7 @@ The `afterToday` and `todayOrAfter` methods may be used to fluently express the 
 
 The field under validation must be a value after or equal to the given date. For more information, see the [after](#rule-after) rule.
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1198,10 +1204,27 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
+<a name="rule-anyof"></a>
+#### anyOf
+
+The `Rule::anyOf` validation rule allows you to specify that the field under validation must satisfy any of the given validation rulesets. For example, the following rule will validate that the `username` field is either an email address or an alpha-numeric string (including dashes) that is at least 6 characters long:
+
+```php
+use Illuminate\Validation\Rule;
+
+'username' => [
+    'required',
+    Rule::anyOf([
+        ['string', 'email'],
+        ['string', 'alpha_dash', 'min:6'],
+    ]),
+],
+```
+
 <a name="rule-alpha"></a>
 #### alpha
 
-The field under validation must be entirely Unicode alphabetic characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) and [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=).
+The field under validation must be entirely Unicode alphabetic characters contained in [\p{L}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=) and [\p{M}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=).
 
 To restrict this validation rule to characters in the ASCII range (`a-z` and `A-Z`), you may provide the `ascii` option to the validation rule:
 
@@ -1212,7 +1235,7 @@ To restrict this validation rule to characters in the ASCII range (`a-z` and `A-
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
-The field under validation must be entirely Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=), as well as ASCII dashes (`-`) and ASCII underscores (`_`).
+The field under validation must be entirely Unicode alpha-numeric characters contained in [\p{L}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [\p{M}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), [\p{N}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=), as well as ASCII dashes (`-`) and ASCII underscores (`_`).
 
 To restrict this validation rule to characters in the ASCII range (`a-z`, `A-Z`, and `0-9`), you may provide the `ascii` option to the validation rule:
 
@@ -1223,7 +1246,7 @@ To restrict this validation rule to characters in the ASCII range (`a-z`, `A-Z`,
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
-The field under validation must be entirely Unicode alpha-numeric characters contained in [`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), and [`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=).
+The field under validation must be entirely Unicode alpha-numeric characters contained in [\p{L}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=), [\p{M}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=), and [\p{N}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=).
 
 To restrict this validation rule to characters in the ASCII range (`a-z`, `A-Z`, and `0-9`), you may provide the `ascii` option to the validation rule:
 
@@ -1277,9 +1300,9 @@ if ($validator->stopOnFirstFailure()->fails()) {
 <a name="rule-before"></a>
 #### before:_date_
 
-The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
+The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [after](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
-For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may also be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1290,7 +1313,7 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
-The `beforeToday` and `todayOrBefore` methods may be used to fluently express the date must be before today or or today or before, respectively:
+The `beforeToday` and `todayOrBefore` methods may be used to fluently express the date and must be before today, or today or before, respectively:
 
 ```php
 'start_date' => [
@@ -1302,9 +1325,9 @@ The `beforeToday` and `todayOrBefore` methods may be used to fluently express th
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_date_
 
-The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
+The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance. In addition, like the [after](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
-For convenience, date based rules may also be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may also be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1318,12 +1341,18 @@ use Illuminate\Validation\Rule;
 <a name="rule-between"></a>
 #### between:_min_,_max_
 
-The field under validation must have a size between the given _min_ and _max_ (inclusive). Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+The field under validation must have a size between the given _min_ and _max_ (inclusive). Strings, numerics, arrays, and files are evaluated in the same fashion as the [size](#rule-size) rule.
 
 <a name="rule-boolean"></a>
 #### boolean
 
 The field under validation must be able to be cast as a boolean. Accepted input are `true`, `false`, `1`, `0`, `"1"`, and `"0"`.
+
+You may use the `strict` parameter to only consider the field valid if its value is `true` or `false`:
+
+```php
+'foo' => 'boolean:strict'
+```
 
 <a name="rule-confirmed"></a>
 #### confirmed
@@ -1335,7 +1364,38 @@ You may also pass a custom confirmation field name. For example, `confirmed:repe
 <a name="rule-contains"></a>
 #### contains:_foo_,_bar_,...
 
-The field under validation must be an array that contains all of the given parameter values.
+The field under validation must be an array that contains all of the given parameter values. Since this rule often requires you to `implode` an array, the `Rule::contains` method may be used to fluently construct the rule:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'roles' => [
+        'required',
+        'array',
+        Rule::contains(['admin', 'editor']),
+    ],
+]);
+```
+
+<a name="rule-doesnt-contain"></a>
+#### doesnt_contain:_foo_,_bar_,...
+
+The field under validation must be an array that does not contain any of the given parameter values. Since this rule often requires you to `implode` an array, the `Rule::doesntContain` method may be used to fluently construct the rule:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'roles' => [
+        'required',
+        'array',
+        Rule::doesntContain(['admin', 'editor']),
+    ],
+]);
+```
 
 <a name="rule-current-password"></a>
 #### current_password
@@ -1361,7 +1421,7 @@ The field under validation must be equal to the given date. The dates will be pa
 
 The field under validation must match one of the given _formats_. You should use **either** `date` or `date_format` when validating a field, not both. This validation rule supports all formats supported by PHP's [DateTime](https://www.php.net/manual/en/class.datetime.php) class.
 
-For convenience, date based rules may be constructed using the fluent `date` rule builder:
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1408,7 +1468,7 @@ The integer under validation must have an exact length of _value_.
 <a name="rule-digits-between"></a>
 #### digits_between:_min_,_max_
 
-The integer validation must have a length between the given _min_ and _max_.
+The integer under validation must have a length between the given _min_ and _max_.
 
 <a name="rule-dimensions"></a>
 #### dimensions
@@ -1478,7 +1538,7 @@ The field under validation must not end with one of the given values.
 <a name="rule-email"></a>
 #### email
 
-The field under validation must be formatted as an email address. This validation rule utilizes the [`egulias/email-validator`](https://github.com/egulias/EmailValidator) package for validating the email address. By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:
+The field under validation must be formatted as an email address. This validation rule utilizes the [egulias/email-validator](https://github.com/egulias/EmailValidator) package for validating the email address. By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:
 
 ```php
 'email' => 'email:rfc,dns'
@@ -1488,8 +1548,8 @@ The example above will apply the `RFCValidation` and `DNSCheckValidation` valida
 
 <div class="content-list" markdown="1">
 
-- `rfc`: `RFCValidation` - Validate the email address according to RFC 5322.
-- `strict`: `NoRFCWarningsValidation` - Validate the email according to RFC 5322, rejecting trailing periods or multiple consecutive periods.
+- `rfc`: `RFCValidation` - Validate the email address according to [supported RFCs](https://github.com/egulias/EmailValidator?tab=readme-ov-file#supported-rfcs).
+- `strict`: `NoRFCWarningsValidation` - Validate the email according to [supported RFCs](https://github.com/egulias/EmailValidator?tab=readme-ov-file#supported-rfcs), failing when warnings are found (e.g. trailing periods and multiple consecutive periods).
 - `dns`: `DNSCheckValidation` - Ensure the email address's domain has a valid MX record.
 - `spoof`: `SpoofCheckValidation` - Ensure the email address does not contain homograph or deceptive Unicode characters.
 - `filter`: `FilterEmailValidation` - Ensure the email address is valid according to PHP's `filter_var` function.
@@ -1516,6 +1576,24 @@ $request->validate([
 > [!WARNING]
 > The `dns` and `spoof` validators require the PHP `intl` extension.
 
+<a name="rule-encoding"></a>
+#### encoding:*encoding_type*
+
+The field under validation must match the specified character encoding. This rule uses PHP's `mb_check_encoding` function to verify the encoding of the given file or string value. For convenience, the `encoding` rule may be constructed using Laravel's fluent file rule builder:
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
+
+Validator::validate($input, [
+    'attachment' => [
+        'required',
+        File::types(['csv'])
+            ->encoding('utf-8'),
+    ],
+]);
+```
+
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
 
@@ -1524,7 +1602,7 @@ The field under validation must end with one of the given values.
 <a name="rule-enum"></a>
 #### enum
 
-The `Enum` rule is a class based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument. When validating primitive values, a backed Enum should be provided to the `Enum` rule:
+The `Enum` rule is a class-based rule that validates whether the field under validation contains a valid enum value. The `Enum` rule accepts the name of the enum as its only constructor argument. When validating primitive values, a backed Enum should be provided to the `Enum` rule:
 
 ```php
 use App\Enums\ServerStatus;
@@ -1657,6 +1735,14 @@ You may explicitly specify the database column name that should be used by the `
 'state' => Rule::exists('states', 'abbreviation'),
 ```
 
+Sometimes, you may wish to validate whether an array of values exists in the database. You can do so by adding both the `exists` and [array](#rule-array) rules to the field being validated:
+
+```php
+'states' => ['array', Rule::exists('states', 'abbreviation')],
+```
+
+When both of these rules are assigned to a field, Laravel will automatically build a single query to determine if all of the given values exist in the specified table.
+
 <a name="rule-extensions"></a>
 #### extensions:_foo_,_bar_,...
 
@@ -1667,7 +1753,7 @@ The file under validation must have a user-assigned extension corresponding to o
 ```
 
 > [!WARNING]
-> You should never rely on validating a file by its user-assigned extension alone. This rule should typically always be used in combination with the [`mimes`](#rule-mimes) or [`mimetypes`](#rule-mimetypes) rules.
+> You should never rely on validating a file by its user-assigned extension alone. This rule should typically always be used in combination with the [mimes](#rule-mimes) or [mimetypes](#rule-mimetypes) rules.
 
 <a name="rule-file"></a>
 #### file
@@ -1682,12 +1768,12 @@ The field under validation must not be empty when it is present.
 <a name="rule-gt"></a>
 #### gt:_field_
 
-The field under validation must be greater than the given _field_ or _value_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+The field under validation must be greater than the given _field_ or _value_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [size](#rule-size) rule.
 
 <a name="rule-gte"></a>
 #### gte:_field_
 
-The field under validation must be greater than or equal to the given _field_ or _value_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+The field under validation must be greater than or equal to the given _field_ or _value_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [size](#rule-size) rule.
 
 <a name="rule-hex-color"></a>
 #### hex_color
@@ -1743,10 +1829,25 @@ Validator::make($input, [
 
 The field under validation must exist in _anotherfield_'s values.
 
+<a name="rule-in-array-keys"></a>
+#### in_array_keys:_value_.*
+
+The field under validation must be an array having at least one of the given _values_ as a key within the array:
+
+```php
+'config' => 'array|in_array_keys:timezone'
+```
+
 <a name="rule-integer"></a>
 #### integer
 
 The field under validation must be an integer.
+
+You may use the `strict` parameter to only consider the field valid if its type is `integer`. Strings with integer values will be considered invalid:
+
+```php
+'age' => 'integer:strict'
+```
 
 > [!WARNING]
 > This validation rule does not verify that the input is of the "integer" variable type, only that the input is of a type accepted by PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being a number please use this rule in combination with [the `numeric` validation rule](#rule-numeric).
@@ -1774,12 +1875,12 @@ The field under validation must be a valid JSON string.
 <a name="rule-lt"></a>
 #### lt:_field_
 
-The field under validation must be less than the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+The field under validation must be less than the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [size](#rule-size) rule.
 
 <a name="rule-lte"></a>
 #### lte:_field_
 
-The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [`size`](#rule-size) rule.
+The field under validation must be less than or equal to the given _field_. The two fields must be of the same type. Strings, numerics, arrays, and files are evaluated using the same conventions as the [size](#rule-size) rule.
 
 <a name="rule-lowercase"></a>
 #### lowercase
@@ -1799,7 +1900,7 @@ The field under validation must be a MAC address.
 <a name="rule-max"></a>
 #### max:_value_
 
-The field under validation must be less than or equal to a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+The field under validation must be less than or equal to a maximum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [size](#rule-size) rule.
 
 <a name="rule-max-digits"></a>
 #### max_digits:_value_
@@ -1833,12 +1934,12 @@ Even though you only need to specify the extensions, this rule actually validate
 <a name="mime-types-and-extensions"></a>
 #### MIME Types and Extensions
 
-This validation rule does not verify agreement between the MIME type and the extension the user assigned to the file. For example, the `mimes:png` validation rule would consider a file containing valid PNG content to be a valid PNG image, even if the file is named `photo.txt`. If you would like to validate the user-assigned extension of the file, you may use the [`extensions`](#rule-extensions) rule.
+This validation rule does not verify agreement between the MIME type and the extension the user assigned to the file. For example, the `mimes:png` validation rule would consider a file containing valid PNG content to be a valid PNG image, even if the file is named `photo.txt`. If you would like to validate the user-assigned extension of the file, you may use the [extensions](#rule-extensions) rule.
 
 <a name="rule-min"></a>
 #### min:_value_
 
-The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [`size`](#rule-size) rule.
+The field under validation must have a minimum _value_. Strings, numerics, arrays, and files are evaluated in the same fashion as the [size](#rule-size) rule.
 
 <a name="rule-min-digits"></a>
 #### min_digits:_value_
@@ -1911,6 +2012,12 @@ The field under validation may be `null`.
 
 The field under validation must be [numeric](https://www.php.net/manual/en/function.is-numeric.php).
 
+You may use the `strict` parameter to only consider the field valid if its value is an integer or float type. Numeric strings will be considered invalid:
+
+```php
+'amount' => 'numeric:strict'
+```
+
 <a name="rule-present"></a>
 #### present
 
@@ -1978,6 +2085,15 @@ Validator::make($request->all(), [
     'role_id' => Rule::prohibitedIf(fn () => $request->user()->is_admin),
 ]);
 ```
+<a name="rule-prohibited-if-accepted"></a>
+#### prohibited_if_accepted:_anotherfield_,...
+
+The field under validation must be missing or empty if the _anotherfield_ field is equal to `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"`.
+
+<a name="rule-prohibited-if-declined"></a>
+#### prohibited_if_declined:_anotherfield_,...
+
+The field under validation must be missing or empty if the _anotherfield_ field is equal to `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"`.
 
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_anotherfield_,_value_,...
@@ -2214,7 +2330,7 @@ You may specify additional query conditions by customizing the query using the `
 'email' => Rule::unique('users')->where(fn (Builder $query) => $query->where('account_id', 1))
 ```
 
-**Ignoring Soft Deleteded Records in Unique Checks:**
+**Ignoring Soft Deleted Records in Unique Checks:**
 
 By default, the unique rule includes soft deleted records when determining uniqueness. To exclude soft deleted records from the uniqueness check, you may invoke the `withoutTrashed` method:
 
@@ -2374,7 +2490,7 @@ Like the `$input` parameter passed to the closure, the `$item` parameter is an i
 <a name="validating-arrays"></a>
 ## Validating Arrays
 
-As discussed in the [`array` validation rule documentation](#rule-array), the `array` rule accepts a list of allowed array keys. If any additional keys are present within the array, validation will fail:
+As discussed in the [array validation rule documentation](#rule-array), the `array` rule accepts a list of allowed array keys. If any additional keys are present within the array, validation will fail:
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2397,7 +2513,7 @@ In general, you should always specify the array keys that are allowed to be pres
 <a name="validating-nested-array-input"></a>
 ### Validating Nested Array Input
 
-Validating nested array based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
+Validating nested array-based form input fields doesn't have to be a pain. You may use "dot notation" to validate attributes within an array. For example, if the incoming HTTP request contains a `photos[profile]` field, you may validate it like so:
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2411,17 +2527,17 @@ You may also validate each element of an array. For example, to validate that ea
 
 ```php
 $validator = Validator::make($request->all(), [
-    'person.*.email' => 'email|unique:users',
-    'person.*.first_name' => 'required_with:person.*.last_name',
+    'users.*.email' => 'email|unique:users',
+    'users.*.first_name' => 'required_with:users.*.last_name',
 ]);
 ```
 
-Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array based fields:
+Likewise, you may use the `*` character when specifying [custom validation messages in your language files](#custom-messages-for-specific-attributes), making it a breeze to use a single validation message for array-based fields:
 
 ```php
 'custom' => [
-    'person.*.email' => [
-        'unique' => 'Each person must have a unique email address',
+    'users.*.email' => [
+        'unique' => 'Each user must have a unique email address',
     ]
 ],
 ```
@@ -2449,7 +2565,7 @@ $validator = Validator::make($request->all(), [
 <a name="error-message-indexes-and-positions"></a>
 ### Error Message Indexes and Positions
 
-When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starts from `0`) and `:position` (starts from `1`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):
+When validating arrays, you may want to reference the index or position of a particular item that failed validation within the error message displayed by your application. To accomplish this, you may include the `:index` (starts from `0`), `:position` (starts from `1`), or `:ordinal-position` (starts from `1st`) placeholders within your [custom validation message](#manual-customizing-the-error-messages):
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2827,7 +2943,7 @@ $validator = Validator::make($request->all(), [
 <a name="implicit-rules"></a>
 ### Implicit Rules
 
-By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom rules, are not run. For example, the [`unique`](#rule-unique) rule will not be run against an empty string:
+By default, when an attribute being validated is not present or contains an empty string, normal validation rules, including custom rules, are not run. For example, the [unique](#rule-unique) rule will not be run against an empty string:
 
 ```php
 use Illuminate\Support\Facades\Validator;

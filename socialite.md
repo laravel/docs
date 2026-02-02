@@ -11,6 +11,7 @@
     - [Slack Bot Scopes](#slack-bot-scopes)
     - [Optional Parameters](#optional-parameters)
 - [Retrieving User Details](#retrieving-user-details)
+- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -61,7 +62,7 @@ These credentials should be placed in your application's `config/services.php` c
 To authenticate users using an OAuth provider, you will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. The example routes below demonstrate the implementation of both routes:
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 Route::get('/auth/redirect', function () {
     return Socialite::driver('github')->redirect();
@@ -84,7 +85,7 @@ Once the user has been retrieved from the OAuth provider, you may determine if t
 ```php
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 Route::get('/auth/callback', function () {
     $githubUser = Socialite::driver('github')->user();
@@ -113,7 +114,7 @@ Route::get('/auth/callback', function () {
 Before redirecting the user, you may use the `scopes` method to specify the "scopes" that should be included in the authentication request. This method will merge all previously specified scopes with the scopes that you specify:
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 return Socialite::driver('github')
     ->scopes(['read:user', 'public_repo'])
@@ -165,7 +166,7 @@ When generating a bot token, the `user` method will still return a `Laravel\Soci
 A number of OAuth providers support other optional parameters on the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 return Socialite::driver('google')
     ->with(['hd' => 'example.com'])
@@ -183,7 +184,7 @@ After the user is redirected back to your application's authentication callback 
 Differing properties and methods may be available on this object depending on whether the OAuth provider you are authenticating with supports OAuth 1.0 or OAuth 2.0:
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 Route::get('/auth/callback', function () {
     $user = Socialite::driver('github')->user();
@@ -212,7 +213,7 @@ Route::get('/auth/callback', function () {
 If you already have a valid access token for a user, you can retrieve their user details using Socialite's `userFromToken` method:
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 $user = Socialite::driver('github')->userFromToken($token);
 ```
@@ -225,7 +226,70 @@ If you are using Facebook Limited Login via an iOS application, Facebook will re
 The `stateless` method may be used to disable session state verification. This is useful when adding social authentication to a stateless API that does not utilize cookie based sessions:
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 return Socialite::driver('google')->stateless()->user();
+```
+
+<a name="testing"></a>
+## Testing
+
+Laravel Socialite provides a convenient way to test OAuth authentication flows without making actual requests to OAuth providers. The `fake` method allows you to mock the OAuth provider's behavior and define the user data that should be returned.
+
+<a name="faking-the-redirect"></a>
+#### Faking the Redirect
+
+To test that your application correctly redirects users to an OAuth provider, you may invoke the `fake` method before making a request to your redirect route. This will cause Socialite to return a redirect to a fake authorization URL instead of redirecting to the actual OAuth provider:
+
+```php
+use Laravel\Socialite\Socialite;
+
+test('user is redirected to github', function () {
+    Socialite::fake('github');
+
+    $response = $this->get('/auth/github/redirect');
+
+    $response->assertRedirect();
+});
+```
+
+<a name="faking-the-callback"></a>
+#### Faking the Callback
+
+To test your application's callback route, you may invoke the `fake` method and provide a `User` instance that should be returned when your application requests the user's details from the provider. The `User` instance may be created using the `map` method:
+
+```php
+use Laravel\Socialite\Socialite;
+use Laravel\Socialite\Two\User;
+
+test('user can login with github', function () {
+    Socialite::fake('github', (new User)->map([
+        'id' => 'github-123',
+        'name' => 'Jason Beggs',
+        'email' => 'jason@example.com',
+    ]));
+
+    $response = $this->get('/auth/github/callback');
+
+    $response->assertRedirect('/dashboard');
+
+    $this->assertDatabaseHas('users', [
+        'name' => 'Jason Beggs',
+        'email' => 'jason@example.com',
+        'github_id' => 'github-123',
+    ]);
+});
+```
+
+By default, the `User` instance will also include a `token` property. If needed, you may manually specify additional properties on the `User` instance:
+
+```php
+$fakeUser = (new User)->map([
+    'id' => 'github-123',
+    'name' => 'Jason Beggs',
+    'email' => 'jason@example.com',
+])->setToken('fake-token')
+  ->setRefreshToken('fake-refresh-token')
+  ->setExpiresIn(3600)
+  ->setApprovedScopes(['read', 'write'])
 ```

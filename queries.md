@@ -33,6 +33,7 @@
     - [Increment and Decrement](#increment-and-decrement)
 - [Delete Statements](#delete-statements)
 - [Pessimistic Locking](#pessimistic-locking)
+- [Reusable Query Components](#reusable-query-components)
 - [Debugging](#debugging)
 
 <a name="introduction"></a>
@@ -203,7 +204,7 @@ DB::table('users')->where(function ($query) {
 <a name="streaming-results-lazily"></a>
 ### Streaming Results Lazily
 
-The `lazy` method works similarly to [the `chunk` method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [`LazyCollection`](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:
+The `lazy` method works similarly to [the chunk method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [LazyCollection](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -521,6 +522,15 @@ For convenience, if you want to verify that a column is `=` to a given value, yo
 $users = DB::table('users')->where('votes', 100)->get();
 ```
 
+You may also provide an associative array to the `where` method to quickly query against multiple columns:
+
+```php
+$users = DB::table('users')->where([
+    'first_name' => 'Jane',
+    'last_name' => 'Doe',
+])->get();
+```
+
 As previously mentioned, you may use any operator that is supported by your database system:
 
 ```php
@@ -567,6 +577,8 @@ $users = DB::table('users')
 If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
 
 ```php
+use Illuminate\Database\Query\Builder; 
+
 $users = DB::table('users')
     ->where('votes', '>', 100)
     ->orWhere(function (Builder $query) {
@@ -653,7 +665,7 @@ WHERE published = true AND (
 The `whereNone` method may be used to retrieve records where none of the given columns match a given constraint:
 
 ```php
-$posts = DB::table('albums')
+$albums = DB::table('albums')
     ->where('published', true)
     ->whereNone([
         'title',
@@ -684,25 +696,49 @@ Laravel also supports querying JSON column types on databases that provide suppo
 $users = DB::table('users')
     ->where('preferences->dining->meal', 'salad')
     ->get();
+
+$users = DB::table('users')
+    ->whereIn('preferences->dining->meal', ['pasta', 'salad', 'sandwiches'])
+    ->get();
 ```
 
-You may use `whereJsonContains` to query JSON arrays:
+You may use the `whereJsonContains` and `whereJsonDoesntContain` methods to query JSON arrays:
 
 ```php
 $users = DB::table('users')
     ->whereJsonContains('options->languages', 'en')
     ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContain('options->languages', 'en')
+    ->get();
 ```
 
-If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
+If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` and `whereJsonDoesntContain` methods:
 
 ```php
 $users = DB::table('users')
     ->whereJsonContains('options->languages', ['en', 'de'])
     ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContain('options->languages', ['en', 'de'])
+    ->get();
 ```
 
-You may use `whereJsonLength` method to query JSON arrays by their length:
+In addition, you may use the `whereJsonContainsKey` or `whereJsonDoesntContainKey` methods to retrieve the results that include or do not include a JSON key:
+
+```php
+$users = DB::table('users')
+    ->whereJsonContainsKey('preferences->dietary_requirements')
+    ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContainKey('preferences->dietary_requirements')
+    ->get();
+```
+
+Finally, you may use `whereJsonLength` method to query JSON arrays by their length:
 
 ```php
 $users = DB::table('users')
@@ -787,7 +823,7 @@ You may also provide a query object as the `whereIn` method's second argument:
 ```php
 $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
 
-$users = DB::table('comments')
+$comments = DB::table('comments')
     ->whereIn('user_id', $activeUsers)
     ->get();
 ```
@@ -840,6 +876,24 @@ The `whereNotBetweenColumns` method verifies that a column's value lies outside 
 ```php
 $patients = DB::table('patients')
     ->whereNotBetweenColumns('weight', ['minimum_allowed_weight', 'maximum_allowed_weight'])
+    ->get();
+```
+
+**whereValueBetween / whereValueNotBetween / orWhereValueBetween / orWhereValueNotBetween**
+
+The `whereValueBetween` method verifies that a given value is between the values of two columns of the same type in the same table row:
+
+```php
+$patients = DB::table('products')
+    ->whereValueBetween(100, ['min_price', 'max_price'])
+    ->get();
+```
+
+The `whereValueNotBetween` method verifies that a value lies outside the values of two columns in the same table row:
+
+```php
+$patients = DB::table('products')
+    ->whereValueNotBetween(100, ['min_price', 'max_price'])
     ->get();
 ```
 
@@ -1119,6 +1173,23 @@ $users = DB::table('users')
     ->get();
 ```
 
+The sort direction is optional, and is ascending by default. If you want to sort in descending order, you can specify the second parameter for the `orderBy` method, or just use `orderByDesc`:
+
+```php
+$users = DB::table('users')
+    ->orderByDesc('verified_at')
+    ->get();
+```
+
+Finally, using the `->` operator, the results can be sorted by a value within a JSON column:
+
+```php
+$corporations = DB::table('corporations')
+    ->where('country', 'US')
+    ->orderBy('location->state')
+    ->get();
+```
+
 <a name="latest-oldest"></a>
 #### The `latest` and `oldest` Methods
 
@@ -1160,6 +1231,14 @@ $query = DB::table('users')->orderBy('name');
 $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
 ```
 
+For convenience, you may use the `reorderDesc` method to reorder the query results in descending order:
+
+```php
+$query = DB::table('users')->orderBy('name');
+
+$usersOrderedByEmail = $query->reorderDesc('email')->get();
+```
+
 <a name="grouping"></a>
 ### Grouping
 
@@ -1194,21 +1273,12 @@ $users = DB::table('users')
     ->get();
 ```
 
-To build more advanced `having` statements, see the [`havingRaw`](#raw-methods) method.
+To build more advanced `having` statements, see the [havingRaw](#raw-methods) method.
 
 <a name="limit-and-offset"></a>
 ### Limit and Offset
 
-<a name="skip-take"></a>
-#### The `skip` and `take` Methods
-
-You may use the `skip` and `take` methods to limit the number of results returned from the query or to skip a given number of results in the query:
-
-```php
-$users = DB::table('users')->skip(10)->take(5)->get();
-```
-
-Alternatively, you may use the `limit` and `offset` methods. These methods are functionally equivalent to the `take` and `skip` methods, respectively:
+You may use the `limit` and `offset` methods to limit the number of results returned from the query or to skip a given number of results in the query:
 
 ```php
 $users = DB::table('users')
@@ -1285,7 +1355,7 @@ DB::table('pruned_users')->insertUsing([
     'id', 'name', 'email', 'email_verified_at'
 ], DB::table('users')->select(
     'id', 'name', 'email', 'email_verified_at'
-)->where('updated_at', '<=', now()->subMonth()));
+)->where('updated_at', '<=', now()->minus(months: 1)));
 ```
 
 <a name="auto-incrementing-ids"></a>
@@ -1447,7 +1517,7 @@ DB::transaction(function () {
         ->find(1);
 
     $receiver = DB::table('users')
-        ->lockForUpdate();
+        ->lockForUpdate()
         ->find(2);
 
     if ($sender->balance < 100) {
@@ -1466,6 +1536,131 @@ DB::transaction(function () {
             'balance' => $receiver->balance + 100
         ]);
 });
+```
+
+<a name="reusable-query-components"></a>
+## Reusable Query Components
+
+If you have repeated query logic throughout your application, you may extract the logic into reusable objects using the query builder's `tap` and `pipe` methods. Imagine you have these two different queries in your application:
+
+```php
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+You may like to extract the destination filtering that is common between the queries into a reusable object:
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Database\Query\Builder;
+
+class DestinationFilter
+{
+    public function __construct(
+        private ?string $destination,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): void
+    {
+        $query->when($this->destination, function (Builder $query) {
+            $query->where('destination', $this->destination);
+        });
+    }
+}
+```
+
+Then, you can use the query builder's `tap` method to apply the object's logic to the query:
+
+```php
+use App\Scopes\DestinationFilter;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DestinationFilter($destination)) // [tl! add]
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DestinationFilter($destination)) // [tl! add]
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+<a name="query-pipes"></a>
+#### Query Pipes
+
+The `tap` method will always return the query builder. If you would like to extract an object that executes the query and returns another value, you may use the `pipe` method instead.
+
+Consider the following query object that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DestinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Query\Builder;
+
+class Paginate
+{
+    public function __construct(
+        private string $sortBy = 'timestamp',
+        private string $sortDirection = 'desc',
+        private int $perPage = 25,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): LengthAwarePaginator
+    {
+        return $query->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate($this->perPage, pageName: 'p');
+    }
+}
+```
+
+Using the query builder's `pipe` method, we can leverage this object to apply our shared pagination logic:
+
+```php
+$flights = DB::table('flights')
+    ->tap(new DestinationFilter($destination))
+    ->pipe(new Paginate);
 ```
 
 <a name="debugging"></a>

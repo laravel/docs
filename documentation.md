@@ -5,6 +5,7 @@
 - ## Getting Started
     - [Installation](/docs/{{version}}/installation)
     - [Configuration](/docs/{{version}}/configuration)
+    - [Agentic Development](/docs/{{version}}/ai)
     - [Directory Structure](/docs/{{version}}/structure)
     - [Frontend](/docs/{{version}}/frontend)
     - [Starter Kits](/docs/{{version}}/starter-kits)
@@ -73,6 +74,9 @@
     - [API Resources](/docs/{{version}}/eloquent-resources)
     - [Serialization](/docs/{{version}}/eloquent-serialization)
     - [Factories](/docs/{{version}}/eloquent-factories)
+- ## AI
+    - [Boost](/docs/{{version}}/boost)
+    - [MCP](/docs/{{version}}/mcp)
 - ## Testing
     - [Getting Started](/docs/{{version}}/testing)
     - [HTTP Tests](/docs/{{version}}/http-tests)

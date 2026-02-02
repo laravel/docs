@@ -123,7 +123,7 @@ If you want a middleware to run during every HTTP request to your application, y
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
      $middleware->append(EnsureTokenIsValid::class);
 })
 ```
@@ -136,7 +136,7 @@ The `$middleware` object provided to the `withMiddleware` closure is an instance
 If you would like to manage Laravel's global middleware stack manually, you may provide Laravel's default stack of global middleware to the `use` method. Then, you may adjust the default middleware stack as necessary:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->use([
         \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
         // \Illuminate\Http\Middleware\TrustHosts::class,
@@ -213,7 +213,7 @@ Sometimes you may want to group several middleware under a single key to make th
 use App\Http\Middleware\First;
 use App\Http\Middleware\Second;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->appendToGroup('group-name', [
         First::class,
         Second::class,
@@ -245,21 +245,21 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 
 <div class="overflow-auto">
 
-| The `web` Middleware Group |
-| --- |
-| `Illuminate\Cookie\Middleware\EncryptCookies` |
+| The `web` Middleware Group                                |
+| --------------------------------------------------------- |
+| `Illuminate\Cookie\Middleware\EncryptCookies`             |
 | `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse` |
-| `Illuminate\Session\Middleware\StartSession` |
-| `Illuminate\View\Middleware\ShareErrorsFromSession` |
+| `Illuminate\Session\Middleware\StartSession`              |
+| `Illuminate\View\Middleware\ShareErrorsFromSession`       |
 | `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken` |
-| `Illuminate\Routing\Middleware\SubstituteBindings` |
+| `Illuminate\Routing\Middleware\SubstituteBindings`        |
 
 </div>
 
 <div class="overflow-auto">
 
-| The `api` Middleware Group |
-| --- |
+| The `api` Middleware Group                         |
+| -------------------------------------------------- |
 | `Illuminate\Routing\Middleware\SubstituteBindings` |
 
 </div>
@@ -270,7 +270,7 @@ If you would like to append or prepend middleware to these groups, you may use t
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Middleware\EnsureUserIsSubscribed;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->web(append: [
         EnsureUserIsSubscribed::class,
     ]);
@@ -306,7 +306,7 @@ $middleware->web(remove: [
 If you would like to manually manage all of the middleware within Laravel's default `web` and `api` middleware groups, you may redefine the groups entirely. The example below will define the `web` and `api` middleware groups with their default middleware, allowing you to customize them as necessary:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->group('web', [
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -336,7 +336,7 @@ You may assign aliases to middleware in your application's `bootstrap/app.php` f
 ```php
 use App\Http\Middleware\EnsureUserIsSubscribed;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->alias([
         'subscribed' => EnsureUserIsSubscribed::class
     ]);
@@ -355,20 +355,20 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 
 <div class="overflow-auto">
 
-| Alias | Middleware |
-| --- | --- |
-| `auth` | `Illuminate\Auth\Middleware\Authenticate` |
-| `auth.basic` | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth` |
-| `auth.session` | `Illuminate\Session\Middleware\AuthenticateSession` |
-| `cache.headers` | `Illuminate\Http\Middleware\SetCacheHeaders` |
-| `can` | `Illuminate\Auth\Middleware\Authorize` |
-| `guest` | `Illuminate\Auth\Middleware\RedirectIfAuthenticated` |
-| `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword` |
-| `precognitive` | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests` |
-| `signed` | `Illuminate\Routing\Middleware\ValidateSignature` |
-| `subscribed` | `\Spark\Http\Middleware\VerifyBillableIsSubscribed` |
-| `throttle` | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
-| `verified` | `Illuminate\Auth\Middleware\EnsureEmailIsVerified` |
+| Alias              | Middleware                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `auth`             | `Illuminate\Auth\Middleware\Authenticate`                                                                     |
+| `auth.basic`       | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth`                                                        |
+| `auth.session`     | `Illuminate\Session\Middleware\AuthenticateSession`                                                           |
+| `cache.headers`    | `Illuminate\Http\Middleware\SetCacheHeaders`                                                                  |
+| `can`              | `Illuminate\Auth\Middleware\Authorize`                                                                        |
+| `guest`            | `Illuminate\Auth\Middleware\RedirectIfAuthenticated`                                                          |
+| `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword`                                                                  |
+| `precognitive`     | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests`                                            |
+| `signed`           | `Illuminate\Routing\Middleware\ValidateSignature`                                                             |
+| `subscribed`       | `\Spark\Http\Middleware\VerifyBillableIsSubscribed`                                                           |
+| `throttle`         | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
+| `verified`         | `Illuminate\Auth\Middleware\EnsureEmailIsVerified`                                                            |
 
 </div>
 
@@ -378,7 +378,7 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In these situations, you may specify your middleware priority using the `priority` method in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->priority([
         \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
@@ -427,7 +427,6 @@ class EnsureUserHasRole
 
         return $next($request);
     }
-
 }
 ```
 
@@ -452,7 +451,7 @@ Route::put('/post/{id}', function (string $id) {
 <a name="terminable-middleware"></a>
 ## Terminable Middleware
 
-Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using FastCGI, the `terminate` method will automatically be called after the response is sent to the browser:
+Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using [FastCGI](https://www.php.net/manual/en/install.fpm.php), the `terminate` method will automatically be called after the response is sent to the browser:
 
 ```php
 <?php

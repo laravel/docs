@@ -53,6 +53,9 @@
 <a name="introduction"></a>
 ## Introduction
 
+> [!WARNING]
+> [Pest 4](https://pestphp.com/) now includes automated browser testing which offers significant performance and usability improvements compared to Laravel Dusk. For new projects, we recommend using Pest for browser testing.
+
 [Laravel Dusk](https://github.com/laravel/dusk) provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone [ChromeDriver](https://sites.google.com/chromium.org/driver) installation. However, you are free to utilize any other Selenium compatible driver you wish.
 
 <a name="installation"></a>
@@ -163,7 +166,7 @@ The `DatabaseMigrations` trait will run your database migrations before each tes
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 
-uses(DatabaseMigrations::class);
+pest()->use(DatabaseMigrations::class);
 
 //
 ```
@@ -199,7 +202,7 @@ The `DatabaseTruncation` trait will migrate your database on the first test in o
 use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Laravel\Dusk\Browser;
 
-uses(DatabaseTruncation::class);
+pest()->use(DatabaseTruncation::class);
 
 //
 ```
@@ -357,7 +360,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 
-uses(DatabaseMigrations::class);
+pest()->use(DatabaseMigrations::class);
 
 test('basic example', function () {
     $user = User::factory()->create([
@@ -1414,6 +1417,7 @@ Dusk provides a variety of assertions that you may make against your application
 [assertDontSeeIn](#assert-dont-see-in)
 [assertSeeAnythingIn](#assert-see-anything-in)
 [assertSeeNothingIn](#assert-see-nothing-in)
+[assertCount](#assert-count)
 [assertScript](#assert-script)
 [assertSourceHas](#assert-source-has)
 [assertSourceMissing](#assert-source-missing)
@@ -1755,6 +1759,15 @@ Assert that no text is present within the selector:
 
 ```php
 $browser->assertSeeNothingIn($selector);
+```
+
+<a name="assert-count"></a>
+#### assertCount
+
+Assert that elements matching the given selector appear the specified number of times:
+
+```php
+$browser->assertCount($selector, $count);
 ```
 
 <a name="assert-script"></a>
@@ -2379,7 +2392,7 @@ $browser->visit(new Dashboard)
 <a name="components"></a>
 ## Components
 
-Components are similar to Dusk’s “page objects”, but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
+Components are similar to Dusk's "page objects", but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
 
 <a name="generating-components"></a>
 ### Generating Components
@@ -2464,7 +2477,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\DatePicker;
 
-uses(DatabaseMigrations::class);
+pest()->use(DatabaseMigrations::class);
 
 test('basic example', function () {
     $this->browse(function (Browser $browser) {
@@ -2503,6 +2516,16 @@ class ExampleTest extends DuskTestCase
         });
     }
 }
+```
+
+The `component` method may be used to retrieve a browser instance scoped to the given component:
+
+```php
+$datePicker = $browser->component(new DatePickerComponent);
+
+$datePicker->selectDate(2019, 1, 30);
+
+$datePicker->assertSee('January');
 ```
 
 <a name="continuous-integration"></a>
@@ -2579,7 +2602,7 @@ jobs:
       DB_PASSWORD: root
       MAIL_MAILER: log
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Prepare The Environment
         run: cp .env.example .env
       - name: Create Database

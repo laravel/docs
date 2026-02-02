@@ -55,7 +55,7 @@ Want to get started fast? Install a [Laravel application starter kit](/docs/{{ve
 
 By default, Laravel includes an `App\Models\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app/Models` directory. This model may be used with the default Eloquent authentication driver.
 
-If your application is not using Eloquent, you may use the `database` authentication provider which uses the Laravel query builder. If your application is using MongoDB, check out MongoDB's official [Laravel user authentication documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/user-authentication/) .
+If your application is not using Eloquent, you may use the `database` authentication provider which uses the Laravel query builder. If your application is using MongoDB, check out MongoDB's official [Laravel user authentication documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/user-authentication/).
 
 When building the database schema for the `App\Models\User` model, make sure the password column is at least 60 characters in length. Of course, the `users` table migration that is included in new Laravel applications already creates a column that exceeds this length.
 
@@ -194,7 +194,7 @@ When the `auth` middleware detects an unauthenticated user, it will redirect the
 ```php
 use Illuminate\Http\Request;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->redirectGuestsTo('/login');
 
     // Using a closure...
@@ -210,7 +210,7 @@ When the `guest` middleware detects an authenticated user, it will redirect the 
 ```php
 use Illuminate\Http\Request;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->redirectUsersTo('/panel');
 
     // Using a closure...
@@ -409,7 +409,7 @@ Auth::loginUsingId(1, remember: true);
 <a name="authenticate-a-user-once"></a>
 #### Authenticate a User Once
 
-You may use the `once` method to authenticate a user with the application for a single request. No sessions or cookies will be utilized when calling this method:
+You may use the `once` method to authenticate a user with the application for a single request. No sessions or cookies will be utilized when calling this method, and the `Login` event will not be dispatched:
 
 ```php
 if (Auth::once($credentials)) {
@@ -433,7 +433,7 @@ Once the middleware has been attached to the route, you will automatically be pr
 <a name="a-note-on-fastcgi"></a>
 #### A Note on FastCGI
 
-If you are using PHP FastCGI and Apache to serve your Laravel application, HTTP Basic authentication may not work correctly. To correct these problems, the following lines may be added to your application's `.htaccess` file:
+If you are using [PHP FastCGI](https://www.php.net/manual/en/install.fpm.php) and Apache to serve your Laravel application, HTTP Basic authentication may not work correctly. To correct these problems, the following lines may be added to your application's `.htaccess` file:
 
 ```apache
 RewriteCond %{HTTP:Authorization} ^(.+)$
@@ -567,7 +567,6 @@ Next, we will define a route that will handle the form request from the "confirm
 ```php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 
 Route::post('/confirm-password', function (Request $request) {
     if (! Hash::check($request->password, $request->user()->password)) {
@@ -825,19 +824,20 @@ Laravel dispatches a variety of [events](/docs/{{version}}/events) during the au
 
 <div class="overflow-auto">
 
-| Event Name |
-| --- |
-| `Illuminate\Auth\Events\Registered` |
-| `Illuminate\Auth\Events\Attempting` |
-| `Illuminate\Auth\Events\Authenticated` |
-| `Illuminate\Auth\Events\Login` |
-| `Illuminate\Auth\Events\Failed` |
-| `Illuminate\Auth\Events\Validated` |
-| `Illuminate\Auth\Events\Verified` |
-| `Illuminate\Auth\Events\Logout` |
-| `Illuminate\Auth\Events\CurrentDeviceLogout` |
-| `Illuminate\Auth\Events\OtherDeviceLogout` |
-| `Illuminate\Auth\Events\Lockout` |
-| `Illuminate\Auth\Events\PasswordReset` |
+| Event Name                                     |
+| ---------------------------------------------- |
+| `Illuminate\Auth\Events\Registered`            |
+| `Illuminate\Auth\Events\Attempting`            |
+| `Illuminate\Auth\Events\Authenticated`         |
+| `Illuminate\Auth\Events\Login`                 |
+| `Illuminate\Auth\Events\Failed`                |
+| `Illuminate\Auth\Events\Validated`             |
+| `Illuminate\Auth\Events\Verified`              |
+| `Illuminate\Auth\Events\Logout`                |
+| `Illuminate\Auth\Events\CurrentDeviceLogout`   |
+| `Illuminate\Auth\Events\OtherDeviceLogout`     |
+| `Illuminate\Auth\Events\Lockout`               |
+| `Illuminate\Auth\Events\PasswordReset`         |
+| `Illuminate\Auth\Events\PasswordResetLinkSent` |
 
 </div>

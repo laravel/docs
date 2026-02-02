@@ -74,7 +74,7 @@ class Service
 }
 
 Route::get('/', function (Service $service) {
-    die($service::class);
+    dd($service::class);
 });
 ```
 
@@ -178,6 +178,25 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 });
 ```
 
+<a name="singleton-attribute"></a>
+#### Singleton Attribute
+
+Alternatively, you may mark an interface or class with the `#[Singleton]` attribute to indicate to the container that it should be resolved one time:
+
+```php
+<?php
+
+namespace App\Services;
+
+use Illuminate\Container\Attributes\Singleton;
+
+#[Singleton]
+class Transistor
+{
+    // ...
+}
+```
+
 <a name="binding-scoped"></a>
 #### Binding Scoped Singletons
 
@@ -199,6 +218,25 @@ You may use the `scopedIf` method to register a scoped container binding only if
 $this->app->scopedIf(Transistor::class, function (Application $app) {
     return new Transistor($app->make(PodcastParser::class));
 });
+```
+
+<a name="scoped-attribute"></a>
+#### Scoped Attribute
+
+Alternatively, you may mark an interface or class with the `#[Scoped]` attribute to indicate to the container that it should be resolved one time within a given Laravel request / job lifecycle:
+
+```php
+<?php
+
+namespace App\Services;
+
+use Illuminate\Container\Attributes\Scoped;
+
+#[Scoped]
+class Transistor
+{
+    // ...
+}
 ```
 
 <a name="binding-instances"></a>
@@ -238,6 +276,45 @@ use App\Contracts\EventPusher;
 public function __construct(
     protected EventPusher $pusher,
 ) {}
+```
+
+<a name="bind-attribute"></a>
+#### Bind Attribute
+
+Laravel also provides a `Bind` attribute for added convenience. You can apply this attribute to any interface to tell Laravel which implementation should be automatically injected whenever that interface is requested. When using the `Bind` attribute, there is no need to perform any additional service registration in your application's service providers.
+
+In addition, multiple `Bind` attributes may be placed on an interface in order to configure a different implementation that should be injected for a given set of environments:
+
+```php
+<?php
+
+namespace App\Contracts;
+
+use App\Services\FakeEventPusher;
+use App\Services\RedisEventPusher;
+use Illuminate\Container\Attributes\Bind;
+
+#[Bind(RedisEventPusher::class)]
+#[Bind(FakeEventPusher::class, environments: ['local', 'testing'])]
+interface EventPusher
+{
+    // ...
+}
+```
+
+Furthermore, [Singleton](#singleton-attribute) and [Scoped](#scoped-attribute) attributes may be applied to indicate if the container bindings should be resolved once or once per request / job lifecycle:
+
+```php
+use App\Services\RedisEventPusher;
+use Illuminate\Container\Attributes\Bind;
+use Illuminate\Container\Attributes\Singleton;
+
+#[Bind(RedisEventPusher::class)]
+#[Singleton]
+interface EventPusher
+{
+    // ...
+}
 ```
 
 <a name="contextual-binding"></a>
@@ -284,25 +361,28 @@ class PhotoController extends Controller
 {
     public function __construct(
         #[Storage('local')] protected Filesystem $filesystem
-    )
-    {
+    ) {
         // ...
     }
 }
 ```
 
-In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `DB`, `Log`, `RouteParameter`, and [`Tag`](#tagging) attributes:
+In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `Context`, `DB`, `Give`, `Log`, `RouteParameter`, and [Tag](#tagging) attributes:
 
 ```php
 <?php
 
 namespace App\Http\Controllers;
 
+use App\Contracts\UserRepository;
 use App\Models\Photo;
+use App\Repositories\DatabaseRepository;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Container\Attributes\Cache;
 use Illuminate\Container\Attributes\Config;
+use Illuminate\Container\Attributes\Context;
 use Illuminate\Container\Attributes\DB;
+use Illuminate\Container\Attributes\Give;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Container\Attributes\Tag;
@@ -317,12 +397,14 @@ class PhotoController extends Controller
         #[Auth('web')] protected Guard $auth,
         #[Cache('redis')] protected Repository $cache,
         #[Config('app.timezone')] protected string $timezone,
+        #[Context('uuid')] protected string $uuid,
+        #[Context('ulid', hidden: true)] protected string $ulid,
         #[DB('mysql')] protected Connection $connection,
+        #[Give(DatabaseRepository::class)] protected UserRepository $users,
         #[Log('daily')] protected LoggerInterface $log,
         #[RouteParameter('photo')] protected Photo $photo,
         #[Tag('reports')] protected iterable $reports,
-    )
-    {
+    ) {
         // ...
     }
 }

@@ -112,7 +112,7 @@ For convenience, if a feature definition only returns a lottery, you may omit th
 <a name="class-based-features"></a>
 ### Class Based Features
 
-Pennant also allows you to define class based features. Unlike closure based feature definitions, there is no need to register a class based feature in a service provider. To create a class based feature, you may invoke the `pennant:feature` Artisan command. By default the feature class will be placed in your application's `app/Features` directory:
+Pennant also allows you to define class-based features. Unlike closure-based feature definitions, there is no need to register a class-based feature in a service provider. To create a class-based feature, you may invoke the `pennant:feature` Artisan command. By default, the feature class will be placed in your application's `app/Features` directory:
 
 ```shell
 php artisan pennant:feature NewApi
@@ -144,7 +144,7 @@ class NewApi
 }
 ```
 
-If you would like to manually resolve an instance of a class based feature, you may invoke the `instance` method on the `Feature` facade:
+If you would like to manually resolve an instance of a class-based feature, you may invoke the `instance` method on the `Feature` facade:
 
 ```php
 use Illuminate\Support\Facades\Feature;
@@ -157,22 +157,18 @@ $instance = Feature::instance(NewApi::class);
 
 #### Customizing the Stored Feature Name
 
-By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may specify a `$name` property on the feature class. The value of this property will be stored in place of the class name:
+By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may add the `Name` attribute on the feature class. The value of this attribute will be stored in place of the class name:
 
 ```php
 <?php
 
 namespace App\Features;
 
+use Laravel\Pennant\Attributes\Name;
+
+#[Name('new-api')]
 class NewApi
 {
-    /**
-     * The stored name of the feature.
-     *
-     * @var string
-     */
-    public $name = 'new-api';
-
     // ...
 }
 ```
@@ -240,7 +236,7 @@ Feature::someAreInactive(['new-api', 'site-redesign']);
 <a name="checking-class-based-features"></a>
 #### Checking Class Based Features
 
-For class based features, you should provide the class name when checking the feature:
+For class-based features, you should provide the class name when checking the feature:
 
 ```php
 <?php
@@ -523,7 +519,7 @@ Of course, feature scopes are not limited to "users". Imagine you have built a n
 
 ```php
 use App\Models\Team;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Lottery;
 use Laravel\Pennant\Feature;
 
@@ -746,7 +742,7 @@ Feature::all();
 // ]
 ```
 
-However, class based features are dynamically registered and are not known by Pennant until they are explicitly checked. This means your application's class based features may not appear in the results returned by the `all` method if they have not already been checked during the current request.
+However, class-based features are dynamically registered and are not known by Pennant until they are explicitly checked. This means your application's class-based features may not appear in the results returned by the `all` method if they have not already been checked during the current request.
 
 If you would like to ensure that feature classes are always included when using the `all` method, you may use Pennant's feature discovery capabilities. To get started, invoke the `discover` method in one of your application's service providers:
 
@@ -963,7 +959,7 @@ public function test_it_can_control_feature_values()
 }
 ```
 
-The same approach may be used for class based features:
+The same approach may be used for class-based features:
 
 ```php tab=Pest
 use Laravel\Pennant\Feature;
@@ -1159,7 +1155,7 @@ class AppServiceProvider extends ServiceProvider
 
 ### `Laravel\Pennant\Events\DynamicallyRegisteringFeatureClass`
 
-This event is dispatched when a [class based feature](#class-based-features) is dynamically checked for the first time during a request.
+This event is dispatched when a [class-based feature](#class-based-features) is dynamically checked for the first time during a request.
 
 ### `Laravel\Pennant\Events\UnexpectedNullScopeEncountered`
 

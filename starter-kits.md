@@ -10,6 +10,11 @@
     - [React](#react-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
+- [Authentication](#authentication)
+    - [Enabling and Disabling Features](#enabling-and-disabling-features)
+    - [Customizing User Creation and Password Reset](#customizing-actions)
+    - [Two-Factor Authentication](#two-factor-authentication)
+    - [Rate Limiting](#rate-limiting)
 - [WorkOS AuthKit Authentication](#workos)
 - [Inertia SSR](#inertia-ssr)
 - [Community Maintained Starter Kits](#community-maintained-starter-kits)
@@ -18,7 +23,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users.
+To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users. The starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to provide authentication.
 
 While you are welcome to use these starter kits, they are not required. You are free to build your own application from the ground up by simply installing a fresh copy of Laravel. Either way, we know you will build something great!
 
@@ -223,37 +228,32 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 <a name="livewire-customization"></a>
 ### Livewire
 
-Our Livewire starter kit is built with Livewire 3, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
-
-#### Livewire and Volt
+Our Livewire starter kit is built with Livewire 4, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
 
 The majority of the frontend code is located in the `resources/views` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
 
 ```text
 resources/views
-├── components            # Reusable Livewire components
+├── components            # Reusable components
 ├── flux                  # Customized Flux components
-├── livewire              # Livewire pages
+├── layouts               # Application layouts
+├── pages                 # Livewire pages
 ├── partials              # Reusable Blade partials
 ├── dashboard.blade.php   # Authenticated user dashboard
 ├── welcome.blade.php     # Guest user welcome page
 ```
 
-#### Traditional Livewire Components
-
-The frontend code is located in the `resouces/views` directory, while the `app/Livewire` directory contains the corresponding backend logic for the Livewire components.
-
 <a name="livewire-available-layouts"></a>
 #### Available Layouts
 
-The Livewire starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/components/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
+The Livewire starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
 
 ```blade
-<x-layouts.app.header>
+<x-layouts::app.header>
     <flux:main container>
         {{ $slot }}
     </flux:main>
-</x-layouts.app.header>
+</x-layouts::app.header>
 ```
 
 <a name="livewire-authentication-page-layout-variants"></a>
@@ -261,12 +261,116 @@ The Livewire starter kit includes two different primary layouts for you to choos
 
 The authentication pages included with the Livewire starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
 
-To change your authentication layout, modify the layout that is used by your application's `resources/views/components/layouts/auth.blade.php` file:
+To change your authentication layout, modify the layout that is used by your application's `resources/views/layouts/auth.blade.php` file:
 
 ```blade
-<x-layouts.auth.split>
+<x-layouts::auth.split>
     {{ $slot }}
-</x-layouts.auth.split>
+</x-layouts::auth.split>
+```
+
+<a name="authentication"></a>
+## Authentication
+
+All starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to handle authentication. Fortify provides routes, controllers, and logic for login, registration, password reset, email verification, and more.
+
+Fortify automatically registers the following authentication routes based on the features that are enabled in your application's `config/fortify.php` configuration file:
+
+| Route                              | Method | Description                         |
+| ---------------------------------- | ------ | ----------------------------------- |
+| `/login`                           | `GET`    | Display login form                  |
+| `/login`                           | `POST`   | Authenticate user                   |
+| `/logout`                          | `POST`   | Log user out                        |
+| `/register`                        | `GET`    | Display registration form           |
+| `/register`                        | `POST`   | Create new user                     |
+| `/forgot-password`                 | `GET`    | Display password reset request form |
+| `/forgot-password`                 | `POST`   | Send password reset link            |
+| `/reset-password/{token}`          | `GET`    | Display password reset form         |
+| `/reset-password`                  | `POST`   | Update password                     |
+| `/email/verify`                    | `GET`    | Display email verification notice   |
+| `/email/verify/{id}/{hash}`        | `GET`    | Verify email address                |
+| `/email/verification-notification` | `POST`   | Resend verification email           |
+| `/user/confirm-password`           | `GET`    | Display password confirmation form  |
+| `/user/confirm-password`           | `POST`   | Confirm password                    |
+| `/two-factor-challenge`            | `GET`    | Display 2FA challenge form          |
+| `/two-factor-challenge`            | `POST`   | Verify 2FA code                     |
+
+The `php artisan route:list` Artisan command can be used to display all of the routes in your application.
+
+<a name="enabling-and-disabling-features"></a>
+### Enabling and Disabling Features
+
+You can control which Fortify features are enabled in your application's `config/fortify.php` configuration file:
+
+```php
+use Laravel\Fortify\Features;
+
+'features' => [
+    Features::registration(),
+    Features::resetPasswords(),
+    Features::emailVerification(),
+    Features::twoFactorAuthentication([
+        'confirm' => true,
+        'confirmPassword' => true,
+    ]),
+],
+```
+
+To disable a feature, comment out or remove that feature entry from the `features` array. For example, remove `Features::registration()` to disable public registration.
+
+When using the [React](#react) or [Vue](#vue) starter kits, you will also need to remove any references to the disabled feature's routes in your frontend code. For example, if you disable email verification, you should remove the imports and references to the `verification` routes in your Vue or React components. This is necessary because these starter kits use Wayfinder for type-safe routing, which generates route definitions at build time. If you reference routes that no longer exist, your application will fail to build.
+
+<a name="customizing-actions"></a>
+### Customizing User Creation and Password Reset
+
+When a user registers or resets their password, Fortify invokes action classes located in your application's `app/Actions/Fortify` directory:
+
+| File                          | Description                           |
+| ----------------------------- | ------------------------------------- |
+| `CreateNewUser.php`           | Validates and creates new users       |
+| `ResetUserPassword.php`       | Validates and updates user passwords  |
+| `PasswordValidationRules.php` | Defines password validation rules     |
+
+For example, to customize your application's registration logic, you should edit the `CreateNewUser` action:
+
+```php
+public function create(array $input): User
+{
+    Validator::make($input, [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'max:255', 'unique:users'],
+        'phone' => ['required', 'string', 'max:20'], // [tl! add]
+        'password' => $this->passwordRules(),
+    ])->validate();
+
+    return User::create([
+        'name' => $input['name'],
+        'email' => $input['email'],
+        'phone' => $input['phone'], // [tl! add]
+        'password' => Hash::make($input['password']),
+    ]);
+}
+```
+
+<a name="two-factor-authentication"></a>
+### Two-Factor Authentication
+
+Starter kits include built-in two-factor authentication (2FA), allowing users to secure their accounts using any TOTP-compatible authenticator app. 2FA is enabled by default via `Features::twoFactorAuthentication()` in your application's `config/fortify.php` configuration file.
+
+The `confirm` option requires users to verify a code before 2FA is fully enabled, while `confirmPassword` requires password confirmation before enabling or disabling 2FA. For more details, see [Fortify's two-factor authentication documentation](/docs/{{version}}/fortify#two-factor-authentication).
+
+<a name="rate-limiting"></a>
+### Rate Limiting
+
+Rate limiting prevents brute-forcing and repeated login attempts from overwhelming your authentication endpoints. You can customize Fortify's rate limiting behavior in your application's `FortifyServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
+
+RateLimiter::for('login', function ($request) {
+    return Limit::perMinute(5)->by($request->email.$request->ip());
+});
 ```
 
 <a name="workos"></a>

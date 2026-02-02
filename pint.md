@@ -35,6 +35,18 @@ You can instruct Pint to fix code style issues by invoking the `pint` binary tha
 ./vendor/bin/pint
 ```
 
+If you would like Pint to run in parallel mode (experimental) for improved performance, you may use the `--parallel` option:
+
+```shell
+./vendor/bin/pint --parallel
+```
+
+Parallel mode also allows you to specify the maximum number of processes to run via the `--max-processes` option. If this option is not provided, Pint will use every available core on your machine:
+
+```shell
+./vendor/bin/pint --parallel --max-processes=4
+```
+
 You may also run Pint on specific files or directories:
 
 ```shell
@@ -188,21 +200,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: json, dom, curl, libxml, mbstring
-          coverage: none
-
-      - name: Install Pint
-        run: composer global require laravel/pint
+          tools: pint
 
       - name: Run Pint
         run: pint
 
       - name: Commit linted files
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
 ```

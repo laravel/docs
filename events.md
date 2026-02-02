@@ -11,9 +11,12 @@
 - [Queued Event Listeners](#queued-event-listeners)
     - [Manually Interacting With the Queue](#manually-interacting-with-the-queue)
     - [Queued Event Listeners and Database Transactions](#queued-event-listeners-and-database-transactions)
+    - [Queued Listener Middleware](#queued-listener-middleware)
+    - [Encrypted Queued Listeners](#encrypted-queued-listeners)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
     - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
+    - [Deferring Events](#deferring-events)
 - [Event Subscribers](#event-subscribers)
     - [Writing Event Subscribers](#writing-event-subscribers)
     - [Registering Event Subscribers](#registering-event-subscribers)
@@ -61,7 +64,7 @@ use App\Events\PodcastProcessed;
 class SendPodcastNotification
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(PodcastProcessed $event): void
     {
@@ -74,7 +77,7 @@ You may listen to multiple events using PHP's union types:
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(PodcastProcessed|PodcastPublished $event): void
 {
@@ -160,7 +163,7 @@ public function boot(): void
 <a name="queuable-anonymous-event-listeners"></a>
 #### Queueable Anonymous Event Listeners
 
-When registering closure based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
+When registering closure-based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
 
 ```php
 use App\Events\PodcastProcessed;
@@ -183,7 +186,7 @@ Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods
 ```php
 Event::listen(queueable(function (PodcastProcessed $event) {
     // ...
-})->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
+})->onConnection('redis')->onQueue('podcasts')->delay(now()->plus(seconds: 10)));
 ```
 
 If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener. This closure will receive the event instance and the `Throwable` instance that caused the listener's failure:
@@ -424,7 +427,7 @@ class SendShipmentNotification implements ShouldQueue
      */
     public function handle(OrderShipped $event): void
     {
-        if (true) {
+        if ($condition) {
             $this->release(30);
         }
     }
@@ -454,6 +457,62 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 
 > [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
+
+<a name="queued-listener-middleware"></a>
+### Queued Listener Middleware
+
+Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allow you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use App\Jobs\Middleware\RateLimited;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // Process the event...
+    }
+
+    /**
+     * Get the middleware the listener should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(OrderShipped $event): array
+    {
+        return [new RateLimited];
+    }
+}
+```
+
+<a name="encrypted-queued-listeners"></a>
+#### Encrypted Queued Listeners
+
+Laravel allows you to ensure the privacy and integrity of a queued listener's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the listener class. Once this interface has been added to the class, Laravel will automatically encrypt your listener before pushing it onto a queue:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
+{
+    // ...
+}
+```
 
 <a name="handling-failed-jobs"></a>
 ### Handling Failed Jobs
@@ -497,7 +556,7 @@ class SendShipmentNotification implements ShouldQueue
 
 If one of your queued listeners is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
 
-You may define a `$tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
+You may define a `tries` property or method on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
 
 ```php
 <?php
@@ -531,9 +590,11 @@ use DateTime;
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(5);
+    return now()->plus(minutes: 5);
 }
 ```
+
+If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
 
 <a name="specifying-queued-listener-backoff"></a>
 #### Specifying Queued Listener Backoff
@@ -555,7 +616,7 @@ If you require more complex logic for determining the listeners's backoff time, 
 /**
  * Calculate the number of seconds to wait before retrying the queued listener.
  */
-public function backoff(): int
+public function backoff(OrderShipped $event): int
 {
     return 3;
 }
@@ -567,11 +628,100 @@ You may easily configure "exponential" backoffs by returning an array of backoff
 /**
  * Calculate the number of seconds to wait before retrying the queued listener.
  *
- * @return array<int, int>
+ * @return list<int>
  */
-public function backoff(): array
+public function backoff(OrderShipped $event): array
 {
     return [1, 5, 10];
+}
+```
+
+<a name="specifying-queued-listener-max-exceptions"></a>
+#### Specifying Queued Listener Max Exceptions
+
+Sometimes you may wish to specify that a queued listener may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may define a `maxExceptions` property on your listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    /**
+     * The number of times the queued listener may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 25;
+
+    /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    /**
+     * Handle the event.
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // Process the event...
+    }
+}
+```
+
+In this example, the listener will be retried up to 25 times. However, the listener will fail if three unhandled exceptions are thrown by the listener.
+
+<a name="specifying-queued-listener-timeout"></a>
+#### Specifying Queued Listener Timeout
+
+Often, you know roughly how long you expect your queued listeners to take. For this reason, Laravel allows you to specify a "timeout" value. If a listener is processing for longer than the number of seconds specified by the timeout value, the worker processing the listener will exit with an error. You may define the maximum number of seconds a listener should be allowed to run by defining a `timeout` property on your listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * The number of seconds the listener can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 120;
+}
+```
+
+If you would like to indicate that a listener should be marked as failed on timeout, you may define the `failOnTimeout` property on the listener class:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * Indicate if the listener should be marked as failed on timeout.
+     *
+     * @var bool
+     */
+    public $failOnTimeout = true;
 }
 ```
 
@@ -650,13 +800,46 @@ class OrderShipped implements ShouldDispatchAfterCommit
 }
 ```
 
+<a name="deferring-events"></a>
+### Deferring Events
+
+Deferred events allow you to delay the dispatching of model events and execution of event listeners until after a specific block of code has completed. This is particularly useful when you need to ensure that all related records are created before event listeners are triggered.
+
+To defer events, provide a closure to the `Event::defer()` method:
+
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
+
+Event::defer(function () {
+    $user = User::create(['name' => 'Victoria Otwell']);
+
+    $user->posts()->create(['title' => 'My first post!']);
+});
+```
+
+All events triggered within the closure will be dispatched after the closure is executed. This ensures that event listeners have access to all related records that were created during the deferred execution. If an exception occurs within the closure, the deferred events will not be dispatched.
+
+To defer only specific events, pass an array of events as the second argument to the `defer` method:
+
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
+
+Event::defer(function () {
+    $user = User::create(['name' => 'Victoria Otwell']);
+
+    $user->posts()->create(['title' => 'My first post!']);
+}, ['eloquent.created: '.User::class]);
+```
+
 <a name="event-subscribers"></a>
 ## Event Subscribers
 
 <a name="writing-event-subscribers"></a>
 ### Writing Event Subscribers
 
-Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
+Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which receives an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
 
 ```php
 <?php
@@ -786,6 +969,9 @@ test('orders can be shipped', function () {
     // Assert an event was dispatched twice...
     Event::assertDispatched(OrderShipped::class, 2);
 
+    // Assert an event was dispatched once...
+    Event::assertDispatchedOnce(OrderShipped::class);
+
     // Assert an event was not dispatched...
     Event::assertNotDispatched(OrderFailedToShip::class);
 
@@ -820,6 +1006,9 @@ class ExampleTest extends TestCase
 
         // Assert an event was dispatched twice...
         Event::assertDispatched(OrderShipped::class, 2);
+
+        // Assert an event was dispatched once...
+        Event::assertDispatchedOnce(OrderShipped::class);
 
         // Assert an event was not dispatched...
         Event::assertNotDispatched(OrderFailedToShip::class);
@@ -866,7 +1055,9 @@ test('orders can be processed', function () {
     Event::assertDispatched(OrderCreated::class);
 
     // Other events are dispatched as normal...
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -885,7 +1076,9 @@ public function test_orders_can_be_processed(): void
     Event::assertDispatched(OrderCreated::class);
 
     // Other events are dispatched as normal...
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 }
 ```
 
@@ -918,8 +1111,10 @@ test('orders can be processed', function () {
         return $order;
     });
 
-    // Events are dispatched as normal and observers will run ...
-    $order->update([...]);
+    // Events are dispatched as normal and observers will run...
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -948,8 +1143,10 @@ class ExampleTest extends TestCase
             return $order;
         });
 
-        // Events are dispatched as normal and observers will run ...
-        $order->update([...]);
+        // Events are dispatched as normal and observers will run...
+        $order->update([
+            // ...
+        ]);
     }
 }
 ```

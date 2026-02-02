@@ -6,6 +6,7 @@
     - [Defining a Mutator](#defining-a-mutator)
 - [Attribute Casting](#attribute-casting)
     - [Array and JSON Casting](#array-and-json-casting)
+    - [Binary Casting](#binary-casting)
     - [Date Casting](#date-casting)
     - [Enum Casting](#enum-casting)
     - [Encrypted Casting](#encrypted-casting)
@@ -15,6 +16,7 @@
     - [Array / JSON Serialization](#array-json-serialization)
     - [Inbound Casting](#inbound-casting)
     - [Cast Parameters](#cast-parameters)
+    - [Comparing Cast Values](#comparing-cast-values)
     - [Castables](#castables)
 
 <a name="introduction"></a>
@@ -213,7 +215,9 @@ The `casts` method should return an array where the key is the name of the attri
 <div class="content-list" markdown="1">
 
 - `array`
+- `AsFluent::class`
 - `AsStringable::class`
+- `AsUri::class`
 - `boolean`
 - `collection`
 - `date`
@@ -286,7 +290,7 @@ $user->mergeCasts([
 <a name="stringable-casting"></a>
 #### Stringable Casting
 
-You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent `Illuminate\Support\Stringable` object](/docs/{{version}}/strings#fluent-strings-method-list):
+You may use the `Illuminate\Database\Eloquent\Casts\AsStringable` cast class to cast a model attribute to a [fluent Illuminate\Support\Stringable object](/docs/{{version}}/strings#fluent-strings-method-list):
 
 ```php
 <?php
@@ -449,6 +453,111 @@ protected function casts(): array
 }
 ```
 
+The `of` method may be used to indicate collection items should be mapped into a given class via the collection's [mapInto method](/docs/{{version}}/collections#method-mapinto):
+
+```php
+use App\ValueObjects\Option;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+/**
+ * Get the attributes that should be cast.
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => AsCollection::of(Option::class)
+    ];
+}
+```
+
+When mapping collections to objects, the object should implement the `Illuminate\Contracts\Support\Arrayable` and `JsonSerializable` interfaces to define how their instances should be serialized into the database as JSON:
+
+```php
+<?php
+
+namespace App\ValueObjects;
+
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
+
+class Option implements Arrayable, JsonSerializable
+{
+    public string $name;
+    public mixed $value;
+    public bool $isLocked;
+
+    /**
+     * Create a new Option instance.
+     */
+    public function __construct(array $data)
+    {
+        $this->name = $data['name'];
+        $this->value = $data['value'];
+        $this->isLocked = $data['is_locked'];
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array{name: string, data: string, is_locked: bool}
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'value' => $this->value,
+            'is_locked' => $this->isLocked,
+        ];
+    }
+
+    /**
+     * Specify the data which should be serialized to JSON.
+     *
+     * @return array{name: string, data: string, is_locked: bool}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+}
+```
+
+<a name="binary-casting"></a>
+### Binary Casting
+
+If your Eloquent model has a [binary type](/docs/{{version}}/migrations#column-method-binary) `uuid` or `ulid` column in addition to your model's auto-incrementing ID column, you may use the `AsBinary` cast to automatically cast the value to and from its binary representation:
+
+```php
+use Illuminate\Database\Eloquent\Casts\AsBinary;
+
+/**
+ * Get the attributes that should be cast.
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'uuid' => AsBinary::uuid(),
+        'ulid' => AsBinary::ulid(),
+    ];
+}
+```
+
+Once the cast has been defined on the model, you may set the UUID / ULID attribute value to an object instance or a string. Eloquent will automatically cast the value to its binary representation. When retrieving the attribute's value, you will always receive a plain-text string value:
+
+```php
+use Illuminate\Support\Str;
+
+$user->uuid = Str::uuid();
+
+return $user->uuid;
+
+// "6e8cdeed-2f32-40bd-b109-1e4405be2140"
+```
+
 <a name="date-casting"></a>
 ### Date Casting
 
@@ -565,7 +674,7 @@ As the final length of the encrypted text is not predictable and is longer than 
 <a name="key-rotation"></a>
 #### Key Rotation
 
-As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you will need to manually re-encrypt your encrypted attributes using the new key.
+As you may know, Laravel encrypts strings using the `key` configuration value specified in your application's `app` configuration file. Typically, this value corresponds to the value of the `APP_KEY` environment variable. If you need to rotate your application's encryption key, you may [gracefully do so](/docs/{{version}}/encryption#gracefully-rotating-encryption-keys).
 
 <a name="query-time-casting"></a>
 ### Query Time Casting
@@ -601,7 +710,7 @@ $users = User::select([
 Laravel has a variety of built-in, helpful cast types; however, you may occasionally need to define your own cast types. To create a cast, execute the `make:cast` Artisan command. The new cast class will be placed in your `app/Casts` directory:
 
 ```shell
-php artisan make:cast Json
+php artisan make:cast AsJson
 ```
 
 All custom cast classes implement the `CastsAttributes` interface. Classes that implement this interface must define a `get` and `set` method. The `get` method is responsible for transforming a raw value from the database into a cast value, while the `set` method should transform a cast value into a raw value that can be stored in the database. As an example, we will re-implement the built-in `json` cast type as a custom cast type:
@@ -614,7 +723,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class Json implements CastsAttributes
+class AsJson implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -622,8 +731,12 @@ class Json implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, mixed>
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): array
-    {
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
         return json_decode($value, true);
     }
 
@@ -632,8 +745,12 @@ class Json implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return json_encode($value);
     }
 }
@@ -646,7 +763,7 @@ Once you have defined a custom cast type, you may attach it to a model attribute
 
 namespace App\Models;
 
-use App\Casts\Json;
+use App\Casts\AsJson;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
@@ -659,7 +776,7 @@ class User extends Model
     protected function casts(): array
     {
         return [
-            'options' => Json::class,
+            'options' => AsJson::class,
         ];
     }
 }
@@ -668,30 +785,34 @@ class User extends Model
 <a name="value-object-casting"></a>
 ### Value Object Casting
 
-You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, the `set` method should return an array of key / value pairs that will be used to set raw, storable values on the model.
+You are not limited to casting values to primitive types. You may also cast values to objects. Defining custom casts that cast values to objects is very similar to casting to primitive types; however, if your value object encompasses more than one database column, the `set` method must return an array of key / value pairs that will be used to set raw, storable values on the model. If your value object only affects a single column, you should simply return the storable value.
 
-As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value has two public properties: `lineOne` and `lineTwo`:
+As an example, we will define a custom cast class that casts multiple model values into a single `Address` value object. We will assume the `Address` value object has two public properties: `lineOne` and `lineTwo`:
 
 ```php
 <?php
 
 namespace App\Casts;
 
-use App\ValueObjects\Address as AddressValueObject;
+use App\ValueObjects\Address;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
-class Address implements CastsAttributes
+class AsAddress implements CastsAttributes
 {
     /**
      * Cast the given value.
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): AddressValueObject
-    {
-        return new AddressValueObject(
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): Address {
+        return new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two']
         );
@@ -703,9 +824,13 @@ class Address implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, string>
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): array
-    {
-        if (! $value instanceof AddressValueObject) {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
+        if (! $value instanceof Address) {
             throw new InvalidArgumentException('The given value is not an Address instance.');
         }
 
@@ -740,7 +865,7 @@ When attributes that are cast to value objects are resolved, they are cached by 
 If you would like to disable the object caching behavior of custom cast classes, you may declare a public `withoutObjectCaching` property on your custom cast class:
 
 ```php
-class Address implements CastsAttributes
+class AsAddress implements CastsAttributes
 {
     public bool $withoutObjectCaching = true;
 
@@ -761,8 +886,12 @@ Therefore, you may specify that your custom cast class will be responsible for s
  *
  * @param  array<string, mixed>  $attributes
  */
-public function serialize(Model $model, string $key, mixed $value, array $attributes): string
-{
+public function serialize(
+    Model $model,
+    string $key,
+    mixed $value,
+    array $attributes,
+): string {
     return (string) $value;
 }
 ```
@@ -775,7 +904,7 @@ Occasionally, you may need to write a custom cast class that only transforms val
 Inbound only custom casts should implement the `CastsInboundAttributes` interface, which only requires a `set` method to be defined. The `make:cast` Artisan command may be invoked with the `--inbound` option to generate an inbound only cast class:
 
 ```shell
-php artisan make:cast Hash --inbound
+php artisan make:cast AsHash --inbound
 ```
 
 A classic example of an inbound only cast is a "hashing" cast. For example, we may define a cast that hashes inbound values via a given algorithm:
@@ -788,7 +917,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class Hash implements CastsInboundAttributes
+class AsHash implements CastsInboundAttributes
 {
     /**
      * Create a new cast class instance.
@@ -802,8 +931,12 @@ class Hash implements CastsInboundAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return is_null($this->algorithm)
             ? bcrypt($value)
             : hash($this->algorithm, $value);
@@ -825,8 +958,35 @@ When attaching a custom cast to a model, cast parameters may be specified by sep
 protected function casts(): array
 {
     return [
-        'secret' => Hash::class.':sha256',
+        'secret' => AsHash::class.':sha256',
     ];
+}
+```
+
+<a name="comparing-cast-values"></a>
+### Comparing Cast Values
+
+If you would like to define how two given cast values should be compared to determine if they have been changed, your custom cast class may implement the `Illuminate\Contracts\Database\Eloquent\ComparesCastableAttributes` interface. This allows you to have fine-grained control over which values Eloquent considers changed and thus saves to the database when a model is updated.
+
+This interface states that your class should contain a `compare` method which should return `true` if the given values are considered equal:
+
+```php
+/**
+ * Determine if the given values are equal.
+ *
+ * @param  \Illuminate\Database\Eloquent\Model  $model
+ * @param  string  $key
+ * @param  mixed  $firstValue
+ * @param  mixed  $secondValue
+ * @return bool
+ */
+public function compare(
+    Model $model,
+    string $key,
+    mixed $firstValue,
+    mixed $secondValue
+): bool {
+    return $firstValue === $secondValue;
 }
 ```
 
@@ -854,7 +1014,7 @@ Objects that implement the `Castable` interface must define a `castUsing` method
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Database\Eloquent\Castable;
-use App\Casts\Address as AddressCast;
+use App\Casts\AsAddress;
 
 class Address implements Castable
 {
@@ -865,7 +1025,7 @@ class Address implements Castable
      */
     public static function castUsing(array $arguments): string
     {
-        return AddressCast::class;
+        return AsAddress::class;
     }
 }
 ```
@@ -909,16 +1069,24 @@ class Address implements Castable
     {
         return new class implements CastsAttributes
         {
-            public function get(Model $model, string $key, mixed $value, array $attributes): Address
-            {
+            public function get(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): Address {
                 return new Address(
                     $attributes['address_line_one'],
                     $attributes['address_line_two']
                 );
             }
 
-            public function set(Model $model, string $key, mixed $value, array $attributes): array
-            {
+            public function set(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): array {
                 return [
                     'address_line_one' => $value->lineOne,
                     'address_line_two' => $value->lineTwo,

@@ -79,11 +79,16 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 [modelKeys](#method-modelKeys)
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
+[mergeVisible](#method-mergeVisible)
+[mergeHidden](#method-mergeHidden)
 [only](#method-only)
+[partition](#method-partition)
+[setAppends](#method-setAppends)
 [setVisible](#method-setVisible)
 [setHidden](#method-setHidden)
 [toQuery](#method-toquery)
 [unique](#method-unique)
+[withoutAppends](#method-withoutAppends)
 
 </div>
 
@@ -228,6 +233,24 @@ The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serializat
 $users = $users->makeHidden(['address', 'phone_number']);
 ```
 
+<a name="method-mergeVisible"></a>
+#### `mergeVisible($attributes)` {.collection-method}
+
+The `mergeVisible` method [makes additional attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing visible attributes:
+
+```php
+$users = $users->mergeVisible(['middle_name']);
+```
+
+<a name="method-mergeHidden"></a>
+#### `mergeHidden($attributes)` {.collection-method}
+
+The `mergeHidden` method [hides additional attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing hidden attributes:
+
+```php
+$users = $users->mergeHidden(['last_login_at']);
+```
+
 <a name="method-only"></a>
 #### `only($keys)` {.collection-method}
 
@@ -235,6 +258,28 @@ The `only` method returns all of the models that have the given primary keys:
 
 ```php
 $users = $users->only([1, 2, 3]);
+```
+
+<a name="method-partition"></a>
+#### `partition` {.collection-method}
+
+The `partition` method returns an instance of `Illuminate\Support\Collection` containing `Illuminate\Database\Eloquent\Collection` collection instances:
+
+```php
+$partition = $users->partition(fn ($user) => $user->age > 18);
+
+dump($partition::class);    // Illuminate\Support\Collection
+dump($partition[0]::class); // Illuminate\Database\Eloquent\Collection
+dump($partition[1]::class); // Illuminate\Database\Eloquent\Collection
+```
+
+<a name="method-setAppends"></a>
+#### `setAppends($attributes)` {.collection-method}
+
+The `setAppends` method temporarily overrides all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
+
+```php
+$users = $users->setAppends(['is_admin']);
 ```
 
 <a name="method-setVisible"></a>
@@ -279,6 +324,15 @@ The `unique` method returns all of the unique models in the collection. Any mode
 $users = $users->unique();
 ```
 
+<a name="method-withoutAppends"></a>
+#### `withoutAppends()` {.collection-method}
+
+The `withoutAppends` method temporarily removes all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
+
+```php
+$users = $users->withoutAppends();
+```
+
 <a name="custom-collections"></a>
 ## Custom Collections
 
@@ -321,7 +375,13 @@ class User extends Model
      */
     public function newCollection(array $models = []): Collection
     {
-        return new UserCollection($models);
+        $collection = new UserCollection($models);
+
+        if (Model::isAutomaticallyEagerLoadingRelationships()) {
+            $collection->withRelationshipAutoloading();
+        }
+
+        return $collection;
     }
 }
 ```

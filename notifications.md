@@ -36,7 +36,6 @@
 - [SMS Notifications](#sms-notifications)
     - [Prerequisites](#sms-prerequisites)
     - [Formatting SMS Notifications](#formatting-sms-notifications)
-    - [Unicode Content](#unicode-content)
     - [Customizing the "From" Number](#customizing-the-from-number)
     - [Adding a Client Reference](#adding-a-client-reference)
     - [Routing SMS Notifications](#routing-sms-notifications)
@@ -145,7 +144,7 @@ public function via(object $notifiable): array
 ### Queueing Notifications
 
 > [!WARNING]
-> Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker).
+> Before queueing notifications, you should configure your queue and [start a worker](/docs/{{version}}/queues#running-the-queue-worker).
 
 Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:
 
@@ -180,7 +179,7 @@ When queueing notifications, a queued job will be created for each recipient and
 If you would like to delay the delivery of the notification, you may chain the `delay` method onto your notification instantiation:
 
 ```php
-$delay = now()->addMinutes(10);
+$delay = now()->plus(minutes: 10);
 
 $user->notify((new InvoicePaid($invoice))->delay($delay));
 ```
@@ -189,8 +188,8 @@ You may pass an array to the `delay` method to specify the delay amount for spec
 
 ```php
 $user->notify((new InvoicePaid($invoice))->delay([
-    'mail' => now()->addMinutes(5),
-    'sms' => now()->addMinutes(10),
+    'mail' => now()->plus(minutes: 5),
+    'sms' => now()->plus(minutes: 10),
 ]));
 ```
 
@@ -205,8 +204,8 @@ Alternatively, you may define a `withDelay` method on the notification class its
 public function withDelay(object $notifiable): array
 {
     return [
-        'mail' => now()->addMinutes(5),
-        'sms' => now()->addMinutes(10),
+        'mail' => now()->plus(minutes: 5),
+        'sms' => now()->plus(minutes: 10),
     ];
 }
 ```
@@ -276,6 +275,94 @@ public function viaQueues(): array
 }
 ```
 
+<a name="customizing-queued-notification-job-properties"></a>
+#### Customizing Queued Notification Job Properties
+
+You may customize the behavior of the underlying queued job by defining properties on your notification class. These properties will be inherited by the queued job that sends the notification:
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+
+class InvoicePaid extends Notification implements ShouldQueue
+{
+    use Queueable;
+
+    /**
+     * The number of times the notification may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 5;
+
+    /**
+     * The number of seconds the notification can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 120;
+
+    /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    // ...
+}
+```
+
+If you would like to ensure the privacy and integrity of a queued notification's data via [encryption](/docs/{{version}}/encryption), add the `ShouldBeEncrypted` interface to your notification class:
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+
+class InvoicePaid extends Notification implements ShouldQueue, ShouldBeEncrypted
+{
+    use Queueable;
+
+    // ...
+}
+```
+
+In addition to defining these properties directly on your notification class, you may also define `backoff` and `retryUntil` methods to specify the backoff strategy and retry timeout for the queued notification job:
+
+```php
+use DateTime;
+
+/**
+ * Calculate the number of seconds to wait before retrying the notification.
+ */
+public function backoff(): int
+{
+    return 3;
+}
+
+/**
+ * Determine the time at which the notification should timeout.
+ */
+public function retryUntil(): DateTime
+{
+    return now()->plus(minutes: 5);
+}
+```
+
+> [!NOTE]
+> For more information on these job properties and methods, please review the documentation on [queued jobs](/docs/{{version}}/queues#max-job-attempts-and-timeout).
+
 <a name="queued-notification-middleware"></a>
 #### Queued Notification Middleware
 
@@ -292,7 +379,7 @@ use Illuminate\Queue\Middleware\RateLimited;
 public function middleware(object $notifiable, string $channel)
 {
     return match ($channel) {
-        'email' => [new RateLimited('postmark')],
+        'mail' => [new RateLimited('postmark')],
         'slack' => [new RateLimited('slack')],
         default => [],
     };
@@ -695,7 +782,7 @@ public function toMail(object $notifiable): MailMessage
 }
 ```
 
-If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tags) and [metadata](https://documentation.mailgun.com/docs/mailgun/user-manual/sending-messages/#attaching-metadata-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
 
 If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
 
@@ -920,7 +1007,7 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](/docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
+> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [uuidMorphs](/docs/{{version}}/migrations#column-method-uuidMorphs) or [ulidMorphs](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
 
 <a name="formatting-database-notifications"></a>
 ### Formatting Database Notifications
@@ -944,9 +1031,9 @@ public function toArray(object $notifiable): array
 
 When a notification is stored in your application's database, the `type` column will be set to the notification's class name by default, and the `read_at` column will be `null`. However, you can customize this behavior by defining the `databaseType` and `initialDatabaseReadAtValue` methods in your notification class:
 
-    use Illuminate\Support\Carbon;
-
 ```php
+use Illuminate\Support\Carbon;
+
 /**
  * Get the notification's database type.
  */
@@ -988,6 +1075,16 @@ If you want to retrieve only the "unread" notifications, you may use the `unread
 $user = App\Models\User::find(1);
 
 foreach ($user->unreadNotifications as $notification) {
+    echo $notification->type;
+}
+```
+
+If you want to retrieve only the "read" notifications, you may use the `readNotifications` relationship:
+
+```php
+$user = App\Models\User::find(1);
+
+foreach ($user->readNotifications as $notification) {
     echo $notification->type;
 }
 ```
@@ -1092,6 +1189,82 @@ Echo.private('App.Models.User.' + userId)
     .notification((notification) => {
         console.log(notification.type);
     });
+```
+
+<a name="using-react-or-vue"></a>
+#### Using React or Vue
+
+Laravel Echo includes React and Vue hooks that make it painless to listen for notifications. To get started, invoke the `useEchoNotification` hook, which is used to listen for notifications. The `useEchoNotification` hook will automatically leave channels when the consuming component is unmounted:
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+</script>
+```
+
+By default, the hook listens to all notifications. To specify the notification types you would like to listen to, you can provide either a string or array of types to `useEchoNotification`:
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+</script>
+```
+
+You may also specify the shape of the notification payload data, providing greater type safety and editing convenience:
+
+```ts
+type InvoicePaidNotification = {
+    invoice_id: number;
+    created_at: string;
+};
+
+useEchoNotification<InvoicePaidNotification>(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.invoice_id);
+        console.log(notification.created_at);
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
 ```
 
 <a name="customizing-the-notification-channel"></a>
@@ -1259,7 +1432,7 @@ composer require laravel/slack-notification-channel
 
 Additionally, you must create a [Slack App](https://api.slack.com/apps?new_app=1) for your Slack workspace.
 
-If you only need to send notifications to the same Slack workspace that the App is created in, you should ensure that your App has the `chat:write`, `chat:write.public`, and `chat:write.customize` scopes. If you want to send messages as your Slack App, you should ensure that your App also has the `chat:write:bot` scope. These scopes can be added from the "OAuth & Permissions" App management tab within Slack.
+If you only need to send notifications to the same Slack workspace that the App is created in, you should ensure that your App has the `chat:write`, `chat:write.public`, and `chat:write.customize` scopes. These scopes can be added from the "OAuth & Permissions" App management tab within Slack.
 
 Next, copy the App's "Bot User OAuth Token" and place it within a `slack` configuration array in your application's `services.php` configuration file. This token can be found on the "OAuth & Permissions" tab within Slack:
 
@@ -1285,7 +1458,6 @@ If a notification supports being sent as a Slack message, you should define a `t
 ```php
 use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
-use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
 use Illuminate\Notifications\Slack\SlackMessage;
 
 /**
@@ -1528,7 +1700,7 @@ Notification::locale('es')->send(
 ```
 
 <a name="user-preferred-locales"></a>
-### User Preferred Locales
+#### User Preferred Locales
 
 Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on your notifiable model, you may instruct Laravel to use this stored locale when sending a notification:
 
@@ -1584,6 +1756,9 @@ test('orders can be shipped', function () {
         [$user], AnotherNotification::class
     );
 
+    // Assert a notification was sent twice...
+    Notification::assertSentTimes(WeeklyReminder::class, 2);
+
     // Assert that a given number of notifications were sent...
     Notification::assertCount(3);
 });
@@ -1618,6 +1793,9 @@ class ExampleTest extends TestCase
         Notification::assertNotSentTo(
             [$user], AnotherNotification::class
         );
+
+        // Assert a notification was sent twice...
+        Notification::assertSentTimes(WeeklyReminder::class, 2);
 
         // Assert that a given number of notifications were sent...
         Notification::assertCount(3);
@@ -1670,7 +1848,7 @@ use Illuminate\Notifications\Events\NotificationSending;
 class CheckNotificationStatus
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(NotificationSending $event): void
     {
@@ -1683,7 +1861,7 @@ The notification will not be sent if an event listener for the `NotificationSend
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSending $event): bool
 {
@@ -1695,7 +1873,7 @@ Within an event listener, you may access the `notifiable`, `notification`, and `
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSending $event): void
 {
@@ -1716,7 +1894,7 @@ use Illuminate\Notifications\Events\NotificationSent;
 class LogNotification
 {
     /**
-     * Handle the given event.
+     * Handle the event.
      */
     public function handle(NotificationSent $event): void
     {
@@ -1729,7 +1907,7 @@ Within an event listener, you may access the `notifiable`, `notification`, `chan
 
 ```php
 /**
- * Handle the given event.
+ * Handle the event.
  */
 public function handle(NotificationSent $event): void
 {

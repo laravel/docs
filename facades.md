@@ -257,7 +257,7 @@ use App\Models\Podcast;
 use Facades\App\Contracts\Publisher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
+pest()->use(RefreshDatabase::class);
 
 test('podcast can be published', function () {
     $podcast = Podcast::factory()->create();

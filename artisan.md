@@ -51,7 +51,7 @@ If you are using [Laravel Sail](/docs/{{version}}/sail) as your local developmen
 <a name="tinker"></a>
 ### Tinker (REPL)
 
-Laravel Tinker is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
+[Laravel Tinker](https://github.com/laravel/tinker) is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
 
 <a name="installation"></a>
 #### Installation
@@ -81,7 +81,7 @@ php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
 > [!WARNING]
-> The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depends on garbage collection to place the job on the queue. Therefore, when using tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
+> The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depend on garbage collection to place the job on the queue. Therefore, when using Tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
 
 <a name="command-allow-list"></a>
 #### Command Allow List
@@ -108,7 +108,7 @@ Typically, Tinker automatically aliases classes as you interact with them in Tin
 <a name="writing-commands"></a>
 ## Writing Commands
 
-In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be loaded by Composer.
+In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as you instruct Laravel to [scan other directories for Artisan commands](#registering-commands).
 
 <a name="generating-commands"></a>
 ### Generating Commands
@@ -167,7 +167,7 @@ class SendEmails extends Command
 <a name="exit-codes"></a>
 #### Exit Codes
 
-If nothing is returned from the `handle` method and the command executes successfully, the command will exit with a `0` exit code, indicating success. However, the `handle` method may optionally return an integer to manually specify command's exit code:
+If nothing is returned from the `handle` method and the command executes successfully, the command will exit with a `0` exit code, indicating success. However, the `handle` method may optionally return an integer to manually specify the command's exit code:
 
 ```php
 $this->error('Something went wrong.');
@@ -184,9 +184,9 @@ $this->fail('Something went wrong.');
 <a name="closure-commands"></a>
 ### Closure Commands
 
-Closure based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes.
+Closure-based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes.
 
-Even though the `routes/console.php` file does not define HTTP routes, it defines console based entry points (routes) into your application. Within this file, you may define all of your closure based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
+Even though the `routes/console.php` file does not define HTTP routes, it defines console-based entry points (routes) into your application. Within this file, you may define all of your closure-based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
 
 ```php
 Artisan::command('mail:send {user}', function (string $user) {
@@ -204,6 +204,7 @@ In addition to receiving your command's arguments and options, command closures 
 ```php
 use App\Models\User;
 use App\Support\DripEmailer;
+use Illuminate\Support\Facades\Artisan;
 
 Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) {
     $drip->send(User::find($user));
@@ -213,7 +214,7 @@ Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) 
 <a name="closure-command-descriptions"></a>
 #### Closure Command Descriptions
 
-When defining a closure based command, you may use the `purpose` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
+When defining a closure-based command, you may use the `purpose` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
 
 ```php
 Artisan::command('mail:send {user}', function (string $user) {
@@ -243,7 +244,7 @@ class SendEmails extends Command implements Isolatable
 }
 ```
 
-When a command is marked as `Isolatable`, Laravel will automatically add an `--isolated` option to the command. When the command is invoked with that option, Laravel will ensure that no other instances of that command are already running. Laravel accomplishes this by attempting to acquire an atomic lock using your application's default cache driver. If other instances of the command are running, the command will not execute; however, the command will still exit with a successful exit status code:
+When you mark a command as `Isolatable`, Laravel automatically makes the `--isolated` option available for the command without needing to explicitly define it in the command's options. When the command is invoked with that option, Laravel will ensure that no other instances of that command are already running. Laravel accomplishes this by attempting to acquire an atomic lock using your application's default cache driver. If other instances of the command are running, the command will not execute; however, the command will still exit with a successful exit status code:
 
 ```shell
 php artisan mail:send 1 --isolated
@@ -273,7 +274,7 @@ public function isolatableId(): string
 <a name="lock-expiration-time"></a>
 #### Lock Expiration Time
 
-By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining a `isolationLockExpiresAt` method on your command:
+By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining an `isolationLockExpiresAt` method on your command:
 
 ```php
 use DateTimeInterface;
@@ -284,7 +285,7 @@ use DateInterval;
  */
 public function isolationLockExpiresAt(): DateTimeInterface|DateInterval
 {
-    return now()->addMinutes(5);
+    return now()->plus(minutes: 5);
 }
 ```
 
@@ -369,7 +370,7 @@ You may assign default values to options by specifying the default value after t
 To assign a shortcut when defining an option, you may specify it before the option name and use the `|` character as a delimiter to separate the shortcut from the full option name:
 
 ```php
-'mail:send {user} {--Q|queue}'
+'mail:send {user} {--Q|queue=}'
 ```
 
 When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen and no `=` character should be included when specifying a value for the option:
@@ -387,7 +388,7 @@ If you would like to define arguments or options to expect multiple input values
 'mail:send {user*}'
 ```
 
-When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
+When running this command, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
 
 ```shell
 php artisan mail:send 1 2
@@ -493,7 +494,7 @@ return [
         label: 'Search for a user:',
         placeholder: 'E.g. Taylor Otwell',
         options: fn ($value) => strlen($value) > 0
-            ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+            ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
             : []
     ),
 ];
@@ -658,7 +659,7 @@ $name = $this->choice(
 <a name="writing-output"></a>
 ### Writing Output
 
-To send output to the console, you may use the `line`, `info`, `comment`, `question`, `warn`, and `error` methods. Each of these methods will use appropriate ANSI colors for their purpose. For example, let's display some general information to the user. Typically, the `info` method will display in the console as green colored text:
+To send output to the console, you may use the `line`, `newLine`, `info`, `comment`, `question`, `warn`, `alert`, and `error` methods. Each of these methods will use appropriate ANSI colors for their purpose. For example, let's display some general information to the user. Typically, the `info` method will display in the console as green colored text:
 
 ```php
 /**
@@ -772,6 +773,7 @@ Sometimes you may wish to execute an Artisan command outside of the CLI. For exa
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/user/{user}/mail', function (string $user) {
     $exitCode = Artisan::call('mail:send', [
@@ -795,6 +797,7 @@ If your command defines an option that accepts an array, you may pass an array o
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/mail', function () {
     $exitCode = Artisan::call('mail:send', [
@@ -821,6 +824,7 @@ Using the `queue` method on the `Artisan` facade, you may even queue Artisan com
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/user/{user}/mail', function (string $user) {
     Artisan::queue('mail:send', [

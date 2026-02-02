@@ -7,6 +7,7 @@
 - [URLs for Named Routes](#urls-for-named-routes)
     - [Signed URLs](#signed-urls)
 - [URLs for Controller Actions](#urls-for-controller-actions)
+- [Fluent URI Objects](#fluent-uri-objects)
 - [Default Values](#default-values)
 
 <a name="introduction"></a>
@@ -73,12 +74,6 @@ echo url()->current();
 
 // Get the current URL including the query string...
 echo url()->full();
-
-// Get the full URL for the previous request...
-echo url()->previous();
-
-// Get the path for the previous request...
-echo url()->previousPath();
 ```
 
 Each of these methods may also be accessed via the `URL` [facade](/docs/{{version}}/facades):
@@ -87,6 +82,37 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/{{versio
 use Illuminate\Support\Facades\URL;
 
 echo URL::current();
+```
+
+<a name="accessing-the-previous-url"></a>
+#### Accessing the Previous URL
+
+Sometimes it is helpful to know the previous URL that the user is visiting from. You can access the previous URL via the `url` helper's `previous` and `previousPath` methods:
+
+```php
+// Get the full URL for the previous request...
+echo url()->previous();
+
+// Get the path for the previous request...
+echo url()->previousPath();
+```
+
+Or, via the [session](/docs/{{version}}/session), you may access the previous URL as a [fluent URI](#fluent-uri-objects) instance:
+
+```php
+use Illuminate\Http\Request;
+
+Route::post('/users', function (Request $request) {
+    $previousUri = $request->session()->previousUri();
+
+    // ...
+});
+```
+
+It is also possible to retrieve the route name for the previously visited URL via the session:
+
+```php
+$previousRoute = $request->session()->previousRoute();
 ```
 
 <a name="urls-for-named-routes"></a>
@@ -162,7 +188,7 @@ If you would like to generate a temporary signed route URL that expires after a 
 use Illuminate\Support\Facades\URL;
 
 return URL::temporarySignedRoute(
-    'unsubscribe', now()->addMinutes(30), ['user' => 1]
+    'unsubscribe', now()->plus(minutes: 30), ['user' => 1]
 );
 ```
 
@@ -215,7 +241,7 @@ When someone visits a signed URL that has expired, they will receive a generic e
 ```php
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->render(function (InvalidSignatureException $e) {
         return response()->view('errors.link-expired', status: 403);
     });
@@ -238,6 +264,50 @@ If the controller method accepts route parameters, you may pass an associative a
 ```php
 $url = action([UserController::class, 'profile'], ['id' => 1]);
 ```
+
+<a name="fluent-uri-objects"></a>
+## Fluent URI Objects
+
+Laravel's `Uri` class provides a convenient and fluent interface for creating and manipulating URIs via objects. This class wraps the functionality provided by the underlying League URI package and integrates seamlessly with Laravel's routing system.
+
+You can create a `Uri` instance easily using static methods:
+
+```php
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvokableController;
+use Illuminate\Support\Uri;
+
+// Generate a URI instance from the given string...
+$uri = Uri::of('https://example.com/path');
+
+// Generate URI instances to paths, named routes, or controller actions...
+$uri = Uri::to('/dashboard');
+$uri = Uri::route('users.show', ['user' => 1]);
+$uri = Uri::signedRoute('users.show', ['user' => 1]);
+$uri = Uri::temporarySignedRoute('user.index', now()->plus(minutes: 5));
+$uri = Uri::action([UserController::class, 'index']);
+$uri = Uri::action(InvokableController::class);
+
+// Generate a URI instance from the current request URL...
+$uri = $request->uri();
+
+// Generate a URI instance from the previous request URL...
+$uri = $request->session()->previousUri();
+```
+
+Once you have a URI instance, you can fluently modify it:
+
+```php
+$uri = Uri::of('https://example.com')
+    ->withScheme('http')
+    ->withHost('test.com')
+    ->withPort(8000)
+    ->withPath('/users')
+    ->withQuery(['page' => 2])
+    ->withFragment('section-1');
+```
+
+For more information on working with fluent URI objects, consult the [URI documentation](/docs/{{version}}/helpers#uri).
 
 <a name="default-values"></a>
 ## Default Values
@@ -286,7 +356,7 @@ Once the default value for the `locale` parameter has been set, you are no longe
 Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/{{version}}/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this using the `priority` middleware method in your application's `bootstrap/app.php` file:
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->prependToPriorityList(
         before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
         prepend: \App\Http\Middleware\SetDefaultLocaleForUrls::class,

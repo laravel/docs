@@ -30,6 +30,7 @@
 - [Concurrency Result Index Mapping](#concurrency-result-index-mapping)
 - [Container Class Dependency Resolution](#container-class-dependency-resolution)
 - [Image Validation Now Excludes SVGs](#image-validation)
+- [Local Filesystem Disk Default Root Path](#local-filesystem-disk-default-root-path)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
 - [Nested Array Request Merging](#nested-array-request-merging)
 
@@ -63,7 +64,7 @@ You should update the following dependencies in your application's `composer.jso
 
 **Likelihood Of Impact: Low**
 
-Support for [Carbon 2.x](https://carbon.nesbot.com/docs/) has been removed. All Laravel 12 applications now require [Carbon 3.x](https://carbon.nesbot.com/docs/#api-carbon-3).
+Support for Carbon 2.x has been removed. All Laravel 12 applications now require [Carbon 3.x](https://carbon.nesbot.com/guide/getting-started/migration.html).
 
 <a name="updating-the-laravel-installer"></a>
 ### Updating the Laravel Installer
@@ -90,6 +91,16 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ```
 
 Or, if you are using [Laravel Herd's](https://herd.laravel.com) bundled copy of the Laravel installer, you should update your Herd installation to the latest release.
+
+<a name="authentication"></a>
+### Authentication
+
+<a name="updated-databasetokenrepository-constructor-signature"></a>
+#### Updated `DatabaseTokenRepository` Constructor Signature
+
+**Likelihood Of Impact: Very Low**
+
+The constructor of the `Illuminate\Auth\Passwords\DatabaseTokenRepository` class now expects the `$expires` parameter to be given in seconds, rather than minutes.
 
 <a name="concurrency"></a>
 ### Concurrency
@@ -150,10 +161,10 @@ The `Schema::getTables()`, `Schema::getViews()`, and `Schema::getTypes()` method
 $tables = Schema::getTables();
 
 // All tables on the 'main' schema...
-$table = Schema::getTables(schema: 'main');
+$tables = Schema::getTables(schema: 'main');
 
 // All tables on the 'main' and 'blog' schemas...
-$table = Schema::getTables(schema: ['main', 'blog']);
+$tables = Schema::getTables(schema: ['main', 'blog']);
 ```
 
 The `Schema::getTableListing()` method now returns schema-qualified table names by default. You may pass the `schemaQualified` argument to change the behavior as desired:
@@ -162,14 +173,59 @@ The `Schema::getTableListing()` method now returns schema-qualified table names 
 $tables = Schema::getTableListing();
 // ['main.migrations', 'main.users', 'blog.posts']
 
-$table = Schema::getTableListing(schema: 'main');
+$tables = Schema::getTableListing(schema: 'main');
 // ['main.migrations', 'main.users']
 
-$table = Schema::getTableListing(schema: 'main', schemaQualified: false);
+$tables = Schema::getTableListing(schema: 'main', schemaQualified: false);
 // ['migrations', 'users']
 ```
 
 The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
+
+<a name="database-constructor-signature-changes"></a>
+#### Database Constructor Signature Changes
+
+**Likelihood Of Impact: Very Low**
+
+In Laravel 12, several low-level database classes now require an `Illuminate\Database\Connection` instance to be provided via their constructors.
+
+**These changes are primarily applicable to database package maintainers - it is extremely unlikely any of these changes affect normal application development.**
+
+`Illuminate\Database\Schema\Blueprint`
+
+The constructor of the `Illuminate\Database\Schema\Blueprint` class now expects a `Connection` instance as its first argument. This primarily affects applications or packages that manually instantiate `Blueprint` instances.
+
+`Illuminate\Database\Grammar`
+
+The constructor of the `Illuminate\Database\Grammar` class also now requires a `Connection` instance. In previous versions, the connection was assigned after construction using the `setConnection()` method. This method has been removed in Laravel 12:
+
+```php
+// Laravel <= 11.x
+$grammar = new MySqlGrammar;
+$grammar->setConnection($connection);
+
+// Laravel >= 12.x
+$grammar = new MySqlGrammar($connection);
+````
+
+In addition, the following APIs have been removed or deprecated:
+
+<div class="content-list" markdown="1">
+
+- The `Blueprint::getPrefix()` method is deprecated.
+- The `Connection::withTablePrefix()` method has been removed.
+- The `Grammar::getTablePrefix()` and `setTablePrefix()` methods are deprecated.
+- The `Grammar::setConnection()` method has been removed.
+
+</div>
+
+When working with table prefixes, you should now retrieve them directly from the database connection:
+
+```php
+$prefix = $connection->getTablePrefix();
+```
+
+If you maintain custom database drivers, schema builders, or grammar implementations, you should review their constructors and ensure a `Connection` instance is provided.
 
 <a name="eloquent"></a>
 ### Eloquent
@@ -204,11 +260,23 @@ $request->mergeIfMissing([
 ]);
 ```
 
+<a name="storage"></a>
+### Storage
+
+<a name="local-filesystem-disk-default-root-path"></a>
+#### Local Filesystem Disk Default Root Path
+
+**Likelihood Of Impact: Low**
+
+If your application does not explicitly define a `local` disk in your filesystems configuration, Laravel will now default the local disk's root to `storage/app/private`. In previous releases, this defaulted to `storage/app`. As a result, calls to `Storage::disk('local')` will read from and write to `storage/app/private` unless otherwise configured. To restore the previous behavior, you may define the `local` disk manually and set the desired root path.
+
 <a name="validation"></a>
 ### Validation
 
 <a name="image-validation"></a>
 #### Image Validation Now Excludes SVGs
+
+**Likelihood Of Impact: Low**
 
 The `image` validation rule no longer allows SVG images by default. If you would like to allow SVGs when using the `image` rule, you must explicitly allow them:
 

@@ -168,6 +168,7 @@ We've already seen a few examples of how you may configure a task to run at spec
 | `->dailyAt('13:00');`              | Run the task every day at 13:00.                         |
 | `->twiceDaily(1, 13);`             | Run the task daily at 1:00 & 13:00.                      |
 | `->twiceDailyAt(1, 13, 15);`       | Run the task daily at 1:15 & 13:15.                      |
+| `->daysOfMonth([1, 10, 20]);`      | Run the task on specific days of the month.              |
 | `->weekly();`                      | Run the task every Sunday at 00:00.                      |
 | `->weeklyOn(1, '8:00');`           | Run the task every week on Monday at 8:00.               |
 | `->monthly();`                     | Run the task on the first day of every month at 00:00.   |
@@ -362,6 +363,12 @@ Schedule::command('report:generate')
     ->onOneServer();
 ```
 
+You may use the `useCache` method to customize the cache store used by the scheduler to obtain the atomic locks necessary for single-server tasks:
+
+```php
+Schedule::useCache('database');
+```
+
 <a name="naming-unique-jobs"></a>
 #### Naming Single Server Jobs
 
@@ -416,7 +423,7 @@ Schedule::command('emails:send')->evenInMaintenanceMode();
 <a name="schedule-groups"></a>
 ### Schedule Groups
 
-When defining multiple scheduled tasks with similar configurations, you can use Laravel’s task grouping feature to avoid repeating the same settings for each task. Grouping tasks simplifies your code and ensures consistency across related tasks.
+When defining multiple scheduled tasks with similar configurations, you can use Laravel's task grouping feature to avoid repeating the same settings for each task. Grouping tasks simplifies your code and ensures consistency across related tasks.
 
 To create a group of scheduled tasks, invoke the desired task configuration methods, followed by the `group` method. The `group` method accepts a closure that is responsible for defining the tasks that share the specified configuration:
 
@@ -617,12 +624,12 @@ Laravel dispatches a variety of [events](/docs/{{version}}/events) during the sc
 
 <div class="overflow-auto">
 
-| Event Name |
-| --- |
-| `Illuminate\Console\Events\ScheduledTaskStarting` |
-| `Illuminate\Console\Events\ScheduledTaskFinished` |
+| Event Name                                                  |
+| ----------------------------------------------------------- |
+| `Illuminate\Console\Events\ScheduledTaskStarting`           |
+| `Illuminate\Console\Events\ScheduledTaskFinished`           |
 | `Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
-| `Illuminate\Console\Events\ScheduledTaskSkipped` |
-| `Illuminate\Console\Events\ScheduledTaskFailed` |
+| `Illuminate\Console\Events\ScheduledTaskSkipped`            |
+| `Illuminate\Console\Events\ScheduledTaskFailed`             |
 
 </div>

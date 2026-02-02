@@ -98,7 +98,7 @@ APP_NAME="My Application"
 All of the variables listed in the `.env` file will be loaded into the `$_ENV` PHP super-global when your application receives a request. However, you may use the `env` function to retrieve values from these variables in your configuration files. In fact, if you review the Laravel configuration files, you will notice many of the options are already using this function:
 
 ```php
-'debug' => env('APP_DEBUG', false),
+'debug' => (bool) env('APP_DEBUG', false),
 ```
 
 The second value passed to the `env` function is the "default value". This value will be returned if no environment variable exists for the given key.
@@ -157,6 +157,32 @@ If your application has multiple environment files, such as `.env` and `.env.sta
 ```shell
 php artisan env:encrypt --env=staging
 ```
+
+<a name="readable-variable-names"></a>
+#### Readable Variable Names
+
+When encrypting your environment file, you may use the `--readable` option to retain visible variable names while encrypting their values:
+
+```shell
+php artisan env:encrypt --readable
+```
+
+This will produce an encrypted file with the following format:
+
+```ini
+APP_NAME=eyJpdiI6...
+APP_ENV=eyJpdiI6...
+APP_KEY=eyJpdiI6...
+APP_DEBUG=eyJpdiI6...
+APP_URL=eyJpdiI6...
+```
+
+Using the readable format allows you to see which environment variables exist without exposing sensitive data. It also makes reviewing pull requests much easier since you can see which variables were added, removed, or renamed without needing to decrypt the file.
+
+When decrypting environment files, Laravel automatically detects which format was used, so no additional options are needed for the `env:decrypt` command.
+
+> [!NOTE]
+> When using the `--readable` option, comments, and blank lines from the original environment file are not included in the encrypted output.
 
 <a name="decryption"></a>
 #### Decryption
@@ -225,6 +251,7 @@ Config::integer('config-key');
 Config::float('config-key');
 Config::boolean('config-key');
 Config::array('config-key');
+Config::collection('config-key');
 ```
 
 <a name="configuration-caching"></a>

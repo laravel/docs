@@ -3,11 +3,10 @@
 - [Introduction](#introduction)
 - [Live Validation](#live-validation)
     - [Using Vue](#using-vue)
-    - [Using Vue and Inertia](#using-vue-and-inertia)
     - [Using React](#using-react)
-    - [Using React and Inertia](#using-react-and-inertia)
     - [Using Alpine and Blade](#using-alpine)
     - [Configuring Axios](#configuring-axios)
+- [Validating Arrays](#validating-arrays)
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
@@ -16,9 +15,12 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel Precognition allows you to anticipate the outcome of a future HTTP request. One of the primary use cases of Precognition is the ability to provide "live" validation for your frontend JavaScript application without having to duplicate your application's backend validation rules. Precognition pairs especially well with Laravel's Inertia-based [starter kits](/docs/{{version}}/starter-kits).
+Laravel Precognition allows you to anticipate the outcome of a future HTTP request. One of the primary use cases of Precognition is the ability to provide "live" validation for your frontend JavaScript application without having to duplicate your application's backend validation rules.
 
 When Laravel receives a "precognitive request", it will execute all of the route's middleware and resolve the route's controller dependencies, including validating [form requests](/docs/{{version}}/validation#form-request-validation) - but it will not actually execute the route's controller method.
+
+> [!NOTE]
+> As of Inertia 2.3, Precognition support is built-in. Please consult the [Inertia Forms documentation](https://inertiajs.com/docs/v2/the-basics/forms) for more information. Earlier Inertia versions require Precognition 0.x.
 
 <a name="live-validation"></a>
 ## Live Validation
@@ -187,38 +189,6 @@ You may determine if a form submission request is in-flight by inspecting the fo
 </button>
 ```
 
-<a name="using-vue-and-inertia"></a>
-### Using Vue and Inertia
-
-> [!NOTE]
-> If you would like a head start when developing your Laravel application with Vue and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
-
-Before using Precognition with Vue and Inertia, be sure to review our general documentation on [using Precognition with Vue](#using-vue). When using Vue with Inertia, you will need to install the Inertia compatible Precognition library via NPM:
-
-```shell
-npm install laravel-precognition-vue-inertia
-```
-
-Once installed, Precognition's `useForm` function will return an Inertia [form helper](https://inertiajs.com/forms#form-helper) augmented with the validation features discussed above.
-
-The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the Vue example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:
-
-```vue
-<script setup>
-import { useForm } from 'laravel-precognition-vue-inertia';
-
-const form = useForm('post', '/users', {
-    name: '',
-    email: '',
-});
-
-const submit = () => form.submit({
-    preserveScroll: true,
-    onSuccess: () => form.reset(),
-});
-</script>
-```
-
 <a name="using-react"></a>
 ### Using React
 
@@ -330,7 +300,7 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
     id="avatar"
     type="file"
     onChange={(e) => {
-        form.setData('avatar', e.target.value);
+        form.setData('avatar', e.target.files[0]);
 
         form.forgetError('avatar');
     }}
@@ -376,40 +346,6 @@ You may determine if a form submission request is in-flight by inspecting the fo
 <button disabled={form.processing}>
     Submit
 </button>
-```
-
-<a name="using-react-and-inertia"></a>
-### Using React and Inertia
-
-> [!NOTE]
-> If you would like a head start when developing your Laravel application with React and Inertia, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
-
-Before using Precognition with React and Inertia, be sure to review our general documentation on [using Precognition with React](#using-react). When using React with Inertia, you will need to install the Inertia compatible Precognition library via NPM:
-
-```shell
-npm install laravel-precognition-react-inertia
-```
-
-Once installed, Precognition's `useForm` function will return an Inertia [form helper](https://inertiajs.com/forms#form-helper) augmented with the validation features discussed above.
-
-The form helper's `submit` method has been streamlined, removing the need to specify the HTTP method or URL. Instead, you may pass Inertia's [visit options](https://inertiajs.com/manual-visits) as the first and only argument. In addition, the `submit` method does not return a Promise as seen in the React example above. Instead, you may provide any of Inertia's supported [event callbacks](https://inertiajs.com/manual-visits#event-callbacks) in the visit options given to the `submit` method:
-
-```js
-import { useForm } from 'laravel-precognition-react-inertia';
-
-const form = useForm('post', '/users', {
-    name: '',
-    email: '',
-});
-
-const submit = (e) => {
-    e.preventDefault();
-
-    form.submit({
-        preserveScroll: true,
-        onSuccess: () => form.reset(),
-    });
-};
 ```
 
 <a name="using-alpine"></a>
@@ -616,8 +552,21 @@ window.axios.defaults.headers.common['Authorization'] = authToken;
 client.use(window.axios)
 ```
 
-> [!WARNING]
-> The Inertia flavored Precognition libraries will only use the configured Axios instance for validation requests. Form submissions will always be sent by Inertia.
+<a name="validating-arrays"></a>
+## Validating Arrays
+
+You may use wildcards to validate fields within arrays or nested objects. Each `*` matches a single path segment:
+
+```js
+// Validate email for all users in an array...
+form.validate('users.*.email');
+
+// Validate all fields in a profile object...
+form.validate('profile.*');
+
+// Validate all fields for all users...
+form.validate('users.*.*');
+```
 
 <a name="customizing-validation-rules"></a>
 ## Customizing Validation Rules

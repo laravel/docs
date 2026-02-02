@@ -33,6 +33,7 @@
 - [Eager Loading](#eager-loading)
     - [Constraining Eager Loads](#constraining-eager-loads)
     - [Lazy Eager Loading](#lazy-eager-loading)
+    - [Automatic Eager Loading](#automatic-eager-loading)
     - [Preventing Lazy Loading](#preventing-lazy-loading)
 - [Inserting and Updating Related Models](#inserting-and-updating-related-models)
     - [The `save` Method](#the-save-method)
@@ -725,12 +726,18 @@ public function featuredPosts(): HasMany
 }
 ```
 
-The `withAttributes` method will add `where` clause constraints to the query using the given attributes, and it will also add the given attributes to any models created via the relationship method:
+The `withAttributes` method will add `where` conditions to the query using the given attributes, and it will also add the given attributes to any models created via the relationship method:
 
 ```php
 $post = $user->featuredPosts()->create(['title' => 'Featured Post']);
 
 $post->featured; // true
+```
+
+To instruct the `withAttributes` method to not add `where` conditions to the query, you may set the `asConditions` argument to `false`:
+
+```php
+return $this->posts()->withAttributes(['featured' => true], asConditions: false);
 ```
 
 <a name="many-to-many"></a>
@@ -1636,6 +1643,23 @@ $posts = Post::whereHas('comments', function (Builder $query) {
 > [!WARNING]
 > Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
 
+<a name="many-to-many-relationship-existence-queries"></a>
+#### Many to Many Relationship Existence Queries
+
+The `whereAttachedTo` method may be used to query for models that have a many to many attachment to a model or collection of models:
+
+```php
+$users = User::whereAttachedTo($role)->get();
+```
+
+You may also provide a [collection](/docs/{{version}}/eloquent-collections) instance to the `whereAttachedTo` method. When doing so, Laravel will retrieve models that are attached to any of the models within the collection:
+
+```php
+$tags = Tag::whereLike('name', '%laravel%')->get();
+
+$posts = Post::whereAttachedTo($tags)->get();
+```
+
 <a name="inline-relationship-existence-queries"></a>
 #### Inline Relationship Existence Queries
 
@@ -1651,7 +1675,7 @@ Of course, like calls to the query builder's `where` method, you may also specif
 
 ```php
 $posts = Post::whereRelation(
-    'comments', 'created_at', '>=', now()->subHour()
+    'comments', 'created_at', '>=', now()->minus(hours: 1)
 )->get();
 ```
 
@@ -1676,13 +1700,13 @@ $posts = Post::whereDoesntHave('comments', function (Builder $query) {
 })->get();
 ```
 
-You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments; however, posts that have comments from authors that are not banned will be included in the results:
+You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments as well as posts that have comments where none of the comments are from banned users:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
 $posts = Post::whereDoesntHave('comments.author', function (Builder $query) {
-    $query->where('banned', 0);
+    $query->where('banned', 1);
 })->get();
 ```
 
@@ -2103,9 +2127,8 @@ Sometimes you may wish to eager load a relationship but also specify additional 
 
 ```php
 use App\Models\User;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 
-$users = User::with(['posts' => function (Builder $query) {
+$users = User::with(['posts' => function ($query) {
     $query->where('title', 'like', '%code%');
 }])->get();
 ```
@@ -2113,7 +2136,7 @@ $users = User::with(['posts' => function (Builder $query) {
 In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
 
 ```php
-$users = User::with(['posts' => function (Builder $query) {
+$users = User::with(['posts' => function ($query) {
     $query->orderBy('created_at', 'desc');
 }])->get();
 ```
@@ -2163,7 +2186,7 @@ use App\Models\Book;
 
 $books = Book::all();
 
-if ($someCondition) {
+if ($condition) {
     $books->load('author', 'publisher');
 }
 ```
@@ -2171,7 +2194,7 @@ if ($someCondition) {
 If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query instance:
 
 ```php
-$author->load(['books' => function (Builder $query) {
+$author->load(['books' => function ($query) {
     $query->orderBy('published_date', 'asc');
 }]);
 ```
@@ -2219,6 +2242,52 @@ $activities = ActivityFeed::with('parentable')
         Photo::class => ['tags'],
         Post::class => ['author'],
     ]);
+```
+
+<a name="automatic-eager-loading"></a>
+### Automatic Eager Loading
+
+> [!WARNING]
+> This feature is currently in beta in order to gather community feedback. The behavior and functionality of this feature may change even on patch releases.
+
+In many cases, Laravel can automatically eager load the relationships you access. To enable automatic eager loading, you should invoke the `Model::automaticallyEagerLoadRelationships` method within the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Model::automaticallyEagerLoadRelationships();
+}
+```
+
+When this feature is enabled, Laravel will attempt to automatically load any relationships you access that have not been previously loaded. For example, consider the following scenario:
+
+```php
+use App\Models\User;
+
+$users = User::all();
+
+foreach ($users as $user) {
+    foreach ($user->posts as $post) {
+        foreach ($post->comments as $comment) {
+            echo $comment->content;
+        }
+    }
+}
+```
+
+Typically, the code above would execute a query for each user in order to retrieve their posts, as well as a query for each post to retrieve its comments. However, when the `automaticallyEagerLoadRelationships` feature has been enabled, Laravel will automatically [lazy eager load](#lazy-eager-loading) the posts for all users in the user collection when you attempt to access the posts on any of the retrieved users. Likewise, when you attempt to access the comments for any retrieved post, all comments will be lazy eager loaded for all posts that were originally retrieved.
+
+If you do not want to globally enable automatic eager loading, you can still enable this feature for a single Eloquent collection instance by invoking the `withRelationshipAutoloading` method on the collection:
+
+```php
+$users = User::where('vip', true)->get();
+
+return $users->withRelationshipAutoloading();
 ```
 
 <a name="preventing-lazy-loading"></a>
