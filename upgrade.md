@@ -443,7 +443,7 @@ Laravel 11 supports both Carbon 2 and Carbon 3. Carbon is a date manipulation li
 
 **Likelihood Of Impact: Medium**
 
-Laravel 11 uses automatic event discovery by default. If you are upgrading from Laravel 10 and wish to keep using your existing `App\Providers\EventServiceProvider`, you should remove `App\Providers\EventServiceProvider` from your `bootstrap/providers.php` file to avoid duplicate event listener registration:
+Laravel 11 uses automatic event discovery by default. If you are upgrading from Laravel 10 you should remove `App\Providers\EventServiceProvider` from your `bootstrap/providers.php` file to avoid duplicate event listener registration:
 
 ```php
 return [
