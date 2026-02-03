@@ -101,54 +101,7 @@ When an agent needs to understand how a feature works, it can search Boost's doc
 <a name="ide-integration"></a>
 ### IDE Integration
 
-Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. Here's how to enable Boost in a few popular editors:
-
-```text tab="Claude Code"
-// torchlight! {"lineNumbers": false}
-Boost is typically detected automatically. If manual setup is needed:
-
-1. Open a terminal in your project directory
-2. Run: claude mcp add laravel-boost -- php artisan boost:mcp
-```
-
-```text tab=Cursor
-// torchlight! {"lineNumbers": false}
-1. Open the command palette (Cmd+Shift+P or Ctrl+Shift+P)
-2. Select "MCP: Open Settings"
-3. Toggle on the "laravel-boost" option
-```
-
-```text tab="VS Code"
-// torchlight! {"lineNumbers": false}
-1. Open the command palette (Cmd+Shift+P or Ctrl+Shift+P)
-2. Select "MCP: List Servers"
-3. Navigate to "laravel-boost" and press enter
-4. Select "Start server"
-```
-
-```text tab=PhpStorm
-// torchlight! {"lineNumbers": false}
-1. Press Shift twice to open Search Everywhere
-2. Search for "MCP Settings" and press enter
-3. Enable the checkbox next to "laravel-boost"
-4. Click "Apply"
-```
-
-```text tab=Codex
-// torchlight! {"lineNumbers": false}
-Boost is typically detected automatically. If manual setup is needed:
-
-1. Open a terminal in your project directory
-2. Run: codex mcp add -- php artisan boost:mcp
-```
-
-```text tab=Gemini
-// torchlight! {"lineNumbers": false}
-Boost is typically detected automatically. If manual setup is needed:
-
-1. Open a terminal in your project directory
-2. Run: gemini mcp add laravel-boost -- php artisan boost:mcp
-```
+Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. For detailed setup instructions for Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot, and Junie, see the [Set Up Your Agents](/docs/{{version}}/boost#set-up-your-agents) section of the Boost documentation.
 
 <a name="custom-guidelines"></a>
 ## Custom Boost Guidelines
