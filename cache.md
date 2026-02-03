@@ -547,7 +547,7 @@ By default, the lock will not be released until the closure finishes executing, 
 ```php
 Cache::withoutOverlapping('foo', function () {
     // Lock acquired for 120 seconds after waiting a maximum of 5 seconds...
-}, lockSeconds: 120, waitSeconds: 5);
+}, lockFor: 120, waitFor: 5);
 ```
 
 If the lock cannot be acquired within the specified wait time, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown.
