@@ -154,6 +154,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
+[hasMany](#method-hasmany)
 [hasSole](#method-hassole)
 [implode](#method-implode)
 [intersect](#method-intersect)
@@ -1434,6 +1435,32 @@ $collection->hasAny(['product', 'price']);
 // true
 
 $collection->hasAny(['name', 'price']);
+
+// false
+```
+
+<a name="method-hasmany"></a>
+#### `hasMany()` {.collection-method}
+
+The `hasMany` method determines whether the collection contains multiple items:
+
+```php
+collect([])->hasMany();
+
+// false
+
+collect(['1'])->hasMany();
+
+// false
+
+collect([1, 2, 3])->hasMany();
+
+// true
+
+collect([
+    ['age' => 2],
+    ['age' => 3],
+])->hasMany(fn ($item) => $item['age'] === 2)
 
 // false
 ```
