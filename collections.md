@@ -3598,7 +3598,7 @@ The `values` method returns a new collection with the keys reset to consecutive 
 ```php
 $collection = collect([
     10 => ['product' => 'Desk', 'price' => 200],
-    11 => ['product' => 'Desk', 'price' => 200],
+    11 => ['product' => 'Speaker', 'price' => 400],
 ]);
 
 $values = $collection->values();
@@ -3608,7 +3608,7 @@ $values->all();
 /*
     [
         0 => ['product' => 'Desk', 'price' => 200],
-        1 => ['product' => 'Desk', 'price' => 200],
+        1 => ['product' => 'Speaker', 'price' => 400],
     ]
 */
 ```
