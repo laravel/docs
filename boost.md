@@ -54,49 +54,43 @@ Once Laravel Boost has been installed, you're ready to start coding with Cursor,
 <a name="set-up-your-agents"></a>
 ### Set Up Your Agents
 
-#### Cursor
-
+```text tab=Cursor
 1. Open the command palette (`Cmd+Shift+P` or `Ctrl+Shift+P`)
 2. Press `enter` on "/open MCP Settings"
 3. Turn the toggle on for `laravel-boost`
+```
 
-#### Claude Code
-
+```text tab=Claude Code
 Claude Code support is typically enabled automatically. If you find it isn't, open a shell in the project's directory and run the following command:
 
-```shell
 claude mcp add -s local -t stdio laravel-boost php artisan boost:mcp
 ```
 
-#### Codex
-
+```text tab=Codex
 Codex support is typically enabled automatically. If you find it isn't, open a shell in the project's directory and run the following command:
 
-```shell
 codex mcp add laravel-boost -- php "artisan" "boost:mcp"
 ```
 
-#### Gemini CLI
-
+```text tab=Gemini CLI
 Gemini CLI support is typically enabled automatically. If you find it isn't, open a shell in the project's directory and run the following command:
 
-```shell
 gemini mcp add -s project -t stdio laravel-boost php artisan boost:mcp
 ```
 
-#### GitHub Copilot (VS Code)
-
+```text tab=GitHub Copilot (VS Code)
 1. Open the command palette (`Cmd+Shift+P` or `Ctrl+Shift+P`)
 2. Press `enter` on "MCP: List Servers"
 3. Arrow to `laravel-boost` and press `enter`
 4. Choose "Start server"
+```
 
-#### Junie
-
+```text tab=Junie
 1. Press `shift` twice to open the command palette
 2. Search "MCP Settings" and press `enter`
 3. Check the box next to `laravel-boost`
 4. Click "Apply" at the bottom right
+```
 
 <a name="keeping-boost-resources-updated"></a>
 ### Keeping Boost Resources Updated
