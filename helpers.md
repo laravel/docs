@@ -3727,6 +3727,7 @@ $path = $uri->path();
 $segments = $uri->pathSegments();
 $query = $uri->query();
 $fragment = $uri->fragment();
+$authority = $uri->authority();
 ```
 
 <a name="manipulating-query-strings"></a>
