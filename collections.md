@@ -119,7 +119,6 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
-[containsManyItems](#method-containsmanyitems)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [countBy](#method-countBy)
@@ -577,29 +576,6 @@ $collection->contains('product', 'Bookcase');
 The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [containsStrict](#method-containsstrict) method to filter using "strict" comparisons.
 
 For the inverse of `contains`, see the [doesntContain](#method-doesntcontain) method.
-
-<a name="method-containsmanyitems"></a>
-#### `containsManyItems()` {.collection-method}
-
-The `containsManyItems` method determines whether the collection contains multiple items:
-
-```php
-collect([])->containsManyItems(); // false
-collect(['1'])->containsManyItems(); // false
-collect(['1', '2'])->containsManyItems(); // true
-```
-
-You may also pass a callback to determine if multiple items in the collection match a given condition:
-
-```php
-collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 1);
-
-// true
-
-collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 5);
-
-// false
-```
 
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
