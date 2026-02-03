@@ -1,16 +1,14 @@
 # AI Assisted Development
 
-- [Introduction](#introduction)
-    - [Why Laravel for AI Development?](#why-laravel-for-ai-development)
-- [Laravel Boost](#laravel-boost)
-    - [Installation](#installation)
-    - [Available Tools](#available-tools)
-    - [AI Guidelines](#ai-guidelines)
-    - [Documentation Search](#documentation-search)
-    - [IDE Integration](#ide-integration)
-- [Custom Boost Guidelines](#custom-guidelines)
-    - [Adding Project Guidelines](#adding-project-guidelines)
-    - [Package Guidelines](#package-guidelines)
+ - [Introduction](#introduction)
+     - [Why Laravel for AI Development?](#why-laravel-for-ai-development)
+ - [Laravel Boost](#laravel-boost)
+     - [Installation](#installation)
+     - [Available Tools](#available-tools)
+     - [AI Guidelines](#ai-guidelines)
+     - [Agent Skills](#agent-skills)
+     - [Documentation Search](#documentation-search)
+     - [Agents Integration](#agents-integration)
 
 <a name="introduction"></a>
 ## Introduction
@@ -91,6 +89,13 @@ Guidelines are available for Laravel itself and over 16 packages in the Laravel 
 
 When you run `boost:install`, Boost automatically detects which packages your application uses and assembles the relevant guidelines into your project's AI context files.
 
+<a name="agent-skills"></a>
+### Agent Skills
+
+[Agent Skills](https://agentskills.io/home) are lightweight, targeted knowledge modules that agents can activate on-demand when working on specific domains. Unlike guidelines, which are loaded upfront, skills allow detailed patterns and best practices to be loaded only when relevant, reducing context bloat and improving the relevance of AI-generated code.
+
+Skills are available for popular Laravel packages like Livewire, Inertia, Tailwind CSS, Pest, and more. When you run `boost:install` and select skills as a feature, skills are automatically installed based on the packages detected in your `composer.json`.
+
 <a name="documentation-search"></a>
 ### Documentation Search
 
@@ -98,14 +103,7 @@ Boost includes a powerful documentation API that gives AI agents access to over 
 
 When an agent needs to understand how a feature works, it can search Boost's documentation API and receive accurate, version-specific information. This eliminates the common problem of AI agents suggesting deprecated methods or syntax from older framework versions.
 
-<a name="ide-integration"></a>
-### IDE Integration
+<a name="agent-integration"></a>
+### Agents Integration
 
 Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. For detailed setup instructions for Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot, and Junie, see the [Set Up Your Agents](/docs/{{version}}/boost#set-up-your-agents) section of the Boost documentation.
-
-<a name="custom-guidelines"></a>
-## Custom Boost Guidelines
-
-While Boost's built-in guidelines cover the Laravel ecosystem comprehensively, you may want to add project-specific instructions for your AI agents.
-
-For detailed information on adding custom guidelines, overriding built-in guidelines, or creating package guidelines, see the [Boost documentation](/docs/{{version}}/boost).
