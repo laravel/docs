@@ -457,7 +457,7 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="unique-event-listeners"></a>
-#### Unique Event Listeners
+### Unique Event Listeners
 
 > [!WARNING]
 > Unique listeners require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
