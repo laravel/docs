@@ -3721,13 +3721,13 @@ The `Uri` class also allows you to easily inspect the various components of the 
 
 ```php
 $scheme = $uri->scheme();
+$authority = $uri->authority();
 $host = $uri->host();
 $port = $uri->port();
 $path = $uri->path();
 $segments = $uri->pathSegments();
 $query = $uri->query();
 $fragment = $uri->fragment();
-$authority = $uri->authority();
 ```
 
 <a name="manipulating-query-strings"></a>
