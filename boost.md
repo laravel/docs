@@ -50,6 +50,8 @@ Once Laravel Boost has been installed, you're ready to start coding with Cursor,
 
 > [!NOTE]
 > Feel free to add the generated MCP configuration file (`.mcp.json`), guideline files (`CLAUDE.md`, `AGENTS.md`, `junie/`, etc.), and the `boost.json` configuration file to your application's `.gitignore`, as these files are automatically regenerated when running `boost:install` and `boost:update`.
+>
+> **However**: If you use online agentic AI services, like GitHub Copilot, to work on issues off your local device, you may want to commit these files (e.g., `.github/copilot-instructions.md`) to ensure they have the necessary context.
 
 <a name="set-up-your-agents"></a>
 ### Set Up Your Agents
