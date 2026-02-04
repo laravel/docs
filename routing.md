@@ -888,7 +888,7 @@ Since rate limiter callbacks receive the incoming HTTP request instance, you may
 
 ```php
 RateLimiter::for('uploads', function (Request $request) {
-    return $request->user()->vipCustomer()
+    return $request->user()?->vipCustomer()
         ? Limit::none()
         : Limit::perHour(10);
 });
