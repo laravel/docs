@@ -1068,6 +1068,74 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
 
+Once you have generated embeddings, you will typically store them in a `vector` column in your database for later querying. Laravel provides native support for vector columns on PostgreSQL via the `pgvector` extension. To get started, define a `vector` column in your migration, specifying the number of dimensions:
+
+```php
+Schema::ensureVectorExtensionExists();
+
+Schema::create('documents', function (Blueprint $table) {
+    $table->id();
+    $table->string('title');
+    $table->text('content');
+    $table->vector('embedding', dimensions: 1536);
+    $table->timestamps();
+});
+```
+
+You may also add a vector index to speed up similarity searches. When calling `index` on a vector column, Laravel will automatically create an HNSW index with cosine distance:
+
+```php
+$table->vector('embedding', dimensions: 1536)->index();
+```
+
+On your Eloquent model, you should cast the vector column to an `array`:
+
+```php
+protected function casts(): array
+{
+    return [
+        'embedding' => 'array',
+    ];
+}
+```
+
+To query for similar records, use the `whereVectorSimilarTo` method. This method filters results by a minimum cosine similarity (between `0.0` and `1.0`, where `1.0` is identical) and orders the results by similarity:
+
+```php
+use App\Models\Document;
+
+$documents = Document::query()
+    ->whereVectorSimilarTo('embedding', $queryEmbedding, minSimilarity: 0.4)
+    ->limit(10)
+    ->get();
+```
+
+The `$queryEmbedding` may be an array of floats or a plain string. When a string is given, Laravel will automatically generate embeddings for it:
+
+```php
+$documents = Document::query()
+    ->whereVectorSimilarTo('embedding', 'best wineries in Napa Valley')
+    ->limit(10)
+    ->get();
+```
+
+If you need more control, you may use the lower-level `whereVectorDistanceLessThan`, `selectVectorDistance`, and `orderByVectorDistance` methods independently:
+
+```php
+$documents = Document::query()
+    ->select('*')
+    ->selectVectorDistance('embedding', $queryEmbedding, as: 'distance')
+    ->whereVectorDistanceLessThan('embedding', $queryEmbedding, maxDistance: 0.3)
+    ->orderByVectorDistance('embedding', $queryEmbedding)
+    ->limit(10)
+    ->get();
+```
+
+If you would like to give an agent the ability to perform similarity searches as a tool, check out the [Similarity Search](#similarity-search) tool documentation.
+
+> [!NOTE]
+> Vector queries are currently only supported on PostgreSQL connections using the `pgvector` extension.
+
 <a name="caching-embeddings"></a>
 ### Caching Embeddings
 
