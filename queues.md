@@ -1238,6 +1238,52 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
+##### Queue Routing
+
+You may use the `Queue` facade's `route` method to define a default connection and queue for specific job classes. This is useful when you want to ensure certain jobs always use specific queues without needing to specify the connection or queue property.
+
+In addition to routing specific job classes, you may also pass an interface, trait, or parent class to the `route` method. When you do this, any job that implements the interface, uses the trait, or extends the parent class will automatically use the configured connection and queue.
+
+Typically, you should call the `route` method from the `boot` method of a service provider:
+```php
+use App\Jobs\ProcessPodcast;
+use App\Jobs\ProcessVideo;
+use Illuminate\Support\Facades\Queue;
+use App\Concerns\RequiresVideo;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Queue::route(ProcessPodcast::class, connection: 'redis', queue: 'podcasts');
+    Queue::route(RequiresVideo::class, queue: 'video');
+}
+```
+
+You may also route multiple job classes at once by passing an array to the `route` method:
+```php
+Queue::route([
+    ProcessPodcast::class => ['podcasts', 'redis'], // queue and connection
+    ProcessVideo::class => 'videos', // queue only (uses default connection)
+]);
+```
+
+When a connection is specified without a queue, the job will be sent to the default queue:
+```php
+Queue::route(ProcessPodcast::class, connection: 'redis');
+```
+
+Once a job has been routed, it will automatically be dispatched to the configured connection and queue without needing to call `onConnection` or `onQueue`:
+```php
+// This job will automatically be sent to the 'redis' connection
+// and 'podcasts' queue due to the routing configuration above...
+ProcessPodcast::dispatch($podcast);
+```
+
+> [!NOTE]
+> Queue routing settings can still be overridden on a per-job basis by explicitly calling `onConnection` or `onQueue` or setting the connection / queue properties.
+
 <a name="max-job-attempts-and-timeout"></a>
 ### Specifying Max Job Attempts / Timeout Values
 
