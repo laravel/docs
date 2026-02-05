@@ -341,7 +341,7 @@ use App\Ai\Agents\SalesCoach;
 use Laravel\Ai\Files;
 
 $response = (new SalesCoach)->prompt(
-    'Analyze the attached sales transcript...'
+    'Analyze the attached sales transcript...',
     attachments: [
         Files\Document::fromStorage('transcript.pdf') // Attach a document from a filesystem disk...
         Files\Document::fromPath('/home/laravel/transcript.md') // Attach a document from a local path...
@@ -357,7 +357,7 @@ use App\Ai\Agents\ImageAnalyzer;
 use Laravel\Ai\Files;
 
 $response = (new ImageAnalyzer)->prompt(
-    'What is in this image?'
+    'What is in this image?',
     attachments: [
         Files\Image::fromStorage('photo.jpg') // Attach an image from a filesystem disk...
         Files\Image::fromPath('/home/laravel/photo.jpg') // Attach an image from a local path...
@@ -1943,3 +1943,5 @@ The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), i
 - `StreamingAgent`
 - `ToolInvoked`
 - `TranscriptionGenerated`
+
+You can listen to any of these events to log or store AI SDK usage information.
