@@ -59,7 +59,7 @@ Next, you should publish the AI SDK configuration and migration files using the 
 php artisan vendor:publish --provider="Laravel\Ai\AiServiceProvider"
 ```
 
-Finally, you should run your application's database migrations. This will create a `features` table that the AI SDK uses to power its conversation storage:
+Finally, you should run your application's database migrations. This will create a `agent_conversations` and `agent_conversation_messages` table that the AI SDK uses to power its conversation storage:
 
 ```shell
 php artisan migrate
