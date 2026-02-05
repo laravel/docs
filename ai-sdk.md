@@ -991,7 +991,7 @@ use Laravel\Ai\Responses\AudioResponse;
 Audio::of('I love coding with Laravel.')
     ->queue()
     ->then(function (AudioResponse $audio) {
-        $path = $image->store();
+        $path = $audio->store();
 
         // ...
     });
