@@ -139,7 +139,7 @@ class SalesCoach implements Agent, Conversational, HasTools, HasStructuredOutput
      */
     public function instructions(): Stringable|string
     {
-        return 'You are a sales coach, analyzing transcripts and providing feedback and an overall sales strength score .';
+        return 'You are a sales coach, analyzing transcripts and providing feedback and an overall sales strength score.';
     }
 
     /**
