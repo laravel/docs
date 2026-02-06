@@ -183,7 +183,7 @@ In this example, the command will publish the Switch component to `resources/js/
 
 ```vue
 <script setup lang="ts">
-import { Switch } from '@/Components/ui/switch'
+import { Switch } from '@/components/ui/switch'
 </script>
 
 <template>
