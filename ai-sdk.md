@@ -75,8 +75,11 @@ ANTHROPIC_API_KEY=
 COHERE_API_KEY=
 ELEVENLABS_API_KEY=
 GEMINI_API_KEY=
+MISTRAL_API_KEY=
+OLLAMA_API_KEY=
 OPENAI_API_KEY=
 JINA_API_KEY=
+VOYAGEAI_API_KEY=
 XAI_API_KEY=
 ```
 
@@ -93,7 +96,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | Images | OpenAI, Gemini, xAI |
 | TTS | OpenAI, ElevenLabs |
 | STT | OpenAI, ElevenLabs, Mistral |
-| Embeddings | OpenAI, Gemini, Cohere, Mistral, Jina |
+| Embeddings | OpenAI, Gemini, Cohere, Mistral, Jina, VoyageAI |
 | Reranking | Cohere, Jina |
 | Files | OpenAI, Anthropic, Gemini |
 
