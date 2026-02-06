@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
+    - [Custom Base URLs](#custom-base-urls)
     - [Provider Support](#provider-support)
 - [Agents](#agents)
     - [Prompting](#prompting)
@@ -84,6 +85,33 @@ XAI_API_KEY=
 ```
 
 The default models used for text, images, audio, transcription, and embeddings may also be configured in your application's `config/ai.php` configuration file.
+
+<a name="custom-base-urls"></a>
+### Custom Base URLs
+
+By default, the Laravel AI SDK connects directly to each provider's public API endpoint. However, you may need to route requests through a different endpoint - for example, when using a proxy service to centralize API key management, implement rate limiting, or route traffic through a corporate gateway.
+
+You may configure custom base URLs by adding a `url` parameter to your provider configuration:
+
+```php
+'providers' => [
+    'openai' => [
+        'driver' => 'openai',
+        'key' => env('OPENAI_API_KEY'),
+        'url' => env('OPENAI_BASE_URL'),
+    ],
+
+    'anthropic' => [
+        'driver' => 'anthropic',
+        'key' => env('ANTHROPIC_API_KEY'),
+        'url' => env('ANTHROPIC_BASE_URL'),
+    ],
+],
+```
+
+This is useful when routing requests through a proxy service (such as LiteLLM or Azure OpenAI Gateway) or using alternative endpoints.
+
+Custom base URLs are supported for the following providers: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI, and OpenRouter.
 
 <a name="provider-support"></a>
 ### Provider Support
