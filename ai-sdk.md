@@ -4,7 +4,6 @@
 - [Installation](#installation)
     - [Configuration](#configuration)
         - [Custom Base URLs and Proxy Support](#custom-base-urls)
-        - [Additional Provider Configuration](#additional-provider-configuration)
     - [Provider Support](#provider-support)
 - [Agents](#agents)
     - [Prompting](#prompting)
@@ -110,26 +109,26 @@ To route your Laravel application through a LiteLLM proxy, configure multiple pr
     'openai' => [
         'driver' => 'openai',
         'key' => env('LITELLM_API_KEY'),
-        'url' => env('LITELLM_BASE_URL').'/v1',
+        'url' => env('LITELLM_BASE_URL'),
     ],
 
     'anthropic' => [
         'driver' => 'anthropic',
         'key' => env('LITELLM_API_KEY'),
-        'url' => env('LITELLM_BASE_URL').'/v1',
+        'url' => env('LITELLM_BASE_URL'),
     ],
 
     'gemini' => [
         'driver' => 'gemini',
         'key' => env('LITELLM_API_KEY'),
-        'url' => env('LITELLM_BASE_URL').'/v1',
+        'url' => env('LITELLM_BASE_URL'),
     ],
 
     // Embeddings/Reranking via LiteLLM
     'cohere' => [
         'driver' => 'cohere',
         'key' => env('LITELLM_API_KEY'),
-        'url' => env('LITELLM_BASE_URL').'/v1',
+        'url' => env('LITELLM_BASE_URL'),
     ],
 ],
 ```
@@ -137,22 +136,8 @@ To route your Laravel application through a LiteLLM proxy, configure multiple pr
 Then configure your LiteLLM server URL in your `.env` file:
 
 ```ini
-LITELLM_BASE_URL=https://litellm.company.com
+LITELLM_BASE_URL=https://litellm.company.com/v1
 LITELLM_API_KEY=sk-your-company-litellm-key
-```
-
-##### Direct Provider Access
-
-You can also configure custom base URLs for direct access, useful for Azure OpenAI endpoints or self-hosted models:
-
-```php
-'providers' => [
-    'azure-openai' => [
-        'driver' => 'openai',
-        'key' => env('AZURE_OPENAI_API_KEY'),
-        'url' => env('AZURE_OPENAI_ENDPOINT').'/openai/deployments',
-    ],
-],
 ```
 
 > [!NOTE]
@@ -161,25 +146,6 @@ You can also configure custom base URLs for direct access, useful for Azure Open
 > - **Embeddings & Reranking**: Cohere
 >
 > Providers like Jina and ElevenLabs use direct HTTP clients and currently require code modifications to support custom URLs.
-
-<a name="additional-provider-configuration"></a>
-#### Additional Provider Configuration
-
-Beyond API keys and URLs, you can pass additional provider-specific configuration options. Any configuration keys other than `driver`, `key`, and `name` are automatically passed to the underlying provider.
-
-For example, OpenAI supports organization and project parameters:
-
-```php
-'openai' => [
-    'driver' => 'openai',
-    'key' => env('OPENAI_API_KEY'),
-    'url' => env('OPENAI_BASE_URL'),
-    'organization' => env('OPENAI_ORGANIZATION'),
-    'project' => env('OPENAI_PROJECT'),
-],
-```
-
-These additional configuration options will be passed directly to the provider's API client, allowing you to take advantage of provider-specific features without modifying the SDK code.
 
 <a name="provider-support"></a>
 ### Provider Support
