@@ -89,11 +89,11 @@ The AI SDK supports a variety of providers across its features. The following ta
 
 | Feature | Providers |
 |---|---|
-| Text | OpenAI, Anthropic, Gemini, Groq, xAI |
+| Text | OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, Ollama |
 | Images | OpenAI, Gemini, xAI |
 | TTS | OpenAI, ElevenLabs |
-| STT | OpenAI, ElevenLabs |
-| Embeddings | OpenAI, Gemini, Cohere, Jina |
+| STT | OpenAI, ElevenLabs, Mistral |
+| Embeddings | OpenAI, Gemini, Cohere, Mistral, Jina |
 | Reranking | Cohere, Jina |
 | Files | OpenAI, Anthropic, Gemini |
 
