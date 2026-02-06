@@ -1,6 +1,7 @@
 # Laravel AI SDK
 
 - [Introduction](#introduction)
+- [System requirements](#system-requirements)
 - [Installation](#installation)
     - [Configuration](#configuration)
     - [Provider Support](#provider-support)
@@ -43,6 +44,11 @@
 ## Introduction
 
 The [Laravel AI SDK](https://github.com/laravel/ai) provides a unified, expressive API for interacting with AI providers such as OpenAI, Anthropic, Gemini, and more. With the AI SDK, you can build intelligent agents with tools and structured output, generate images, synthesize and transcribe audio, create vector embeddings, and much more — all using a consistent, Laravel-friendly interface.
+
+<a name="system-requirements"></a>
+## System requirements
+
+PHP version ^8.4 is needed to install this package.
 
 <a name="installation"></a>
 ## Installation
