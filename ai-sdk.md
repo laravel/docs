@@ -864,7 +864,7 @@ use Laravel\Ai\Promptable;
 
 #[MaxSteps(10)]
 #[MaxTokens(4096)]
-#[Model('claude-sonnet-4-5')]
+#[Model('claude-haiku-4-5-20251001')]
 #[Provider('anthropic')]
 #[Temperature(0.7)]
 #[Timeout(120)]
