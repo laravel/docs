@@ -427,6 +427,18 @@ class InvoicePaid extends Notification implements ShouldQueue
 > [!NOTE]
 > To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
 
+<a name="after-sending"></a>
+#### After Sending
+
+If you need to perform additional actions after a notification is sent, you can use the `afterSending` method:
+
+```php
+public function afterSending(object $notifiable, string $channel, $response)
+{
+    // ...
+}
+```
+
 <a name="determining-if-the-queued-notification-should-be-sent"></a>
 #### Determining if a Queued Notification Should Be Sent
 
