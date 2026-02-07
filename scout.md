@@ -646,7 +646,7 @@ $orders->searchable();
 #### Determining if the Search Index Should Be Updated
 
 By default, Scout will reindex a model on save regardless of which attributes were modified. If you would like Scout to only reindex when relevant attributes have changed, you may override the `searchIndexShouldBeUpdated` method on your model:
-
+```php
     /**
      * Determine if the search index should be updated.
      */
@@ -654,6 +654,7 @@ By default, Scout will reindex a model on save regardless of which attributes we
     {
         return $this->wasRecentlyCreated || $this->wasChanged(['title', 'body']);
     }
+```
 
 This can be particularly useful for models with frequently updated, non-searchable attributes where reindexing on every update would be unnecessary and costly.
 
