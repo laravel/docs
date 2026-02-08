@@ -633,6 +633,16 @@ The first argument passed to the `make` method is the data under validation. The
 
 After determining whether the request validation failed, you may use the `withErrors` method to flash the error messages to the session. When using this method, the `$errors` variable will automatically be shared with your views after redirection, allowing you to easily display them back to the user. The `withErrors` method accepts a validator, a `MessageBag`, or a PHP `array`.
 
+Instead of manually checking `fails()` and throwing an exception, the validator now provides a `whenFails()` callback that is executed automatically if validation does not pass:
+
+```php
+Validator::make($request->all(), [
+    'file' => 'required'
+])->whenFails(function () {
+    throw new InvalidArgumentException('Provided file is invalid');
+});
+```
+
 #### Stopping on First Validation Failure
 
 The `stopOnFirstFailure` method will inform the validator that it should stop validating all attributes once a single validation failure has occurred:
