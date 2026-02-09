@@ -642,23 +642,6 @@ Or, if you already have a collection of Eloquent models in memory, you may call 
 $orders->searchable();
 ```
 
-<a name="determining-if-the-search-index-should-be-updated"></a>
-#### Determining if the Search Index Should Be Updated
-
-By default, Scout will reindex a model on save regardless of which attributes were modified. If you would like Scout to only reindex when relevant attributes have changed, you may override the `searchIndexShouldBeUpdated` method on your model:
-
-```php
-    /**
-     * Determine if the search index should be updated.
-     */
-    public function searchIndexShouldBeUpdated(): bool
-    {
-        return $this->wasRecentlyCreated || $this->wasChanged(['title', 'body']);
-    }
-```
-
-This can be particularly useful for models with frequently updated, non-searchable attributes where reindexing on every update would be unnecessary and costly.
-
 <a name="modifying-records-before-importing"></a>
 #### Modifying Records Before Importing
 
@@ -673,6 +656,21 @@ use Illuminate\Database\Eloquent\Collection;
 public function makeSearchableUsing(Collection $models): Collection
 {
     return $models->load('author');
+}
+```
+
+<a name="conditionally-updating-the-search-index"></a>
+#### Conditionally Updating the Search Index
+
+By default, Scout will reindex an updated model regardless of which attributes were modified. If you would like to customize this behavior, you may define a `searchIndexShouldBeUpdated` method on your model:
+
+```php
+/**
+ * Determine if the search index should be updated.
+ */
+public function searchIndexShouldBeUpdated(): bool
+{
+    return $this->wasRecentlyCreated || $this->wasChanged(['title', 'body']);
 }
 ```
 
