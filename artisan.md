@@ -379,6 +379,21 @@ When invoking the command on your terminal, option shortcuts should be prefixed 
 php artisan mail:send 1 -Qdefault
 ```
 
+<a name="quiet-option"></a>
+#### Quiet Option
+
+If you want to execute a command without cluttering the terminal with output, you may use the `--quiet` (or `-q`) option. This option suppresses all output from the command:
+```shell
+php artisan mail:send 1 --quiet
+```
+
+Or using the shortcut:
+```shell
+php artisan mail:send 1 -q
+```
+
+This is particularly useful when running commands in cron jobs or scripts where you don't want to see the command's output unless there's an error.
+
 <a name="input-arrays"></a>
 ### Input Arrays
 
