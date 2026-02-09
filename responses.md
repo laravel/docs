@@ -96,9 +96,6 @@ return response($content)
     ]);
 ```
 
-<a name="remove-headers-from-response"></a>
-#### Remove Headers from Response
-
 You can remove specific headers from an outgoing response using the `withoutHeader` method:
 
 ```php
