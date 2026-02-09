@@ -102,6 +102,8 @@ return response($content)
 You can remove specific headers from an outgoing response using the `withoutHeader` method:
 
 ```php
+return response($content)->withoutHeader('X-Debug');
+
 return response($content)->withoutHeader(['X-Debug', 'X-Powered-By']);
 ```
 
