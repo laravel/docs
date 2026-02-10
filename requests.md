@@ -822,11 +822,11 @@ By default, Laravel will respond to all requests it receives regardless of the c
 
 Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given hostname. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain hostnames, you may do so by enabling the `Illuminate\Http\Middleware\TrustHosts` middleware for your application.
 
-To enable the `TrustHosts` middleware, you should invoke the `trustHosts` middleware method in your application's `bootstrap/app.php` file. Using the `at` argument of this method, you may specify the hostnames that your application should respond to. Incoming requests with other `Host` headers will be rejected:
+To enable the `TrustHosts` middleware, you should invoke the `trustHosts` middleware method in your application's `bootstrap/app.php` file. Using the `at` argument of this method, you may specify the hostnames that your application should respond to. The hostname string is treated as a regular expression. Incoming requests with other `Host` headers will be rejected:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
-    $middleware->trustHosts(at: ['laravel.test']);
+    $middleware->trustHosts(at: ['^laravel\.test$']);
 })
 ```
 
@@ -834,7 +834,7 @@ By default, requests coming from subdomains of the application's URL are also au
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
-    $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
+    $middleware->trustHosts(at: ['^laravel\.test$'], subdomains: false);
 })
 ```
 

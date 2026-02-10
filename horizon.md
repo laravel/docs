@@ -479,6 +479,43 @@ You may gracefully terminate the Horizon process using the `horizon:terminate` A
 php artisan horizon:terminate
 ```
 
+<a name="automatically-restarting-horizon"></a>
+#### Automatically Restarting Horizon
+
+During local development, you may run the `horizon:listen` command. When using the `horizon:listen` command, you don't have to manually restart Horizon when you want to reload your updated code. Before using this feature, you should ensure that [Node](https://nodejs.org) is installed within your local development environment. In addition, you should install the [Chokidar](https://github.com/paulmillr/chokidar) file-watching library within your project:
+
+```shell
+npm install --save-dev chokidar
+```
+
+Once Chokidar is installed, you may start Horizon using the `horizon:listen` command:
+
+```shell
+php artisan horizon:listen
+```
+
+When running within Docker or Vagrant, you should use the `--poll` option:
+
+```shell
+php artisan horizon:listen --poll
+```
+
+You may configure the directories and files that should be watched using the `watch` configuration option within your application's `config/horizon.php` configuration file:
+
+```php
+'watch' => [
+    'app',
+    'bootstrap',
+    'config',
+    'database',
+    'public/**/*.php',
+    'resources/**/*.php',
+    'routes',
+    'composer.lock',
+    '.env',
+],
+```
+
 <a name="deploying-horizon"></a>
 ### Deploying Horizon
 

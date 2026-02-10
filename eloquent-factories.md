@@ -390,7 +390,7 @@ $user = User::factory()
             ->state(function (array $attributes, User $user) {
                 return ['user_type' => $user->type];
             })
-        )
+    )
     ->create();
 ```
 

@@ -6,6 +6,7 @@
     - [Using React](#using-react)
     - [Using Alpine and Blade](#using-alpine)
     - [Configuring Axios](#configuring-axios)
+- [Validating Arrays](#validating-arrays)
 - [Customizing Validation Rules](#customizing-validation-rules)
 - [Handling File Uploads](#handling-file-uploads)
 - [Managing Side-Effects](#managing-side-effects)
@@ -549,6 +550,22 @@ window.axios = Axios.create()
 window.axios.defaults.headers.common['Authorization'] = authToken;
 
 client.use(window.axios)
+```
+
+<a name="validating-arrays"></a>
+## Validating Arrays
+
+You may use wildcards to validate fields within arrays or nested objects. Each `*` matches a single path segment:
+
+```js
+// Validate email for all users in an array...
+form.validate('users.*.email');
+
+// Validate all fields in a profile object...
+form.validate('profile.*');
+
+// Validate all fields for all users...
+form.validate('users.*.*');
 ```
 
 <a name="customizing-validation-rules"></a>

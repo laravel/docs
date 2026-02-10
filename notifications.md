@@ -444,6 +444,21 @@ public function shouldSend(object $notifiable, string $channel): bool
 }
 ```
 
+<a name="after-sending-notifications"></a>
+#### After Sending Notifications
+
+If you would like to execute code after a notification has been sent, you may define an `afterSending` method on the notification class. This method will receive the notifiable entity, the channel name, and the response from the channel:
+
+```php
+/**
+ * Handle the notification after it has been sent.
+ */
+public function afterSending(object $notifiable, string $channel, mixed $response): void
+{
+    // ...
+}
+```
+
 <a name="on-demand-notifications"></a>
 ### On-Demand Notifications
 

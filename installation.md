@@ -37,13 +37,21 @@ There are a variety of tools and frameworks available to you when building a web
 
 We like to call Laravel a "progressive" framework. By that, we mean that Laravel grows with you. If you're just taking your first steps into web development, Laravel's vast library of documentation, guides, and [video tutorials](https://laracasts.com) will help you learn the ropes without becoming overwhelmed.
 
-If you're a senior developer, Laravel gives you robust tools for [dependency injection](/docs/{{version}}/container), [unit testing](/docs/{{version}}/testing), [queues](/docs/{{version}}/queues), [real-time events](/docs/{{version}}/broadcasting), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise work loads.
+If you're a senior developer, Laravel gives you robust tools for [dependency injection](/docs/{{version}}/container), [unit testing](/docs/{{version}}/testing), [queues](/docs/{{version}}/queues), [real-time events](/docs/{{version}}/broadcasting), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise workloads.
 
 #### A Scalable Framework
 
 Laravel is incredibly scalable. Thanks to the scaling-friendly nature of PHP and Laravel's built-in support for fast, distributed cache systems like Redis, horizontal scaling with Laravel is a breeze. In fact, Laravel applications have been easily scaled to handle hundreds of millions of requests per month.
 
 Need extreme scaling? Platforms like [Laravel Cloud](https://cloud.laravel.com) allow you to run your Laravel application at nearly limitless scale.
+
+#### An Agent Ready Framework
+
+Laravel's opinionated conventions and well-defined structure make it an ideal framework for [AI assisted development](/docs/{{version}}/ai) using tools like Cursor and Claude Code. When you ask an AI agent to add a controller, it knows exactly where to place it. When you need a new migration, the naming conventions and file locations are predictable. This consistency eliminates the guesswork that often trips up AI tools in more flexible frameworks.
+
+Beyond file organization, Laravel's expressive syntax and comprehensive documentation give AI agents the context they need to generate accurate, idiomatic code. Features like Eloquent relationships, form requests, and middleware follow patterns that agents can reliably understand and replicate. The result is AI-generated code that looks like it was written by a seasoned Laravel developer, not stitched together from generic PHP snippets.
+
+To learn more about why Laravel is the perfect choice for AI assisted development, check out our documentation on [agentic development](/docs/{{version}}/ai).
 
 #### A Community Framework
 
@@ -243,6 +251,11 @@ The installer will auto-detect your IDE and AI agents, allowing you to opt into 
 
 > [!NOTE]
 > To learn more about Boost, check out the [Laravel Boost repository on GitHub](https://github.com/laravel/boost).
+
+<a name="adding-custom-ai-guidelines"></a>
+#### Adding Custom AI Guidelines
+
+To augment Laravel Boost with your own custom AI guidelines, add `.blade.php` or `.md` files to your application's `.ai/guidelines/*` directory. These files will automatically be included with Laravel Boost's guidelines when you run `boost:install`.
 
 <a name="next-steps"></a>
 ## Next Steps

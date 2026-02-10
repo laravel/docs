@@ -659,6 +659,21 @@ public function makeSearchableUsing(Collection $models): Collection
 }
 ```
 
+<a name="conditionally-updating-the-search-index"></a>
+#### Conditionally Updating the Search Index
+
+By default, Scout will reindex an updated model regardless of which attributes were modified. If you would like to customize this behavior, you may define a `searchIndexShouldBeUpdated` method on your model:
+
+```php
+/**
+ * Determine if the search index should be updated.
+ */
+public function searchIndexShouldBeUpdated(): bool
+{
+    return $this->wasRecentlyCreated || $this->wasChanged(['title', 'body']);
+}
+```
+
 <a name="removing-records"></a>
 ### Removing Records
 

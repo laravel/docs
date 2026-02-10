@@ -5,6 +5,7 @@
 - [Available Prompts](#available-prompts)
     - [Text](#text)
     - [Textarea](#textarea)
+    - [Number](#number)
     - [Password](#password)
     - [Confirm](#confirm)
     - [Select](#select)
@@ -186,6 +187,76 @@ Alternatively, you may leverage the power of Laravel's [validator](/docs/{{versi
 $story = textarea(
     label: 'Tell me a story.',
     validate: ['story' => 'required|max:10000']
+);
+```
+
+<a name="number"></a>
+### Number
+
+The `number` function will prompt the user with the given question, accept their numeric input, and then return it. The `number` function allows the user to use the up and down arrow keys to manipulate the number:
+
+```php
+use function Laravel\Prompts\number;
+
+$number = number('How many copies would you like?');
+```
+
+You may also include placeholder text, a default value, and an informational hint:
+
+```php
+$name = number(
+    label: 'How many copies would you like?',
+    placeholder: '5',
+    default: 1,
+    hint: 'This will be determine how many copies to create.'
+);
+```
+
+<a name="number-required"></a>
+#### Required Values
+
+If you require a value to be entered, you may pass the `required` argument:
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    required: true
+);
+```
+
+If you would like to customize the validation message, you may also pass a string:
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    required: 'A number of copies is required.'
+);
+```
+
+<a name="number-validation"></a>
+#### Additional Validation
+
+Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    validate: fn (?int $value) => match (true) {
+        $value < 1 => 'At least one copy is required.',
+        $value > 100 => 'You may not create more than 100 copies.',
+        default => null
+    }
+);
+```
+
+The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+
+Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    validate: ['copies' => 'required|integer|min:1|max:100']
 );
 ```
 
