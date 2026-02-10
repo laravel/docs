@@ -1163,7 +1163,7 @@ $documents = DB::table('documents')
     ->get();
 ```
 
-When a plain string is given as the vector argument, Laravel will automatically generate embeddings for it using the [AI SDK](/docs/{{version}}/ai-sdk#embeddings):
+When a plain string is given as the vector argument, Laravel will automatically generate embeddings for it using the [Laravel AI SDK](/docs/{{version}}/ai-sdk#embeddings):
 
 ```php
 $documents = DB::table('documents')
