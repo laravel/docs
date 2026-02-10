@@ -3022,6 +3022,30 @@ Bus::assertBatched(function (PendingBatch $batch) {
 });
 ```
 
+The `hasJobs` method may be used on the pending batch to verify that the batch contains the expected jobs. The method accepts an array of job instances, class names, or closures:
+
+```php
+Bus::assertBatched(function (PendingBatch $batch) {
+    return $batch->hasJobs([
+        new ProcessCsvRow(row: 1),
+        new ProcessCsvRow(row: 2),
+        new ProcessCsvRow(row: 3),
+    ]);
+});
+```
+
+When using closures, the closure will receive the job instance. The expected job type will be inferred from the closure's type hint:
+
+```php
+Bus::assertBatched(function (PendingBatch $batch) {
+    return $batch->hasJobs([
+        fn (ProcessCsvRow $job) => $job->row === 1,
+        fn (ProcessCsvRow $job) => $job->row === 2,
+        fn (ProcessCsvRow $job) => $job->row === 3,
+    ]);
+});
+```
+
 You may use the `assertBatchCount` method to assert that a given number of batches were dispatched:
 
 ```php
