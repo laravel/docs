@@ -587,8 +587,25 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]
-> If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
+<a name="rate-limiting-with-redis"></a>
+#### Rate Limiting With Redis
+
+If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware:
+
+```php
+use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+
+public function middleware(): array
+{
+    return [new RateLimitedWithRedis('backups')];
+}
+```
+
+The `connection` method may be used to specify which Redis connection the middleware should use:
+
+```php
+return [(new RateLimitedWithRedis('backups'))->connection('limiter')];
+```
 
 <a name="preventing-job-overlaps"></a>
 ### Preventing Job Overlaps
@@ -810,8 +827,25 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]
-> If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
+<a name="throttling-exceptions-with-redis"></a>
+#### Throttling Exceptions With Redis
+
+If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware:
+
+```php
+use Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis;
+
+public function middleware(): array
+{
+    return [new ThrottlesExceptionsWithRedis(10, 10 * 60)];
+}
+```
+
+The `connection` method may be used to specify which Redis connection the middleware should use:
+
+```php
+return [(new ThrottlesExceptionsWithRedis(10, 10 * 60))->connection('limiter')];
+```
 
 <a name="skipping-jobs"></a>
 ### Skipping Jobs
