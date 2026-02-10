@@ -787,13 +787,13 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, to use this grant type, register a middleware alias for the `CheckClientCredentials` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
+Next, to use this grant type, register a middleware alias for the `CheckToken::class` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
 
-    use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+    use Laravel\Passport\Http\Middleware\CheckToken::class;
 
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'client' => CheckClientCredentials::class
+            'client' => CheckToken::class::class
         ]);
     })
 
