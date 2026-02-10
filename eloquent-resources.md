@@ -10,6 +10,13 @@
     - [Conditional Attributes](#conditional-attributes)
     - [Conditional Relationships](#conditional-relationships)
     - [Adding Meta Data](#adding-meta-data)
+- [JSON:API Resources](#jsonapi-resources)
+    - [Generating JSON:API Resources](#generating-jsonapi-resources)
+    - [Defining Attributes](#defining-jsonapi-attributes)
+    - [Defining Relationships](#defining-jsonapi-relationships)
+    - [Resource Type and ID](#jsonapi-resource-type-and-id)
+    - [Sparse Fieldsets and Includes](#jsonapi-sparse-fieldsets-and-includes)
+    - [Links and Meta](#jsonapi-links-and-meta)
 - [Resource Responses](#resource-responses)
 
 <a name="introduction"></a>
@@ -893,6 +900,347 @@ return User::all()
     ->additional(['meta' => [
         'key' => 'value',
     ]]);
+```
+
+<a name="jsonapi-resources"></a>
+## JSON:API Resources
+
+Laravel ships with `JsonApiResource`, a resource class that produces responses compliant with the [JSON:API specification](https://jsonapi.org/). It extends the standard `JsonResource` class and automatically handles resource object structure, relationships, sparse fieldsets, includes, and sets the `Content-Type` header to `application/vnd.api+json`.
+
+> [!NOTE]
+> Laravel's JSON:API resources handle the serialization of your responses. If you also need to parse incoming JSON:API query parameters such as filters and sorts, [Spatie's Laravel Query Builder](https://spatie.be/docs/laravel-query-builder/v6/introduction) is a great companion package.
+
+<a name="generating-jsonapi-resources"></a>
+### Generating JSON:API Resources
+
+To generate a JSON:API resource, use the `make:resource` Artisan command with the `--json-api` flag:
+
+```shell
+php artisan make:resource PostResource --json-api
+```
+
+The generated class will extend `Illuminate\Http\Resources\JsonApi\JsonApiResource` and include `$attributes` and `$relationships` properties for you to define:
+
+```php
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+
+class PostResource extends JsonApiResource
+{
+    /**
+     * The resource's attributes.
+     */
+    public $attributes = [
+        // ...
+    ];
+
+    /**
+     * The resource's relationships.
+     */
+    public $relationships = [
+        // ...
+    ];
+}
+```
+
+JSON:API resources may be returned from routes and controllers just like standard resources:
+
+```php
+use App\Http\Resources\PostResource;
+use App\Models\Post;
+
+Route::get('/api/posts/{post}', function (Post $post) {
+    return new PostResource($post);
+});
+```
+
+Or, for convenience, you may use the model's `toResource` method:
+
+```php
+Route::get('/api/posts/{post}', function (Post $post) {
+    return $post->toResource();
+});
+```
+
+This will produce a JSON:API compliant response:
+
+```json
+{
+    "data": {
+        "id": "1",
+        "type": "posts",
+        "attributes": {
+            "title": "Hello World",
+            "body": "This is my first post."
+        }
+    }
+}
+```
+
+To return a collection of JSON:API resources, use the `collection` method or the `toResourceCollection` convenience method:
+
+```php
+return PostResource::collection(Post::all());
+
+return Post::all()->toResourceCollection();
+```
+
+<a name="defining-jsonapi-attributes"></a>
+### Defining Attributes
+
+There are two ways to define which attributes are included in your JSON:API resource.
+
+The simplest approach is to define an `$attributes` property on your resource. You may list attribute names as values, which will be read directly from the underlying model:
+
+```php
+public $attributes = [
+    'title',
+    'body',
+    'created_at',
+];
+```
+
+Or, for full control over the resource's attributes, you may override the `toAttributes` method on the resource:
+
+```php
+/**
+ * Get the resource's attributes.
+ *
+ * @return array<string, mixed>
+ */
+public function toAttributes(Request $request): array
+{
+    return [
+        'title' => $this->title,
+        'body' => $this->body,
+        'is_published' => $this->published_at !== null,
+        'created_at' => $this->created_at,
+        'updated_at' => $this->updated_at,
+    ];
+}
+```
+
+<a name="defining-jsonapi-relationships"></a>
+### Defining Relationships
+
+JSON:API resources support defining relationships that follow the JSON:API specification. Relationships are only serialized when requested by the client via the `include` query parameter.
+
+#### The `$relationships` Property
+
+You may define your resource's includable relationships via the `$relationships` property on your resource:
+
+```php
+public $relationships = [
+    'author',
+    'comments',
+];
+```
+
+When listing a relationship name as a value, Laravel will resolve the corresponding Eloquent relationship and automatically discover the appropriate resource class. If you need to specify the resource class explicitly, you may define the relationship as a key / class pair:
+
+```php
+use App\Http\Resources\UserResource;
+
+public $relationships = [
+    'author' => UserResource::class,
+    'comments',
+];
+```
+
+Alternatively, you may override the `toRelationships` method on the resource:
+
+```php
+/**
+ * Get the resource's relationships.
+ */
+public function toRelationships(Request $request): array
+{
+    return [
+        'author' => UserResource::class,
+        'comments',
+    ];
+}
+```
+
+#### Including Relationships
+
+Clients may request related resources using the `include` query parameter:
+
+```
+GET /api/posts/1?include=author,comments
+```
+
+This produces a response with resource identifier objects in the `relationships` key and full resource objects in the top-level `included` array:
+
+```json
+{
+    "data": {
+        "id": "1",
+        "type": "posts",
+        "attributes": {
+            "title": "Hello World"
+        },
+        "relationships": {
+            "author": {
+                "data": {
+                    "id": "1",
+                    "type": "users"
+                }
+            },
+            "comments": {
+                "data": [
+                    {
+                        "id": "1",
+                        "type": "comments"
+                    }
+                ]
+            }
+        }
+    },
+    "included": [
+        {
+            "id": "1",
+            "type": "users",
+            "attributes": {
+                "name": "Taylor Otwell"
+            }
+        },
+        {
+            "id": "1",
+            "type": "comments",
+            "attributes": {
+                "body": "Great post!"
+            }
+        }
+    ]
+}
+```
+
+Nested relationships may be included using dot notation:
+
+```
+GET /api/posts/1?include=comments.author
+```
+
+<a name="jsonapi-relationship-depth"></a>
+#### Relationship Depth
+
+By default, nested relationship includes are limited to a maximum depth. You may customize this limit using the `maxRelationshipDepth` method, typically in one of you application's service provider:
+
+```php
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+
+JsonApiResource::maxRelationshipDepth(3);
+```
+
+<a name="jsonapi-resource-type-and-id"></a>
+### Resource Type and ID
+
+By default, the resource's `type` is derived from the resource class name. For example, `PostResource` produces the type `posts` and `BlogPostResource` produces `blog-posts`. The resource's `id` is resolved from the model's primary key.
+
+If you need to customize these values, you may override the `toType` and `toId` methods on your resource:
+
+```php
+/**
+ * Get the resource's type.
+ */
+public function toType(Request $request): string
+{
+    return 'articles';
+}
+
+/**
+ * Get the resource's ID.
+ */
+public function toId(Request $request): string
+{
+    return (string) $this->uuid;
+}
+```
+
+This is particularly useful when a resource's type should differ from its class name, such as when an `AuthorResource` wraps a `User` model and should output the type `authors`.
+
+<a name="jsonapi-sparse-fieldsets-and-includes"></a>
+### Sparse Fieldsets and Includes
+
+JSON:API resources support [sparse fieldsets](https://jsonapi.org/format/#fetching-sparse-fieldsets), allowing clients to request only specific attributes for each resource type using the `fields` query parameter:
+
+```
+GET /api/posts?fields[posts]=title,created_at&fields[users]=name
+```
+
+This will only include the `title` and `created_at` attributes for `posts` resources, and the `name` attribute for `users` resources.
+
+<a name="jsonapi-ignoring-query-string"></a>
+#### Ignoring the Query String
+
+If you would like to disable sparse fieldset filtering for a given resource response, you may call the `ignoreFieldsAndIncludesInQueryString` method:
+
+```php
+return $post->toResource()
+    ->ignoreFieldsAndIncludesInQueryString();
+```
+
+<a name="jsonapi-including-previously-loaded-relationships"></a>
+#### Including Previously Loaded Relationships
+
+By default, relationships are only included in the response when requested via the `include` query parameter. If you would like to include all previously eager-loaded relationships regardless of the query string, you may call the `includePreviouslyLoadedRelationships` method:
+
+```php
+return $post->load('author', 'comments')
+    ->toResource()
+    ->includePreviouslyLoadedRelationships();
+```
+
+<a name="jsonapi-links-and-meta"></a>
+### Links and Meta
+
+You may add links and meta information to your JSON:API resource objects by overriding the `toLinks` and `toMeta` methods on the resource:
+
+```php
+/**
+ * Get the resource's links.
+ */
+public function toLinks(Request $request): array
+{
+    return [
+        'self' => route('api.posts.show', $this->resource),
+    ];
+}
+
+/**
+ * Get the resource's meta information.
+ */
+public function toMeta(Request $request): array
+{
+    return [
+        'readable_created_at' => $this->created_at->diffForHumans(),
+    ];
+}
+```
+
+This will add `links` and `meta` keys to the resource object in the response:
+
+```json
+{
+    "data": {
+        "id": "1",
+        "type": "posts",
+        "attributes": {
+            "title": "Hello World"
+        },
+        "links": {
+            "self": "https://example.com/api/posts/1"
+        },
+        "meta": {
+            "readable_created_at": "2 hours ago"
+        }
+    }
+}
 ```
 
 <a name="resource-responses"></a>
