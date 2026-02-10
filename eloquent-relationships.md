@@ -953,6 +953,14 @@ return $this->belongsToMany(Badge::class)
     ->orderByPivot('created_at', 'desc');
 ```
 
+The `orderByPivotDesc` method allows you to sort a `belongsToMany` relationship query by a pivot table column in descending order:
+
+```php
+return $this->belongsToMany(Badge::class)
+    ->where('rank', 'gold')
+    ->orderByPivotDesc('created_at');
+```
+
 <a name="defining-custom-intermediate-table-models"></a>
 ### Defining Custom Intermediate Table Models
 
