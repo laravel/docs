@@ -1569,12 +1569,12 @@ DB::table('flights')
     ->get();
 ```
 
-You may like to extract the destination filtering that is common between the queries into a reusable object:
+You may like to extract the destination filtering that is common between the queries into a reusable object. To quickly generate a new filter, you may run the make:filter Artisan command. By default, all of the filters for your application are stored in the app/Models/Scopes/Filters directory:
 
 ```php
 <?php
 
-namespace App\Scopes;
+namespace App\Scopes\Filters;
 
 use Illuminate\Database\Query\Builder;
 
