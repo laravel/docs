@@ -205,7 +205,7 @@ class CurrentWeatherTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, \Illuminate\JsonSchema\Type\Type>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -1473,7 +1473,7 @@ If your application is already using [Sanctum](/docs/{{version}}/sanctum) then a
 <a name="sanctum"></a>
 ### Sanctum
 
-If you would like to protect your MCP server using [Sanctum](/docs/{{version}}/sanctum), simply add Sanctum's authentication middleware to your server in your `routes/ai.php` file. Then, ensure your MCP clients provide a `Authorization: Bearer <token>` header to ensure successful authentication:
+If you would like to protect your MCP server using [Sanctum](/docs/{{version}}/sanctum), simply add Sanctum's authentication middleware to your server in your `routes/ai.php` file. Then, ensure your MCP clients provide an `Authorization: Bearer <token>` header to ensure successful authentication:
 
 ```php
 use App\Mcp\Servers\WeatherExample;

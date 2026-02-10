@@ -587,8 +587,25 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]
-> If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware.
+<a name="rate-limiting-with-redis"></a>
+#### Rate Limiting With Redis
+
+If you are using Redis, you may use the `Illuminate\Queue\Middleware\RateLimitedWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic rate limiting middleware:
+
+```php
+use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+
+public function middleware(): array
+{
+    return [new RateLimitedWithRedis('backups')];
+}
+```
+
+The `connection` method may be used to specify which Redis connection the middleware should use:
+
+```php
+return [(new RateLimitedWithRedis('backups'))->connection('limiter')];
+```
 
 <a name="preventing-job-overlaps"></a>
 ### Preventing Job Overlaps
@@ -810,8 +827,25 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]
-> If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware.
+<a name="throttling-exceptions-with-redis"></a>
+#### Throttling Exceptions With Redis
+
+If you are using Redis, you may use the `Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis` middleware, which is fine-tuned for Redis and more efficient than the basic exception throttling middleware:
+
+```php
+use Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis;
+
+public function middleware(): array
+{
+    return [new ThrottlesExceptionsWithRedis(10, 10 * 60)];
+}
+```
+
+The `connection` method may be used to specify which Redis connection the middleware should use:
+
+```php
+return [(new ThrottlesExceptionsWithRedis(10, 10 * 60))->connection('limiter')];
+```
 
 <a name="skipping-jobs"></a>
 ### Skipping Jobs
@@ -1795,7 +1829,7 @@ $batch = Bus::batch([
 })->then(function (Batch $batch) {
     // All jobs completed successfully...
 })->catch(function (Batch $batch, Throwable $e) {
-    // First batch job failure detected...
+    // Batch job failure detected...
 })->finally(function (Batch $batch) {
     // The batch has finished executing...
 })->dispatch();
@@ -3028,6 +3062,30 @@ Bus::fake();
 Bus::assertBatched(function (PendingBatch $batch) {
     return $batch->name == 'Import CSV' &&
            $batch->jobs->count() === 10;
+});
+```
+
+The `hasJobs` method may be used on the pending batch to verify that the batch contains the expected jobs. The method accepts an array of job instances, class names, or closures:
+
+```php
+Bus::assertBatched(function (PendingBatch $batch) {
+    return $batch->hasJobs([
+        new ProcessCsvRow(row: 1),
+        new ProcessCsvRow(row: 2),
+        new ProcessCsvRow(row: 3),
+    ]);
+});
+```
+
+When using closures, the closure will receive the job instance. The expected job type will be inferred from the closure's type hint:
+
+```php
+Bus::assertBatched(function (PendingBatch $batch) {
+    return $batch->hasJobs([
+        fn (ProcessCsvRow $job) => $job->row === 1,
+        fn (ProcessCsvRow $job) => $job->row === 2,
+        fn (ProcessCsvRow $job) => $job->row === 3,
+    ]);
 });
 ```
 

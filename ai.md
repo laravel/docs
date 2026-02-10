@@ -1,16 +1,14 @@
 # AI Assisted Development
 
-- [Introduction](#introduction)
-    - [Why Laravel for AI Development?](#why-laravel-for-ai-development)
-- [Laravel Boost](#laravel-boost)
-    - [Installation](#installation)
-    - [Available Tools](#available-tools)
-    - [AI Guidelines](#ai-guidelines)
-    - [Documentation Search](#documentation-search)
-    - [IDE Integration](#ide-integration)
-- [Custom Boost Guidelines](#custom-guidelines)
-    - [Adding Project Guidelines](#adding-project-guidelines)
-    - [Package Guidelines](#package-guidelines)
+ - [Introduction](#introduction)
+     - [Why Laravel for AI Development?](#why-laravel-for-ai-development)
+ - [Laravel Boost](#laravel-boost)
+     - [Installation](#installation)
+     - [Available Tools](#available-tools)
+     - [AI Guidelines](#ai-guidelines)
+     - [Agent Skills](#agent-skills)
+     - [Documentation Search](#documentation-search)
+     - [Agents Integration](#agents-integration)
 
 <a name="introduction"></a>
 ## Introduction
@@ -91,6 +89,13 @@ Guidelines are available for Laravel itself and over 16 packages in the Laravel 
 
 When you run `boost:install`, Boost automatically detects which packages your application uses and assembles the relevant guidelines into your project's AI context files.
 
+<a name="agent-skills"></a>
+### Agent Skills
+
+[Agent Skills](https://agentskills.io/home) are lightweight, targeted knowledge modules that agents can activate on-demand when working on specific domains. Unlike guidelines, which are loaded upfront, skills allow detailed patterns and best practices to be loaded only when relevant, reducing context bloat and improving the relevance of AI-generated code.
+
+Skills are available for popular Laravel packages like Livewire, Inertia, Tailwind CSS, Pest, and more. When you run `boost:install` and select skills as a feature, skills are automatically installed based on the packages detected in your `composer.json`.
+
 <a name="documentation-search"></a>
 ### Documentation Search
 
@@ -98,107 +103,7 @@ Boost includes a powerful documentation API that gives AI agents access to over 
 
 When an agent needs to understand how a feature works, it can search Boost's documentation API and receive accurate, version-specific information. This eliminates the common problem of AI agents suggesting deprecated methods or syntax from older framework versions.
 
-<a name="ide-integration"></a>
-### IDE Integration
+<a name="agent-integration"></a>
+### Agents Integration
 
-Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. Here's how to enable Boost in a few popular editors:
-
-```text tab="Claude Code"
-// torchlight! {"lineNumbers": false}
-Boost is typically detected automatically. If manual setup is needed:
-
-1. Open a terminal in your project directory
-2. Run: claude mcp add laravel-boost -- php artisan boost:mcp
-```
-
-```text tab=Cursor
-// torchlight! {"lineNumbers": false}
-1. Open the command palette (Cmd+Shift+P or Ctrl+Shift+P)
-2. Select "MCP: Open Settings"
-3. Toggle on the "laravel-boost" option
-```
-
-```text tab="VS Code"
-// torchlight! {"lineNumbers": false}
-1. Open the command palette (Cmd+Shift+P or Ctrl+Shift+P)
-2. Select "MCP: List Servers"
-3. Navigate to "laravel-boost" and press enter
-4. Select "Start server"
-```
-
-```text tab=PhpStorm
-// torchlight! {"lineNumbers": false}
-1. Press Shift twice to open Search Everywhere
-2. Search for "MCP Settings" and press enter
-3. Enable the checkbox next to "laravel-boost"
-4. Click "Apply"
-```
-
-```text tab=Codex
-// torchlight! {"lineNumbers": false}
-Boost is typically detected automatically. If manual setup is needed:
-
-1. Open a terminal in your project directory
-2. Run: codex mcp add -- php artisan boost:mcp
-```
-
-```text tab=Gemini
-// torchlight! {"lineNumbers": false}
-Boost is typically detected automatically. If manual setup is needed:
-
-1. Open a terminal in your project directory
-2. Run: gemini mcp add laravel-boost -- php artisan boost:mcp
-```
-
-<a name="custom-guidelines"></a>
-## Custom Boost Guidelines
-
-While Boost's built-in guidelines cover the Laravel ecosystem comprehensively, you may want to add project-specific instructions for your AI agents.
-
-<a name="adding-project-guidelines"></a>
-### Adding Project Guidelines
-
-To add custom guidelines for your project, create `.blade.php` or `.md` files in your application's `.ai/guidelines` directory:
-
-```text
-.ai/
-└── guidelines/
-    └── api-conventions.md
-    ├── architecture.md
-    ├── testing-standards.blade.php
-```
-
-These files will automatically be included when you run `boost:install`. Use these guidelines to document your team's coding standards, architectural decisions, domain-specific terminology, or any other context that would help AI agents write better code for your project.
-
-<a name="package-guidelines"></a>
-### Package Guidelines
-
-If you maintain a Laravel package and want to provide AI guidelines for your users, you can include guidelines in your package's `resources/boost/guidelines` directory:
-
-```text
-resources/
-└── boost/
-    └── guidelines/
-        └── core.blade.php
-```
-
-AI guidelines should provide a short overview of what your package does, outline any required file structure or conventions, and explain how to create or use its main features (with example commands or code snippets). Keep them concise, actionable, and focused on best practices so AI can generate correct code for your users. Here is an example:
-
-```md
-## Package Name
-
-This package provides [brief description of functionality].
-
-### Features
-
-- Feature 1: [clear & short description].
-- Feature 2: [clear & short description]. Example usage:
-
-@verbatim
-<code-snippet name="How to use Feature 2" lang="php">
-$result = PackageName::featureTwo($param1, $param2);
-</code-snippet>
-@endverbatim
-```
-
-When users install Boost in an application that includes your package, your guidelines will automatically be discovered and included in their AI context. This allows package authors to help AI agents understand how to properly use their packages.
+Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. For detailed setup instructions for Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot, and Junie, see the [Set Up Your Agents](/docs/{{version}}/boost#set-up-your-agents) section of the Boost documentation.

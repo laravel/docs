@@ -945,12 +945,12 @@ return $this->belongsToMany(Role::class)
 <a name="ordering-queries-via-intermediate-table-columns"></a>
 ### Ordering Queries via Intermediate Table Columns
 
-You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` method. In the following example, we will retrieve all of the latest badges for the user:
+You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` and `orderByPivotDesc` methods. In the following example, we will retrieve all of the latest badges for the user:
 
 ```php
 return $this->belongsToMany(Badge::class)
     ->where('rank', 'gold')
-    ->orderByPivot('created_at', 'desc');
+    ->orderByPivotDesc('created_at');
 ```
 
 <a name="defining-custom-intermediate-table-models"></a>

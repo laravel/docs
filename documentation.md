@@ -75,8 +75,9 @@
     - [Serialization](/docs/{{version}}/eloquent-serialization)
     - [Factories](/docs/{{version}}/eloquent-factories)
 - ## AI
-    - [Boost](/docs/{{version}}/boost)
+    - [AI SDK](/docs/{{version}}/ai-sdk)
     - [MCP](/docs/{{version}}/mcp)
+    - [Boost](/docs/{{version}}/boost)
 - ## Testing
     - [Getting Started](/docs/{{version}}/testing)
     - [HTTP Tests](/docs/{{version}}/http-tests)

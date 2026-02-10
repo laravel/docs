@@ -3721,6 +3721,7 @@ The `Uri` class also allows you to easily inspect the various components of the 
 
 ```php
 $scheme = $uri->scheme();
+$authority = $uri->authority();
 $host = $uri->host();
 $port = $uri->port();
 $path = $uri->path();
