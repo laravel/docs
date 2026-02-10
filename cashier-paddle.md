@@ -1360,7 +1360,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
-    $middleware->validateCsrfTokens(except: [
+    $middleware->preventRequestForgery(except: [
         'paddle/*',
     ]);
 })

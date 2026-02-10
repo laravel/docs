@@ -1922,7 +1922,7 @@ Since Stripe webhooks need to bypass Laravel's [CSRF protection](/docs/{{version
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
-    $middleware->validateCsrfTokens(except: [
+    $middleware->preventRequestForgery(except: [
         'stripe/*',
     ]);
 })

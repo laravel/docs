@@ -251,7 +251,7 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 | `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse` |
 | `Illuminate\Session\Middleware\StartSession`              |
 | `Illuminate\View\Middleware\ShareErrorsFromSession`       |
-| `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken` |
+| `Illuminate\Foundation\Http\Middleware\PreventRequestForgery` |
 | `Illuminate\Routing\Middleware\SubstituteBindings`        |
 
 </div>
@@ -312,7 +312,7 @@ If you would like to manually manage all of the middleware within Laravel's defa
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         // \Illuminate\Session\Middleware\AuthenticateSession::class,
     ]);
@@ -385,7 +385,7 @@ Rarely, you may need your middleware to execute in a specific order but not have
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
         \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
