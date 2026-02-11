@@ -647,7 +647,7 @@ return $this->through('environments')->has('deployments');
 return $this->throughEnvironments()->hasDeployments();
 ```
 
-Though the `Deployment` model's table does not contain a `application_id` column, the `hasManyThrough` relation provides access to a application's deployments via `$application->deployments`. To retrieve these models, Eloquent inspects the `application_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
+Though the `Deployment` model's table does not contain a `application_id` column, the `hasManyThrough` relation provides access to an application's deployments via `$application->deployments`. To retrieve these models, Eloquent inspects the `application_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
 
 <a name="has-many-through-key-conventions"></a>
 #### Key Conventions
