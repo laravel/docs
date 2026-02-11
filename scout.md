@@ -4,19 +4,17 @@
 - [Installation](#installation)
     - [Queueing](#queueing)
 - [Driver Prerequisites](#driver-prerequisites)
-    - [Algolia](#algolia)
-    - [Meilisearch](#meilisearch)
-    - [Typesense](#typesense)
 - [Configuration](#configuration)
-    - [Configuring Model Indexes](#configuring-model-indexes)
     - [Configuring Searchable Data](#configuring-searchable-data)
-    - [Configuring the Model ID](#configuring-the-model-id)
-    - [Configuring Search Engines per Model](#configuring-search-engines-per-model)
-    - [Identifying Users](#identifying-users)
 - [Database / Collection Engines](#database-and-collection-engines)
     - [Database Engine](#database-engine)
     - [Collection Engine](#collection-engine)
-- [Indexing](#indexing)
+- [Third-Party Engine Configuration](#third-party-engine-configuration)
+    - [Configuring Model Indexes](#configuring-model-indexes)
+    - [Algolia](#algolia-configuration)
+    - [Meilisearch](#meilisearch-configuration)
+    - [Typesense](#typesense-configuration)
+- [Third-Party Engine Indexing](#indexing)
     - [Batch Import](#batch-import)
     - [Adding Records](#adding-records)
     - [Updating Records](#updating-records)
@@ -35,7 +33,9 @@
 
 [Laravel Scout](https://github.com/laravel/scout) provides a simple, driver-based solution for adding full-text search to your [Eloquent models](/docs/{{version}}/eloquent). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Currently, Scout ships with [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), [Typesense](https://typesense.org), and MySQL / PostgreSQL (`database`) drivers. In addition, Scout includes a "collection" driver that is designed for local development usage and does not require any external dependencies or third-party services. Furthermore, writing custom drivers is simple and you are free to extend Scout with your own search implementations.
+Scout ships with a built-in `database` engine that uses MySQL / PostgreSQL full-text indexes and `LIKE` clauses to search your existing database — no external service required. For most applications, this is all you need. For an overview of all search options available in Laravel, consult the [search documentation](/docs/{{version}}/search).
+
+Scout also includes drivers for [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), and [Typesense](https://typesense.org) when you need features like typo tolerance, faceted filtering, or geo-search at massive scale. A "collection" driver is also available for local development, and you are free to write [custom engines](#custom-engines) as well.
 
 <a name="installation"></a>
 ## Installation
@@ -79,7 +79,7 @@ Once you have configured a queue driver, set the value of the `queue` option in 
 'queue' => true,
 ```
 
-Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. Meaning, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
+Even when the `queue` option is set to `false`, it's important to remember that some Scout drivers like Algolia and Meilisearch always index records asynchronously. In other words, even though the index operation has completed within your Laravel application, the search engine itself may not reflect the new and updated records immediately.
 
 To specify the connection and queue that your Scout jobs utilize, you may define the `queue` configuration option as an array:
 
@@ -111,7 +111,7 @@ composer require algolia/algoliasearch-client-php
 <a name="meilisearch"></a>
 ### Meilisearch
 
-[Meilisearch](https://www.meilisearch.com) is a blazingly fast and open source search engine. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+[Meilisearch](https://www.meilisearch.com) is a fast, open source search engine. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
 
 When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
 
@@ -165,8 +165,334 @@ TYPESENSE_PROTOCOL=http
 
 Additional settings and schema definitions for your Typesense collections can be found within your application's `config/scout.php` configuration file. For more information regarding Typesense, please consult the [Typesense documentation](https://typesense.org/docs/guide/#quick-start).
 
-<a name="preparing-data-for-storage-in-typesense"></a>
-#### Preparing Data for Storage in Typesense
+<a name="configuration"></a>
+## Configuration
+
+<a name="configuring-searchable-data"></a>
+### Configuring Searchable Data
+
+By default, the entire `toArray` form of a given model will be persisted to its search index. If you would like to customize the data that is synchronized to the search index, you may override the `toSearchableArray` method on the model:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+
+class Post extends Model
+{
+    use Searchable;
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+
+        // Customize the data array...
+
+        return $array;
+    }
+}
+```
+
+<a name="configuring-search-engines-per-model"></a>
+#### Configuring Model Engines
+
+When searching, Scout will typically use the default search engine specified in your application's `scout` configuration file. However, the search engine for a particular model can be changed by overriding the `searchableUsing` method on the model:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Engines\Engine;
+use Laravel\Scout\Scout;
+use Laravel\Scout\Searchable;
+
+class User extends Model
+{
+    use Searchable;
+
+    /**
+     * Get the engine used to index the model.
+     */
+    public function searchableUsing(): Engine
+    {
+        return Scout::engine('meilisearch');
+    }
+}
+```
+
+<a name="database-and-collection-engines"></a>
+## Database / Collection Engines
+
+<a name="database-engine"></a>
+### Database Engine
+
+> [!WARNING]
+> The database engine currently supports MySQL and PostgreSQL, both of which provide support for fast, full-text column indexing.
+
+The `database` engine uses MySQL / PostgreSQL full-text indexes and `LIKE` clauses to search your existing database directly. For many applications, this is the simplest and most practical way to add search — no external service or additional infrastructure required.
+
+To use the database engine, set the `SCOUT_DRIVER` environment variable to `database`:
+
+```ini
+SCOUT_DRIVER=database
+```
+
+Once configured, you may [define your searchable data](#configuring-searchable-data) and start [executing search queries](#searching) against your models. Unlike third-party engines, the database engine requires no separate indexing step — it searches your database tables directly.
+
+#### Customizing Database Searching Strategies
+
+By default, the database engine will execute a `LIKE` query against every model attribute that you have [configured as searchable](#configuring-searchable-data). However, you can assign more efficient search strategies to specific columns. The `SearchUsingFullText` attribute will use your database's full-text index for that column, while `SearchUsingPrefix` will only match the beginning of strings (`example%`) instead of searching within the entire string (`%example%`).
+
+To define this behavior, assign PHP attributes to your model's `toSearchableArray` method. Any columns without an attribute will continue to use the default `LIKE` strategy:
+
+```php
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
+
+/**
+ * Get the indexable data array for the model.
+ *
+ * @return array<string, mixed>
+ */
+#[SearchUsingPrefix(['id', 'email'])]
+#[SearchUsingFullText(['bio'])]
+public function toSearchableArray(): array
+{
+    return [
+        'id' => $this->id,
+        'name' => $this->name,
+        'email' => $this->email,
+        'bio' => $this->bio,
+    ];
+}
+```
+
+> [!WARNING]
+> Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
+
+<a name="collection-engine"></a>
+### Collection Engine
+
+The "collection" engine is intended for quick prototypes, extremely small datasets (a few hundred records), or running tests. It retrieves all possible records from your database and uses Laravel's `Str::is` helper to filter them in PHP, so it does not require any indexing or database-specific features. For anything beyond trivial use cases, you should use the [database engine](#database-engine) instead.
+
+To use the collection engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `collection`, or specify the `collection` driver directly in your application's `scout` configuration file:
+
+```ini
+SCOUT_DRIVER=collection
+```
+
+Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia, Meilisearch, or Typesense indexes, is unnecessary when using the collection engine.
+
+#### Differences From Database Engine
+
+While the database engine uses full-text indexes and `LIKE` clauses to find matching records efficiently, the collection engine pulls all records and filters them in PHP. The collection engine is the most portable option as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is significantly less efficient than the database engine and should not be used with large datasets.
+
+<a name="third-party-engine-configuration"></a>
+## Third-Party Engine Configuration
+
+The following configuration options are only relevant when using a third-party search engine such as Algolia, Meilisearch, or Typesense. If you are using the [database engine](#database-engine), you may skip this section.
+
+<a name="configuring-model-indexes"></a>
+### Configuring Model Indexes
+
+When using a third-party engine, each Eloquent model is synced with a given search "index", which contains all of the searchable records for that model. By default, each model will be persisted to an index matching the model's typical "table" name. Typically, this is the plural form of the model name; however, you are free to customize the model's index by overriding the `searchableAs` method on the model:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+
+class Post extends Model
+{
+    use Searchable;
+
+    /**
+     * Get the name of the index associated with the model.
+     */
+    public function searchableAs(): string
+    {
+        return 'posts_index';
+    }
+}
+```
+
+> [!NOTE]
+> The `searchableAs` method has no effect when using the database engine, which always searches the model's database table directly.
+
+<a name="configuring-the-model-id"></a>
+#### Configuring the Model ID
+
+By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior when using a third-party engine, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+
+class User extends Model
+{
+    use Searchable;
+
+    /**
+     * Get the value used to index the model.
+     */
+    public function getScoutKey(): mixed
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get the key name used to index the model.
+     */
+    public function getScoutKeyName(): mixed
+    {
+        return 'email';
+    }
+}
+```
+
+> [!NOTE]
+> The `getScoutKey` and `getScoutKeyName` methods have no effect when using the database engine, which always uses the model's primary key.
+
+<a name="algolia-configuration"></a>
+### Algolia
+
+<a name="algolia-index-settings"></a>
+#### Index Settings
+
+Sometimes you may want to configure additional settings on your Algolia indexes. While you can manage these settings via the Algolia UI, it is sometimes more efficient to manage the desired state of your index configuration directly from your application's `config/scout.php` configuration file.
+
+This approach allows you to deploy these settings through your application's automated deployment pipeline, avoiding manual configuration and ensuring consistency across multiple environments. You may configure filterable attributes, ranking, faceting, or [any other supported settings](https://www.algolia.com/doc/rest-api/search/#tag/Indices/operation/setSettings).
+
+To get started, add settings for each index in your application's `config/scout.php` configuration file:
+
+```php
+use App\Models\User;
+use App\Models\Flight;
+
+'algolia' => [
+    'id' => env('ALGOLIA_APP_ID', ''),
+    'secret' => env('ALGOLIA_SECRET', ''),
+    'index-settings' => [
+        User::class => [
+            'searchableAttributes' => ['id', 'name', 'email'],
+            'attributesForFaceting'=> ['filterOnly(email)'],
+            // Other settings fields...
+        ],
+        Flight::class => [
+            'searchableAttributes'=> ['id', 'destination'],
+        ],
+    ],
+],
+```
+
+If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for faceting on soft deleted models on that index. If you have no other faceting attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
+
+```php
+'index-settings' => [
+    Flight::class => []
+],
+```
+
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Algolia of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
+
+```shell
+php artisan scout:sync-index-settings
+```
+
+<a name="algolia-identifying-users"></a>
+#### Identifying Users
+
+Scout allows you to auto identify users when using Algolia. Associating the authenticated user with search operations may be helpful when viewing your search analytics within Algolia's dashboard. You can enable user identification by defining a `SCOUT_IDENTIFY` environment variable as `true` in your application's `.env` file:
+
+```ini
+SCOUT_IDENTIFY=true
+```
+
+Enabling this feature will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
+
+<a name="meilisearch-configuration"></a>
+### Meilisearch
+
+<a name="meilisearch-index-settings"></a>
+#### Index Settings
+
+Meilisearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
+
+Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
+
+```php
+use App\Models\User;
+use App\Models\Flight;
+
+'meilisearch' => [
+    'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
+    'key' => env('MEILISEARCH_KEY', null),
+    'index-settings' => [
+        User::class => [
+            'filterableAttributes'=> ['id', 'name', 'email'],
+            'sortableAttributes' => ['created_at'],
+            // Other settings fields...
+        ],
+        Flight::class => [
+            'filterableAttributes'=> ['id', 'destination'],
+            'sortableAttributes' => ['updated_at'],
+        ],
+    ],
+],
+```
+
+If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for filtering on soft deleted models on that index. If you have no other filterable or sortable attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
+
+```php
+'index-settings' => [
+    Flight::class => []
+],
+```
+
+After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Meilisearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
+
+```shell
+php artisan scout:sync-index-settings
+```
+
+<a name="meilisearch-data-types"></a>
+#### Searchable Data Types
+
+Meilisearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. When customizing your searchable data, you should ensure that numeric values are cast to their correct type:
+
+```php
+public function toSearchableArray()
+{
+    return [
+        'id' => (int) $this->id,
+        'name' => $this->name,
+        'price' => (float) $this->price,
+    ];
+}
+```
+
+<a name="typesense-configuration"></a>
+### Typesense
+
+<a name="typesense-searchable-data"></a>
+#### Preparing Searchable Data
 
 When utilizing Typesense, your searchable models must define a `toSearchableArray` method that casts your model's primary key to a string and creation date to a UNIX timestamp:
 
@@ -219,313 +545,11 @@ Todo::search('Groceries')->options([
 ])->get();
 ```
 
-<a name="configuration"></a>
-## Configuration
-
-<a name="configuring-model-indexes"></a>
-### Configuring Model Indexes
-
-Each Eloquent model is synced with a given search "index", which contains all of the searchable records for that model. In other words, you can think of each index like a MySQL table. By default, each model will be persisted to an index matching the model's typical "table" name. Typically, this is the plural form of the model name; however, you are free to customize the model's index by overriding the `searchableAs` method on the model:
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
-
-class Post extends Model
-{
-    use Searchable;
-
-    /**
-     * Get the name of the index associated with the model.
-     */
-    public function searchableAs(): string
-    {
-        return 'posts_index';
-    }
-}
-```
-
-<a name="configuring-searchable-data"></a>
-### Configuring Searchable Data
-
-By default, the entire `toArray` form of a given model will be persisted to its search index. If you would like to customize the data that is synchronized to the search index, you may override the `toSearchableArray` method on the model:
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
-
-class Post extends Model
-{
-    use Searchable;
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray(): array
-    {
-        $array = $this->toArray();
-
-        // Customize the data array...
-
-        return $array;
-    }
-}
-```
-
-Some search engines such as Meilisearch will only perform filter operations (`>`, `<`, etc.) on data of the correct type. So, when using these search engines and customizing your searchable data, you should ensure that numeric values are cast to their correct type:
-
-```php
-public function toSearchableArray()
-{
-    return [
-        'id' => (int) $this->id,
-        'name' => $this->name,
-        'price' => (float) $this->price,
-    ];
-}
-```
-
-<a name="configuring-indexes-for-algolia"></a>
-#### Configuring Index Settings (Algolia)
-
-Sometimes you may want to configure additional settings on your Algolia indexes. While you can manage these settings via the Algolia UI, it is sometimes more efficient to manage the desired state of your index configuration directly from your application's `config/scout.php` configuration file.
-
-This approach allows you to deploy these settings through your application's automated deployment pipeline, avoiding manual configuration and ensuring consistency across multiple environments. You may configure filterable attributes, ranking, faceting, or [any other supported settings](https://www.algolia.com/doc/rest-api/search/#tag/Indices/operation/setSettings).
-
-To get started, add settings for each index in your application's `config/scout.php` configuration file:
-
-```php
-use App\Models\User;
-use App\Models\Flight;
-
-'algolia' => [
-    'id' => env('ALGOLIA_APP_ID', ''),
-    'secret' => env('ALGOLIA_SECRET', ''),
-    'index-settings' => [
-        User::class => [
-            'searchableAttributes' => ['id', 'name', 'email'],
-            'attributesForFaceting'=> ['filterOnly(email)'],
-            // Other settings fields...
-        ],
-        Flight::class => [
-            'searchableAttributes'=> ['id', 'destination'],
-        ],
-    ],
-],
-```
-
-If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for faceting on soft deleted models on that index. If you have no other faceting attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
-
-```php
-'index-settings' => [
-    Flight::class => []
-],
-```
-
-After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Algolia of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
-
-```shell
-php artisan scout:sync-index-settings
-```
-
-<a name="configuring-filterable-data-for-meilisearch"></a>
-#### Configuring Filterable Data and Index Settings (Meilisearch)
-
-Unlike Scout's other drivers, Meilisearch requires you to pre-define index search settings such as filterable attributes, sortable attributes, and [other supported settings fields](https://docs.meilisearch.com/reference/api/settings.html).
-
-Filterable attributes are any attributes you plan to filter on when invoking Scout's `where` method, while sortable attributes are any attributes you plan to sort by when invoking Scout's `orderBy` method. To define your index settings, adjust the `index-settings` portion of your `meilisearch` configuration entry in your application's `scout` configuration file:
-
-```php
-use App\Models\User;
-use App\Models\Flight;
-
-'meilisearch' => [
-    'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
-    'key' => env('MEILISEARCH_KEY', null),
-    'index-settings' => [
-        User::class => [
-            'filterableAttributes'=> ['id', 'name', 'email'],
-            'sortableAttributes' => ['created_at'],
-            // Other settings fields...
-        ],
-        Flight::class => [
-            'filterableAttributes'=> ['id', 'destination'],
-            'sortableAttributes' => ['updated_at'],
-        ],
-    ],
-],
-```
-
-If the model underlying a given index is soft deletable and is included in the `index-settings` array, Scout will automatically include support for filtering on soft deleted models on that index. If you have no other filterable or sortable attributes to define for a soft deletable model index, you may simply add an empty entry to the `index-settings` array for that model:
-
-```php
-'index-settings' => [
-    Flight::class => []
-],
-```
-
-After configuring your application's index settings, you must invoke the `scout:sync-index-settings` Artisan command. This command will inform Meilisearch of your currently configured index settings. For convenience, you may wish to make this command part of your deployment process:
-
-```shell
-php artisan scout:sync-index-settings
-```
-
-<a name="configuring-the-model-id"></a>
-### Configuring the Model ID
-
-By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
-
-class User extends Model
-{
-    use Searchable;
-
-    /**
-     * Get the value used to index the model.
-     */
-    public function getScoutKey(): mixed
-    {
-        return $this->email;
-    }
-
-    /**
-     * Get the key name used to index the model.
-     */
-    public function getScoutKeyName(): mixed
-    {
-        return 'email';
-    }
-}
-```
-
-<a name="configuring-search-engines-per-model"></a>
-### Configuring Search Engines per Model
-
-When searching, Scout will typically use the default search engine specified in your application's `scout` configuration file. However, the search engine for a particular model can be changed by overriding the `searchableUsing` method on the model:
-
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Engines\Engine;
-use Laravel\Scout\Scout;
-use Laravel\Scout\Searchable;
-
-class User extends Model
-{
-    use Searchable;
-
-    /**
-     * Get the engine used to index the model.
-     */
-    public function searchableUsing(): Engine
-    {
-        return Scout::engine('meilisearch');
-    }
-}
-```
-
-<a name="identifying-users"></a>
-### Identifying Users
-
-Scout also allows you to auto identify users when using [Algolia](https://algolia.com). Associating the authenticated user with search operations may be helpful when viewing your search analytics within Algolia's dashboard. You can enable user identification by defining a `SCOUT_IDENTIFY` environment variable as `true` in your application's `.env` file:
-
-```ini
-SCOUT_IDENTIFY=true
-```
-
-Enabling this feature will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
-
-<a name="database-and-collection-engines"></a>
-## Database / Collection Engines
-
-<a name="database-engine"></a>
-### Database Engine
-
-> [!WARNING]
-> The database engine currently supports MySQL and PostgreSQL.
-
-The `database` engine is the fastest way to get started with Laravel Scout, and uses MySQL / PostgreSQL full-text indexes and "where like" clauses when filtering results from your existing database to determine the applicable search results for your query.
-
-To use the database engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `database`, or specify the `database` driver directly in your application's `scout` configuration file:
-
-```ini
-SCOUT_DRIVER=database
-```
-
-Once you have specified the database engine as your preferred driver, you must [configure your searchable data](#configuring-searchable-data). Then, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia, Meilisearch or Typesense indexes, is unnecessary when using the database engine.
-
-#### Customizing Database Searching Strategies
-
-By default, the database engine will execute a "where like" query against every model attribute that you have [configured as searchable](#configuring-searchable-data). However, in some situations, this may result in poor performance. Therefore, the database engine's search strategy can be configured so that some specified columns utilize full text search queries or only use "where like" constraints to search the prefixes of strings (`example%`) instead of searching within the entire string (`%example%`).
-
-To define this behavior, you may assign PHP attributes to your model's `toSearchableArray` method. Any columns that are not assigned additional search strategy behavior will continue to use the default "where like" strategy:
-
-```php
-use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
-
-/**
- * Get the indexable data array for the model.
- *
- * @return array<string, mixed>
- */
-#[SearchUsingPrefix(['id', 'email'])]
-#[SearchUsingFullText(['bio'])]
-public function toSearchableArray(): array
-{
-    return [
-        'id' => $this->id,
-        'name' => $this->name,
-        'email' => $this->email,
-        'bio' => $this->bio,
-    ];
-}
-```
-
-> [!WARNING]
-> Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
-
-<a name="collection-engine"></a>
-### Collection Engine
-
-While you are free to use the Algolia, Meilisearch, or Typesense search engines during local development, you may find it more convenient to get started with the "collection" engine. The collection engine will use "where" clauses and collection filtering on results from your existing database to determine the applicable search results for your query. When using this engine, it is not necessary to "index" your searchable models, as they will simply be retrieved from your local database.
-
-To use the collection engine, you may simply set the value of the `SCOUT_DRIVER` environment variable to `collection`, or specify the `collection` driver directly in your application's `scout` configuration file:
-
-```ini
-SCOUT_DRIVER=collection
-```
-
-Once you have specified the collection driver as your preferred driver, you may start [executing search queries](#searching) against your models. Search engine indexing, such as the indexing needed to seed Algolia, Meilisearch, or Typesense indexes, is unnecessary when using the collection engine.
-
-#### Differences From Database Engine
-
-On first glance, the "database" and "collections" engines are fairly similar. They both interact directly with your database to retrieve search results. However, the collection engine does not utilize full text indexes or `LIKE` clauses to find matching records. Instead, it pulls all possible records and uses Laravel's `Str::is` helper to determine if the search string exists within the model attribute values.
-
-The collection engine is the most portable search engine as it works across all relational databases supported by Laravel (including SQLite and SQL Server); however, it is much less efficient than Scout's database engine.
-
 <a name="indexing"></a>
-## Indexing
+## Third-Party Engine Indexing
+
+> [!NOTE]
+> The indexing features described in this section are primarily relevant when using a third-party engine (Algolia, Meilisearch, or Typesense). The database engine searches your database tables directly, so it does not require manual index management.
 
 <a name="batch-import"></a>
 ### Batch Import
@@ -775,7 +799,7 @@ $orders = Order::search('Star Trek')->raw();
 <a name="custom-indexes"></a>
 #### Custom Indexes
 
-Search queries will typically be performed on the index specified by the model's [searchableAs](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
+When searching using third-party engines, search queries will typically be performed on the index specified by the model's [searchableAs](#configuring-model-indexes) method. However, you may use the `within` method to specify a custom index that should be searched instead:
 
 ```php
 $orders = Order::search('Star Trek')
@@ -786,7 +810,7 @@ $orders = Order::search('Star Trek')
 <a name="where-clauses"></a>
 ### Where Clauses
 
-Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic numeric equality checks and are primarily useful for scoping search queries by an owner ID:
+Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic equality checks and are primarily useful for scoping search queries by an owner ID:
 
 ```php
 use App\Models\Order;
@@ -810,10 +834,24 @@ $orders = Order::search('Star Trek')->whereNotIn(
 )->get();
 ```
 
-Since a search index is not a relational database, more advanced "where" clauses are not currently supported.
-
 > [!WARNING]
-> If your application is using Meilisearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
+> If your application is using Meilisearch, you must configure your application's [filterable attributes](#meilisearch-index-settings) before utilizing Scout's "where" clauses.
+
+<a name="customizing-the-eloquent-results-query"></a>
+#### Customizing the Eloquent Results Query
+
+After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:
+
+```php
+use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
+
+$orders = Order::search('Star Trek')
+    ->query(fn (Builder $query) => $query->with('invoices'))
+    ->get();
+```
+
+When using a third-party engine, this callback is invoked after the relevant models have already been retrieved from the search engine, so it should not be used for "filtering" results — use [Scout where clauses](#where-clauses) instead. However, when using the database engine, the `query` method's constraints are applied directly to the database query, so you may use it for filtering as well.
 
 <a name="pagination"></a>
 ### Pagination
@@ -830,6 +868,12 @@ You may specify how many models to retrieve per page by passing the amount as th
 
 ```php
 $orders = Order::search('Star Trek')->paginate(15);
+```
+
+When using the database engine, you may also use the `simplePaginate` method. Unlike `paginate`, which retrieves the total number of matching records so it can display page numbers, `simplePaginate` only determines whether there are more results beyond the current page — making it more efficient for large datasets where you only need "previous" and "next" links:
+
+```php
+$orders = Order::search('Star Trek')->simplePaginate(15);
 ```
 
 Once you have retrieved the results, you may display the results and render the page links using [Blade](/docs/{{version}}/blade) just as if you had paginated a traditional Eloquent query:
@@ -903,22 +947,6 @@ Order::search(
     }
 )->get();
 ```
-
-<a name="customizing-the-eloquent-results-query"></a>
-#### Customizing the Eloquent Results Query
-
-After Scout retrieves a list of matching Eloquent models from your application's search engine, Eloquent is used to retrieve all of the matching models by their primary keys. You may customize this query by invoking the `query` method. The `query` method accepts a closure that will receive the Eloquent query builder instance as an argument:
-
-```php
-use App\Models\Order;
-use Illuminate\Database\Eloquent\Builder;
-
-$orders = Order::search('Star Trek')
-    ->query(fn (Builder $query) => $query->with('invoices'))
-    ->get();
-```
-
-Since this callback is invoked after the relevant models have already been retrieved from your application's search engine, the `query` method should not be used for "filtering" results. Instead, you should use [Scout where clauses](#where-clauses).
 
 <a name="custom-engines"></a>
 ## Custom Engines
