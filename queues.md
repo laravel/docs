@@ -6,6 +6,7 @@
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
+    - [Job Display Name](#job-display-name)
     - [Unique Jobs](#unique-jobs)
     - [Encrypted Jobs](#encrypted-jobs)
 - [Job Middleware](#job-middleware)
@@ -304,6 +305,23 @@ class ProcessPodcast implements ShouldQueue
 ```
 
 If a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.
+
+<a name="job-display-name"></a>
+### Job Display Name
+
+By default, the fully qualified class name of the job is used to identify the job in queue monitoring tools such as [Horizon](/docs/{{version}}/horizon) and the `queue:work` Artisan command's output. If you would like to customize the display name for a job, you may define a `displayName` method on the job class:
+
+```php
+/**
+ * Get the display name for the queued job.
+ */
+public function displayName(): string
+{
+    return 'Process Podcast: '.$this->podcast->title;
+}
+```
+
+This can be especially useful when a single job class handles different types of work based on its constructor arguments, allowing you to see at a glance what a specific job instance is responsible for when reviewing your queue.
 
 <a name="unique-jobs"></a>
 ### Unique Jobs
