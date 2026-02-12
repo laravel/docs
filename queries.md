@@ -489,12 +489,12 @@ The query builder also provides a convenient method to "union" two or more queri
 ```php
 use Illuminate\Support\Facades\DB;
 
-$first = DB::table('users')
+$usersWithoutFirstName = DB::table('users')
     ->whereNull('first_name');
 
 $users = DB::table('users')
     ->whereNull('last_name')
-    ->union($first)
+    ->union($usersWithoutFirstName)
     ->get();
 ```
 
