@@ -86,6 +86,28 @@ XAI_API_KEY=
 
 The default models used for text, images, audio, transcription, and embeddings may also be configured in your application's `config/ai.php` configuration file.
 
+You may override the default models for a provider by adding a `models` key to the provider's configuration:
+
+```php
+'openai' => [
+    'driver' => 'openai',
+    'key' => env('OPENAI_API_KEY'),
+    'models' => [
+        'text' => [
+            'default' => 'gpt-5.2',
+            'cheapest' => 'gpt-5-nano',
+            'smartest' => 'gpt-5.2-pro',
+        ],
+        'embeddings' => [
+            'default' => 'text-embedding-3-large',
+            'dimensions' => 1536,
+        ],
+    ],
+],
+```
+
+The `cheapest` and `smartest` values correspond to the `#[UseCheapestModel]` and `#[UseSmartestModel]` [agent attributes](#agent-configuration).
+
 <a name="custom-base-urls"></a>
 ### Custom Base URLs
 
