@@ -149,34 +149,34 @@ class Flight extends Model
 <a name="primary-keys"></a>
 ### Primary Keys
 
-Eloquent will also assume that each model's corresponding database table has a primary key column named `id`. If necessary, you may use the `PrimaryKey` attribute to specify a different column that serves as your model's primary key:
+Eloquent will also assume that each model's corresponding database table has a primary key column named `id`. If necessary, you may specify a different column that serves as your model's primary key using the `key` argument on the `Table` attribute:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\PrimaryKey;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 
-#[PrimaryKey('flight_id')]
+#[Table(key: 'flight_id')]
 class Flight extends Model
 {
     // ...
 }
 ```
 
-In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that Eloquent will automatically cast the primary key to an integer. If you wish to use a non-incrementing or a non-numeric primary key, you should specify the `type` and `incrementing` arguments on the `PrimaryKey` attribute:
+In addition, Eloquent assumes that the primary key is an incrementing integer value, which means that Eloquent will automatically cast the primary key to an integer. If you wish to use a non-incrementing or a non-numeric primary key, you should specify the `keyType` and `incrementing` arguments on the `Table` attribute:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\PrimaryKey;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 
-#[PrimaryKey('uuid', type: 'string', incrementing: false)]
+#[Table(key: 'uuid', keyType: 'string', incrementing: false)]
 class Flight extends Model
 {
     // ...
@@ -258,34 +258,34 @@ $article->id; // "01gd4d3tgrrfqeda94gdbtdk5c"
 <a name="timestamps"></a>
 ### Timestamps
 
-By default, Eloquent expects `created_at` and `updated_at` columns to exist on your model's corresponding database table. Eloquent will automatically set these column's values when models are created or updated. If you do not want these columns to be automatically managed by Eloquent, you may use the `WithoutTimestamps` attribute on your model:
+By default, Eloquent expects `created_at` and `updated_at` columns to exist on your model's corresponding database table. Eloquent will automatically set these column's values when models are created or updated. If you do not want these columns to be automatically managed by Eloquent, you may set `timestamps` to `false` on your model's `Table` attribute:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 
-#[WithoutTimestamps]
+#[Table(timestamps: false)]
 class Flight extends Model
 {
     // ...
 }
 ```
 
-If you need to customize the format of your model's timestamps, you may use the `DateFormat` attribute. This determines how date attributes are stored in the database as well as their format when the model is serialized to an array or JSON:
+If you need to customize the format of your model's timestamps, you may use the `dateFormat` argument on the `Table` attribute. This determines how date attributes are stored in the database as well as their format when the model is serialized to an array or JSON:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\DateFormat;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 
-#[DateFormat('U')]
+#[Table(dateFormat: 'U')]
 class Flight extends Model
 {
     // ...
