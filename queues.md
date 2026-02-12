@@ -551,7 +551,7 @@ public function middleware(): array
 }
 ```
 
-Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. Or, you may wish to use the [retryUntil method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
+Releasing a rate limited job back onto the queue will still increment the job's total number of `attempts`. You may wish to tune your `Tries` and `MaxExceptions` attributes on your job class accordingly. Or, you may wish to use the [retryUntil method](#time-based-attempts) to define the amount of time until the job should no longer be attempted.
 
 Using the `releaseAfter` method, you may also specify the number of seconds that must elapse before the released job will be attempted again:
 
@@ -605,7 +605,7 @@ public function middleware(): array
 }
 ```
 
-Releasing an overlapping job back onto the queue will still increment the job's total number of attempts. You may wish to tune your `tries` and `maxExceptions` properties on your job class accordingly. For example, leaving the `tries` property to 1 as it is by default would prevent any overlapping job from being retried later.
+Releasing an overlapping job back onto the queue will still increment the job's total number of attempts. You may wish to tune your `Tries` and `MaxExceptions` attributes on your job class accordingly. For example, leaving `Tries` to 1 as it is by default would prevent any overlapping job from being retried later.
 
 Any overlapping jobs of the same type will be released back to the queue. You may also specify the number of seconds that must elapse before the released job will be attempted again:
 
@@ -1315,7 +1315,7 @@ public function retryUntil(): DateTime
 If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
 
 > [!NOTE]
-> You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners) and [queued notifications](/docs/{{version}}/notifications#queueing-notifications).
+> You may also define a `Tries` attribute or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners) and [queued notifications](/docs/{{version}}/notifications#queueing-notifications).
 
 <a name="max-exceptions"></a>
 #### Max Exceptions
@@ -1622,14 +1622,14 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Queue\Middleware\FailOnException;
 use Illuminate\Support\Facades\Http;
 
+#[Tries(3)]
 class SyncChatHistory implements ShouldQueue
 {
     use Queueable;
-
-    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -2407,7 +2407,7 @@ php artisan make:queue-failed-table
 php artisan migrate
 ```
 
-When running a [queue worker](#running-the-queue-worker) process, you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once or as many times as specified by the job class' `$tries` property:
+When running a [queue worker](#running-the-queue-worker) process, you may specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will only be attempted once or as many times as specified by the job class' `Tries` attribute:
 
 ```shell
 php artisan queue:work redis --tries=3
