@@ -128,6 +128,17 @@ The AI SDK supports a variety of providers across its features. The following ta
 | Reranking | Cohere, Jina |
 | Files | OpenAI, Anthropic, Gemini |
 
+The `Laravel\Ai\Enums\Lab` enum may be used to reference providers throughout your code instead of using plain strings:
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+Lab::Anthropic;
+Lab::OpenAI;
+Lab::Gemini;
+// ...
+```
+
 <a name="agents"></a>
 ## Agents
 
@@ -240,7 +251,7 @@ By passing additional arguments to the `prompt` method, you may override the def
 ```php
 $response = (new SalesCoach)->prompt(
     'Analyze this sales transcript...',
-    provider: 'anthropic',
+    provider: Lab::Anthropic,
     model: 'claude-haiku-4-5-20251001',
     timeout: 120,
 );
@@ -862,9 +873,10 @@ use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 
-#[Provider('anthropic')]
+#[Provider(Lab::Anthropic)]
 #[Model('claude-haiku-4-5-20251001')]
 #[MaxSteps(10)]
 #[MaxTokens(4096)]
@@ -1097,7 +1109,7 @@ You may specify the dimensions and provider for the embeddings:
 ```php
 $response = Embeddings::for(['Napa Valley has great wine.'])
     ->dimensions(1536)
-    ->generate('openai', 'text-embedding-3-small');
+    ->generate(Lab::OpenAI, 'text-embedding-3-small');
 ```
 
 <a name="querying-embeddings"></a>
@@ -1271,7 +1283,7 @@ $reranked = $posts->rerank(
     by: 'content',
     query: 'Laravel tutorials',
     limit: 10,
-    provider: 'cohere'
+    provider: Lab::Cohere
 );
 ```
 
@@ -1348,7 +1360,7 @@ By default, the `Files` class uses the default AI provider configured in your ap
 ```php
 $response = Document::fromPath(
     '/home/laravel/document.pdf'
-)->put(provider: 'anthropic');
+)->put(provider: Lab::Anthropic);
 ```
 
 <a name="using-stored-files-in-conversations"></a>
@@ -1494,11 +1506,11 @@ use Laravel\Ai\Image;
 
 $response = (new SalesCoach)->prompt(
     'Analyze this sales transcript...',
-    provider: ['openai', 'anthropic'],
+    provider: [Lab::OpenAI, Lab::Anthropic],
 );
 
 $image = Image::of('A donut sitting on the kitchen counter')
-    ->generate(provider: ['gemini', 'xai']);
+    ->generate(provider: [Lab::Gemini, Lab::xAI]);
 ```
 
 <a name="testing"></a>
