@@ -104,7 +104,7 @@ class User extends Model
 
 
 > [!NOTE]
-> To hide relationships, add the relationship's method name to your Eloquent model's `$hidden` property.
+> To hide relationships, add the relationship's method name to your Eloquent model's `Hidden` attribute.
 
 Alternatively, you may use the `Visible` attribute to define an "allow list" of attributes that should be included in your model's array and JSON representation. All attributes that are not present in the `Visible` attribute will be hidden when the model is converted to an array or JSON:
 

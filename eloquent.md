@@ -748,7 +748,7 @@ $flight = Flight::create([
 ]);
 ```
 
-However, before using the `create` method, you will need to specify either a `fillable` or `guarded` property on your model class. These properties are required because all Eloquent models are protected against mass assignment vulnerabilities by default. To learn more about mass assignment, please consult the [mass assignment documentation](#mass-assignment).
+However, before using the `create` method, you will need to specify either a `Fillable` or `Guarded` attribute on your model class. These attributes are required because all Eloquent models are protected against mass assignment vulnerabilities by default. To learn more about mass assignment, please consult the [mass assignment documentation](#mass-assignment).
 
 <a name="updates"></a>
 ### Updates
@@ -918,7 +918,7 @@ $flight = Flight::create([
 ]);
 ```
 
-However, before using the `create` method, you will need to specify either a `fillable` or `guarded` property on your model class. These properties are required because all Eloquent models are protected against mass assignment vulnerabilities by default.
+However, before using the `create` method, you will need to specify either a `Fillable` or `Guarded` attribute on your model class. These attributes are required because all Eloquent models are protected against mass assignment vulnerabilities by default.
 
 A mass assignment vulnerability occurs when a user passes an unexpected HTTP request field and that field changes a column in your database that you did not expect. For example, a malicious user might send an `is_admin` parameter through an HTTP request, which is then passed to your model's `create` method, allowing the user to escalate themselves to an administrator.
 
@@ -954,17 +954,16 @@ $flight->fill(['name' => 'Amsterdam to Frankfurt']);
 <a name="mass-assignment-json-columns"></a>
 #### Mass Assignment and JSON Columns
 
-When assigning JSON columns, each column's mass assignable key must be specified in your model's `$fillable` array. For security, Laravel does not support updating nested JSON attributes when using the `guarded` property:
+When assigning JSON columns, each column's mass assignable key must be specified in your model's `Fillable` attribute. For security, Laravel does not support updating nested JSON attributes when using the `Guarded` attribute:
 
 ```php
-/**
- * The attributes that are mass assignable.
- *
- * @var array<int, string>
- */
-protected $fillable = [
-    'options->enabled',
-];
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable(['options->enabled'])]
+class Flight extends Model
+{
+    // ...
+}
 ```
 
 <a name="allowing-mass-assignment"></a>
@@ -990,7 +989,7 @@ class Flight extends Model
 <a name="mass-assignment-exceptions"></a>
 #### Mass Assignment Exceptions
 
-By default, attributes that are not included in the `$fillable` array are silently discarded when performing mass-assignment operations. In production, this is expected behavior; however, during local development it can lead to confusion as to why model changes are not taking effect.
+By default, attributes that are not included in the `Fillable` attribute are silently discarded when performing mass-assignment operations. In production, this is expected behavior; however, during local development it can lead to confusion as to why model changes are not taking effect.
 
 If you wish, you may instruct Laravel to throw an exception when attempting to fill an unfillable attribute by invoking the `preventSilentlyDiscardingAttributes` method. Typically, this method should be invoked in the `boot` method of your application's `AppServiceProvider` class:
 
