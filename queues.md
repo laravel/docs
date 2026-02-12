@@ -2447,17 +2447,19 @@ public function backoff(): int
 }
 ```
 
-You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
+You may easily configure "exponential" backoffs by defining an array of backoff values. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
 
 ```php
-/**
- * Calculate the number of seconds to wait before retrying the job.
- *
- * @return array<int, int>
- */
-public function backoff(): array
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Queue\Attributes\Backoff;
+
+#[Backoff([1, 5, 10])]
+class ProcessPodcast implements ShouldQueue
 {
-    return [1, 5, 10];
+    // ...
 }
 ```
 
