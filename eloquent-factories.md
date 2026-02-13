@@ -135,6 +135,7 @@ class FlightFactory extends Factory
     // ...
 }
 ```
+
 <a name="factory-states"></a>
 ### Factory States
 

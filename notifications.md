@@ -292,9 +292,9 @@ use Illuminate\Queue\Attributes\MaxExceptions;
 use Illuminate\Queue\Attributes\Timeout;
 use Illuminate\Queue\Attributes\Tries;
 
-#[MaxExceptions(3)]
-#[Timeout(120)]
 #[Tries(5)]
+#[Timeout(120)]
+#[MaxExceptions(3)]
 class InvoicePaid extends Notification implements ShouldQueue
 {
     use Queueable;

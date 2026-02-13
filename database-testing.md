@@ -192,7 +192,6 @@ class OrderTest extends TestCase
 }
 ```
 
-
 <a name="available-assertions"></a>
 ## Available Assertions
 

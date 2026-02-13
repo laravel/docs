@@ -446,7 +446,6 @@ class StorePostRequest extends FormRequest
 }
 ```
 
-
 <a name="customizing-the-redirect-location"></a>
 #### Customizing the Redirect Location
 

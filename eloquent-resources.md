@@ -244,6 +244,7 @@ class UserResource extends JsonResource
     // ...
 }
 ```
+
 When the `preserveKeys` property is set to `true`, collection keys will be preserved when the collection is returned from a route or controller:
 
 ```php
