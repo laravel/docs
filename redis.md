@@ -230,18 +230,17 @@ The `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base`, and `b
 ],
 ```
 
-Predis >= 3.4.0 also supports retry and backoff configuration. You may configure the `Retry` class as the `retry` option. The following backoff strategies are supported: `NoBackoff`, `EqualBackoff`, and `ExponentialBackoff`:
+Predis 3.4.0 and later supports built-in retry and backoff configuration via the `Retry` class. Configure it using the `retry` option with one of the following strategies: `NoBackoff`, `EqualBackoff`, or `ExponentialBackoff`:
 
 ```php
+use Predis\Retry;
+use Predis\Retry\Strategy\ExponentialBackoff;
+
 'default' => [
     'url' => env('REDIS_URL'),
-    'host' => env('REDIS_HOST', '127.0.0.1'),
-    'username' => env('REDIS_USERNAME'),
-    'password' => env('REDIS_PASSWORD'),
-    'port' => env('REDIS_PORT', '6379'),
-    'database' => env('REDIS_DB', '0'),
-    'retry' => new \Predis\Retry(
-        new \Predis\Retry\Strategy\ExponentialBackoff(
+    // ...
+    'retry' => new Retry(
+        new ExponentialBackoff(
             env('REDIS_BACKOFF_BASE', 100),
             env('REDIS_BACKOFF_CAP', 1000),
             true, // Enables jitter
