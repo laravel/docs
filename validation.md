@@ -429,40 +429,58 @@ public function after(): array
 <a name="request-stopping-on-first-validation-rule-failure"></a>
 #### Stopping on the First Validation Failure
 
-By adding a `stopOnFirstFailure` property to your request class, you may inform the validator that it should stop validating all attributes once a single validation failure has occurred:
+By adding the `StopOnFirstFailure` attribute to your request class, you may inform the validator that it should stop validating all attributes once a single validation failure has occurred:
 
 ```php
-/**
- * Indicates if the validator should stop on the first rule failure.
- *
- * @var bool
- */
-protected $stopOnFirstFailure = true;
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\Attributes\StopOnFirstFailure;
+use Illuminate\Foundation\Http\FormRequest;
+
+#[StopOnFirstFailure]
+class StorePostRequest extends FormRequest
+{
+    // ...
+}
 ```
 
 <a name="customizing-the-redirect-location"></a>
 #### Customizing the Redirect Location
 
-When form request validation fails, a redirect response will be generated to send the user back to their previous location. However, you are free to customize this behavior. To do so, define a `$redirect` property on your form request:
+When form request validation fails, a redirect response will be generated to send the user back to their previous location. However, you are free to customize this behavior. To do so, you may use the `RedirectTo` attribute on your form request:
 
 ```php
-/**
- * The URI that users should be redirected to if validation fails.
- *
- * @var string
- */
-protected $redirect = '/dashboard';
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\Attributes\RedirectTo;
+use Illuminate\Foundation\Http\FormRequest;
+
+#[RedirectTo('/dashboard')]
+class StorePostRequest extends FormRequest
+{
+    // ...
+}
 ```
 
-Or, if you would like to redirect users to a named route, you may define a `$redirectRoute` property instead:
+Or, if you would like to redirect users to a named route, you may use the `RedirectToRoute` attribute instead:
 
 ```php
-/**
- * The route that users should be redirected to if validation fails.
- *
- * @var string
- */
-protected $redirectRoute = 'dashboard';
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\Attributes\RedirectToRoute;
+use Illuminate\Foundation\Http\FormRequest;
+
+#[RedirectToRoute('dashboard')]
+class StorePostRequest extends FormRequest
+{
+    // ...
+}
 ```
 
 <a name="authorizing-form-requests"></a>

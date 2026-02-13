@@ -122,20 +122,17 @@ protected static function newFactory()
 }
 ```
 
-Then, define a `model` property on the corresponding factory:
+Then, use the `UseModel` attribute on the corresponding factory to specify the model:
 
 ```php
 use App\Administration\Flight;
+use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+#[UseModel(Flight::class)]
 class FlightFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
-     */
-    protected $model = Flight::class;
+    // ...
 }
 ```
 

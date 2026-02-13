@@ -593,15 +593,16 @@ protected function serializeDate(DateTimeInterface $date): string
 }
 ```
 
-To specify the format that should be used when actually storing a model's dates within your database, you should define a `$dateFormat` property on your model:
+To specify the format that should be used when actually storing a model's dates within your database, you should use the `dateFormat` argument on your model's `Table` attribute:
 
 ```php
-/**
- * The storage format of the model's date columns.
- *
- * @var string
- */
-protected $dateFormat = 'U';
+use Illuminate\Database\Eloquent\Attributes\Table;
+
+#[Table(dateFormat: 'U')]
+class Flight extends Model
+{
+    // ...
+}
 ```
 
 <a name="date-casting-and-timezones"></a>

@@ -155,37 +155,41 @@ class ExampleTest extends TestCase
 }
 ```
 
-Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by defining a `$seed` property on your base test class:
+Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by adding the `Seed` attribute to your base test class:
 
 ```php
 <?php
 
 namespace Tests;
 
+use Illuminate\Foundation\Testing\Attributes\Seed;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
+#[Seed]
 abstract class TestCase extends BaseTestCase
 {
-    /**
-     * Indicates whether the default seeder should run before each test.
-     *
-     * @var bool
-     */
-    protected $seed = true;
 }
 ```
 
-When the `$seed` property is `true`, the test will run the `Database\Seeders\DatabaseSeeder` class before each test that uses the `RefreshDatabase` trait. However, you may specify a specific seeder that should be executed by defining a `$seeder` property on your test class:
+When the `Seed` attribute is present, the test will run the `Database\Seeders\DatabaseSeeder` class before each test that uses the `RefreshDatabase` trait. However, you may specify a specific seeder that should be executed by using the `Seeder` attribute on your test class:
 
 ```php
-use Database\Seeders\OrderStatusSeeder;
+<?php
 
-/**
- * Run a specific seeder before each test.
- *
- * @var string
- */
-protected $seeder = OrderStatusSeeder::class;
+namespace Tests\Feature;
+
+use Database\Seeders\OrderStatusSeeder;
+use Illuminate\Foundation\Testing\Attributes\Seeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+#[Seeder(OrderStatusSeeder::class)]
+class OrderTest extends TestCase
+{
+    use RefreshDatabase;
+
+    // ...
+}
 ```
 
 <a name="available-assertions"></a>
