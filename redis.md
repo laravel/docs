@@ -230,6 +230,26 @@ The `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base`, and `b
 ],
 ```
 
+Predis 3.4.0 and later supports built-in retry and backoff configuration via the `Retry` class. Configure it using the `retry` option with one of the following strategies: `NoBackoff`, `EqualBackoff`, or `ExponentialBackoff`:
+
+```php
+use Predis\Retry;
+use Predis\Retry\Strategy\ExponentialBackoff;
+
+'default' => [
+    'url' => env('REDIS_URL'),
+    // ...
+    'retry' => new Retry(
+        new ExponentialBackoff(
+            env('REDIS_BACKOFF_BASE', 100),
+            env('REDIS_BACKOFF_CAP', 1000),
+            true, // Enables jitter
+        ),
+        env('REDIS_MAX_RETRIES', 3)
+    )
+],
+```
+
 <a name="unix-socket-connections"></a>
 #### Unix Socket Connections
 
