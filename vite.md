@@ -11,6 +11,7 @@
   - [Aliases](#aliases)
   - [Vue](#vue)
   - [React](#react)
+  - [Svelte](#svelte)
   - [Inertia](#inertia)
   - [URL Processing](#url-processing)
 - [Working With Stylesheets](#working-with-stylesheets)
@@ -73,7 +74,7 @@ npm install
 <a name="configuring-vite"></a>
 ### Configuring Vite
 
-Vite is configured via a `vite.config.js` file in the root of your project. You are free to customize this file based on your needs, and you may also install any other plugins your application requires, such as `@vitejs/plugin-vue` or `@vitejs/plugin-react`.
+Vite is configured via a `vite.config.js` file in the root of your project. You are free to customize this file based on your needs, and you may also install any other plugins your application requires, such as `@vitejs/plugin-react`, `@sveltejs/vite-plugin-svelte` or `@vitejs/plugin-vue`.
 
 The Laravel Vite plugin requires you to specify the entry points for your application. These may be JavaScript or CSS files, and include preprocessed languages such as TypeScript, JSX, TSX, and Sass.
 
@@ -372,10 +373,41 @@ The `@viteReactRefresh` directive must be called before the `@vite` directive.
 > [!NOTE]
 > Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, React, and Vite.
 
+<a name="svelte"></a>
+### Svelte
+
+If you would like to build your frontend using the [Svelte](https://svelte.dev/) framework, then you will also need to install the `@sveltejs/vite-plugin-svelte` plugin:
+
+```shell
+npm install --save-dev @sveltejs/vite-plugin-svelte
+```
+
+You may then include the plugin in your `vite.config.js` configuration file.
+
+```js
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import laravel from 'laravel-vite-plugin';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  plugins: [
+    laravel({
+      input: ['resources/js/app.ts'],
+      ssr: 'resources/js/ssr.ts',
+      refresh: true,
+    }),
+    svelte(),
+  ],
+});
+```
+
+> [!NOTE]
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Svelte, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Svelte, and Vite.
+
 <a name="inertia"></a>
 ### Inertia
 
-The Laravel Vite plugin provides a convenient `resolvePageComponent` function to help you resolve your Inertia page components. Below is an example of the helper in use with Vue 3; however, you may also utilize the function in other frameworks such as React:
+The Laravel Vite plugin provides a convenient `resolvePageComponent` function to help you resolve your Inertia page components. Below is an example of the helper in use with Vue 3; however, you may also utilize the function in other frameworks such as React or Svelte:
 
 ```js
 import { createApp, h } from 'vue';
