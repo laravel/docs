@@ -260,6 +260,16 @@ $request->mergeIfMissing([
 ]);
 ```
 
+<a name="routing"></a>
+### Routing
+
+<a name="route-precedence"></a>
+#### Route Precedence
+
+**Likelihood Of Impact: Low**
+
+The routing behavior when multiple routes have the same name has been unified between cached and uncached routing. This means that uncached routing now matches the first route registered with a given name instead of the last one.
+
 <a name="storage"></a>
 ### Storage
 
@@ -269,33 +279,6 @@ $request->mergeIfMissing([
 **Likelihood Of Impact: Low**
 
 If your application does not explicitly define a `local` disk in your filesystems configuration, Laravel will now default the local disk's root to `storage/app/private`. In previous releases, this defaulted to `storage/app`. As a result, calls to `Storage::disk('local')` will read from and write to `storage/app/private` unless otherwise configured. To restore the previous behavior, you may define the `local` disk manually and set the desired root path.
-
-<a name="routing"></a>
-### Routing
-
-<a name="image-validation"></a>
-#### Routes with the same name now always resolve as FIFO
-
-**Likelihood Of Impact: Low**
-
-The routing behaviour when multiple routes have the same name has been unified between cached and uncached routing. This means that uncached routing now uses the first route with the name as opposed to the last one. 
-
-<a name="image-validation"></a>
-#### Image Validation Now Excludes SVGs
-
-**Likelihood Of Impact: Low**
-
-The `image` validation rule no longer allows SVG images by default. If you would like to allow SVGs when using the `image` rule, you must explicitly allow them:
-
-```php
-use Illuminate\Validation\Rules\File;
-
-'photo' => 'required|image:allow_svg'
-
-// Or...
-'photo' => ['required', File::image(allowSvg: true)],
-```
-
 
 <a name="validation"></a>
 ### Validation
