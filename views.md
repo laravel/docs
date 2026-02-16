@@ -43,9 +43,9 @@ Route::get('/', function () {
 <a name="writing-views-in-react-svelte-or-vue"></a>
 ### Writing Views in React / Svelte / Vue
 
-Instead of writing their frontend templates in PHP via Blade, many developers have begun to prefer to write their templates using React, Svelte or Vue. Laravel makes this painless thanks to [Inertia](https://inertiajs.com/), a library that makes it a cinch to tie your React / Svelte / Vue frontend to your Laravel backend without the typical complexities of building an SPA.
+Instead of writing their frontend templates in PHP via Blade, many developers have begun to prefer to write their templates using React, Svelte, or Vue. Laravel makes this painless thanks to [Inertia](https://inertiajs.com/), a library that makes it a cinch to tie your React / Svelte / Vue frontend to your Laravel backend without the typical complexities of building an SPA.
 
-Our [React, Svelte and Vue application starter kits](/docs/{{version}}/starter-kits) give you a great starting point for your next Laravel application powered by Inertia.
+Our [React, Svelte, and Vue application starter kits](/docs/{{version}}/starter-kits) give you a great starting point for your next Laravel application powered by Inertia.
 
 <a name="creating-and-rendering-views"></a>
 ## Creating and Rendering Views
