@@ -14,6 +14,8 @@
     - [Queued Listener Middleware](#queued-listener-middleware)
     - [Encrypted Queued Listeners](#encrypted-queued-listeners)
     - [Unique Event Listeners](#unique-event-listeners)
+        - [Keeping Listeners Unique Until Processing Begins](#keeping-listeners-unique-until-processing-begins)
+        - [Unique Listener Locks](#unique-listener-locks)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
     - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
@@ -583,7 +585,30 @@ In the example above, the `AcquireProductKey` listener is unique by license ID. 
 > [!WARNING]
 > If your application dispatches events from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server so that Laravel can accurately determine if a listener is unique.
 
-By default, Laravel will use the default cache driver to obtain unique locks. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method that returns the cache driver that should be used:
+<a name="keeping-listeners-unique-until-processing-begins"></a>
+#### Keeping Listeners Unique Until Processing Begins
+
+By default, unique listeners are "unlocked" after a listener completes processing or fails all of its retry attempts. However, there may be situations where you would like your listener to unlock immediately before it is processed. To accomplish this, your listener should implement the `ShouldBeUniqueUntilProcessing` contract instead of the `ShouldBeUnique` contract:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\LicenseSaved;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class AcquireProductKey implements ShouldQueue, ShouldBeUniqueUntilProcessing
+{
+    // ...
+}
+```
+
+<a name="unique-listener-locks"></a>
+#### Unique Listener Locks
+
+Behind the scenes, when a `ShouldBeUnique` listener is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is already held, the listener is not dispatched. This lock is released when the listener completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method that returns the cache driver that should be used:
 
 ```php
 <?php
@@ -607,6 +632,9 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUnique
     }
 }
 ```
+
+> [!NOTE]
+> If you only need to limit the concurrent processing of a listener, use the [WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
 
 <a name="handling-failed-jobs"></a>
 ### Handling Failed Jobs
