@@ -64,11 +64,9 @@ When using Livewire, you will create Livewire "components" that render a discret
 ```php
 <?php
 
-namespace App\Http\Livewire;
-
 use Livewire\Component;
 
-class Counter extends Component
+new class extends Component
 {
     public $count = 0;
 
@@ -76,21 +74,14 @@ class Counter extends Component
     {
         $this->count++;
     }
+};
+?>
 
-    public function render()
-    {
-        return view('livewire.counter');
-    }
-}
-```
-
-And, the corresponding template for the counter would be written like so:
-
-```blade
 <div>
     <button wire:click="increment">+</button>
     <h1>{{ $count }}</h1>
 </div>
+
 ```
 
 As you can see, Livewire enables you to write new HTML attributes such as `wire:click` that connect your Laravel application's frontend and backend. In addition, you can render your component's current state using simple Blade expressions.
