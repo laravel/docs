@@ -409,7 +409,7 @@ class AppServiceProvider extends ServiceProvider
 #### Temporary Upload URLs
 
 > [!WARNING]
-> The ability to generate temporary upload URLs is only supported by the `s3` driver.
+> The ability to generate temporary upload URLs is only supported by the `s3` and `local` drivers.
 
 If you need to generate a temporary URL that can be used to upload a file directly from your client-side application, you may use the `temporaryUploadUrl` method. This method accepts a path and a `DateTime` instance specifying when the URL should expire. The `temporaryUploadUrl` method returns an associative array which may be destructured into the upload URL and the headers that should be included with the upload request:
 
