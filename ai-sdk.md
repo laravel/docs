@@ -1865,7 +1865,7 @@ use Laravel\Ai\Contracts\Files\StorableFile;
 use Laravel\Ai\Files\Document;
 
 // Store files...
-Document::fromString('Hello, Laravel!', mime: 'text/plain')
+Document::fromString('Hello, Laravel!', mimeType: 'text/plain')
     ->as('hello.txt')
     ->put();
 
