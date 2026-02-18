@@ -1913,7 +1913,9 @@ The integer under validation must have a maximum length of _value_.
 The file under validation must match one of the given MIME types:
 
 ```php
-'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
+'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime',
+
+'media' => 'mimetypes:image/*,video/*',
 ```
 
 To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client's provided MIME type.
