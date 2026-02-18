@@ -1194,6 +1194,12 @@ $documents = DB::table('documents')
     ->get();
 ```
 
+When utilizing PostgreSQL, the `pgvector` extension must be loaded before `vector` columns can be created:
+
+```php
+Schema::ensureVectorExtensionExists();
+```
+
 <a name="ordering-grouping-limit-and-offset"></a>
 ## Ordering, Grouping, Limit and Offset
 
