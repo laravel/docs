@@ -1916,6 +1916,12 @@ The file under validation must match one of the given MIME types:
 'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
 ```
 
+You may also use wildcard MIME types for a top-level type:
+
+```php
+'media' => 'mimetypes:image/*,video/*'
+```
+
 To determine the MIME type of the uploaded file, the file's contents will be read and the framework will attempt to guess the MIME type, which may be different from the client's provided MIME type.
 
 <a name="rule-mimes"></a>
