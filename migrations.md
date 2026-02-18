@@ -1179,6 +1179,12 @@ The `vector` method creates a `vector` equivalent column:
 $table->vector('embedding', dimensions: 100);
 ```
 
+When utilizing PostgreSQL, the `pgvector` extension must be loaded before `vector` columns can be created:
+
+```php
+Schema::ensureVectorExtensionExists();
+```
+
 <a name="column-method-year"></a>
 #### `year()` {.collection-method}
 
