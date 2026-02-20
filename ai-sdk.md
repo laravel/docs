@@ -754,13 +754,20 @@ new FileSearch(stores: ['store_id'], where: fn (FileSearchQuery $query) =>
 <a name="middleware"></a>
 ### Middleware
 
-Agents support middleware, allowing you to intercept and modify prompts before they are sent to the provider. To add middleware to an agent, implement the `HasMiddleware` interface and define a `middleware` method that returns an array of middleware classes:
+Agents support middleware, allowing you to intercept and modify prompts before they are sent to the provider. Middleware can be created using the `make:agent-middleware` Artisan command:
+
+```shell
+php artisan make:agent-middleware LogPrompts
+```
+
+The generated middleware will be placed in your application's `app/Ai/Middleware` directory. To add middleware to an agent, implement the `HasMiddleware` interface and define a `middleware` method that returns an array of middleware classes:
 
 ```php
 <?php
 
 namespace App\Ai\Agents;
 
+use App\Ai\Middleware\LogPrompts;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Promptable;
