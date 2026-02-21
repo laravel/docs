@@ -15,6 +15,7 @@
     - [Managing Locks](#managing-locks)
     - [Managing Locks Across Processes](#managing-locks-across-processes)
     - [Locks and Function Invocations](#locks-and-function-invocations)
+    - [Concurrency Limiting](#concurrency-limiting)
 - [Cache Failover](#cache-failover)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
     - [Writing the Driver](#writing-the-driver)
@@ -551,6 +552,57 @@ Cache::withoutOverlapping('foo', function () {
 ```
 
 If the lock cannot be acquired within the specified wait time, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown.
+
+<a name="concurrency-limiting"></a>
+### Concurrency Limiting
+
+While the `withoutOverlapping` method ensures only a single instance of a closure runs at a time, the `funnel` method allows you to limit the number of concurrent executions of a closure to a specified maximum. This is useful when you want to allow some degree of parallelism while still protecting a shared resource from being overwhelmed. The `funnel` method works with any cache driver that supports locks:
+
+```php
+Cache::funnel('foo')
+    ->limit(3)
+    ->releaseAfter(60)
+    ->block(10)
+    ->then(function () {
+        // Concurrency lock acquired...
+    }, function () {
+        // Could not acquire concurrency lock...
+    });
+```
+
+The `funnel` method accepts a key that identifies the resource being limited. The `limit` method defines the maximum number of concurrent executions allowed, while `releaseAfter` specifies the number of seconds until the lock is automatically released as a safety net, defaulting to 60 seconds. The `block` method defines the maximum number of seconds to wait for a slot to become available. You may also use the `sleep` method to customize the time in milliseconds between lock acquisition attempts, which defaults to 250 milliseconds.
+
+If you prefer to handle the timeout via exceptions instead of providing a failure closure, you may omit the second closure. An `Illuminate\Cache\Limiters\LimiterTimeoutException` will be thrown if the lock cannot be acquired within the specified wait time:
+
+```php
+use Illuminate\Cache\Limiters\LimiterTimeoutException;
+
+try {
+    Cache::funnel('foo')
+        ->limit(3)
+        ->releaseAfter(60)
+        ->block(10)
+        ->then(function () {
+            // Concurrency lock acquired...
+        });
+} catch (LimiterTimeoutException $e) {
+    // Unable to acquire concurrency lock...
+}
+```
+
+If you would like to use a specific cache store for the concurrency limiter, you may invoke the `funnel` method on the desired store:
+
+```php
+Cache::store('redis')->funnel('foo')
+    ->limit(3)
+    ->block(10)
+    ->then(function () {
+        // Concurrency lock acquired using the "redis" store...
+    });
+```
+
+> [!NOTE]
+> The `funnel` method requires the cache store to implement the `Illuminate\Contracts\Cache\LockProvider` interface. If you attempt to use `funnel` with a cache store that does not support locks, a `BadMethodCallException` will be thrown.
 
 <a name="cache-failover"></a>
 ## Cache Failover
