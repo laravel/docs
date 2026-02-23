@@ -14,7 +14,7 @@
 - [Atomic Locks](#atomic-locks)
     - [Managing Locks](#managing-locks)
     - [Managing Locks Across Processes](#managing-locks-across-processes)
-    - [Locks and Function Invocations](#locks-and-function-invocations)
+    - [Concurrency Limiting](#concurrency-limiting)
 - [Cache Failover](#cache-failover)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
     - [Writing the Driver](#writing-the-driver)
@@ -531,10 +531,10 @@ If you would like to release a lock without respecting its current owner, you ma
 Cache::lock('processing')->forceRelease();
 ```
 
-<a name="locks-and-function-invocations"></a>
-### Locks and Function Invocations
+<a name="concurrency-limiting"></a>
+### Concurrency Limiting
 
-The `withoutOverlapping` method provides a simple syntax for executing a given closure while holding an atomic lock, allowing you to ensure only one instance of the closure is running at a given time across your entire infrastructure:
+Laravel's atomic lock functionality also provides a few ways to limit concurrent execution of closures. Use `withoutOverlapping` when you want to allow only one running instance across your infrastructure:
 
 ```php
 Cache::withoutOverlapping('foo', function () {
@@ -542,7 +542,7 @@ Cache::withoutOverlapping('foo', function () {
 });
 ```
 
-By default, the lock will not be released until the closure finishes executing, and the method will wait up to 10 seconds to acquire the lock. You may customize these values by passing additional arguments to the method:
+By default, the lock is held until the closure finishes executing, and the method waits up to 10 seconds to acquire the lock. You may customize these values using additional arguments:
 
 ```php
 Cache::withoutOverlapping('foo', function () {
@@ -551,6 +551,54 @@ Cache::withoutOverlapping('foo', function () {
 ```
 
 If the lock cannot be acquired within the specified wait time, an `Illuminate\Contracts\Cache\LockTimeoutException` will be thrown.
+
+If you want controlled parallelism, use the `funnel` method to set a maximum number of concurrent executions. The `funnel` method works with any cache driver that supports locks:
+
+```php
+Cache::funnel('foo')
+    ->limit(3)
+    ->releaseAfter(60)
+    ->block(10)
+    ->then(function () {
+        // Concurrency lock acquired...
+    }, function () {
+        // Could not acquire concurrency lock...
+    });
+```
+
+The `funnel` key identifies the resource being limited. The `limit` method defines the maximum concurrent executions. The `releaseAfter` method sets a safety timeout in seconds before an acquired slot is automatically released. The `block` method sets how many seconds to wait for an available slot.
+
+If you prefer to handle the timeout via exceptions instead of providing a failure closure, you may omit the second closure. An `Illuminate\Cache\Limiters\LimiterTimeoutException` will be thrown if the lock cannot be acquired within the specified wait time:
+
+```php
+use Illuminate\Cache\Limiters\LimiterTimeoutException;
+
+try {
+    Cache::funnel('foo')
+        ->limit(3)
+        ->releaseAfter(60)
+        ->block(10)
+        ->then(function () {
+            // Concurrency lock acquired...
+        });
+} catch (LimiterTimeoutException $e) {
+    // Unable to acquire concurrency lock...
+}
+```
+
+If you would like to use a specific cache store for the concurrency limiter, you may invoke the `funnel` method on the desired store:
+
+```php
+Cache::store('redis')->funnel('foo')
+    ->limit(3)
+    ->block(10)
+    ->then(function () {
+        // Concurrency lock acquired using the "redis" store...
+    });
+```
+
+> [!NOTE]
+> The `funnel` method requires the cache store to implement the `Illuminate\Contracts\Cache\LockProvider` interface. If you attempt to use `funnel` with a cache store that does not support locks, a `BadMethodCallException` will be thrown.
 
 <a name="cache-failover"></a>
 ## Cache Failover
