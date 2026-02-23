@@ -167,6 +167,12 @@ If you would like to see which migrations have already run and which are still p
 php artisan migrate:status
 ```
 
+If you provide the `--step` option to the `migrate` command, the command will run each migration as its own batch, allowing you to roll back individual migrations later using the `migrate:rollback` command:
+
+```shell
+php artisan migrate --step
+```
+
 If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate` command:
 
 ```shell
