@@ -549,7 +549,7 @@ To indicate an error occurred during tool execution, use the `error` method:
 return Response::error('Unable to fetch weather data. Please try again.');
 ```
 
-To return image or audio content, use the `image` and `audio` methods respectively:
+To return image or audio content, use the `image` and `audio` methods:
 
 ```php
 return Response::image(file_get_contents(storage_path('weather/radar.png')), 'image/png');
