@@ -549,6 +549,28 @@ To indicate an error occurred during tool execution, use the `error` method:
 return Response::error('Unable to fetch weather data. Please try again.');
 ```
 
+To return image or audio content, use the `image` and `audio` methods:
+
+```php
+return Response::image(file_get_contents(storage_path('weather/radar.png')), 'image/png');
+
+return Response::audio(file_get_contents(storage_path('weather/alert.mp3')), 'audio/mp3');
+```
+
+You may also load image and audio content directly from a Laravel filesystem disk using the `fromStorage` method. The MIME type will be automatically detected from the file:
+
+```php
+return Response::fromStorage('weather/radar.png');
+```
+
+If needed, you may specify a particular disk or override the MIME type:
+
+```php
+return Response::fromStorage('weather/radar.png', disk: 's3');
+
+return Response::fromStorage('weather/radar.png', mimeType: 'image/webp');
+```
+
 <a name="multiple-content-responses"></a>
 #### Multiple Content Responses
 
