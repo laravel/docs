@@ -342,9 +342,6 @@ You may clear the entire cache using the `flush` method:
 Cache::flush();
 ```
 
-> [!WARNING]
-> Flushing the cache does not respect your configured cache "prefix" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
-
 You may clear all cache locks using the `flushLocks` method:
 
 ```php
@@ -352,10 +349,7 @@ Cache::flushLocks();
 ```
 
 > [!WARNING]
-> Flushing cache locks will remove all active locks for the configured cache store. This may release locks that are currently being held by other processes or applications. Use caution when clearing locks in shared or production environments.
-
-> [!NOTE]
-> The `flushLocks` method is only supported when using the `array`, `database`, `file`, or `redis` cache drivers.
+> Flushing the cache does not respect your configured cache "prefix" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
 
 <a name="cache-memoization"></a>
 ### Cache Memoization
