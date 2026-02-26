@@ -342,6 +342,12 @@ You may clear the entire cache using the `flush` method:
 Cache::flush();
 ```
 
+You may clear all atomic locks in the cache using the `flushLocks` method:
+
+```php
+Cache::flushLocks();
+```
+
 > [!WARNING]
 > Flushing the cache does not respect your configured cache "prefix" and will remove all entries from the cache. Consider this carefully when clearing a cache which is shared by other applications.
 
