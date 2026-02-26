@@ -342,7 +342,7 @@ You may clear the entire cache using the `flush` method:
 Cache::flush();
 ```
 
-You may clear all cache locks using the `flushLocks` method:
+You may clear all atomic locks in the cache using the `flushLocks` method:
 
 ```php
 Cache::flushLocks();
