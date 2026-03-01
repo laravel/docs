@@ -1710,6 +1710,70 @@ $flights = DB::table('flights')
     ->pipe(new Paginate);
 ```
 
+<a name="pdo-fetch-modes"></a>
+## PDO Fetch Modes
+By default, query results that return multiple records are provided as a numerically indexed array (starting at `0`).
+If you would like to control how results are structured at the database level, you may chain the `fetchUsing` method
+onto your query. This method accepts one or more native [PDO fetch mode constants](https://www.php.net/manual/en/pdostatement.fetchall.php),
+allowing you to customize how rows are returned directly by PDO.
+
+Because the formatting happens inside PDO itself, this approach is often more efficient than transforming results
+afterward using collection methods.
+
+### Common Fetch Mode Examples
+You may pass any supported PDO fetch mode to the `fetchUsing` method, including combinations using the bitwise OR (`|`)
+operator.
+
+#### `PDO::FETCH_UNIQUE`
+Uses the *first selected column* as the array key for each row.
+```php
+DB::table('users')->select(['email', 'users.*'])->fetchUsing(\PDO::FETCH_UNIQUE)->get()
+```
+
+Result:
+```txt
+[
+    "foo@example.com" => [
+        "id" => 1,
+        "email" => "foo@example.com",
+        "username" => "Foo",
+    ],
+    "bar@example.com" => [
+        "id" => 2,
+        "email" => "bar@example.com",
+        "username" => "Bar",
+    ],
+]
+```
+
+#### `PDO::FETCH_KEY_PAIR`
+Fetches exactly two selected columns as a simple key/value array. The first column becomes the key and the second
+becomes the value (similar to the `pluck` collection method).
+```php
+DB::table('users')->select(['email', 'username'])->fetchUsing(\PDO::FETCH_KEY_PAIR)->get()
+```
+Result:
+```txt
+[
+    "foo@example.com" => "Foo",
+    "bar@example.com" => "Bar",
+]
+```
+
+#### `PDO::FETCH_GROUP | PDO::FETCH_COLUMN`
+Groups results by the first selected column, while returning the second column as an array of values for each group
+(similar to the `mapToGroups` collection method).
+```php
+DB::table('users')->select(['role', 'email'])->fetchUsing(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN)->get()
+```
+Result:
+```txt
+[
+    "admin" => ["alice@example.com", "eve@example.com"],
+    "user" => ["bob@example.com", "charlie@example.com"],
+]
+```
+
 <a name="debugging"></a>
 ## Debugging
 
