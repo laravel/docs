@@ -707,6 +707,22 @@ $response
     );
 ```
 
+If you would like to make the same assertions against every item in a JSON collection, you may use the `each` method:
+
+```php
+$response
+  ->assertJson(fn (AssertableJson $json) =>
+      $json->has(3)
+          ->each(fn (AssertableJson $json) =>
+              $json->whereType('id', 'integer')
+                  ->whereType('name', 'string')
+                  ->whereType('email', 'string')
+                  ->missing('password')
+                  ->etc()
+          )
+  );
+```
+
 <a name="scoping-json-collection-assertions"></a>
 #### Scoping JSON Collection Assertions
 
