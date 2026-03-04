@@ -60,11 +60,8 @@ DB_FOREIGN_KEYS=false
 
 To use a Microsoft SQL Server database, you should ensure that you have the `sqlsrv` and `pdo_sqlsrv` PHP extensions installed as well as any dependencies they may require such as the Microsoft SQL ODBC driver.
 
-Note that as of ODBC Driver 18, because connection encryption is enabled by default, you may need to instruct Laravel to trust the self-signed certificate issued by Microsoft SQL Server to successfully connect to it. This can be done by setting the `DB_TRUST_SERVER_CERTIFICATE` environment variable to `true`:
-
-```ini
-DB_TRUST_SERVER_CERTIFICATE=true
-```
+> [!NOTE]
+> As of ODBC Driver 18, connection encryption is enabled by default. You may need to instruct Laravel to trust the self-signed certificate issued by Microsoft SQL Server to successfully connect to it. This can be done by setting the `DB_TRUST_SERVER_CERTIFICATE` environment variable to `true`, and then uncommenting the line `'trust_server_certificate'` in `config/database.php`.
 
 <a name="configuration-using-urls"></a>
 #### Configuration Using URLs
