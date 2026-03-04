@@ -120,13 +120,24 @@ The AI SDK supports a variety of providers across its features. The following ta
 
 | Feature | Providers |
 |---|---|
-| Text | OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, Ollama |
+| Text | OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama |
 | Images | OpenAI, Gemini, xAI |
 | TTS | OpenAI, ElevenLabs |
 | STT | OpenAI, ElevenLabs, Mistral |
-| Embeddings | OpenAI, Gemini, Cohere, Mistral, Jina, VoyageAI |
+| Embeddings | OpenAI, Gemini, Azure, Cohere, Mistral, Jina, VoyageAI |
 | Reranking | Cohere, Jina |
 | Files | OpenAI, Anthropic, Gemini |
+
+The `Laravel\Ai\Enums\Lab` enum may be used to reference providers throughout your code instead of using plain strings:
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+Lab::Anthropic;
+Lab::OpenAI;
+Lab::Gemini;
+// ...
+```
 
 <a name="agents"></a>
 ## Agents
@@ -240,7 +251,7 @@ By passing additional arguments to the `prompt` method, you may override the def
 ```php
 $response = (new SalesCoach)->prompt(
     'Analyze this sales transcript...',
-    provider: 'anthropic',
+    provider: Lab::Anthropic,
     model: 'claude-haiku-4-5-20251001',
     timeout: 120,
 );
@@ -743,13 +754,20 @@ new FileSearch(stores: ['store_id'], where: fn (FileSearchQuery $query) =>
 <a name="middleware"></a>
 ### Middleware
 
-Agents support middleware, allowing you to intercept and modify prompts before they are sent to the provider. To add middleware to an agent, implement the `HasMiddleware` interface and define a `middleware` method that returns an array of middleware classes:
+Agents support middleware, allowing you to intercept and modify prompts before they are sent to the provider. Middleware can be created using the `make:agent-middleware` Artisan command:
+
+```shell
+php artisan make:agent-middleware LogPrompts
+```
+
+The generated middleware will be placed in your application's `app/Ai/Middleware` directory. To add middleware to an agent, implement the `HasMiddleware` interface and define a `middleware` method that returns an array of middleware classes:
 
 ```php
 <?php
 
 namespace App\Ai\Agents;
 
+use App\Ai\Middleware\LogPrompts;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Promptable;
@@ -862,9 +880,10 @@ use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 
-#[Provider('anthropic')]
+#[Provider(Lab::Anthropic)]
 #[Model('claude-haiku-4-5-20251001')]
 #[MaxSteps(10)]
 #[MaxTokens(4096)]
@@ -1097,7 +1116,7 @@ You may specify the dimensions and provider for the embeddings:
 ```php
 $response = Embeddings::for(['Napa Valley has great wine.'])
     ->dimensions(1536)
-    ->generate('openai', 'text-embedding-3-small');
+    ->generate(Lab::OpenAI, 'text-embedding-3-small');
 ```
 
 <a name="querying-embeddings"></a>
@@ -1271,7 +1290,7 @@ $reranked = $posts->rerank(
     by: 'content',
     query: 'Laravel tutorials',
     limit: 10,
-    provider: 'cohere'
+    provider: Lab::Cohere
 );
 ```
 
@@ -1348,7 +1367,7 @@ By default, the `Files` class uses the default AI provider configured in your ap
 ```php
 $response = Document::fromPath(
     '/home/laravel/document.pdf'
-)->put(provider: 'anthropic');
+)->put(provider: Lab::Anthropic);
 ```
 
 <a name="using-stored-files-in-conversations"></a>
@@ -1494,11 +1513,11 @@ use Laravel\Ai\Image;
 
 $response = (new SalesCoach)->prompt(
     'Analyze this sales transcript...',
-    provider: ['openai', 'anthropic'],
+    provider: [Lab::OpenAI, Lab::Anthropic],
 );
 
 $image = Image::of('A donut sitting on the kitchen counter')
-    ->generate(provider: ['gemini', 'xai']);
+    ->generate(provider: [Lab::Gemini, Lab::xAI]);
 ```
 
 <a name="testing"></a>
@@ -1853,7 +1872,7 @@ use Laravel\Ai\Contracts\Files\StorableFile;
 use Laravel\Ai\Files\Document;
 
 // Store files...
-Document::fromString('Hello, Laravel!', mime: 'text/plain')
+Document::fromString('Hello, Laravel!', mimeType: 'text/plain')
     ->as('hello.txt')
     ->put();
 

@@ -49,6 +49,7 @@
     - [Processes](/docs/{{version}}/processes)
     - [Queues](/docs/{{version}}/queues)
     - [Rate Limiting](/docs/{{version}}/rate-limiting)
+    - [Search](/docs/{{version}}/search)
     - [Strings](/docs/{{version}}/strings)
     - [Task Scheduling](/docs/{{version}}/scheduling)
 - ## Security

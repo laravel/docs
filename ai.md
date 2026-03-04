@@ -77,7 +77,7 @@ Guidelines are available for Laravel itself and over 16 packages in the Laravel 
 <div class="content-list" markdown="1">
 
 - Livewire (2.x, 3.x, and 4.x)
-- Inertia.js (React and Vue variants)
+- Inertia.js (React, Svelte, and Vue variants)
 - Tailwind CSS (3.x and 4.x)
 - Filament (3.x and 4.x)
 - PHPUnit

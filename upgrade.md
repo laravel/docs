@@ -260,6 +260,16 @@ $request->mergeIfMissing([
 ]);
 ```
 
+<a name="routing"></a>
+### Routing
+
+<a name="route-precedence"></a>
+#### Route Precedence
+
+**Likelihood Of Impact: Low**
+
+The routing behavior when multiple routes have the same name has been unified between cached and uncached routing. This means that uncached routing now matches the first route registered with a given name instead of the last one.
+
 <a name="storage"></a>
 ### Storage
 

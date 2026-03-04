@@ -4,10 +4,12 @@
 - [Creating an Application Using a Starter Kit](#creating-an-application)
 - [Available Starter Kits](#available-starter-kits)
     - [React](#react)
+    - [Svelte](#svelte)
     - [Vue](#vue)
     - [Livewire](#livewire)
 - [Starter Kit Customization](#starter-kit-customization)
     - [React](#react-customization)
+    - [Svelte](#svelte-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
 - [Authentication](#authentication)
@@ -64,6 +66,15 @@ Inertia allows you to build modern, single-page React applications using classic
 
 The React starter kit utilizes React 19, TypeScript, Tailwind, and the [shadcn/ui](https://ui.shadcn.com) component library.
 
+<a name="svelte"></a>
+### Svelte
+
+Our Svelte starter kit provides a robust, modern starting point for building Laravel applications with a Svelte frontend using [Inertia](https://inertiajs.com).
+
+Inertia allows you to build modern, single-page Svelte applications using classic server-side routing and controllers. This lets you enjoy the frontend power of Svelte combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+
+The Svelte starter kit utilizes Svelte 5, TypeScript, Tailwind, and the [shadcn-svelte](https://www.shadcn-svelte.com/) component library.
+
 <a name="vue"></a>
 ### Vue
 
@@ -78,7 +89,7 @@ The Vue starter kit utilizes the Vue Composition API, TypeScript, Tailwind, and 
 
 Our Livewire starter kit provides the perfect starting point for building Laravel applications with a [Laravel Livewire](https://livewire.laravel.com) frontend.
 
-Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React and Vue.
+Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React, Svelte, and Vue.
 
 The Livewire starter kit utilizes Livewire, Tailwind, and the [Flux UI](https://fluxui.dev) component library.
 
@@ -154,6 +165,72 @@ To change your authentication layout, modify the layout that is imported at the 
 ```js
 import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout'; // [tl! remove]
 import AuthLayoutTemplate from '@/layouts/auth/auth-split-layout'; // [tl! add]
+```
+
+<a name="svelte-customization"></a>
+### Svelte
+
+Our Svelte starter kit is built with Inertia 2, Svelte 5, Tailwind, and [shadcn-svelte](https://www.shadcn-svelte.com/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+
+The majority of the frontend code is located in the `resources/js` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+
+```text
+resources/js/
+├── components/    # Reusable Svelte components
+├── layouts/       # Application layouts
+├── lib/           # Utility functions and configuration and Svelte rune modules
+├── pages/         # Page components
+└── types/         # TypeScript definitions
+```
+
+To publish additional shadcn-svelte components, first [find the component you want to publish](https://www.shadcn-svelte.com). Then, publish the component using `npx`:
+
+```shell
+npx shadcn-svelte@latest add switch
+```
+
+In this example, the command will publish the Switch component to `resources/js/components/ui/switch/switch.svelte`. Once the component has been published, you can use it in any of your pages:
+
+```svelte
+<script lang="ts">
+    import { Switch } from '@/components/ui/switch'
+</script>
+
+<div>
+    <Switch />
+</div>
+```
+
+<a name="svelte-available-layouts"></a>
+#### Available Layouts
+
+The Svelte starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.svelte` file:
+
+```js
+import AppLayout from '@/layouts/app/AppSidebarLayout.svelte'; // [tl! remove]
+import AppLayout from '@/layouts/app/AppHeaderLayout.svelte'; // [tl! add]
+```
+
+<a name="svelte-sidebar-variants"></a>
+#### Sidebar Variants
+
+The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/AppSidebar.svelte` component:
+
+```text
+<Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
+<Sidebar collapsible="icon" variant="inset"> [tl! add]
+```
+
+<a name="svelte-authentication-page-layout-variants"></a>
+#### Authentication Page Layout Variants
+
+The authentication pages included with the Svelte starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+
+To change your authentication layout, modify the layout that is imported at the top of your application's `resources/js/layouts/AuthLayout.svelte` file:
+
+```js
+import AuthLayout from '@/layouts/auth/AuthSimpleLayout.svelte'; // [tl! remove]
+import AuthLayout from '@/layouts/auth/AuthSplitLayout.svelte'; // [tl! add]
 ```
 
 <a name="vue-customization"></a>
@@ -318,7 +395,7 @@ use Laravel\Fortify\Features;
 
 To disable a feature, comment out or remove that feature entry from the `features` array. For example, remove `Features::registration()` to disable public registration.
 
-When using the [React](#react) or [Vue](#vue) starter kits, you will also need to remove any references to the disabled feature's routes in your frontend code. For example, if you disable email verification, you should remove the imports and references to the `verification` routes in your Vue or React components. This is necessary because these starter kits use Wayfinder for type-safe routing, which generates route definitions at build time. If you reference routes that no longer exist, your application will fail to build.
+When using the [React](#react), [Svelte](#svelte) or [Vue](#vue) starter kits, you will also need to remove any references to the disabled feature's routes in your frontend code. For example, if you disable email verification, you should remove the imports and references to the `verification` routes in your React, Svelte, or Vue components. This is necessary because these starter kits use Wayfinder for type-safe routing, which generates route definitions at build time. If you reference routes that no longer exist, your application will fail to build.
 
 <a name="customizing-actions"></a>
 ### Customizing User Creation and Password Reset
@@ -376,7 +453,7 @@ RateLimiter::for('login', function ($request) {
 <a name="workos"></a>
 ## WorkOS AuthKit Authentication
 
-By default, the React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we also offer a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit that offers:
+By default, the React, Svelte, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we also offer a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit that offers:
 
 <div class="content-list" markdown="1">
 
@@ -416,7 +493,7 @@ In addition, we recommend that you configure your WorkOS AuthKit session inactiv
 <a name="inertia-ssr"></a>
 ### Inertia SSR
 
-The React and Vue starter kits are compatible with Inertia's [server-side rendering](https://inertiajs.com/server-side-rendering) capabilities. To build an Inertia SSR compatible bundle for your application, run the `build:ssr` command:
+The React, Svelte, and Vue starter kits are compatible with Inertia's [server-side rendering](https://inertiajs.com/server-side-rendering) capabilities. To build an Inertia SSR compatible bundle for your application, run the `build:ssr` command:
 
 ```shell
 npm run build:ssr

@@ -489,12 +489,12 @@ The query builder also provides a convenient method to "union" two or more queri
 ```php
 use Illuminate\Support\Facades\DB;
 
-$first = DB::table('users')
+$usersWithoutFirstName = DB::table('users')
     ->whereNull('first_name');
 
 $users = DB::table('users')
     ->whereNull('last_name')
-    ->union($first)
+    ->union($usersWithoutFirstName)
     ->get();
 ```
 
@@ -885,7 +885,7 @@ $patients = DB::table('patients')
 The `whereValueBetween` method verifies that a given value is between the values of two columns of the same type in the same table row:
 
 ```php
-$patients = DB::table('products')
+$products = DB::table('products')
     ->whereValueBetween(100, ['min_price', 'max_price'])
     ->get();
 ```
@@ -893,7 +893,7 @@ $patients = DB::table('products')
 The `whereValueNotBetween` method verifies that a value lies outside the values of two columns in the same table row:
 
 ```php
-$patients = DB::table('products')
+$products = DB::table('products')
     ->whereValueNotBetween(100, ['min_price', 'max_price'])
     ->get();
 ```
@@ -1192,6 +1192,12 @@ $documents = DB::table('documents')
     ->orderByVectorDistance('embedding', $queryEmbedding)
     ->limit(10)
     ->get();
+```
+
+When utilizing PostgreSQL, the `pgvector` extension must be loaded before `vector` columns can be created:
+
+```php
+Schema::ensureVectorExtensionExists();
 ```
 
 <a name="ordering-grouping-limit-and-offset"></a>

@@ -37,7 +37,6 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Envoy](https://github.com/laravel/envoy)
 - [Laravel Folio](https://github.com/laravel/folio)
 - [Laravel Framework](https://github.com/laravel/framework)
-- [Laravel Homestead](https://github.com/laravel/homestead) ([Build Scripts](https://github.com/laravel/settler))
 - [Laravel Horizon](https://github.com/laravel/horizon)
 - [Laravel Passport](https://github.com/laravel/passport)
 - [Laravel Pennant](https://github.com/laravel/pennant)
@@ -51,6 +50,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Livewire Starter Kit](https://github.com/laravel/livewire-starter-kit)
 - [Laravel React Starter Kit](https://github.com/laravel/react-starter-kit)
+- [Laravel Svelte Starter Kit](https://github.com/laravel/svelte-starter-kit)
 - [Laravel Vue Starter Kit](https://github.com/laravel/vue-starter-kit)
 
 </div>
