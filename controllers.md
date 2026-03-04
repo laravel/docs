@@ -5,6 +5,7 @@
     - [Basic Controllers](#basic-controllers)
     - [Single Action Controllers](#single-action-controllers)
 - [Controller Middleware](#controller-middleware)
+    - [Middleware Attributes](#middleware-attributes)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Nested Resources](#restful-nested-resources)
@@ -163,6 +164,60 @@ public static function middleware(): array
             return $next($request);
         },
     ];
+}
+```
+
+<a name="middleware-attributes"></a>
+### Middleware Attributes
+
+You may also assign middleware to controllers using PHP attributes:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Attributes\Controllers\Middleware;
+
+#[Middleware('auth')]
+#[Middleware('log', only: ['index'])]
+#[Middleware('subscribed', except: ['store'])]
+class UserController
+{
+    // ...
+}
+```
+
+You may place middleware attributes on individual controller methods as well. Middleware assigned to methods will be merged with middleware assigned at the class level:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
+
+#[Middleware('auth')]
+class UserController
+{
+    #[Middleware('log')]
+    #[Middleware('subscribed')]
+    public function index()
+    {
+        // ...
+    }
+
+    #[Middleware(static function (Request $request, Closure $next) {
+        // ...
+
+        return $next($request);
+    })]
+    public function store()
+    {
+        // ...
+    }
 }
 ```
 
