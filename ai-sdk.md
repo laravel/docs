@@ -1,44 +1,58 @@
 # Laravel AI SDK
 
-- [Introduction](#introduction)
-- [Installation](#installation)
+- [Laravel AI SDK](#laravel-ai-sdk)
+  - [Introduction](#introduction)
+  - [Installation](#installation)
     - [Configuration](#configuration)
     - [Custom Base URLs](#custom-base-urls)
     - [Provider Support](#provider-support)
-- [Agents](#agents)
+  - [Agents](#agents)
     - [Prompting](#prompting)
     - [Conversation Context](#conversation-context)
+      - [Remembering Conversations](#remembering-conversations)
     - [Structured Output](#structured-output)
     - [Attachments](#attachments)
     - [Streaming](#streaming)
+      - [Streaming Using the Vercel AI SDK Protocol](#streaming-using-the-vercel-ai-sdk-protocol)
     - [Broadcasting](#broadcasting)
     - [Queueing](#queueing)
     - [Tools](#tools)
+      - [Similarity Search](#similarity-search)
+      - [Tool Approval](#tool-approval)
+        - [Conditional Approval](#conditional-approval)
+        - [Handling Pending Approval Responses](#handling-pending-approval-responses)
+        - [Approving and Rejecting Tool Calls](#approving-and-rejecting-tool-calls)
+        - [Events](#events)
     - [Provider Tools](#provider-tools)
+      - [Web Search](#web-search)
+      - [Web Fetch](#web-fetch)
+      - [File Search](#file-search)
     - [Middleware](#middleware)
     - [Anonymous Agents](#anonymous-agents)
     - [Agent Configuration](#agent-configuration)
-- [Images](#images)
-- [Audio (TTS)](#audio)
-- [Transcription (STT)](#transcription)
-- [Embeddings](#embeddings)
+  - [Images](#images)
+  - [Audio](#audio)
+  - [Transcriptions](#transcriptions)
+  - [Embeddings](#embeddings)
     - [Querying Embeddings](#querying-embeddings)
     - [Caching Embeddings](#caching-embeddings)
-- [Reranking](#reranking)
-- [Files](#files)
-- [Vector Stores](#vector-stores)
+  - [Reranking](#reranking)
+    - [Reranking Collections](#reranking-collections)
+  - [Files](#files)
+    - [Using Stored Files in Conversations](#using-stored-files-in-conversations)
+  - [Vector Stores](#vector-stores)
     - [Adding Files to Stores](#adding-files-to-stores)
-- [Failover](#failover)
-- [Testing](#testing)
-    - [Agents](#testing-agents)
-    - [Images](#testing-images)
-    - [Audio](#testing-audio)
-    - [Transcriptions](#testing-transcriptions)
-    - [Embeddings](#testing-embeddings)
-    - [Reranking](#testing-reranking)
-    - [Files](#testing-files)
-    - [Vector Stores](#testing-vector-stores)
-- [Events](#events)
+  - [Failover](#failover)
+  - [Testing](#testing)
+    - [Agents](#agents-1)
+    - [Images](#images-1)
+    - [Audio](#audio-1)
+    - [Transcriptions](#transcriptions-1)
+    - [Embeddings](#embeddings-1)
+    - [Reranking](#reranking-1)
+    - [Files](#files-1)
+    - [Vector Stores](#vector-stores-1)
+  - [Events](#events-1)
 
 <a name="introduction"></a>
 ## Introduction
@@ -639,6 +653,169 @@ You may customize the tool's description using the `withDescription` method:
 ```php
 SimilaritySearch::usingModel(Document::class, 'embedding')
     ->withDescription('Search the knowledge base for relevant articles.'),
+```
+
+<a name="tool-approval"></a>
+#### Tool Approval
+
+Sometimes tools perform actions with real-world consequences — deleting files, processing payments, or sending messages on behalf of a user. In these cases, you may want to require human approval before a tool is executed. To indicate that a tool requires approval, define a `requiresApproval` method on the tool that returns `true`:
+
+```php
+<?php
+
+namespace App\Ai\Tools;
+
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Tools\Request;
+use Stringable;
+
+class DeleteUserFiles implements Tool
+{
+    /**
+     * Get the description of the tool's purpose.
+     */
+    public function description(): Stringable|string
+    {
+        return 'Permanently deletes all files for a given user.';
+    }
+
+    /**
+     * Determine if the tool requires approval before execution.
+     */
+    public function requiresApproval(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Execute the tool.
+     */
+    public function handle(Request $request): Stringable|string
+    {
+        Storage::deleteDirectory("users/{$request['user_id']}");
+
+        return "Deleted files for user {$request['user_id']}";
+    }
+
+    /**
+     * Get the tool's schema definition.
+     */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'user_id' => $schema->integer()->description('The user ID')->required(),
+        ];
+    }
+}
+```
+
+When the AI model calls a tool that requires approval, the agent will not execute the tool. Instead, the `prompt` method will return a `PendingApprovalResponse` instance containing the pending tool call details.
+
+<a name="conditional-tool-approval"></a>
+##### Conditional Approval
+
+The `requiresApproval` method receives no arguments, but since it is a regular method on your tool class, you may use any application logic to determine whether approval is necessary:
+
+```php
+/**
+ * Determine if the tool requires approval before execution.
+ */
+public function requiresApproval(): bool
+{
+    return ! auth()->user()->isAdmin();
+}
+```
+
+<a name="handling-pending-approval-responses"></a>
+##### Handling Pending Approval Responses
+
+To handle approval responses, your agent should use the `HasApprovalFlow` trait, which provides `approve` and `reject` methods:
+
+```php
+<?php
+
+namespace App\Ai\Agents;
+
+use Laravel\Ai\Concerns\HasApprovalFlow;
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\HasTools;
+use Laravel\Ai\Promptable;
+
+class FileManager implements Agent, HasTools
+{
+    use Promptable, HasApprovalFlow;
+
+    // ...
+}
+```
+
+When prompting the agent, you should check whether the response requires approval before presenting the result to the user:
+
+```php
+use App\Ai\Agents\FileManager;
+use Laravel\Ai\Responses\PendingApprovalResponse;
+
+$response = (new FileManager)->prompt('Delete all files for user 42');
+
+if ($response instanceof PendingApprovalResponse) {
+    $pendingToolCall = $response->pendingToolCalls->first();
+
+    // Store the pending tool call for later (session, cache, etc.)...
+    session(['pending_tool' => $pendingToolCall]);
+
+    // Present the pending tool call to the user for approval...
+    return response()->json([
+        'status' => 'pending_approval',
+        'tool' => $pendingToolCall->toolName(),
+        'arguments' => $pendingToolCall->arguments,
+    ]);
+}
+
+return response()->json(['message' => $response->text]);
+```
+
+<a name="approving-and-rejecting-tool-calls"></a>
+##### Approving and Rejecting Tool Calls
+
+Once the user has made a decision, you may approve or reject the pending tool call. The `approve` method will execute the tool and re-prompt the agent with the tool's result:
+
+```php
+$pendingToolCall = session()->pull('pending_tool');
+
+$response = (new FileManager)->approve($pendingToolCall);
+
+return response()->json(['message' => $response->text]);
+```
+
+The `reject` method accepts an optional reason that will be communicated to the agent:
+
+```php
+$response = (new FileManager)->reject($pendingToolCall, 'User declined the operation');
+```
+
+> **Note:** Both `approve` and `reject` re-prompt the agent, which results in an additional API call to the AI provider. The tool's result (or rejection reason) is provided as context in the new prompt.
+
+<a name="tool-approval-events"></a>
+##### Events
+
+The following events are dispatched during the tool approval lifecycle:
+
+- `ToolApprovalRequested`: Dispatched when a tool requiring approval is intercepted at prompt time.
+- `ToolApproved`: Dispatched when a pending tool call is approved, before the tool is executed.
+- `ToolRejected`: Dispatched when a pending tool call is rejected.
+
+These events may be used to log approval decisions, send notifications, or implement audit trails:
+
+```php
+use Laravel\Ai\Events\ToolApprovalRequested;
+
+Event::listen(ToolApprovalRequested::class, function ($event) {
+    Log::info('Tool approval requested', [
+        'tool' => $event->pendingToolCall->toolName(),
+        'arguments' => $event->arguments,
+    ]);
+});
 ```
 
 <a name="provider-tools"></a>
@@ -1995,7 +2172,10 @@ The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), i
 - `StoreCreated`
 - `StoringFile`
 - `StreamingAgent`
+- `ToolApprovalRequested`
+- `ToolApproved`
 - `ToolInvoked`
+- `ToolRejected`
 - `TranscriptionGenerated`
 
 You can listen to any of these events to log or store AI SDK usage information.
