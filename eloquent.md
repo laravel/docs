@@ -36,6 +36,7 @@
 - [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Using Closures](#events-using-closures)
+    - [Using Traits](#events-using-traits)
     - [Observers](#observers)
     - [Muting Events](#muting-events)
 
@@ -1754,6 +1755,52 @@ use function Illuminate\Events\queueable;
 static::created(queueable(function (User $user) {
     // ...
 }));
+```
+
+<a name="events-using-traits"></a>
+### Using Traits
+
+In addition to registering model events using closures, you may also register them within a trait by defining a `boot{TraitName}` static method. Laravel will automatically call this method when the model is booted, allowing the trait to register event listeners independently of the model that uses it:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+trait LogsActivity
+{
+    public static function bootLogsActivity(): void
+    {
+        static::created(function (Model $model) {
+            // Log that a model was created...
+        });
+    }
+}
+```
+
+<a name="initializing-traits"></a>
+#### Initializing Traits
+
+In addition to booting, traits may also define an `initialize{TraitName}` instance method. This method is called each time a new model instance is created, making it useful for setting default attribute values or configuring model properties directly on the instance:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Support\Str;
+
+trait HasHashId
+{
+    public function initializeHasHashId(): void
+    {
+        if (empty($this->hash_id)) {
+            $this->hash_id = Str::random(12);
+        }
+    }
+}
 ```
 
 <a name="observers"></a>
