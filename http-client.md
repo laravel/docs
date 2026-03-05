@@ -287,10 +287,10 @@ $response = Http::retry([100, 200])->post(/* ... */);
 If needed, you may pass a third argument to the `retry` method. The third argument should be a callable that determines if the retries should actually be attempted. For example, you may wish to only retry the request if the initial request encounters an `ConnectionException`:
 
 ```php
-use Exception;
 use Illuminate\Http\Client\PendingRequest;
+use Throwable;
 
-$response = Http::retry(3, 100, function (Exception $exception, PendingRequest $request) {
+$response = Http::retry(3, 100, function (Throwable $exception, PendingRequest $request) {
     return $exception instanceof ConnectionException;
 })->post(/* ... */);
 ```
@@ -298,11 +298,11 @@ $response = Http::retry(3, 100, function (Exception $exception, PendingRequest $
 If a request attempt fails, you may wish to make a change to the request before a new attempt is made. You can achieve this by modifying the request argument provided to the callable you provided to the `retry` method. For example, you might want to retry the request with a new authorization token if the first attempt returned an authentication error:
 
 ```php
-use Exception;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
+use Throwable;
 
-$response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {
+$response = Http::withToken($this->getToken())->retry(2, 0, function (Throwable $exception, PendingRequest $request) {
     if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
         return false;
     }
