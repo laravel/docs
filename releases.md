@@ -2,14 +2,14 @@
 
 - [Versioning Scheme](#versioning-scheme)
 - [Support Policy](#support-policy)
-- [Laravel 12](#laravel-12)
+- [Laravel 13](#laravel-13)
 
 <a name="versioning-scheme"></a>
 ## Versioning Scheme
 
 Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every year (~Q1), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
 
-When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^12.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
+When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^13.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
 
 <a name="named-arguments"></a>
 #### Named Arguments
@@ -45,25 +45,78 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
 
 (*) Supported PHP versions
 
-<a name="laravel-12"></a>
-## Laravel 12
+<a name="laravel-13"></a>
+## Laravel 13
 
-Laravel 12 continues the improvements made in Laravel 11.x by updating upstream dependencies and introducing new starter kits for React, Svelte, Vue, and Livewire, including the option of using [WorkOS AuthKit](https://authkit.com) for user authentication. The WorkOS variant of our starter kits offers social authentication, passkeys, and SSO support.
+Laravel 13 continues Laravel's annual release cadence with a focus on AI-native workflows, stronger defaults, and more expressive developer APIs. This release includes first-party AI primitives, JSON:API resources, semantic / vector search capabilities, and incremental improvements across queues, cache, and security.
 
 <a name="minimal-breaking-changes"></a>
 ### Minimal Breaking Changes
 
 Much of our focus during this release cycle has been minimizing breaking changes. Instead, we have dedicated ourselves to shipping continuous quality-of-life improvements throughout the year that do not break existing applications.
 
-Therefore, the Laravel 12 release is a relatively minor "maintenance release" in order to upgrade existing dependencies. In light of this, most Laravel applications may upgrade to Laravel 12 without changing any application code.
+Therefore, the Laravel 13 release is a relatively minor upgrade in terms of effort, while still delivering substantial new capabilities. In light of this, most Laravel applications may upgrade to Laravel 13 without changing much application code.
 
-<a name="new-application-starter-kits"></a>
-### New Application Starter Kits
+<a name="php-8"></a>
+### PHP 8.3
 
-Laravel 12 introduces new [application starter kits](/docs/{{version}}/starter-kits) for React, Svelte, Vue, and Livewire. The React, Svelte, and Vue starter kits utilize Inertia 2, TypeScript, [shadcn/ui](https://ui.shadcn.com), and Tailwind, while the Livewire starter kits utilize the Tailwind-based [Flux UI](https://fluxui.dev) component library and Laravel Volt.
+Laravel 13.x requires a minimum PHP version of 8.3.
 
-The React, Svelte, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we are introducing a [WorkOS AuthKit-powered](https://authkit.com) variant of each starter kit, offering social authentication, passkeys, and SSO support. WorkOS offers free authentication for applications up to 1 million monthly active users.
+<a name="ai-sdk"></a>
+### Laravel AI SDK
 
-With the introduction of our new application starter kits, Laravel Breeze and Laravel Jetstream will no longer receive additional updates.
+Laravel 13 introduces the first-party [Laravel AI SDK](https://laravel.com/ai), providing a unified API for text generation, tool-calling agents, embeddings, audio, images, and vector-store integrations.
 
-To get started with our new starter kits, check out the [starter kit documentation](/docs/{{version}}/starter-kits).
+With the AI SDK, you can build provider-agnostic AI features while keeping a consistent, Laravel-native developer experience.
+
+For example, a basic agent can be prompted with a single call:
+
+```php
+use App\Ai\Agents\SalesCoach;
+
+$response = SalesCoach::make()->prompt('Analyze this sales transcript...');
+
+return (string) $response;
+```
+
+<a name="json-api"></a>
+### JSON:API Resources
+
+Laravel now includes first-party [JSON:API resources](/docs/{{version}}/eloquent-resources#jsonapi-resources), making it straightforward to return responses compliant with the JSON:API specification.
+
+JSON:API resources handle resource object serialization, relationship inclusion, sparse fieldsets, links, and JSON:API-compliant response headers.
+
+<a name="request-forgery-protection"></a>
+### Request Forgery Protection
+
+For security, Laravel's [request forgery protection](/docs/{{version}}/csrf#preventing-csrf-requests) middleware has been enhanced and formalized as `PreventRequestForgery`, adding origin-aware request verification while preserving compatibility with token-based CSRF protection.
+
+<a name="queue-routing"></a>
+### Queue Routing
+
+Laravel 13 adds [queue routing by class](/docs/{{version}}/queues#queue-routing) via `Queue::route(...)`, allowing you to define default queue / connection routing rules for specific jobs in a central place:
+
+```php
+Queue::route(ProcessPodcast::class, connection: 'redis', queue: 'podcasts');
+```
+
+<a name="cache-touch"></a>
+### Cache TTL Extension
+
+Laravel now includes [`Cache::touch(...)`](/docs/{{version}}/cache), which lets you extend an existing cache item's TTL without retrieving and re-storing its value.
+
+<a name="semantic-search"></a>
+### Semantic / Vector Search
+
+Laravel 13 deepens its semantic search story with native vector query support, embedding workflows, and related APIs documented across [search](/docs/{{version}}/search#semantic-vector-search), [queries](/docs/{{version}}/queries#vector-similarity-clauses), and the [AI SDK](/docs/{{version}}/ai-sdk#embeddings).
+
+These features make it straightforward to build AI-powered search experiences using PostgreSQL + `pgvector`, including similarity search against embeddings generated directly from strings.
+
+For example, you may run semantic similarity searches directly from the query builder:
+
+```php
+$documents = DB::table('documents')
+    ->whereVectorSimilarTo('embedding', 'Best wineries in Napa Valley')
+    ->limit(10)
+    ->get();
+```
