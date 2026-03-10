@@ -701,6 +701,18 @@ Route::put('/post/{post}', function (Post $post) {
 })->can('update', 'post');
 ```
 
+If you are using [controller middleware attributes](/docs/{{version}}/controllers#middleware-attributes), you may apply the `can` middleware via the `Authorize` attribute:
+
+```php
+use Illuminate\Routing\Attributes\Controllers\Authorize;
+
+#[Authorize('update', 'post')]
+public function update(Post $post)
+{
+    // The current user may update the post...
+}
+```
+
 <a name="middleware-actions-that-dont-require-models"></a>
 #### Actions That Don't Require Models
 

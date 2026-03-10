@@ -6,6 +6,7 @@
     - [Single Action Controllers](#single-action-controllers)
 - [Controller Middleware](#controller-middleware)
     - [Middleware Attributes](#middleware-attributes)
+    - [Authorization Attributes](#authorization-attributes)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Nested Resources](#restful-nested-resources)
@@ -220,6 +221,38 @@ class UserController
     }
 }
 ```
+
+<a name="authorization-attributes"></a>
+### Authorization Attributes
+
+If you are authorizing controller actions via policies, you may use the `Authorize` attribute as a convenient shortcut for the `can` middleware:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
+
+class CommentController
+{
+    #[Authorize('create', [Comment::class, 'post'])]
+    public function store(Post $post)
+    {
+        // ...
+    }
+
+    #[Authorize('delete', 'comment')]
+    public function destroy(Comment $comment)
+    {
+        // ...
+    }
+}
+```
+
+The first argument is the ability you wish to authorize. The second argument is the model class, route parameter, or parameters that should be passed to the policy.
 
 <a name="resource-controllers"></a>
 ## Resource Controllers
