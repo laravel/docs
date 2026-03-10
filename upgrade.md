@@ -19,8 +19,6 @@
 <div class="content-list" markdown="1">
 
 - [Cache `serializable_classes` Configuration](#cache-serializable_classes-configuration)
-- [Cache Prefixes and Session Cookie Names](#cache-prefixes-and-session-cookie-names)
-- [MySQL `DELETE` Queries With `JOIN`, `ORDER BY`, and `LIMIT`](#mysql-delete-queries-with-join-order-by-and-limit)
 
 </div>
 
@@ -29,23 +27,17 @@
 
 <div class="content-list" markdown="1">
 
-- [`Container::call` and Nullable Class Defaults](#containercall-and-nullable-class-defaults)
-- [`Dispatcher` Contract: `dispatchAfterResponse`](#dispatcher-contract-dispatchafterresponse)
-- [`JobAttempted` Event Exception Payload](#jobattempted-event-exception-payload)
-- [`Js::from` Uses Unescaped Unicode By Default](#jsfrom-uses-unescaped-unicode-by-default)
-- [`MustVerifyEmail` Contract: `markEmailAsUnverified`](#mustverifyemail-contract-markemailasunverified)
-- [`Queue` Contract Method Additions](#queue-contract-method-additions)
-- [`QueueBusy` Event Property Rename](#queuebusy-event-property-rename)
-- [`ResponseFactory` Contract: `eventStream`](#responsefactory-contract-eventstream)
-- [`Store` and `Repository` Contracts: `touch`](#store-and-repository-contracts-touch)
-- [`Str` Factories Reset Between Tests](#str-factories-reset-between-tests)
-- [`withScheduling` Registration Timing](#withscheduling-registration-timing)
+- [Cache Prefixes and Session Cookie Names](#cache-prefixes-and-session-cookie-names)
 - [Collection Model Serialization Restores Eager-Loaded Relations](#collection-model-serialization-restores-eager-loaded-relations)
-- [Default Password Reset Subject](#default-password-reset-subject)
+- [`Container::call` and Nullable Class Defaults](#containercall-and-nullable-class-defaults)
 - [Domain Route Registration Precedence](#domain-route-registration-precedence)
+- [`JobAttempted` Event Exception Payload](#jobattempted-event-exception-payload)
 - [Manager `extend` Callback Binding](#manager-extend-callback-binding)
+- [MySQL `DELETE` Queries With `JOIN`, `ORDER BY`, and `LIMIT`](#mysql-delete-queries-with-join-order-by-and-limit)
 - [Pagination Bootstrap View Names](#pagination-bootstrap-view-names)
 - [Polymorphic Pivot Table Name Generation](#polymorphic-pivot-table-name-generation)
+- [`QueueBusy` Event Property Rename](#queuebusy-event-property-rename)
+- [`Str` Factories Reset Between Tests](#str-factories-reset-between-tests)
 
 </div>
 
@@ -91,9 +83,11 @@ Or, if you are using [Laravel Herd's](https://herd.laravel.com) bundled copy of 
 <a name="cache-prefixes-and-session-cookie-names"></a>
 #### Cache Prefixes and Session Cookie Names
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: Low**
 
 Laravel's default cache and Redis key prefixes now use hyphenated suffixes. In addition, the default session cookie name now uses `Str::snake(...)` for the application name.
+
+In most applications, this change will not apply because application-level configuration files already define these values. This primarily affects applications that rely on framework-level fallback configuration when corresponding application config values are not present.
 
 If your application relies on these generated defaults, cache keys and session cookie names may change after upgrading:
 
@@ -128,7 +122,7 @@ public function touch($key, $seconds);
 
 **Likelihood Of Impact: Medium**
 
-The default application `cache` configuration now includes a `serializable_classes` option set to `false`. If your application intentionally stores PHP objects in cache, you should explicitly list the classes that may be unserialized:
+The default application `cache` configuration now includes a `serializable_classes` option set to `false`. This hardens cache unserialization behavior to help prevent PHP deserialization gadget chain attacks if your application's `APP_KEY` is leaked. If your application intentionally stores PHP objects in cache, you should explicitly list the classes that may be unserialized:
 
 ```php
 'serializable_classes' => [
