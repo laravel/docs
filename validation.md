@@ -483,6 +483,26 @@ class StorePostRequest extends FormRequest
 }
 ```
 
+<a name="customizing-the-error-bag"></a>
+#### Customizing the Error Bag
+
+When form request validation fails, the errors are flashed to the `default` error bag. If you need to store the errors in a different [named error bag](#named-error-bags), you may use the `ErrorBag` attribute on your form request:
+
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\Attributes\ErrorBag;
+use Illuminate\Foundation\Http\FormRequest;
+
+#[ErrorBag('login')]
+class LoginRequest extends FormRequest
+{
+    // ...
+}
+```
+
 <a name="authorizing-form-requests"></a>
 ### Authorizing Form Requests
 
