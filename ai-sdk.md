@@ -234,9 +234,6 @@ To prompt an agent, first create an instance using the `make` method or standard
 $response = (new SalesCoach)
     ->prompt('Analyze this sales transcript...');
 
-$response = SalesCoach::make()
-    ->prompt('Analyze this sales transcript...');
-
 return (string) $response;
 ```
 
