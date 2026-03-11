@@ -47,7 +47,7 @@
 #### Estimated Upgrade Time: 10 Minutes
 
 > [!NOTE]
-> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. To save time, consider using [Shift](https://laravelshift.com) — a community-maintained service that automates Laravel upgrades.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
