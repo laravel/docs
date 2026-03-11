@@ -79,6 +79,36 @@ $response = SalesCoach::make()->prompt('Analyze this sales transcript...');
 return (string) $response;
 ```
 
+The Laravel AI SDK can also generate images, audio, and embeddings:
+
+For visual generation use cases, the SDK offers a clean API for creating images from plain-language prompts:
+
+```php
+use Laravel\Ai\Image;
+
+$image = Image::of('A donut sitting on the kitchen counter')->generate();
+
+$rawContent = (string) $image;
+```
+
+For voice experiences, you can synthesize natural-sounding audio from text for assistants, narrations, and accessibility features:
+
+```php
+use Laravel\Ai\Audio;
+
+$audio = Audio::of('I love coding with Laravel.')->generate();
+
+$rawContent = (string) $audio;
+```
+
+And for semantic search and retrieval workflows, you can generate embeddings directly from strings:
+
+```php
+use Illuminate\Support\Str;
+
+$embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings();
+```
+
 <a name="json-api"></a>
 ### JSON:API Resources
 
