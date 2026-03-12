@@ -154,10 +154,10 @@ In addition to PHP CS Fixer rules, Pint provides custom rules prefixed with `Pin
 
 This rule removes all comments and docblock prose from your code, keeping only lines that contain `@` annotations such as `@param`, `@return`, `@var`, `@phpstan-type`, etc:
 
-```diff
+```php
 /**
--* Get the posts for the user.
--*
+ * Get the posts for the user. [tl! remove]
+ * [tl! remove]
  * @return HasMany<Post, $this>
  */
 public function posts(): HasMany
