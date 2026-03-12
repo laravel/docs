@@ -18,6 +18,7 @@
     - [Middleware](#middleware)
     - [Anonymous Agents](#anonymous-agents)
     - [Agent Configuration](#agent-configuration)
+    - [Provider Options](#provider-options)
 - [Images](#images)
 - [Audio (TTS)](#audio)
 - [Transcription (STT)](#transcription)
@@ -232,9 +233,6 @@ To prompt an agent, first create an instance using the `make` method or standard
 
 ```php
 $response = (new SalesCoach)
-    ->prompt('Analyze this sales transcript...');
-
-$response = SalesCoach::make()
     ->prompt('Analyze this sales transcript...');
 
 return (string) $response;
@@ -921,6 +919,49 @@ class ComplexReasoner implements Agent
     // Will use the most capable model (e.g., Opus)...
 }
 ```
+
+<a name="provider-options"></a>
+### Provider Options
+
+If your agent needs to pass provider-specific options (such as OpenAI reasoning effort or penalty settings), implement the `HasProviderOptions` contract and define a `providerOptions` method:
+
+```php
+<?php
+
+namespace App\Ai\Agents;
+
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\HasProviderOptions;
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Promptable;
+
+class SalesCoach implements Agent, HasProviderOptions
+{
+    use Promptable;
+
+    // ...
+
+    /**
+     * Get provider-specific generation options.
+     */
+    public function providerOptions(Lab|string $provider): array
+    {
+        return match ($provider) {
+            Lab::OpenAI => [
+                'reasoning' => ['effort' => 'low'],
+                'frequency_penalty' => 0.5,
+                'presence_penalty' => 0.3,
+            ],
+            Lab::Anthropic => [
+                'thinking' => ['budget_tokens' => 1024],
+            ],
+            default => [],
+        };
+    }
+}
+```
+
+The `providerOptions` method receives the provider currently being used (`Lab` enum or string), allowing you to return different options per provider. This is especially useful when using [failover](#failover), since each fallback provider can receive its own configuration.
 
 <a name="images"></a>
 ## Images

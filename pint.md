@@ -144,6 +144,45 @@ However, if you wish, you may enable or disable specific rules in your `pint.jso
 
 Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Therefore, you may use any of its rules to fix code style issues in your project: [PHP CS Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator).
 
+<a name="custom-rules"></a>
+#### Custom Rules
+
+In addition to PHP CS Fixer rules, Pint provides custom rules prefixed with `Pint/`. These rules are not enabled by default, but you may enable them in your `pint.json` file.
+
+<a name="phpdoc-type-annotations-only"></a>
+##### `Pint/phpdoc_type_annotations_only`
+
+This rule removes all comments and docblock prose from your code, keeping only lines that contain `@` annotations such as `@param`, `@return`, `@var`, `@phpstan-type`, etc:
+
+```php
+/**
+ * Get the posts for the user. [tl! remove]
+ * [tl! remove]
+ * @return HasMany<Post, $this>
+ */
+public function posts(): HasMany
+```
+
+Single-line comments and block comments without `@` annotations are removed entirely. If you would like to keep a specific comment, you may prefix it with `@note`, `@warning`, or `@todo`:
+
+```php
+// @note This comment will be preserved.
+```
+
+To enable this rule, add it to your `pint.json` file:
+
+```json
+{
+    "preset": "laravel",
+    "rules": {
+        "Pint/phpdoc_type_annotations_only": true
+    }
+}
+```
+
+> [!NOTE]
+> This rule automatically skips files in the `config` directory, as configuration files typically rely on comments for documentation.
+
 <a name="excluding-files-or-folders"></a>
 ### Excluding Files / Folders
 
