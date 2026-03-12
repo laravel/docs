@@ -174,10 +174,10 @@ Laravel Boost includes AI guidelines for the following packages and frameworks. 
 | Flux UI           | core, free, pro        |
 | Folio             | core                   |
 | Herd              | core                   |
-| Inertia Laravel   | core, 1.x, 2.x         |
-| Inertia React     | core, 1.x, 2.x         |
-| Inertia Vue       | core, 1.x, 2.x         |
-| Inertia Svelte    | core, 1.x, 2.x         |
+| Inertia Laravel   | core, 1.x, 2.x, 3.x    |
+| Inertia React     | core, 1.x, 2.x, 3.x    |
+| Inertia Vue       | core, 1.x, 2.x, 3.x    |
+| Inertia Svelte    | core, 1.x, 2.x, 3.x    |
 | MCP               | core                   |
 | Pennant           | core                   |
 | Pest              | core, 3.x, 4.x         |
