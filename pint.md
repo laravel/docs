@@ -163,7 +163,7 @@ This rule removes all comments and docblock prose from your code, keeping only l
 public function posts(): HasMany
 ```
 
-Single-line comments and block comments without `@` annotations are removed entirely. If you would like to keep a specific comment, you may prefix it with `@note`, `@warning`, or `@important`:
+Single-line comments and block comments without `@` annotations are removed entirely. If you would like to keep a specific comment, you may prefix it with `@note`, `@warning`, or `@todo`:
 
 ```php
 // @note This comment will be preserved.
