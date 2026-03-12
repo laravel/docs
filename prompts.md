@@ -20,6 +20,7 @@
 - [Tables](#tables)
 - [Spin](#spin)
 - [Progress Bar](#progress)
+- [Hyperlink](#hyperlink)  
 - [Clearing the Terminal](#clear)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments and Fallbacks](#fallbacks)
@@ -988,6 +989,45 @@ foreach ($users as $user) {
 }
 
 $progress->finish();
+```
+
+<a name="hyperlink"></a>
+## Hyperlink
+
+The href function may be used to display clickable hyperlinks in supported terminals.
+When the terminal supports OSC-8 hyperlinks, the rendered text becomes an active link that can be opened directly.
+
+```php
+use function Laravel\Prompts\href;
+
+href(
+    message: 'Visit Laravel Documentation:',
+    path: 'https://laravel.com/docs',
+    tooltip: 'Laravel Documentation'
+);
+```
+
+If you omit the tooltip argument, the link text will default to the provided path:
+
+```php
+use function Laravel\Prompts\href;
+
+href(
+    message: 'Laravel Documentation:',
+    path: 'https://laravel.com/docs'
+);
+```
+
+You may also generate hyperlinks to local files:
+
+```php
+use function Laravel\Prompts\href;
+
+href(
+    message: 'Open current file:',
+    path: base_path('routes/web.php'),
+    tooltip: 'Route file'
+);
 ```
 
 <a name="clear"></a>
