@@ -147,14 +147,12 @@ Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fi
 <a name="custom-rules"></a>
 #### Custom Rules
 
-In addition to PHP CS Fixer rules, Pint provides custom rules prefixed with `Pint/`. These rules are not enabled by default and can be enabled in your `pint.json` file.
+In addition to PHP CS Fixer rules, Pint provides custom rules prefixed with `Pint/`. These rules are not enabled by default, but you may enable them in your `pint.json` file.
 
 <a name="phpdoc-type-annotations-only"></a>
 ##### `Pint/phpdoc_type_annotations_only`
 
-The `Pint/phpdoc_type_annotations_only` rule removes all comments and docblock prose from your code, keeping only lines that contain `@` annotations (such as `@param`, `@return`, `@var`, `@phpstan-type`, etc.).
-
-For example:
+This rule removes all comments and docblock prose from your code, keeping only lines that contain `@` annotations such as `@param`, `@return`, `@var`, `@phpstan-type`, etc:
 
 ```diff
 /**
