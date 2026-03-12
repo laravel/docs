@@ -6,7 +6,6 @@
 - [Configuring Pint](#configuring-pint)
     - [Presets](#presets)
     - [Rules](#rules)
-        - [Custom Rules](#custom-rules)
     - [Excluding Files / Folders](#excluding-files-or-folders)
 - [Continuous Integration](#continuous-integration)
     - [GitHub Actions](#running-tests-on-github-actions)
@@ -155,21 +154,12 @@ In addition to PHP CS Fixer rules, Pint provides custom rules prefixed with `Pin
 
 The `Pint/phpdoc_type_annotations_only` rule removes all comments and docblock prose from your code, keeping only lines that contain `@` annotations (such as `@param`, `@return`, `@var`, `@phpstan-type`, etc.).
 
-For example, the following docblock:
+For example:
 
-```php
+```diff
 /**
- * Get the posts for the user.
- *
- * @return HasMany<Post, $this>
- */
-public function posts(): HasMany
-```
-
-Would become:
-
-```php
-/**
+-* Get the posts for the user.
+-*
  * @return HasMany<Post, $this>
  */
 public function posts(): HasMany
