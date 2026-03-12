@@ -130,6 +130,39 @@ Laravel 13 adds [queue routing by class](/docs/{{version}}/queues#queue-routing)
 Queue::route(ProcessPodcast::class, connection: 'redis', queue: 'podcasts');
 ```
 
+<a name="php-attributes"></a>
+### Expanded PHP Attributes
+
+Laravel 13 continues to expand first-party PHP attribute support across the framework, making common configuration and behavioral concerns more declarative and colocated with your classes and methods.
+
+Notable additions include controller and authorization attributes like [`#[Middleware]`](/docs/{{version}}/controllers#controller-middleware) and [`#[Authorize]`](/docs/{{version}}/controllers#authorize-attribute), as well as queue-oriented job controls like [`#[Tries]`](/docs/{{version}}/queues#max-job-attempts-and-timeout), [`#[Backoff]`](/docs/{{version}}/queues#dealing-with-failed-jobs), [`#[Timeout]`](/docs/{{version}}/queues#max-job-attempts-and-timeout), and [`#[FailOnTimeout]`](/docs/{{version}}/queues#failing-on-timeout).
+
+For example, controller middleware and policy checks can now be declared directly on classes and methods:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Comment;
+use App\Models\Post;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
+
+#[Middleware('auth')]
+class CommentController
+{
+    #[Middleware('subscribed')]
+    #[Authorize('create', [Comment::class, 'post'])]
+    public function store(Post $post)
+    {
+        // ...
+    }
+}
+```
+
+Additional attributes have also been introduced across Eloquent, events, notifications, validation, testing, and resource serialization APIs, giving you a consistent attribute-first option in more areas of the framework.
+
 <a name="cache-touch"></a>
 ### Cache TTL Extension
 
