@@ -11,6 +11,7 @@
     - [Running Tasks on One Server](#running-tasks-on-one-server)
     - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
+    - [Pausing Scheduled Tasks](#pausing-scheduled-tasks)
     - [Schedule Groups](#schedule-groups)
 - [Running the Scheduler](#running-the-scheduler)
     - [Sub-Minute Scheduled Tasks](#sub-minute-scheduled-tasks)
@@ -418,6 +419,27 @@ Your application's scheduled tasks will not run when the application is in [main
 
 ```php
 Schedule::command('emails:send')->evenInMaintenanceMode();
+```
+
+<a name="pausing-scheduled-tasks"></a>
+### Pausing Scheduled Tasks
+
+You may temporarily pause scheduled task processing without changing your deployed code by using the `schedule:pause` Artisan command:
+
+```shell
+php artisan schedule:pause
+```
+
+While the scheduler is paused, no scheduled tasks will run. You may resume scheduled task processing using the `schedule:continue` command:
+
+```shell
+php artisan schedule:continue
+```
+
+If a task should still run while the scheduler is paused, you may mark it with the `evenWhenPaused` method:
+
+```php
+Schedule::command('emails:send')->evenWhenPaused();
 ```
 
 <a name="schedule-groups"></a>
