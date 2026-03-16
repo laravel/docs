@@ -753,13 +753,13 @@ The `Str::initials` method will return the initials of a given string, optionall
 ```php
 use Illuminate\Support\Str;
 
-$initials = Str::initials('mickey mouse');
+$initials = Str::initials('taylor otwell');
 
-// mm
+// to
 
-$initials = Str::initials('minnie mouse', true);
+$initials = Str::initials('taylor otwell', capitalize: true);
 
-// MM
+// TO
 ```
 
 <a name="method-str-inline-markdown"></a>
@@ -2591,14 +2591,14 @@ $headline = Str::of('EmailNotificationSent')->headline();
 <a name="method-fluent-str-initials"></a>
 #### `initials` {.collection-method}
 
-The `initials` method will convert the string to only keep the initials:
+The `initials` method will convert the string to its initials:
 
 ```php
 use Illuminate\Support\Str;
 
-$initials = Str::of('mickey mouse')->initials();
+$initials = Str::of('Taylor Otwell')->initials()->upper();
 
-// mm
+// TO
 ```
 
 <a name="method-fluent-str-inline-markdown"></a>
