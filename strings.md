@@ -56,6 +56,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::finish](#method-str-finish)
 [Str::fromBase64](#method-str-from-base64)
 [Str::headline](#method-str-headline)
+[Str::initials](#method-str-initials)
 [Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
@@ -165,6 +166,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [fromBase64](#method-fluent-str-from-base64)
 [hash](#method-fluent-str-hash)
 [headline](#method-fluent-str-headline)
+[initials](#method-fluent-str-initials)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
@@ -741,6 +743,23 @@ $headline = Str::headline('steve_jobs');
 $headline = Str::headline('EmailNotificationSent');
 
 // Email Notification Sent
+```
+
+<a name="method-str-initials"></a>
+#### `Str::initials()` {.collection-method}
+
+The `Str::initials` method will return the initials of a given string, optionally capitalizing them:
+
+```php
+use Illuminate\Support\Str;
+
+$initials = Str::initials('taylor otwell');
+
+// to
+
+$initials = Str::initials('taylor otwell', capitalize: true);
+
+// TO
 ```
 
 <a name="method-str-inline-markdown"></a>
@@ -2567,6 +2586,19 @@ $headline = Str::of('taylor_otwell')->headline();
 $headline = Str::of('EmailNotificationSent')->headline();
 
 // Email Notification Sent
+```
+
+<a name="method-fluent-str-initials"></a>
+#### `initials` {.collection-method}
+
+The `initials` method will convert the string to its initials:
+
+```php
+use Illuminate\Support\Str;
+
+$initials = Str::of('Taylor Otwell')->initials()->upper();
+
+// TO
 ```
 
 <a name="method-fluent-str-inline-markdown"></a>
