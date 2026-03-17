@@ -409,7 +409,7 @@ Route::post('/chat', function () {
 <a name="consuming-streamed-responses"></a>
 ### Consuming Streamed Responses
 
-Streamed responses may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel response and event streams. To get started, install the `@laravel/stream-react` or `@laravel/stream-vue` package:
+Streamed responses may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel response and event streams. To get started, install the `@laravel/stream-react`, `@laravel/stream-vue`, or `@laravel/stream-svelte` package:
 
 ```shell tab=React
 npm install @laravel/stream-react
@@ -417,6 +417,10 @@ npm install @laravel/stream-react
 
 ```shell tab=Vue
 npm install @laravel/stream-vue
+```
+
+```shell tab=Svelte
+npm install @laravel/stream-svelte
 ```
 
 Then, `useStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `data` with the concatenated response as content is returned from your Laravel application:
@@ -465,6 +469,31 @@ const sendMessage = () => {
         <button @click="sendMessage">Send Message</button>
     </div>
 </template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat");
+
+const sendMessage = () => {
+    stream.send({
+        message: `Current timestamp: ${Date.now()}`,
+    });
+};
+</script>
+
+<div>
+    <div>{$stream.data}</div>
+    {#if $stream.isFetching}
+        <div>Connecting...</div>
+    {/if}
+    {#if $stream.isStreaming}
+        <div>Generating...</div>
+    {/if}
+    <button onclick={sendMessage}>Send Message</button>
+</div>
 ```
 
 When sending data back to the stream via `send`, the active connection to the stream is canceled before sending the new data. All requests are sent as JSON `POST` requests.
@@ -516,6 +545,26 @@ const { data } = useStream("chat", {
 </template>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat", {
+    id: undefined,
+    initialInput: undefined,
+    headers: undefined,
+    csrfToken: undefined,
+    onResponse: (response) => {},
+    onData: (data) => {},
+    onCancel: () => {},
+    onFinish: () => {},
+    onError: (error) => {},
+});
+</script>
+
+<div>{$stream.data}</div>
+```
+
 `onResponse` is triggered after a successful initial response from the stream and the raw [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) is passed to the callback. `onData` is called as each chunk is received - the current chunk is passed to the callback. `onFinish` is called when a stream has finished and when an error is thrown during the fetch / read cycle.
 
 By default, a request is not made to the stream on initialization. You may pass an initial payload to the stream by using the `initialInput` option:
@@ -550,6 +599,20 @@ const { data } = useStream("chat", {
 </template>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat", {
+    initialInput: {
+        message: "Introduce yourself.",
+    },
+});
+</script>
+
+<div>{$stream.data}</div>
+```
+
 To cancel a stream manually, you may use the `cancel` method returned from the hook:
 
 ```tsx tab=React
@@ -580,6 +643,19 @@ const { data, cancel } = useStream("chat");
         <button @click="cancel">Cancel</button>
     </div>
 </template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat");
+</script>
+
+<div>
+    <div>{$stream.data}</div>
+    <button onclick={() => stream.cancel()}>Cancel</button>
+</div>
 ```
 
 Each time the `useStream` hook is used, a random `id` is generated to identify the stream. This is sent back to the server with each request in the `X-STREAM-ID` header. When consuming the same stream from multiple components, you can read and write to the stream by providing your own `id`:
@@ -647,6 +723,39 @@ const { isFetching, isStreaming } = useStream("chat", { id: props.id });
         <div v-if="isStreaming">Generating...</div>
     </div>
 </template>
+```
+
+```svelte tab=Svelte
+<!-- App.svelte -->
+<script>
+import { useStream } from "@laravel/stream-svelte";
+import StreamStatus from "./StreamStatus.svelte";
+
+const stream = useStream("chat");
+</script>
+
+<div>
+    <div>{$stream.data}</div>
+    <StreamStatus id={stream.id} />
+</div>
+
+<!-- StreamStatus.svelte -->
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+let { id } = $props();
+
+const stream = useStream("chat", { id });
+</script>
+
+<div>
+    {#if $stream.isFetching}
+        <div>Connecting...</div>
+    {/if}
+    {#if $stream.isStreaming}
+        <div>Generating...</div>
+    {/if}
+</div>
 ```
 
 <a name="streamed-json-responses"></a>
@@ -730,6 +839,31 @@ const loadUsers = () => {
 </template>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useJsonStream } from "@laravel/stream-svelte";
+
+const stream = useJsonStream("users");
+
+const loadUsers = () => {
+    stream.send({
+        query: "taylor",
+    });
+};
+</script>
+
+<div>
+    <ul>
+        {#if $stream.data?.users}
+            {#each $stream.data.users as user (user.id)}
+                <li>{user.id}: {user.name}</li>
+            {/each}
+        {/if}
+    </ul>
+    <button onclick={loadUsers}>Load Users</button>
+</div>
+```
+
 <a name="event-streams"></a>
 ### Event Streams (SSE)
 
@@ -761,7 +895,7 @@ yield new StreamedEvent(
 <a name="consuming-event-streams"></a>
 #### Consuming Event Streams
 
-Event streams may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel event streams. To get started, install the `@laravel/stream-react` or `@laravel/stream-vue` package:
+Event streams may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel event streams. To get started, install the `@laravel/stream-react`, `@laravel/stream-vue`, or `@laravel/stream-svelte` package:
 
 ```shell tab=React
 npm install @laravel/stream-react
@@ -769,6 +903,10 @@ npm install @laravel/stream-react
 
 ```shell tab=Vue
 npm install @laravel/stream-vue
+```
+
+```shell tab=Svelte
+npm install @laravel/stream-svelte
 ```
 
 Then, `useEventStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `message` with the concatenated response as messages are returned from your Laravel application:
@@ -793,6 +931,16 @@ const { message } = useEventStream("/chat");
 <template>
   <div>{{ message }}</div>
 </template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEventStream } from "@laravel/stream-svelte";
+
+const eventStream = useEventStream("/chat");
+</script>
+
+<div>{$eventStream.message}</div>
 ```
 
 The second argument given to `useEventStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
@@ -837,6 +985,28 @@ const { message } = useEventStream("/chat", {
   },
   endSignal: "</stream>",
   glue: " ",
+});
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEventStream } from "@laravel/stream-svelte";
+
+const eventStream = useEventStream("/chat", {
+    eventName: "update",
+    onMessage: (event) => {
+        //
+    },
+    onError: (error) => {
+        //
+    },
+    onComplete: () => {
+        //
+    },
+    endSignal: "</stream>",
+    glue: " ",
+    replace: false,
 });
 </script>
 ```

@@ -5,6 +5,7 @@
 - [Core Development Discussion](#core-development-discussion)
 - [Which Branch?](#which-branch)
 - [Compiled Assets](#compiled-assets)
+- [AI-Generated Contributions](#ai-generated-contributions)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Coding Style](#coding-style)
     - [PHPDoc](#phpdoc)
@@ -92,6 +93,17 @@ Informal discussion regarding bugs, new features, and implementation of existing
 ## Compiled Assets
 
 If you are submitting a change that will affect a compiled file, such as most of the files in `resources/css` or `resources/js` of the `laravel/laravel` repository, do not commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Laravel. In order to defensively prevent this, all compiled files will be generated and committed by Laravel maintainers.
+
+<a name="ai-generated-contributions"></a>
+## AI-Generated Contributions
+
+We appreciate every pull request submitted to Laravel. However, contributions that are primarily AI-generated without thoughtful human review and consideration are not acceptable.
+
+If you choose to use AI tools to assist with your contribution, the resulting code **must** be thoroughly reviewed, tested, and understood by you before submitting.
+
+**Mass opening issues or pull requests that are entirely AI-generated will not be tolerated.** Such pull requests will be closed without review, and the contributing user may be blocked from the repository.
+
+We encourage contributors to familiarize themselves with the existing codebase, engage with the community, and submit pull requests that reflect their own understanding and careful consideration of the problem they are solving.
 
 <a name="security-vulnerabilities"></a>
 ## Security Vulnerabilities
