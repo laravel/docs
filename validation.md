@@ -2281,6 +2281,22 @@ The field under validation must start with one of the given values.
 
 The field under validation must be a string. If you would like to allow the field to also be `null`, you should assign the `nullable` rule to the field.
 
+For convenience, string validation rules may also be constructed using the fluent `Rule::string()` rule builder:
+
+```php
+use Illuminate\Validation\Rule;
+
+'title' => [
+    'required',
+    Rule::string()
+        ->min(3)
+        ->max(255)
+        ->alphaDash(ascii: true),
+],
+```
+
+The string rule builder provides methods for common string constraints, including `alpha`, `alphaDash`, `alphaNumeric`, `ascii`, `between`, `doesntEndWith`, `doesntStartWith`, `endsWith`, `exactly`, `lowercase`, `max`, `min`, `startsWith`, and `uppercase`. Since the rule builder is conditionable, you may also use the `when` and `unless` methods to conditionally apply constraints.
+
 <a name="rule-timezone"></a>
 #### timezone
 
