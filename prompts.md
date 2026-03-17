@@ -24,6 +24,7 @@
 - [Task](#task)
 - [Stream](#stream)
 - [Terminal Title](#terminal-title)
+- [Notifications](#notifications)
 - [Clearing the Terminal](#clear)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments and Fallbacks](#fallbacks)
@@ -1329,6 +1330,40 @@ To reset the terminal title back to its default, pass an empty string:
 
 ```php
 title('');
+```
+
+<a name="notifications"></a>
+## Notifications
+
+The `notify` function sends a native desktop notification from the terminal:
+
+```php
+use function Laravel\Prompts\notify;
+
+notify('Build Complete', 'Deployed to production');
+```
+
+Notifications are supported on macOS (via `osascript`) and Linux (via `notify-send` with `kdialog` fallback).
+
+On macOS, you may also include a `subtitle` and a `sound`:
+
+```php
+notify(
+    title: 'Build Complete',
+    body: 'Deployed to production',
+    subtitle: 'staging-server',
+    sound: 'Glass',
+);
+```
+
+On Linux, you may provide a custom `icon`:
+
+```php
+notify(
+    title: 'Build Complete',
+    body: 'Deployed to production',
+    icon: '/path/to/icon.png',
+);
 ```
 
 <a name="clear"></a>
