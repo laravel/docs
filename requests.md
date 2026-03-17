@@ -256,6 +256,18 @@ if ($request->expectsJson()) {
 }
 ```
 
+If you need to determine whether the request specifically prefers Markdown or will accept Markdown among other content types, such as when serving AI agents or other clients that consume Markdown responses, you may use the `wantsMarkdown` and `acceptsMarkdown` methods:
+
+```php
+if ($request->wantsMarkdown()) {
+    // The client's most preferred content type is text/markdown...
+}
+
+if ($request->acceptsMarkdown()) {
+    // The client accepts Markdown responses...
+}
+```
+
 <a name="psr7-requests"></a>
 ### PSR-7 Requests
 
