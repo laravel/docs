@@ -47,7 +47,7 @@
 #### Estimated Upgrade Time: 10 Minutes
 
 > [!NOTE]
-> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. To save time, you may use [Laravel Shift](https://laravelshift.com) or [Laravel Boost](https://github.com/laravel/boost). Shift is a community-maintained service that automates Laravel upgrades. Boost is a first-party MCP server that provides your AI assistant with guided upgrade prompts — once installed in any Laravel 12 application, simply use the `/upgrade-laravel-13` slash command in Claude Code, Cursor, Opencode, Gemini or VS Code to begin the upgrade to Laravel 13.
+> We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application. To save time, you may use [Laravel Shift](https://laravelshift.com) or [Laravel Boost](https://github.com/laravel/boost). Shift is a community-maintained service that automates Laravel upgrades. Boost is a first-party MCP server that provides your AI assistant with guided upgrade prompts — once installed in any Laravel 12 application, simply use the `/upgrade-laravel-13` slash command in Claude Code, Cursor, OpenCode, Gemini or VS Code to begin the upgrade to Laravel 13.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
