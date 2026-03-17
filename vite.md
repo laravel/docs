@@ -481,13 +481,13 @@ Your application's CSS may be placed within the `resources/css/app.css` file.
 
 When referencing assets in your JavaScript or CSS, Vite automatically processes and versions them. In addition, when building Blade based applications, Vite can also process and version static assets that you reference solely in Blade templates.
 
-However, in order to accomplish this, you need to make Vite aware of your assets by importing the static assets into the application's entry point. For example, if you want to process and version all images stored in `resources/images` and all fonts stored in `resources/fonts`, you should add the following in your application's `resources/js/app.js` entry point:
+However, in order to accomplish this, you need to make Vite aware of your assets by specifying them in the plugin's `assets` option. For example, if you want to process and version all images stored in `resources/images` and all fonts stored in `resources/fonts`, you should add the following to your Vite configuration:
 
 ```js
-import.meta.glob([
-  '../images/**',
-  '../fonts/**',
-]);
+laravel({
+    input: 'resources/js/app.js',
+    assets: ['resources/images/**', 'resources/fonts/**'],
+})
 ```
 
 These assets will now be processed by Vite when running `npm run build`. You can then reference these assets in Blade templates using the `Vite::asset` method, which will return the versioned URL for a given asset:
@@ -495,6 +495,9 @@ These assets will now be processed by Vite when running `npm run build`. You can
 ```blade
 <img src="{{ Vite::asset('resources/images/logo.png') }}">
 ```
+
+> [!NOTE]
+> Prior to version 3 of the Laravel Vite plugin, static assets had to be imported in your application's entry point using `import.meta.glob`. The `assets` option was introduced due to changes in Vite 8.
 
 <a name="blade-refreshing-on-save"></a>
 ### Refreshing on Save
