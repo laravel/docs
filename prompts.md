@@ -425,6 +425,38 @@ $role = select(
 );
 ```
 
+<a name="select-info"></a>
+#### Secondary Information
+
+The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+
+```php
+$role = select(
+    label: 'What role should the user have?',
+    options: [
+        'member' => 'Member',
+        'contributor' => 'Contributor',
+        'owner' => 'Owner',
+    ],
+    info: fn (string $value) => match ($value) {
+        'member' => 'Can view and comment.',
+        'contributor' => 'Can view, comment, and edit.',
+        'owner' => 'Full access to all resources.',
+        default => null,
+    }
+);
+```
+
+You may also pass a static string to the `info` argument if the information does not depend on the highlighted option:
+
+```php
+$role = select(
+    label: 'What role should the user have?',
+    options: ['Member', 'Contributor', 'Owner'],
+    info: 'The role may be changed at any time.'
+);
+```
+
 <a name="select-validation"></a>
 #### Additional Validation
 
@@ -496,6 +528,30 @@ $categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
     scroll: 10
+);
+```
+
+<a name="multiselect-info"></a>
+#### Secondary Information
+
+The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+
+```php
+$permissions = multiselect(
+    label: 'What permissions should be assigned?',
+    options: [
+        'read' => 'Read',
+        'create' => 'Create',
+        'update' => 'Update',
+        'delete' => 'Delete',
+    ],
+    info: fn (string $value) => match ($value) {
+        'read' => 'View resources and their properties.',
+        'create' => 'Create new resources.',
+        'update' => 'Modify existing resources.',
+        'delete' => 'Permanently remove resources.',
+        default => null,
+    }
 );
 ```
 
@@ -574,6 +630,23 @@ $name = suggest(
     placeholder: 'E.g. Taylor',
     default: $user?->name,
     hint: 'This will be displayed on your profile.'
+);
+```
+
+<a name="suggest-info"></a>
+#### Secondary Information
+
+The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+
+```php
+$name = suggest(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle'],
+    info: fn (string $value) => match ($value) {
+        'Taylor' => 'Administrator',
+        'Dayle' => 'Contributor',
+        default => null,
+    }
 );
 ```
 
@@ -686,6 +759,21 @@ $id = search(
 );
 ```
 
+<a name="search-info"></a>
+#### Secondary Information
+
+The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+
+```php
+$id = search(
+    label: 'Search for the user that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    info: fn (int $userId) => User::find($userId)?->email
+);
+```
+
 <a name="search-validation"></a>
 #### Additional Validation
 
@@ -763,6 +851,21 @@ $ids = multisearch(
         ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
         : [],
     scroll: 10
+);
+```
+
+<a name="multisearch-info"></a>
+#### Secondary Information
+
+The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    info: fn (int $userId) => User::find($userId)?->email
 );
 ```
 
