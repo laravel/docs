@@ -1008,7 +1008,7 @@ If you would like to make all of your attributes mass assignable, you may define
 /**
  * The attributes that aren't mass assignable.
  *
- * @var array<string>|bool
+ * @var array<string>
  */
 protected $guarded = [];
 ```
