@@ -235,7 +235,7 @@ Boost also includes Laravel-maintained AI guidelines that help agents to follow 
 <a name="installing-laravel-boost"></a>
 ### Installing Laravel Boost
 
-Boost can be installed in Laravel 10, 11, and 12 applications running PHP 8.1 or higher. To get started, install Boost as a development dependency:
+Boost can be installed in Laravel 10, 11, 12, and 13 applications running PHP 8.1 or higher. To get started, install Boost as a development dependency:
 
 ```shell
 composer require laravel/boost --dev
