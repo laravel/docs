@@ -2969,6 +2969,16 @@ return retry(5, function () {
 }, 100);
 ```
 
+The sleep duration also accepts a `CarbonInterval` instance:
+
+```php
+use function Illuminate\Support\seconds;
+
+return retry(5, function () {
+    // Attempt 5 times while resting 5 seconds between attempts...
+}, seconds(5));
+```
+
 If you would like to manually calculate the number of milliseconds to sleep between attempts, you may pass a closure as the third argument to the `retry` function:
 
 ```php
