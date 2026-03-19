@@ -69,6 +69,7 @@ You should update the following dependencies in your application's `composer.jso
 - `laravel/tinker` to `^3.0`
 - `phpunit/phpunit` to `^12.0`
 - `pestphp/pest` to `^4.0`
+- `laravel/boost` to `^2.0`
 
 </div>
 
