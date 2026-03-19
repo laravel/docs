@@ -177,6 +177,14 @@ if ($request->session()->missing('users')) {
 }
 ```
 
+Session methods such as `get`, `put`, `has`, and `forget` also accept enum instances as keys:
+
+```php
+use App\Enums\CheckoutSession;
+
+$request->session()->get(CheckoutSession::Cart);
+```
+
 <a name="storing-data"></a>
 ### Storing Data
 
