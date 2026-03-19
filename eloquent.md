@@ -738,6 +738,12 @@ class FlightController extends Controller
 
 In this example, we assign the `name` field from the incoming HTTP request to the `name` attribute of the `App\Models\Flight` model instance. When we call the `save` method, a record will be inserted into the database. The model's `created_at` and `updated_at` timestamps will automatically be set when the `save` method is called, so there is no need to set them manually.
 
+If you would like to save the model within a database transaction, you may use the `saveOrFail` method. If an exception is thrown during the save, the transaction will automatically be rolled back:
+
+```php
+$flight->saveOrFail();
+```
+
 Alternatively, you may use the `create` method to "save" a new model using a single PHP statement. The inserted model instance will be returned to you by the `create` method:
 
 ```php
@@ -763,6 +769,12 @@ $flight = Flight::find(1);
 $flight->name = 'Paris to London';
 
 $flight->save();
+```
+
+If you would like to update the model within a database transaction, you may use the `updateOrFail` method. If an exception is thrown during the update, the transaction will automatically be rolled back:
+
+```php
+$flight->updateOrFail(['name' => 'Paris to London']);
 ```
 
 Occasionally, you may need to update an existing model or create a new model if no matching model exists. Like the `firstOrCreate` method, the `updateOrCreate` method persists the model, so there's no need to manually call the `save` method.
@@ -1031,6 +1043,12 @@ use App\Models\Flight;
 $flight = Flight::find(1);
 
 $flight->delete();
+```
+
+If you would like to delete the model within a database transaction, you may use the `deleteOrFail` method. If an exception is thrown during the delete, the transaction will automatically be rolled back:
+
+```php
+$flight->deleteOrFail();
 ```
 
 <a name="deleting-an-existing-model-by-its-primary-key"></a>

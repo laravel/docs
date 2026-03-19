@@ -2545,6 +2545,17 @@ $user->roles()->toggle([
 ]);
 ```
 
+<a name="transactional-pivot-operations"></a>
+#### Transactional Pivot Operations
+
+Each of the pivot operations discussed above also has an `OrFail` variant (`attachOrFail`, `detachOrFail`, `syncOrFail`, `syncWithoutDetachingOrFail`, and `toggleOrFail`) that wraps the operation within a database transaction, so that all changes are automatically rolled back if an exception is thrown:
+
+```php
+$user->roles()->attachOrFail([1, 2, 3]);
+
+$user->roles()->syncOrFail([1, 2, 3]);
+```
+
 <a name="updating-a-record-on-the-intermediate-table"></a>
 #### Updating a Record on the Intermediate Table
 
