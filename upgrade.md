@@ -53,7 +53,7 @@
 <a name="upgrading-using-ai"></a>
 ### Upgrading Using AI
 
-You can automate your upgrade using [Laravel Boost](https://github.com/laravel/boost). Boost is a first-party MCP server that provides your AI assistant with guided upgrade prompts — once installed in any Laravel 12 application, use the `/upgrade-laravel-v13` slash command in Claude Code, Cursor, OpenCode, Gemini, or VS Code to begin the upgrade to Laravel 13.
+You can automate your upgrade using [Laravel Boost](https://github.com/laravel/boost). Boost is a first-party MCP server that provides your AI assistant with guided upgrade prompts — once installed in any Laravel 12 application, use the `/upgrade-laravel-v13` slash command in Claude Code, Cursor, OpenCode, Gemini, or VS Code to begin the upgrade to Laravel 13. This command requires Laravel Boost `^2.0`.
 
 <a name="updating-dependencies"></a>
 ### Updating Dependencies
@@ -65,6 +65,7 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^13.0`
+- `laravel/boost` to `^2.0`
 - `laravel/tinker` to `^3.0`
 - `phpunit/phpunit` to `^12.0`
 - `pestphp/pest` to `^4.0`
