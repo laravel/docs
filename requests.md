@@ -432,6 +432,27 @@ $elapsed = $request->date('elapsed', '!H:i', 'Europe/Madrid');
 
 If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `date` method.
 
+<a name="retrieving-interval-input-values"></a>
+#### Retrieving Interval Input Values
+
+Input values containing durations may be retrieved as `CarbonInterval` instances using the `interval` method. If the request does not contain an input value with the given name, `null` will be returned:
+
+```php
+$duration = $request->interval('duration');
+```
+
+If the input value is numeric, you may provide a unit as the second argument. The unit may be a string such as `second`, `minute`, or `day`, or a `Carbon\Unit` enum instance:
+
+```php
+use Carbon\Unit;
+
+$timeout = $request->interval('timeout', 'second');
+
+$delay = $request->interval('delay', Unit::Minute);
+```
+
+If the input value is present but has an invalid format, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `interval` method.
+
 <a name="retrieving-enum-input-values"></a>
 #### Retrieving Enum Input Values
 
