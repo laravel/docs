@@ -573,7 +573,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 
 </div>
 
-<a name="spacifics-method-list"></a>
+<a name="specifics-method-list"></a>
 #### Specialty Types
 
 <div class="collection-method-list" markdown="1">
