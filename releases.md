@@ -135,7 +135,7 @@ Queue::route(ProcessPodcast::class, connection: 'redis', queue: 'podcasts');
 
 Laravel 13 continues to expand first-party PHP attribute support across the framework, making common configuration and behavioral concerns more declarative and colocated with your classes and methods.
 
-Notable additions include controller and authorization attributes like [`#[Middleware]`](/docs/{{version}}/controllers#controller-middleware) and [`#[Authorize]`](/docs/{{version}}/controllers#authorize-attribute), as well as queue-oriented job controls like [`#[Tries]`](/docs/{{version}}/queues#max-job-attempts-and-timeout), [`#[Backoff]`](/docs/{{version}}/queues#dealing-with-failed-jobs), [`#[Timeout]`](/docs/{{version}}/queues#max-job-attempts-and-timeout), and [`#[FailOnTimeout]`](/docs/{{version}}/queues#failing-on-timeout).
+Notable additions include controller and authorization attributes like [`#[Middleware]`](/docs/{{version}}/controllers#controller-middleware) and [`#[Authorize]`](/docs/{{version}}/controllers#authorization-attributes), as well as queue-oriented job controls like [`#[Tries]`](/docs/{{version}}/queues#max-job-attempts-and-timeout), [`#[Backoff]`](/docs/{{version}}/queues#dealing-with-failed-jobs), [`#[Timeout]`](/docs/{{version}}/queues#max-job-attempts-and-timeout), and [`#[FailOnTimeout]`](/docs/{{version}}/queues#failing-on-timeout).
 
 For example, controller middleware and policy checks can now be declared directly on classes and methods:
 
