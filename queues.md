@@ -261,6 +261,12 @@ public function __construct(
 }
 ```
 
+If you only need to remove specific relations while keeping the rest, you may use the `withoutRelation` method:
+
+```php
+$this->podcast = $podcast->withoutRelation('comments');
+```
+
 If you are using [PHP constructor property promotion](https://www.php.net/manual/en/language.oop5.decon.php#language.oop5.decon.constructor.promotion) and would like to indicate that an Eloquent model should not have its relations serialized, you may use the `WithoutRelations` attribute:
 
 ```php
