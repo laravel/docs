@@ -7,6 +7,7 @@
     - [Assigning Middleware to Routes](#assigning-middleware-to-routes)
     - [Middleware Groups](#middleware-groups)
     - [Middleware Aliases](#middleware-aliases)
+    - [Idempotent requests](#idempotent-requests)
     - [Sorting Middleware](#sorting-middleware)
 - [Middleware Parameters](#middleware-parameters)
 - [Terminable Middleware](#terminable-middleware)
@@ -363,6 +364,7 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 | `cache.headers`    | `Illuminate\Http\Middleware\SetCacheHeaders`                                                                  |
 | `can`              | `Illuminate\Auth\Middleware\Authorize`                                                                        |
 | `guest`            | `Illuminate\Auth\Middleware\RedirectIfAuthenticated`                                                          |
+| `idempotent`       | `Illuminate\Routing\Middleware\Idempotent`                                                                    |
 | `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword`                                                                  |
 | `precognitive`     | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests`                                            |
 | `signed`           | `Illuminate\Routing\Middleware\ValidateSignature`                                                             |
@@ -371,6 +373,59 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 | `verified`         | `Illuminate\Auth\Middleware\EnsureEmailIsVerified`                                                            |
 
 </div>
+
+<a name="idempotent-requests"></a>
+### Idempotent requests
+
+Laravel includes an `Illuminate\Routing\Middleware\Idempotent` middleware that helps you safely retry `POST`, `PUT`, and `PATCH` requests without performing the same work twice. When two requests use the same idempotency key and the same request payload, Laravel will return the original response instead of executing your route again.
+
+To get started, attach the middleware to the routes that create or update data:
+
+```php
+use Illuminate\Routing\Middleware\Idempotent;
+use Illuminate\Support\Facades\Route;
+
+Route::post('/orders', StoreOrderController::class)
+    ->middleware(Idempotent::class);
+```
+
+By default, the middleware expects an `Idempotency-Key` header on the request. If the header is missing, Laravel will return a `400` response. When the same key is sent again with the same request data, the cached response will be replayed and the response will include an `Idempotency-Replayed: true` header.
+
+> [!NOTE]
+> The idempotency middleware uses Laravel's cache system to store responses and acquire locks. Therefore, your application should use a cache driver that supports [atomic locks](/docs/{{version}}/cache#atomic-locks).
+
+If you need to customize the middleware's behavior, you may use the `Idempotent::using` helper when assigning the middleware:
+
+```php
+use Illuminate\Routing\Middleware\Idempotent;
+
+Route::post('/orders', StoreOrderController::class)
+    ->middleware(Idempotent::using(
+        ttl: 600,
+        required: false,
+        scope: 'ip',
+        header: 'X-Idempotency-Key',
+    ));
+```
+
+The middleware accepts four options:
+
+<div class="overflow-auto">
+
+| Option | Description |
+| --- | --- |
+| `ttl` | The number of seconds the stored response should remain available. The default is `86400` seconds. |
+| `required` | Determines whether the idempotency header is required. When `false`, requests without the header pass through normally. |
+| `scope` | Controls how keys are segmented. Supported values are `user`, `ip`, and `global`. |
+| `header` | The header name Laravel should inspect for the client-provided idempotency key. |
+
+</div>
+
+When using the default `user` scope, keys are isolated per authenticated user. Guest requests automatically fall back to the request IP address. The `ip` scope always segments by client IP address, while the `global` scope reuses the same key across all users and IP addresses.
+
+If the same key is reused with different request data, Laravel will return a `422` response. If a second matching request arrives while the first request is still being processed, Laravel will return a `409` response with a `Retry-After: 1` header so the client may try again shortly.
+
+Idempotency fingerprints include the request method, route, query string, payload, and content type. JSON payloads are normalized before hashing, so equivalent JSON objects with different key ordering are still treated as the same request.
 
 <a name="sorting-middleware"></a>
 ### Sorting Middleware
