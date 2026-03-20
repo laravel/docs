@@ -902,7 +902,7 @@ return User::all()
 Laravel ships with `JsonApiResource`, a resource class that produces responses compliant with the [JSON:API specification](https://jsonapi.org/). It extends the standard `JsonResource` class and automatically handles resource object structure, relationships, sparse fieldsets, includes, and sets the `Content-Type` header to `application/vnd.api+json`.
 
 > [!NOTE]
-> Laravel's JSON:API resources handle the serialization of your responses. If you also need to parse incoming JSON:API query parameters such as filters and sorts, [Spatie's Laravel Query Builder](https://spatie.be/docs/laravel-query-builder/v6/introduction) is a great companion package.
+> Laravel's JSON:API resources handle the serialization of your responses. If you also need to parse incoming JSON:API query parameters such as filters and sorts, [Spatie's Laravel Query Builder](https://spatie.be/docs/laravel-query-builder) is a great companion package.
 
 <a name="generating-jsonapi-resources"></a>
 ### Generating JSON:API Resources
