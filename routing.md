@@ -28,6 +28,7 @@
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing the Current Route](#accessing-the-current-route)
 - [Cross-Origin Resource Sharing (CORS)](#cors)
+    - [Route-specific CORS](#route-specific-cors)
 - [Route Caching](#route-caching)
 
 <a name="basic-routing"></a>
@@ -1044,6 +1045,98 @@ php artisan config:publish cors
 ```
 
 This command will place a `cors.php` configuration file within your application's `config` directory.
+
+<a name="route-specific-cors"></a>
+### Route-specific CORS
+
+If you need different CORS policies for different parts of your application, you may define CORS options directly on individual routes or route groups. Route-specific CORS options override the global CORS configuration for the matched route. The `cors` method accepts `origins`, `methods`, `headers`, `exposed_headers`, `max_age`, and `credentials` options.
+
+```php
+use Illuminate\Support\Facades\Route;
+
+Route::get('/profile', function () {
+    // ...
+})->cors([
+    'origins' => ['https://app.example.com'],
+    'methods' => ['GET'],
+    'headers' => ['Content-Type', 'X-Requested-With'],
+]);
+```
+
+You may also apply the same CORS options to every route within a route group:
+
+```php
+use Illuminate\Support\Facades\Route;
+
+Route::prefix('api')
+    ->cors([
+        'origins' => ['https://frontend.example.com'],
+        'methods' => ['GET', 'POST'],
+    ])
+    ->group(function () {
+        Route::get('/reports', function () {
+            // ...
+        });
+
+        Route::post('/reports', function () {
+            // ...
+        });
+    });
+```
+
+If you are defining controller routes, you may use the `Illuminate\Routing\Attributes\Cors` attribute on the controller class or on individual controller methods:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Attributes\Cors;
+
+#[Cors(origins: ['https://admin.example.com'], methods: ['GET', 'POST'])]
+class AdminProfileController extends Controller
+{
+    public function __invoke()
+    {
+        // ...
+    }
+}
+```
+
+```php
+use App\Http\Controllers\AdminProfileController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/admin/profile', AdminProfileController::class);
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Attributes\Cors;
+
+class ReportController extends Controller
+{
+    #[Cors(origins: ['https://reports.example.com'], methods: ['GET'])]
+    public function show()
+    {
+        // ...
+    }
+}
+```
+
+```php
+use App\Http\Controllers\ReportController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/reports/{report}', [ReportController::class, 'show']);
+```
+
+Method-level `Cors` attributes take precedence over class-level attributes. Controller attributes also take precedence over route or route group CORS definitions.
+
+Route-specific CORS definitions are included when you cache your routes, so you may continue using the `route:cache` command in production.
 
 > [!NOTE]
 > For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
