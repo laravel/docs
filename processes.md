@@ -94,6 +94,14 @@ By default, processes will throw an instance of `Illuminate\Process\Exceptions\P
 $result = Process::timeout(120)->run('bash import.sh');
 ```
 
+The `timeout` and `idleTimeout` methods also accept `CarbonInterval` instances:
+
+```php
+use function Illuminate\Support\minutes;
+
+$result = Process::timeout(minutes(2))->run('bash import.sh');
+```
+
 Or, if you would like to disable the process timeout entirely, you may invoke the `forever` method:
 
 ```php
