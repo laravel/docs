@@ -1719,7 +1719,7 @@ class User extends Model
 }
 ```
 
-If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queuable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener in the background using your application's [queue](/docs/{{version}}/queues):
+If needed, you may utilize [queueable anonymous event listeners](/docs/{{version}}/events#queueable-anonymous-event-listeners) when registering model events. This will instruct Laravel to execute the model event listener in the background using your application's [queue](/docs/{{version}}/queues):
 
 ```php
 use function Illuminate\Events\queueable;
