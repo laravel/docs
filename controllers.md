@@ -6,6 +6,7 @@
     - [Single Action Controllers](#single-action-controllers)
 - [Controller Middleware](#controller-middleware)
     - [Middleware Attributes](#middleware-attributes)
+    - [Idempotent attribute](#idempotent-attribute)
     - [Authorization Attributes](#authorization-attributes)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
@@ -221,6 +222,82 @@ class UserController
     }
 }
 ```
+
+<a name="idempotent-attribute"></a>
+### Idempotent Attribute
+
+If you need to make write-oriented controller actions safely retryable, you may use Laravel's `#[Idempotent]` attribute. This attribute applies the `Illuminate\Routing\Middleware\Idempotent` middleware to the controller action, allowing Laravel to replay the original response when the same idempotency key is submitted more than once.
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Attributes\Controllers\Idempotent;
+use Symfony\Component\HttpFoundation\Response;
+
+#[Idempotent]
+class OrderController
+{
+    public function store(): Response
+    {
+        // ...
+    }
+}
+```
+
+Like the route middleware, the attribute expects an `Idempotency-Key` header by default and only manages `POST`, `PUT`, and `PATCH` requests.
+
+You may place the attribute on individual methods or on the controller class itself. Method-level attributes are merged with class-level attributes:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Attributes\Controllers\Idempotent;
+
+#[Idempotent]
+class OrderController
+{
+    #[Idempotent(ttl: 600, scope: 'ip', header: 'X-Idempotency-Key')]
+    public function store()
+    {
+        // ...
+    }
+
+    public function update()
+    {
+        // ...
+    }
+}
+```
+
+The `#[Idempotent]` attribute accepts the same `ttl`, `required`, `scope`, and `header` options as the route middleware. In addition, since it extends Laravel's controller middleware attribute, you may limit the attribute to selected methods using the `only` and `except` arguments:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Attributes\Controllers\Idempotent;
+
+#[Idempotent(except: ['store'])]
+class OrderController
+{
+    public function store()
+    {
+        // ...
+    }
+
+    public function update()
+    {
+        // ...
+    }
+}
+```
+
+For more information about configuring idempotency behavior, including custom headers and request scopes, check out the [idempotent requests middleware documentation](/docs/{{version}}/middleware#idempotent-requests).
 
 <a name="authorization-attributes"></a>
 ### Authorization Attributes
