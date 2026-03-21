@@ -1728,7 +1728,7 @@ $browser->assertDontSee($text);
 <a name="assert-see-in"></a>
 #### assertSeeIn
 
-Assert that the given text is present within the selector:
+Assert that the given text is present within the selector. When the selector matches multiple elements, the assertion will pass if the text is found in any of the matched elements:
 
 ```php
 $browser->assertSeeIn($selector, $text);
@@ -1737,7 +1737,7 @@ $browser->assertSeeIn($selector, $text);
 <a name="assert-dont-see-in"></a>
 #### assertDontSeeIn
 
-Assert that the given text is not present within the selector:
+Assert that the given text is not present within the selector. When the selector matches multiple elements, the assertion will pass only if the text is not found in any of the matched elements:
 
 ```php
 $browser->assertDontSeeIn($selector, $text);
@@ -1746,7 +1746,7 @@ $browser->assertDontSeeIn($selector, $text);
 <a name="assert-see-anything-in"></a>
 #### assertSeeAnythingIn
 
-Assert that any text is present within the selector:
+Assert that any text is present within the selector. When the selector matches multiple elements, the assertion will pass if at least one of the matched elements contains text:
 
 ```php
 $browser->assertSeeAnythingIn($selector);
@@ -1755,7 +1755,7 @@ $browser->assertSeeAnythingIn($selector);
 <a name="assert-see-nothing-in"></a>
 #### assertSeeNothingIn
 
-Assert that no text is present within the selector:
+Assert that no text is present within the selector. When the selector matches multiple elements, the assertion will pass only if all of the matched elements are empty:
 
 ```php
 $browser->assertSeeNothingIn($selector);
