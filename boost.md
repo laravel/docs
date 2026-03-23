@@ -113,6 +113,12 @@ You may also automate this process by adding it to your Composer "post-update-cm
 }
 ```
 
+By default, the `boost:update` command will only update the existing Boost resources already published within your application. If you would like Boost to scan your application for any newly installed packages and offer to publish their corresponding guidelines and skills, you may use the `--discover` option:
+
+```shell
+php artisan boost:update --discover
+```
+
 <a name="mcp-server"></a>
 ## MCP Server
 
