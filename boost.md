@@ -119,8 +119,6 @@ By default, the `boost:update` command will only update the existing Boost resou
 php artisan boost:update --discover
 ```
 
-This option is particularly useful after installing new Laravel ecosystem packages, as it ensures your Boost resources remain complete and up to date.
-
 <a name="mcp-server"></a>
 ## MCP Server
 
