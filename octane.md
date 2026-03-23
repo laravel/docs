@@ -380,6 +380,8 @@ If you are using the Swoole application server, you may also specify how many ["
 php artisan octane:start --workers=4 --task-workers=6
 ```
 
+Alternatively, you may set the `OCTANE_WORKERS` and `OCTANE_TASK_WORKERS` environment variables, or the `workers` and `task_workers` keys in your `config/octane.php` file.
+
 <a name="specifying-the-max-request-count"></a>
 ### Specifying the Max Request Count
 
@@ -388,6 +390,8 @@ To help prevent stray memory leaks, Octane gracefully restarts any worker once i
 ```shell
 php artisan octane:start --max-requests=250
 ```
+
+Alternatively, you may set the `OCTANE_MAX_REQUESTS` environment variable or the `max_requests` key in your `config/octane.php` file.
 
 <a name="specifying-the-max-execution-time"></a>
 ### Specifying the Max Execution Time
