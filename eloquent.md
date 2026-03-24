@@ -183,6 +183,23 @@ class Flight extends Model
 }
 ```
 
+If you only need to disable auto-incrementing IDs, you may use the `WithoutIncrementing` attribute:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Attributes\WithoutIncrementing;
+use Illuminate\Database\Eloquent\Model;
+
+#[WithoutIncrementing]
+class Flight extends Model
+{
+    // ...
+}
+```
+
 <a name="composite-primary-keys"></a>
 #### "Composite" Primary Keys
 
@@ -275,6 +292,23 @@ class Flight extends Model
 }
 ```
 
+If you only need to disable timestamps, you may use the `WithoutTimestamps` attribute:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
+use Illuminate\Database\Eloquent\Model;
+
+#[WithoutTimestamps]
+class Flight extends Model
+{
+    // ...
+}
+```
+
 If you need to customize the format of your model's timestamps, you may use the `dateFormat` argument on the `Table` attribute. This determines how date attributes are stored in the database as well as their format when the model is serialized to an array or JSON:
 
 ```php
@@ -286,6 +320,23 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 
 #[Table(dateFormat: 'U')]
+class Flight extends Model
+{
+    // ...
+}
+```
+
+If you only need to define a date format, you may use the `DateFormat` attribute:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Attributes\DateFormat;
+use Illuminate\Database\Eloquent\Model;
+
+#[DateFormat('U')]
 class Flight extends Model
 {
     // ...
