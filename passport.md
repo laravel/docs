@@ -1211,6 +1211,37 @@ Route::get('/orders', function () {
 })->middleware(['auth:api', CheckTokenForAnyScope::using('orders:read', 'orders:create')]);
 ```
 
+<a name="scope-attributes"></a>
+#### Scope Attributes
+
+If your application uses [controller middleware attributes](/docs/{{version}}/controllers#middleware-attributes), you may use the `Laravel\Passport\Attributes\AuthorizeToken` attribute as a convenient shortcut for Passport's scope middleware:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Laravel\Passport\Attributes\AuthorizeToken;
+
+#[AuthorizeToken('orders:read')]
+#[AuthorizeToken('orders:create', only: ['store'])]
+class OrderController
+{
+    #[AuthorizeToken(['orders:read', 'orders:create'], anyScope: true)]
+    public function index()
+    {
+        // Access token has either "orders:read" or "orders:create" scope...
+    }
+
+    public function store()
+    {
+        // Access token has both "orders:read" and "orders:create" scopes...
+    }
+}
+```
+
+By default, the `AuthorizeToken` attribute requires all given scopes. If you pass `anyScope: true`, the request is authorized when the token has at least one of the given scopes.
+
 <a name="checking-scopes-on-a-token-instance"></a>
 #### Checking Scopes on a Token Instance
 
