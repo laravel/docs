@@ -412,6 +412,18 @@ $user = User::factory()
     ->create();
 ```
 
+You may also pass multiple attribute arrays to create related models with per-model state. Laravel will apply each array in sequence:
+
+```php
+$user = User::factory()
+    ->hasPosts(
+        ['title' => 'First Post'],
+        ['title' => 'Second Post'],
+        ['title' => 'Third Post'],
+    )
+    ->create();
+```
+
 You may provide a closure-based state transformation if your state change requires access to the parent model:
 
 ```php
