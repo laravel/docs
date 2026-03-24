@@ -941,6 +941,25 @@ class PostResource extends JsonApiResource
 }
 ```
 
+Alternatively, you may configure your resource entirely using PHP 8 attributes:
+
+```php
+<?php
+
+namespace App\Http\Resources;
+
+use App\Http\Resources\UserResource;
+use Illuminate\Http\Resources\JsonApi\Attributes\Attributes;
+use Illuminate\Http\Resources\JsonApi\Attributes\Relationships;
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+
+#[Attributes(attributes: ['title', 'body'])]
+#[Relationships(relationships: ['author' => UserResource::class, 'comments'])]
+class PostResource extends JsonApiResource
+{
+}
+```
+
 JSON:API resources may be returned from routes and controllers just like standard resources:
 
 ```php
@@ -986,9 +1005,20 @@ return Post::all()->toResourceCollection();
 <a name="defining-jsonapi-attributes"></a>
 ### Defining Attributes
 
-There are two ways to define which attributes are included in your JSON:API resource.
+There are three ways to define which attributes are included in your JSON:API resource.
 
-The simplest approach is to define an `$attributes` property on your resource. You may list attribute names as values, which will be read directly from the underlying model:
+The simplest approach is to use the `Attributes` PHP attribute on your resource class:
+
+```php
+use Illuminate\Http\Resources\JsonApi\Attributes\Attributes;
+
+#[Attributes(attributes: ['title', 'body', 'created_at'])]
+class PostResource extends JsonApiResource
+{
+}
+```
+
+You may also define an `$attributes` property on your resource. You may list attribute names as values, which will be read directly from the underlying model:
 
 ```php
 public $attributes = [
@@ -1023,9 +1053,23 @@ public function toAttributes(Request $request): array
 
 JSON:API resources support defining relationships that follow the JSON:API specification. Relationships are only serialized when requested by the client via the `include` query parameter.
 
+#### The `Relationships` Attribute
+
+The simplest way to define relationships is using the `Relationships` PHP attribute:
+
+```php
+use App\Http\Resources\UserResource;
+use Illuminate\Http\Resources\JsonApi\Attributes\Relationships;
+
+#[Relationships(relationships: ['author' => UserResource::class, 'comments'])]
+class PostResource extends JsonApiResource
+{
+}
+```
+
 #### The `$relationships` Property
 
-You may define your resource's includable relationships via the `$relationships` property on your resource:
+You may also define your resource's includable relationships via the `$relationships` property on your resource:
 
 ```php
 public $relationships = [
@@ -1193,7 +1237,22 @@ return $post->load('author', 'comments')
 <a name="jsonapi-links-and-meta"></a>
 ### Links and Meta
 
-You may add links and meta information to your JSON:API resource objects by overriding the `toLinks` and `toMeta` methods on the resource:
+You may add links and meta information to your JSON:API resource objects using PHP attributes or by overriding methods on the resource.
+
+For static values, you may use the `JsonApiLinks` and `JsonApiMeta` attributes:
+
+```php
+use Illuminate\Http\Resources\JsonApi\Attributes\JsonApiLinks;
+use Illuminate\Http\Resources\JsonApi\Attributes\JsonApiMeta;
+
+#[JsonApiLinks(links: ['self' => '/api/posts/1'])]
+#[JsonApiMeta(meta: ['copyright' => '2024 Laravel'])]
+class PostResource extends JsonApiResource
+{
+}
+```
+
+For dynamic values (such as route URLs or computed data), override the `toLinks` and `toMeta` methods on the resource:
 
 ```php
 /**
@@ -1236,6 +1295,42 @@ This will add `links` and `meta` keys to the resource object in the response:
     }
 }
 ```
+
+<a name="jsonapi-information"></a>
+### JSON:API Information
+
+You may add top-level JSON:API specification metadata to your resource using the `JsonApiInformation` attribute. This allows you to declare the specification version, extensions, profiles, and meta information:
+
+```php
+use Illuminate\Http\Resources\JsonApi\Attributes\JsonApiInformation;
+
+#[JsonApiInformation(version: '1.0', ext: ['atomic'], profile: ['https://example.com/profiles/last-modified'], meta: ['docs' => 'https://example.com/docs'])]
+class PostResource extends JsonApiResource
+{
+}
+```
+
+<a name="jsonapi-custom-wrapping"></a>
+### Custom Wrapping
+
+By default, JSON:API resources wrap the response data using the `data` key. If you would like to customize the wrapper key, you may use the `Wraps` attribute:
+
+```php
+use Illuminate\Http\Resources\JsonApi\Attributes\Wraps;
+
+#[Wraps(wrapper: 'result')]
+class PostResource extends JsonApiResource
+{
+}
+```
+
+This is equivalent to setting the `static $wrap` property on the resource.
+
+<a name="jsonapi-attribute-priority"></a>
+### Attribute Priority
+
+> [!NOTE]
+> When configuring your JSON:API resource, you may mix PHP attributes, class properties, and method overrides. Values are resolved in the following priority order: method override > class property > PHP attribute > default. This means a `toAttributes` method will always take precedence over an `$attributes` property, which in turn takes precedence over an `#[Attributes]` PHP attribute.
 
 <a name="resource-responses"></a>
 ## Resource Responses
