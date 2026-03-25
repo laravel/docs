@@ -496,7 +496,7 @@ use Laravel\Ai\Responses\AgentResponse;
 use Throwable;
 
 Route::post('/coach', function (Request $request) {
-    return (new SalesCoach)
+    (new SalesCoach)
         ->queue($request->input('transcript'))
         ->then(function (AgentResponse $response) {
             // ...
