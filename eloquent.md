@@ -867,6 +867,32 @@ The `update` method expects an array of column and value pairs representing the 
 > [!WARNING]
 > When issuing a mass update via Eloquent, the `saving`, `saved`, `updating`, and `updated` model events will not be fired for the updated models. This is because the models are never actually retrieved when issuing a mass update.
 
+<a name="increment-and-decrement"></a>
+#### Increment and Decrement
+
+Eloquent also provides convenient methods for incrementing or decrementing the value of a given column on a model instance. These methods scope the update to the model's primary key and fire the `updating` / `updated` model events:
+
+```php
+$flight = Flight::find(1);
+
+$flight->increment('seats');
+$flight->increment('seats', 5);
+
+$flight->decrement('seats');
+$flight->decrement('seats', 5);
+```
+
+If you need to increment or decrement multiple columns at once, you may use the `incrementEach` and `decrementEach` methods:
+
+```php
+$flight->incrementEach([
+    'seats' => 5,
+    'miles' => 100,
+]);
+```
+
+For more information on increment and decrement operations, see the [query builder documentation](/docs/{{version}}/queries#increment-and-decrement).
+
 <a name="examining-attribute-changes"></a>
 #### Examining Attribute Changes
 
