@@ -962,7 +962,7 @@ RateLimiter::for('resource-not-found', function (Request $request) {
         ->by($request->user()?->id ?: $request->ip())
         ->after(function (Response $response) {
             // Only count 404 responses toward the rate limit to prevent enumeration...
-            return $response->status() === 404;
+            return $response->getStatusCode() === 404;
         });
 });
 ```
