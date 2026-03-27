@@ -3,7 +3,7 @@
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
 - [Creating a Laravel Application](#creating-a-laravel-project)
-    - [Getting Started with AI Agents](#getting-started-with-ai-agents)
+    - [Getting Started Using AI](#getting-started-using-ai)
     - [Installing PHP and the Laravel Installer](#installing-php)
     - [Creating an Application](#creating-an-application)
 - [Initial Configuration](#initial-configuration)
@@ -71,11 +71,7 @@ The prompt below tells the agent where to find Laravel's installation guidance, 
 ```text
 I'm building a new Laravel application.
 
-First, fetch and follow the instructions from https://laravel.com/for/agents. Treat the returned Markdown as the source of truth for how to install and set up Laravel in this session.
-
-Then help me complete the installation using Laravel's recommended defaults. Ask only for the minimum decisions you need, and if multiple options are available, choose the most sensible Laravel default unless I tell you otherwise.
-
-Before making changes, check the current directory and confirm whether I am already inside a Laravel project. If not, guide me through creating one.
+Fetch and follow the instructions from https://laravel.com/for/agents. Treat the returned Markdown as the source of truth for how to install and set up Laravel in this session.
 ```
 
 After the agent reads the instructions, it should guide you step by step and keep the setup aligned with Laravel's defaults.
