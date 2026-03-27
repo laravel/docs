@@ -3,6 +3,7 @@
 - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
 - [Creating a Laravel Application](#creating-a-laravel-project)
+    - [Getting Started with AI Agents](#getting-started-with-ai-agents)
     - [Installing PHP and the Laravel Installer](#installing-php)
     - [Creating an Application](#creating-an-application)
 - [Initial Configuration](#initial-configuration)
@@ -59,6 +60,25 @@ Laravel combines the best packages in the PHP ecosystem to offer the most robust
 
 <a name="creating-a-laravel-project"></a>
 ## Creating a Laravel Application
+
+<a name="getting-started-using-ai"></a>
+### Getting Started Using AI
+
+If you are using an AI coding agent like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [OpenCode](https://opencode.ai), you can start with a prompt that gives the agent a Laravel-specific playbook before it touches your project.
+
+The prompt below tells the agent where to find Laravel's installation guidance, what to prioritize, and how to make sensible defaults when you haven't made a choice yet. Paste this into your agent to get started:
+
+```text
+I'm building a new Laravel application.
+
+First, fetch and follow the instructions from https://laravel.com/for/agents. Treat the returned Markdown as the source of truth for how to install and set up Laravel in this session.
+
+Then help me complete the installation using Laravel's recommended defaults. Ask only for the minimum decisions you need, and if multiple options are available, choose the most sensible Laravel default unless I tell you otherwise.
+
+Before making changes, check the current directory and confirm whether I am already inside a Laravel project. If not, guide me through creating one.
+```
+
+After the agent reads the instructions, it should guide you step by step and keep the setup aligned with Laravel's defaults.
 
 <a name="installing-php"></a>
 ### Installing PHP and the Laravel Installer
