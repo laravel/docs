@@ -591,7 +591,7 @@ public function handle(Request $request): array
 
     return [
         Response::text('Weather Summary: Sunny, 72°F'),
-        Response::text('**Detailed Forecast**\n- Morning: 65°F\n- Afternoon: 78°F\n- Evening: 70°F')
+        Response::text("**Detailed Forecast**\n- Morning: 65°F\n- Afternoon: 78°F\n- Evening: 70°F")
     ];
 }
 ```
