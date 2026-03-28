@@ -153,6 +153,15 @@ export default function Show({ user }) {
 
 As you can see, Inertia allows you to leverage the full power of React, Svelte, or Vue when building your frontend, while providing a light-weight bridge between your Laravel powered backend and your JavaScript powered frontend.
 
+#### The Inertia Response Protocol
+
+Under the hood, when a user first visits an Inertia-powered application, the server returns a full HTML document—just like a traditional server-rendered page. This response includes the page component data, allowing the client-side framework to boot and hydrate the application.
+
+Once the Inertia client-side library has initialized, all subsequent navigation within the application is handled via XHR requests that include a special `X-Inertia` header. When the server detects this header, it returns only the page component data as a JSON response instead of a full HTML document. The Inertia client-side library then swaps the page component and updates the browser's history state without a full page reload.
+
+> [!NOTE]
+> If your browser displays a raw JSON response containing a `component` key instead of a rendered page, it typically indicates that the Inertia client-side library has not been properly initialized—often due to a JavaScript bundle that failed to load or execute. Ensure your [asset bundling](/docs/{{version}}/vite) is configured correctly and that the Inertia client-side library is installed in your application. For a deeper understanding of how Inertia's client-server communication works, consult the [Inertia.js protocol documentation](https://inertiajs.com/the-protocol).
+
 #### Server-Side Rendering
 
 If you're concerned about diving into Inertia because your application requires server-side rendering, don't worry. Inertia offers [server-side rendering support](https://inertiajs.com/server-side-rendering). And, when deploying your application via [Laravel Cloud](https://cloud.laravel.com) or [Laravel Forge](https://forge.laravel.com), it's a breeze to ensure that Inertia's server-side rendering process is always running.
