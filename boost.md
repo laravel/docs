@@ -175,7 +175,7 @@ Laravel Boost includes AI guidelines for the following packages and frameworks. 
 | Package           | Versions Supported     |
 | ----------------- | ---------------------- |
 | Core & Boost      | core                   |
-| Laravel Framework | core, 10.x, 11.x, 12.x |
+| Laravel Framework | core, 10.x, 11.x, 12.x, 13.x |
 | Livewire          | core, 2.x, 3.x, 4.x    |
 | Flux UI           | core, free, pro        |
 | Folio             | core                   |
@@ -330,7 +330,7 @@ The `Search Docs` MCP tool allows agents to query the Laravel hosted documentati
 
 | Package           | Versions Supported |
 | ----------------- | ------------------ |
-| Laravel Framework | 10.x, 11.x, 12.x   |
+| Laravel Framework | 10.x, 11.x, 12.x, 13.x |
 | Filament          | 2.x, 3.x, 4.x, 5.x |
 | Flux UI           | 2.x Free, 2.x Pro  |
 | Inertia           | 1.x, 2.x           |
