@@ -218,19 +218,23 @@ Some applications may require a different approach to throttling authentication 
 
 If your application uses two-factor authentication, you should also rate limit the two-factor challenge endpoint. You may specify your own [rate limiter](/docs/{{version}}/routing#rate-limiting) via the `fortify.limiters.two-factor` configuration option:
 
-    'limiters' => [
-        'login' => 'login',
-        'two-factor' => 'two-factor',
-    ],
+```php
+'limiters' => [
+    'login' => 'login',
+    'two-factor' => 'two-factor',
+],
+```
 
 Then, define the corresponding rate limiter in your application's `FortifyServiceProvider`:
 
-    use Illuminate\Cache\RateLimiting\Limit;
-    use Illuminate\Support\Facades\RateLimiter;
+```php
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 
-    RateLimiter::for('two-factor', function (Request $request) {
-        return Limit::perMinute(5)->by($request->session()->get('login.id'));
-    });
+RateLimiter::for('two-factor', function (Request $request) {
+    return Limit::perMinute(5)->by($request->session()->get('login.id'));
+});
+```
 
 > [!NOTE]
 > Utilizing a mixture of throttling, [two-factor authentication](/docs/{{version}}/fortify#two-factor-authentication), and an external web application firewall (WAF) will provide the most robust defense for your legitimate application users.
