@@ -2,8 +2,8 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-    - [Keeping Boost Resources Updated](#keeping-boost-resources-updated)
     - [Set Up Your Agents](#set-up-your-agents)
+    - [Keeping Boost Resources Updated](#keeping-boost-resources-updated)
 - [MCP Server](#mcp-server)
     - [Available MCP Tools](#available-mcp-tools)
     - [Manually Registering the MCP Server](#manually-registering-the-mcp-server)
