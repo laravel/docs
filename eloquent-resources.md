@@ -899,7 +899,7 @@ return User::all()
 <a name="jsonapi-resources"></a>
 ## JSON:API Resources
 
-Laravel ships with `JsonApiResource`, a resource class that produces responses compliant with the [JSON:API specification](https://jsonapi.org/). It extends the standard `JsonResource` class and automatically handles resource object structure, relationships, sparse fieldsets, includes, and sets the `Content-Type` header to `application/vnd.api+json`.
+Laravel ships with `JsonApiResource`, a resource class that produces responses compliant with the [JSON:API specification](https://jsonapi.org/). It extends the standard `JsonResource` class and automatically handles resource object structure, relationships, sparse fieldsets, includes, lazy attribute evaluation, and sets the `Content-Type` header to `application/vnd.api+json`.
 
 > [!NOTE]
 > Laravel's JSON:API resources handle the serialization of your responses. If you also need to parse incoming JSON:API query parameters such as filters and sorts, [Spatie's Laravel Query Builder](https://spatie.be/docs/laravel-query-builder) is a great companion package.
@@ -998,6 +998,8 @@ public $attributes = [
 ];
 ```
 
+If an attribute is expensive to calculate, you may return it from `toAttributes` as a closure so it is only evaluated when the attribute is actually needed in the response.
+
 Or, for full control over the resource's attributes, you may override the `toAttributes` method on the resource:
 
 ```php
@@ -1011,7 +1013,7 @@ public function toAttributes(Request $request): array
     return [
         'title' => $this->title,
         'body' => $this->body,
-        'is_published' => $this->published_at !== null,
+        'is_published' => fn () => $this->published_at !== null,
         'created_at' => $this->created_at,
         'updated_at' => $this->updated_at,
     ];
@@ -1055,10 +1057,16 @@ public function toRelationships(Request $request): array
 {
     return [
         'author' => UserResource::class,
-        'comments',
+        'comments' => fn () => CommentResource::collection(
+            $request->user()->is($this->resource)
+                ? $this->comments
+                : $this->comments->where('is_public', true),
+        ),
     ];
 }
 ```
+
+Using closures gives you more control over the relationship payload, while still only resolving the relationship when the client requests it.
 
 #### Including Relationships
 
