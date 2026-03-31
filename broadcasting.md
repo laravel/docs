@@ -30,7 +30,7 @@
     - [Listening for Events](#listening-for-events)
     - [Leaving a Channel](#leaving-a-channel)
     - [Namespaces](#namespaces)
-    - [Using React or Vue](#using-react-or-vue)
+    - [Using React, Vue, or Svelte](#using-react-or-vue)
 - [Presence Channels](#presence-channels)
     - [Authorizing Presence Channels](#authorizing-presence-channels)
     - [Joining Presence Channels](#joining-presence-channels)
@@ -78,7 +78,7 @@ All of your application's event broadcasting configuration is stored in the `con
 <a name="quickstart-next-steps"></a>
 #### Next Steps
 
-Once you have enabled event broadcasting, you're ready to learn more about [defining broadcast events](#defining-broadcast-events) and [listening for events](#listening-for-events). If you're using Laravel's React or Vue [starter kits](/docs/{{version}}/starter-kits), you may listen for events using Echo's [useEcho hook](#using-react-or-vue).
+Once you have enabled event broadcasting, you're ready to learn more about [defining broadcast events](#defining-broadcast-events) and [listening for events](#listening-for-events). If you're using Laravel's React, Vue, or Svelte [starter kits](/docs/{{version}}/starter-kits), you may listen for events using Echo's [useEcho hook](#using-react-or-vue).
 
 > [!NOTE]
 > Before broadcasting any events, you should first configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
@@ -259,6 +259,20 @@ configureEcho({
 });
 ```
 
+```js tab=Svelte
+import { configureEcho } from "@laravel/echo-svelte";
+
+configureEcho({
+    broadcaster: "reverb",
+    // key: import.meta.env.VITE_REVERB_APP_KEY,
+    // wsHost: import.meta.env.VITE_REVERB_HOST,
+    // wsPort: import.meta.env.VITE_REVERB_PORT,
+    // wssPort: import.meta.env.VITE_REVERB_PORT,
+    // forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    // enabledTransports: ['ws', 'wss'],
+});
+```
+
 Next, you should compile your application's assets:
 
 ```shell
@@ -317,6 +331,21 @@ configureEcho({
 
 ```js tab=Vue
 import { configureEcho } from "@laravel/echo-vue";
+
+configureEcho({
+    broadcaster: "pusher",
+    // key: import.meta.env.VITE_PUSHER_APP_KEY,
+    // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    // forceTLS: true,
+    // wsHost: import.meta.env.VITE_PUSHER_HOST,
+    // wsPort: import.meta.env.VITE_PUSHER_PORT,
+    // wssPort: import.meta.env.VITE_PUSHER_PORT,
+    // enabledTransports: ["ws", "wss"],
+});
+```
+
+```js tab=Svelte
+import { configureEcho } from "@laravel/echo-svelte";
 
 configureEcho({
     broadcaster: "pusher",
@@ -443,6 +472,19 @@ configureEcho({
 });
 ```
 
+```js tab=Svelte
+import { configureEcho } from "@laravel/echo-svelte";
+
+configureEcho({
+    broadcaster: "ably",
+    // key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
+    // wsHost: "realtime-pusher.ably.io",
+    // wsPort: 443,
+    // disableStats: true,
+    // encrypted: true,
+});
+```
+
 You may have noticed our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
 
 Once you have adjusted the Echo configuration according to your needs, you may compile your application's assets:
@@ -557,7 +599,7 @@ All authorization callbacks receive the currently authenticated user as their fi
 <a name="listening-for-event-broadcasts"></a>
 #### Listening for Event Broadcasts
 
-Next, all that remains is to listen for the event in our JavaScript application. We can do this using [Laravel Echo](#client-side-installation). Laravel Echo's built-in React and Vue hooks make it simple to get started, and, by default, all of the event's public properties will be included on the broadcast event:
+Next, all that remains is to listen for the event in our JavaScript application. We can do this using [Laravel Echo](#client-side-installation). Laravel Echo's built-in React, Vue, and Svelte hooks make it simple to get started, and, by default, all of the event's public properties will be included on the broadcast event:
 
 ```js tab=React
 import { useEcho } from "@laravel/echo-react";
@@ -574,6 +616,20 @@ useEcho(
 ```vue tab=Vue
 <script setup lang="ts">
 import { useEcho } from "@laravel/echo-vue";
+
+useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEcho } from "@laravel/echo-svelte";
 
 useEcho(
     `orders.${orderId}`,
@@ -1119,9 +1175,9 @@ Echo.channel('orders')
 ```
 
 <a name="using-react-or-vue"></a>
-### Using React or Vue
+### Using React, Vue, or Svelte
 
-Laravel Echo includes React and Vue hooks that make it painless to listen for events. To get started, invoke the `useEcho` hook, which is used to listen for private events. The `useEcho` hook will automatically leave channels when the consuming component is unmounted:
+Laravel Echo includes React, Vue, and Svelte hooks that make it painless to listen for events. To get started, invoke the `useEcho` hook, which is used to listen for private events. The `useEcho` hook will automatically leave channels when the consuming component is unmounted:
 
 ```js tab=React
 import { useEcho } from "@laravel/echo-react";
@@ -1138,6 +1194,20 @@ useEcho(
 ```vue tab=Vue
 <script setup lang="ts">
 import { useEcho } from "@laravel/echo-vue";
+
+useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEcho } from "@laravel/echo-svelte";
 
 useEcho(
     `orders.${orderId}`,
@@ -1233,6 +1303,32 @@ leave();
 </script>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useEcho } from "@laravel/echo-svelte";
+
+const { leaveChannel, leave, stopListening, listen } = useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+
+// Stop listening without leaving channel...
+stopListening();
+
+// Start listening again...
+listen();
+
+// Leave channel...
+leaveChannel();
+
+// Leave a channel and also its associated private and presence channels...
+leave();
+</script>
+```
+
 <a name="react-vue-connecting-to-public-channels"></a>
 #### Connecting to Public Channels
 
@@ -1256,6 +1352,16 @@ useEchoPublic("posts", "PostPublished", (e) => {
 </script>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useEchoPublic } from "@laravel/echo-svelte";
+
+useEchoPublic("posts", "PostPublished", (e) => {
+    console.log(e.post);
+});
+</script>
+```
+
 <a name="react-vue-connecting-to-presence-channels"></a>
 #### Connecting to Presence Channels
 
@@ -1272,6 +1378,16 @@ useEchoPresence("posts", "PostPublished", (e) => {
 ```vue tab=Vue
 <script setup lang="ts">
 import { useEchoPresence } from "@laravel/echo-vue";
+
+useEchoPresence("posts", "PostPublished", (e) => {
+    console.log(e.post);
+});
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEchoPresence } from "@laravel/echo-svelte";
 
 useEchoPresence("posts", "PostPublished", (e) => {
     console.log(e.post);
@@ -1304,6 +1420,16 @@ const status = useConnectionStatus();
 <template>
     <div>Connection: {{ status }}</div>
 </template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useConnectionStatus } from "@laravel/echo-svelte";
+
+const status = useConnectionStatus();
+</script>
+
+<div>Connection: {status()}</div>
 ```
 
 The possible status values are:
@@ -1592,9 +1718,9 @@ Echo.private(`App.Models.User.${this.user.id}`)
 ```
 
 <a name="model-broadcasts-with-react-or-vue"></a>
-#### Using React or Vue
+#### Using React, Vue, or Svelte
 
-If you are using React or Vue, you may use Laravel Echo's included `useEchoModel` hook to easily listen for model broadcasts:
+If you are using React, Vue, or Svelte, you may use Laravel Echo's included `useEchoModel` hook to easily listen for model broadcasts:
 
 ```js tab=React
 import { useEchoModel } from "@laravel/echo-react";
@@ -1607,6 +1733,16 @@ useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
 ```vue tab=Vue
 <script setup lang="ts">
 import { useEchoModel } from "@laravel/echo-vue";
+
+useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
+    console.log(e.model);
+});
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEchoModel } from "@laravel/echo-svelte";
 
 useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
     console.log(e.model);
@@ -1668,6 +1804,18 @@ channel().whisper('typing', { name: user.name });
 </script>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useEcho } from "@laravel/echo-svelte";
+
+const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
+    console.log('Chat event received:', e);
+});
+
+channel().whisper('typing', { name: user.name });
+</script>
+```
+
 To listen for client events, you may use the `listenForWhisper` method:
 
 ```js tab=JavaScript
@@ -1692,6 +1840,20 @@ channel().listenForWhisper('typing', (e) => {
 ```vue tab=Vue
 <script setup lang="ts">
 import { useEcho } from "@laravel/echo-vue";
+
+const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
+    console.log('Chat event received:', e);
+});
+
+channel().listenForWhisper('typing', (e) => {
+    console.log(e.name);
+});
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEcho } from "@laravel/echo-svelte";
 
 const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
     console.log('Chat event received:', e);
@@ -1730,6 +1892,18 @@ channel().notification((notification) => {
 ```vue tab=Vue
 <script setup lang="ts">
 import { useEchoModel } from "@laravel/echo-vue";
+
+const { channel } = useEchoModel('App.Models.User', userId);
+
+channel().notification((notification) => {
+    console.log(notification.type);
+});
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEchoModel } from "@laravel/echo-svelte";
 
 const { channel } = useEchoModel('App.Models.User', userId);
 
