@@ -829,7 +829,7 @@ Order::search('Star Trek')->where('total_price', '>', 100)->get();
 
 Order::search('Star Trek')->where('shipping_cost', '<', 20)->get();
 
-Order::search('Star Trek')->where('created_at', '>=', now()->subDays(14)->toDateTimeString())->get();
+Order::search('Star Trek')->where('discount_percent', '>=', 10)->get();
 
 Order::search('Star Trek')->where('item_count', '<=', 5)->get();
 ```
