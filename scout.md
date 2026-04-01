@@ -818,10 +818,20 @@ use App\Models\Order;
 $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 ```
 
-You can also do use the standard `=`, '!=`, `<`, `>`, `>=`, `<=` comparsion operators for more advanced queries:
+You can also use the standard `=`, `!=`, `<`, `>`, `>=`, `<=` comparsion operators to build more advanced queries:
 
-```
-Order::search('Star Trek')->where('amount', '>=', 42)->get();
+```php
+Order::search('Star Trek')->where('status', '=', 'completed')->get();
+
+Order::search('Star Trek')->where('is_refunded', '!=', true)->get();
+
+Order::search('Star Trek')->where('total_price', '>', 100)->get();
+
+Order::search('Star Trek')->where('shipping_cost', '<', 20)->get();
+
+Order::search('Star Trek')->where('created_at', '>=', now()->subDays(14)->toDateTimeString())->get();
+
+Order::search('Star Trek')->where('item_count', '<=', 5)->get();
 ```
 
 In addition, the `whereIn` method may be used to verify that a given column's value is contained within the given array:
