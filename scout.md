@@ -810,12 +810,18 @@ $orders = Order::search('Star Trek')
 <a name="where-clauses"></a>
 ### Where Clauses
 
-Scout allows you to add simple "where" clauses to your search queries. Currently, these clauses only support basic equality checks and are primarily useful for scoping search queries by an owner ID:
+Scout allows you to add "where" clauses to your search queries. For example, basic equality checks are useful for scoping search queries by an owner ID:
 
 ```php
 use App\Models\Order;
 
 $orders = Order::search('Star Trek')->where('user_id', 1)->get();
+```
+
+You can also do use the standard `=`, '!=`, `<`, `>`, `>=`, `<=` comparsion operators for more advanced queries:
+
+```
+Order::search('Star Trek')->where('amount', '>=', 42)->get();
 ```
 
 In addition, the `whereIn` method may be used to verify that a given column's value is contained within the given array:
