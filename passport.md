@@ -991,6 +991,9 @@ $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
 return $response->json()['access_token'];
 ```
 
+> [!WARNING]
+> The underlying OAuth2 server sets the token's `sub` claim to the client's identifier for client credentials tokens. By default, Passport uses UUIDs for clients, so this cannot collide with a user's integer primary key. However, if you have set `Passport::$clientUuids` to `false`, a client credentials token may inadvertently resolve a user whose ID matches the client's ID. Applications using integer client IDs should ensure client credentials routes are protected by the `EnsureClientIsResourceOwner` middleware and are not shared with user-authenticated routes.
+
 <a name="personal-access-tokens"></a>
 ## Personal Access Tokens
 
