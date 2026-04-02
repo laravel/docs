@@ -20,6 +20,7 @@
 <div class="content-list" markdown="1">
 
 - [Cache `serializable_classes` Configuration](#cache-serializable_classes-configuration)
+- [Database `upsert` With MySQL or MariaDB](#database-upsert-mariadb-mysql)
 
 </div>
 
@@ -194,6 +195,15 @@ If you provide a custom implementation of this contract, add this method to rema
 
 <a name="database"></a>
 ### Database
+
+<a name="database-upsert-mariadb-mysql"></a>
+#### Database `upsert` With MySQL or MariaDB
+
+**Likelihood Of Impact: Medium**
+
+Laravel now validates that the caller provides a non-empty value for `uniqueBy`, and will throw an `InvalidArgumentException` instead of generating invalid SQL.
+
+Although the MariaDB and MySQL database drivers ignore the `uniqueBy` value and always use the table's primary and unique indexes to detect existing records, the validation still applies. An `InvalidArgumentException` will be thrown if `uniqueBy` is empty.
 
 <a name="mysql-delete-queries-with-join-order-by-and-limit"></a>
 #### MySQL `DELETE` Queries With `JOIN`, `ORDER BY`, and `LIMIT`
