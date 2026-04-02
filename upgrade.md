@@ -20,6 +20,7 @@
 <div class="content-list" markdown="1">
 
 - [Cache `serializable_classes` Configuration](#cache-serializable_classes-configuration)
+- [Database `upsert` with MariaDB or MySQL](#database-upsert-mariadb-mysql)
 
 </div>
 
@@ -203,6 +204,16 @@ If you provide a custom implementation of this contract, add this method to rema
 Laravel now compiles full `DELETE ... JOIN` queries including `ORDER BY` and `LIMIT` for MySQL grammar.
 
 In previous versions, `ORDER BY` / `LIMIT` clauses could be silently ignored on joined deletes. In Laravel 13, these clauses are included in the generated SQL. As a result, database engines that do not support this syntax (such as standard MySQL / MariaDB variants) may now throw a `QueryException` instead of executing an unbounded delete.
+
+<a name="database-upsert-mariadb-mysql"></a>
+
+#### Database upsert with MariaDB or MySQL
+
+**Likelihood Of Impact: Medium**
+
+Laravel now validates that the caller provides a non-empty value for `uniqueBy`, and will throw an `InvalidArgumentException` instead of generating invalid SQL.
+
+Although the MariaDB and MySQL database drivers ignore the `uniqueBy` value and always use the table's primary and unique indexes to detect existing records, the validation still applies. An `InvalidArgumentException` will be thrown if `uniqueBy` is empty.
 
 <a name="eloquent"></a>
 ### Eloquent
