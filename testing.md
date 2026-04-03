@@ -47,6 +47,31 @@ If you would like to create a test within the `tests/Unit` directory, you may us
 php artisan make:test UserTest --unit
 ```
 
+If you have a test class that mostly relies on Laravel's testing features, but a specific test method does not need the framework booted, you may apply the `#[UnitTest]` attribute to that method to skip booting the application for just that test.
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\Attributes\UnitTest;
+use Tests\TestCase;
+
+class LocationServiceTest extends TestCase
+{
+    public function test_get_coordinates_resolves_address(): void
+    {
+        // This test uses Laravel's testing features...
+    }
+
+    #[UnitTest]
+    public function test_get_state_returns_state_from_abbreviation(): void
+    {
+        // This test runs without booting the application...
+    }
+}
+```
+
 > [!NOTE]
 > Test stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
 
