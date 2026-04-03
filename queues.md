@@ -1207,6 +1207,9 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
+> [!WARNING]
+> Constructor-based queue assignment via `onQueue` only works for job classes. For [queued event listeners](/docs/{{version}}/events#customizing-the-queue-connection-queue-name), define a `viaQueue` method or a `$queue` property on the listener class instead.
+
 <a name="dispatching-to-a-particular-connection"></a>
 #### Dispatching to a Particular Connection
 
