@@ -477,6 +477,46 @@ class AppServiceProvider extends ServiceProvider
 > [!WARNING]
 > The `withoutWrapping` method only affects the outermost response and will not remove `data` keys that you manually add to your own resource collections.
 
+
+<a name="per-consumer-wrapping"></a>
+#### Per-Consumer Wrapping
+
+If your API is consumed by multiple clients with different expectations — for example, third-party consumers that expect a `data` wrapper alongside an internal React frontend where you want to avoid `response.data.data` — you can use separate resource classes per consumer rather than calling `withoutWrapping()` globally.
+
+Because `$wrap` is a static property resolved per-class by `ResourceResponse::wrapper()`, each subclass carries its own independent value. Declare a base resource with the shared `toArray()` logic, then create a lightweight subclass that sets `$wrap = null`:
+
+```php
+// App\Http\Resources\UserResource.php — for external / third-party consumers
+class UserResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            'id'   => $this->id,
+            'name' => $this->name,
+        ];
+    }
+}
+
+// App\Http\Resources\Internal\UserResource.php — for internal / frontend consumers
+class UserResource extends \App\Http\Resources\UserResource
+{
+    public static $wrap = null; // own static property, no global mutation
+}
+```
+
+Usage in your controllers:
+
+```php
+// External API endpoint — response: {"data": {"id": 1, ...}}
+return new \App\Http\Resources\UserResource($user);
+
+// Internal / React endpoint — response: {"id": 1, ...}
+return new \App\Http\Resources\Internal\UserResource($user);
+```
+
+This approach is Octane-safe because `$wrap` is set at class definition time and is never mutated at runtime, unlike calling `withoutWrapping()` inside a request lifecycle method.
+
 <a name="wrapping-nested-resources"></a>
 #### Wrapping Nested Resources
 
