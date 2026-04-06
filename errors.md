@@ -469,9 +469,20 @@ use Throwable;
 ## HTTP Exceptions
 
 Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401), or even a developer generated 500 error. In order to generate such a response from anywhere in your application, you may use the `abort` helper:
-
 ```php
 abort(404);
+```
+
+You may also provide the exception's response text and custom HTTP response headers that should be sent to the browser:
+```php
+abort(403, 'Unauthorized.', $headers);
+```
+
+The `abort_if` and `abort_unless` [helpers](/docs/{{version}}/helpers#method-abort-if) provide a convenient way to throw HTTP exceptions when a given condition is met:
+```php
+abort_if(! Auth::user()->isAdmin(), 403);
+
+abort_unless(Auth::user()->isAdmin(), 403);
 ```
 
 <a name="custom-http-error-pages"></a>
