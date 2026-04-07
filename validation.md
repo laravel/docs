@@ -446,6 +446,58 @@ class StorePostRequest extends FormRequest
 }
 ```
 
+<a name="request-failing-on-unknown-fields"></a>
+#### Failing on Unknown Fields
+
+By adding the `FailOnUnknownFields` attribute to your request class, you may instruct Laravel to reject any incoming fields that are not defined by your request's validation rules:
+
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\Attributes\FailOnUnknownFields;
+use Illuminate\Foundation\Http\FormRequest;
+
+#[FailOnUnknownFields]
+class StorePostRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'title' => ['required', 'string'],
+            'body' => ['required', 'string'],
+        ];
+    }
+}
+```
+
+You may also enable this behavior globally for all form requests from your `AppServiceProvider`:
+
+```php
+use Illuminate\Foundation\Http\FormRequest;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    FormRequest::failOnUnknownFields();
+}
+```
+
+If needed, you may disable this behavior for a specific request by passing `false` to the attribute:
+
+```php
+#[FailOnUnknownFields(false)]
+class PublicWebhookRequest extends FormRequest
+{
+    // ...
+}
+```
+
+Rejecting unknown fields can provide additional protection against mass-assignment style issues by preventing unexpected input keys from flowing deeper into your application. However, you should still configure your model's `$fillable` / `$guarded` properties and only persist trusted, validated input.
+
 <a name="customizing-the-redirect-location"></a>
 #### Customizing the Redirect Location
 
