@@ -598,6 +598,33 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 > [!WARNING]
 > You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
 
+> [!WARNING]
+> When passing an array of conditions to the `orWhere` method, the conditions within the array are joined using `or`, not `and`. If you need the conditions within the group to be joined using `and`, pass a closure instead:
+
+```php
+// Conditions within the array are joined with "or":
+$users = DB::table('users')
+    ->where('role', 'admin')
+    ->orWhere([
+        ['status', '=', 'active'],
+        ['votes', '>', 50],
+    ])
+    ->get();
+
+// select * from users where role = 'admin' or (status = 'active' or votes > 50)
+
+// To join conditions within the group with "and", use a closure:
+$users = DB::table('users')
+    ->where('role', 'admin')
+    ->orWhere(function (Builder $query) {
+        $query->where('status', '=', 'active')
+            ->where('votes', '>', 50);
+    })
+    ->get();
+
+// select * from users where role = 'admin' or (status = 'active' and votes > 50)
+```
+
 <a name="where-not-clauses"></a>
 ### Where Not Clauses
 
