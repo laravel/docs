@@ -685,15 +685,15 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-As an alternative to defining how many times a listener may be attempted before it fails, you may define a time at which the listener should no longer be attempted. This allows a listener to be attempted any number of times within a given time frame. To define the time at which a listener should no longer be attempted, add a `retryUntil` method to your listener class. This method should return a `DateTime` instance:
+As an alternative to defining how many times a listener may be attempted before it fails, you may define a time at which the listener should no longer be attempted. This allows a listener to be attempted any number of times within a given time frame. To define the time at which a listener should no longer be attempted, add a `retryUntil` method to your listener class. This method should return a `DateTimeInterface` instance:
 
 ```php
-use DateTime;
+use DateTimeInterface;
 
 /**
  * Determine the time at which the listener should timeout.
  */
-public function retryUntil(): DateTime
+public function retryUntil(): DateTimeInterface
 {
     return now()->plus(minutes: 5);
 }
