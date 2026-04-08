@@ -372,6 +372,64 @@ $response = (new SalesCoach)->prompt('Analyze this sales transcript...');
 return $response['score'];
 ```
 
+<a name="structured-output-nested-objects"></a>
+#### Nested Objects
+
+To define nested structured output, use the `object` method with a closure:
+
+```php
+<?php
+
+namespace App\Ai\Agents;
+
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\HasStructuredOutput;
+use Laravel\Ai\Promptable;
+
+class SalesCoach implements Agent, HasStructuredOutput
+{
+    use Promptable;
+
+    // ...
+
+    /**
+     * Get the agent's structured output schema definition.
+     */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'score' => $schema->integer()->required(),
+            'metadata' => $schema->object(fn ($schema) => [
+                'confidence' => $schema->string()->enum(['low', 'medium', 'high'])->required(),
+                'language' => $schema->string()->required(),
+            ])->required(),
+        ];
+    }
+}
+```
+
+<a name="structured-output-arrays-of-objects"></a>
+#### Arrays of Objects
+
+If your agent should return a list of structured items, combine the `array` and `object` methods:
+
+```php
+public function schema(JsonSchema $schema): array
+{
+    return [
+        'feedback' => $schema->array()
+            ->items(
+                $schema->object(fn ($schema) => [
+                    'comment' => $schema->string()->required(),
+                    'score' => $schema->integer()->required(),
+                ])
+            )
+            ->required(),
+    ];
+}
+```
+
 <a name="attachments"></a>
 ### Attachments
 
@@ -405,79 +463,6 @@ $response = (new ImageAnalyzer)->prompt(
         $request->file('photo'), // Attach an uploaded file...
     ]
 );
-```
-
-### Nested object
-
-For structured output with nested objects, use the `object` method with a closure:
-
-```php
-<?php
-
-namespace App\Ai\Agents;
-
-use Illuminate\Contracts\JsonSchema\JsonSchema;
-use Laravel\Ai\Contracts\Agent;
-use Laravel\Ai\Contracts\HasStructuredOutput;
-use Laravel\Ai\Promptable;
-
-class SalesCoach implements Agent, HasStructuredOutput
-{
-
-    // ...
-
-    /**
-     * Get the agent's structured output schema definition.
-     */
-    public function schema(JsonSchema $schema): array
-    {
-        return [
-            'score' => $schema->string()->required(),
-            'metadata' => $schema->object(fn ($schema) => [
-                'confidence' => $schema->string()->enum(['low', 'medium', 'high'])->required(),
-                'language'   => $schema->string()->required(),
-            ])->additionalProperties()->required(),
-        ];
-    }
-}
-```
-
-#### Arrays of Objects
-
-When your agent needs to return a list of structured items, use the `array` method combined with `object`:
-
-```php
-<?php
-
-namespace App\Ai\Agents;
-
-use Illuminate\Contracts\JsonSchema\JsonSchema;
-use Laravel\Ai\Contracts\Agent;
-use Laravel\Ai\Contracts\HasStructuredOutput;
-use Laravel\Ai\Promptable;
-
-class SalesCoach implements Agent, HasStructuredOutput
-{
-
-    // ...
-
-    /**
-     * Get the agent's structured output schema definition.
-     */
-    public function schema(JsonSchema $schema): array
-    {
-        return [
-                'feedback' => $schema->array()
-                    ->items(
-                        $schema->object(fn ($schema) => [
-                            'comment' => $schema->string()->required(),
-                            'score'   => $schema->integer()->required(),
-                        ])->additionalProperties()
-                    )
-                    ->required(),
-    ];
-    }
-}
 ```
 
 <a name="streaming"></a>
