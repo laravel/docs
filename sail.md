@@ -2,7 +2,6 @@
 
 - [Introduction](#introduction)
 - [Installation and Setup](#installation)
-    - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Rebuilding Sail Images](#rebuilding-sail-images)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
 - [Starting and Stopping Sail](#starting-and-stopping-sail)
