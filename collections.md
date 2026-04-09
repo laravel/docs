@@ -132,6 +132,8 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [doesntContainStrict](#method-doesntcontainstrict)
 [dot](#method-dot)
 [dump](#method-dump)
+[dumpFirst](#method-dumpfirst)
+[dumpRandom](#method-dumprandom)
 [duplicates](#method-duplicates)
 [duplicatesStrict](#method-duplicatesstrict)
 [each](#method-each)
@@ -863,7 +865,47 @@ $collection->dump();
 */
 ```
 
-If you want to stop executing the script after dumping the collection, use the [dd](#method-dd) method instead.
+Any additional arguments to the method will also be dumped. If you want to stop executing the script after dumping the collection, use the [dd](#method-dd) method instead.
+
+<a name="method-dumpfirst"></a>
+#### `dumpFirst()` {.collection-method}
+
+The `dumpFirst` method dumps the collection's first item, or `null` if the collection is empty:
+
+```php
+$collection = collect(['John Doe', 'Jane Doe']);
+
+$collection->dumpFirst();
+
+/*
+    "John Doe"
+*/
+```
+
+Any additional arguments to the method will also be dumped.
+
+<a name="method-dumprandom"></a>
+#### `dumpRandom()` {.collection-method}
+
+The `dumpRandom` method dumps a random item from the collection, or `null` if the collection is empty:
+
+```php
+$collection = collect(['John Doe', 'Jane Doe']);
+
+$collection->dumpRandom();
+
+/*
+    "Jane Doe"
+*/
+
+$collection->dumpRandom();
+
+/*
+    "John Doe"
+*/
+```
+
+Any additional arguments to the method will also be dumped.
 
 <a name="method-duplicates"></a>
 #### `duplicates()` {.collection-method}
