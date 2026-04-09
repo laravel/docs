@@ -42,7 +42,7 @@ Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https://docs.
 <a name="installation"></a>
 ## Installation and Setup
 
-You may install Sail using the Composer package manager. Of course, these steps assume that your existing local development environment allows you to install Composer dependencies:
+You may install Sail using the Composer package manager:
 
 ```shell
 composer require laravel/sail --dev
