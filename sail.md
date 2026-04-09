@@ -2,7 +2,6 @@
 
 - [Introduction](#introduction)
 - [Installation and Setup](#installation)
-    - [Installing Sail Into Existing Applications](#installing-sail-into-existing-applications)
     - [Rebuilding Sail Images](#rebuilding-sail-images)
     - [Configuring A Shell Alias](#configuring-a-shell-alias)
 - [Starting and Stopping Sail](#starting-and-stopping-sail)
@@ -43,12 +42,7 @@ Laravel Sail is supported on macOS, Linux, and Windows (via [WSL2](https://docs.
 <a name="installation"></a>
 ## Installation and Setup
 
-Laravel Sail is automatically installed with all new Laravel applications so you may start using it immediately.
-
-<a name="installing-sail-into-existing-applications"></a>
-### Installing Sail Into Existing Applications
-
-If you are interested in using Sail with an existing Laravel application, you may simply install Sail using the Composer package manager. Of course, these steps assume that your existing local development environment allows you to install Composer dependencies:
+You may install Sail using the Composer package manager:
 
 ```shell
 composer require laravel/sail --dev
