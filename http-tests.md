@@ -97,6 +97,50 @@ class ExampleTest extends TestCase
 In general, each of your tests should only make one request to your application. Unexpected behavior may occur if multiple requests are executed within a single test method.
 
 > [!NOTE]
+> If you need to perform multiple requests to compare different endpoints within a single test, you should manually reboot the application between requests to ensure a clean state.
+
+You may use the `refreshApplication` method to reset the service container and application state during a test:
+
+```php tab=Pest
+<?php
+
+test('parity between legacy and new endpoints', function () {
+    $legacyResponse = $this->get('/api/legacy/resource');
+
+    $this->refreshApplication();
+
+    $newResponse = $this->get('/api/v1/resource');
+
+    expect($newResponse->json())->toBe($legacyResponse->json());
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_parity_between_endpoints(): void
+    {
+        $legacyResponse = $this->get('/api/legacy/resource');
+    
+        $this->refreshApplication();
+    
+        $newResponse = $this->get('/api/v1/resource');
+    
+        $this->assertEquals($legacyResponse->json(), $newResponse->json());
+    }
+}
+```
+
+> [!NOTE]
 > For convenience, the CSRF middleware is automatically disabled when running tests.
 
 <a name="customizing-request-headers"></a>
