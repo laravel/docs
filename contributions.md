@@ -139,9 +139,11 @@ public function bind($abstract, $concrete = null, $shared = false)
 
 When the `@param` or `@return` attributes are redundant due to the use of native types, they can be removed:
 
-```php
+```diff
 /**
  * Execute the job.
+-*
+-* @return void
  */
 public function handle(AudioProcessor $processor): void
 {
@@ -151,11 +153,11 @@ public function handle(AudioProcessor $processor): void
 
 However, when the native type is generic, please specify the generic type through the use of the `@param` or `@return` attributes:
 
-```php
+```diff
 /**
  * Get the attachments for the message.
- *
- * @return array<int, \Illuminate\Mail\Mailables\Attachment>
++*
++* @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
 public function attachments(): array
 {
