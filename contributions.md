@@ -142,6 +142,8 @@ When the `@param` or `@return` attributes are redundant due to the use of native
 ```php
 /**
  * Execute the job.
+ * [tl! remove]
+ * @return void [tl! remove]
  */
 public function handle(AudioProcessor $processor): void
 {
@@ -154,8 +156,8 @@ However, when the native type is generic, please specify the generic type throug
 ```php
 /**
  * Get the attachments for the message.
- *
- * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+ * [tl! add]
+ * @return array<int, \Illuminate\Mail\Mailables\Attachment> [tl! add]
  */
 public function attachments(): array
 {
