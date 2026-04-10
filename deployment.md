@@ -181,7 +181,7 @@ After deploying a new version of your application, any long-running services suc
 php artisan reload
 ```
 
-If you are not using [Laravel Cloud](https://cloud.laravel.com), you should manually  configure a process monitor that can detect when your reloadable processes exit and automatically restart them.
+If you are not using [Laravel Cloud](https://cloud.laravel.com), you should manually configure a process monitor that can detect when your reloadable processes exit and automatically restart them.
 
 <a name="debug-mode"></a>
 ## Debug Mode
