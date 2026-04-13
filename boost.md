@@ -51,6 +51,18 @@ Once Laravel Boost has been installed, you're ready to start coding with Cursor,
 > [!NOTE]
 > Feel free to add the generated MCP configuration file (`.mcp.json`), guideline files (`CLAUDE.md`, `AGENTS.md`, `junie/`, etc.), and the `boost.json` configuration file to your application's `.gitignore`, as these files are automatically regenerated when running `boost:install` and `boost:update`.
 
+```text filename=.gitignore
+# Boost
+boost.json
+.claude/
+.junie/
+.github/skills/
+.cursor
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+```
+
 <a name="set-up-your-agents"></a>
 ### Set Up Your Agents
 
