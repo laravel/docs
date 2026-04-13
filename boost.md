@@ -56,8 +56,10 @@ Once Laravel Boost has been installed, you're ready to start coding with Cursor,
 boost.json
 .claude/
 .junie/
-.github/skills/
 .cursor
+.github/skills/
+.agents/skills/
+.ai/skills/
 AGENTS.md
 CLAUDE.md
 GEMINI.md
