@@ -428,6 +428,28 @@ If your tests depended on custom UUID / ULID / random string factories persistin
 
 If your tests or frontend output comparisons depended on escaped Unicode sequences (for example `\u00e8`), update your expectations.
 
+<a name="utilities"></a>
+### Utilities
+
+<a name="symfony-polyfill"></a>
+#### Symfony PHP 8.5 Polyfill and Global Function Conflicts
+
+**Likelihood Of Impact: Low**
+
+Laravel 13 introduces a dependency on `symfony/polyfill-php85`. On PHP versions below 8.5, this polyfill defines global functions such as `array_first()` and `array_last()` unless they have already been defined earlier during bootstrap.
+
+These functions may conflict with legacy helper packages like `laravel/helpers` or custom global helpers using the same names. For example, the historical `array_first()` helper accepted a callback to return the first matching element, while the polyfilled version only returns the first element of the array.
+
+To avoid conflicts and ensure consistent behavior across PHP versions, you should prefer the `Illuminate\Support\Arr` methods:
+
+```php
+use Illuminate\Support\Arr;
+
+Arr::first($array, function ($value) {
+  return /* condition */;
+});
+```
+
 <a name="views"></a>
 ### Views
 
@@ -449,21 +471,6 @@ pagination::simple-bootstrap-3
 ```
 
 If your application references the old pagination view names directly, update those references.
-
-### Symfony PHP 8.5 Polyfill and Global Function Conflicts
-
-**Likelihood Of Impact: Low**
-
-Laravel 13 introduces a dependency on `symfony/polyfill-php85`. On PHP versions below 8.5, this polyfill defines global functions such as `array_first()` and `array_last()` unless they have already been defined earlier during bootstrap. These functions may conflict with legacy helper packages (like `laravel/helpers`) or custom global helpers using the same names. For example, the historical `array_first()` helper accepted a callback to return the first matching element, while the polyfilled version only returns the first element of the array.
-
-To avoid conflicts and ensure consistent behavior across PHP versions, you should prefer the `Illuminate\Support\Arr` methods:
-```php
-use Illuminate\Support\Arr;
-
-Arr::first($array, function ($value) {
-  return /* condition */;
-});
-```
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
