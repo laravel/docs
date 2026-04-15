@@ -1307,7 +1307,7 @@ You may also route multiple job classes at once by passing an array to the `rout
 
 ```php
 Queue::route([
-    ProcessPodcast::class => ['podcasts', 'redis'], // Separate queue and connection
+    ProcessPodcast::class => ['podcasts', 'redis'], // Queue and connection
     ProcessVideo::class => 'videos', // Default for both queue and connection
 ]);
 ```
