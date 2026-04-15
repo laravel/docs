@@ -89,7 +89,7 @@ The HTTP client also allows you to construct request URLs using the [URI templat
 Http::withUrlParameters([
     'endpoint' => 'https://laravel.com',
     'page' => 'docs',
-    'version' => '12.x',
+    'version' => '13.x',
     'topic' => 'validation',
 ])->get('{+endpoint}/{page}/{version}/{topic}');
 ```
