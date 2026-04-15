@@ -94,7 +94,7 @@ Or, if you are using [Laravel Herd's](https://herd.laravel.com) bundled copy of 
 
 **Likelihood Of Impact: Low**
 
-Laravel's default cache and Redis key prefixes now use hyphenated suffixes. In addition, the default session cookie name now uses `Str::snake(...)` for the application name.
+Laravel's default cache and Redis key prefixes now use hyphenated suffixes.
 
 In most applications, this change will not apply because application-level configuration files already define these values. This primarily affects applications that rely on framework-level fallback configuration when corresponding application config values are not present.
 
@@ -109,7 +109,7 @@ Str::slug((string) env('APP_NAME', 'laravel'), '_').'_session';
 // Laravel >= 13.x
 Str::slug((string) env('APP_NAME', 'laravel')).'-cache-';
 Str::slug((string) env('APP_NAME', 'laravel')).'-database-';
-Str::snake((string) env('APP_NAME', 'laravel')).'_session';
+Str::slug((string) env('APP_NAME', 'laravel')).'-session';
 ```
 
 To retain previous behavior, explicitly configure `CACHE_PREFIX`, `REDIS_PREFIX`, and `SESSION_COOKIE` in your environment.
