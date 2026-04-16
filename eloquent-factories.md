@@ -529,8 +529,8 @@ $user = User::factory()
     ->hasAttached(
         Role::factory(),
         [
-            ['expires_at' => now()->addMonth()],
-            ['expires_at' => now()->addYear()],
+            ['active' => true],
+            ['active' => false],
         ]
     )
     ->create();
