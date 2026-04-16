@@ -2011,7 +2011,7 @@ Assert that the element matching the given selector has the given value in the p
 $browser->assertDataAttribute($selector, $attribute, $value);
 ```
 
-For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-label` attribute like so:
+For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-content` attribute like so:
 
 ```php
 $browser->assertDataAttribute('#row-1', 'content', 'attendees')
