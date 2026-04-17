@@ -1,4 +1,4 @@
-# HTTP Requests
+# HTTP Requestq
 
 - [Introduction](#introduction)
 - [Interacting With The Request](#interacting-with-the-request)
@@ -165,9 +165,10 @@ $request->fullUrlWithoutQuery(['type']);
 You may retrieve the "host" of the incoming request via the `host`, `httpHost`, and `schemeAndHttpHost` methods:
 
 ```php
-$request->host();
-$request->httpHost();
-$request->schemeAndHttpHost();
+// http://localhost:8000/
+$request->host(); // localhost
+$request->httpHost(); // localhost:8000
+$request->schemeAndHttpHost(); // http://localhost:8000
 ```
 
 <a name="retrieving-the-request-method"></a>
