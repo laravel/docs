@@ -375,6 +375,12 @@ $response->throwIfStatus(403);
 // Throw an exception unless the response has a specific status code...
 $response->throwUnlessStatus(200);
 
+// Throw an exception if a server error occurred (status >500)...
+$response->throwIfServerError();
+
+// Throw an exception if a client error occurred (status >400 and <500)...
+$response->throwIfClientError();
+
 return $response['user']['id'];
 ```
 
