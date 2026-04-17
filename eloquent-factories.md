@@ -522,6 +522,20 @@ $user = User::factory()
     ->create();
 ```
 
+You may also pass an array of pivot arrays to provide unique pivot data for each related model:
+
+```php
+$user = User::factory()
+    ->hasAttached(
+        Role::factory(),
+        [
+            ['active' => true],
+            ['active' => false],
+        ]
+    )
+    ->create();
+```
+
 If you already have model instances that you would like to be attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:
 
 ```php
