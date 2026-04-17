@@ -1,4 +1,4 @@
-# HTTP Requestq
+# HTTP Requests
 
 - [Introduction](#introduction)
 - [Interacting With The Request](#interacting-with-the-request)
