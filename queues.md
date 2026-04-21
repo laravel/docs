@@ -7,6 +7,7 @@
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
     - [Unique Jobs](#unique-jobs)
+    - [Debounced Jobs](#debounced-jobs)
     - [Encrypted Jobs](#encrypted-jobs)
 - [Job Middleware](#job-middleware)
     - [Rate Limiting](#rate-limiting)
@@ -413,6 +414,76 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 
 > [!NOTE]
 > If you only need to limit the concurrent processing of a job, use the [WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
+
+<a name="debounced-jobs"></a>
+### Debounced Jobs
+
+Sometimes, you may want to ensure that when the same job is dispatched many times in a short window, only the latest dispatch actually executes. You may do so by adding the `DebounceFor` attribute to your job:
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Attributes\DebounceFor;
+
+#[DebounceFor(30)]
+class UpdateSearchIndex implements ShouldQueue
+{
+    use Queueable;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(public int $productId)
+    {
+    }
+
+    /**
+     * Get the debounce ID for the job.
+     */
+    public function debounceId(): string
+    {
+        return (string) $this->productId;
+    }
+}
+```
+
+In the example above, repeatedly dispatching `UpdateSearchIndex` for the same product within `30` seconds will debounce the job so that only the latest dispatch runs.
+
+If you would like to cap how long a frequently re-dispatched job can be deferred, you may provide the `maxWait` argument to the `DebounceFor` attribute:
+
+```php
+#[DebounceFor(30, maxWait: 120)]
+class UpdateSearchIndex implements ShouldQueue
+{
+    use Queueable;
+
+    // ...
+}
+```
+
+You may customize the cache store used for debounce tracking by defining a `debounceVia` method on your job:
+
+```php
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Cache;
+
+public function debounceVia(): Repository
+{
+    return Cache::driver('redis');
+}
+```
+
+If a debounced job is superseded by a newer dispatch, Laravel will dispatch the `Illuminate\Queue\Events\JobDebounced` event and remove the superseded job from the queue.
+
+> [!WARNING]
+> Debounced jobs and unique jobs are mutually exclusive. A job using the `DebounceFor` attribute should not implement `ShouldBeUnique`.
+
+> [!WARNING]
+> If your application dispatches debounced jobs from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server.
 
 <a name="encrypted-jobs"></a>
 ### Encrypted Jobs
