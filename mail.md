@@ -36,7 +36,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/current/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Mailgun, Postmark, Resend, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud-based service of your choice.
+Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/current/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Cloudflare, Mailgun, Postmark, Resend, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud-based service of your choice.
 
 <a name="configuration"></a>
 ### Configuration
@@ -49,6 +49,38 @@ Within your `mail` configuration file, you will find a `mailers` configuration a
 ### Driver / Transport Prerequisites
 
 The API based drivers such as Mailgun, Postmark, and Resend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
+
+<a name="cloudflare-driver"></a>
+#### Cloudflare Driver
+
+To use the Cloudflare driver, install Symfony's HTTP Client via Composer:
+
+```shell
+composer require symfony/http-client
+```
+
+Next, you will need to make two changes in your application's `config/mail.php` configuration file. First, set your default mailer to `cloudflare`:
+
+```php
+'default' => env('MAIL_MAILER', 'cloudflare'),
+```
+
+Second, add the following configuration array to your array of `mailers`:
+
+```php
+'cloudflare' => [
+    'transport' => 'cloudflare',
+],
+```
+
+After configuring your application's default mailer, add the following options to your `config/services.php` configuration file:
+
+```php
+'cloudflare' => [
+    'account_id' => env('CLOUDFLARE_ACCOUNT_ID'),
+    'key' => env('CLOUDFLARE_KEY'),
+],
+```
 
 <a name="mailgun-driver"></a>
 #### Mailgun Driver
