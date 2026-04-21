@@ -1569,7 +1569,7 @@ class ProcessPodcast implements ShouldQueue
 <a name="sqs-fifo-and-fair-queues"></a>
 ### SQS FIFO and Fair Queues
 
-Laravel supports [Amazon SQS FIFO (First-In-First-Out)](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html) queues, allowing you to process jobs in the exact order they were sent while ensuring exactly-once processing through message deduplication.
+Laravel supports [Amazon SQS FIFO (First-In-First-Out)](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html) and [fair](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues.html) queues. FIFO queues allow you to process jobs in the exact order they were sent while ensuring exactly-once processing through message deduplication.
 
 FIFO queues require a message group ID to determine which jobs can be processed in parallel. Jobs with the same group ID are processed sequentially, while messages with different group IDs can be processed concurrently.
 
@@ -1602,6 +1602,37 @@ class ProcessSubscriptionRenewal implements ShouldQueue
     public function deduplicationId(): string
     {
         return "renewal-{$this->subscription->id}";
+    }
+}
+```
+
+<a name="fair-queues"></a>
+#### Fair Queues
+
+If you are using an SQS standard queue, setting a message group enables fair queueing. In other words, once you assign groups, SQS will use them to maintain fair delivery across tenants / workloads. No additional Laravel configuration is required.
+
+Instead of calling `onGroup` at dispatch time, you may also define a `messageGroup` method directly on the job:
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+
+class ProcessOrder implements ShouldQueue
+{
+    use Queueable;
+
+    // ...
+
+    /**
+     * Get the job's message group.
+     */
+    public function messageGroup(): string
+    {
+        return "customer-{$this->order->customer_id}";
     }
 }
 ```
