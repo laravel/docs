@@ -1261,6 +1261,36 @@ task(
 );
 ```
 
+<a name="task-sub-label"></a>
+#### Displaying a Sub-Label
+
+The `subLabel` method displays a dim line beneath the task's main label, which is useful for communicating ephemeral status such as the step currently in progress. Pass an empty string to clear the sub-label:
+
+```php
+task(
+    label: 'Deploying',
+    callback: function ($logger) {
+        $logger->subLabel('Building assets...');
+        // ...
+        $logger->subLabel('Running migrations...');
+        // ...
+        $logger->subLabel('');
+    }
+);
+```
+
+You may also provide an initial sub-label via the `subLabel` argument:
+
+```php
+task(
+    label: 'Deploying',
+    callback: function ($logger) {
+        // ...
+    },
+    subLabel: 'Preparing...'
+);
+```
+
 <a name="task-streaming"></a>
 #### Streaming Text
 
@@ -1291,6 +1321,23 @@ task(
         // ...
     },
     limit: 20
+);
+```
+
+<a name="task-keep-summary"></a>
+#### Keeping the Summary
+
+By default, the task's output is erased once the callback finishes. If you would like to keep the status messages on screen after the task has completed, you may pass the `keepSummary` argument:
+
+```php
+task(
+    label: 'Deploying',
+    callback: function ($logger) {
+        $logger->success('Assets built');
+        // ...
+        $logger->success('Migrations complete');
+    },
+    keepSummary: true,
 );
 ```
 
