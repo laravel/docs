@@ -428,7 +428,7 @@ sail up
 <a name="sail-node-versions"></a>
 ## Node Versions
 
-Sail installs Node 22 by default. To change the Node version that is installed when building your images, you may update the `build.args` definition of the `laravel.test` service in your application's `compose.yaml` file:
+Sail installs Node 24 by default. To change the Node version that is installed when building your images, you may update the `build.args` definition of the `laravel.test` service in your application's `compose.yaml` file:
 
 ```yaml
 build:
