@@ -1569,12 +1569,18 @@ The file under validation must be an image meeting the dimension constraints as 
 'avatar' => 'dimensions:min_width=100,min_height=200'
 ```
 
-Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_.
+Available constraints are: _min\_width_, _max\_width_, _min\_height_, _max\_height_, _width_, _height_, _ratio_, _min\_ratio_, _max\_ratio_.
 
 A _ratio_ constraint should be represented as width divided by height. This can be specified either by a fraction like `3/2` or a float like `1.5`:
 
 ```php
 'avatar' => 'dimensions:ratio=3/2'
+```
+
+The _min\_ratio_ and _max\_ratio_ constraints may be used to define a range of acceptable aspect ratios:
+
+```php
+'avatar' => 'dimensions:min_ratio=1/2,max_ratio=3/2'
 ```
 
 Since this rule requires several arguments, it is often more convenient to use the `Rule::dimensions` method to fluently construct the rule:
@@ -1592,6 +1598,12 @@ Validator::make($data, [
             ->ratio(3 / 2),
     ],
 ]);
+```
+
+You may also use the `minRatio`, `maxRatio`, and `ratioBetween` methods to fluently define ratio constraints:
+
+```php
+Rule::dimensions()->ratioBetween(min: 1 / 2, max: 3 / 2)
 ```
 
 <a name="rule-distinct"></a>
