@@ -1037,6 +1037,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
 [assertExactJsonStructure](#assert-exact-json-structure)
+[assertFailedDependency](#assert-failed-dependency)
 [assertForbidden](#assert-forbidden)
 [assertFound](#assert-found)
 [assertGone](#assert-gone)
@@ -1238,6 +1239,15 @@ $response->assertExactJsonStructure(array $data);
 ```
 
 This method is a more strict variant of [assertJsonStructure](#assert-json-structure). In contrast with `assertJsonStructure`, this method will fail if the response contains any keys that aren't explicitly included in the expected JSON structure.
+
+<a name="assert-failed-dependency"></a>
+#### assertFailedDependency
+
+Assert that the response has a failed dependency (424) HTTP status code:
+
+```php
+$response->assertFailedDependency();
+```
 
 <a name="assert-forbidden"></a>
 #### assertForbidden
