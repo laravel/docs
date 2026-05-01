@@ -557,6 +557,9 @@ $users = DB::table('users')->where([
 ])->get();
 ```
 
+> [!NOTE]
+> When this array syntax is used with `orWhere`, the inner conditions inherit the outer `or` boolean. For example, `->orWhere([['a', 1], ['b', 2]])` produces `or ("a" = 1 or "b" = 2)`, not `or ("a" = 1 and "b" = 2)`. To group `or` conditions with `and` between the inner clauses, pass a closure to `orWhere` instead — see [Or Where Clauses](#or-where-clauses) below.
+
 > [!WARNING]
 > PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
 
@@ -596,7 +599,7 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ```
 
 > [!WARNING]
-> You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+> You should always group `orWhere` calls using a closure — both to avoid unexpected behavior when global scopes are applied, and because passing an array directly to `orWhere` propagates the `or` boolean to every condition inside the group rather than joining them with `and`.
 
 <a name="where-not-clauses"></a>
 ### Where Not Clauses
@@ -1062,7 +1065,7 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
 
 > [!WARNING]
-> You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+> You should always group `orWhere` calls using a closure — both to avoid unexpected behavior when global scopes are applied, and because passing an array directly to `orWhere` propagates the `or` boolean to every condition inside the group rather than joining them with `and`.
 
 <a name="advanced-where-clauses"></a>
 ## Advanced Where Clauses
