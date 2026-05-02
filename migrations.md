@@ -1200,7 +1200,7 @@ The `year` method creates a `YEAR` equivalent column:
 $table->year('birth_year');
 ```
 > [!WARNING]
-> The year method creates the `YEAR` equivalent column, but **limited in range**. YEAR accepts input values in a variety of formats, but always in the range '1901' to '2155'. Years previous to '1901' are not accepted by MySQL.
+> **When using the MySQL engine:** The year method creates the `YEAR` equivalent column, but **limited in range**. YEAR accepts input values in a variety of formats, but always in the range '1901' to '2155'. Years previous to '1901' are not accepted.
 
 <a name="column-modifiers"></a>
 ### Column Modifiers
