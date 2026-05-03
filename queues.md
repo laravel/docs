@@ -1033,6 +1033,14 @@ class PodcastController extends Controller
 }
 ```
 
+In addition, you can also specify the number of seconds to delay the processsing of a job:
+
+```php
+// The job will also be available after 10 minutes.
+ProcessPodcast::dispatch($podcast)
+    ->delay(600);
+```
+
 In some cases, jobs may have a default delay configured. If you need to bypass this delay and dispatch a job for immediate processing, you may use the `withoutDelay` method:
 
 ```php
