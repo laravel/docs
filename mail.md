@@ -975,12 +975,16 @@ foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {
 <a name="sending-mail-via-a-specific-mailer"></a>
 #### Sending Mail via a Specific Mailer
 
-By default, Laravel will send email using the mailer configured as the `default` mailer in your application's `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
+By default, Laravel will send email using the mailer configured as the `default` mailer in your application's `mail` configuration file. However, you may use the `driver` or `mailer` methods to send a message using a specific mailer configuration:
 
 ```php
-Mail::mailer('postmark')
+Mail::driver('postmark')
     ->to($request->user())
     ->send(new OrderShipped($order));
+
+Mail::mailer('mailgun')
+    ->to($request->user())
+    ->send(new RequestReview($order));
 ```
 
 <a name="queueing-mail"></a>
