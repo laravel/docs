@@ -993,7 +993,7 @@ Some of Laravel's built-in validation rule error messages contain a `:value` pla
 
 ```php
 Validator::make($request->all(), [
-    'credit_card_number' => ['required_if:payment_type,cc]'
+    'credit_card_number' => ['required_if:payment_type,cc']
 ]);
 ```
 
