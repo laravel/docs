@@ -1112,6 +1112,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSessionHasNoErrors](#assert-session-has-no-errors)
 [assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors)
 [assertSessionMissing](#assert-session-missing)
+[assertSessionMissingInput](#assert-session-missing-input)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
 [assertTooManyRequests](#assert-too-many-requests)
@@ -1933,6 +1934,15 @@ Assert that the session does not contain the given key:
 
 ```php
 $response->assertSessionMissing($key);
+```
+
+<a name="assert-session-missing-input"></a>
+#### assertSessionMissingInput
+
+Assert that the session is missing the given input key in the flashed input array:
+
+```php
+$response->assertSessionMissingInput($key);
 ```
 
 <a name="assert-status"></a>
