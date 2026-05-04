@@ -366,7 +366,7 @@ To disable two-factor authentication, your application should make a DELETE requ
 <a name="passkeys"></a>
 ## Passkeys
 
-Fortify authenticates users with passkeys via WebAuthn. Passkeys allow passwordless authentication using platform authenticators such as Face ID, Touch ID, Windows Hello, or hardware security keys.
+Fortify supports passkey authentication using WebAuthn. Passkeys allow users to authenticate without passwords using platform authenticators such as Face ID, Touch ID, Windows Hello, or hardware security keys.
 
 <a name="enabling-passkeys"></a>
 ### Enabling Passkeys
@@ -384,7 +384,7 @@ use Laravel\Fortify\Features;
 ],
 ```
 
-The `confirmPassword` option defaults to `false`. When enabled, Fortify requires [password confirmation](#password-confirmation) before any passkey management route (registration and deletion) may be called.
+The `confirmPassword` option determines whether Fortify requires [password confirmation](#password-confirmation) before any passkey management route (registration and deletion) may be called.
 
 Next, ensure your application's `App\Models\User` model implements `Laravel\Fortify\Contracts\PasskeyUser` and uses the `Laravel\Fortify\PasskeyAuthenticatable` trait:
 
