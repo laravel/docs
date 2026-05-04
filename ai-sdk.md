@@ -1107,6 +1107,14 @@ $audio = Audio::of('I love coding with Laravel.')->generate();
 $rawContent = (string) $audio;
 ```
 
+You may also generate audio from a string using the `toAudio` method available via Laravel's `Stringable` class:
+
+```php
+use Illuminate\Support\Str;
+
+$audio = Str::of('I love coding with Laravel.')->toAudio();
+```
+
 The `male`, `female`, and `voice` methods may be used to determine the voice of the generated audio:
 
 ```php

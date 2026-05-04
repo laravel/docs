@@ -597,6 +597,25 @@ The `assertJsonPath` method also accepts a closure, which may be used to dynamic
 $response->assertJsonPath('team.owner.name', fn (string $name) => strlen($name) >= 3);
 ```
 
+If you need to assert multiple JSON paths at once, you may use the `assertJsonPaths` method. The expected value for each path may also be a closure:
+
+```php
+$response->assertJsonPaths([
+    'team.owner.name' => 'Darian',
+    'team.owner.email' => fn (string $email) => str($email)->is('*@laravel.com'),
+    'team.members.0.name' => 'Sally',
+]);
+```
+
+You may use the `assertJsonMissingPaths` method to assert that multiple JSON paths are missing from the response:
+
+```php
+$response->assertJsonMissingPaths([
+    'team.owner.password',
+    'team.members.0.api_token',
+]);
+```
+
 <a name="fluent-json-testing"></a>
 ### Fluent JSON Testing
 
@@ -1037,6 +1056,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
 [assertExactJsonStructure](#assert-exact-json-structure)
+[assertFailedDependency](#assert-failed-dependency)
 [assertForbidden](#assert-forbidden)
 [assertFound](#assert-found)
 [assertGone](#assert-gone)
@@ -1053,7 +1073,9 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonMissingExact](#assert-json-missing-exact)
 [assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
 [assertJsonPath](#assert-json-path)
+[assertJsonPaths](#assert-json-paths)
 [assertJsonMissingPath](#assert-json-missing-path)
+[assertJsonMissingPaths](#assert-json-missing-paths)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
@@ -1239,6 +1261,15 @@ $response->assertExactJsonStructure(array $data);
 
 This method is a more strict variant of [assertJsonStructure](#assert-json-structure). In contrast with `assertJsonStructure`, this method will fail if the response contains any keys that aren't explicitly included in the expected JSON structure.
 
+<a name="assert-failed-dependency"></a>
+#### assertFailedDependency
+
+Assert that the response has a failed dependency (424) HTTP status code:
+
+```php
+$response->assertFailedDependency();
+```
+
 <a name="assert-forbidden"></a>
 #### assertForbidden
 
@@ -1414,6 +1445,24 @@ You may assert that the `name` property of the `user` object matches a given val
 $response->assertJsonPath('user.name', 'Steve Schoger');
 ```
 
+<a name="assert-json-paths"></a>
+#### assertJsonPaths
+
+Assert that the response contains the given data at the specified paths:
+
+```php
+$response->assertJsonPaths(array $paths);
+```
+
+For example, you may assert multiple values within the response at once:
+
+```php
+$response->assertJsonPaths([
+    'user.name' => 'Steve Schoger',
+    'user.email' => fn (string $email) => str($email)->endsWith('@laravel.com'),
+]);
+```
+
 <a name="assert-json-missing-path"></a>
 #### assertJsonMissingPath
 
@@ -1437,6 +1486,24 @@ You may assert that it does not contain the `email` property of the `user` objec
 
 ```php
 $response->assertJsonMissingPath('user.email');
+```
+
+<a name="assert-json-missing-paths"></a>
+#### assertJsonMissingPaths
+
+Assert that the response does not contain the given paths:
+
+```php
+$response->assertJsonMissingPaths($paths);
+```
+
+For example, you may assert that multiple paths are missing from the response:
+
+```php
+$response->assertJsonMissingPaths([
+    'user.email',
+    'user.password',
+]);
 ```
 
 <a name="assert-json-structure"></a>
