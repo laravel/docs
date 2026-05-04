@@ -415,6 +415,9 @@ Fortify's passkeys configuration options may be customized using the `passkeys` 
 ],
 ```
 
+> [!NOTE]
+> Fortify wraps the `laravel/passkeys` Composer package and configures it for you. If you are using Fortify's passkeys feature, you should configure passkeys using the `config/fortify.php` file. You do not need to publish the `laravel/passkeys` configuration file, and values defined there will be overridden by Fortify.
+
 The `relying_party_id` should match your application's domain. The `allowed_origins` array lists the browser origins permitted to complete passkey registration and authentication operations. The `user_handle_secret` is used to derive the opaque user identifiers, ensuring the same user is recognized across passkey registrations. The `timeout` option controls how long passkey registration and authentication operations may remain active.
 
 Fortify applies a dedicated passkeys rate limiter for its passkey login, confirmation, and registration routes. If needed, you may customize it via the fortify.limiters.passkeys configuration option and a corresponding RateLimiter::for(...) definition.
