@@ -3113,3 +3113,6 @@ php artisan make:rule Uppercase --implicit
 
 > [!WARNING]
 > An "implicit" rule only _implies_ that the attribute is required. Whether it actually invalidates a missing or empty attribute is up to you.
+
+> [!NOTE]
+> As mentioned in [a note on optional fields](#a-note-on-optional-fields), when using [Form Request Validation](#form-request-validation), empty strings are converted to `null` by the `ConvertEmptyStringsToNull` middleware. Therefore, they will be passed to the validation rules as `null` , and the rules will not be skipped.
