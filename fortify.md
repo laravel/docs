@@ -384,7 +384,7 @@ use Laravel\Fortify\Features;
 ],
 ```
 
-The `confirmPassword` option determines whether Fortify requires [password confirmation](#password-confirmation) before any passkey management route (registration and deletion) may be called.
+The `confirmPassword` option determines whether Fortify requires [password confirmation](#password-confirmation) before passkeys may be registered or deleted.
 
 Next, ensure your application's `App\Models\User` model implements `Laravel\Fortify\Contracts\PasskeyUser` and uses the `Laravel\Fortify\PasskeyAuthenticatable` trait:
 
@@ -416,18 +416,18 @@ Fortify's passkeys configuration options may be customized using the `passkeys` 
 ```
 
 > [!NOTE]
-> Fortify wraps the `laravel/passkeys` Composer package and configures it for you. If you are using Fortify's passkeys feature, you should configure passkeys using the `config/fortify.php` file. You do not need to publish the `laravel/passkeys` configuration file, and values defined there will be overridden by Fortify.
+> Fortify wraps the `laravel/passkeys` Composer package and configures it for you. If you are using Fortify's passkeys feature, you should configure passkeys using your application's `config/fortify.php` file. You do not need to publish the `laravel/passkeys` configuration file, and any values defined there will be overridden by Fortify.
 
-The `relying_party_id` should match your application's domain. The `allowed_origins` array lists the browser origins permitted to complete passkey registration and authentication operations. The `user_handle_secret` is used to derive the opaque user identifiers, ensuring the same user is recognized across passkey registrations. The `timeout` option controls how long passkey registration and authentication operations may remain active.
+The `relying_party_id` should match your application's domain. The `allowed_origins` array lists the browser origins that may complete passkey registration and authentication. The `user_handle_secret` is used to derive opaque user identifiers, ensuring the same user is recognized across passkey registrations. The `timeout` option controls how long passkey registration and authentication operations may remain active.
 
-Fortify applies a dedicated passkeys rate limiter for its passkey login, confirmation, and registration routes. If needed, you may customize it via the fortify.limiters.passkeys configuration option and a corresponding RateLimiter::for(...) definition.
+Fortify applies a dedicated passkeys rate limiter to its passkey login, confirmation, and registration routes. If needed, you may customize it using the `fortify.limiters.passkeys` configuration option and a corresponding `RateLimiter::for(...)` definition.
 
 <a name="passkeys-javascript-client"></a>
 ### JavaScript Client
 
-If you are building a custom frontend, including a Blade application with browser-side scripts, you may use the official [`@laravel/passkeys`](https://www.npmjs.com/package/@laravel/passkeys) package. The package handles browser WebAuthn ceremonies and sends requests to Fortify's passkey endpoints.
+If you are building a custom frontend, including a Blade application with browser-side scripts, you may use the official [`@laravel/passkeys`](https://www.npmjs.com/package/@laravel/passkeys) package. This package handles browser WebAuthn ceremonies and sends requests to Fortify's passkey endpoints.
 
-Install the package via NPM:
+Install the package via npm:
 
 ```shell
 npm install @laravel/passkeys
@@ -461,12 +461,12 @@ await Passkeys.register({
 });
 ```
 
-The package also provides framework helpers for React, Vue, and Svelte via `@laravel/passkeys/react`, `@laravel/passkeys/vue`, and `@laravel/passkeys/svelte`.
+The package also provides React, Vue, and Svelte helpers via `@laravel/passkeys/react`, `@laravel/passkeys/vue`, and `@laravel/passkeys/svelte`.
 
 <a name="authenticating-with-passkeys"></a>
 ### Authenticating With Passkeys
 
-To authenticate a user with a passkey, your application should first make a GET request to the `/passkeys/login/options` endpoint. This endpoint returns the WebAuthn challenge options your frontend should pass to `navigator.credentials.get(...)`.
+To authenticate a user with a passkey, your application should first make a GET request to the `/passkeys/login/options` endpoint. This endpoint returns the WebAuthn challenge options that your frontend should pass to `navigator.credentials.get(...)`.
 
 After the browser returns a credential, your application should make a POST request to `/passkeys/login` with the credential payload. You may also include a boolean `remember` field.
 
@@ -480,7 +480,7 @@ If the request is successful, Fortify will log the user into the configured guar
 
 For authenticated sessions, Fortify provides passkey confirmation endpoints that satisfy Laravel's password confirmation requirement for the current session.
 
-To confirm with a passkey, your application should first make a GET request to `/passkeys/confirm/options`. This endpoint returns the WebAuthn challenge options your frontend should pass to `navigator.credentials.get(...)`.
+To confirm with a passkey, your application should first make a GET request to `/passkeys/confirm/options`. This endpoint returns the WebAuthn challenge options that your frontend should pass to `navigator.credentials.get(...)`.
 
 After the browser returns a credential, your application should make a POST request to `/passkeys/confirm` with the credential payload.
 
@@ -492,7 +492,7 @@ If the request is successful, Fortify marks the current session as password conf
 <a name="registering-passkeys"></a>
 ### Registering Passkeys
 
-To register a passkey for an authenticated user, your application should first make a GET request to `/user/passkeys/options`. This endpoint returns the WebAuthn creation options your frontend should pass to `navigator.credentials.create(...)`.
+To register a passkey for an authenticated user, your application should first make a GET request to `/user/passkeys/options`. This endpoint returns the WebAuthn creation options that your frontend should pass to `navigator.credentials.create(...)`.
 
 After the browser returns a credential, your application should make a POST request to `/user/passkeys` with a `name` field and a `credential` field containing the serialized [`PublicKeyCredential`](https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredential) object returned by `navigator.credentials.create(...)`.
 
