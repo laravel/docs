@@ -472,8 +472,12 @@ After the browser returns a credential, your application should make a POST requ
 
 If the request is successful, Fortify will log the user into the configured guard and return either:
 
+<div class="content-list" markdown="1">
+
 - A redirect response to your intended destination for standard requests.
 - A `200` HTTP response containing a JSON payload with a `redirect` key for XHR requests.
+
+</div>
 
 <a name="confirming-password-with-passkeys"></a>
 ### Confirming Password With Passkeys
@@ -486,8 +490,12 @@ After the browser returns a credential, your application should make a POST requ
 
 If the request is successful, Fortify marks the current session as password confirmed and returns either:
 
+<div class="content-list" markdown="1">
+
 - A redirect response to your intended destination for standard requests.
 - A `200` HTTP response containing a JSON payload with a `redirect` key for XHR requests.
+
+</div>
 
 <a name="registering-passkeys"></a>
 ### Registering Passkeys
@@ -498,8 +506,12 @@ After the browser returns a credential, your application should make a POST requ
 
 If the request is successful, Fortify will return either:
 
+<div class="content-list" markdown="1">
+
 - A redirect back response with a `passkey-registered` status in the session for standard requests.
 - A `200` HTTP response with a JSON payload containing a `status` key, along with the newly registered passkey's `id` and `name`.
+
+</div>
 
 <a name="deleting-passkeys"></a>
 ### Deleting Passkeys
@@ -508,8 +520,12 @@ To delete a passkey, your application should make a DELETE request to `/user/pas
 
 If the request is successful, Fortify will return either:
 
+<div class="content-list" markdown="1">
+
 - A redirect back response with a `passkey-deleted` status in the session for standard requests.
 - A `200` HTTP response with a JSON payload containing a `status` key for XHR requests.
+
+</div>
 
 <a name="registration"></a>
 ## Registration
