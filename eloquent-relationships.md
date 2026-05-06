@@ -1039,8 +1039,8 @@ users
 images
     id - integer
     url - string
-    imageable_id - integer
     imageable_type - string
+    imageable_id - integer
 ```
 
 Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which "type" of parent model to return when accessing the `imageable` relation. In this case, the column would contain either `App\Models\Post` or `App\Models\User`.
@@ -1160,8 +1160,8 @@ videos
 comments
     id - integer
     body - text
-    commentable_id - integer
     commentable_type - string
+    commentable_id - integer
 ```
 
 <a name="one-to-many-polymorphic-model-structure"></a>
@@ -1353,8 +1353,8 @@ tags
 
 taggables
     tag_id - integer
-    taggable_id - integer
     taggable_type - string
+    taggable_id - integer
 ```
 
 > [!NOTE]
