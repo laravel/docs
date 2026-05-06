@@ -1016,6 +1016,7 @@ class SalesCoach implements Agent, HasProviderOptions
             ],
             Lab::Anthropic => [
                 'thinking' => ['budget_tokens' => 1024],
+                'cache_control' => ['type' => 'ephemeral'],
             ],
             default => [],
         };
@@ -1024,6 +1025,8 @@ class SalesCoach implements Agent, HasProviderOptions
 ```
 
 The `providerOptions` method receives the provider currently being used (`Lab` enum or string), allowing you to return different options per provider. This is especially useful when using [failover](#failover), since each fallback provider can receive its own configuration.
+
+The Anthropic example above also enables [prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) via `cache_control`.
 
 <a name="images"></a>
 ## Images
