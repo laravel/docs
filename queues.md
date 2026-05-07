@@ -6,6 +6,7 @@
 - [Creating Jobs](#creating-jobs)
     - [Generating Job Classes](#generating-job-classes)
     - [Class Structure](#class-structure)
+    - [Preparing Jobs for Dispatch](#preparing-jobs-for-dispatch)
     - [Unique Jobs](#unique-jobs)
     - [Debounced Jobs](#debounced-jobs)
     - [Encrypted Jobs](#encrypted-jobs)
@@ -312,6 +313,33 @@ class ProcessPodcast implements ShouldQueue
 ```
 
 If a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.
+
+<a name="preparing-jobs-for-dispatch"></a>
+### Preparing Jobs for Dispatch
+
+Sometimes, you may wish to prepare a job before it is pushed onto the queue, or prevent it from being dispatched if it has no work to do. To do so, implement the `Illuminate\Contracts\Queue\PreparesForDispatch` interface on your job class and define a `prepareForDispatch` method. The `prepareForDispatch` method is executed in the dispatching process, not by a queue worker. Returning `false` from the method will prevent the job from being dispatched to the queue:
+
+```php
+<?php
+
+use Illuminate\Contracts\Queue\PreparesForDispatch;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class UpdateSearchIndex implements ShouldQueue, PreparesForDispatch
+{
+    // ...
+
+    /**
+     * Prepare the job for dispatch.
+     */
+    public function prepareForDispatch(): bool|void
+    {
+        if ($this->product->isUpToDate()) {
+            return false;
+        }
+    }
+}
+```
 
 <a name="unique-jobs"></a>
 ### Unique Jobs
