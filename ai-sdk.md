@@ -920,6 +920,39 @@ class ComplexReasoner implements Agent
 }
 ```
 
+In addition to the `Provider`, `Model`, and `Timeout` attributes, you may also define `provider`, `model`, and `timeout` methods on your agent to resolve these values at runtime, which is useful when the configuration depends on a database record, configuration value, or other runtime state. The same applies to `maxSteps`, `maxTokens`, and `temperature`:
+
+```php
+<?php
+
+namespace App\Ai\Agents;
+
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Promptable;
+
+class SalesCoach implements Agent
+{
+    use Promptable;
+
+    public function maxSteps(): int
+    {
+        return config('agents.sales_coach.max_steps', 5);
+    }
+
+    public function maxTokens(): int
+    {
+        return $this->user->plan->maxTokens();
+    }
+
+    public function temperature(): float
+    {
+        return Setting::get('sales_coach_temperature', 0.7);
+    }
+}
+```
+
+When both a method and an attribute are defined for the same option, the method takes precedence.
+
 <a name="provider-options"></a>
 ### Provider Options
 
