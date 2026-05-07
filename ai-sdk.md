@@ -925,6 +925,7 @@ You may configure text generation options for an agent using PHP attributes. The
 - `Provider`: The AI provider (or providers for failover) to use for the agent.
 - `Temperature`: The sampling temperature to use for generation (0.0 to 1.0).
 - `Timeout`: The HTTP timeout in seconds for agent requests (default: 60).
+- `TopP`: The nucleus sampling probability to use for generation (0.0 to 1.0).
 - `UseCheapestModel`: Use the provider's cheapest text model for cost optimization.
 - `UseSmartestModel`: Use the provider's most capable text model for complex tasks.
 
@@ -939,6 +940,7 @@ use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Attributes\Timeout;
+use Laravel\Ai\Attributes\TopP;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
@@ -949,6 +951,7 @@ use Laravel\Ai\Promptable;
 #[MaxTokens(4096)]
 #[Temperature(0.7)]
 #[Timeout(120)]
+#[TopP(0.9)]
 class SalesCoach implements Agent
 {
     use Promptable;
