@@ -332,7 +332,7 @@ class UpdateSearchIndex implements ShouldQueue, PreparesForDispatch
     /**
      * Prepare the job for dispatch.
      */
-    public function prepareForDispatch(): bool|void
+    public function prepareForDispatch()
     {
         if ($this->product->isUpToDate()) {
             return false;
