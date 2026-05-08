@@ -996,6 +996,13 @@ $browser->controlClick();
 $browser->controlClick('.selector');
 ```
 
+The `clickWhenVisible` or `clickWhenEnabled` method may be used to wait for an element to be ready before clicking it exactly once:
+
+```php
+$browser->clickWhenVisible('@save-button');
+$browser->clickWhenEnabled('@submit-button');
+```
+
 <a name="mouseover"></a>
 #### Mouseover
 
