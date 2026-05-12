@@ -2324,6 +2324,12 @@ You may include the `-v` flag when invoking the `queue:work` command if you woul
 php artisan queue:work -v
 ```
 
+Conversely, you may include the `-q` flag (or `--quiet`) to suppress all output except errors. This means job logs, status messages, and other informational output will not be displayed:
+
+```shell
+php artisan queue:work --quiet
+```
+
 Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment). In addition, remember that any static state created or modified by your application will not be automatically reset between jobs.
 
 Alternatively, you may run the `queue:listen` command. When using the `queue:listen` command, you don't have to manually restart the worker when you want to reload your updated code or reset the application state; however, this command is significantly less efficient than the `queue:work` command:
