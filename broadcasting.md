@@ -212,7 +212,7 @@ To manually configure Laravel Echo for your application's frontend, first instal
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/bootstrap.js` file that is included with the Laravel framework:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/app.js` file that is included with the Laravel framework:
 
 ```js tab=JavaScript
 import Echo from 'laravel-echo';
@@ -298,7 +298,7 @@ To manually configure Laravel Echo for your application's frontend, first instal
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's `resources/js/bootstrap.js` file:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's `resources/js/app.js` file:
 
 ```js tab=JavaScript
 import Echo from 'laravel-echo';
@@ -428,7 +428,7 @@ npm install --save-dev laravel-echo pusher-js
 
 **Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's `resources/js/bootstrap.js` file:
+Once Echo is installed, you are ready to create a fresh Echo instance in your application's `resources/js/app.js` file:
 
 ```js tab=JavaScript
 import Echo from 'laravel-echo';
