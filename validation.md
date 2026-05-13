@@ -2892,6 +2892,17 @@ Password::min(8)
     ->uncompromised()
 ```
 
+You may convert a `Password` rule object to a string suitable for the HTML `passwordrules` attribute using the `toPasswordRulesString` method:
+
+```blade
+<input
+    type="password"
+    name="password"
+    autocomplete="new-password"
+    passwordrules="{{ Password::defaults()->toPasswordRulesString() }}"
+/>
+```
+
 <a name="defining-default-password-rules"></a>
 #### Defining Default Password Rules
 

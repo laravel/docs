@@ -568,6 +568,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 [foreignIdFor](#column-method-foreignIdFor)
 [foreignUlid](#column-method-foreignUlid)
 [foreignUuid](#column-method-foreignUuid)
+[foreignUuidFor](#column-method-foreignUuidFor)
 [morphs](#column-method-morphs)
 [nullableMorphs](#column-method-nullableMorphs)
 
@@ -745,6 +746,15 @@ The `foreignUuid` method creates a `UUID` equivalent column:
 
 ```php
 $table->foreignUuid('user_id');
+```
+
+<a name="column-method-foreignUuidFor"></a>
+#### `foreignUuidFor()` {.collection-method}
+
+The `foreignUuidFor` method adds a `{column}_id` UUID equivalent column for a given model class:
+
+```php
+$table->foreignUuidFor(User::class);
 ```
 
 <a name="column-method-geography"></a>
