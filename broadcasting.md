@@ -984,6 +984,41 @@ If you are not using a global Axios instance, you will need to manually configur
 var socketId = Echo.socketId();
 ```
 
+If you are using one of the framework adapter packages (`@laravel/echo-react`, `@laravel/echo-vue`, or `@laravel/echo-svelte`), you can retrieve the socket ID via the exported `echo()` helper. This is useful for setting up Axios interceptors or attaching the header to individual requests outside of a component:
+
+```js
+import { echo } from '@laravel/echo-react'; // or @laravel/echo-vue, @laravel/echo-svelte
+
+axios.interceptors.request.use((config) => {
+    const socketId = echo().socketId();
+    if (socketId) config.headers['X-Socket-Id'] = socketId;
+    return config;
+});
+```
+
+For reactive access inside a component — for example, when you need the socket ID to update automatically after a reconnect — you may use the `useSocketId` hook:
+
+```js
+// React
+import { useSocketId } from '@laravel/echo-react';
+
+const socketId = useSocketId(); // string | undefined, updates on reconnect
+```
+
+```js
+// Vue
+import { useSocketId } from '@laravel/echo-vue';
+
+const socketId = useSocketId(); // ComputedRef<string | undefined>
+```
+
+```js
+// Svelte
+import { useSocketId } from '@laravel/echo-svelte';
+
+const socketId = useSocketId(); // call socketId() to read the value
+```
+
 <a name="customizing-the-connection"></a>
 ### Customizing the Connection
 
