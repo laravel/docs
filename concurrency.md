@@ -2,8 +2,8 @@
 
 - [Introduction](#introduction)
 - [Running Concurrent Tasks](#running-concurrent-tasks)
-- [Named Results](#named-results)
-- [Task Timeouts](#task-timeouts)
+    - [Named Results](#named-results)
+    - [Task Timeouts](#task-timeouts)
 - [Deferring Concurrent Tasks](#deferring-concurrent-tasks)
 
 <a name="introduction"></a>
@@ -54,7 +54,7 @@ php artisan config:publish concurrency
 ```
 
 <a name="named-results"></a>
-## Named Results
+### Named Results
 
 If you would like to access concurrent task results by name rather than by position, you may provide an associative array of closures. Each result will be returned using the same key as its corresponding closure:
 
@@ -72,7 +72,7 @@ $orderCount = $results['orders'];
 ```
 
 <a name="task-timeouts"></a>
-## Task Timeouts
+### Task Timeouts
 
 When using the `process` driver (the default), you may specify a maximum number of seconds a concurrent task is allowed to run before it is terminated by providing a timeout to the `run` method:
 
@@ -89,10 +89,11 @@ use Illuminate\Support\Facades\DB;
 You may also provide a `CarbonInterval` instance if you prefer a more expressive timeout definition:
 
 ```php
-use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\Concurrency;
 
-Concurrency::run([...], timeout: CarbonInterval::seconds(30));
+use function Illuminate\Support\seconds;
+
+Concurrency::run([...], timeout: seconds(30));
 ```
 
 <a name="deferring-concurrent-tasks"></a>
