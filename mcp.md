@@ -32,7 +32,6 @@
     - [Resource Annotations](#resource-annotations)
     - [Conditional Resource Registration](#conditional-resource-registration)
     - [Resource Responses](#resource-responses)
-    - [Resource Link Responses](#resource-link-responses)
 - [Apps](#apps)
     - [Creating App Resources](#creating-app-resources)
     - [Rendering Apps From Tools](#rendering-apps-from-tools)
@@ -1329,70 +1328,30 @@ return Response::error('Unable to fetch weather data for the specified location.
 <a name="resource-link-responses"></a>
 #### Resource Link Responses
 
-To return a resource link, use the `resourceLink` method. Unlike an embedded resource that inlines content, a resource link returns a URI pointer that the AI client fetches or subscribes to independently. This is useful for large payloads, generated artifacts, and live subscriptions:
+To return a resource link, use the `resourceLink` method, providing the URI and name. Unlike an embedded resource, a resource link returns a URI pointer that the AI client fetches independently:
 
 ```php
 return Response::resourceLink(
     uri: 'file:///data/report.json',
     name: 'monthly-report',
     mimeType: 'application/json',
-    title: 'Monthly Sales Report',
-    description: 'Generated sales report',
-    size: 2048,
 );
 ```
 
-You may also create a resource link directly from a registered resource class or instance. The resource's URI, name, title, description, MIME type, and annotations will be inherited automatically:
+You may also pass a registered resource class or instance, which will automatically inherit the resource's URI, name, title, description, and MIME type:
 
 ```php
-use App\Mcp\Resources\WeatherForecastResource;
-
-// From a resource class:
 return Response::resourceLink(WeatherForecastResource::class);
 
-// From a resource instance:
 return Response::resourceLink(new WeatherForecastResource);
 ```
 
-Any properties inherited from the resource class or instance may be overridden by providing additional named arguments:
+Any inherited value may be overridden by providing additional named arguments:
 
 ```php
-return Response::resourceLink(
-    WeatherForecastResource::class,
-    title: 'Custom Title',
-);
+return Response::resourceLink(WeatherForecastResource::class, title: 'Custom Title');
 ```
 
-Resource links support annotations to provide additional metadata to AI clients. Annotations are passed as a spec-shaped array:
-
-```php
-return Response::resourceLink(
-    uri: 'file:///data/report.json',
-    name: 'monthly-report',
-    mimeType: 'application/json',
-    annotations: [
-        'audience' => ['user'],
-        'priority' => 0.9,
-        'lastModified' => '2026-05-07T12:00:00Z',
-    ],
-);
-```
-
-The resulting wire payload omits null fields and conforms to the MCP specification's `resource_link` content type:
-
-```json
-{
-    "type": "resource_link",
-    "uri": "file:///data/report.json",
-    "name": "monthly-report",
-    "mimeType": "application/json",
-    "annotations": {
-        "audience": ["user"],
-        "priority": 0.9,
-        "lastModified": "2026-05-07T12:00:00Z"
-    }
-}
-```
 
 <a name="apps"></a>
 ## Apps
