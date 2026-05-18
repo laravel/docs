@@ -1290,6 +1290,25 @@ public function handle(Request $request): Response
 }
 ```
 
+<a name="resource-link-responses"></a>
+#### Resource Link Responses
+
+To return a resource link, use the `resourceLink` method, providing the URI and name. Unlike an embedded resource, a resource link returns a URI pointer that the AI client fetches independently:
+
+```php
+return Response::resourceLink(
+    uri: 'file:///data/report.json',
+    name: 'monthly-report',
+    mimeType: 'application/json',
+);
+```
+
+You may also pass a registered resource class or instance, which will automatically inherit the resource's URI, name, title, description, and MIME type:
+
+```php
+return Response::resourceLink(new WeatherForecastResource);
+```
+
 <a name="resource-blob-responses"></a>
 #### Blob Responses
 
