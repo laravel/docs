@@ -14,7 +14,6 @@
 - [SPA Authentication](#spa-authentication)
     - [Configuration](#spa-configuration)
     - [Authenticating](#spa-authenticating)
-    - [Remembering Authenticated Sessions](#remembering-authenticated-sessions)
     - [Protecting Routes](#protecting-spa-routes)
     - [Authorizing Private Broadcast Channels](#authorizing-private-broadcast-channels)
 - [Mobile Application Authentication](#mobile-application-authentication)
@@ -351,103 +350,12 @@ Of course, if your user's session expires due to lack of activity, subsequent re
 > [!WARNING]
 > You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard.
 
-<a name="remembering-authenticated-sessions"></a>
-### Remembering Authenticated Sessions
-
-When using Sanctum's SPA authentication mode, your application is not authenticating users with API tokens. Instead, Sanctum leverages Laravel's [session based authentication services](/docs/{{version}}/authentication#authenticating-users) — the same services used by traditional web applications. This means you may use all of Laravel's session authentication features, including "remember me" functionality.
-
-> [!IMPORTANT]
-> Remember me functionality is only available when using Sanctum's SPA authentication mode, since [API token authentication](#api-token-authentication) is stateless and does not utilize session cookies.
-
-It is a common misconception that Sanctum is a "token only" authentication package. While Sanctum does provide API token authentication, its SPA authentication mode is entirely [stateful](#stateful-vs-stateless-authentication) and cookie based. When a user logs into your SPA, no API token is created or returned. The user's authentication state is maintained via Laravel's session and, optionally, a remember me cookie.
-
-<a name="remember-me-session-authentication"></a>
-#### Remember Me & Session Authentication
-
-If you would like to provide "remember me" functionality in your SPA, you may pass a boolean value as the second argument to the `Auth::attempt` method, just as you would in a traditional web application. When this value is `true`, Laravel will issue a long-lived remember me cookie in addition to the session cookie. Your `users` table must include a `remember_token` column, which is included in Laravel's default application skeleton. To learn more about Laravel's remember me feature, consult the [authentication documentation](/docs/{{version}}/authentication#remembering-users).
-
-The following example demonstrates how you might implement a login endpoint that supports remember me functionality:
-
-```php
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
-Route::post('/login', function (Request $request) {
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
-
-    if (! Auth::attempt($credentials, $request->boolean('remember'))) {
-        return response()->json([
-            'message' => 'Invalid credentials.',
-        ], 401);
-    }
-
-    $request->session()->regenerate();
-
-    return response()->noContent();
-});
-```
-
-On the frontend, you may pass a `remember` flag when making the login request. Be sure that your HTTP client is configured to send credentials (cookies) with cross-origin requests:
-
-```js
-await axios.post('/login', {
-    email,
-    password,
-    remember: true,
-}, {
-    withCredentials: true,
-});
-```
-
-<a name="auth-sanctum-spa-mode"></a>
-#### The `auth:sanctum` Guard in SPA Mode
-
-When protecting routes with the `auth:sanctum` middleware, it is important to understand how Sanctum authenticates SPA requests. For incoming requests from your [configured stateful domains](#configuring-your-first-party-domains), Sanctum does not authenticate the user via an API token. Instead, Sanctum instructs Laravel's authentication system to authenticate the request using the `web` guard and the session cookie stored on the request.
-
-In other words, when your SPA makes an authenticated request to a route protected by `auth:sanctum`, Sanctum is effectively using Laravel's standard session authentication under the hood. The `auth:sanctum` guard first checks if the request originates from one of your stateful domains. If it does, Sanctum authenticates the request using the `web` guard, which reads the session ID from the `laravel_session` cookie and loads the authenticated user from the session. Only if the request is not from a stateful domain, or if no valid session exists, will Sanctum attempt to authenticate the request using a Bearer token in the `Authorization` header.
-
-This is why your `/login` endpoint should authenticate users using the `web` guard (via `Auth::attempt` or equivalent) rather than issuing an API token. The session created during login is what subsequent `auth:sanctum` protected routes will use to identify the authenticated user.
-
-<a name="spa-authentication-cookies"></a>
-#### Authentication Cookies
-
-When using SPA authentication, several cookies work together to maintain your user's authenticated state. Understanding each cookie's role can help when debugging authentication issues:
-
-<div class="content-list" markdown="1">
-
-- **`laravel_session`** — This encrypted cookie contains the session ID. Laravel uses this ID to load the session data from your configured session driver, which stores the authenticated user's ID. This cookie is set when the user logs in and is sent with every subsequent request to your application.
-
-- **`remember_web_*`** — When the user logs in with "remember me" enabled, Laravel issues a long-lived remember me cookie. The cookie name follows the pattern `remember_{guard}_{hash}`, which for the default `web` guard appears as `remember_web_*` in the browser. This cookie allows the user to remain authenticated even after their session expires. If the session cookie is missing but a valid remember me cookie is present, Laravel will automatically re-authenticate the user and issue a new session cookie.
-
-- **`XSRF-TOKEN`** — This cookie is set by the `/sanctum/csrf-cookie` endpoint and contains the CSRF token needed to protect against cross-site request forgery attacks. Your JavaScript HTTP client should send this token in the `X-XSRF-TOKEN` header with state-changing requests (POST, PUT, PATCH, DELETE).
-
-</div>
-
-All of these cookies are managed by Laravel's session and authentication systems — Sanctum does not create or manage them directly. Sanctum's role is to ensure that incoming requests from your SPA are routed through Laravel's session authentication pipeline.
-
-<a name="stateful-vs-stateless-authentication"></a>
-#### Stateful vs Stateless Authentication
-
-Sanctum supports two distinct authentication modes. Understanding the difference is critical when deciding how to authenticate your application:
-
-| Feature | SPA Authentication | API Token Authentication |
-|---|---|---|
-| **Mode** | Stateful | Stateless |
-| **Mechanism** | Session cookies | `Authorization: Bearer` header |
-| **Guard** | `web` | Sanctum token guard |
-| **Remember Me** | Supported | Not supported |
-| **CSRF Protection** | Required | Not applicable |
-| **Use Case** | First-party SPAs on your domain | Third-party APIs, mobile apps, machine-to-machine |
-
-When building a first-party SPA that communicates with your Laravel API, you should use SPA authentication. Your users will log in once, and their browser will automatically send the session cookie with each request. When building an API consumed by third parties or mobile applications, you should issue API tokens instead.
+Since SPA authentication is session based, you may use Laravel's standard authentication services, including ["remember me"](/docs/{{version}}/authentication#remembering-users) functionality.
 
 <a name="protecting-spa-routes"></a>
 ### Protecting Routes
 
-To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either stateful, cookie authenticated requests from your SPA (via the `web` guard) or contain a valid API token header if the request is from a third party:
+To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either stateful authenticated requests from your SPA or contain a valid API token header if the request is from a third party:
 
 ```php
 use Illuminate\Http\Request;
