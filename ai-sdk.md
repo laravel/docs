@@ -1110,6 +1110,9 @@ class ComplexReasoner implements Agent
 }
 ```
 
+> [!NOTE]
+> The underlying model selected by `UseCheapestModel` and `UseSmartestModel` may change between releases of the Laravel AI SDK as providers release new models. Switching models can introduce behavioral changes, deprecated parameters, and significant cost differences. If you need a stable, predictable model and pricing, specify the model explicitly using the `Model` attribute.
+
 <a name="provider-options"></a>
 ### Provider Options
 
