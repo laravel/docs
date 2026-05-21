@@ -347,6 +347,8 @@ If the login request is successful, you will be authenticated and subsequent req
 
 Of course, if your user's session expires due to lack of activity, subsequent requests to the Laravel application may receive a 401 or 419 HTTP error response. In this case, you should redirect the user to your SPA's login page.
 
+Since this approach to SPA authentication is session based, you may use Laravel's standard authentication services, including ["remember me"](/docs/{{version}}/authentication#remembering-users) functionality.
+
 > [!WARNING]
 > You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard.
 
