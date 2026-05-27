@@ -6,6 +6,7 @@
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
     - [Listening for Query Events](#listening-for-query-events)
+    - [Logging Queries](#logging-queries)
     - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
 - [Connecting to the Database CLI](#connecting-to-the-database-cli)
@@ -329,6 +330,50 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
+
+### Logging Queries
+
+Laravel can log all the queries that have been executed for debugging. To start capturing, call the `enableQueryLog` on the `DB` facade, then `getQueryLog` to retreive the results:
+
+```php
+DB::enableQueryLog();
+
+DB::select('select * from `books` where `id` = ?', [1]);
+
+$queries = DB::getQueryLog();
+
+// [
+//     [
+//         'query'    => 'select * from `books` where `id` = ?',
+//         'bindings' => [1],
+//         'time'     => 0.34,
+//     ],
+// ]
+```
+
+You can also get the raw SQL queries using `getRawQueryLog`:
+
+```php
+$queries = DB::getRawQueryLog();
+
+// [
+//     [
+//         'raw_query' => 'select * from `books` where `id` = 1',
+//         'time'      => 0.34,
+//     ],
+// ]
+```
+
+To clear the log without disabling it, call `flushQueryLog`. To stop capturing altogether, call `disableQueryLog`:
+
+```php
+DB::flushQueryLog();
+
+DB::disableQueryLog();
+```
+
+> [!NOTE]
+> You can also log the queries on a specific connection: `DB::connection('mysql-replica')->enableQueryLog()`.
 
 <a name="monitoring-cumulative-query-time"></a>
 ### Monitoring Cumulative Query Time
