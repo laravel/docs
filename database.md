@@ -90,7 +90,7 @@ To see how read / write connections should be configured, let's look at this exa
 ```php
 'mysql' => [
     'driver' => 'mysql',
-
+    
     'read' => [
         'host' => [
             '192.168.1.1',
@@ -103,7 +103,7 @@ To see how read / write connections should be configured, let's look at this exa
         ],
     ],
     'sticky' => true,
-
+    
     'port' => env('DB_PORT', '3306'),
     'database' => env('DB_DATABASE', 'laravel'),
     'username' => env('DB_USERNAME', 'root'),
