@@ -331,6 +331,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
+<a name="logging-queries"></a>
 ### Logging Queries
 
 Laravel can log all the queries that have been executed for debugging. To start capturing, call the `enableQueryLog` on the `DB` facade, then `getQueryLog` to retreive the results:
