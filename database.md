@@ -334,7 +334,7 @@ class AppServiceProvider extends ServiceProvider
 <a name="logging-queries"></a>
 ### Logging Queries
 
-Laravel can log all the database queries that have been executed. To start capturing, call the `DB` facade's `enableQueryLog` method, execute some queries, and then call `getQueryLog` to retrieve the results:
+Laravel can log every database query that has been executed. To start capturing, call the `DB` facade's `enableQueryLog` method, execute some queries, and then call `getQueryLog` to retrieve the results:
 
 ```php
 DB::enableQueryLog();
@@ -365,7 +365,7 @@ $queries = DB::getRawQueryLog();
 // ]
 ```
 
-To clear the log without disabling it, call `flushQueryLog`, or to stop capturing entirely, call `disableQueryLog`:
+To clear the log, call `flushQueryLog`, or to stop capturing entirely, call `disableQueryLog`:
 
 ```php
 DB::flushQueryLog();
