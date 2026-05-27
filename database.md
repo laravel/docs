@@ -90,7 +90,7 @@ To see how read / write connections should be configured, let's look at this exa
 ```php
 'mysql' => [
     'driver' => 'mysql',
-    
+
     'read' => [
         'host' => [
             '192.168.1.1',
@@ -103,7 +103,7 @@ To see how read / write connections should be configured, let's look at this exa
         ],
     ],
     'sticky' => true,
-    
+
     'port' => env('DB_PORT', '3306'),
     'database' => env('DB_DATABASE', 'laravel'),
     'username' => env('DB_USERNAME', 'root'),
@@ -334,7 +334,7 @@ class AppServiceProvider extends ServiceProvider
 <a name="logging-queries"></a>
 ### Logging Queries
 
-Laravel can log all the queries that have been executed for debugging. To start capturing, call the `enableQueryLog` on the `DB` facade, then `getQueryLog` to retreive the results:
+Laravel can log all the queries that have been executed for debugging. To start capturing, call `enableQueryLog` on the `DB` facade, then `getQueryLog` to retrieve the results:
 
 ```php
 DB::enableQueryLog();
@@ -352,7 +352,7 @@ $queries = DB::getQueryLog();
 // ]
 ```
 
-You can also get the raw SQL queries using `getRawQueryLog`:
+You can also retrieve the raw queries using `getRawQueryLog`:
 
 ```php
 $queries = DB::getRawQueryLog();
@@ -365,7 +365,7 @@ $queries = DB::getRawQueryLog();
 // ]
 ```
 
-To clear the log without disabling it, call `flushQueryLog`. To stop capturing altogether, call `disableQueryLog`:
+To clear the log without disabling it, call `flushQueryLog`, or to stop capturing entirely, call `disableQueryLog`:
 
 ```php
 DB::flushQueryLog();
@@ -373,8 +373,8 @@ DB::flushQueryLog();
 DB::disableQueryLog();
 ```
 
-> [!NOTE]
-> You can also log the queries on a specific connection: `DB::connection('mysql-replica')->enableQueryLog()`.
+> [!WARNING]
+> Query logging stores all executed queries in memory. You should only enable it for local development and debugging.
 
 <a name="monitoring-cumulative-query-time"></a>
 ### Monitoring Cumulative Query Time
