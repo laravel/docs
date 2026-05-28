@@ -118,6 +118,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
 [Number::pairs](#method-number-pairs)
+[Number::parse](#method-number-parse)
 [Number::parseInt](#method-number-parse-int)
 [Number::parseFloat](#method-number-parse-float)
 [Number::percentage](#method-number-percentage)
@@ -1837,6 +1838,23 @@ $result = Number::pairs(25, 10);
 $result = Number::pairs(25, 10, offset: 0);
 
 // [[0, 10], [10, 20], [20, 25]]
+```
+
+<a name="method-number-parse"></a>
+#### `Number::parse()` {.collection-method}
+
+The `Number::parse` method parses a localized numeric string using PHP's `NumberFormatter`:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parse('10,123', locale: 'en');
+
+// 10123.0
+
+$result = Number::parse('10,123', locale: 'fr');
+
+// 10.123
 ```
 
 <a name="method-number-parse-int"></a>
