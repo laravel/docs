@@ -1754,6 +1754,7 @@ When prompting or generating other media, you may provide an array of providers 
 
 ```php
 use App\Ai\Agents\SalesCoach;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Image;
 
 $response = (new SalesCoach)->prompt(
@@ -1763,6 +1764,22 @@ $response = (new SalesCoach)->prompt(
 
 $image = Image::of('A donut sitting on the kitchen counter')
     ->generate(provider: [Lab::Gemini, Lab::xAI]);
+```
+
+Failover only occurs when a `FailoverableException` is thrown — such as a rate limit (`RateLimitedException`), an overloaded or unavailable provider (`ProviderOverloadedException`), or insufficient credits (`InsufficientCreditsException`). Ordinary errors, like a validation or bad request error, will not trigger failover.
+
+When you pass a plain list of providers, such as `[Lab::OpenAI, Lab::Anthropic]`, each provider uses its default model. To specify a particular model for each provider in the failover chain, pass an associative array keyed by the provider, using the `Lab` enum's `value` as the key (enum cases cannot be used directly as PHP array keys):
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+$response = (new SalesCoach)->prompt(
+    'Analyze this sales transcript...',
+    provider: [
+        Lab::Gemini->value => 'gemini-3-flash-preview',
+        Lab::DeepSeek->value => 'deepseek-v4-pro',
+    ],
+);
 ```
 
 <a name="testing"></a>
