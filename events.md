@@ -110,6 +110,28 @@ The `event:list` command may be used to list all of the listeners registered wit
 php artisan event:list
 ```
 
+<a name="preventing-event-discovery"></a>
+#### Preventing Event Discovery
+
+If you would like a listener to opt out of automatic discovery, you may implement the `ShouldBeDiscovered` interface on the listener class and define a `shouldBeDiscovered` method that returns a boolean value. If the method returns `false`, the listener will not be registered during event discovery:
+
+```php
+use Illuminate\Contracts\Events\ShouldBeDiscovered;
+
+class SendPodcastNotification implements ShouldBeDiscovered
+{
+    public static function shouldBeDiscovered(): bool
+    {
+        return app()->environment('production');
+    }
+
+    public function handle(PodcastProcessed $event): void
+    {
+        // ...
+    }
+}
+```
+
 <a name="event-discovery-in-production"></a>
 #### Event Discovery in Production
 
