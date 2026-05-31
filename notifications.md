@@ -709,22 +709,6 @@ public function toMail(object $notifiable): MailMessage
 }
 ```
 
-Unlike attaching files in mailable objects, you may not attach a file directly from a storage disk using `attachFromStorage`. You should rather use the `attach` method with an absolute path to the file on the storage disk. Alternatively, you could return a [mailable](/docs/{{version}}/mail#generating-mailables) from the `toMail` method:
-
-```php
-use App\Mail\InvoicePaid as InvoicePaidMailable;
-
-/**
- * Get the mail representation of the notification.
- */
-public function toMail(object $notifiable): Mailable
-{
-    return (new InvoicePaidMailable($this->invoice))
-        ->to($notifiable->email)
-        ->attachFromStorage('/path/to/file');
-}
-```
-
 When necessary, multiple files may be attached to a message using the `attachMany` method:
 
 ```php
@@ -741,6 +725,24 @@ public function toMail(object $notifiable): MailMessage
                 'as' => 'Logo.svg',
                 'mime' => 'image/svg+xml',
             ],
+        ]);
+}
+```
+
+You may use the `attachFromStorageDisk` method to attach a file that exists on a specific [filesystem disk](/docs/{{version}}/filesystem). This method accepts the disk name and the path to the file on that disk:
+
+```php
+use App\Mail\InvoicePaid as InvoicePaidMailable;
+
+/**
+ * Get the mail representation of the notification.
+ */
+public function toMail(object $notifiable): Mailable
+{
+    return (new InvoicePaidMailable($this->invoice))
+        ->to($notifiable->email)
+        ->attachFromStorageDisk('s3', '/path/to/file', 'invoice.pdf', [
+            'mime' => 'application/pdf',
         ]);
 }
 ```
