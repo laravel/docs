@@ -110,32 +110,38 @@ The `event:list` command may be used to list all of the listeners registered wit
 php artisan event:list
 ```
 
+<a name="event-discovery-in-production"></a>
+#### Event Discovery in Production
+
+To give your application a speed boost, you should cache a manifest of all of your application's listeners using the `optimize` or `event:cache` Artisan commands. Typically, this command should be run as part of your application's [deployment process](/docs/{{version}}/deployment#optimization). This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the event cache.
+
 <a name="preventing-event-discovery"></a>
 #### Preventing Event Discovery
 
-If you would like a listener to opt out of automatic discovery, you may implement the `ShouldBeDiscovered` interface on the listener class and define a `shouldBeDiscovered` method that returns a boolean value. If the method returns `false`, the listener will not be registered during event discovery:
+To dynamically control whether a given listener is discovered, you may implement the `ShouldBeDiscovered` interface on the listener class and define a `shouldBeDiscovered` method that returns a boolean value. If the method returns `false`, the listener will not be registered during event discovery:
 
 ```php
 use Illuminate\Contracts\Events\ShouldBeDiscovered;
 
 class SendPodcastNotification implements ShouldBeDiscovered
 {
-    public static function shouldBeDiscovered(): bool
-    {
-        return app()->environment('production');
-    }
-
+    /**
+     * Handle the event.
+     */
     public function handle(PodcastProcessed $event): void
     {
         // ...
     }
+
+    /**
+     * Determine if the listener should be discovered.
+     */
+    public static function shouldBeDiscovered(): bool
+    {
+        return app()->environment('production');
+    }
 }
 ```
-
-<a name="event-discovery-in-production"></a>
-#### Event Discovery in Production
-
-To give your application a speed boost, you should cache a manifest of all of your application's listeners using the `optimize` or `event:cache` Artisan commands. Typically, this command should be run as part of your application's [deployment process](/docs/{{version}}/deployment#optimization). This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the event cache.
 
 <a name="manually-registering-events"></a>
 ### Manually Registering Events
