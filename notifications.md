@@ -725,6 +725,24 @@ public function toMail(object $notifiable): Mailable
 }
 ```
 
+Unlike attaching files directly from the local filesystem, you may use `attachFromStorageDisk` to attach a file that exists on a specific filesystem disk. This method accepts the disk name and the path to the file within that disk, and will resolve the file into an attachment instance:
+
+```php
+use App\Mail\InvoicePaid as InvoicePaidMailable;
+
+/**
+ * Get the mail representation of the notification.
+ */
+public function toMail(object $notifiable): Mailable
+{
+    return (new InvoicePaidMailable($this->invoice))
+        ->to($notifiable->email)
+        ->attachFromStorageDisk('s3', '/path/to/file', 'invoice.pdf', [
+            'mime' => 'application/pdf',
+        ]);
+}
+```
+
 When necessary, multiple files may be attached to a message using the `attachMany` method:
 
 ```php
