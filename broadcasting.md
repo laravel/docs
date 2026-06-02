@@ -1444,6 +1444,43 @@ The possible status values are:
 
 </div>
 
+<a name="react-vue-socket-id"></a>
+#### Socket ID
+
+You may retrieve the current WebSocket socket ID using the `useSocketId` hook, which provides a reactive value that automatically updates when the connection reconnects with a new socket ID:
+
+```js tab=React
+import { useSocketId } from "@laravel/echo-react";
+
+function SocketIndicator() {
+    const socketId = useSocketId();
+
+    return <div>Socket ID: {socketId}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useSocketId } from "@laravel/echo-vue";
+
+const socketId = useSocketId();
+</script>
+
+<template>
+    <div>Socket ID: {{ socketId }}</div>
+</template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useSocketId } from "@laravel/echo-svelte";
+
+const socketId = useSocketId();
+</script>
+
+<div>Socket ID: {socketId()}</div>
+```
+
 <a name="presence-channels"></a>
 ## Presence Channels
 
