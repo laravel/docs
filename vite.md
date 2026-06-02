@@ -574,6 +574,8 @@ local('Brand Sans', {
 
 Depending on the provider, font definitions may accept several options that allow you to customize the generated font CSS:
 
+<div class="content-list" markdown="1">
+
 - `alias` defines the name used by Blade's `@fonts` directive and defaults to a slug of the font family.
 - `variable` defines the generated CSS variable and defaults to `--font-{alias}`.
 - `weights` defines the remote or Fontsource font weights that should be resolved and defaults to `[400]`.
@@ -583,6 +585,8 @@ Depending on the provider, font definitions may accept several options that allo
 - `preload` controls which WOFF2 font variants should be preloaded. This option may be `true`, `false`, or an array of `{ weight, style }` selectors.
 - `fallbacks` defines additional fallback fonts that should be appended to the generated font stack.
 - `optimizedFallbacks` attempts to generate metric-adjusted fallback font faces using the optional `fontaine` package and defaults to `true`.
+
+</div>
 
 Local fonts are resolved from the `src` or `variants` options described above instead of using `weights`, `styles`, and `subsets`.
 
