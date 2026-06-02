@@ -17,6 +17,7 @@
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
     - [Synchronous Dispatching](#synchronous-dispatching)
+    - [Bulk Dispatching](#bulk-dispatching)
     - [Preparing Jobs Before Dispatch](#preparing-jobs-before-dispatch)
     - [Jobs & Database Transactions](#jobs-and-database-transactions)
     - [Job Chaining](#job-chaining)
@@ -1142,6 +1143,20 @@ Similarly, the `background` connection processes jobs after the HTTP response ha
 
 ```php
 RecordDelivery::dispatch($order)->onConnection('background');
+```
+
+<a name="bulk-dispatching"></a>
+### Bulk Dispatching
+
+If you need to dispatch many independent jobs at once and do not need [batch](#job-batching) tracking or callbacks, you may use the `bulk` method of the `Bus` facade. Laravel will group the jobs by their configured queue connection and queue name and push each group to the appropriate queue in bulk:
+
+```php
+use App\Jobs\ProcessUser;
+use Illuminate\Support\Facades\Bus;
+
+Bus::bulk(
+    $users->map(fn ($user) => new ProcessUser($user))
+);
 ```
 
 <a name="preparing-jobs-before-dispatch"></a>

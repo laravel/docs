@@ -1028,6 +1028,20 @@ Mail::to($request->user())
     ->queue($message);
 ```
 
+Alternatively, you may specify the connection and queue using the `Connection` and `Queue` attributes on the mailable class:
+
+```php
+use Illuminate\Queue\Attributes\Connection;
+use Illuminate\Queue\Attributes\Queue;
+
+#[Connection('sqs')]
+#[Queue('emails')]
+class OrderShipped extends Mailable
+{
+    // ...
+}
+```
+
 <a name="queueing-by-default"></a>
 #### Queueing by Default
 
