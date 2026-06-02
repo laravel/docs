@@ -714,7 +714,7 @@ Grouped imports are also supported with both function and const modifiers, allow
 <a name="fonts"></a>
 ### Fonts
 
-When using [Laravel's Vite font optimization](/docs/{{version}}/vite#working-with-fonts), you may use the `@fonts` directive to render the configured font preload links and inline font CSS in your application's layout:
+When using [Laravel's Vite font optimization](/docs/{{version}}/vite#working-with-fonts), you may use the `@fonts` directive to render your configured font preload links and inline font CSS in your application's layout:
 
 ```blade
 <!doctype html>
@@ -726,7 +726,7 @@ When using [Laravel's Vite font optimization](/docs/{{version}}/vite#working-wit
 </head>
 ```
 
-The `@fonts` directive renders all font families configured in your `vite.config.js` file. The directive should typically be placed in the `<head>` of your application's root layout before the content that uses those fonts.
+The `@fonts` directive renders all font families configured in your `vite.config.js` file. The directive should typically be placed in the `<head>` of your application's root layout before any content that uses those fonts.
 
 If a page only needs some of your configured fonts, you may pass one or more font aliases to the directive:
 
@@ -738,7 +738,7 @@ If a page only needs some of your configured fonts, you may pass one or more fon
 @fonts(['sans', 'mono'])
 ```
 
-Font aliases are configured using the `alias` option when defining fonts in your Vite configuration. Under the hood, the `@fonts` directive calls the `fonts` method provided by the `Vite` facade, which may also be invoked directly:
+Font aliases are configured using the `alias` option when defining fonts in your Vite configuration. The `@fonts` directive calls the `fonts` method provided by the `Vite` facade, which may also be invoked directly:
 
 ```blade
 {{ Vite::fonts(['sans', 'mono']) }}
