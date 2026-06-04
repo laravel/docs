@@ -47,6 +47,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::chopEnd](#method-str-chop-end)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
+[Str::convertCase](#method-str-convert-case)
 [Str::doesntContain](#method-str-doesnt-contain)
 [Str::doesntEndWith](#method-str-doesnt-end-with)
 [Str::doesntStartWith](#method-str-doesnt-start-with)
@@ -535,6 +536,39 @@ use Illuminate\Support\Str;
 $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: true);
 
 // true
+```
+
+<a name="method-str-convert-case"></a>
+#### `Str::convertCase()` {.collection-method}
+
+The `Str::convertCase` method converts the case of the given string using the specified mode:
+
+```php
+use Illuminate\Support\Str;
+
+$converted = Str::convertCase('laravel framework', MB_CASE_UPPER);
+
+// LARAVEL FRAMEWORK
+```
+
+By default, the method uses `MB_CASE_FOLD`:
+
+```php
+use Illuminate\Support\Str;
+
+$converted = Str::convertCase('LARAVEL FRAMEWORK');
+
+// laravel framework
+```
+
+You may also specify the character encoding as the third argument:
+
+```php
+use Illuminate\Support\Str;
+
+$converted = Str::convertCase('laravel framework', MB_CASE_TITLE, 'UTF-8');
+
+// Laravel Framework
 ```
 
 <a name="method-str-doesnt-contain"></a>
