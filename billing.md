@@ -23,6 +23,7 @@
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
+    - [Using the Payment Element](#using-the-payment-element)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
     - [Payment Method Presence](#payment-method-presence)
     - [Updating the Default Payment Method](#updating-the-default-payment-method)
@@ -773,6 +774,150 @@ cardButton.addEventListener('click', async (e) => {
 ```
 
 If the card is verified successfully, you may pass the `paymentMethod.id` to your Laravel application and process a [single charge](#simple-charge).
+
+<a name="using-the-payment-element"></a>
+### Using the Payment Element
+
+Stripe's [Payment Element](https://stripe.com/docs/payments/payment-element) is 
+the modern, recommended replacement for the legacy Card Element. It supports 
+multiple payment methods (cards, Apple Pay, Google Pay, iDEAL, etc.) and handles 
+3D Secure automatically.
+
+<a name="payment-element-for-subscriptions"></a>
+#### Payment Element for Subscriptions
+
+First, create a Setup Intent and pass it to your view:
+
+```php
+return view('subscribe', [
+    'intent' => $user->createSetupIntent()
+]);
+```
+
+Mount the Payment Element using the Setup Intent's `client_secret`:
+
+```html
+<div id="payment-element"></div>
+<button id="submit">Subscribe</button>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('stripe-public-key');
+    const elements = stripe.elements({
+        clientSecret: '{{ $intent->client_secret }}'
+    });
+
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+
+    document.getElementById('submit').addEventListener('click', async () => {
+        const { error } = await stripe.confirmSetup({
+            elements,
+            confirmParams: {
+                return_url: '{{ route("subscription.complete") }}',
+            },
+        });
+
+        if (error) {
+            // Display error.message to the user...
+        }
+    });
+</script>
+```
+
+After Stripe redirects to your `return_url`, the `setup_intent` ID is available 
+as a query parameter. Use it to retrieve the payment method and create the subscription:
+
+```php
+use Illuminate\Http\Request;
+
+Route::get('/subscription/complete', function (Request $request) {
+    $setupIntent = $request->user()->findSetupIntent($request->setup_intent);
+
+    $paymentMethod = $setupIntent->payment_method;
+
+    $request->user()->addPaymentMethod($paymentMethod);
+
+    $request->user()->newSubscription('default', 'price_xxx')
+                    ->create($paymentMethod);
+
+    return redirect('/dashboard');
+})->name('subscription.complete');
+```
+
+<a name="payment-element-for-single-charges"></a>
+#### Payment Element for Single Charges
+
+For one-off payments, create a Payment Intent using Cashier's `pay` method and 
+pass the `client_secret` to your frontend:
+
+```php
+use Illuminate\Http\Request;
+
+Route::post('/pay', function (Request $request) {
+    $payment = $request->user()->pay(1000); // Amount in cents
+
+    return view('checkout', [
+        'clientSecret' => $payment->client_secret,
+    ]);
+});
+```
+
+Mount the Payment Element and confirm the payment:
+
+```html
+<div id="payment-element"></div>
+<button id="submit">Pay Now</button>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('stripe-public-key');
+    const elements = stripe.elements({
+        clientSecret: '{{ $clientSecret }}'
+    });
+
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+
+    document.getElementById('submit').addEventListener('click', async () => {
+        const { error } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                return_url: '{{ route("payment.complete") }}',
+            },
+        });
+
+        if (error) {
+            // Display error.message to the user...
+        }
+    });
+</script>
+```
+
+After the redirect, verify the payment and fulfill the order:
+
+```php
+Route::get('/payment/complete', function (Request $request) {
+    $paymentIntent = $request->user()->stripe()
+        ->paymentIntents->retrieve($request->payment_intent);
+
+    if ($paymentIntent->status === 'succeeded') {
+        // Fulfill the order...
+    }
+
+    return redirect('/dashboard');
+})->name('payment.complete');
+```
+
+<a name="payment-element-update-payment-method"></a>
+#### Updating the Default Payment Method
+
+To let users update their saved payment method, follow the same subscription 
+flow but call `updateDefaultPaymentMethod` instead of creating a subscription:
+
+```php
+$request->user()->updateDefaultPaymentMethod($paymentMethod);
+```
 
 <a name="retrieving-payment-methods"></a>
 ### Retrieving Payment Methods
