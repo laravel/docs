@@ -916,6 +916,18 @@ $users = DB::table('users')
     ->get();
 ```
 
+**whereNullSafeEquals / orWhereNullSafeEquals**
+
+The `whereNullSafeEquals` and `orWhereNullSafeEquals` methods may be used to compare a column's value against a given value while treating two `NULL` values as equal:
+
+```php
+$lastLoginIp = $request->input('last_login_ip');
+
+$users = DB::table('users')
+    ->whereNullSafeEquals('last_login_ip', $lastLoginIp)
+    ->get();
+```
+
 **whereDate / whereMonth / whereDay / whereYear / whereTime**
 
 The `whereDate` method may be used to compare a column's value against a date:
