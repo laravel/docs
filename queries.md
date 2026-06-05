@@ -927,6 +927,7 @@ $users = DB::table('users')
     ->whereNullSafeEquals('last_login_ip', $lastLoginIp)
     ->get();
 ```
+
 The `orWhereNullSafeEquals` method may be used to add an "or" clause with a null-safe equality comparison:
 
 ```php
