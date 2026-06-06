@@ -1651,6 +1651,8 @@ Once the expected arguments have been added to your scope method's signature, yo
 $users = User::ofType('admin')->get();
 ```
 
+Attributed scope methods should be `protected`. When calling an attributed scope from within the model class, call the scope through a query builder instance, such as `static::query()->ofType('admin')`, to ensure the call is routed through Eloquent's scope handling.
+
 <a name="pending-attributes"></a>
 ### Pending Attributes
 
