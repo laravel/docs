@@ -1638,7 +1638,7 @@ class User extends Model
      * Scope a query to only include users of a given type.
      */
     #[Scope]
-    public function ofType(Builder $query, string $type): void
+    protected function ofType(Builder $query, string $type): void
     {
         $query->where('type', $type);
     }
@@ -1648,7 +1648,7 @@ class User extends Model
 Once the expected arguments have been added to your scope method's signature, you may pass the arguments when calling the scope:
 
 ```php
-$users = User::ofType('admin')->get();
+$users = User::query()->ofType('admin')->get();
 ```
 
 <a name="pending-attributes"></a>
