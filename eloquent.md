@@ -1638,7 +1638,7 @@ class User extends Model
      * Scope a query to only include users of a given type.
      */
     #[Scope]
-    protected function ofType(Builder $query, string $type): void
+    public function ofType(Builder $query, string $type): void
     {
         $query->where('type', $type);
     }
