@@ -1651,6 +1651,11 @@ Once the expected arguments have been added to your scope method's signature, yo
 $users = User::ofType('admin')->get();
 ```
 
+> [!WARNING]
+> Attributed scopes have to be `protected`, so the method can be called by Laravel's magic from outside, otherwise, you would have to pass the `Builder` inside if the method was `public`.\
+> When using the scope inside another model method, the `protected` method can be accessed or outside the model statically, you have to use `::query()` before calling the method, to make sure, it's called on the `Builder`, not the model for Laravel's magic to work.\
+> Another solution is to use the old way of writing scope without the attribute and instead with a `scope*` prefix before the actual scope method's name, so that there is no method with the scope's name and and Laravel's magic can work as intended.
+
 <a name="pending-attributes"></a>
 ### Pending Attributes
 
