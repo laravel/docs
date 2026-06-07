@@ -774,13 +774,13 @@ Route::post('/user/{user}/mail', function (string $user) {
 });
 ```
 
-You may also pass the entire Artisan command to the `call` method as a string:
+Alternatively, you may pass the entire Artisan command to the `call` method as a string:
 
 ```php
 Artisan::call('mail:send 1 --queue=default');
 ```
 
-Alternatively, you may pass the command class to the `call` method:
+Additionally, you may pass the command class to the `call` method:
 
 ```php
 $exitCode = Artisan::call(SendEmails::class, [
@@ -833,7 +833,7 @@ Route::post('/user/{user}/mail', function (string $user) {
 });
 ```
 
-Alternatively, You may also pass the command class to the `queue` method:
+Alternatively, you may also pass the command class to the `queue` method:
 
 ```php
 Artisan::queue(SendEmails::class, [
@@ -868,7 +868,7 @@ public function handle(): void
 }
 ```
 
-Alternatively, you may pass the command class to the `call` method:
+Alternatively, you may also pass the command class to the `call` method:
 
 ```php
 $this->call(SendEmails::class, [
