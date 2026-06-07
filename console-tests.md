@@ -13,11 +13,15 @@ In addition to simplifying HTTP testing, Laravel provides a simple API for testi
 <a name="success-failure-expectations"></a>
 ## Success / Failure Expectations
 
-To get started, let's explore how to make assertions regarding an Artisan command's exit code. To accomplish this, we will use the `artisan` method to invoke an Artisan command from our test. Then, we will use the `assertExitCode` method to assert that the command completed with a given exit code:
+To get started, let's explore how to make assertions regarding an Artisan command's exit code. To accomplish this, we will use the `artisan` method to invoke an Artisan command from our test. The `artisan` method accepts either the command's signature or command class. Then, we will use the `assertExitCode` method to assert that the command completed with a given exit code:
 
 ```php tab=Pest
 test('console command', function () {
     $this->artisan('inspire')->assertExitCode(0);
+});
+
+test('console command using command class', function () {
+    $this->artisan(InspireCommand::class)->assertExitCode(0);
 });
 ```
 
@@ -28,6 +32,14 @@ test('console command', function () {
 public function test_console_command(): void
 {
     $this->artisan('inspire')->assertExitCode(0);
+}
+
+/**
+ * Test a console command using command class.
+ */
+public function test_console_command_using_command_class(): void
+{
+    $this->artisan(InspireCommand::class)->assertExitCode(0);
 }
 ```
 

@@ -774,10 +774,18 @@ Route::post('/user/{user}/mail', function (string $user) {
 });
 ```
 
-Alternatively, you may pass the entire Artisan command to the `call` method as a string:
+You may also pass the entire Artisan command to the `call` method as a string:
 
 ```php
 Artisan::call('mail:send 1 --queue=default');
+```
+
+Alternatively, you may pass the command class to the `call` method:
+
+```php
+$exitCode = Artisan::call(SendEmails::class, [
+    'user' => 1, '--queue' => 'default'
+]);
 ```
 
 <a name="passing-array-values"></a>
@@ -825,6 +833,14 @@ Route::post('/user/{user}/mail', function (string $user) {
 });
 ```
 
+Alternatively, You may also pass the command class to the `queue` method:
+
+```php
+Artisan::queue(SendEmails::class, [
+    'user' => 1, '--queue' => 'default'
+]);
+```
+
 Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:
 
 ```php
@@ -836,7 +852,7 @@ Artisan::queue('mail:send', [
 <a name="calling-commands-from-other-commands"></a>
 ### Calling Commands From Other Commands
 
-Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command arguments / options:
+Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command's signature or command class, and an array of command arguments / options:
 
 ```php
 /**
@@ -852,10 +868,21 @@ public function handle(): void
 }
 ```
 
+Alternatively, you may pass the command class to the `call` method:
+
+```php
+$this->call(SendEmails::class, [
+    'user' => 1, '--queue' => 'default'
+]);
+```
+
 If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
 
 ```php
 $this->callSilently('mail:send', [
+    'user' => 1, '--queue' => 'default'
+]);
+$this->callSilently(SendEmails::class, [
     'user' => 1, '--queue' => 'default'
 ]);
 ```
