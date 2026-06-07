@@ -316,6 +316,8 @@ class SalesCoach implements Agent, Conversational
 }
 ```
 
+When using the `RemembersConversations` trait, do not manually define a `messages` method in your agent class. If a `messages` method is present, it will take precedence over the trait's implementation and conversation history will not be loaded from the database.
+
 To start a new conversation for a user, call the `forUser` method before prompting:
 
 ```php
