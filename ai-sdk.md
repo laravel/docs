@@ -730,7 +730,7 @@ SimilaritySearch::usingModel(Document::class, 'embedding')
 <a name="mcp-tools"></a>
 ### MCP Tools
 
-If your application uses [Laravel MCP](/docs/{{version}}/mcp), you may give your agents tools that come from the [Model Context Protocol](https://modelcontextprotocol.io). Using the [Laravel MCP client](/docs/{{version}}/mcp#client), you may connect to a remote or local MCP server and pass its tools straight to your agent.
+If your application uses [Laravel MCP](/docs/{{version}}/mcp), you may give your agents tools exposed by [Model Context Protocol](https://modelcontextprotocol.io) servers. Using the [Laravel MCP client](/docs/{{version}}/mcp#client), you may connect to a remote or local MCP server and pass its tools directly to your agent.
 
 > [!NOTE]
 > MCP tools require the [Laravel MCP](/docs/{{version}}/mcp) package to be installed in your application.
@@ -758,7 +758,7 @@ public function tools(): iterable
 }
 ```
 
-The AI SDK automatically wraps each MCP tool so the agent can call it like any other tool. You may also use a [named MCP client](/docs/{{version}}/mcp#client-named):
+The AI SDK automatically wraps each MCP tool so the agent can call it like any other tool. You may also use a [named MCP client](/docs/{{version}}/mcp#named-clients):
 
 ```php
 use Laravel\Mcp\Facades\Mcp;

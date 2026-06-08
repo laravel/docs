@@ -45,7 +45,7 @@
 - [Authorization](#authorization)
 - [MCP Client](#client)
     - [Connecting to Servers](#client-connecting)
-    - [Named Clients](#client-named)
+    - [Named Clients](#named-clients)
     - [Client Authentication](#client-authentication)
     - [Tools](#client-tools)
 - [Testing Servers](#testing-servers)
@@ -1673,12 +1673,12 @@ public function handle(Request $request): Response
 <a name="client"></a>
 ## MCP Client
 
-In addition to building servers, Laravel MCP includes a client for connecting to other MCP servers — your own or third-party servers. The client lets your application discover the tools an MCP server exposes and call them, which is especially useful for giving your [AI agents](/docs/{{version}}/ai-sdk#mcp-tools) access to capabilities provided by external MCP servers.
+In addition to building servers, Laravel MCP includes a client for connecting to other MCP servers, whether first-party or third-party. The client lets your application discover and call the tools exposed by an MCP server, which is especially useful for giving your [AI agents](/docs/{{version}}/ai-sdk#mcp-tools) access to capabilities provided by external MCP servers.
 
 <a name="client-connecting"></a>
 ### Connecting to Servers
 
-You may connect to an HTTP-accessible (web) MCP server using the `Client::web` method, passing the server's URL:
+You may connect to an HTTP-accessible MCP server using the `Client::web` method, passing the server's URL:
 
 ```php
 use Laravel\Mcp\Client;
@@ -1714,7 +1714,7 @@ You may customize the request timeout using the `withTimeout` method:
 $client = Client::web('https://mcp.example.com')->withTimeout(30);
 ```
 
-<a name="client-named"></a>
+<a name="named-clients"></a>
 ### Named Clients
 
 Instead of constructing a client each time you need it, you may register reusable, named clients. This is typically done in the `boot` method of a service provider using the `Mcp` facade:
@@ -1739,19 +1739,20 @@ Named clients are resolved once per request and automatically disconnected at th
 <a name="client-authentication"></a>
 ### Client Authentication
 
-To connect to a web MCP server that is protected by a bearer token, use the `withToken` method. You may pass a token string or a closure that resolves the token lazily:
+To connect to a web MCP server that is protected by a bearer token, use the `withToken` method. You may pass a token string or a closure that lazily resolves the token:
 
 ```php
+use Illuminate\Support\Facades\Auth;
 use Laravel\Mcp\Client;
 
 $client = Client::web('https://mcp.example.com')->withToken($token);
 
 $client = Client::web('https://mcp.example.com')->withToken(
-    fn () => auth()->user()->mcpToken(),
+    fn () => Auth::user()->mcpToken(),
 );
 ```
 
-For servers protected by [OAuth 2.1](#oauth), configure the client using the `withOAuth` method. This is the client-side counterpart to authenticating your own servers with OAuth:
+For servers protected by [OAuth 2.1](#oauth), configure the client using the `withOAuth` method. This is the client-side counterpart to protecting your own servers with OAuth:
 
 ```php
 use Laravel\Mcp\Client;
@@ -1766,14 +1767,15 @@ Mcp::registerClient('github', fn () => Client::web('https://mcp.example.com')->w
 > [!NOTE]
 > The `clientId` and `clientSecret` arguments may be omitted when the MCP server supports [dynamic client registration](https://datatracker.ietf.org/doc/html/rfc7591), in which case the client registers itself automatically.
 
-Next, register the OAuth routes for the named client in your `routes/ai.php` file using the `oAuthRoutesFor` method. The closure you provide is invoked after the authorization code has been exchanged for an access token, receiving the client name and the resulting `TokenSet`:
+Next, register the OAuth routes for the named client in your `routes/ai.php` file using the `oAuthRoutesFor` method. The closure you provide receives the client name and resulting `TokenSet` after the authorization code has been exchanged for an access token:
 
 ```php
+use Illuminate\Support\Facades\Auth;
 use Laravel\Mcp\Client\OAuth\TokenSet;
 use Laravel\Mcp\Facades\Mcp;
 
 Mcp::oAuthRoutesFor('github', function (string $client, TokenSet $token) {
-    auth()->user()->update([
+    Auth::user()->update([
         'github_mcp_token' => $token->accessToken,
     ]);
 
@@ -1813,7 +1815,7 @@ The client automatically paginates through all available tools. You may limit th
 $tools = Mcp::client('github')->tools(limit: 10);
 ```
 
-To invoke a tool, use the `callTool` method, passing the tool name and an array of arguments. The returned `ToolResult` instance exposes the tool's response:
+To invoke a tool, use the `callTool` method, passing the tool name and an array of arguments. The returned `ToolResult` instance exposes the tool response:
 
 ```php
 use Laravel\Mcp\Facades\Mcp;
@@ -1822,9 +1824,9 @@ $result = Mcp::client('github')->callTool('current-weather', [
     'location' => 'New York',
 ]);
 
-$result->text();             // The text content of the response...
-(string) $result;            // Equivalent to calling text()...
-$result->isError;            // Whether the tool reported an error...
+$result->text(); // The text content of the response...
+(string) $result; // Equivalent to calling text()...
+$result->isError; // Whether the tool reported an error...
 $result->structuredContent;  // Structured content, if any...
 ```
 
@@ -1838,7 +1840,7 @@ $result = $tools['current-weather']->call([
 ]);
 ```
 
-If you are building agents with the [Laravel AI SDK](/docs/{{version}}/ai-sdk), you may also hand the tools from an MCP client directly to an agent, allowing the model to call them while responding to a prompt. See the [MCP Tools](/docs/{{version}}/ai-sdk#mcp-tools) section of the AI SDK documentation for more information.
+If you are building agents with the [Laravel AI SDK](/docs/{{version}}/ai-sdk), you may also provide tools from an MCP client directly to an agent, allowing the model to call them while responding to a prompt. See the [MCP Tools](/docs/{{version}}/ai-sdk#mcp-tools) section of the AI SDK documentation for more information.
 
 <a name="testing-servers"></a>
 ## Testing Servers
