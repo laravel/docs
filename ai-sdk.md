@@ -14,6 +14,7 @@
     - [Broadcasting](#broadcasting)
     - [Queueing](#queueing)
     - [Tools](#tools)
+    - [MCP Tools](#mcp-tools)
     - [Provider Tools](#provider-tools)
     - [Sub-Agents](#sub-agents)
     - [Middleware](#middleware)
@@ -725,6 +726,65 @@ You may customize the tool's description using the `withDescription` method:
 SimilaritySearch::usingModel(Document::class, 'embedding')
     ->withDescription('Search the knowledge base for relevant articles.'),
 ```
+
+<a name="mcp-tools"></a>
+### MCP Tools
+
+If your application uses [Laravel MCP](/docs/{{version}}/mcp), you may give your agents tools exposed by [Model Context Protocol](https://modelcontextprotocol.io) servers. Using the [Laravel MCP client](/docs/{{version}}/mcp#client), you may connect to a remote or local MCP server and pass its tools directly to your agent.
+
+> [!NOTE]
+> MCP tools require the [Laravel MCP](/docs/{{version}}/mcp) package to be installed in your application.
+
+Because an MCP client's `tools` method returns a collection, spread it into your agent's `tools` array using the `...` operator:
+
+```php
+use App\Ai\Tools\RandomNumberGenerator;
+use Laravel\Mcp\Client;
+
+/**
+ * Get the tools available to the agent.
+ *
+ * @return Tool[]
+ */
+public function tools(): iterable
+{
+    return [
+        ...Client::web('https://mcp.example.com')
+            ->withToken($token)
+            ->tools(),
+
+        new RandomNumberGenerator,
+    ];
+}
+```
+
+The AI SDK automatically wraps each MCP tool so the agent can call it like any other tool. You may also use a [named MCP client](/docs/{{version}}/mcp#named-clients):
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+public function tools(): iterable
+{
+    return [
+        ...Mcp::client('github')->tools(),
+    ];
+}
+```
+
+Or connect to a [local MCP server](/docs/{{version}}/mcp#client-connecting):
+
+```php
+use Laravel\Mcp\Client;
+
+public function tools(): iterable
+{
+    return [
+        ...Client::local('php', ['artisan', 'mcp:start'])->tools(),
+    ];
+}
+```
+
+For more information on creating and authenticating MCP clients, including bearer tokens and OAuth, consult the [MCP client documentation](/docs/{{version}}/mcp#client).
 
 <a name="provider-tools"></a>
 ### Provider Tools

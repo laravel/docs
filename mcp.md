@@ -43,6 +43,11 @@
     - [OAuth 2.1](#oauth)
     - [Sanctum](#sanctum)
 - [Authorization](#authorization)
+- [MCP Client](#client)
+    - [Connecting to Servers](#client-connecting)
+    - [Named Clients](#named-clients)
+    - [Client Authentication](#client-authentication)
+    - [Tools](#client-tools)
 - [Testing Servers](#testing-servers)
     - [MCP Inspector](#mcp-inspector)
     - [Unit Tests](#unit-tests)
@@ -1664,6 +1669,178 @@ public function handle(Request $request): Response
     // ...
 }
 ```
+
+<a name="client"></a>
+## MCP Client
+
+In addition to building servers, Laravel MCP includes a client for connecting to other MCP servers, whether first-party or third-party. The client lets your application discover and call the tools exposed by an MCP server, which is especially useful for giving your [AI agents](/docs/{{version}}/ai-sdk#mcp-tools) access to capabilities provided by external MCP servers.
+
+<a name="client-connecting"></a>
+### Connecting to Servers
+
+You may connect to an HTTP-accessible MCP server using the `Client::web` method, passing the server's URL:
+
+```php
+use Laravel\Mcp\Client;
+
+$client = Client::web('https://mcp.example.com');
+```
+
+To connect to a local MCP server that runs as a command, use the `Client::local` method, providing the command and any arguments needed to start the server:
+
+```php
+use Laravel\Mcp\Client;
+
+$client = Client::local('php', ['artisan', 'mcp:start']);
+```
+
+The client connects lazily, automatically establishing the connection the first time you list or call tools. If you need to manage the connection manually, you may use the `connect`, `connected`, `ping`, and `disconnect` methods:
+
+```php
+$client->connect();
+
+$client->ping();
+
+if ($client->connected()) {
+    // ...
+}
+
+$client->disconnect();
+```
+
+You may customize the request timeout using the `withTimeout` method:
+
+```php
+$client = Client::web('https://mcp.example.com')->withTimeout(30);
+```
+
+<a name="named-clients"></a>
+### Named Clients
+
+Instead of constructing a client each time you need it, you may register reusable, named clients. This is typically done in the `boot` method of a service provider using the `Mcp` facade:
+
+```php
+use Laravel\Mcp\Client;
+use Laravel\Mcp\Facades\Mcp;
+
+Mcp::registerClient('github', fn () => Client::web('https://mcp.example.com'));
+```
+
+Once registered, you may resolve the client anywhere in your application by name:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+$client = Mcp::client('github');
+```
+
+Named clients are resolved once per request and automatically disconnected at the end of the request lifecycle.
+
+<a name="client-authentication"></a>
+### Client Authentication
+
+To connect to a web MCP server that is protected by a bearer token, use the `withToken` method. You may pass a token string or a closure that lazily resolves the token:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Laravel\Mcp\Client;
+
+$client = Client::web('https://mcp.example.com')->withToken($token);
+
+$client = Client::web('https://mcp.example.com')->withToken(
+    fn () => Auth::user()->mcpToken(),
+);
+```
+
+For servers protected by [OAuth 2.1](#oauth), configure the client using the `withOAuth` method. This is the client-side counterpart to protecting your own servers with OAuth:
+
+```php
+use Laravel\Mcp\Client;
+use Laravel\Mcp\Facades\Mcp;
+
+Mcp::registerClient('github', fn () => Client::web('https://mcp.example.com')->withOAuth(
+    clientId: config('services.github_mcp.client_id'),
+    clientSecret: config('services.github_mcp.client_secret'),
+));
+```
+
+> [!NOTE]
+> The `clientId` and `clientSecret` arguments may be omitted when the MCP server supports [dynamic client registration](https://datatracker.ietf.org/doc/html/rfc7591), in which case the client registers itself automatically.
+
+Next, register the OAuth routes for the named client in your `routes/ai.php` file using the `oAuthRoutesFor` method. The closure you provide receives the client name and resulting `TokenSet` after the authorization code has been exchanged for an access token:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Laravel\Mcp\Client\OAuth\TokenSet;
+use Laravel\Mcp\Facades\Mcp;
+
+Mcp::oAuthRoutesFor('github', function (string $client, TokenSet $token) {
+    Auth::user()->update([
+        'github_mcp_token' => $token->accessToken,
+    ]);
+
+    return redirect('/dashboard');
+});
+```
+
+This registers two named routes: a connect route (`mcp.oauth.{client}.connect`) that redirects the user to the authorization server, and a callback route (`mcp.oauth.{client}.callback`) that exchanges the authorization code and invokes your handler. Both routes use the `web` middleware group by default, which you may override using the `middleware` argument.
+
+To begin the authorization flow, redirect the user to the connect route:
+
+```php
+return redirect()->route('mcp.oauth.github.connect');
+```
+
+<a name="client-tools"></a>
+### Tools
+
+You may retrieve the tools exposed by an MCP server using the `tools` method, which returns a collection of tools keyed by name:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+$tools = Mcp::client('github')->tools();
+
+foreach ($tools as $tool) {
+    $tool->name;
+    $tool->title;
+    $tool->description;
+    $tool->inputSchema;
+}
+```
+
+The client automatically paginates through all available tools. You may limit the number of tools returned using the `limit` argument:
+
+```php
+$tools = Mcp::client('github')->tools(limit: 10);
+```
+
+To invoke a tool, use the `callTool` method, passing the tool name and an array of arguments. The returned `ToolResult` instance exposes the tool response:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+$result = Mcp::client('github')->callTool('current-weather', [
+    'location' => 'New York',
+]);
+
+$result->text(); // The text content of the response...
+(string) $result; // Equivalent to calling text()...
+$result->isError; // Whether the tool reported an error...
+$result->structuredContent;  // Structured content, if any...
+```
+
+Alternatively, you may call a tool directly from a listed tool instance:
+
+```php
+$tools = Mcp::client('github')->tools();
+
+$result = $tools['current-weather']->call([
+    'location' => 'New York',
+]);
+```
+
+If you are building agents with the [Laravel AI SDK](/docs/{{version}}/ai-sdk), you may also provide tools from an MCP client directly to an agent, allowing the model to call them while responding to a prompt. See the [MCP Tools](/docs/{{version}}/ai-sdk#mcp-tools) section of the AI SDK documentation for more information.
 
 <a name="testing-servers"></a>
 ## Testing Servers
