@@ -241,6 +241,14 @@ $value = Cache::remember('users', $seconds, function () {
 
 If the item does not exist in the cache, the closure passed to the `remember` method will be executed and its result will be placed in the cache.
 
+If you need to know whether the item was retrieved from the cache instead of by executing the given closure, you may use the `rememberWithWarmth` method. This method returns an array containing the cached value and a boolean indicating whether the item was "warm", meaning it was retrieved from the cache and not resolved from the closure:
+
+```php
+[$value, $warm] = Cache::rememberWithWarmth('users', $seconds, function () {
+    return DB::table('users')->get();
+});
+```
+
 You may use the `rememberForever` method to retrieve an item from the cache or store it forever if it does not exist:
 
 ```php

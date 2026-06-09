@@ -96,6 +96,22 @@ Of course, if you customize the connection and queue that Scout jobs utilize, yo
 php artisan queue:work redis --queue=scout
 ```
 
+<a name="unique-jobs"></a>
+#### Unique Jobs
+
+In write-heavy applications, you may wish to prevent Scout from queueing duplicate jobs for the same model records. You may opt into unique indexing jobs by registering the `MakeSearchableUniquely` and `RemoveFromSearchUniquely` job classes, typically within the `boot` method of a service provider:
+
+```php
+use Laravel\Scout\Jobs\MakeSearchableUniquely;
+use Laravel\Scout\Jobs\RemoveFromSearchUniquely;
+use Laravel\Scout\Scout;
+
+Scout::makeSearchableUsing(MakeSearchableUniquely::class);
+Scout::removeFromSearchUsing(RemoveFromSearchUniquely::class);
+```
+
+These jobs use Laravel's [unique job locks](/docs/{{version}}/queues#unique-jobs) to avoid dispatching duplicate queued indexing operations for the same searchable model records while a matching job is already queued.
+
 <a name="driver-prerequisites"></a>
 ## Driver Prerequisites
 
