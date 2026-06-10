@@ -78,6 +78,20 @@ RateLimiter::increment('send-message:'.$user->id);
 // Send message...
 ```
 
+When rate limiting an endpoint that may receive many simultaneous requests, you may wish to check the value returned by the `increment` method instead of using `tooManyAttempts` and `increment` as separate operations. When using the `redis`, `memcached`, or `database` cache stores, this value is incremented atomically, ensuring each concurrent request receives a unique count:
+
+```php
+use Illuminate\Support\Facades\RateLimiter;
+
+$perMinute = 5;
+
+if (RateLimiter::increment('send-message:'.$user->id) > $perMinute) {
+    return 'Too many attempts!';
+}
+
+// Send message...
+```
+
 Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `increment` method to increment the number of total attempts:
 
 ```php
