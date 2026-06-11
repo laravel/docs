@@ -48,6 +48,8 @@
     - [Named Clients](#named-clients)
     - [Client Authentication](#client-authentication)
     - [Tools](#client-tools)
+    - [Prompts](#client-prompts)
+    - [Resources](#client-resources)
 - [Testing Servers](#testing-servers)
     - [MCP Inspector](#mcp-inspector)
     - [Unit Tests](#unit-tests)
@@ -1841,6 +1843,84 @@ $result = $tools['current-weather']->call([
 ```
 
 If you are building agents with the [Laravel AI SDK](/docs/{{version}}/ai-sdk), you may also provide tools from an MCP client directly to an agent, allowing the model to call them while responding to a prompt. See the [MCP Tools](/docs/{{version}}/ai-sdk#mcp-tools) section of the AI SDK documentation for more information.
+
+<a name="client-prompts"></a>
+### Prompts
+
+You may retrieve the prompts exposed by an MCP server using the `prompts` method, which returns a collection of prompts keyed by name:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+$prompts = Mcp::client('github')->prompts();
+
+foreach ($prompts as $prompt) {
+    $prompt->name;
+    $prompt->title;
+    $prompt->description;
+    $prompt->arguments;
+}
+```
+
+The client automatically paginates through all available prompts. You may limit the number of prompts returned using the `limit` argument:
+
+```php
+$prompts = Mcp::client('github')->prompts(limit: 10);
+```
+
+To retrieve a prompt, use the `getPrompt` method, passing the prompt name and an array of arguments. The returned `PromptResult` instance exposes the generated messages:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+$result = Mcp::client('github')->getPrompt('describe-weather', [
+    'location' => 'New York',
+]);
+
+$result->text(); // The text content of the messages...
+(string) $result; // Equivalent to calling text()...
+$result->messages; // The raw messages returned by the prompt...
+$result->description; // The prompt description, if any...
+```
+
+<a name="client-resources"></a>
+### Resources
+
+You may retrieve the resources exposed by an MCP server using the `resources` method, which returns a collection of resources keyed by URI:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+$resources = Mcp::client('github')->resources();
+
+foreach ($resources as $resource) {
+    $resource->uri;
+    $resource->name;
+    $resource->title;
+    $resource->description;
+    $resource->mimeType;
+    $resource->size;
+}
+```
+
+The client automatically paginates through all available resources. You may limit the number of resources returned using the `limit` argument:
+
+```php
+$resources = Mcp::client('github')->resources(limit: 10);
+```
+
+To read a resource, use the `readResource` method, passing the resource URI. The returned `ResourceReadResult` instance exposes the resource content:
+
+```php
+use Laravel\Mcp\Facades\Mcp;
+
+$result = Mcp::client('github')->readResource('weather://guidelines');
+
+$result->content(); // The content of the resource, decoding base64 blobs as needed...
+(string) $result; // Equivalent to calling content()...
+$result->mimeType(); // The MIME type of the resource, if any...
+$result->contents; // The raw contents returned by the resource...
+```
 
 <a name="testing-servers"></a>
 ## Testing Servers
