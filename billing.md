@@ -778,10 +778,7 @@ If the card is verified successfully, you may pass the `paymentMethod.id` to you
 <a name="using-the-payment-element"></a>
 ### Using the Payment Element
 
-Stripe's [Payment Element](https://stripe.com/docs/payments/payment-element) is 
-the modern, recommended replacement for the legacy Card Element. It supports 
-multiple payment methods (cards, Apple Pay, Google Pay, iDEAL, etc.) and handles 
-3D Secure automatically.
+Stripe's [Payment Element](https://stripe.com/docs/payments/payment-element) is the modern, recommended replacement for the legacy Card Element. It supports multiple payment methods (cards, Apple Pay, Google Pay, iDEAL, etc.) and handles 3D Secure automatically.
 
 <a name="payment-element-for-subscriptions"></a>
 #### Payment Element for Subscriptions
@@ -819,14 +816,13 @@ Mount the Payment Element using the Setup Intent's `client_secret`:
         });
 
         if (error) {
-            // Display error.message to the user...
+            // Display "error.message" to the user...
         }
     });
 </script>
 ```
 
-After Stripe redirects to your `return_url`, the `setup_intent` ID is available 
-as a query parameter. Use it to retrieve the payment method and create the subscription:
+After Stripe redirects to your `return_url`, the `setup_intent` ID is available as a query parameter. Use it to retrieve the payment method and create the subscription:
 
 ```php
 use Illuminate\Http\Request;
@@ -839,7 +835,7 @@ Route::get('/subscription/complete', function (Request $request) {
     $request->user()->addPaymentMethod($paymentMethod);
 
     $request->user()->newSubscription('default', 'price_xxx')
-                    ->create($paymentMethod);
+        ->create($paymentMethod);
 
     return redirect('/dashboard');
 })->name('subscription.complete');
@@ -848,14 +844,13 @@ Route::get('/subscription/complete', function (Request $request) {
 <a name="payment-element-for-single-charges"></a>
 #### Payment Element for Single Charges
 
-For one-off payments, create a Payment Intent using Cashier's `pay` method and 
-pass the `client_secret` to your frontend:
+For one-off payments, create a Payment Intent using Cashier's `pay` method and pass the `client_secret` to your frontend:
 
 ```php
 use Illuminate\Http\Request;
 
 Route::post('/pay', function (Request $request) {
-    $payment = $request->user()->pay(1000); // Amount in cents
+    $payment = $request->user()->pay(1000);
 
     return view('checkout', [
         'clientSecret' => $payment->client_secret,
@@ -888,7 +883,7 @@ Mount the Payment Element and confirm the payment:
         });
 
         if (error) {
-            // Display error.message to the user...
+            // Display "error.message" to the user...
         }
     });
 </script>
@@ -912,8 +907,7 @@ Route::get('/payment/complete', function (Request $request) {
 <a name="payment-element-update-payment-method"></a>
 #### Updating the Default Payment Method
 
-To let users update their saved payment method, follow the same subscription 
-flow but call `updateDefaultPaymentMethod` instead of creating a subscription:
+To let users update their saved payment method, follow the same subscription flow but call `updateDefaultPaymentMethod` instead of creating a subscription:
 
 ```php
 $request->user()->updateDefaultPaymentMethod($paymentMethod);
