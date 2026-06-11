@@ -8,6 +8,7 @@
     - [Configuring Searchable Data](#configuring-searchable-data)
 - [Database / Collection Engines](#database-and-collection-engines)
     - [Database Engine](#database-engine)
+    - [PostgreSQL Engine](#postgresql-engine)
     - [Collection Engine](#collection-engine)
 - [Third-Party Engine Configuration](#third-party-engine-configuration)
     - [Configuring Model Indexes](#configuring-model-indexes)
@@ -295,6 +296,226 @@ public function toSearchableArray(): array
 
 > [!WARNING]
 > Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
+
+<a name="postgresql-engine"></a>
+### PostgreSQL Engine
+
+Scout's `pgsql` engine uses PostgreSQL's native full-text search features to search your existing database directly. It stores a generated `tsvector` column on your table, searches that column with PostgreSQL `tsquery` functions, and orders matching records by relevance using `ts_rank` or `ts_rank_cd`.
+
+The PostgreSQL engine may also use the `pg_trgm` extension for typo-tolerant matching. When trigram search is enabled and the extension is available, Scout blends PostgreSQL full-text rank with trigram similarity. If `pg_trgm` is not available, Scout continues using full-text search only.
+
+To use the PostgreSQL engine, set the `SCOUT_DRIVER` environment variable to `pgsql`:
+
+```ini
+SCOUT_DRIVER=pgsql
+```
+
+The model being searched must use a PostgreSQL database connection. If a model uses another database driver, Scout will throw an exception when the `pgsql` engine is used for that model.
+
+> [!NOTE]
+> Setting `SCOUT_DRIVER` to `pgsql` does not create any database columns or indexes. You should add Scout's PostgreSQL search vector to each searchable table using a migration.
+
+#### Preparing Searchable Data
+
+The PostgreSQL engine uses the columns returned by your model's `toSearchableArray` method for full-text search. These values should correspond to columns that exist on the model's table:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+
+class Post extends Model
+{
+    use Searchable;
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'body' => $this->body,
+        ];
+    }
+}
+```
+
+The PostgreSQL engine is scoped to columns on a single model table. It does not search relationship data, JSON paths, or multiple tables in one search operation.
+
+If you enable trigram search, Scout uses the configured `scout.pgsql.trigram.columns` values for trigram predicates and ranking. These columns should also be present in your model's `toSearchableArray` method.
+
+#### Creating Search Indexes
+
+Scout registers a `searchable` schema helper for PostgreSQL migrations. The helper creates a generated `tsvector` column and a GIN index for the searchable columns:
+
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->text('body');
+            $table->string('status')->default('draft');
+
+            $table->searchable(['title', 'body']);
+        });
+    }
+};
+```
+
+By default, Scout creates a generated column named `search_vector` and a GIN index using Laravel's conventional index name. You may customize the generated column name, text search language, index name, and column weights:
+
+```php
+$table->searchable(['title', 'body'], [
+    'language' => 'english',
+    'vector_column' => 'search_vector',
+    'index' => 'posts_search_vector_index',
+    'weights' => [
+        'title' => 'A',
+        'body' => 'D',
+    ],
+]);
+```
+
+PostgreSQL supports four weight categories: `A`, `B`, `C`, and `D`. Weight `A` is the strongest and weight `D` is the default. In the example above, matches in the `title` column receive more influence during ranking than matches in the `body` column.
+
+#### Dropping Search Indexes
+
+If you need to remove Scout's PostgreSQL search column and indexes from an existing table, you may use the `dropSearchable` schema helper in your migration's `down` method:
+
+```php
+/**
+ * Reverse the migrations.
+ */
+public function down(): void
+{
+    Schema::table('posts', function (Blueprint $table) {
+        $table->dropSearchable();
+    });
+}
+```
+
+If your searchable column uses a custom vector column or index name, pass the same options that were used when the `searchable` helper was called:
+
+```php
+$table->dropSearchable([
+    'vector_column' => 'document_vector',
+    'index' => 'posts_document_vector_index',
+]);
+```
+
+When dropping trigram indexes, Scout uses the columns configured in `scout.pgsql.trigram.columns` by default. If you need to override those columns for a specific migration, pass the trigram columns that were indexed by the migration:
+
+```php
+$table->dropSearchable([
+    'trigram' => [
+        'columns' => ['title'],
+    ],
+]);
+```
+
+#### Trigram Search
+
+To enable typo-tolerant search, install PostgreSQL's `pg_trgm` extension and enable trigram search in Scout's configuration:
+
+```ini
+SCOUT_PGSQL_TRIGRAM=true
+```
+
+You may create the extension and trigram indexes from your migration using the `trigram` option:
+
+```php
+$table->searchable(['title', 'body'], [
+    'trigram' => [
+        'create_extension' => true,
+        'columns' => ['title'],
+    ],
+]);
+```
+
+The `create_extension` option issues a `CREATE EXTENSION IF NOT EXISTS pg_trgm` statement before creating trigram indexes. The database user running the migration must have permission to create extensions. If your production database does not allow application users to create extensions, create `pg_trgm` separately using a privileged database role and omit the `create_extension` option from your application migration.
+
+Once enabled, Scout will include trigram matching as a fallback match path and use trigram similarity as part of the blended relevance score. Scout only searches the columns listed in `scout.pgsql.trigram.columns`, and the migration helper uses the same configured columns when no `trigram.columns` option is provided. If the extension is not installed, cannot be inspected, or no trigram columns are configured, Scout deterministically falls back to full-text search only.
+
+#### Configuration
+
+The PostgreSQL engine is configured from the `pgsql` section of your application's `config/scout.php` file:
+
+```php
+'pgsql' => [
+    'language' => env('SCOUT_PGSQL_LANGUAGE', 'english'),
+    'vector_column' => env('SCOUT_PGSQL_VECTOR_COLUMN', 'search_vector'),
+    'column_weights' => [
+        'title' => 'A',
+        'body' => 'D',
+    ],
+    'query_function' => env('SCOUT_PGSQL_QUERY_FUNCTION', 'plainto_tsquery'),
+    'rank_function' => env('SCOUT_PGSQL_RANK_FUNCTION', 'ts_rank'),
+    'trigram' => [
+        'enabled' => env('SCOUT_PGSQL_TRIGRAM', false),
+        'threshold' => env('SCOUT_PGSQL_TRIGRAM_THRESHOLD', 0.3),
+        'columns' => ['title'],
+        'create_extension' => env('SCOUT_PGSQL_CREATE_TRIGRAM_EXTENSION', false),
+    ],
+    'weights' => [
+        'full_text' => env('SCOUT_PGSQL_FULL_TEXT_WEIGHT', 1.0),
+        'trigram' => env('SCOUT_PGSQL_TRIGRAM_WEIGHT', 0.25),
+    ],
+],
+```
+
+The `language` option controls the PostgreSQL text search configuration used for stemming and tokenization. The `vector_column` option must be a plain PostgreSQL column name. The `query_function` option may be `plainto_tsquery`, `phraseto_tsquery`, `websearch_to_tsquery`, or `to_tsquery`. The `rank_function` option may be `ts_rank` or `ts_rank_cd`.
+
+The `column_weights` option controls ranking weights used when Scout builds generated vector expressions. You should keep these weights in sync with the weights used by your migration's `searchable` helper.
+
+The `trigram.columns` option controls which columns Scout uses for typo-tolerant trigram matching. The migration helper uses these configured columns by default when creating or dropping trigram indexes. You may still pass a migration-specific `trigram.columns` option when a table needs different trigram indexes.
+
+The `trigram.threshold` option must be numeric and between `0` and `1`. The `weights.full_text` and `weights.trigram` options control how full-text rank and trigram similarity are blended when trigram search is enabled and the `pg_trgm` extension is available.
+
+#### Searching
+
+Once your model and migration are configured, you may search PostgreSQL-backed models using the standard Scout API:
+
+```php
+$posts = Post::search('laravel postgres')->get();
+```
+
+You may also use Scout's usual constraints and pagination methods:
+
+```php
+$posts = Post::search('laravel')
+    ->whereIn('status', ['published'])
+    ->paginate(15);
+```
+
+When you do not provide an explicit `orderBy` clause, Scout orders non-empty searches by PostgreSQL relevance score. If you call `orderBy`, your explicit ordering takes precedence over relevance ordering.
+
+#### Performance Considerations
+
+Generated `tsvector` columns and GIN indexes make PostgreSQL full-text search fast, but they add storage and write overhead. Large tables may take time to backfill and index, and write-heavy tables will pay the cost of maintaining the generated vector and indexes as records change.
+
+For large production tables, consider creating or backfilling search indexes during a maintenance window and testing the migration on a copy of production data before deployment. If you enable trigram indexes, remember that each indexed trigram column adds another index that PostgreSQL must maintain.
+
+#### Limitations
+
+The PostgreSQL engine searches one model table at a time and expects searchable values to map to columns on that table. It does not provide cross-model search, relationship search, JSON path search, MySQL or SQLite full-text behavior, background indexing jobs, or custom ranking callbacks.
 
 <a name="collection-engine"></a>
 ### Collection Engine
