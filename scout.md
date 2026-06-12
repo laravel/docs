@@ -313,7 +313,7 @@ SCOUT_DRIVER=pgsql
 The model being searched must use a PostgreSQL database connection. If a model uses another database driver, Scout will throw an exception when the `pgsql` engine is used for that model.
 
 > [!NOTE]
-> Setting `SCOUT_DRIVER` to `pgsql` or running `scout:import` does not create any database columns or indexes. You should add Scout's PostgreSQL search vector to each searchable table using a migration before importing records.
+> Using the `pgsql` Scout engine does not automatically create any database columns or indexes. You should add Scout's PostgreSQL search vector to each searchable table using a migration, or explicitly prepare the table when running `scout:import`.
 
 #### Preparing Searchable Data
 
@@ -395,6 +395,14 @@ $table->searchable(['title', 'body'], [
 ```
 
 PostgreSQL supports four weight categories: `A`, `B`, `C`, and `D`. Weight `A` is the strongest and weight `D` is the default. In the example above, matches in the `title` column receive more influence during ranking than matches in the `body` column.
+
+If you are enabling Scout's PostgreSQL engine for an existing table, you may also ask the `scout:import` command to create the generated search column and indexes before importing records for a model that uses the `pgsql` engine:
+
+```shell
+php artisan scout:import "App\Models\Post" --prepare-pgsql
+```
+
+This option uses the columns returned by the model's `toSearchableArray` method and skips preparation if the configured search vector column already exists. For production applications, migrations are typically preferred because they keep schema changes explicit and repeatable.
 
 #### Dropping Search Indexes
 
