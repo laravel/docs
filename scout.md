@@ -313,7 +313,7 @@ SCOUT_DRIVER=pgsql
 The model being searched must use a PostgreSQL database connection. If a model uses another database driver, Scout will throw an exception when the `pgsql` engine is used for that model.
 
 > [!NOTE]
-> Setting `SCOUT_DRIVER` to `pgsql` does not create any database columns or indexes. You should add Scout's PostgreSQL search vector to each searchable table using a migration.
+> Setting `SCOUT_DRIVER` to `pgsql` or running `scout:import` does not create any database columns or indexes. You should add Scout's PostgreSQL search vector to each searchable table using a migration before importing records.
 
 #### Preparing Searchable Data
 
@@ -436,7 +436,7 @@ $table->dropSearchable([
 To enable typo-tolerant search, install PostgreSQL's `pg_trgm` extension and enable trigram search in Scout's configuration:
 
 ```ini
-SCOUT_PGSQL_TRIGRAM=true
+PGSQL_TRIGRAM=true
 ```
 
 You may create the extension and trigram indexes from your migration using the `trigram` option:
@@ -452,7 +452,7 @@ $table->searchable(['title', 'body'], [
 
 The `create_extension` option issues a `CREATE EXTENSION IF NOT EXISTS pg_trgm` statement before creating trigram indexes. The database user running the migration must have permission to create extensions. If your production database does not allow application users to create extensions, create `pg_trgm` separately using a privileged database role and omit the `create_extension` option from your application migration.
 
-Once enabled, Scout will include trigram matching as a fallback match path and use trigram similarity as part of the blended relevance score. Scout only searches the columns listed in `scout.pgsql.trigram.columns`, and the migration helper uses the same configured columns when no `trigram.columns` option is provided. If the extension is not installed, cannot be inspected, or no trigram columns are configured, Scout deterministically falls back to full-text search only.
+Once enabled, Scout will include trigram matching as a fallback match path and use trigram similarity as part of the blended relevance score. Scout applies the configured trigram threshold before executing the trigram predicate, only searches the columns listed in `scout.pgsql.trigram.columns`, and the migration helper uses the same configured columns when no `trigram.columns` option is provided. If the extension is not installed, cannot be inspected, or no trigram columns are configured, Scout deterministically falls back to full-text search only.
 
 #### Configuration
 
@@ -460,23 +460,23 @@ The PostgreSQL engine is configured from the `pgsql` section of your application
 
 ```php
 'pgsql' => [
-    'language' => env('SCOUT_PGSQL_LANGUAGE', 'english'),
-    'vector_column' => env('SCOUT_PGSQL_VECTOR_COLUMN', 'search_vector'),
+    'language' => 'english',
+    'vector_column' => 'search_vector',
     'column_weights' => [
         'title' => 'A',
         'body' => 'D',
     ],
-    'query_function' => env('SCOUT_PGSQL_QUERY_FUNCTION', 'plainto_tsquery'),
-    'rank_function' => env('SCOUT_PGSQL_RANK_FUNCTION', 'ts_rank'),
+    'query_function' => 'plainto_tsquery',
+    'rank_function' => 'ts_rank',
     'trigram' => [
-        'enabled' => env('SCOUT_PGSQL_TRIGRAM', false),
-        'threshold' => env('SCOUT_PGSQL_TRIGRAM_THRESHOLD', 0.3),
+        'enabled' => env('PGSQL_TRIGRAM', false),
+        'threshold' => env('PGSQL_TRIGRAM_THRESHOLD', 0.3),
         'columns' => ['title'],
-        'create_extension' => env('SCOUT_PGSQL_CREATE_TRIGRAM_EXTENSION', false),
+        'create_extension' => false,
     ],
     'weights' => [
-        'full_text' => env('SCOUT_PGSQL_FULL_TEXT_WEIGHT', 1.0),
-        'trigram' => env('SCOUT_PGSQL_TRIGRAM_WEIGHT', 0.25),
+        'full_text' => 1.0,
+        'trigram' => 0.25,
     ],
 ],
 ```
@@ -487,7 +487,7 @@ The `column_weights` option controls ranking weights used when Scout builds gene
 
 The `trigram.columns` option controls which columns Scout uses for typo-tolerant trigram matching. The migration helper uses these configured columns by default when creating or dropping trigram indexes. You may still pass a migration-specific `trigram.columns` option when a table needs different trigram indexes.
 
-The `trigram.threshold` option must be numeric and between `0` and `1`. The `weights.full_text` and `weights.trigram` options control how full-text rank and trigram similarity are blended when trigram search is enabled and the `pg_trgm` extension is available.
+The `trigram.threshold` option must be numeric and between `0` and `1`. Scout applies this value to PostgreSQL before running trigram predicates. The `weights.full_text` and `weights.trigram` options control how full-text rank and trigram similarity are blended when trigram search is enabled and the `pg_trgm` extension is available.
 
 #### Searching
 
