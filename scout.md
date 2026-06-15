@@ -402,7 +402,7 @@ If you are enabling Scout's PostgreSQL engine for an existing table, you may als
 php artisan scout:import "App\Models\Post" --prepare-pgsql
 ```
 
-This option uses the columns returned by the model's `toSearchableArray` method and skips preparation if the configured search vector column already exists. For production applications, migrations are typically preferred because they keep schema changes explicit and repeatable.
+This option inspects the model's table and uses the columns returned by the model's `toSearchableArray` method that exist on the table. If the configured search vector column does not exist, Scout creates the generated column and indexes. If the vector column already exists, Scout creates any missing vector or trigram indexes. For production applications, migrations are typically preferred because they keep schema changes explicit and repeatable.
 
 #### Dropping Search Indexes
 
