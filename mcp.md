@@ -1606,6 +1606,13 @@ class CurrentWeatherTool extends Tool
 
 Icons defined via the attribute and the `icons` method are combined automatically. Icon paths are resolved as follows:
 
+<div class="content-list" markdown="1">
+
+- Paths with a URI scheme, such as `https:` or `data:`, are used as-is.
+- Relative paths are resolved to a URL using Laravel's `asset` helper.
+
+</div>
+
 <a name="authentication"></a>
 ## Authentication
 
