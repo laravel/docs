@@ -256,14 +256,14 @@ test('user is redirected to github', function () {
 <a name="faking-the-callback"></a>
 #### Faking the Callback
 
-To test your application's callback route, you may invoke the `fake` method and provide a `User` instance that should be returned when your application requests the user's details from the provider. The `User` instance may be created using the `map` method:
+To test your application's callback route, you may invoke the `fake` method and provide a `User` instance that should be returned when your application requests the user's details from the provider. The `User` instance may be created using the `fake` method:
 
 ```php
 use Laravel\Socialite\Socialite;
 use Laravel\Socialite\Two\User;
 
 test('user can login with github', function () {
-    Socialite::fake('github', (new User)->map([
+    Socialite::fake('github', User::fake([
         'id' => 'github-123',
         'name' => 'Jason Beggs',
         'email' => 'jason@example.com',
@@ -281,15 +281,18 @@ test('user can login with github', function () {
 });
 ```
 
-By default, the `User` instance will also include a `token` property. If needed, you may manually specify additional properties on the `User` instance:
+By default, the `User` instance will include fake OAuth token values. If needed, you may override these values by passing additional attributes to the `fake` method:
 
 ```php
-$fakeUser = (new User)->map([
+$fakeUser = User::fake([
     'id' => 'github-123',
     'name' => 'Jason Beggs',
     'email' => 'jason@example.com',
-])->setToken('fake-token')
-  ->setRefreshToken('fake-refresh-token')
-  ->setExpiresIn(3600)
-  ->setApprovedScopes(['read', 'write'])
+    'token' => 'fake-token',
+    'refreshToken' => 'fake-refresh-token',
+    'expiresIn' => 3600,
+    'approvedScopes' => ['read', 'write'],
+]);
 ```
+
+OAuth 1 users may be faked using the `Laravel\Socialite\One\User` class.

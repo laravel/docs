@@ -23,6 +23,7 @@
 - [Previewing Emails](#previewing-emails)
 - [Container CLI](#sail-container-cli)
 - [PHP Versions](#sail-php-versions)
+    - [Additional PHP Extensions](#sail-php-extensions)
 - [Node Versions](#sail-node-versions)
 - [Sharing Your Site](#sharing-your-site)
 - [Debugging With Xdebug](#debugging-with-xdebug)
@@ -424,6 +425,20 @@ sail build --no-cache
 
 sail up
 ```
+
+<a name="sail-php-extensions"></a>
+### Additional PHP Extensions
+
+Sail's runtime images include a common set of PHP extensions. If your application requires additional extensions, you may install them when building the image by adding a space-separated `PHP_EXTENSIONS` build argument to the `laravel.test` service in your application's `compose.yaml` file:
+
+```yaml
+build:
+    args:
+        WWWGROUP: '${WWWGROUP}'
+        PHP_EXTENSIONS: 'gmp imagick'
+```
+
+After updating your application's `compose.yaml` file, you should rebuild your container images.
 
 <a name="sail-node-versions"></a>
 ## Node Versions

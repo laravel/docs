@@ -402,7 +402,7 @@ class PhotoController extends Controller
         #[DB('mysql')] protected Connection $connection,
         #[Give(DatabaseRepository::class)] protected UserRepository $users,
         #[Log('daily')] protected LoggerInterface $log,
-        #[RouteParameter('photo')] protected Photo $photo,
+        #[RouteParameter] protected Photo $photo,
         #[Tag('reports')] protected iterable $reports,
     ) {
         // ...
@@ -410,7 +410,9 @@ class PhotoController extends Controller
 }
 ```
 
-Furthermore, Laravel provides a `CurrentUser` attribute for injecting the currently authenticated user into a given route or class:
+The `RouteParameter` attribute will resolve the route parameter matching the variable name. If needed, you may specify the route parameter name explicitly: `#[RouteParameter('photo')]`.
+
+In addition, Laravel provides a `CurrentUser` attribute for injecting the currently authenticated user into a given route or class:
 
 ```php
 use App\Models\User;

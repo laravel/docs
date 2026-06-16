@@ -460,6 +460,26 @@ public function schema(JsonSchema $schema): array
 }
 ```
 
+If a value may match one of several schemas, use the `anyOf` method:
+
+```php
+public function schema(JsonSchema $schema): array
+{
+    return [
+        'content' => $schema->anyOf([
+            $schema->object(fn ($schema) => [
+                'type' => $schema->string()->enum(['article'])->required(),
+                'title' => $schema->string()->required(),
+            ]),
+            $schema->object(fn ($schema) => [
+                'type' => $schema->string()->enum(['image'])->required(),
+                'url' => $schema->string()->required(),
+            ]),
+        ])->required(),
+    ];
+}
+```
+
 <a name="attachments"></a>
 ### Attachments
 
