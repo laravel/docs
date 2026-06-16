@@ -15,6 +15,7 @@
 - [Atomic Locks](#atomic-locks)
     - [Managing Locks](#managing-locks)
     - [Managing Locks Across Processes](#managing-locks-across-processes)
+    - [Refreshing Locks](#refreshing-locks)
     - [Concurrency Limiting](#concurrency-limiting)
 - [Cache Failover](#cache-failover)
 - [Adding Custom Cache Drivers](#adding-custom-cache-drivers)
@@ -545,23 +546,6 @@ Cache::lock('foo', 10)->block(5, function () {
 });
 ```
 
-If you need to extend the expiration of a lock that you currently own, you may use the `refresh` method. If no number of seconds is provided, the lock's original duration will be used. This is useful for long-running operations where you prefer to acquire a short lock and periodically extend it instead of acquiring a lock with a very long expiration time:
-
-```php
-$lock = Cache::lock('generate-reports', 60);
-
-if ($lock->get()) {
-    foreach ($reports as $report) {
-        $report->generate();
-
-        // Extend the lock for another 60 seconds...
-        $lock->refresh();
-    }
-
-    $lock->release();
-}
-```
-
 <a name="managing-locks-across-processes"></a>
 ### Managing Locks Across Processes
 
@@ -589,6 +573,26 @@ If you would like to release a lock without respecting its current owner, you ma
 
 ```php
 Cache::lock('processing')->forceRelease();
+```
+
+<a name="refreshing-locks"></a>
+### Refreshing Locks
+
+If you need to extend the expiration of a lock that you currently own, you may use the `refresh` method. If no number of seconds is provided, the lock's original duration will be used. This is useful for long-running operations where you prefer to acquire a short lock and periodically extend it instead of acquiring a lock with a very long expiration time:
+
+```php
+$lock = Cache::lock('generate-reports', 60);
+
+if ($lock->get()) {
+    foreach ($reports as $report) {
+        $report->generate();
+
+        // Extend the lock for another 60 seconds...
+        $lock->refresh();
+    }
+
+    $lock->release();
+}
 ```
 
 <a name="concurrency-limiting"></a>
