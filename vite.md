@@ -588,6 +588,14 @@ Depending on the provider, font definitions may accept several options that allo
 
 </div>
 
+Optimized fallbacks require the `fontaine` package, which is not installed by default. If you want Laravel to generate metric-adjusted fallback font faces, you should install `fontaine` as a development dependency:
+
+```shell
+npm install --save-dev fontaine
+```
+
+If `fontaine` is not installed or cannot read a font file, Laravel will skip the optimized fallback for that font and continue using any fonts configured via the `fallbacks` option.
+
 Local fonts are resolved from the `src` or `variants` options described above instead of using `weights`, `styles`, and `subsets`.
 
 <a name="working-with-blade-and-routes"></a>
