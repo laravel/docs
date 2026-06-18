@@ -39,6 +39,7 @@
     - [App Configuration](#app-configuration)
     - [Building Apps With Boost](#building-apps-with-boost)
 - [Metadata](#metadata)
+- [Icons](#icons)
 - [Authentication](#authentication)
     - [OAuth 2.1](#oauth)
     - [Sanctum](#sanctum)
@@ -1562,6 +1563,55 @@ class CurrentWeatherTool extends Tool
     // ...
 }
 ```
+
+<a name="icons"></a>
+## Icons
+
+MCP clients can display icons for your server and its primitives. You may declare icons on a server, tool, resource, or prompt using the `Icon` attribute:
+
+```php
+use Laravel\Mcp\Enums\IconTheme;
+use Laravel\Mcp\Server\Attributes\Icon;
+
+#[Icon('mcp/server.png', mimeType: 'image/png', sizes: ['48x48'])]
+#[Icon('mcp/server-dark.svg', theme: IconTheme::Dark)]
+class WeatherServer extends Server
+{
+    // ...
+}
+```
+
+The `Icon` attribute is repeatable, so you may declare multiple icons to provide different sizes or light and dark theme variants.
+
+Alternatively, you may define icons programmatically by overriding the `icons` method, which is useful when an icon depends on runtime conditions:
+
+```php
+use Laravel\Mcp\Schema\Icon;
+
+class CurrentWeatherTool extends Tool
+{
+    /**
+     * Get the tool's icons.
+     *
+     * @return array<int, Icon>
+     */
+    public function icons(): array
+    {
+        return [
+            Icon::from('mcp/tool.png', mimeType: 'image/png'),
+        ];
+    }
+}
+```
+
+Icons defined via the attribute and the `icons` method are combined automatically. Icon paths are resolved as follows:
+
+<div class="content-list" markdown="1">
+
+- Paths with a URI scheme, such as `https:` or `data:`, are used as-is.
+- Relative paths are resolved to a URL using Laravel's `asset` helper.
+
+</div>
 
 <a name="authentication"></a>
 ## Authentication
