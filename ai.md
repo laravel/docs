@@ -103,7 +103,7 @@ Boost includes a powerful documentation API that gives AI agents access to over 
 
 When an agent needs to understand how a feature works, it can search Boost's documentation API and receive accurate, version-specific information. This eliminates the common problem of AI agents suggesting deprecated methods or syntax from older framework versions.
 
-<a name="agent-integration"></a>
+<a name="agents-integration"></a>
 ### Agents Integration
 
 Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. For detailed setup instructions for Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot, and Junie, see the [Set Up Your Agents](/docs/{{version}}/boost#set-up-your-agents) section of the Boost documentation.
