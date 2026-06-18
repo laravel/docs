@@ -2,53 +2,55 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-    - [Configuration](#configuration)
-    - [Custom Base URLs](#custom-base-urls)
-    - [Provider Support](#provider-support)
+  - [Configuration](#configuration)
+  - [Custom Base URLs](#custom-base-urls)
+  - [Provider Support](#provider-support)
 - [Agents](#agents)
-    - [Prompting](#prompting)
-    - [Conversation Context](#conversation-context)
-    - [Structured Output](#structured-output)
-    - [Attachments](#attachments)
-    - [Streaming](#streaming)
-    - [Broadcasting](#broadcasting)
-    - [Queueing](#queueing)
-    - [Tools](#tools)
-    - [MCP Tools](#mcp-tools)
-    - [Provider Tools](#provider-tools)
-    - [Sub-Agents](#sub-agents)
-    - [Middleware](#middleware)
-    - [Anonymous Agents](#anonymous-agents)
-    - [Agent Configuration](#agent-configuration)
-    - [Provider Options](#provider-options)
+  - [Prompting](#prompting)
+  - [Conversation Context](#conversation-context)
+  - [Structured Output](#structured-output)
+  - [Attachments](#attachments)
+  - [Streaming](#streaming)
+  - [Broadcasting](#broadcasting)
+  - [Queueing](#queueing)
+  - [Tools](#tools)
+  - [MCP Tools](#mcp-tools)
+  - [Provider Tools](#provider-tools)
+  - [Sub-Agents](#sub-agents)
+  - [Middleware](#middleware)
+  - [Anonymous Agents](#anonymous-agents)
+  - [Agent Configuration](#agent-configuration)
+  - [Provider Options](#provider-options)
 - [Images](#images)
 - [Audio (TTS)](#audio)
 - [Transcription (STT)](#transcription)
 - [Embeddings](#embeddings)
-    - [Querying Embeddings](#querying-embeddings)
-    - [Caching Embeddings](#caching-embeddings)
+  - [Querying Embeddings](#querying-embeddings)
+  - [Caching Embeddings](#caching-embeddings)
 - [Reranking](#reranking)
 - [Files](#files)
 - [Vector Stores](#vector-stores)
-    - [Adding Files to Stores](#adding-files-to-stores)
+  - [Adding Files to Stores](#adding-files-to-stores)
 - [Failover](#failover)
 - [Testing](#testing)
-    - [Agents](#testing-agents)
-    - [Images](#testing-images)
-    - [Audio](#testing-audio)
-    - [Transcriptions](#testing-transcriptions)
-    - [Embeddings](#testing-embeddings)
-    - [Reranking](#testing-reranking)
-    - [Files](#testing-files)
-    - [Vector Stores](#testing-vector-stores)
+  - [Agents](#testing-agents)
+  - [Images](#testing-images)
+  - [Audio](#testing-audio)
+  - [Transcriptions](#testing-transcriptions)
+  - [Embeddings](#testing-embeddings)
+  - [Reranking](#testing-reranking)
+  - [Files](#testing-files)
+  - [Vector Stores](#testing-vector-stores)
 - [Events](#events)
 
 <a name="introduction"></a>
+
 ## Introduction
 
 The [Laravel AI SDK](https://github.com/laravel/ai) provides a unified, expressive API for interacting with AI providers such as OpenAI, Anthropic, Gemini, and more. With the AI SDK, you can build intelligent agents with tools and structured output, generate images, synthesize and transcribe audio, create vector embeddings, and much more — all using a consistent, Laravel-friendly interface.
 
 <a name="installation"></a>
+
 ## Installation
 
 You can install the Laravel AI SDK via Composer:
@@ -70,6 +72,7 @@ php artisan migrate
 ```
 
 <a name="configuration"></a>
+
 ### Configuration
 
 You may define your AI provider credentials in your application's `config/ai.php` configuration file or as environment variables in your application's `.env` file:
@@ -94,6 +97,7 @@ XAI_API_KEY=
 The default models used for text, images, audio, transcription, and embeddings may also be configured in your application's `config/ai.php` configuration file.
 
 <a name="custom-base-urls"></a>
+
 ### Custom Base URLs
 
 By default, the Laravel AI SDK connects directly to each provider's public API endpoint. However, you may need to route requests through a different endpoint - for example, when using a proxy service to centralize API key management, implement rate limiting, or route traffic through a corporate gateway.
@@ -105,7 +109,7 @@ You may configure custom base URLs by adding a `url` parameter to your provider 
     'openai' => [
         'driver' => 'openai',
         'key' => env('OPENAI_API_KEY'),
-        'url' => env('OPENAI_BASE_URL'),
+        'url' => env('OPENAI_URL'),
     ],
 
     'anthropic' => [
@@ -121,19 +125,20 @@ This is useful when routing requests through a proxy service (such as LiteLLM or
 Custom base URLs are supported for the following providers: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI, and OpenRouter.
 
 <a name="provider-support"></a>
+
 ### Provider Support
 
 The AI SDK supports a variety of providers across its features. The following table summarizes which providers are available for each feature:
 
-| Feature | Providers |
-|---|---|
-| Text | OpenAI, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
-| Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
-| TTS | OpenAI, ElevenLabs, Gemini |
-| STT | OpenAI, ElevenLabs, Mistral, Gemini |
-| Embeddings | OpenAI, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
-| Reranking | Cohere, Jina, VoyageAI |
-| Files | OpenAI, Anthropic, Gemini |
+| Feature    | Providers                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------- |
+| Text       | OpenAI, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
+| Images     | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter                                             |
+| TTS        | OpenAI, ElevenLabs, Gemini                                                                  |
+| STT        | OpenAI, ElevenLabs, Mistral, Gemini                                                         |
+| Embeddings | OpenAI, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter         |
+| Reranking  | Cohere, Jina, VoyageAI                                                                      |
+| Files      | OpenAI, Anthropic, Gemini                                                                   |
 
 The `Laravel\Ai\Enums\Lab` enum may be used to reference providers throughout your code instead of using plain strings:
 
@@ -147,6 +152,7 @@ Lab::Gemini;
 ```
 
 <a name="agents"></a>
+
 ## Agents
 
 Agents are the fundamental building block for interacting with AI providers in the Laravel AI SDK. Each agent is a dedicated PHP class that encapsulates the instructions, conversation context, tools, and output schema needed to interact with a large language model. Think of an agent as a specialized assistant — a sales coach, a document analyzer, a support bot — that you configure once and prompt as needed throughout your application.
@@ -233,6 +239,7 @@ class SalesCoach implements Agent, Conversational, HasTools, HasStructuredOutput
 ```
 
 <a name="prompting"></a>
+
 ### Prompting
 
 To prompt an agent, first create an instance using the `make` method or standard instantiation, then call `prompt`:
@@ -262,6 +269,7 @@ $response = (new SalesCoach)->prompt(
 ```
 
 <a name="conversation-context"></a>
+
 ### Conversation Context
 
 If your agent implements the `Conversational` interface, you may use the `messages` method to return the previous conversation context, if applicable:
@@ -287,6 +295,7 @@ public function messages(): iterable
 ```
 
 <a name="remembering-conversations"></a>
+
 #### Remembering Conversations
 
 > **Note:** Before using the `RemembersConversations` trait, you should publish and run the AI SDK migrations using the `vendor:publish` Artisan command. These migrations will create the necessary database tables to store conversations.
@@ -362,6 +371,7 @@ $response = (new SalesCoach)
 When using the `RemembersConversations` trait, previous messages are automatically loaded and included in the conversation context when prompting. New messages (both user and assistant) are automatically stored after each interaction.
 
 <a name="structured-output"></a>
+
 ### Structured Output
 
 If you would like your agent to return structured output, implement the `HasStructuredOutput` interface, which requires that your agent define a `schema` method:
@@ -403,6 +413,7 @@ return $response['score'];
 ```
 
 <a name="structured-output-nested-objects"></a>
+
 #### Nested Objects
 
 To define nested structured output, use the `object` method with a closure:
@@ -440,6 +451,7 @@ class SalesCoach implements Agent, HasStructuredOutput
 ```
 
 <a name="structured-output-arrays-of-objects"></a>
+
 #### Arrays of Objects
 
 If your agent should return a list of structured items, combine the `array` and `object` methods:
@@ -481,6 +493,7 @@ public function schema(JsonSchema $schema): array
 ```
 
 <a name="attachments"></a>
+
 ### Attachments
 
 When prompting, you may also pass attachments with the prompt to allow the model to inspect images and documents:
@@ -516,6 +529,7 @@ $response = (new ImageAnalyzer)->prompt(
 ```
 
 <a name="streaming"></a>
+
 ### Streaming
 
 You may stream an agent's response by invoking the `stream` method. The returned `StreamableAgentResponse` may be returned from a route to automatically send a streaming response (SSE) to the client:
@@ -554,6 +568,7 @@ foreach ($stream as $event) {
 ```
 
 <a name="streaming-using-the-vercel-ai-sdk-protocol"></a>
+
 #### Streaming Using the Vercel AI SDK Protocol
 
 You may stream the events using the [Vercel AI SDK stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol) by invoking the `usingVercelDataProtocol` method on the streamable response:
@@ -569,6 +584,7 @@ Route::get('/coach', function () {
 ```
 
 <a name="broadcasting"></a>
+
 ### Broadcasting
 
 You may broadcast streamed events in a few different ways. First, you can simply invoke the `broadcast` or `broadcastNow` method on a streamed event:
@@ -594,6 +610,7 @@ Or, you can invoke an agent's `broadcastOnQueue` method to queue the agent opera
 ```
 
 <a name="queueing"></a>
+
 ### Queueing
 
 Using an agent's `queue` method, you may prompt the agent, but allow it to process the response in the background, keeping your application feeling fast and responsive. The `then` and `catch` methods may be used to register closures that will be invoked when a response is available or if an exception occurs:
@@ -618,6 +635,7 @@ Route::post('/coach', function (Request $request) {
 ```
 
 <a name="tools"></a>
+
 ### Tools
 
 Tools may be used to give agents additional functionality that they can utilize while responding to prompts. Tools can be created using the `make:tool` Artisan command:
@@ -688,6 +706,7 @@ public function tools(): iterable
 ```
 
 <a name="similarity-search"></a>
+
 #### Similarity Search
 
 The `SimilaritySearch` tool allows agents to search for documents similar to a given query using vector embeddings stored in your database. This is useful for retrieval-augmented generation (RAG) when you want to give agents access to search your application's data.
@@ -748,6 +767,7 @@ SimilaritySearch::usingModel(Document::class, 'embedding')
 ```
 
 <a name="mcp-tools"></a>
+
 ### MCP Tools
 
 If your application uses [Laravel MCP](/docs/{{version}}/mcp), you may give your agents tools exposed by [Model Context Protocol](https://modelcontextprotocol.io) servers. Using the [Laravel MCP client](/docs/{{version}}/mcp#client), you may connect to a remote or local MCP server and pass its tools directly to your agent.
@@ -807,6 +827,7 @@ public function tools(): iterable
 For more information on creating and authenticating MCP clients, including bearer tokens and OAuth, consult the [MCP client documentation](/docs/{{version}}/mcp#client).
 
 <a name="provider-tools"></a>
+
 ### Provider Tools
 
 Provider tools are special tools implemented natively by AI providers, offering capabilities like web searching, URL fetching, and file searching. Unlike regular tools, provider tools are executed by the provider itself rather than your application.
@@ -814,6 +835,7 @@ Provider tools are special tools implemented natively by AI providers, offering 
 Provider tools can be returned by your agent's `tools` method.
 
 <a name="web-search"></a>
+
 #### Web Search
 
 The `WebSearch` provider tool allows agents to search the web for real-time information. This is useful for answering questions about current events, recent data, or topics that may have changed since the model's training cutoff.
@@ -848,6 +870,7 @@ To refine search results based on user location, use the `location` method:
 ```
 
 <a name="web-fetch"></a>
+
 #### Web Fetch
 
 The `WebFetch` provider tool allows agents to fetch and read the contents of web pages. This is useful when you need the agent to analyze specific URLs or retrieve detailed information from known web pages.
@@ -872,6 +895,7 @@ You may configure the web fetch tool to limit the number of fetches or restrict 
 ```
 
 <a name="file-search"></a>
+
 #### File Search
 
 The `FileSearch` provider tool allows agents to search through [files](#files) stored in [vector stores](#vector-stores). This enables retrieval-augmented generation (RAG) by allowing the agent to search your uploaded documents for relevant information.
@@ -917,6 +941,7 @@ new FileSearch(stores: ['store_id'], where: fn (FileSearchQuery $query) =>
 ```
 
 <a name="sub-agents"></a>
+
 ### Sub-Agents
 
 Agents may also be returned from another agent's `tools` method. When an agent is returned as a tool, the parent agent may delegate a specific task to the sub-agent and use the sub-agent's response while answering the original prompt. This is useful when a general-purpose agent needs access to specialized agents with their own instructions, tools, model configuration, or provider preferences.
@@ -1019,6 +1044,7 @@ class RefundsAgent implements Agent, CanActAsTool, HasTools
 If a sub-agent does not implement `CanActAsTool`, Laravel will use the agent's class basename as the tool name and a generic description that asks the parent agent to pass a clear, self-contained task description. Each sub-agent invocation runs in isolation and does not receive the parent agent's conversation history.
 
 <a name="middleware"></a>
+
 ### Middleware
 
 Agents support middleware, allowing you to intercept and modify prompts before they are sent to the provider. Middleware can be created using the `make:agent-middleware` Artisan command:
@@ -1093,6 +1119,7 @@ public function handle(AgentPrompt $prompt, Closure $next)
 ```
 
 <a name="anonymous-agents"></a>
+
 ### Anonymous Agents
 
 Sometimes you may want to quickly interact with a model without creating a dedicated agent class. You can create an ad-hoc, anonymous agent using the `agent` function:
@@ -1122,6 +1149,7 @@ $response = agent(
 ```
 
 <a name="agent-configuration"></a>
+
 ### Agent Configuration
 
 You may configure text generation options for an agent using PHP attributes. The following attributes are available:
@@ -1196,6 +1224,7 @@ class ComplexReasoner implements Agent
 > The underlying model selected by `UseCheapestModel` and `UseSmartestModel` may change between releases of the Laravel AI SDK as providers release new models. Switching models can introduce behavioral changes, deprecated parameters, and significant cost differences. If you need a stable, predictable model and pricing, specify the model explicitly using the `Model` attribute.
 
 <a name="provider-options"></a>
+
 ### Provider Options
 
 If your agent needs to pass provider-specific options (such as OpenAI reasoning effort or penalty settings), implement the `HasProviderOptions` contract and define a `providerOptions` method:
@@ -1242,6 +1271,7 @@ The `providerOptions` method receives the provider currently being used (`Lab` e
 The Anthropic example above also enables [prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) via `cache_control`.
 
 <a name="images"></a>
+
 ## Images
 
 The `Laravel\Ai\Image` class may be used to generate images using the `openai`, `gemini`, or `xai` providers:
@@ -1311,6 +1341,7 @@ Image::of('A donut sitting on the kitchen counter')
 ```
 
 <a name="audio"></a>
+
 ## Audio
 
 The `Laravel\Ai\Audio` class may be used to generate audio from the given text:
@@ -1379,6 +1410,7 @@ Audio::of('I love coding with Laravel.')
 ```
 
 <a name="transcription"></a>
+
 ## Transcriptions
 
 The `Laravel\Ai\Transcription` class may be used to generate a transcript of the given audio:
@@ -1415,6 +1447,7 @@ Transcription::fromStorage('audio.mp3')
 ```
 
 <a name="embeddings"></a>
+
 ## Embeddings
 
 You may easily generate vector embeddings for any given string using the new `toEmbeddings` method available via Laravel's `Stringable` class:
@@ -1447,6 +1480,7 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
 ```
 
 <a name="querying-embeddings"></a>
+
 ### Querying Embeddings
 
 Once you have generated embeddings, you will typically store them in a `vector` column in your database for later querying. Laravel provides native support for vector columns on PostgreSQL via the `pgvector` extension. To get started, define a `vector` column in your migration, specifying the number of dimensions:
@@ -1518,6 +1552,7 @@ If you would like to give an agent the ability to perform similarity searches as
 > Vector queries are currently only supported on PostgreSQL connections using the `pgvector` extension.
 
 <a name="caching-embeddings"></a>
+
 ### Caching Embeddings
 
 Embedding generation can be cached to avoid redundant API calls for identical inputs. To enable caching, set the `ai.caching.embeddings.cache` configuration option to `true`:
@@ -1561,6 +1596,7 @@ $embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings(cache: 3600);
 ```
 
 <a name="reranking"></a>
+
 ## Reranking
 
 Reranking allows you to reorder a list of documents based on their relevance to a given query. This is useful for improving search results by using semantic understanding:
@@ -1591,6 +1627,7 @@ $response = Reranking::of($documents)
 ```
 
 <a name="reranking-collections"></a>
+
 ### Reranking Collections
 
 For convenience, Laravel collections may be reranked using the `rerank` macro. The first argument specifies which field(s) to use for reranking, and the second argument is the query:
@@ -1622,6 +1659,7 @@ $reranked = $posts->rerank(
 ```
 
 <a name="files"></a>
+
 ## Files
 
 The `Laravel\Ai\Files` class or the individual file classes may be used to store files with your AI provider for later use in conversations. This is useful for large documents or files you want to reference multiple times without re-uploading:
@@ -1698,6 +1736,7 @@ $response = Document::fromPath(
 ```
 
 <a name="using-stored-files-in-conversations"></a>
+
 ### Using Stored Files in Conversations
 
 Once a file has been stored with a provider, you may reference it in agent conversations using the `fromId` method on the `Document` or `Image` classes:
@@ -1734,6 +1773,7 @@ $response = (new ImageAnalyzer)->prompt(
 ```
 
 <a name="vector-stores"></a>
+
 ## Vector Stores
 
 Vector stores allow you to create searchable collections of files that can be used for retrieval-augmented generation (RAG). The `Laravel\Ai\Stores` class provides methods for creating, retrieving, and deleting vector stores:
@@ -1782,6 +1822,7 @@ $store->delete();
 ```
 
 <a name="adding-files-to-stores"></a>
+
 ### Adding Files to Stores
 
 Once you have a vector store, you may add [files](#files) to it using the `add` method. Files added to a store are automatically indexed for semantic searching using the [file search provider tool](#file-search):
@@ -1830,6 +1871,7 @@ $store->remove('file_abc123', deleteFile: true);
 ```
 
 <a name="failover"></a>
+
 ## Failover
 
 When prompting or generating other media, you may provide an array of providers / models to automatically failover to a backup provider / model if a service interruption or rate limit is encountered on the primary provider:
@@ -1865,9 +1907,11 @@ $response = (new SalesCoach)->prompt(
 ```
 
 <a name="testing"></a>
+
 ## Testing
 
 <a name="testing-agents"></a>
+
 ### Agents
 
 To fake an agent's responses during tests, call the `fake` method on the agent class. You may optionally provide an array of responses or a closure:
@@ -1932,6 +1976,7 @@ SalesCoach::fake()->preventStrayPrompts();
 ```
 
 <a name="testing-images"></a>
+
 ### Images
 
 Image generations may be faked by invoking the `fake` method on the `Image` class. Once image has been faked, various assertions may be performed against the recorded image generation prompts:
@@ -1987,6 +2032,7 @@ Image::fake()->preventStrayImages();
 ```
 
 <a name="testing-audio"></a>
+
 ### Audio
 
 Audio generations may be faked by invoking the `fake` method on the `Audio` class. Once audio has been faked, various assertions may be performed against the recorded audio generation prompts:
@@ -2042,6 +2088,7 @@ Audio::fake()->preventStrayAudio();
 ```
 
 <a name="testing-transcriptions"></a>
+
 ### Transcriptions
 
 Transcription generations may be faked by invoking the `fake` method on the `Transcription` class. Once transcription has been faked, various assertions may be performed against the recorded transcription generation prompts:
@@ -2101,6 +2148,7 @@ Transcription::fake()->preventStrayTranscriptions();
 ```
 
 <a name="testing-embeddings"></a>
+
 ### Embeddings
 
 Embeddings generations may be faked by invoking the `fake` method on the `Embeddings` class. Once embeddings has been faked, various assertions may be performed against the recorded embeddings generation prompts:
@@ -2163,6 +2211,7 @@ Embeddings::fake()->preventStrayEmbeddings();
 ```
 
 <a name="testing-reranking"></a>
+
 ### Reranking
 
 Reranking operations may be faked by invoking the `fake` method on the `Reranking` class:
@@ -2199,6 +2248,7 @@ Reranking::assertNothingReranked();
 ```
 
 <a name="testing-files"></a>
+
 ### Files
 
 File operations may be faked by invoking the `fake` method on the `Files` class:
@@ -2242,6 +2292,7 @@ Files::assertNothingDeleted();
 ```
 
 <a name="testing-vector-stores"></a>
+
 ### Vector Stores
 
 Vector store operations may be faked by invoking the `fake` method on the `Stores` class. Faking stores will also fake [file operations](#files) automatically:
@@ -2312,6 +2363,7 @@ $store->assertAdded(fn (StorableFile $file) => $file->content() === 'Hello, Worl
 ```
 
 <a name="events"></a>
+
 ## Events
 
 The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), including:
