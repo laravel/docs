@@ -105,7 +105,7 @@ You may configure custom base URLs by adding a `url` parameter to your provider 
     'openai' => [
         'driver' => 'openai',
         'key' => env('OPENAI_API_KEY'),
-        'url' => env('OPENAI_BASE_URL'),
+        'url' => env('OPENAI_URL'),
     ],
 
     'anthropic' => [
