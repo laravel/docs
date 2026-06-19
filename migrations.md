@@ -1613,12 +1613,13 @@ For convenience, each migration operation will dispatch an [event](/docs/{{versi
 
 | Class                                            | Description                                      |
 | ------------------------------------------------ | ------------------------------------------------ |
+| `Illuminate\Database\Events\DatabaseRefreshed`   | The `migrate:refresh` command has finished.      |
 | `Illuminate\Database\Events\MigrationsStarted`   | A batch of migrations is about to be executed.   |
-| `Illuminate\Database\Events\MigrationsEnded`     | A batch of migrations has finished executing.    |
+| `Illuminate\Database\Events\MigrationsEnded`     | A batch of migrations has finished.              |
 | `Illuminate\Database\Events\MigrationStarted`    | A single migration is about to be executed.      |
-| `Illuminate\Database\Events\MigrationEnded`      | A single migration has finished executing.       |
+| `Illuminate\Database\Events\MigrationEnded`      | A single migration has finished.                 |
 | `Illuminate\Database\Events\NoPendingMigrations` | A migration command found no pending migrations. |
-| `Illuminate\Database\Events\SchemaDumped`        | A database schema dump has completed.            |
+| `Illuminate\Database\Events\SchemaDumped`        | A database schema dump has finished.             |
 | `Illuminate\Database\Events\SchemaLoaded`        | An existing database schema dump has loaded.     |
 
 </div>
