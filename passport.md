@@ -955,26 +955,33 @@ Before your application can issue tokens via the client credentials grant, you w
 php artisan passport:client --client
 ```
 
-Next, assign the `Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner` middleware to a route:
+Next, to use this grant type, register a middleware alias for the `CheckClientCredentials` middleware. You may define middleware aliases in your application's `bootstrap/app.php` file:
 
 ```php
-use Laravel\Passport\Http\Middleware\EnsureClientIsResourceOwner;
+use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
-Route::get('/orders', function (Request $request) {
-    // Access token is valid and the client is resource owner...
-})->middleware(EnsureClientIsResourceOwner::class);
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->alias([
+        'client' => CheckClientCredentials::class
+    ]);
+})
 ```
 
-To restrict access to the route to specific scopes, you may provide a list of the required scopes to the `using` method`:
+Then, attach the middleware to a route:
 
 ```php
 Route::get('/orders', function (Request $request) {
-    // Access token is valid, the client is resource owner, and has both "servers:read" and "servers:create" scopes...
-})->middleware(EnsureClientIsResourceOwner::using('servers:read', 'servers:create'));
+    ...
+})->middleware('client');
 ```
 
-> [!WARNING]
-> The [underlying OAuth2 server](https://oauth2.thephpleague.com/database-setup/#:~:text=Please%20note%20that,the%20bearer%20token.) sets the token's `sub` claim to the client's identifier for client credentials tokens. By default, Passport uses UUIDs for clients, so this cannot collide with a user's integer primary key. However, if you have set `Passport::$clientUuids` to `false`, a client credentials token may inadvertently resolve a user whose ID matches the client's ID. In such cases, using this middleware cannot guarantee that the incoming token is a client credentials token.
+To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `client` middleware to the route:
+
+```php
+Route::get('/orders', function (Request $request) {
+    ...
+})->middleware('client:check-status,your-scope');
+```
 
 <a name="retrieving-tokens"></a>
 ### Retrieving Tokens
