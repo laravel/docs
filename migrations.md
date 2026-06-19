@@ -1613,6 +1613,7 @@ For convenience, each migration operation will dispatch an [event](/docs/{{versi
 
 | Class                                            | Description                                      |
 | ------------------------------------------------ | ------------------------------------------------ |
+| `Illuminate\Database\Events\DatabaseRefreshed`   | The `migrate:refresh` command has finished.      |
 | `Illuminate\Database\Events\MigrationsStarted`   | A batch of migrations is about to be executed.   |
 | `Illuminate\Database\Events\MigrationsEnded`     | A batch of migrations has finished executing.    |
 | `Illuminate\Database\Events\MigrationStarted`    | A single migration is about to be executed.      |
