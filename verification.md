@@ -43,12 +43,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
 Once this interface has been added to your model, newly registered users will automatically be sent an email containing an email verification link. This happens seamlessly because Laravel automatically registers the `Illuminate\Auth\Listeners\SendEmailVerificationNotification` [listener](/docs/{{version}}/events) for the `Illuminate\Auth\Events\Registered` event.
 
-If your application implements its own email verification flow and you would prefer that Laravel not automatically send this notification, you may disable the listener by passing `emailVerification: false` to the `withEvents` method in your application's `bootstrap/app.php` file:
-
-```php
-->withEvents(emailVerification: false)
-```
-
 If you are manually implementing registration within your application instead of using [a starter kit](/docs/{{version}}/starter-kits), you should ensure that you are dispatching the `Illuminate\Auth\Events\Registered` event after a user's registration is successful:
 
 ```php
