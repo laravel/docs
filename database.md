@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Configuration](#configuration)
     - [Read and Write Connections](#read-and-write-connections)
+    - [Pooled PostgreSQL Connections](#pooled-postgresql-connections)
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
     - [Listening for Query Events](#listening-for-query-events)
@@ -128,6 +129,42 @@ You only need to place items in the `read` and `write` arrays if you wish to ove
 #### The `sticky` Option
 
 The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
+
+<a name="pooled-postgresql-connections"></a>
+### Pooled PostgreSQL Connections
+
+Many managed PostgreSQL providers offer transaction-mode connection pooling through services such as PgBouncer or connection proxying. These poolers are ideal for application queries, but some schema operations, migrations, and maintenance commands require a direct database connection.
+
+To use a transaction pooler with PostgreSQL, configure the pooled connection as usual and provide direct connection details via the `direct` configuration option:
+
+```php
+'pgsql' => [
+    'driver' => 'pgsql',
+    // ...
+    'pooled' => env('DB_POOLED', false),
+    'direct' => array_filter([
+        'host' => env('DB_DIRECT_HOST'),
+        'port' => env('DB_DIRECT_PORT'),
+        'username' => env('DB_DIRECT_USERNAME'),
+        'password' => env('DB_DIRECT_PASSWORD'),
+        'sslmode' => env('DB_DIRECT_SSLMODE'),
+    ]),
+],
+```
+
+When a PostgreSQL connection is configured as pooled, Laravel automatically enables emulated prepares for the pooled connection. The direct connection inherits any options not explicitly defined in the `direct` configuration and uses native prepares by default.
+
+Laravel automatically uses the direct connection for migrations, schema dumps and restores, `db:wipe`, `db:show`, and `db:table`. The `db` command also uses the direct connection by default when pooled mode is enabled and a direct connection is configured; you may pass the `--pooled` option to connect to the pooled connection instead:
+
+```shell
+php artisan db --pooled
+```
+
+If you need to explicitly use the direct connection in your application, append the `::direct` suffix to the connection name:
+
+```php
+DB::connection('pgsql::direct')->statement('create extension if not exists "uuid-ossp"');
+```
 
 <a name="running-queries"></a>
 ## Running SQL Queries
