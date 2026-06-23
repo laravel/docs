@@ -127,6 +127,8 @@ Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools
 <a name="available-mcp-tools"></a>
 ### Available MCP Tools
 
+<div class="overflow-auto">
+
 | Name                 | Notes                                                                                                       |
 | -------------------- | ----------------------------------------------------------------------------------------------------------- |
 | Application Info     | Read PHP & Laravel versions, database engine, list of ecosystem packages with versions, and Eloquent models |
@@ -138,6 +140,8 @@ Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools
 | Last Error           | Read the last error from the application's log files                                                        |
 | Read Log Entries     | Read the last N log entries                                                                                 |
 | Search Docs          | Query the Laravel hosted documentation API service to retrieve documentation based on installed packages    |
+
+</div>
 
 <a name="manually-registering-the-mcp-server"></a>
 ### Manually Registering the MCP Server
@@ -172,6 +176,8 @@ AI guidelines are composable instruction files that are loaded upfront to provid
 
 Laravel Boost includes AI guidelines for the following packages and frameworks. The `core` guidelines provide generic, generalized advice to the AI for the given package that is applicable across all versions.
 
+<div class="overflow-auto">
+
 | Package           | Versions Supported     |
 | ----------------- | ---------------------- |
 | Core & Boost      | core                   |
@@ -194,6 +200,8 @@ Laravel Boost includes AI guidelines for the following packages and frameworks. 
 | Livewire Volt     | core                   |
 | Wayfinder         | core                   |
 | Enforce Tests     | conditional            |
+
+</div>
 
 > **Note:** To keep your AI guidelines up-to-date, see the [Keeping Boost Resources Updated](#keeping-boost-resources-updated) section.
 
@@ -243,6 +251,8 @@ When you run `boost:install` and select skills as a feature, skills are automati
 <a name="available-skills"></a>
 ### Available Skills
 
+<div class="overflow-auto">
+
 | Skill                      | Package        |
 | -------------------------- | -------------- |
 | fluxui-development         | Flux UI        |
@@ -257,6 +267,8 @@ When you run `boost:install` and select skills as a feature, skills are automati
 | tailwindcss-development    | Tailwind CSS   |
 | volt-development           | Volt           |
 | wayfinder-development      | Wayfinder      |
+
+</div>
 
 > **Note:** To keep your skills up-to-date, see the [Keeping Boost Resources Updated](#keeping-boost-resources-updated) section.
 
@@ -315,11 +327,15 @@ Laravel Boost provides two distinct ways to give AI agents context about your ap
 
 **Skills** are activated on-demand when working on specific tasks, containing detailed patterns for particular domains (like Livewire components or Pest tests). Loading skills only when relevant reduces context bloat and improves code quality.
 
+<div class="overflow-auto">
+
 | Aspect      | Guidelines                        | Skills                           |
 | ----------- | --------------------------------- | -------------------------------- |
 | **Loaded**  | Upfront, always present           | On-demand, when relevant         |
 | **Scope**   | Broad, foundational               | Focused, task-specific           |
 | **Purpose** | Core conventions & best practices | Detailed implementation patterns |
+
+</div>
 
 <a name="documentation-api"></a>
 ## Documentation API
@@ -327,6 +343,8 @@ Laravel Boost provides two distinct ways to give AI agents context about your ap
 Laravel Boost includes a Documentation API that provides AI agents with access to an extensive knowledge base containing over 17,000 pieces of Laravel-specific information. The API uses semantic search with embeddings to deliver precise, context-aware results.
 
 The `Search Docs` MCP tool allows agents to query the Laravel hosted documentation API service to retrieve documentation based on your installed packages. Boost's AI guidelines and skills will automatically instruct your coding agent to use this API.
+
+<div class="overflow-auto">
 
 | Package           | Versions Supported |
 | ----------------- | ------------------ |
@@ -338,6 +356,8 @@ The `Search Docs` MCP tool allows agents to query the Laravel hosted documentati
 | Nova              | 4.x, 5.x           |
 | Pest              | 3.x, 4.x           |
 | Tailwind CSS      | 3.x, 4.x           |
+
+</div>
 
 <a name="extending-boost"></a>
 ## Extending Boost

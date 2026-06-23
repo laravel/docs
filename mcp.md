@@ -482,12 +482,16 @@ class CurrentWeatherTool extends Tool
 
 Available annotations include:
 
+<div class="overflow-auto">
+
 | Annotation         | Type    | Description                                                                                  |
 | ------------------ | ------- | -------------------------------------------------------------------------------------------- |
 | `#[IsReadOnly]`    | boolean | Indicates the tool does not modify its environment.                                          |
 | `#[IsDestructive]` | boolean | Indicates the tool may perform destructive updates (only meaningful when not read-only).     |
 | `#[IsIdempotent]`  | boolean | Indicates repeated calls with same arguments have no additional effect (when not read-only). |
 | `#[IsOpenWorld]`   | boolean | Indicates the tool may interact with external entities.                                      |
+
+</div>
 
 Annotation values can be explicitly set using boolean arguments:
 
@@ -1243,11 +1247,15 @@ class UserDashboardResource extends Resource
 
 Available annotations include:
 
+<div class="overflow-auto">
+
 | Annotation        | Type          | Description                                                                 |
 | ----------------- | ------------- | --------------------------------------------------------------------------- |
 | `#[Audience]`     | Role or array | Specifies the intended audience (`Role::User`, `Role::Assistant`, or both). |
 | `#[Priority]`     | float         | A numerical score between 0.0 and 1.0 indicating resource importance.       |
 | `#[LastModified]` | string        | An ISO 8601 timestamp showing when the resource was last updated.           |
+
+</div>
 
 <a name="conditional-resource-registration"></a>
 ### Conditional Resource Registration

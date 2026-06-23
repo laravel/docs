@@ -125,6 +125,8 @@ Custom base URLs are supported for the following providers: OpenAI, Anthropic, G
 
 The AI SDK supports a variety of providers across its features. The following table summarizes which providers are available for each feature:
 
+<div class="overflow-auto">
+
 | Feature | Providers |
 |---|---|
 | Text | OpenAI, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
@@ -134,6 +136,8 @@ The AI SDK supports a variety of providers across its features. The following ta
 | Embeddings | OpenAI, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI |
 | Files | OpenAI, Anthropic, Gemini |
+
+</div>
 
 The `Laravel\Ai\Enums\Lab` enum may be used to reference providers throughout your code instead of using plain strings:
 
