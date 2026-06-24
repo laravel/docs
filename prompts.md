@@ -18,6 +18,7 @@
 - [Transforming Input Before Validation](#transforming-input-before-validation)
 - [Forms](#forms)
 - [Informational Messages](#informational-messages)
+- [Callouts](#callouts)
 - [Tables](#tables)
 - [Spin](#spin)
 - [Progress Bar](#progress)
