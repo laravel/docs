@@ -108,7 +108,9 @@ Full-text search relies on matching keywords — the words in the query must app
 The basic workflow for vector search is: generate an embedding (a numeric array) for each piece of content and store it alongside your data, then at search time, generate an embedding for the user's query and find the stored embeddings that are closest to it in vector space.
 
 > [!NOTE]
-> Vector search requires a PostgreSQL database with the `pgvector` extension and the [Laravel AI SDK](/docs/{{version}}/ai-sdk). All [Laravel Cloud](https://cloud.laravel.com) Serverless Postgres databases already include `pgvector`.
+> Vector search requires the [Laravel AI SDK](/docs/{{version}}/ai-sdk) and is supported for the following database engines:
+> - PostgreSQL (requires the `pgvector` extension). All [Laravel Cloud](https://cloud.laravel.com) Serverless Postgres databases already include `pgvector`.
+> - MongoDB (requires the [Laravel MongoDB package](https://laravel.com/docs/13.x/mongodb)).
 
 <a name="generating-embeddings"></a>
 ### Generating Embeddings
