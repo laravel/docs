@@ -1141,7 +1141,7 @@ callout(
 <a name="callout-rich-content"></a>
 #### Rich Content
 
-Instead of passing a string, you may pass an array of strings and elements to build rich, structured callouts. The `Element` class provides factory methods for creating headings, bulleted lists, numbered lists, and key-value lists:
+Instead of passing a string, you may pass an array of strings and elements to build rich, structured callouts. The `Element` class provides factory methods for creating headings, bulleted lists, numbered lists, key-value lists, and links:
 
 ```php
 use Laravel\Prompts\Elements\Element;
@@ -1178,6 +1178,19 @@ callout('Database Connection Failed', [
     ]),
 ], type: 'error');
 ```
+
+The `Element::link` method creates a clickable hyperlink in terminals that support [OSC 8](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda). You may provide a URL alone, or a URL with a custom label:
+
+```php
+callout('Server Health Check', [
+    'Multiple services are reporting degraded performance.',
+    Element::heading('Affected Services'),
+    'Look here: '.Element::link('https://example.com/health', 'Health Dashboard'),
+    Element::link('https://example.com/health'),
+]);
+```
+
+If no label is provided, the URL itself will be displayed as the link text.
 
 <a name="tables"></a>
 ## Tables
