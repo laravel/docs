@@ -23,7 +23,6 @@
     - [Billing Portal](#billing-portal)
 - [Payment Methods](#payment-methods)
     - [Storing Payment Methods](#storing-payment-methods)
-    - [Using the Payment Element](#using-the-payment-element)
     - [Retrieving Payment Methods](#retrieving-payment-methods)
     - [Payment Method Presence](#payment-method-presence)
     - [Updating the Default Payment Method](#updating-the-default-payment-method)
@@ -650,135 +649,9 @@ $url = $request->user()->billingPortalUrl(route('billing'));
 <a name="storing-payment-methods"></a>
 ### Storing Payment Methods
 
-In order to create subscriptions or perform "one-off" charges with Stripe, you will need to store a payment method and retrieve its identifier from Stripe. The approach used to accomplish this differs based on whether you plan to use the payment method for subscriptions or single charges, so we will examine both below.
+In order to create subscriptions or perform "one-off" charges with Stripe, your application will need to securely collect payment details from the customer. The approach used to accomplish this differs based on whether you plan to store the payment method for future subscriptions or immediately process a single charge, so we will examine both below.
 
-<a name="payment-methods-for-subscriptions"></a>
-#### Payment Methods for Subscriptions
-
-When storing a customer's credit card information for future use by a subscription, the Stripe "Setup Intents" API must be used to securely gather the customer's payment method details. A "Setup Intent" indicates to Stripe the intention to charge a customer's payment method. Cashier's `Billable` trait includes the `createSetupIntent` method to easily create a new Setup Intent. You should invoke this method from the route or controller that will render the form which gathers your customer's payment method details:
-
-```php
-return view('update-payment-method', [
-    'intent' => $user->createSetupIntent()
-]);
-```
-
-After you have created the Setup Intent and passed it to the view, you should attach its secret to the element that will gather the payment method. For example, consider this "update payment method" form:
-
-```html
-<input id="card-holder-name" type="text">
-
-<!-- Stripe Elements Placeholder -->
-<div id="card-element"></div>
-
-<button id="card-button" data-secret="{{ $intent->client_secret }}">
-    Update Payment Method
-</button>
-```
-
-Next, the Stripe.js library may be used to attach a [Stripe Element](https://stripe.com/docs/stripe-js) to the form and securely gather the customer's payment details:
-
-```html
-<script src="https://js.stripe.com/v3/"></script>
-
-<script>
-    const stripe = Stripe('stripe-public-key');
-
-    const elements = stripe.elements();
-    const cardElement = elements.create('card');
-
-    cardElement.mount('#card-element');
-</script>
-```
-
-Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `confirmCardSetup` method](https://stripe.com/docs/js/setup_intents/confirm_card_setup):
-
-```js
-const cardHolderName = document.getElementById('card-holder-name');
-const cardButton = document.getElementById('card-button');
-const clientSecret = cardButton.dataset.secret;
-
-cardButton.addEventListener('click', async (e) => {
-    const { setupIntent, error } = await stripe.confirmCardSetup(
-        clientSecret, {
-            payment_method: {
-                card: cardElement,
-                billing_details: { name: cardHolderName.value }
-            }
-        }
-    );
-
-    if (error) {
-        // Display "error.message" to the user...
-    } else {
-        // The card has been verified successfully...
-    }
-});
-```
-
-After the card has been verified by Stripe, you may pass the resulting `setupIntent.payment_method` identifier to your Laravel application, where it can be attached to the customer. The payment method can either be [added as a new payment method](#adding-payment-methods) or [used to update the default payment method](#updating-the-default-payment-method). You can also immediately use the payment method identifier to [create a new subscription](#creating-subscriptions).
-
-> [!NOTE]
-> If you would like more information about Setup Intents and gathering customer payment details please [review this overview provided by Stripe](https://stripe.com/docs/payments/save-and-reuse#php).
-
-<a name="payment-methods-for-single-charges"></a>
-#### Payment Methods for Single Charges
-
-Of course, when making a single charge against a customer's payment method, we will only need to use a payment method identifier once. Due to Stripe limitations, you may not use the stored default payment method of a customer for single charges. You must allow the customer to enter their payment method details using the Stripe.js library. For example, consider the following form:
-
-```html
-<input id="card-holder-name" type="text">
-
-<!-- Stripe Elements Placeholder -->
-<div id="card-element"></div>
-
-<button id="card-button">
-    Process Payment
-</button>
-```
-
-After defining such a form, the Stripe.js library may be used to attach a [Stripe Element](https://stripe.com/docs/stripe-js) to the form and securely gather the customer's payment details:
-
-```html
-<script src="https://js.stripe.com/v3/"></script>
-
-<script>
-    const stripe = Stripe('stripe-public-key');
-
-    const elements = stripe.elements();
-    const cardElement = elements.create('card');
-
-    cardElement.mount('#card-element');
-</script>
-```
-
-Next, the card can be verified and a secure "payment method identifier" can be retrieved from Stripe using [Stripe's `createPaymentMethod` method](https://stripe.com/docs/stripe-js/reference#stripe-create-payment-method):
-
-```js
-const cardHolderName = document.getElementById('card-holder-name');
-const cardButton = document.getElementById('card-button');
-
-cardButton.addEventListener('click', async (e) => {
-    const { paymentMethod, error } = await stripe.createPaymentMethod(
-        'card', cardElement, {
-            billing_details: { name: cardHolderName.value }
-        }
-    );
-
-    if (error) {
-        // Display "error.message" to the user...
-    } else {
-        // The card has been verified successfully...
-    }
-});
-```
-
-If the card is verified successfully, you may pass the `paymentMethod.id` to your Laravel application and process a [single charge](#simple-charge).
-
-<a name="using-the-payment-element"></a>
-### Using the Payment Element
-
-Stripe's [Payment Element](https://stripe.com/docs/payments/payment-element) is the modern, recommended replacement for the legacy Card Element. It supports multiple payment methods (cards, Apple Pay, Google Pay, iDEAL, etc.) and handles 3D Secure automatically.
+Stripe's [Payment Element](https://stripe.com/docs/payments/payment-element) may be used to support multiple payment methods, such as cards, Apple Pay, Google Pay, and iDEAL.
 
 <a name="payment-element-for-subscriptions"></a>
 #### Payment Element for Subscriptions
@@ -800,11 +673,13 @@ Mount the Payment Element using the Setup Intent's `client_secret`:
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     const stripe = Stripe('stripe-public-key');
+
     const elements = stripe.elements({
         clientSecret: '{{ $intent->client_secret }}'
     });
 
     const paymentElement = elements.create('payment');
+
     paymentElement.mount('#payment-element');
 
     document.getElementById('submit').addEventListener('click', async () => {
@@ -822,43 +697,57 @@ Mount the Payment Element using the Setup Intent's `client_secret`:
 </script>
 ```
 
-After Stripe redirects to your `return_url`, the `setup_intent` ID is available as a query parameter. Use it to retrieve the payment method and create the subscription:
+After Stripe redirects to your `return_url`, the `setup_intent` ID will be available as a query string parameter. You may use this value to retrieve the payment method and create the subscription:
 
 ```php
 use Illuminate\Http\Request;
 
 Route::get('/subscription/complete', function (Request $request) {
-    $setupIntent = $request->user()->findSetupIntent($request->setup_intent);
+    $setupIntent = $request->user()->findSetupIntent(
+        $request->setup_intent
+    );
 
     $paymentMethod = $setupIntent->payment_method;
 
-    $request->user()->addPaymentMethod($paymentMethod);
-
-    $request->user()->newSubscription('default', 'price_xxx')
+    $request->user()
+        ->newSubscription('default', 'price_xxx')
         ->create($paymentMethod);
 
     return redirect('/dashboard');
 })->name('subscription.complete');
 ```
 
+If you are using the Payment Element to update a customer's default payment method instead of creating a subscription, you may pass the payment method identifier to the [`updateDefaultPaymentMethod`](#updating-the-default-payment-method) method.
+
 <a name="payment-element-for-single-charges"></a>
 #### Payment Element for Single Charges
 
-For one-off payments, create a Payment Intent using Cashier's `pay` method and pass the `client_secret` to your frontend:
+For one-off payments, create a Payment Intent using Cashier's `pay` method. Typically, you should store the Payment Intent ID on your application's corresponding order so that the order can be retrieved after Stripe redirects the customer back to your application. The following example assumes your application has an `Order` model with `user_id`, `amount`, `status`, and `stripe_payment_intent_id` columns:
 
 ```php
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 Route::post('/pay', function (Request $request) {
-    $payment = $request->user()->pay(1000);
+    $amount = 1000;
+
+    $payment = $request->user()->pay($amount);
+
+    $order = Order::create([
+        'user_id' => $request->user()->id,
+        'amount' => $amount,
+        'status' => 'pending',
+        'stripe_payment_intent_id' => $payment->id,
+    ]);
 
     return view('checkout', [
         'clientSecret' => $payment->client_secret,
+        'order' => $order,
     ]);
 });
 ```
 
-Mount the Payment Element and confirm the payment:
+Then, mount the Payment Element and confirm the payment:
 
 ```html
 <div id="payment-element"></div>
@@ -867,11 +756,13 @@ Mount the Payment Element and confirm the payment:
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     const stripe = Stripe('stripe-public-key');
+
     const elements = stripe.elements({
         clientSecret: '{{ $clientSecret }}'
     });
 
     const paymentElement = elements.create('payment');
+
     paymentElement.mount('#payment-element');
 
     document.getElementById('submit').addEventListener('click', async () => {
@@ -889,28 +780,31 @@ Mount the Payment Element and confirm the payment:
 </script>
 ```
 
-After the redirect, verify the payment and fulfill the order:
+After the redirect, you may use the `payment_intent` query string parameter to retrieve the corresponding order and Payment Intent. Before fulfilling the order, you should verify that the order belongs to the authenticated customer and that the Payment Intent belongs to the authenticated customer and has succeeded:
 
 ```php
-Route::get('/payment/complete', function (Request $request) {
-    $paymentIntent = $request->user()->stripe()
-        ->paymentIntents->retrieve($request->payment_intent);
+use App\Models\Order;
+use Illuminate\Http\Request;
 
-    if ($paymentIntent->status === 'succeeded') {
+Route::get('/payment/complete', function (Request $request) {
+    $order = Order::where('user_id', $request->user()->id)
+        ->where('stripe_payment_intent_id', $request->payment_intent)
+        ->firstOrFail();
+
+    $paymentIntent = $request->user()
+        ->stripe()
+        ->paymentIntents
+        ->retrieve($request->payment_intent);
+
+    if ($paymentIntent->customer === $request->user()->stripe_id &&
+        $paymentIntent->status === 'succeeded') {
+        $order->update(['status' => 'paid']);
+
         // Fulfill the order...
     }
 
     return redirect('/dashboard');
 })->name('payment.complete');
-```
-
-<a name="payment-element-update-payment-method"></a>
-#### Updating the Default Payment Method
-
-To let users update their saved payment method, follow the same subscription flow but call `updateDefaultPaymentMethod` instead of creating a subscription:
-
-```php
-$request->user()->updateDefaultPaymentMethod($paymentMethod);
 ```
 
 <a name="retrieving-payment-methods"></a>
@@ -2111,7 +2005,7 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environm
 <a name="simple-charge"></a>
 ### Simple Charge
 
-If you would like to make a one-time charge against a customer, you may use the `charge` method on a billable model instance. You will need to [provide a payment method identifier](#payment-methods-for-single-charges) as the second argument to the `charge` method:
+If you would like to make a one-time charge against a customer, you may use the `charge` method on a billable model instance. You will need to provide a payment method identifier as the second argument to the `charge` method:
 
 ```php
 use Illuminate\Http\Request;
@@ -2233,7 +2127,7 @@ Route::post('/pay', function (Request $request) {
 <a name="refunding-charges"></a>
 ### Refunding Charges
 
-If you need to refund a Stripe charge, you may use the `refund` method. This method accepts the Stripe [payment intent ID](#payment-methods-for-single-charges) as its first argument:
+If you need to refund a Stripe charge, you may use the `refund` method. This method accepts the Stripe payment intent ID as its first argument:
 
 ```php
 $payment = $user->charge(100, $paymentMethodId);
