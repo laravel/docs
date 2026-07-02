@@ -1161,6 +1161,7 @@ Below is a list of all available validation rules and their function:
 [File](#rule-file)
 [Image](#rule-image)
 [Max](#rule-max)
+[Min](#rule-min)
 [MIME Types](#rule-mimetypes)
 [MIME Type By File Extension](#rule-mimes)
 [Size](#rule-size)
