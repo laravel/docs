@@ -2005,13 +2005,13 @@ To enable webhook verification, ensure that the `STRIPE_WEBHOOK_SECRET` environm
 <a name="simple-charge"></a>
 ### Simple Charge
 
-If you would like to make a one-time charge against a customer, you may use the `charge` method on a billable model instance. You will need to provide a payment method identifier as the second argument to the `charge` method:
+If you would like to make a one-time charge against a customer using a payment method identifier, you may use the `charge` method on a billable model instance. If you need to collect payment details from a customer before processing a one-time charge, see the [Payment Element for Single Charges](#payment-element-for-single-charges) documentation:
 
 ```php
 use Illuminate\Http\Request;
 
 Route::post('/purchase', function (Request $request) {
-    $stripeCharge = $request->user()->charge(
+    $payment = $request->user()->charge(
         100, $request->paymentMethodId
     );
 
@@ -2019,7 +2019,7 @@ Route::post('/purchase', function (Request $request) {
 });
 ```
 
-The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe charge creation. More information regarding the options available to you when creating charges may be found in the [Stripe documentation](https://stripe.com/docs/api/charges/create):
+The `charge` method accepts an array as its third argument, allowing you to pass any options you wish to the underlying Stripe Payment Intent creation. More information regarding the options available to you when creating Payment Intents may be found in the [Stripe documentation](https://stripe.com/docs/api/payment_intents/create):
 
 ```php
 $user->charge(100, $paymentMethod, [
@@ -2032,7 +2032,7 @@ You may also use the `charge` method without an underlying customer or user. To 
 ```php
 use App\Models\User;
 
-$stripeCharge = (new User)->charge(100, $paymentMethod);
+$payment = (new User)->charge(100, $paymentMethod);
 ```
 
 The `charge` method will throw an exception if the charge fails. If the charge is successful, an instance of `Laravel\Cashier\Payment` will be returned from the method:
@@ -2127,7 +2127,7 @@ Route::post('/pay', function (Request $request) {
 <a name="refunding-charges"></a>
 ### Refunding Charges
 
-If you need to refund a Stripe charge, you may use the `refund` method. This method accepts the Stripe payment intent ID as its first argument:
+If you need to refund a Stripe payment, you may use the `refund` method. This method accepts the Stripe Payment Intent ID as its first argument:
 
 ```php
 $payment = $user->charge(100, $paymentMethodId);
