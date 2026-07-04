@@ -110,7 +110,7 @@ composer global require laravel/installer
 <a name="creating-an-application"></a>
 ### Creating an Application
 
-After you have installed PHP, Composer, and the Laravel installer, you are ready to create a new Laravel application. The installer will prompt you to select your preferred starter kit, testing framework, and database:
+After you have installed PHP, Composer, and the Laravel installer, you are ready to create a new Laravel application:
 
 ```shell
 laravel new example-app
