@@ -1,23 +1,29 @@
 # Installation
 
-- [Meet Laravel](#meet-laravel)
+- [Installation](#installation)
+  - [Meet Laravel](#meet-laravel)
     - [Why Laravel?](#why-laravel)
-- [Creating a Laravel Application](#creating-a-laravel-project)
+      - [A Progressive Framework](#a-progressive-framework)
+      - [A Scalable Framework](#a-scalable-framework)
+      - [An Agent Ready Framework](#an-agent-ready-framework)
+      - [A Community Framework](#a-community-framework)
+  - [Creating a Laravel Application](#creating-a-laravel-application)
     - [Getting Started Using AI](#getting-started-using-ai)
-    - [Installing PHP and the Laravel Installer](#installing-php)
+    - [Installing PHP and the Laravel Installer](#installing-php-and-the-laravel-installer)
     - [Creating an Application](#creating-an-application)
-- [Initial Configuration](#initial-configuration)
+  - [Initial Configuration](#initial-configuration)
     - [Environment Based Configuration](#environment-based-configuration)
     - [Databases and Migrations](#databases-and-migrations)
     - [Directory Configuration](#directory-configuration)
-- [Installation Using Herd](#installation-using-herd)
+  - [Installation Using Herd](#installation-using-herd)
     - [Herd on macOS](#herd-on-macos)
     - [Herd on Windows](#herd-on-windows)
-- [IDE Support](#ide-support)
-- [Laravel and AI](#laravel-and-ai)
+  - [IDE Support](#ide-support)
+  - [Laravel and AI](#laravel-and-ai)
     - [Installing Laravel Boost](#installing-laravel-boost)
-- [Next Steps](#next-steps)
-    - [Laravel the Full Stack Framework](#laravel-the-fullstack-framework)
+      - [Adding Custom AI Guidelines](#adding-custom-ai-guidelines)
+  - [Next Steps](#next-steps)
+    - [Laravel the Full Stack Framework](#laravel-the-full-stack-framework)
     - [Laravel the API Backend](#laravel-the-api-backend)
 
 <a name="meet-laravel"></a>
@@ -124,7 +130,7 @@ npm install && npm run build
 composer run dev
 ```
 
-Once you have started the development server, your can access your application in your web browser at [http://localhost:8000](http://localhost:8000). Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations) and run the necessary migrations.
+Once you have started the development server, you can access your application in your web browser at [http://localhost:8000](http://localhost:8000). Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations) and run the necessary migrations.
 
 > [!NOTE]
 > If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
