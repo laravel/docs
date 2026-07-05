@@ -1145,7 +1145,7 @@ The URI and MIME type help AI clients determine how to process and interpret the
 <a name="resource-request"></a>
 ### Resource Request
 
-Unlike tools and prompts, resources can not define input schemas or arguments. However, you can still interact with request object within your resource's `handle` method:
+Unlike tools and prompts, resources cannot define input schemas or arguments. However, you can still interact with the request object within your resource's `handle` method:
 
 ```php
 <?php
