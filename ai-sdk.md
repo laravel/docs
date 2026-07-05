@@ -1897,6 +1897,14 @@ SalesCoach::fake(function (AgentPrompt $prompt) {
 
 > **Note:** When `Agent::fake()` is invoked on an agent that returns structured output, Laravel will automatically generate fake data that matches your agent's defined output schema.
 
+When faking an agent that returns structured output, you may also provide arrays as responses. The agent will return a structured response containing the given data:
+
+```php
+SalesCoach::fake([
+    ['score' => 87],
+]);
+```
+
 After prompting the agent, you may make assertions about the prompts that were received:
 
 ```php
