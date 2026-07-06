@@ -371,9 +371,9 @@ The `Redis` facade's `transaction` method provides a convenient wrapper around R
 
 ```php
 use Redis;
-use Illuminate\Support\Facades\Redis as RedisFacade;
+use Illuminate\Support\Facades;
 
-RedisFacade::transaction(function (Redis $redis) {
+Facades\Redis::transaction(function (Redis $redis) {
     $redis->incr('user_visits', 1);
     $redis->incr('total_visits', 1);
 });
@@ -412,9 +412,9 @@ Sometimes you may need to execute dozens of Redis commands. Instead of making a 
 
 ```php
 use Redis;
-use Illuminate\Support\Facades\Redis as RedisFacade;
+use Illuminate\Support\Facades;
 
-RedisFacade::pipeline(function (Redis $pipe) {
+Facades\Redis::pipeline(function (Redis $pipe) {
     for ($i = 0; $i < 1000; $i++) {
         $pipe->set("key:$i", $i);
     }

@@ -178,7 +178,7 @@ We'll use the `View` facade's `composer` method to register the view composer. L
 namespace App\Providers;
 
 use App\View\Composers\ProfileComposer;
-use Illuminate\Support\Facades\View as ViewFacade;
+use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
 
@@ -198,14 +198,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Using class-based composers...
-        ViewFacade::composer('profile', ProfileComposer::class);
+        Facades\View::composer('profile', ProfileComposer::class);
 
         // Using closure-based composers...
-        ViewFacade::composer('welcome', function (View $view) {
+        Facades\View::composer('welcome', function (View $view) {
             // ...
         });
 
-        ViewFacade::composer('dashboard', function (View $view) {
+        Facades\View::composer('dashboard', function (View $view) {
             // ...
         });
     }
@@ -261,10 +261,10 @@ View::composer(
 The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
 
 ```php
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades;
 use Illuminate\View\View;
 
-View::composer('*', function (View $view) {
+Facades\View::composer('*', function (View $view) {
     // ...
 });
 ```

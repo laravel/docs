@@ -241,12 +241,12 @@ Schedule::command('emails:send')
 Alternatively, you may use the constants available on the `Illuminate\Console\Scheduling\Schedule` class when defining the days on which a task should run:
 
 ```php
-use Illuminate\Console\Scheduling\Schedule as SchedulingSchedule;
-use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades;
+use Illuminate\Console\Scheduling\Schedule;
 
-Schedule::command('emails:send')
+Facades\Schedule::command('emails:send')
     ->hourly()
-    ->days([SchedulingSchedule::SUNDAY, SchedulingSchedule::WEDNESDAY]);
+    ->days([Schedule::SUNDAY, Schedule::WEDNESDAY]);
 ```
 
 <a name="between-time-constraints"></a>
