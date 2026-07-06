@@ -820,7 +820,7 @@ $matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);
 <a name="method-str-is-ascii"></a>
 #### `Str::isAscii()` {.collection-method}
 
-The `Str::isAscii` method determines if a given string is 7 bit ASCII:
+The `Str::isAscii` method determines if a given string is 7-bit ASCII:
 
 ```php
 use Illuminate\Support\Str;
@@ -1054,7 +1054,7 @@ $string = Str::mask('taylor@example.com', '*', 3);
 // tay***************
 ```
 
-If needed, you provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
+If needed, you may provide a negative number as the third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
 
 ```php
 $string = Str::mask('taylor@example.com', '*', -15, 3);
@@ -1511,7 +1511,7 @@ $singular = Str::singular('children');
 <a name="method-str-slug"></a>
 #### `Str::slug()` {.collection-method}
 
-The `Str::slug` method generates a URL friendly "slug" from the given string:
+The `Str::slug` method generates a URL-friendly "slug" from the given string:
 
 ```php
 use Illuminate\Support\Str;
@@ -3326,7 +3326,7 @@ $singular = Str::of('children')->singular();
 <a name="method-fluent-str-slug"></a>
 #### `slug` {.collection-method}
 
-The `slug` method generates a URL friendly "slug" from the given string:
+The `slug` method generates a URL-friendly "slug" from the given string:
 
 ```php
 use Illuminate\Support\Str;
@@ -3940,7 +3940,7 @@ $string = Str::of('foo/bar')->whenIs('foo/*', function (Stringable $string) {
 <a name="method-fluent-str-when-is-ascii"></a>
 #### `whenIsAscii` {.collection-method}
 
-The `whenIsAscii` method invokes the given closure if the string is 7 bit ASCII. The closure will receive the fluent string instance:
+The `whenIsAscii` method invokes the given closure if the string is 7-bit ASCII. The closure will receive the fluent string instance:
 
 ```php
 use Illuminate\Support\Str;
