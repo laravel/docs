@@ -773,7 +773,7 @@ Once a subscription checkout session has been created, the checkout session may 
 </x-paddle-button>
 ```
 
-After the user has finished their checkout, a `subscription_created` webhook will be dispatched from Paddle. Cashier will receive this webhook and setup the subscription for your customer. In order to make sure all webhooks are properly received and handled by your application, ensure you have properly [setup webhook handling](#handling-paddle-webhooks).
+After the user has finished their checkout, a `subscription_created` webhook will be dispatched from Paddle. Cashier will receive this webhook and set up the subscription for your customer. In order to make sure all webhooks are properly received and handled by your application, ensure you have properly [set up webhook handling](#handling-paddle-webhooks).
 
 <a name="checking-subscription-status"></a>
 ### Checking Subscription Status
