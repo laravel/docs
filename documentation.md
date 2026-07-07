@@ -42,6 +42,7 @@
     - [File Storage](/docs/{{version}}/filesystem)
     - [Helpers](/docs/{{version}}/helpers)
     - [HTTP Client](/docs/{{version}}/http-client)
+    - [Images](/docs/{{version}}/images)
     - [Localization](/docs/{{version}}/localization)
     - [Mail](/docs/{{version}}/mail)
     - [Notifications](/docs/{{version}}/notifications)
