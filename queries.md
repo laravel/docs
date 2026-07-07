@@ -880,6 +880,46 @@ $patients = DB::table('patients')
     ->get();
 ```
 
+**whereIntersects / whereNotIntersects / orWhereIntersects / orWhereNotIntersects**
+
+The `whereIntersects` method verifies that a pair of date or date-time columns intersects a given period:
+
+```php
+$reservations = DB::table('reservations')
+    ->whereIntersects(['starts_at', 'ends_at'], ['2026-01-01 15:00:00', '2026-01-07 11:00:00'])
+    ->get();
+```
+
+By default, periods that touch at their start or end values are considered intersecting. You may use the `inclusive` argument to require a strict overlap:
+
+```php
+$reservations = DB::table('reservations')
+    ->whereIntersects(['starts_at', 'ends_at'], ['2026-01-01 15:00:00', '2026-01-07 11:00:00'], inclusive: false)
+    ->get();
+```
+
+You may also pass a `DatePeriod` instance to the `whereIntersects` method:
+
+```php
+$period = new DatePeriod(
+    new DateTime('2026-01-01 15:00:00'),
+    new DateInterval('P1D'),
+    new DateTime('2026-01-07 11:00:00'),
+);
+
+$reservations = DB::table('reservations')
+    ->whereIntersects(['starts_at', 'ends_at'], $period)
+    ->get();
+```
+
+The `whereNotIntersects` method verifies that a pair of date or date-time columns does not intersect a given period:
+
+```php
+$reservations = DB::table('reservations')
+    ->whereNotIntersects(['starts_at', 'ends_at'], ['2026-01-01 15:00:00', '2026-01-07 11:00:00'])
+    ->get();
+```
+
 **whereValueBetween / whereValueNotBetween / orWhereValueBetween / orWhereValueNotBetween**
 
 The `whereValueBetween` method verifies that a given value is between the values of two columns of the same type in the same table row:
