@@ -4,6 +4,7 @@
 - [Installation](#installation)
     - [Configuration](#configuration)
     - [Custom Base URLs](#custom-base-urls)
+    - [OpenAI-Compatible Providers](#openai-compatible-providers)
     - [Provider Support](#provider-support)
 - [Agents](#agents)
     - [Prompting](#prompting)
@@ -86,6 +87,8 @@ GROQ_API_KEY=
 MISTRAL_API_KEY=
 OLLAMA_API_KEY=
 OPENAI_API_KEY=
+OPENAI_COMPATIBLE_API_KEY=
+OPENAI_COMPATIBLE_URL=
 OPENROUTER_API_KEY=
 JINA_API_KEY=
 VOYAGEAI_API_KEY=
@@ -121,6 +124,44 @@ This is useful when routing requests through a proxy service (such as LiteLLM or
 
 Custom base URLs are supported for the following providers: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI, and OpenRouter.
 
+<a name="openai-compatible-providers"></a>
+### OpenAI-Compatible Providers
+
+If you are using an OpenAI-compatible API, such as LM Studio, vLLM, Together, Fireworks, or a local gateway, you may configure an `openai-compatible` provider. The `url` option is required, while the `key` option is optional and will be sent as a bearer token when present:
+
+```php
+'providers' => [
+    'local' => [
+        'driver' => 'openai-compatible',
+        'url' => env('LOCAL_AI_URL'),
+        'key' => env('LOCAL_AI_API_KEY'),
+    ],
+],
+```
+
+Once configured, you may use the named provider like any other provider:
+
+```php
+agent()->prompt('What is Laravel?', provider: 'local', model: 'local-model');
+```
+
+You may also configure a default text model for the provider so that you do not need to pass a model explicitly:
+
+```php
+'local' => [
+    'driver' => 'openai-compatible',
+    'url' => env('LOCAL_AI_URL'),
+    'key' => env('LOCAL_AI_API_KEY'),
+    'models' => [
+        'text' => [
+            'default' => env('LOCAL_AI_MODEL'),
+        ],
+    ],
+],
+```
+
+OpenAI-compatible providers support text generation, streaming, tools, structured output, and image attachments. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
+
 <a name="provider-support"></a>
 ### Provider Support
 
@@ -130,7 +171,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 
 | Feature | Providers |
 |---|---|
-| Text | OpenAI, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
+| Text | OpenAI, OpenAI Compatible, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
 | TTS | OpenAI, ElevenLabs, Gemini |
 | STT | OpenAI, ElevenLabs, Mistral, Gemini |
@@ -147,6 +188,7 @@ use Laravel\Ai\Enums\Lab;
 
 Lab::Anthropic;
 Lab::OpenAI;
+Lab::OpenAiCompatible;
 Lab::Gemini;
 // ...
 ```
