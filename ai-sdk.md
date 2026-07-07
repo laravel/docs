@@ -87,6 +87,8 @@ GROQ_API_KEY=
 MISTRAL_API_KEY=
 OLLAMA_API_KEY=
 OPENAI_API_KEY=
+OPENAI_COMPATIBLE_API_KEY=
+OPENAI_COMPATIBLE_URL=
 OPENROUTER_API_KEY=
 JINA_API_KEY=
 VOYAGEAI_API_KEY=
@@ -125,29 +127,40 @@ Custom base URLs are supported for the following providers: OpenAI, Anthropic, G
 <a name="openai-compatible-providers"></a>
 ### OpenAI-Compatible Providers
 
-Many AI services and local runtimes — such as LM Studio, vLLM, Together, and Fireworks — expose an API that follows OpenAI's Chat Completions specification. You may connect to any of these services by defining a provider that uses the `openai-compatible` driver in your application's `config/ai.php` configuration file:
+If you are using an OpenAI-compatible API, such as LM Studio, vLLM, Together, Fireworks, or a local gateway, you may configure an `openai-compatible` provider. The `url` option is required, while the `key` option is optional and will be sent as a bearer token when present:
 
 ```php
 'providers' => [
-    'my-llm' => [
+    'local' => [
         'driver' => 'openai-compatible',
-        'url' => env('MY_LLM_URL'),
-        'key' => env('MY_LLM_API_KEY'),
+        'url' => env('LOCAL_AI_URL'),
+        'key' => env('LOCAL_AI_API_KEY'),
     ],
 ],
 ```
 
-The `url` is required and should point to the service's base URL. The `key`, if provided, is sent as a bearer token. Once configured, you may reference the provider by name when prompting:
+Once configured, you may use the named provider like any other provider:
 
 ```php
-$response = (new SalesCoach)->prompt(
-    'Analyze this sales transcript...',
-    provider: 'my-llm',
-    model: 'some-model',
-);
+agent()->prompt('What is Laravel?', provider: 'local', model: 'local-model');
 ```
 
-OpenAI-compatible providers support text and streaming responses, tools, structured output, and image attachments. Any endpoint-specific request options may be supplied via [provider options](#provider-options).
+You may also configure a default text model for the provider so that you do not need to pass a model explicitly:
+
+```php
+'local' => [
+    'driver' => 'openai-compatible',
+    'url' => env('LOCAL_AI_URL'),
+    'key' => env('LOCAL_AI_API_KEY'),
+    'models' => [
+        'text' => [
+            'default' => env('LOCAL_AI_MODEL'),
+        ],
+    ],
+],
+```
+
+OpenAI-compatible providers support text generation, streaming, tools, structured output, and image attachments. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
 
 <a name="provider-support"></a>
 ### Provider Support
@@ -158,7 +171,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 
 | Feature | Providers |
 |---|---|
-| Text | OpenAI, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
+| Text | OpenAI, OpenAI Compatible, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
 | TTS | OpenAI, ElevenLabs, Gemini |
 | STT | OpenAI, ElevenLabs, Mistral, Gemini |
@@ -175,6 +188,7 @@ use Laravel\Ai\Enums\Lab;
 
 Lab::Anthropic;
 Lab::OpenAI;
+Lab::OpenAiCompatible;
 Lab::Gemini;
 // ...
 ```
