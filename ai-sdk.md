@@ -4,6 +4,7 @@
 - [Installation](#installation)
     - [Configuration](#configuration)
     - [Custom Base URLs](#custom-base-urls)
+    - [OpenAI-Compatible Providers](#openai-compatible-providers)
     - [Provider Support](#provider-support)
 - [Agents](#agents)
     - [Prompting](#prompting)
@@ -121,6 +122,33 @@ This is useful when routing requests through a proxy service (such as LiteLLM or
 
 Custom base URLs are supported for the following providers: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI, and OpenRouter.
 
+<a name="openai-compatible-providers"></a>
+### OpenAI-Compatible Providers
+
+Many AI services and local runtimes — such as LM Studio, vLLM, Together, and Fireworks — expose an API that follows OpenAI's Chat Completions specification. You may connect to any of these services by defining a provider that uses the `openai-compatible` driver in your application's `config/ai.php` configuration file:
+
+```php
+'providers' => [
+    'my-llm' => [
+        'driver' => 'openai-compatible',
+        'url' => env('MY_LLM_URL'),
+        'key' => env('MY_LLM_API_KEY'),
+    ],
+],
+```
+
+The `url` is required and should point to the service's base URL. The `key`, if provided, is sent as a bearer token. Once configured, you may reference the provider by name when prompting:
+
+```php
+$response = (new SalesCoach)->prompt(
+    'Analyze this sales transcript...',
+    provider: 'my-llm',
+    model: 'some-model',
+);
+```
+
+OpenAI-compatible providers support text and streaming responses, tools, structured output, and image attachments. Any endpoint-specific request options may be supplied via [provider options](#provider-options).
+
 <a name="provider-support"></a>
 ### Provider Support
 
@@ -136,7 +164,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | STT | OpenAI, ElevenLabs, Mistral, Gemini |
 | Embeddings | OpenAI, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI |
-| Files | OpenAI, Anthropic, Gemini |
+| Files | OpenAI, Anthropic, Gemini, Azure |
 
 </div>
 
@@ -598,6 +626,34 @@ Or, you can invoke an agent's `broadcastOnQueue` method to queue the agent opera
 );
 ```
 
+<a name="skipping-oversized-events"></a>
+#### Skipping Oversized Events
+
+Broadcasting platforms such as Reverb and Pusher limit WebSocket messages to around 10KB. Data-heavy stream events, like large tool results, can exceed this limit and cause broadcasting to fail. You may exclude specific event types from broadcasting using the `WithoutBroadcasting` attribute:
+
+```php
+<?php
+
+namespace App\Ai\Agents;
+
+use Laravel\Ai\Attributes\WithoutBroadcasting;
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\HasTools;
+use Laravel\Ai\Promptable;
+use Laravel\Ai\Streaming\Events\ToolCall;
+use Laravel\Ai\Streaming\Events\ToolResult;
+
+#[WithoutBroadcasting(ToolResult::class, ToolCall::class)]
+class SearchAgent implements Agent, HasTools
+{
+    use Promptable;
+
+    // ...
+}
+```
+
+The excluded events are never broadcast, but they are still persisted to the `agent_conversation_messages` table, so your frontend can load the full tool data after the stream completes. This works for both queued (`broadcastOnQueue`) and synchronous (`broadcast` / `broadcastNow`) broadcasting.
+
 <a name="queueing"></a>
 ### Queueing
 
@@ -852,7 +908,7 @@ Provider tools can be returned by your agent's `tools` method.
 
 The `WebSearch` provider tool allows agents to search the web for real-time information. This is useful for answering questions about current events, recent data, or topics that may have changed since the model's training cutoff.
 
-**Supported Providers:** Anthropic, OpenAI, Gemini
+**Supported Providers:** Anthropic, OpenAI, Gemini, OpenRouter
 
 ```php
 use Laravel\Ai\Providers\Tools\WebSearch;
@@ -1729,6 +1785,30 @@ By default, the `Files` class uses the default AI provider configured in your ap
 $response = Document::fromPath(
     '/home/laravel/document.pdf'
 )->put(provider: Lab::Anthropic);
+```
+
+You may pass provider-specific upload options using the `withProviderOptions` method. For example, you may set OpenAI's file `purpose`:
+
+```php
+use Laravel\Ai\Files\Document;
+
+$response = Document::fromPath('/home/laravel/knowledge.txt')
+    ->withProviderOptions(['purpose' => 'assistants'])
+    ->put();
+```
+
+To scope options per provider, pass a closure that receives the current provider:
+
+```php
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Files\Document;
+
+$response = Document::fromPath('/home/laravel/knowledge.txt')
+    ->withProviderOptions(fn (Lab|string $provider) => match ($provider) {
+        Lab::OpenAI => ['purpose' => 'fine-tune'],
+        default => [],
+    })
+    ->put();
 ```
 
 <a name="using-stored-files-in-conversations"></a>
