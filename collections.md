@@ -199,6 +199,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [random](#method-random)
 [range](#method-range)
 [reduce](#method-reduce)
+[reduceInto](#method-reduce-into)
 [reduceSpread](#method-reduce-spread)
 [reject](#method-reject)
 [replace](#method-replace)
@@ -2498,6 +2499,35 @@ $collection->reduce(function (int $carry, int $value, string $key) use ($ratio) 
 }, 0);
 
 // 4264
+```
+
+<a name="method-reduce-into"></a>
+#### `reduceInto()` {.collection-method}
+
+The `reduceInto` method reduces the collection to a single value by mutating the given initial value. Unlike the `reduce` method, the given callback does not need to return the accumulated value:
+
+```php
+class OrderStats
+{
+    public int $total = 0;
+
+    public int $count = 0;
+}
+
+$orders = collect([
+    ['amount' => 100],
+    ['amount' => 250],
+    ['amount' => 50],
+]);
+
+$stats = $orders->reduceInto(new OrderStats, function (OrderStats $stats, array $order) {
+    $stats->total += $order['amount'];
+    $stats->count++;
+});
+
+$stats->total;
+
+// 400
 ```
 
 <a name="method-reduce-spread"></a>

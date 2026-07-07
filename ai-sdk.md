@@ -14,6 +14,7 @@
     - [Broadcasting](#broadcasting)
     - [Queueing](#queueing)
     - [Tools](#tools)
+    - [File Storage Tools](#file-storage-tools)
     - [MCP Tools](#mcp-tools)
     - [Provider Tools](#provider-tools)
     - [Sub-Agents](#sub-agents)
@@ -749,6 +750,35 @@ You may customize the tool's description using the `withDescription` method:
 ```php
 SimilaritySearch::usingModel(Document::class, 'embedding')
     ->withDescription('Search the knowledge base for relevant articles.'),
+```
+
+<a name="file-storage-tools"></a>
+### File Storage Tools
+
+The `FileStorage` tool factory allows you to give agents access to a Laravel [filesystem disk](/docs/{{version}}/filesystem). The `all` method returns tools that allow the agent to list, read, inspect, generate URLs for, write, delete, and copy files on the given disk:
+
+```php
+use Laravel\Ai\Tools\FileStorage;
+
+public function tools(): iterable
+{
+    return FileStorage::all('local');
+}
+```
+
+If your agent should only be able to inspect files, use the `readOnly` method:
+
+```php
+return FileStorage::readOnly('local');
+```
+
+These methods return an `Illuminate\Support\Collection`, allowing you to further filter the tools that are provided to the agent:
+
+```php
+use Laravel\Ai\Tools\Filesystem\DeleteFile;
+
+return FileStorage::all('s3')
+    ->reject(fn ($tool) => $tool instanceof DeleteFile);
 ```
 
 <a name="mcp-tools"></a>

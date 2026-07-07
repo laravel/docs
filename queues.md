@@ -13,6 +13,7 @@
     - [Rate Limiting](#rate-limiting)
     - [Preventing Job Overlaps](#preventing-job-overlaps)
     - [Throttling Exceptions](#throttling-exceptions)
+    - [Releasing Jobs](#releasing-jobs)
     - [Skipping Jobs](#skipping-jobs)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
@@ -970,6 +971,45 @@ The `connection` method may be used to specify which Redis connection the middle
 
 ```php
 return [(new ThrottlesExceptionsWithRedis(10, 10 * 60))->connection('limiter')];
+```
+
+<a name="releasing-jobs"></a>
+### Releasing Jobs
+
+The `Release` middleware allows you to release a job back onto the queue without executing it. The `Release::when` method will release the job if the given condition evaluates to `true`, while the `Release::unless` method will release the job if the condition evaluates to `false`:
+
+```php
+use Illuminate\Queue\Middleware\Release;
+
+/**
+ * Get the middleware the job should pass through.
+ */
+public function middleware(): array
+{
+    return [
+        Release::when($condition, releaseAfter: 60),
+    ];
+}
+```
+
+Releasing a job back onto the queue will still increment the job's total number of attempts. You may wish to tune your `Tries` and `MaxExceptions` attributes on your job class accordingly.
+
+You can also pass a `Closure` to the `when` and `unless` methods for more complex conditional evaluation:
+
+```php
+use Illuminate\Queue\Middleware\Release;
+
+/**
+ * Get the middleware the job should pass through.
+ */
+public function middleware(): array
+{
+    return [
+        Release::when(function (): bool {
+            return ! $this->order->isPaid();
+        }, releaseAfter: 60),
+    ];
+}
 ```
 
 <a name="skipping-jobs"></a>
