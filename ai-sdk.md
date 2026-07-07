@@ -643,7 +643,7 @@ Or, you can invoke an agent's `broadcastOnQueue` method to queue the agent opera
 <a name="skipping-oversized-events"></a>
 #### Skipping Oversized Events
 
-Broadcasting platforms such as Reverb and Pusher limit WebSocket messages to around 10KB. Data-heavy stream events, like large tool results, can exceed this limit and cause broadcasting to fail. You may exclude specific event types from broadcasting using the `WithoutBroadcasting` attribute:
+Some broadcasting platforms limit WebSocket messages to around 10KB. Data-heavy stream events, like large tool results, can exceed this limit and cause broadcasting to fail. You may exclude specific event types from broadcasting using the `WithoutBroadcasting` attribute:
 
 ```php
 <?php
@@ -657,7 +657,7 @@ use Laravel\Ai\Promptable;
 use Laravel\Ai\Streaming\Events\ToolCall;
 use Laravel\Ai\Streaming\Events\ToolResult;
 
-#[WithoutBroadcasting(ToolResult::class, ToolCall::class)]
+#[WithoutBroadcasting(ToolCall::class, ToolResult::class)]
 class SearchAgent implements Agent, HasTools
 {
     use Promptable;
@@ -922,7 +922,7 @@ Provider tools can be returned by your agent's `tools` method.
 
 The `WebSearch` provider tool allows agents to search the web for real-time information. This is useful for answering questions about current events, recent data, or topics that may have changed since the model's training cutoff.
 
-**Supported Providers:** Anthropic, OpenAI, Gemini, OpenRouter
+**Supported providers:** Anthropic, OpenAI, Gemini, OpenRouter
 
 ```php
 use Laravel\Ai\Providers\Tools\WebSearch;
@@ -1817,7 +1817,7 @@ To scope options per provider, pass a closure that receives the current provider
 use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Files\Document;
 
-$response = Document::fromPath('/home/laravel/knowledge.txt')
+$response = Document::fromPath('/home/laravel/training.jsonl')
     ->withProviderOptions(fn (Lab|string $provider) => match ($provider) {
         Lab::OpenAI => ['purpose' => 'fine-tune'],
         default => [],
