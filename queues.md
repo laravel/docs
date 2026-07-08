@@ -1793,11 +1793,8 @@ In this example, the `numprocs` directive will instruct Supervisor to run eight 
 Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
 ```shell
-sudo supervisorctl reread
-
-sudo supervisorctl update
-
-sudo supervisorctl start "laravel-worker:*"
+sudo systemctl enable supervisor
+sudo systemctl start supervisor
 ```
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
