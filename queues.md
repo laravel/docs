@@ -419,11 +419,8 @@ In this example, the `numprocs` directive will instruct Supervisor to run 8 `que
 
 Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
 
-    sudo supervisorctl reread
-
-    sudo supervisorctl update
-
-    sudo supervisorctl start laravel-worker:*
+    sudo systemctl enable supervisor
+sudo systemctl start supervisor
 
 For more information on configuring and using Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html). Alternatively, you may use [Laravel Forge](https://forge.laravel.com) to automatically configure and manage your Supervisor configuration from a convenient web interface.
 
