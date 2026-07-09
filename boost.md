@@ -9,6 +9,9 @@
     - [Manually Registering the MCP Server](#manually-registering-the-mcp-server)
 - [AI Guidelines](#ai-guidelines)
     - [Available AI Guidelines](#available-ai-guidelines)
+    - [Project Rules](#project-rules)
+        - [Recording Rules](#recording-rules)
+        - [Reading Rules](#reading-rules)
     - [Adding Custom AI Guidelines](#adding-custom-ai-guidelines)
     - [Overriding Boost AI Guidelines](#overriding-boost-ai-guidelines)
     - [Third-Party Package AI Guidelines](#third-party-package-ai-guidelines)
@@ -139,6 +142,7 @@ Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools
 | Get Absolute URL     | Convert relative path URIs to absolute so agents generate valid URLs                                        |
 | Last Error           | Read the last error from the application's log files                                                        |
 | Read Log Entries     | Read the last N log entries                                                                                 |
+| Record Rule          | Record a committed project rule to `.ai/rules/` when project rules are enabled                            |
 | Search Docs          | Query the Laravel hosted documentation API service to retrieve documentation based on installed packages    |
 
 </div>
@@ -204,6 +208,52 @@ Laravel Boost includes AI guidelines for the following packages and frameworks. 
 </div>
 
 > **Note:** To keep your AI guidelines up-to-date, see the [Keeping Boost Resources Updated](#keeping-boost-resources-updated) section.
+
+<a name="project-rules"></a>
+### Project Rules
+
+Sometimes you need to share project-specific conventions with every agent, but they are too narrow to belong in the main `AGENTS.md` or `CLAUDE.md` guidelines. Project rules let you capture these decisions as committed Markdown files in `.ai/rules/`.
+
+Because the rules live in version control, they are shared across the team, reviewed in pull requests, and available to every AI agent that works on the project.
+
+<a name="recording-rules"></a>
+#### Recording Rules
+
+You can record a project rule using the `record-rule` MCP tool:
+
+```text
+record-rule(
+  glob: "app/Http/Controllers/**",
+  title: "Extend BaseController",
+  note: "New controllers must extend App\\Http\\Controllers\\BaseController."
+)
+```
+
+The tool appends the rule to a Markdown file under `.ai/rules/`, grouped by the area described by the glob. Rule files use a `paths:` frontmatter block so agents know which files they apply to:
+
+```markdown
+---
+paths:
+  - "app/Http/Controllers/**"
+---
+
+# Controllers
+
+## Extend BaseController
+New controllers must extend App\Http\Controllers\BaseController.
+```
+
+The tool also regenerates `.ai/rules/index.md`, which maps globs to rule files. The `index.md` file is reserved by Boost and cannot be used as a rule file itself.
+
+> [!NOTE]
+> Project rules are intended for durable, team-wide decisions and constraints. Do not store secrets, transient state, or personal notes in rule files.
+
+<a name="reading-rules"></a>
+#### Reading Rules
+
+When project rules are enabled, Boost instructs agents to consult `.ai/rules/` before planning or editing code. Agents should open `.ai/rules/index.md`, read every rule file whose `paths:` glob covers the files in scope, and search `.ai/rules/` to catch rules that path matching alone might miss.
+
+You may disable project rules by setting `BOOST_RULES_ENABLED=false` in your application's `.env` file.
 
 <a name="adding-custom-ai-guidelines"></a>
 ### Adding Custom AI Guidelines
