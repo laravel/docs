@@ -1250,16 +1250,6 @@ $singular = Str::plural('child', 1);
 // child
 ```
 
-The `prependCount` argument may be provided to prefix the pluralized string with the formatted `$count`:
-
-```php
-use Illuminate\Support\Str;
-
-$label = Str::plural('car', 1000, prependCount: true);
-
-// 1,000 cars
-```
-
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
