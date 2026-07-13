@@ -1719,6 +1719,9 @@ Sometimes, IO blocking processes such as sockets or outgoing HTTP connections ma
 > [!WARNING]
 > The [PCNTL](https://www.php.net/manual/en/book.pcntl.php) PHP extension must be installed in order to specify job timeouts. In addition, a job's "timeout" value should always be less than its ["retry after"](#job-expiration) value. Otherwise, the job may be re-attempted before it has actually finished executing or timed out.
 
+> [!WARNING]
+> The `--timeout` option has no effect when the `queue:work` command is invoked with the `--once` option. In this mode, the worker processes a single job and exits without registering the internal timeout handler used in daemon mode.
+
 <a name="failing-on-timeout"></a>
 #### Failing on Timeout
 
