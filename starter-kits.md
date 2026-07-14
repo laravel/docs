@@ -7,6 +7,7 @@
     - [Svelte](#svelte)
     - [Vue](#vue)
     - [Livewire](#livewire)
+    - [API](#api)
 - [Starter Kit Customization](#starter-kit-customization)
     - [React](#react-customization)
     - [Svelte](#svelte-customization)
@@ -17,6 +18,10 @@
     - [Customizing User Creation and Password Reset](#customizing-actions)
     - [Two-Factor Authentication](#two-factor-authentication)
     - [Rate Limiting](#rate-limiting)
+- [API Starter Kit](#api-starter-kit)
+    - [API Authentication](#api-authentication)
+    - [API Versioning](#api-versioning)
+    - [API Documentation](#api-documentation)
 - [Teams](#teams)
 - [WorkOS AuthKit Authentication](#workos)
 - [Inertia SSR](#inertia-ssr)
@@ -26,7 +31,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users. The starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to provide authentication.
+To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users. The React, Svelte, Vue, and Livewire starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to provide authentication, while the [API starter kit](#api) uses [Laravel Sanctum](/docs/{{version}}/sanctum).
 
 While you are welcome to use these starter kits, they are not required. You are free to build your own application from the ground up by simply installing a fresh copy of Laravel. Either way, we know you will build something great!
 
@@ -54,6 +59,9 @@ composer run dev
 ```
 
 Once you have started the Laravel development server, your application will be accessible in your web browser at [http://localhost:8000](http://localhost:8000).
+
+> [!NOTE]
+> The [API starter kit](#api) does not include a frontend, so there are no NPM dependencies to install. After creating your application, you may simply run `composer run dev`.
 
 <a name="available-starter-kits"></a>
 ## Available Starter Kits
@@ -93,6 +101,15 @@ Our Livewire starter kit provides the perfect starting point for building Larave
 Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React, Svelte, and Vue.
 
 The Livewire starter kit utilizes Livewire, Tailwind, and the [Flux UI](https://fluxui.dev) component library.
+
+<a name="api"></a>
+### API
+
+Our API starter kit provides a headless, API-only starting point for building Laravel applications that power mobile applications, single-page applications, or any other external client.
+
+The API starter kit is configured as a stateless API. Clients authenticate using bearer tokens issued by [Laravel Sanctum](/docs/{{version}}/sanctum), and no session cookies or CSRF protection are used. Out of the box, the kit includes endpoints for registration, login, token refresh, email verification, profile management, password updates, and account deletion, as well as an interactive API reference powered by [Scalar](https://scalar.com) and [Scramble](https://scramble.dedoc.co).
+
+To learn more about the features included with this starter kit, check out the [API starter kit documentation](#api-starter-kit).
 
 <a name="starter-kit-customization"></a>
 ## Starter Kit Customization
@@ -350,7 +367,9 @@ To change your authentication layout, modify the layout that is used by your app
 <a name="authentication"></a>
 ## Authentication
 
-All starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to handle authentication. Fortify provides routes, controllers, and logic for login, registration, password reset, email verification, and more.
+The React, Svelte, Vue, and Livewire starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to handle authentication. Fortify provides routes, controllers, and logic for login, registration, password reset, email verification, and more.
+
+The API starter kit does not use Fortify. Instead, it provides its own token-based authentication endpoints powered by [Laravel Sanctum](/docs/{{version}}/sanctum). To learn more, check out the documentation on [API authentication](#api-authentication).
 
 Fortify automatically registers the following authentication routes based on the features that are enabled in your application's `config/fortify.php` configuration file:
 
@@ -459,16 +478,127 @@ RateLimiter::for('login', function ($request) {
 });
 ```
 
+<a name="api-starter-kit"></a>
+## API Starter Kit
+
+The API starter kit provides a headless starting point for building APIs that power mobile applications, single-page applications, or any other external client. As with all of our starter kits, all of the code exists within your application to allow for full customization.
+
+The starter kit registers its routes in your application's `routes/api.php` file. Unlike a typical Laravel application, these routes are registered without an `/api` prefix, so endpoints are served from your application's root path. In addition, the application is configured to prefer JSON responses and includes a health check endpoint at `/`.
+
+<a name="api-authentication"></a>
+### API Authentication
+
+The API starter kit uses [Laravel Sanctum](/docs/{{version}}/sanctum) to issue personal access tokens. It is configured as a stateless API: clients authenticate with bearer tokens and no session cookies or CSRF protection are used.
+
+The starter kit includes the following endpoints:
+
+<div class="overflow-auto">
+
+| Route                              | Method   | Description                                       |
+| ---------------------------------- | -------- | ------------------------------------------------- |
+| `/`                                | `GET`    | Health check                                      |
+| `/register`                        | `POST`   | Create a new user and issue an API token          |
+| `/login`                           | `POST`   | Authenticate a user and issue an API token        |
+| `/logout`                          | `POST`   | Revoke the current API token                      |
+| `/token/refresh`                   | `POST`   | Revoke the current API token and issue a new one  |
+| `/me`                              | `GET`    | Retrieve the authenticated user                   |
+| `/user`                            | `PATCH`  | Update the authenticated user's profile           |
+| `/user`                            | `DELETE` | Delete the authenticated user's account           |
+| `/user/password`                   | `PATCH`  | Update the authenticated user's password          |
+| `/email/verify/{id}/{hash}`        | `GET`    | Verify an email address using a signed URL        |
+| `/email/verification-notification` | `POST`   | Resend the verification email                     |
+
+</div>
+
+To authenticate, clients send their credentials to the `/login` endpoint. Both the `/login` and `/register` endpoints accept an optional `device_name` field, which is used to name the issued token:
+
+```shell
+curl -X POST http://localhost:8000/login \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"email": "taylor@laravel.com", "password": "secret-password", "device_name": "iPhone 17"}'
+```
+
+The endpoint responds with a personal access token, which the client should include in the `Authorization` header of subsequent requests:
+
+```shell
+curl http://localhost:8000/me \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer <token>"
+```
+
+Issued tokens expire after 24 hours by default. You may adjust the token lifetime via the `expiration` option in your application's `config/sanctum.php` configuration file. Before a token expires, clients may exchange it for a fresh token using the `/token/refresh` endpoint, which revokes the current token and issues a new one.
+
+To protect against brute-force attacks, the registration and login endpoints are rate limited to five attempts per minute.
+
+The endpoints for updating passwords and deleting accounts are protected by the `verified` middleware. Email verification is only enforced once your application's `App\Models\User` model implements the `MustVerifyEmail` interface. To learn more, check out the [email verification FAQ](#faq-enable-email-verification).
+
+<a name="api-versioning"></a>
+### API Versioning
+
+The API starter kit's routes are unversioned by default; however, clients may request a specific representation version by including the `X-API-Version` header in their requests:
+
+```shell
+curl http://localhost:8000/me \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer <token>" \
+    -H "X-API-Version: v1"
+```
+
+Within your controllers, resources, or response objects, you may use the `App\Enums\ApiVersion` enum to determine which version the client requested. Requests without an explicit `X-API-Version` header resolve to `v1`:
+
+```php
+use App\Enums\ApiVersion;
+
+$version = ApiVersion::requested();
+```
+
+Requests for unsupported versions automatically receive a `406 Not Acceptable` JSON response. When you are ready to introduce a new version of your API, you may add additional cases to the `ApiVersion` enum:
+
+```php
+enum ApiVersion: string
+{
+    case V1 = 'v1';
+    case V2 = 'v2'; // [tl! add]
+}
+```
+
+<a name="api-documentation"></a>
+### API Documentation
+
+The API starter kit includes an interactive API reference powered by [Scalar](https://scalar.com). The underlying OpenAPI 3.1 specification is generated on demand by [Scramble](https://scramble.dedoc.co), which inspects your application's routes, form requests, and API resources, ensuring the documentation always reflects your current codebase.
+
+To preview the documentation, start the development server:
+
+```shell
+composer run dev
+```
+
+Then, visit [http://localhost:8000/docs](http://localhost:8000/docs) in your browser. The "Test Request" panel allows you to invoke your endpoints directly from the API reference.
+
+By default, the documentation is only accessible in the `local` environment. You may adjust the `viewApiDocs` gate defined in your application's `app/Providers/ScrambleServiceProvider.php` file to widen access, such as restricting the documentation to specific users in production:
+
+```php
+Gate::define(
+    'viewApiDocs',
+    fn (?Authenticatable $user = null): bool => $user?->isAdmin() ?? false,
+);
+```
+
+You may customize the generated documentation, including the exposed routes, server URLs, and metadata, via your application's `config/scramble.php` configuration file. Since Scramble generates the OpenAPI specification on each request by default, you may cache the generated specification in production using the `scramble:cache` Artisan command and invalidate it after code changes using `scramble:clear`.
+
 <a name="teams"></a>
 ## Teams
 
-The React, Svelte, Vue, and Livewire starter kits may also be generated with team support. When the teams feature is enabled, each user belongs to one or more teams and has a current team. During registration, new users are automatically given a personal team. The starter kits also include team management screens for creating teams, switching between teams, inviting members, and updating team details.
+All of the starter kits may also be generated with team support. When the teams feature is enabled, each user belongs to one or more teams and has a current team. During registration, new users are automatically given a personal team. The React, Svelte, Vue, and Livewire starter kits also include team management screens for creating teams, switching between teams, inviting members, and updating team details.
 
 When a route is scoped to the current team, the current team's slug is included in the URL. For example, the dashboard route becomes `/{current_team}/dashboard`, while team management pages use routes such as `settings/teams/{team}`. When using the `{current_team}` and `{team}` route parameters, the starter kits automatically ensure that the authenticated user belongs to the requested team before allowing access to the route.
 
 To make generating team-aware URLs more convenient, the starter kits register URL defaults for the authenticated user's current team. This allows calls to helpers such as `route('dashboard')` to automatically include the current team's slug. When a user signs in, registers, or switches teams, the starter kits update the current team and refresh these URL defaults so generated links continue to use the correct team context.
 
 When creating or renaming a team, the starter kits also prevent users from choosing reserved names that could produce unsafe or conflicting route segments. For example, names that would collide with route prefixes such as `settings`, `login`, or `dashboard` may not be used.
+
+When using the [API starter kit](#api-starter-kit), team support is provided through a set of `/teams` endpoints for creating, updating, and deleting teams, managing members, and sending, accepting, or declining team invitations. Since the API starter kit does not include a frontend, team invitation emails contain a login link that points to your application's user interface. You may configure this link using the `UI_URL` and `UI_LOGIN_PATH` environment variables in your application's `.env` file.
 
 <a name="workos"></a>
 ## WorkOS AuthKit Authentication
