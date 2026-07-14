@@ -753,6 +753,14 @@ if ($request->hasFile('photo')) {
 }
 ```
 
+If the uploaded file is an image that you need to manipulate before storing, you may use the `image` method to retrieve an `Illuminate\Image\Image` instance, or `null` if the file is not present:
+
+```php
+$image = $request->image('photo');
+```
+
+For more information on manipulating images, please consult the complete [image manipulation documentation](/docs/{{version}}/images).
+
 <a name="validating-successful-uploads"></a>
 #### Validating Successful Uploads
 

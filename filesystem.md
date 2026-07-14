@@ -20,6 +20,7 @@
     - [Automatic Streaming](#automatic-streaming)
     - [File Uploads](#file-uploads)
     - [File Visibility](#file-visibility)
+    - [Image Manipulation](#image-manipulation)
 - [Deleting Files](#deleting-files)
 - [Directories](#directories)
 - [Testing](#testing)
@@ -666,6 +667,24 @@ $path = $request->file('avatar')->storePubliclyAs(
     $request->user()->id,
     's3'
 );
+```
+
+<a name="image-manipulation"></a>
+### Image Manipulation
+
+If you need to resize, crop, or convert an uploaded image before storing it, you may use Laravel's [image manipulation features](/docs/{{version}}/images):
+
+```php
+$path = $request->image('avatar')
+    ->cover(400, 400)
+    ->toWebp()
+    ->storePublicly('avatars', 'public');
+```
+
+You may also create an image instance from a file already stored on one of your filesystem disks:
+
+```php
+$image = Storage::disk('public')->image('avatars/photo.jpg');
 ```
 
 <a name="local-files-and-visibility"></a>
