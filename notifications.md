@@ -1843,7 +1843,7 @@ Notification::assertSentTo(
 );
 ```
 
-<a name="on-demand-notifications"></a>
+<a name="testing-on-demand-notifications"></a>
 #### On-Demand Notifications
 
 If the code you are testing sends [on-demand notifications](#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:
