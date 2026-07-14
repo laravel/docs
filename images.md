@@ -35,7 +35,7 @@ $path = Image::fromStorage('avatars/photo.jpg', 'public')
 ```
 
 > [!WARNING]
-> Image manipulation can be CPU and memory intensive. Consider performing large image processing workloads on a [queued job](/docs/{{version}}/queues) instead of during the HTTP request that receives the upload.
+> Image manipulation can be CPU and memory-intensive. Consider performing large image processing workloads on a [queued job](/docs/{{version}}/queues) instead of during the HTTP request that receives the upload.
 
 <a name="installation"></a>
 ## Installation
