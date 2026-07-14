@@ -222,6 +222,34 @@ class UserController
 }
 ```
 
+To exclude middleware from a controller or individual controller methods, use the `WithoutMiddleware` attribute. You may use the `only` and `except` arguments to limit a class-level attribute to particular controller methods:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Middleware\EnsureTokenIsValid;
+use Illuminate\Routing\Attributes\Controllers\WithoutMiddleware;
+
+#[WithoutMiddleware('subscribed', except: ['index'])]
+class UserController
+{
+    #[WithoutMiddleware(EnsureTokenIsValid::class)]
+    public function index()
+    {
+        // ...
+    }
+
+    public function show()
+    {
+        // ...
+    }
+}
+```
+
+Class-level `WithoutMiddleware` attributes are inherited by child controllers. The attribute can only remove route middleware and does not apply to [global middleware](/docs/{{version}}/middleware#global-middleware).
+
 <a name="authorization-attributes"></a>
 ### Authorization Attributes
 
