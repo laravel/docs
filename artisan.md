@@ -21,6 +21,9 @@
 - [Programmatically Executing Commands](#programmatically-executing-commands)
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
 - [Signal Handling](#signal-handling)
+- [The Dev Command](#the-dev-command)
+    - [Customizing Dev Processes](#customizing-dev-processes)
+    - [Filtering Dev Processes](#filtering-dev-processes)
 - [Stub Customization](#stub-customization)
 - [Events](#events)
 
@@ -909,6 +912,93 @@ $this->trap([SIGTERM, SIGQUIT], function (int $signal) {
 
     dump($signal); // SIGTERM / SIGQUIT
 });
+```
+
+<a name="the-dev-command"></a>
+## The Dev Command
+
+The `dev` Artisan command starts all of the processes needed for local development in a single terminal window. By default, it concurrently runs the PHP development server, a queue worker, log tailing via [Pail](/docs/{{version}}/logging#tailing-log-messages-using-pail), and Vite asset compilation:
+
+```shell
+php artisan dev
+```
+
+Under the hood, the `dev` command uses the `concurrently` npm package to manage the processes. Each process is labeled and color-coded in your terminal output so you can easily distinguish between them. If any process fails, all other processes will be stopped automatically.
+
+The default processes are:
+
+| Name | Command |
+| --- | --- |
+| `server` | `php artisan serve --host=localhost` |
+| `queue` | `php artisan queue:listen --tries=1 --timeout=0` |
+| `logs` | `php artisan pail --timeout=0` |
+| `vite` | `npm run dev` |
+
+> [!NOTE]
+> The `vite` process automatically detects your Node package manager (npm, pnpm, Yarn, or Bun) and uses the appropriate run command.
+
+<a name="customizing-dev-processes"></a>
+### Customizing Dev Processes
+
+You may customize the processes that the `dev` command runs by using the `DevCommands` class, typically within the `boot` method of your application's `AppServiceProvider`. The `register` method accepts a command string and an optional name:
+
+```php
+use Illuminate\Foundation\DevCommands;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    DevCommands::register('some-command --flag', 'my-process');
+}
+```
+
+When registering an Artisan command, you may use the `artisan` method which automatically prefixes the command with `php artisan`:
+
+```php
+DevCommands::artisan('horizon', 'horizon');
+```
+
+Likewise, the `node` method prefixes the command with your detected package manager's run command (e.g. `npm run`), and the `nodeExec` method prefixes the command with the package manager's exec command (e.g. `npx`):
+
+```php
+DevCommands::node('storybook', 'storybook');
+
+DevCommands::nodeExec('tailwindcss -i resources/css/app.css -o public/css/app.css --watch', 'tailwind');
+```
+
+If you register a process with the same name as a default process, your process will replace the default. For example, you may customize the server process to use a different port:
+
+```php
+DevCommands::artisan('serve --host=localhost --port=9000', 'server');
+```
+
+You may also customize the color of a process label in your terminal. The available color methods are `blue`, `purple`, `pink`, `orange`, `green`, and `yellow`. You may also pass a custom hex color to the `color` method:
+
+```php
+DevCommands::register('my-command', 'my-process')->green();
+
+DevCommands::register('my-command', 'my-process')->color('#ff6347');
+```
+
+To see all registered dev processes without starting them, use the `dev:list` command:
+
+```shell
+php artisan dev:list
+```
+
+<a name="filtering-dev-processes"></a>
+### Filtering Dev Processes
+
+You may instruct the `dev` command to only run specific processes when it is invoked using the `only` method. Similarly, you may exclude specific processes using the `except` method:
+
+```php
+// Only run the server and vite processes...
+DevCommands::only('server', 'vite');
+
+// Run all processes except the queue worker...
+DevCommands::except('queue');
 ```
 
 <a name="stub-customization"></a>
