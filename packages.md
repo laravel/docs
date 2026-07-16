@@ -1,6 +1,7 @@
 # Package Development
 
 - [Introduction](#introduction)
+    - [Creating a Package](#creating-a-package)
     - [A Note on Facades](#a-note-on-facades)
 - [Package Discovery](#package-discovery)
 - [Service Providers](#service-providers)
@@ -26,6 +27,17 @@ Packages are the primary way of adding functionality to Laravel. Packages might 
 There are different types of packages. Some packages are stand-alone, meaning they work with any PHP framework. Carbon and Pest are examples of stand-alone packages. Any of these packages may be used with Laravel by requiring them in your `composer.json` file.
 
 On the other hand, other packages are specifically intended for use with Laravel. These packages may have routes, controllers, views, and configuration specifically intended to enhance a Laravel application. This guide primarily covers the development of those packages that are Laravel specific.
+
+<a name="creating-a-package"></a>
+### Creating a Package
+
+The easiest way to start building a new Laravel package is the official [Laravel package skeleton](https://github.com/laravel/package-skeleton). The skeleton provides everything you need to build a Laravel package, including a service provider, testing via Pest, static analysis via Larastan, code formatting via Pint, and a workbench application for end-to-end package development. You can create a new package using the `package` command of the [Laravel installer CLI](/docs/{{version}}/installation#creating-a-laravel-project):
+
+```shell
+laravel package my-package
+```
+
+An interactive configuration script will personalize the skeleton for your package, setting up your namespace, service provider, and only the features you need, such as configuration files, routes, views, translations, migrations, assets, commands, and a facade.
 
 <a name="a-note-on-facades"></a>
 ### A Note on Facades
