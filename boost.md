@@ -149,8 +149,10 @@ Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools
 Sometimes you may need to manually register the Laravel Boost MCP server with your editor of choice. You should register the MCP server using the following details:
 
 <table>
+<tbody>
 <tr><td><strong>Command</strong></td><td><code>php</code></td></tr>
 <tr><td><strong>Args</strong></td><td><code>artisan boost:mcp</code></td></tr>
+<tbody>
 </table>
 
 JSON example:
