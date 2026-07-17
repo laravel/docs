@@ -1042,6 +1042,22 @@ class OrderShipped extends Mailable
 }
 ```
 
+Or you may specify the queue name directly within the constructor of the mailable class:
+
+```php
+use Illuminate\Queue\Attributes\Connection;
+use Illuminate\Queue\Attributes\Queue;
+
+class OrderShipped extends Mailable
+{
+    public function __construct()
+    {
+        $this->onQueue('emails');
+    }
+}
+```
+
+
 <a name="queueing-by-default"></a>
 #### Queueing by Default
 
