@@ -23,6 +23,7 @@
     - [Middleware](#middleware)
     - [Anonymous Agents](#anonymous-agents)
     - [Agent Configuration](#agent-configuration)
+    - [Tool Choice](#tool-choice)
     - [Provider Options](#provider-options)
 - [Images](#images)
 - [Audio (TTS)](#audio)
@@ -1387,6 +1388,7 @@ You may configure text generation options for an agent using PHP attributes. The
 - `Temperature`: The sampling temperature to use for generation (0.0 to 1.0).
 - `Timeout`: The HTTP timeout in seconds for agent requests (default: 60).
 - `TopP`: The nucleus sampling probability to use for generation (0.0 to 1.0).
+- `ToolChoice`: Controls whether and which tool the model should call.
 - `UseCheapestModel`: Use the provider's cheapest text model for cost optimization.
 - `UseSmartestModel`: Use the provider's most capable text model for complex tasks.
 
@@ -1402,6 +1404,7 @@ use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Attributes\TopP;
+use Laravel\Ai\ToolChoice;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
@@ -1413,6 +1416,7 @@ use Laravel\Ai\Promptable;
 #[Temperature(0.7)]
 #[Timeout(120)]
 #[TopP(0.9)]
+#[ToolChoice(ToolChoice::auto)]
 class SalesCoach implements Agent
 {
     use Promptable;
@@ -1448,6 +1452,60 @@ class ComplexReasoner implements Agent
 
 > [!NOTE]
 > The underlying model selected by `UseCheapestModel` and `UseSmartestModel` may change between releases of the Laravel AI SDK as providers release new models. Switching models can introduce behavioral changes, deprecated parameters, and significant cost differences. If you need a stable, predictable model and pricing, specify the model explicitly using the `Model` attribute.
+
+<a name="tool-choice"></a>
+#### Tool Choice
+
+If your agent has tools, you may use the `ToolChoice` attribute to control how the model uses them.
+
+**Supported providers:** OpenAI, Anthropic, Gemini
+
+```php
+<?php
+
+namespace App\Ai\Agents;
+
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\HasTools;
+use Laravel\Ai\Promptable;
+use Laravel\Ai\ToolChoice;
+
+#[ToolChoice(ToolChoice::auto)]
+class CustomerSupportAgent implements Agent, HasTools
+{
+    use Promptable;
+
+    // ...
+}
+```
+
+The `auto` mode lets the model decide whether to call a tool, while `none` prevents tool calls and `required` requires the model to call a tool:
+
+```php
+#[ToolChoice(ToolChoice::none)]
+class CustomerSupportAgent implements Agent, HasTools
+{
+    // ...
+}
+
+#[ToolChoice(ToolChoice::required)]
+class CustomerSupportAgent implements Agent, HasTools
+{
+    // ...
+}
+```
+
+You may also require the model to call a specific tool by providing the tool's name:
+
+```php
+#[ToolChoice(ToolChoice::tool, 'lookup_order')]
+class CustomerSupportAgent implements Agent, HasTools
+{
+    // ...
+}
+```
+
+When a specific tool is required, the requirement only applies to the first generation step. After that tool has been called, the model may continue normally.
 
 <a name="provider-options"></a>
 ### Provider Options
