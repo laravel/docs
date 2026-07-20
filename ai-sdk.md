@@ -366,44 +366,58 @@ class SalesCoach implements Agent, Conversational
 
 When using the `RemembersConversations` trait, do not manually define a `messages` method in your agent class. If a `messages` method is present, it will take precedence over the trait's implementation and conversation history will not be loaded from the database.
 
-To start a new conversation for a user, call the `forUser` method before prompting:
+To start a new conversation for a participant, call the `forParticipant` method before prompting. The participant is typically an Eloquent model that represents the person or resource having the conversation:
 
 ```php
-$response = (new SalesCoach)->forUser($user)->prompt('Hello!');
+$response = (new SalesCoach)->forParticipant($user)->prompt('Hello!');
 
 $conversationId = $response->conversationId;
 ```
 
-The conversation ID is returned on the response and can be stored for future reference. If you would like to retrieve all of a user's conversations using Eloquent, you may add the `HasConversations` trait to your user model:
+If the participant is a user, you may use the `forUser` method as a convenience alias:
+
+```php
+$response = (new SalesCoach)->forUser($user)->prompt('Hello!');
+```
+
+The conversation ID is returned on the response and can be stored for future reference. If you would like to retrieve all of a participant's conversations using Eloquent, you may add the `HasConversations` trait to the participant model:
 
 ```php
 <?php
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Ai\Concerns\HasConversations;
 
-class User extends Authenticatable
+class Customer extends Model
 {
     use HasConversations;
 }
 ```
 
-Once the trait has been added to your model, you may retrieve and query the user's conversations via the `conversations` relationship:
+Once the trait has been added to your model, you may retrieve and query the participant's conversations via the `conversations` relationship:
 
 ```php
-$conversations = $user->conversations()
+$conversations = $customer->conversations()
     ->latest('updated_at')
     ->paginate(20);
 ```
 
-To continue an existing conversation, use the `continue` method:
+To continue an existing conversation, use the `continue` method and provide the participant using the `as` argument:
 
 ```php
 $response = (new SalesCoach)
-    ->continue($conversationId, as: $user)
+    ->continue($conversationId, as: $customer)
     ->prompt('Tell me more about that.');
+```
+
+If you would like to continue the participant's most recent conversation, use the `continueLastConversation` method:
+
+```php
+$response = (new SalesCoach)
+    ->continueLastConversation($customer)
+    ->prompt('What should we work on next?');
 ```
 
 When using the `RemembersConversations` trait, previous messages are automatically loaded and included in the conversation context when prompting. New messages (both user and assistant) are automatically stored after each interaction.
