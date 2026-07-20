@@ -30,6 +30,7 @@
 - [Transcription (STT)](#transcription)
 - [Text Summarization](#text-summarization)
 - [Embeddings](#embeddings)
+    - [Multimodal Embeddings](#multimodal-embeddings)
     - [Querying Embeddings](#querying-embeddings)
     - [Caching Embeddings](#caching-embeddings)
 - [Reranking](#reranking)
@@ -1835,6 +1836,41 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
     ->dimensions(1536)
     ->generate(Lab::OpenAI, 'text-embedding-3-small');
 ```
+
+<a name="multimodal-embeddings"></a>
+### Multimodal Embeddings
+
+In addition to strings, the `Embeddings::for` method accepts image, audio, document, and video inputs, allowing you to generate embeddings for non-text content. Multimodal embeddings are supported by the `gemini` and `voyageai` providers:
+
+```php
+use Laravel\Ai\Embeddings;
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Files\Image;
+use Laravel\Ai\Files\Video;
+
+$response = Embeddings::for([
+    'A vineyard at sunset.',
+    Image::fromStorage('vineyard.jpg'),
+    Video::fromPath('/home/laravel/tour.mp4'),
+])->generate(Lab::Gemini);
+```
+
+Each media type may be created from a local path, a filesystem disk, a remote URL, raw content, or an uploaded file, mirroring the [attachment](#attachments) file classes:
+
+```php
+use Laravel\Ai\Files\Audio;
+use Laravel\Ai\Files\Document;
+use Laravel\Ai\Files\Image;
+use Laravel\Ai\Files\Video;
+
+Image::fromPath('/home/laravel/photo.jpg');
+Audio::fromStorage('clip.mp3');
+Document::fromUrl('https://example.com/report.pdf');
+Video::fromUpload($request->file('video'));
+```
+
+> [!NOTE]
+> Individual providers only support a subset of media types, and some providers require that every input in a single request share the same media source type. Consult your provider's documentation to determine which multimodal models and inputs are available.
 
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
