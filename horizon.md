@@ -20,7 +20,6 @@
 - [Metrics](#metrics)
 - [Deleting Failed Jobs](#deleting-failed-jobs)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
-- [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
 
 <a name="introduction"></a>
 ## Introduction
@@ -59,6 +58,34 @@ After publishing Horizon's assets, its primary configuration file will be locate
 
 > [!WARNING]
 > Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
+
+<a name="content-security-policy-csp-nonce"></a>
+#### Content Security Policy (CSP) Nonce
+
+If you wish to use a [nonce attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) on the script and style tags used in Horizon views as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may use the `Horizon::cspNonce` method to specify the nonce to use. This method should typically be invoked within middleware so that a new nonce is assigned for each request:
+
+```php
+use Closure;
+use Illuminate\Http\Request;
+use Laravel\Horizon\Horizon;
+use Symfony\Component\HttpFoundation\Response;
+
+public function handle(Request $request, Closure $next): Response
+{
+    Horizon::cspNonce('csp-nonce');
+
+    return $next($request);
+}
+```
+
+You may add this middleware to the `middleware` option in your application's `config/horizon.php` configuration file:
+
+```php
+'middleware' => [
+    'web',
+    App\Http\Middleware\AddHorizonCspNonce::class,
+],
+```
 
 <a name="environments"></a>
 #### Environments
@@ -746,22 +773,4 @@ You may provide the `queue` option to delete jobs from a specific queue:
 
 ```shell
 php artisan horizon:clear --queue=emails
-```
-
-<a name="content-security-policy-csp-nonce"></a>
-## Content Security Policy (CSP) Nonce
-
-If you wish to use a [nonce attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) on the script and style tags used in Horizon views as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may use the `Horizon::cspNonce` method to specify the nonce to use. You may call this method from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:
-
-```php
-/**
- * Bootstrap any application services.
- */
-public function boot(): void
-{
-    parent::boot();
-
-    $nonce = app('csp-nonce'); // Assumes 'csp-nonce' binding is defined in a separate provider and resolves to a string, e.g. using spatie/laravel-csp
-    Horizon::cspNonce($nonce);
-}
 ```
