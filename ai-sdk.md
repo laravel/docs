@@ -1729,6 +1729,29 @@ $transcript = Transcription::fromStorage('meeting.mp3')
     ->generate();
 ```
 
+The `toEmbeddings` Stringable method accepts the same options via its `providerOptions` argument:
+
+```php
+$embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings(
+    providerOptions: ['input_type' => 'search_query'],
+);
+```
+
+[Provider tools](#provider-tools) support `withProviderOptions` as well, allowing you to pass options onto the tool's payload. A flat array applies to every provider, while a closure receives the provider currently being used:
+
+```php
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Providers\Tools\WebSearch;
+
+(new WebSearch)->withProviderOptions(['search_context_size' => 'high']);
+
+(new WebSearch)->withProviderOptions(fn (Lab|string $provider) => match ($provider) {
+    Lab::OpenAI => ['search_context_size' => 'high'],
+    Lab::Anthropic => ['blocked_domains' => ['spam.com']],
+    default => [],
+});
+```
+
 <a name="summarization"></a>
 ## Summarization
 
