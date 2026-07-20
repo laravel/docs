@@ -1402,6 +1402,22 @@ $flight = $flight->replicate([
 ]);
 ```
 
+If your model's underlying table contains [generated columns](/docs/{{version}}/migrations#column-modifiers), which are computed by the database itself using the `virtualAs` or `storedAs` schema modifiers, your database will reject insert statements that provide values for these columns. You may instruct Eloquent to always exclude these columns when replicating models by adding the `Generated` attribute to your model class:
+
+```php
+use Illuminate\Database\Eloquent\Attributes\Generated;
+use Illuminate\Database\Eloquent\Model;
+
+#[Generated(['total_price'])]
+class OrderItem extends Model
+{
+    // ...
+}
+```
+
+> [!NOTE]
+> Since your database computes the values of generated columns, a replicated model will not contain values for these columns until it has been saved and re-retrieved from the database, such as via the `refresh` method.
+
 <a name="query-scopes"></a>
 ## Query Scopes
 
