@@ -968,6 +968,27 @@ $user->getPrevious();
 */
 ```
 
+<a name="generated-columns"></a>
+#### Generated Columns
+
+If your model's underlying table contains [generated columns](/docs/{{version}}/migrations#column-modifiers), which are computed by the database itself using the `virtualAs` or `storedAs` schema modifiers, your database will reject insert and update statements that provide values for these columns. You may inform Eloquent about these columns by adding the `Generated` attribute to your model class:
+
+```php
+use Illuminate\Database\Eloquent\Attributes\Generated;
+use Illuminate\Database\Eloquent\Model;
+
+#[Generated(['total_price'])]
+class OrderItem extends Model
+{
+    // ...
+}
+```
+
+Eloquent will never include these columns in the insert and update statements it generates for the model, even if a value has been set on the model instance or retrieved from the database. They are also excluded when [replicating models](#replicating-models).
+
+> [!NOTE]
+> Since your database computes the values of generated columns, a newly saved model will not contain values for these columns until it has been re-retrieved from the database, such as via the `refresh` method.
+
 <a name="mass-assignment"></a>
 ### Mass Assignment
 
@@ -1402,21 +1423,7 @@ $flight = $flight->replicate([
 ]);
 ```
 
-If your model's underlying table contains [generated columns](/docs/{{version}}/migrations#column-modifiers), which are computed by the database itself using the `virtualAs` or `storedAs` schema modifiers, your database will reject insert statements that provide values for these columns. You may instruct Eloquent to always exclude these columns when replicating models by adding the `Generated` attribute to your model class:
-
-```php
-use Illuminate\Database\Eloquent\Attributes\Generated;
-use Illuminate\Database\Eloquent\Model;
-
-#[Generated(['total_price'])]
-class OrderItem extends Model
-{
-    // ...
-}
-```
-
-> [!NOTE]
-> Since your database computes the values of generated columns, a replicated model will not contain values for these columns until it has been saved and re-retrieved from the database, such as via the `refresh` method.
+Columns declared as [generated columns](#generated-columns) via the `Generated` attribute are also excluded when replicating a model, since only the database may provide their values.
 
 <a name="query-scopes"></a>
 ## Query Scopes
