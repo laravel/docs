@@ -1154,7 +1154,7 @@ To refine search results based on user location, use the `location` method:
 If the provider returns citations for web search results, you may access them via the response's `meta` property:
 
 ```php
-$response = (new ResearchAgent)->prompt('What changed in Laravel this week?');
+$response = (new ResearchAgent)->prompt('What happened in Laravel this week?');
 
 $citations = $response->meta->citations;
 ```
