@@ -82,6 +82,16 @@ You may define your AI provider credentials in your application's `config/ai.php
 
 ```ini
 ANTHROPIC_API_KEY=
+AWS_BEDROCK_REGION=
+AWS_BEARER_TOKEN_BEDROCK=
+AWS_USE_DEFAULT_CREDENTIALS=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_SESSION_TOKEN=
+AWS_BEDROCK_ASSUME_ROLE_ARN=
+AWS_BEDROCK_ASSUME_ROLE_SESSION_NAME=
+AWS_BEDROCK_ASSUME_ROLE_DURATION_SECONDS=
+AWS_BEDROCK_ASSUME_ROLE_EXTERNAL_ID=
 AZURE_OPENAI_API_KEY=
 COHERE_API_KEY=
 DEEPSEEK_API_KEY=
@@ -100,6 +110,26 @@ XAI_API_KEY=
 ```
 
 The default models used for text, images, audio, transcription, and embeddings may also be configured in your application's `config/ai.php` configuration file.
+
+When using Amazon Bedrock, you may authenticate using an AWS bearer token, explicit AWS credentials, or the default AWS credential provider. If your application needs to assume a role before making Bedrock requests, configure the provider's `assume_role` options:
+
+```php
+'bedrock' => [
+    'driver' => 'bedrock',
+    'region' => env('AWS_BEDROCK_REGION', 'us-east-1'),
+    'key' => env('AWS_BEARER_TOKEN_BEDROCK'),
+    'access_key_id' => env('AWS_ACCESS_KEY_ID'),
+    'secret_access_key' => env('AWS_SECRET_ACCESS_KEY'),
+    'session_token' => env('AWS_SESSION_TOKEN'),
+    'use_default_credential_provider' => env('AWS_USE_DEFAULT_CREDENTIALS', true),
+    'assume_role' => [
+        'arn' => env('AWS_BEDROCK_ASSUME_ROLE_ARN'),
+        'session_name' => env('AWS_BEDROCK_ASSUME_ROLE_SESSION_NAME'),
+        'duration_seconds' => env('AWS_BEDROCK_ASSUME_ROLE_DURATION_SECONDS'),
+        'external_id' => env('AWS_BEDROCK_ASSUME_ROLE_EXTERNAL_ID'),
+    ],
+],
+```
 
 <a name="custom-base-urls"></a>
 ### Custom Base URLs
@@ -577,6 +607,23 @@ $response = (new ImageAnalyzer)->prompt(
         Files\Image::fromPath('/home/laravel/photo.jpg') // Attach an image from a local path...
         $request->file('photo'), // Attach an uploaded file...
     ]
+);
+```
+
+When using Bedrock, the `S3Document` class may be used to reference a document stored in S3 without reading and sending the file contents from your application:
+
+```php
+use App\Ai\Agents\DocumentAnalyzer;
+use Laravel\Ai\Files\S3Document;
+
+$response = (new DocumentAnalyzer)->prompt(
+    'Summarize the attached report.',
+    attachments: [
+        new S3Document(
+            's3://company-reports/quarterly-report.pdf',
+            bucketOwner: '123456789012',
+        ),
+    ],
 );
 ```
 
