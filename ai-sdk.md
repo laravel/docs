@@ -132,6 +132,8 @@ When using Amazon Bedrock, you may authenticate using an AWS bearer token, expli
 ],
 ```
 
+Credentials are resolved in priority order: a bearer token, then AssumeRole, then static IAM credentials, then the SDK's default credential provider chain. When `assume_role.arn` is set, the role is assumed using your static or default AWS credentials as the source, and the resulting temporary credentials are refreshed automatically before they expire.
+
 <a name="custom-base-urls"></a>
 ### Custom Base URLs
 
