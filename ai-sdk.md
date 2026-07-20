@@ -1479,7 +1479,7 @@ $response = (new FileAssistant)
     ->forUser($user)
     ->prompt('Delete the old invoice.');
 
-if ($response->awaitingApproval()) {
+if ($response->hasPendingApprovals()) {
     foreach ($response->pendingApprovals as $approval) {
         // $approval->id
         // $approval->tool
@@ -1573,7 +1573,7 @@ Route::post('/chat/{conversation}', function (Request $request, Conversation $co
 
     return [
         'conversation_id' => $response->conversationId,
-        'status' => $response->awaitingApproval() ? 'awaiting_approval' : 'complete',
+        'status' => $response->hasPendingApprovals() ? 'awaiting_approval' : 'complete',
         'message' => $response->text,
         'approvals' => $response->pendingApprovals,
     ];
@@ -2293,7 +2293,7 @@ use Laravel\Ai\Approvals\PendingApproval;
 use Laravel\Ai\Responses\AgentResponse;
 
 FileAssistant::fake([
-    AgentResponse::fakeAwaitingApproval([
+    AgentResponse::fakeWithPendingApprovals([
         new PendingApproval(
             id: 'call_abc',
             tool: 'DeleteFile',
@@ -2305,7 +2305,7 @@ FileAssistant::fake([
 
 $response = (new FileAssistant)->prompt('Delete the invoice.');
 
-$response->awaitingApproval(); // true
+$response->hasPendingApprovals(); // true
 ```
 
 > **Note:** When `Agent::fake()` is invoked on an agent that returns structured output and fake output was not explicitly provided, Laravel will automatically generate fake data that matches your agent's defined output schema.
