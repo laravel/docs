@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
     - [Configuration](#configuration)
+        - [Bedrock](#bedrock)
     - [Custom Base URLs](#custom-base-urls)
     - [OpenAI-Compatible Providers](#openai-compatible-providers)
     - [Provider Support](#provider-support)
@@ -83,16 +84,6 @@ You may define your AI provider credentials in your application's `config/ai.php
 
 ```ini
 ANTHROPIC_API_KEY=
-AWS_BEDROCK_REGION=
-AWS_BEARER_TOKEN_BEDROCK=
-AWS_USE_DEFAULT_CREDENTIALS=
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_SESSION_TOKEN=
-AWS_BEDROCK_ASSUME_ROLE_ARN=
-AWS_BEDROCK_ASSUME_ROLE_SESSION_NAME=
-AWS_BEDROCK_ASSUME_ROLE_DURATION_SECONDS=
-AWS_BEDROCK_ASSUME_ROLE_EXTERNAL_ID=
 AZURE_OPENAI_API_KEY=
 COHERE_API_KEY=
 DEEPSEEK_API_KEY=
@@ -112,7 +103,23 @@ XAI_API_KEY=
 
 The default models used for text, images, audio, transcription, and embeddings may also be configured in your application's `config/ai.php` configuration file.
 
+<a name="bedrock"></a>
+#### Bedrock
+
 When using Amazon Bedrock, you may authenticate using an AWS bearer token, AWS credentials, or the default AWS credential provider. If your application needs to assume a role before making Bedrock requests, configure the provider's `assume_role` options:
+
+```ini
+AWS_BEDROCK_REGION=
+AWS_BEARER_TOKEN_BEDROCK=
+AWS_USE_DEFAULT_CREDENTIALS=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_SESSION_TOKEN=
+AWS_BEDROCK_ASSUME_ROLE_ARN=
+AWS_BEDROCK_ASSUME_ROLE_SESSION_NAME=
+AWS_BEDROCK_ASSUME_ROLE_DURATION_SECONDS=
+AWS_BEDROCK_ASSUME_ROLE_EXTERNAL_ID=
+```
 
 ```php
 'bedrock' => [
@@ -424,10 +431,10 @@ The conversation ID is returned on the response and can be stored for future ref
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Ai\Concerns\HasConversations;
 
-class Team extends Model
+class User extends Authenticatable
 {
     use HasConversations;
 }
@@ -436,7 +443,7 @@ class Team extends Model
 Once the trait has been added to your model, you may retrieve and query the participant's conversations via the `conversations` relationship:
 
 ```php
-$conversations = $team->conversations()
+$conversations = $user->conversations()
     ->latest('updated_at')
     ->paginate(20);
 
@@ -454,7 +461,7 @@ To continue an existing conversation, use the `continue` method and provide the 
 
 ```php
 $response = (new SalesCoach)
-    ->continue($conversationId, as: $team)
+    ->continue($conversationId, as: $user)
     ->prompt('Tell me more about that.');
 ```
 
@@ -468,7 +475,7 @@ If you would like to continue the participant's most recent conversation, use th
 
 ```php
 $response = (new SalesCoach)
-    ->continueLastConversation($team)
+    ->continueLastConversation($user)
     ->prompt('What should we work on next?');
 ```
 
@@ -1224,7 +1231,7 @@ To refine search results based on user location, use the `location` method:
 If the provider returns citations for web search results, you may access them via the response's `meta` property. When streaming, citations are emitted as `Citation` stream events as they arrive:
 
 ```php
-$response = (new ResearchAgent)->prompt('What happened in Laravel this week?');
+$response = (new ResearchAgent)->prompt('What new Laravel features were released this week?');
 
 $citations = $response->meta->citations;
 ```
