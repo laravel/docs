@@ -1615,7 +1615,7 @@ class CustomerSupportAgent implements Agent, HasTools
 }
 ```
 
-When a specific tool is required, the requirement only applies to the first generation step. After that tool has been called, the model may continue normally.
+When tool calls are forced — using either the `required` mode or a specific tool — the requirement only applies to the first generation step. After the first step, the model may respond normally.
 
 <a name="provider-options"></a>
 ### Provider Options
