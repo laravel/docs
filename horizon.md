@@ -60,6 +60,34 @@ After publishing Horizon's assets, its primary configuration file will be locate
 > [!WARNING]
 > Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
 
+<a name="content-security-policy-csp-nonce"></a>
+#### Content Security Policy (CSP) Nonce
+
+If you wish to use a [nonce attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) on the script and style tags used in Horizon views as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may use the `Horizon::cspNonce` method to specify the nonce to use. This method should typically be invoked within middleware so that a new nonce is assigned for each request:
+
+```php
+use Closure;
+use Illuminate\Http\Request;
+use Laravel\Horizon\Horizon;
+use Symfony\Component\HttpFoundation\Response;
+
+public function handle(Request $request, Closure $next): Response
+{
+    Horizon::cspNonce('csp-nonce');
+
+    return $next($request);
+}
+```
+
+You may add this middleware to the `middleware` option in your application's `config/horizon.php` configuration file:
+
+```php
+'middleware' => [
+    'web',
+    App\Http\Middleware\AddHorizonCspNonce::class,
+],
+```
+
 <a name="environments"></a>
 #### Environments
 
