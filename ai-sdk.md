@@ -1576,9 +1576,9 @@ class ComplexReasoner implements Agent
 <a name="tool-choice"></a>
 #### Tool Choice
 
-If your agent has tools, you may use the `ToolChoice` attribute to control how the model uses them.
+If your agent has tools, you may use the `ToolChoice` attribute to control how the model uses them. The tool choice is mapped to each provider's native "tool choice" request field.
 
-**Supported providers:** OpenAI, Anthropic, Gemini
+**Supported providers:** OpenAI, Anthropic, Gemini, xAI, Groq, DeepSeek, Mistral, OpenRouter, OpenAI Compatible
 
 ```php
 <?php
@@ -1625,7 +1625,26 @@ class CustomerSupportAgent implements Agent, HasTools
 }
 ```
 
+To determine the tool choice at runtime based on the agent's own state, define a `toolChoice` method on the agent. The method takes precedence over the attribute, and returning `null` lets the model decide:
+
+```php
+use Laravel\Ai\ToolChoice;
+
+/**
+ * Get the agent's tool choice.
+ */
+public function toolChoice(): ?ToolChoice
+{
+    return $this->readyToSave
+        ? ToolChoice::tool('save_payment')
+        : null;
+}
+```
+
 When tool calls are forced — using either the `required` mode or a specific tool — the requirement only applies to the first generation step. After the first step, the model may respond normally.
+
+> [!NOTE]
+> Anthropic cannot force tool use while extended thinking is enabled. Forcing a tool choice with thinking enabled throws an `InvalidArgumentException` instead of silently downgrading to `auto`.
 
 <a name="provider-options"></a>
 ### Provider Options
