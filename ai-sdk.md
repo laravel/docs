@@ -401,15 +401,15 @@ class SalesCoach implements Agent, Conversational
 
 When using the `RemembersConversations` trait, do not manually define a `messages` method in your agent class. If a `messages` method is present, it will take precedence over the trait's implementation and conversation history will not be loaded from the database.
 
-To start a new conversation for a participant, call the `forParticipant` method before prompting. The participant is typically an Eloquent model that represents the person or resource having the conversation:
+To start a new conversation for a participant, call the `forParticipant` method before prompting. The participant may be any Eloquent model — conversations are scoped to both the model's class and its key, so a `User` and a `Team` that share an ID will never collide:
 
 ```php
-$response = (new SalesCoach)->forParticipant($user)->prompt('Hello!');
+$response = (new SalesCoach)->forParticipant($team)->prompt('Hello!');
 
 $conversationId = $response->conversationId;
 ```
 
-If the participant is a user, you may use the `forUser` method as a convenience alias:
+Since a user is the most common participant, you may use the `forUser` method as a convenience alias:
 
 ```php
 $response = (new SalesCoach)->forUser($user)->prompt('Hello!');
@@ -425,33 +425,43 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Ai\Concerns\HasConversations;
 
-class Customer extends Model
+class Team extends Model
 {
     use HasConversations;
 }
 ```
 
-Once the trait has been added to your model, you may retrieve and query the participant's conversations via the `conversations` relationship:
+Once the trait has been added to your model, you may retrieve and query the participant's conversations via the `conversations` relationship. Likewise, a conversation exposes its owning model via the `participant` relationship:
 
 ```php
-$conversations = $customer->conversations()
+$conversations = $team->conversations()
     ->latest('updated_at')
     ->paginate(20);
+
+$conversation->participant; // The owning Team, User, etc...
 ```
+
+Since participants are stored using their morph class, you may wish to [enforce a morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types) so stored conversations survive model renames.
 
 To continue an existing conversation, use the `continue` method and provide the participant using the `as` argument:
 
 ```php
 $response = (new SalesCoach)
-    ->continue($conversationId, as: $customer)
+    ->continue($conversationId, as: $team)
     ->prompt('Tell me more about that.');
+```
+
+The `continue` method trusts the given conversation ID and does not verify ownership. Like route model binding, authorization belongs in your application — for example, by resolving the ID through the participant's own conversations:
+
+```php
+$conversationId = $team->conversations()->findOrFail($conversationId)->id;
 ```
 
 If you would like to continue the participant's most recent conversation, use the `continueLastConversation` method:
 
 ```php
 $response = (new SalesCoach)
-    ->continueLastConversation($customer)
+    ->continueLastConversation($team)
     ->prompt('What should we work on next?');
 ```
 
