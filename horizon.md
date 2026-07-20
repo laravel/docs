@@ -255,12 +255,12 @@ In addition to `tries`, `timeout`, and `backoff`, each supervisor accepts severa
 
 <div class="content-list" markdown="1">
 
-- `memory` defines the maximum amount of memory, in megabytes, that a single worker process may consume before it is restarted. Defaults to `128`.
-- `maxJobs` defines the number of jobs a worker should process before restarting. A value of `0` indicates that workers should not be restarted based on the number of jobs processed. Defaults to `0`.
-- `maxTime` defines the number of seconds a worker should run before restarting. A value of `0` indicates that workers should not be restarted based on time. Defaults to `0`.
-- `sleep` defines the number of seconds a worker should wait when no job is available before polling the queue for new jobs again. Defaults to `3`.
-- `rest` defines the number of seconds to pause between processing each job. Defaults to `0`.
-- `nice` defines the "niceness" (scheduling priority) of the worker processes. A higher value gives the process a lower priority. Defaults to `0`.
+- `memory` defines the maximum amount of memory, in megabytes, that a single worker process may consume before it is restarted. By default, this value is `128`.
+- `maxJobs` defines the number of jobs a worker should process before restarting. A value of `0` indicates that workers should not be restarted based on the number of jobs processed. By default, this value is `0`.
+- `maxTime` defines the number of seconds a worker should run before restarting. A value of `0` indicates that workers should not be restarted based on time. By default, this value is `0`.
+- `sleep` defines the number of seconds a worker should wait when no job is available before polling the queue for new jobs again. By default, this value is `3`.
+- `rest` defines the number of seconds to pause between processing each job. By default, this value is `0`.
+- `nice` defines the "niceness" (scheduling priority) of the worker processes. A higher value gives the process a lower priority. By default, this value is `0`.
 
 </div>
 
@@ -744,7 +744,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('horizon:snapshot')->everyFiveMinutes();
 ```
 
-You may configure how many of these snapshots are retained for display in the metrics graphs using the `metrics` configuration option within your application's `config/horizon.php` configuration file. The `trim_snapshots` option controls how many `job` and `queue` snapshots are kept:
+You may configure how many snapshots Horizon retains for its metrics graphs using the `metrics.trim_snapshots` option in your application's `config/horizon.php` configuration file. Because this option limits the number of snapshots rather than their age, the retention period depends on how frequently the `horizon:snapshot` command runs:
 
 ```php
 'metrics' => [
