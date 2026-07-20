@@ -28,6 +28,7 @@
 - [Audio (TTS)](#audio)
 - [Transcription (STT)](#transcription)
 - [Embeddings](#embeddings)
+    - [File Embeddings](#file-embeddings)
     - [Querying Embeddings](#querying-embeddings)
     - [Caching Embeddings](#caching-embeddings)
 - [Reranking](#reranking)
@@ -1670,7 +1671,7 @@ Transcription::fromStorage('audio.mp3')
 <a name="embeddings"></a>
 ## Embeddings
 
-You may easily generate vector embeddings for any given string using the new `toEmbeddings` method available via Laravel's `Stringable` class:
+You may easily generate vector embeddings for any given string using the `toEmbeddings` method available via Laravel's `Stringable` class:
 
 ```php
 use Illuminate\Support\Str;
@@ -1698,6 +1699,28 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
     ->dimensions(1536)
     ->generate(Lab::OpenAI, 'text-embedding-3-small');
 ```
+
+<a name="file-embeddings"></a>
+### File Embeddings
+
+The `Embeddings` class may also generate embeddings for file inputs, including documents, images, audio, and video. File inputs may be combined with strings in the same request:
+
+```php
+use Laravel\Ai\Embeddings;
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Files;
+
+$response = Embeddings::for([
+    'Product onboarding materials.',
+    Files\Document::fromStorage('handbook.pdf'),
+    Files\Image::fromPath('/home/laravel/product.jpg'),
+    Files\Audio::fromUpload($request->file('call')),
+    Files\Video::fromUrl('https://example.com/demo.mp4'),
+])->generate(provider: Lab::Gemini);
+```
+
+> [!NOTE]
+> File embeddings depend on the selected provider and model. Gemini and VoyageAI provide models capable of embedding multimodal inputs.
 
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
@@ -1909,6 +1932,21 @@ $stored = Document::fromString('Hello, World!', 'text/plain')->put();
 
 // Store an uploaded file...
 $stored = Document::fromUpload($request->file('document'))->put();
+```
+
+Features that accept file inputs, such as [embeddings](#file-embeddings), may also use audio and video file instances:
+
+```php
+use Laravel\Ai\Files\Audio;
+use Laravel\Ai\Files\Video;
+
+$audio = Audio::fromPath('/home/laravel/call.mp3');
+$audio = Audio::fromStorage('recordings/call.mp3');
+$audio = Audio::fromUpload($request->file('audio'));
+
+$video = Video::fromPath('/home/laravel/demo.mp4');
+$video = Video::fromUrl('https://example.com/demo.mp4');
+$video = Video::fromUpload($request->file('video'));
 ```
 
 Once a file has been stored, you may reference the file when generating text via agents instead of re-uploading the file:
