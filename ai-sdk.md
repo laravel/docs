@@ -2905,6 +2905,7 @@ $store->assertAdded(fn (StorableFile $file) => $file->content() === 'Hello, Worl
 The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), including:
 
 - `AddingFileToStore`
+- `AgentFailedOver`
 - `AgentPrompted`
 - `AgentStreamed`
 - `AudioGenerated`
@@ -2921,10 +2922,12 @@ The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), i
 - `ImageGenerated`
 - `InvokingTool`
 - `PromptingAgent`
+- `ProviderFailedOver`
 - `RemovingFileFromStore`
 - `Reranked`
 - `Reranking`
 - `StoreCreated`
+- `StoreDeleted`
 - `StoringFile`
 - `StreamingAgent`
 - `ToolApprovalRequested`
