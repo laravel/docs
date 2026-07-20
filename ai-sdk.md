@@ -831,25 +831,7 @@ public function tools(): iterable
 <a name="tool-approvals"></a>
 #### Tool Approvals
 
-Some tools perform sensitive actions that should be approved before they are executed. To require approval for a tool, use the `InteractsWithApprovals` trait on the tool class and call the `requireApproval` method when returning the tool from your agent:
-
-```php
-use App\Ai\Tools\DeleteCustomer;
-
-/**
- * Get the tools available to the agent.
- *
- * @return Tool[]
- */
-public function tools(): iterable
-{
-    return [
-        (new DeleteCustomer)->requireApproval('This tool deletes customer records.'),
-    ];
-}
-```
-
-You may also determine whether approval is required based on the incoming tool request by defining a `needsApproval` method on the tool:
+Some tools perform sensitive actions that should be approved by a human before they are executed. To require approval before a tool executes, implement the `Approvable` interface and use the `InteractsWithApprovals` trait on the tool. Approvable tools require approval for every invocation by default:
 
 ```php
 <?php
@@ -857,13 +839,13 @@ You may also determine whether approval is required based on the incoming tool r
 namespace App\Ai\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use Laravel\Ai\Approvals\Approval;
 use Laravel\Ai\Concerns\InteractsWithApprovals;
+use Laravel\Ai\Contracts\Approvable;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
-class RefundCustomer implements Tool
+class RefundCustomer implements Approvable, Tool
 {
     use InteractsWithApprovals;
 
@@ -884,16 +866,6 @@ class RefundCustomer implements Tool
     }
 
     /**
-     * Determine whether this tool call needs approval.
-     */
-    protected function needsApproval(Request $request): Approval|bool
-    {
-        return $request['amount_in_cents'] > 10000
-            ? Approval::required('Refunds over $100 require approval.')
-            : false;
-    }
-
-    /**
      * Get the tool's schema definition.
      */
     public function schema(JsonSchema $schema): array
@@ -906,7 +878,47 @@ class RefundCustomer implements Tool
 }
 ```
 
-When an agent reaches a tool call that requires approval, the response will pause before executing the tool. You may inspect the pending approvals on the response:
+To determine whether approval is required based on the incoming tool request, define a `needsApproval` method on the tool. The method may return a boolean or an `Approval` instance containing the reason approval is required:
+
+```php
+use Laravel\Ai\Approvals\Approval;
+use Laravel\Ai\Tools\Request;
+
+/**
+ * Determine whether the tool call needs approval.
+ */
+protected function needsApproval(Request $request): Approval|bool
+{
+    return $request['amount_in_cents'] > 10000
+        ? Approval::required('Refunds over $100 require approval.')
+        : false;
+}
+```
+
+Agents may override a tool's own approval requirement when registering the tool using the `requireApproval` and `withoutApproval` methods:
+
+```php
+/**
+ * Get the tools available to the agent.
+ *
+ * @return Tool[]
+ */
+public function tools(): iterable
+{
+    return [
+        (new RefundCustomer)->withoutApproval(),
+        (new SendEmail)->requireApproval('Review outgoing mail before it sends.'),
+    ];
+}
+```
+
+> [!NOTE]
+> Approvable tools require an agent that stores its conversation history using the [`RemembersConversations` trait](#remembering-conversations), since paused tool calls are stored in and resumed from the conversation. Using an approvable tool on an agent that does not remember conversations will throw an `ApprovalNotResumableException`.
+
+<a name="inspecting-pending-approvals"></a>
+#### Inspecting Pending Approvals
+
+When the model calls a tool that requires approval, the response pauses before the tool is executed. Tool calls in the same step that do not require approval are executed normally. You may inspect the pending approvals on the response:
 
 ```php
 $response = (new SalesCoach)
@@ -915,52 +927,93 @@ $response = (new SalesCoach)
 
 if ($response->awaitingApproval()) {
     foreach ($response->pendingApprovals as $approval) {
-        $approval->id;
-        $approval->tool;
-        $approval->arguments;
-        $approval->reason;
+        $approval->id;        // The tool call ID...
+        $approval->tool;      // The tool's name...
+        $approval->arguments; // The tool call arguments...
+        $approval->reason;    // The reason approval is required, if any...
     }
 }
 ```
 
-To continue the response, pass approval decisions back to the agent. Decisions are keyed by the pending approval ID:
+Whenever an agent pauses for approval, a `Laravel\Ai\Events\ToolApprovalRequested` event is also dispatched. This event contains the pending approvals and the conversation ID, which is convenient when the agent was [queued](#queueing).
+
+<a name="resuming-with-approval-decisions"></a>
+#### Resuming With Approval Decisions
+
+To resume a paused response, continue the conversation and pass approval decisions to the `prompt` method in place of a message. Decisions are keyed by the tool call ID and may approve, reject, or edit each pending tool call:
 
 ```php
 use Laravel\Ai\Approvals\Decision;
 use Laravel\Ai\Approvals\Decisions;
-
-$decisions = Decisions::from([
-    'tool_call_id' => Decision::approve(),
-]);
 
 $response = (new SalesCoach)
-    ->continue($response->conversationId, as: $user)
-    ->prompt($decisions);
+    ->continue($conversationId, as: $user)
+    ->prompt(Decisions::from([
+        'tool_call_id' => Decision::approve(),
+        'other_tool_call_id' => Decision::reject('The customer is not eligible for a refund.'),
+    ]));
 ```
 
-You may reject a tool call, provide edited arguments, or apply a default decision to any remaining tool calls:
+Booleans may be used as shorthand for approving or rejecting a tool call, while the `edit` decision executes the tool with revised arguments:
 
 ```php
-use Laravel\Ai\Approvals\Decision;
-use Laravel\Ai\Approvals\Decisions;
-
 Decisions::from([
-    'tool_call_id' => Decision::reject('The customer is not eligible for a refund.'),
+    'tool_call_id' => true,
+    'other_tool_call_id' => Decision::edit(['amount_in_cents' => 7500]),
 ]);
+```
 
-Decisions::from([
-    'tool_call_id' => Decision::edit(['amount_in_cents' => 7500]),
-]);
+Every pending tool call requires a decision. You may provide a `'*'` wildcard decision that applies to any tool calls without an explicit decision, or use the `approveAll` and `rejectAll` shortcuts. Decisions that do not match the conversation's pending tool calls will throw an `ApprovalMismatchException`:
 
+```php
 Decision::approveAll();
 Decision::rejectAll('Approval was not granted.');
 
 Decisions::from([
-    'tool_call_id' => Decision::approve(),
-])->rejectRemaining();
+    'tool_call_id' => Decision::edit(['amount_in_cents' => 7500]),
+    '*' => false,
+]);
+
+Decisions::from(['tool_call_id' => true])->rejectRemaining();
 ```
 
-Approval decisions may also be passed to `stream`, `queue`, `broadcast`, `broadcastNow`, and `broadcastOnQueue`. When resuming a paused response, continue the same conversation so Laravel can replay the approved tool results into the pending turn.
+Approved tool results are recorded before generation continues, so a crash or retry will never execute an approved tool twice. However, since concurrent resumes may still reach a tool together, tools with external side effects may use the request's `toolCallId` method as an idempotency key when invoking external services.
+
+<a name="streaming-tool-approvals"></a>
+#### Streaming Tool Approvals
+
+When streaming, a pause is emitted as a `ToolApprovalRequest` stream event (`tool_approval_request`) containing the pending approvals. Once the stream completes, the streamed response also exposes the pending approvals:
+
+```php
+use Illuminate\Http\Request;
+use Laravel\Ai\Responses\StreamedAgentResponse;
+
+Route::post('/chat/{conversationId}', function (Request $request, string $conversationId) {
+    return (new SalesCoach)
+        ->continue($conversationId, as: $request->user())
+        ->stream($request->input('message'))
+        ->then(function (StreamedAgentResponse $response) {
+            if ($response->awaitingApproval()) {
+                // $response->pendingApprovals...
+            }
+        });
+});
+```
+
+To resume a paused stream, pass the approval decisions to the `stream` method. The resumed stream emits the resolved tool results before continuing the model's response:
+
+```php
+use Laravel\Ai\Approvals\Decision;
+use Laravel\Ai\Approvals\Decisions;
+
+return (new SalesCoach)
+    ->continue($conversationId, as: $user)
+    ->stream(Decisions::from(['tool_call_id' => Decision::approve()]));
+```
+
+When using the [Vercel AI SDK stream protocol](#streaming-using-the-vercel-ai-sdk-protocol), pauses are emitted as native `tool-approval-request` stream parts, and resumed tool calls emit their corresponding tool output parts.
+
+Approval decisions may also be passed to the `queue`, `broadcast`, `broadcastNow`, and `broadcastOnQueue` methods. When broadcasting, the `tool_approval_request` event is broadcast to your channels like any other stream event.
 
 <a name="similarity-search"></a>
 #### Similarity Search
@@ -2874,6 +2927,8 @@ The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), i
 - `StoreCreated`
 - `StoringFile`
 - `StreamingAgent`
+- `ToolApprovalRequested`
+- `ToolApprovalResolved`
 - `ToolInvoked`
 - `TranscriptionGenerated`
 
