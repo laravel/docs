@@ -7,7 +7,7 @@
     - [Max Job Attempts](#max-job-attempts)
     - [Job Timeout](#job-timeout)
     - [Job Backoff](#job-backoff)
-    - [Worker Options](#worker-options)
+    - [Other Worker Options](#other-worker-options)
     - [Silenced Jobs](#silenced-jobs)
 - [Balancing Strategies](#balancing-strategies)
     - [Auto Balancing](#auto-balancing)
@@ -232,8 +232,8 @@ You may also configure "exponential" backoffs by using an array for the `backoff
 ],
 ```
 
-<a name="worker-options"></a>
-### Worker Options
+<a name="other-worker-options"></a>
+### Other Worker Options
 
 In addition to `tries`, `timeout`, and `backoff`, each supervisor accepts several other options that control how its worker processes behave and when they are automatically restarted. Periodically restarting workers is a good practice for long-running processes, as it helps guard against memory leaks:
 
