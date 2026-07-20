@@ -1214,7 +1214,7 @@ To refine search results based on user location, use the `location` method:
 );
 ```
 
-If the provider returns citations for web search results, you may access them via the response's `meta` property:
+If the provider returns citations for web search results, you may access them via the response's `meta` property. When streaming, citations are emitted as `Citation` stream events as they arrive:
 
 ```php
 $response = (new ResearchAgent)->prompt('What happened in Laravel this week?');
