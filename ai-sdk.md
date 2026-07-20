@@ -25,6 +25,7 @@
     - [Agent Configuration](#agent-configuration)
     - [Tool Choice](#tool-choice)
     - [Provider Options](#provider-options)
+- [Summarization](#summarization)
 - [Images](#images)
 - [Audio (TTS)](#audio)
 - [Transcription (STT)](#transcription)
@@ -1552,6 +1553,37 @@ class SalesCoach implements Agent, HasProviderOptions
 The `providerOptions` method receives the provider currently being used (`Lab` enum or string), allowing you to return different options per provider. This is especially useful when using [failover](#failover), since each fallback provider can receive its own configuration.
 
 The Anthropic example above also enables [prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) via `cache_control`.
+
+<a name="summarization"></a>
+## Summarization
+
+The `Str::summarize` method may be used to quickly summarize text:
+
+```php
+use Illuminate\Support\Str;
+use Laravel\Ai\Enums\Lab;
+
+$summary = Str::summarize(
+    $article,
+    sentences: 3,
+    provider: Lab::Anthropic,
+);
+```
+
+You may also summarize a string using the `summarize` method available via Laravel's `Stringable` class:
+
+```php
+use Illuminate\Support\Str;
+use Laravel\Ai\Enums\Lab;
+
+$summary = Str::of($article)->summarize(
+    sentences: 5,
+    provider: Lab::OpenAI,
+    timeout: 120,
+);
+```
+
+For summaries that require custom instructions, tools, or conversation context, you should create a dedicated [agent](#agents).
 
 <a name="images"></a>
 ## Images
