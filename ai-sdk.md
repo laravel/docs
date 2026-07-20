@@ -2195,12 +2195,12 @@ $response = Document::fromPath('/home/laravel/knowledge.txt')
 To scope options per provider, pass a closure that receives the current provider:
 
 ```php
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Files\Document;
-use Laravel\Ai\Providers\Provider;
 
 $response = Document::fromPath('/home/laravel/training.jsonl')
-    ->withProviderOptions(fn (Provider $provider) => match ($provider->driver()) {
-        'openai' => ['purpose' => 'fine-tune'],
+    ->withProviderOptions(fn (Lab|string $provider) => match ($provider) {
+        Lab::OpenAI => ['purpose' => 'fine-tune'],
         default => [],
     })
     ->put();
