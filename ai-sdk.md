@@ -1985,7 +1985,7 @@ $response = Embeddings::for([
 ```
 
 > [!NOTE]
-> File embeddings depend on the selected provider and model. Gemini and VoyageAI provide models capable of embedding multimodal inputs.
+> File embeddings require a provider and model capable of embedding multimodal inputs. Gemini supports image, audio, document, and video inputs, while VoyageAI supports image and video inputs through its multimodal models. Providers that only support text embeddings throw an `InvalidArgumentException` when given file inputs.
 
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
