@@ -7,6 +7,7 @@
     - [Max Job Attempts](#max-job-attempts)
     - [Job Timeout](#job-timeout)
     - [Job Backoff](#job-backoff)
+    - [Worker Options](#worker-options)
     - [Silenced Jobs](#silenced-jobs)
 - [Balancing Strategies](#balancing-strategies)
     - [Auto Balancing](#auto-balancing)
@@ -230,6 +231,38 @@ You may also configure "exponential" backoffs by using an array for the `backoff
     ],
 ],
 ```
+
+<a name="worker-options"></a>
+### Worker Options
+
+In addition to `tries`, `timeout`, and `backoff`, each supervisor accepts several other options that control how its worker processes behave and when they are automatically restarted. Periodically restarting workers is a good practice for long-running processes, as it helps guard against memory leaks:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'memory' => 128,
+            'maxJobs' => 1000,
+            'maxTime' => 3600,
+            'sleep' => 3,
+            'rest' => 0,
+            'nice' => 0,
+        ],
+    ],
+],
+```
+
+<div class="content-list" markdown="1">
+
+- `memory` defines the maximum amount of memory, in megabytes, that a single worker process may consume before it is restarted. Defaults to `128`.
+- `maxJobs` defines the number of jobs a worker should process before restarting. A value of `0` indicates that workers should not be restarted based on the number of jobs processed. Defaults to `0`.
+- `maxTime` defines the number of seconds a worker should run before restarting. A value of `0` indicates that workers should not be restarted based on time. Defaults to `0`.
+- `sleep` defines the number of seconds a worker should wait when no job is available before polling the queue for new jobs again. Defaults to `3`.
+- `rest` defines the number of seconds to pause between processing each job. Defaults to `0`.
+- `nice` defines the "niceness" (scheduling priority) of the worker processes. A higher value gives the process a lower priority. Defaults to `0`.
+
+</div>
 
 <a name="silenced-jobs"></a>
 ### Silenced Jobs
@@ -709,6 +742,17 @@ Horizon includes a metrics dashboard which provides information regarding your j
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('horizon:snapshot')->everyFiveMinutes();
+```
+
+You may configure how many of these snapshots are retained for display in the metrics graphs using the `metrics` configuration option within your application's `config/horizon.php` configuration file. The `trim_snapshots` option controls how many `job` and `queue` snapshots are kept:
+
+```php
+'metrics' => [
+    'trim_snapshots' => [
+        'job' => 24,
+        'queue' => 24,
+    ],
+],
 ```
 
 If you would like to delete all metric data, you can invoke the `horizon:clear-metrics` Artisan command:
