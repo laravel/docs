@@ -25,6 +25,7 @@
     - [Agent Configuration](#agent-configuration)
     - [Tool Choice](#tool-choice)
     - [Provider Options](#provider-options)
+    - [Pending Request Options](#pending-request-options)
 - [Summarization](#summarization)
 - [Images](#images)
 - [Audio (TTS)](#audio)
@@ -1601,6 +1602,43 @@ The `providerOptions` method receives the provider currently being used (`Lab` e
 
 The Anthropic example above also enables [prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) via `cache_control`.
 
+<a name="pending-request-options"></a>
+#### Pending Request Options
+
+Some pending operations also allow you to pass provider-specific options using the `withProviderOptions` method. For example, you may pass options when generating embeddings:
+
+```php
+use Laravel\Ai\Embeddings;
+
+$response = Embeddings::for(['Napa Valley has great wine.'])
+    ->withProviderOptions(['encoding_format' => 'float'])
+    ->generate();
+```
+
+You may also provide a closure that receives the provider currently being used. This is useful when a request may fail over between providers:
+
+```php
+use Laravel\Ai\Embeddings;
+use Laravel\Ai\Providers\Provider;
+
+$response = Embeddings::for(['Napa Valley has great wine.'])
+    ->withProviderOptions(fn (Provider $provider) => match ($provider->driver()) {
+        'openai' => ['encoding_format' => 'float'],
+        default => [],
+    })
+    ->generate();
+```
+
+Provider options may also be passed when generating transcriptions:
+
+```php
+use Laravel\Ai\Transcription;
+
+$transcript = Transcription::fromStorage('meeting.mp3')
+    ->withProviderOptions(['temperature' => 0])
+    ->generate();
+```
+
 <a name="summarization"></a>
 ## Summarization
 
@@ -2138,12 +2176,12 @@ $response = Document::fromPath('/home/laravel/knowledge.txt')
 To scope options per provider, pass a closure that receives the current provider:
 
 ```php
-use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Files\Document;
+use Laravel\Ai\Providers\Provider;
 
 $response = Document::fromPath('/home/laravel/training.jsonl')
-    ->withProviderOptions(fn (Lab|string $provider) => match ($provider) {
-        Lab::OpenAI => ['purpose' => 'fine-tune'],
+    ->withProviderOptions(fn (Provider $provider) => match ($provider->driver()) {
+        'openai' => ['purpose' => 'fine-tune'],
         default => [],
     })
     ->put();
