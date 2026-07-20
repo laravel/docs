@@ -112,7 +112,7 @@ XAI_API_KEY=
 
 The default models used for text, images, audio, transcription, and embeddings may also be configured in your application's `config/ai.php` configuration file.
 
-When using Amazon Bedrock, you may authenticate using an AWS bearer token, explicit AWS credentials, or the default AWS credential provider. If your application needs to assume a role before making Bedrock requests, configure the provider's `assume_role` options:
+When using Amazon Bedrock, you may authenticate using an AWS bearer token, AWS credentials, or the default AWS credential provider. If your application needs to assume a role before making Bedrock requests, configure the provider's `assume_role` options:
 
 ```php
 'bedrock' => [
@@ -132,7 +132,7 @@ When using Amazon Bedrock, you may authenticate using an AWS bearer token, expli
 ],
 ```
 
-Credentials are resolved in priority order: a bearer token, then AssumeRole, then static IAM credentials, then the SDK's default credential provider chain. When `assume_role.arn` is set, the role is assumed using your static or default AWS credentials as the source, and the resulting temporary credentials are refreshed automatically before they expire.
+Credentials are resolved in priority order: bearer token, AssumeRole, static AWS credentials, then the AWS SDK's default credentials. When `assume_role.arn` is set, the temporary credentials are refreshed automatically before they expire.
 
 <a name="custom-base-urls"></a>
 ### Custom Base URLs
@@ -403,7 +403,7 @@ class SalesCoach implements Agent, Conversational
 
 When using the `RemembersConversations` trait, do not manually define a `messages` method in your agent class. If a `messages` method is present, it will take precedence over the trait's implementation and conversation history will not be loaded from the database.
 
-To start a new conversation for a participant, call the `forParticipant` method before prompting. The participant may be any Eloquent model — conversations are scoped to both the model's class and its key, so a `User` and a `Team` that share an ID will never collide:
+To start a new conversation for a participant, call the `forParticipant` method before prompting. The participant is typically an Eloquent model, and conversations are scoped to both the model's class and key:
 
 ```php
 $response = (new SalesCoach)->forParticipant($team)->prompt('Hello!');
@@ -411,7 +411,7 @@ $response = (new SalesCoach)->forParticipant($team)->prompt('Hello!');
 $conversationId = $response->conversationId;
 ```
 
-Since a user is the most common participant, you may use the `forUser` method as a convenience alias:
+If the participant is a user, you may use the `forUser` method as a convenience alias:
 
 ```php
 $response = (new SalesCoach)->forUser($user)->prompt('Hello!');
@@ -433,17 +433,22 @@ class Team extends Model
 }
 ```
 
-Once the trait has been added to your model, you may retrieve and query the participant's conversations via the `conversations` relationship. Likewise, a conversation exposes its owning model via the `participant` relationship:
+Once the trait has been added to your model, you may retrieve and query the participant's conversations via the `conversations` relationship:
 
 ```php
 $conversations = $team->conversations()
     ->latest('updated_at')
     ->paginate(20);
 
-$conversation->participant; // The owning Team, User, etc...
 ```
 
-Since participants are stored using their morph class, you may wish to [enforce a morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types) so stored conversations survive model renames.
+Each conversation also exposes its owner via the `participant` relationship:
+
+```php
+$participant = $conversation->participant;
+```
+
+If you use multiple participant models, you may wish to [enforce a morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types) so stored conversation owners are not tied to class names.
 
 To continue an existing conversation, use the `continue` method and provide the participant using the `as` argument:
 
@@ -453,7 +458,7 @@ $response = (new SalesCoach)
     ->prompt('Tell me more about that.');
 ```
 
-The `continue` method trusts the given conversation ID and does not verify ownership. Like route model binding, authorization belongs in your application — for example, by resolving the ID through the participant's own conversations:
+The `continue` method does not verify that the given participant owns the conversation. If you need to authorize access to a conversation, resolve the ID through the participant's own conversations:
 
 ```php
 $conversationId = $team->conversations()->findOrFail($conversationId)->id;
@@ -843,7 +848,7 @@ public function tools(): iterable
 <a name="tool-approvals"></a>
 #### Tool Approvals
 
-Some tools perform sensitive actions that should be approved by a human before they are executed. To require approval before a tool executes, implement the `Approvable` interface and use the `InteractsWithApprovals` trait on the tool. Approvable tools require approval for every invocation by default:
+Some tools perform sensitive actions that should be approved before they are executed. To require approval, implement the `Approvable` interface and use the `InteractsWithApprovals` trait on the tool. Approvable tools require approval for every invocation by default:
 
 ```php
 <?php
@@ -890,7 +895,7 @@ class RefundCustomer implements Approvable, Tool
 }
 ```
 
-To determine whether approval is required based on the incoming tool request, define a `needsApproval` method on the tool. The method may return a boolean or an `Approval` instance containing the reason approval is required:
+To determine whether approval is required based on the incoming tool request, define a `needsApproval` method on the tool:
 
 ```php
 use Laravel\Ai\Approvals\Approval;
@@ -925,7 +930,7 @@ public function tools(): iterable
 ```
 
 > [!NOTE]
-> Approvable tools require an agent that stores its conversation history using the [`RemembersConversations` trait](#remembering-conversations), since paused tool calls are stored in and resumed from the conversation. Using an approvable tool on an agent that does not remember conversations will throw an `ApprovalNotResumableException`.
+> Approvable tools require an agent that stores conversation history using the [`RemembersConversations` trait](#remembering-conversations). Using an approvable tool on an agent that does not remember conversations will throw an `ApprovalNotResumableException`.
 
 <a name="inspecting-pending-approvals"></a>
 #### Inspecting Pending Approvals
@@ -939,15 +944,15 @@ $response = (new SalesCoach)
 
 if ($response->awaitingApproval()) {
     foreach ($response->pendingApprovals as $approval) {
-        $approval->id;        // The tool call ID...
-        $approval->tool;      // The tool's name...
-        $approval->arguments; // The tool call arguments...
-        $approval->reason;    // The reason approval is required, if any...
+        $approval->id;
+        $approval->tool;
+        $approval->arguments;
+        $approval->reason;
     }
 }
 ```
 
-Whenever an agent pauses for approval, a `Laravel\Ai\Events\ToolApprovalRequested` event is also dispatched. This event contains the pending approvals and the conversation ID, which is convenient when the agent was [queued](#queueing).
+Whenever an agent pauses for approval, a `Laravel\Ai\Events\ToolApprovalRequested` event is also dispatched. This event contains the pending approvals and the conversation ID.
 
 <a name="resuming-with-approval-decisions"></a>
 #### Resuming With Approval Decisions
@@ -975,7 +980,7 @@ Decisions::from([
 ]);
 ```
 
-Every pending tool call requires a decision. You may provide a `'*'` wildcard decision that applies to any tool calls without an explicit decision, or use the `approveAll` and `rejectAll` shortcuts. Decisions that do not match the conversation's pending tool calls will throw an `ApprovalMismatchException`:
+Every pending tool call requires a decision. You may provide a `'*'` wildcard decision for calls without an explicit decision, or use the `approveAll` and `rejectAll` shortcuts. Decisions that do not match the pending tool calls will throw an `ApprovalMismatchException`:
 
 ```php
 Decision::approveAll();
@@ -989,7 +994,7 @@ Decisions::from([
 Decisions::from(['tool_call_id' => true])->rejectRemaining();
 ```
 
-Approved tool results are recorded before generation continues, so a crash or retry will never execute an approved tool twice. However, since concurrent resumes may still reach a tool together, tools with external side effects may use the request's `toolCallId` method as an idempotency key when invoking external services.
+Tools with external side effects may use the request's `toolCallId` method as an idempotency key when invoking external services.
 
 <a name="streaming-tool-approvals"></a>
 #### Streaming Tool Approvals
@@ -1023,7 +1028,7 @@ return (new SalesCoach)
     ->stream(Decisions::from(['tool_call_id' => Decision::approve()]));
 ```
 
-When using the [Vercel AI SDK stream protocol](#streaming-using-the-vercel-ai-sdk-protocol), pauses are emitted as native `tool-approval-request` stream parts, and resumed tool calls emit their corresponding tool output parts.
+When using the [Vercel AI SDK stream protocol](#streaming-using-the-vercel-ai-sdk-protocol), pauses are emitted as `tool-approval-request` stream parts, and resumed tool calls emit their corresponding tool output parts.
 
 Approval decisions may also be passed to the `queue`, `broadcast`, `broadcastNow`, and `broadcastOnQueue` methods. When broadcasting, the `tool_approval_request` event is broadcast to your channels like any other stream event.
 
@@ -1578,7 +1583,7 @@ class ComplexReasoner implements Agent
 <a name="tool-choice"></a>
 #### Tool Choice
 
-If your agent has tools, you may use the `ToolChoice` attribute to control how the model uses them. The tool choice is mapped to each provider's native "tool choice" request field.
+If your agent has tools, you may use the `ToolChoice` attribute to control how the model uses them.
 
 **Supported providers:** OpenAI, Anthropic, Gemini, xAI, Groq, DeepSeek, Mistral, OpenRouter, OpenAI Compatible
 
@@ -1627,7 +1632,7 @@ class CustomerSupportAgent implements Agent, HasTools
 }
 ```
 
-To determine the tool choice at runtime based on the agent's own state, define a `toolChoice` method on the agent. The method takes precedence over the attribute, and returning `null` lets the model decide:
+To determine the tool choice at runtime, define a `toolChoice` method on the agent. This method takes precedence over the attribute, and returning `null` lets the model decide:
 
 ```php
 use Laravel\Ai\ToolChoice;
@@ -1643,10 +1648,10 @@ public function toolChoice(): ?ToolChoice
 }
 ```
 
-When tool calls are forced — using either the `required` mode or a specific tool — the requirement only applies to the first generation step. After the first step, the model may respond normally.
+When tool calls are forced using either the `required` mode or a specific tool, the requirement only applies to the first generation step. After the first step, the model may respond normally.
 
 > [!NOTE]
-> Anthropic cannot force tool use while extended thinking is enabled. Forcing a tool choice with thinking enabled throws an `InvalidArgumentException` instead of silently downgrading to `auto`.
+> Anthropic does not support forcing tool use while extended thinking is enabled. In this case, Laravel will throw an `InvalidArgumentException`.
 
 <a name="provider-options"></a>
 ### Provider Options
@@ -1707,7 +1712,7 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
     ->generate();
 ```
 
-You may also provide a closure that receives the provider currently being used. This is useful when a request may fail over between providers:
+You may also provide a closure that receives the provider currently being used:
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -1739,7 +1744,7 @@ $embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings(
 );
 ```
 
-[Provider tools](#provider-tools) support `withProviderOptions` as well, allowing you to pass options onto the tool's payload. A flat array applies to every provider, while a closure receives the provider currently being used:
+[Provider tools](#provider-tools) support `withProviderOptions` as well. A flat array applies to every provider, while a closure may return options for a specific provider:
 
 ```php
 use Laravel\Ai\Enums\Lab;
@@ -2010,7 +2015,7 @@ $response = Embeddings::for([
 ```
 
 > [!NOTE]
-> File embeddings require a provider and model capable of embedding multimodal inputs. Gemini supports image, audio, document, and video inputs, while VoyageAI supports image and video inputs through its multimodal models. Providers that only support text embeddings throw an `InvalidArgumentException` when given file inputs.
+> File embeddings require a provider and model that support multimodal inputs. Gemini supports image, audio, document, and video inputs, while VoyageAI supports image and video inputs through its multimodal models.
 
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
