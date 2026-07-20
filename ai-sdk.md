@@ -15,6 +15,7 @@
     - [Broadcasting](#broadcasting)
     - [Queueing](#queueing)
     - [Tools](#tools)
+    - [Tool Approvals](#tool-approvals)
     - [File Storage Tools](#file-storage-tools)
     - [MCP Tools](#mcp-tools)
     - [Provider Tools](#provider-tools)
@@ -775,6 +776,140 @@ public function tools(): iterable
     ];
 }
 ```
+
+<a name="tool-approvals"></a>
+#### Tool Approvals
+
+Some tools perform sensitive actions that should be approved before they are executed. To require approval for a tool, use the `InteractsWithApprovals` trait on the tool class and call the `requireApproval` method when returning the tool from your agent:
+
+```php
+use App\Ai\Tools\DeleteCustomer;
+
+/**
+ * Get the tools available to the agent.
+ *
+ * @return Tool[]
+ */
+public function tools(): iterable
+{
+    return [
+        (new DeleteCustomer)->requireApproval('This tool deletes customer records.'),
+    ];
+}
+```
+
+You may also determine whether approval is required based on the incoming tool request by defining a `needsApproval` method on the tool:
+
+```php
+<?php
+
+namespace App\Ai\Tools;
+
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Ai\Approvals\Approval;
+use Laravel\Ai\Concerns\InteractsWithApprovals;
+use Laravel\Ai\Contracts\Tool;
+use Laravel\Ai\Tools\Request;
+use Stringable;
+
+class RefundCustomer implements Tool
+{
+    use InteractsWithApprovals;
+
+    /**
+     * Get the description of the tool's purpose.
+     */
+    public function description(): Stringable|string
+    {
+        return 'Refund a customer order.';
+    }
+
+    /**
+     * Execute the tool.
+     */
+    public function handle(Request $request): Stringable|string
+    {
+        // ...
+    }
+
+    /**
+     * Determine whether this tool call needs approval.
+     */
+    protected function needsApproval(Request $request): Approval|bool
+    {
+        return $request['amount_in_cents'] > 10000
+            ? Approval::required('Refunds over $100 require approval.')
+            : false;
+    }
+
+    /**
+     * Get the tool's schema definition.
+     */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'order_id' => $schema->string()->required(),
+            'amount_in_cents' => $schema->integer()->required(),
+        ];
+    }
+}
+```
+
+When an agent reaches a tool call that requires approval, the response will pause before executing the tool. You may inspect the pending approvals on the response:
+
+```php
+$response = (new SalesCoach)
+    ->forUser($user)
+    ->prompt('Refund order 123 for $150.');
+
+if ($response->awaitingApproval()) {
+    foreach ($response->pendingApprovals as $approval) {
+        $approval->id;
+        $approval->tool;
+        $approval->arguments;
+        $approval->reason;
+    }
+}
+```
+
+To continue the response, pass approval decisions back to the agent. Decisions are keyed by the pending approval ID:
+
+```php
+use Laravel\Ai\Approvals\Decision;
+use Laravel\Ai\Approvals\Decisions;
+
+$decisions = Decisions::from([
+    'tool_call_id' => Decision::approve(),
+]);
+
+$response = (new SalesCoach)
+    ->continue($response->conversationId, as: $user)
+    ->prompt($decisions);
+```
+
+You may reject a tool call, provide edited arguments, or apply a default decision to any remaining tool calls:
+
+```php
+use Laravel\Ai\Approvals\Decision;
+use Laravel\Ai\Approvals\Decisions;
+
+Decisions::from([
+    'tool_call_id' => Decision::reject('The customer is not eligible for a refund.'),
+]);
+
+Decisions::from([
+    'tool_call_id' => Decision::edit(['amount_in_cents' => 7500]),
+]);
+
+Decision::approveAll();
+Decision::rejectAll('Approval was not granted.');
+
+Decisions::from([
+    'tool_call_id' => Decision::approve(),
+])->rejectRemaining();
+```
+
+Approval decisions may also be passed to `stream`, `queue`, `broadcast`, `broadcastNow`, and `broadcastOnQueue`. When resuming a paused response, continue the same conversation so Laravel can replay the approved tool results into the pending turn.
 
 <a name="similarity-search"></a>
 #### Similarity Search
@@ -2042,6 +2177,24 @@ SalesCoach::fake([
 ```
 
 > **Note:** When `Agent::fake()` is invoked on an agent that returns structured output and fake output was not explicitly provided, Laravel will automatically generate fake data that matches your agent's defined output schema.
+
+You may also fake an agent response that is waiting for tool approval:
+
+```php
+use Laravel\Ai\Approvals\PendingApproval;
+use Laravel\Ai\Responses\AgentResponse;
+
+SalesCoach::fake([
+    AgentResponse::fakeAwaitingApproval([
+        new PendingApproval(
+            id: 'tool_call_id',
+            tool: 'refund_customer',
+            arguments: ['order_id' => '123', 'amount_in_cents' => 15000],
+            reason: 'Refunds over $100 require approval.',
+        ),
+    ]),
+]);
+```
 
 After prompting the agent, you may make assertions about the prompts that were received:
 
