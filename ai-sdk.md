@@ -208,8 +208,8 @@ The AI SDK supports a variety of providers across its features. The following ta
 |---|---|
 | Text | OpenAI, OpenAI Compatible, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
-| TTS | OpenAI, ElevenLabs, Gemini |
-| STT | OpenAI, ElevenLabs, Mistral, Gemini |
+| TTS | OpenAI, ElevenLabs, Gemini, OpenRouter |
+| STT | OpenAI, ElevenLabs, Mistral, Gemini, OpenRouter |
 | Embeddings | OpenAI, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI |
 | Files | OpenAI, Anthropic, Gemini, Azure |
@@ -1151,6 +1151,14 @@ To refine search results based on user location, use the `location` method:
 );
 ```
 
+If the provider returns citations for web search results, you may access them via the response's `meta` property:
+
+```php
+$response = (new ResearchAgent)->prompt('What changed in Laravel this week?');
+
+$citations = $response->meta->citations;
+```
+
 <a name="web-fetch"></a>
 #### Web Fetch
 
@@ -2001,6 +2009,14 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
     ->generate();
 ```
 
+If global embedding caching is enabled, you may disable caching for a specific request by passing `0` to the `cache` method:
+
+```php
+$response = Embeddings::for(['Napa Valley has great wine.'])
+    ->cache(0)
+    ->generate();
+```
+
 The `toEmbeddings` Stringable method also accepts a `cache` argument:
 
 ```php
@@ -2009,6 +2025,9 @@ $embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings(cache: true);
 
 // Cache for a specific duration...
 $embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings(cache: 3600);
+
+// Disable caching for this request...
+$embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings(cache: false);
 ```
 
 <a name="reranking"></a>
