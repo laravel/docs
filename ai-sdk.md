@@ -1864,11 +1864,20 @@ use Laravel\Ai\Files\Image;
 use Laravel\Ai\Files\Video;
 
 Image::fromPath('/home/laravel/photo.jpg');
+Image::fromStorage('photo.jpg');
+Image::fromUpload($request->file('photo'));
+
+Audio::fromPath('/home/laravel/clip.mp3');
 Audio::fromStorage('clip.mp3');
-Document::fromUrl('https://example.com/report.pdf');
+Audio::fromUpload($request->file('clip.mp3'));
+
+Video::fromPath('/home/laravel/video.mp4');
+Video::fromStorage('video.mp4');
 Video::fromUpload($request->file('video'));
-Image::fromBase64($base64, 'image/png');
+
+Document::fromUrl('https://example.com/report.pdf');
 Document::fromString('Laravel is a PHP framework.', 'text/plain');
+Document::fromUpload($request->file('report'));
 ```
 
 > [!NOTE]
