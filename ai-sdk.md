@@ -1840,7 +1840,7 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
 <a name="multimodal-embeddings"></a>
 ### Multimodal Embeddings
 
-In addition to strings, the `Embeddings::for` method accepts image, audio, document, and video inputs, allowing you to generate embeddings for non-text content. Multimodal embeddings are supported by the `gemini` and `voyageai` providers:
+In addition to strings, the `Embeddings::for` method accepts image, audio, document, and video inputs, allowing you to generate embeddings for non-text content. Gemini supports image, audio, document, and video embeddings, while VoyageAI supports image and video embeddings:
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -1855,7 +1855,7 @@ $response = Embeddings::for([
 ])->generate(Lab::Gemini);
 ```
 
-Each media type may be created from a local path, a filesystem disk, a remote URL, raw content, or an uploaded file, mirroring the [attachment](#attachments) file classes:
+Multimodal inputs use the same [file classes used for attachments](#attachments). These files may be created from a local path, a filesystem disk, a remote URL, or Base64-encoded content. Images, documents, and videos may also be created from uploaded files, while documents may be created from raw string content:
 
 ```php
 use Laravel\Ai\Files\Audio;
@@ -1867,10 +1867,12 @@ Image::fromPath('/home/laravel/photo.jpg');
 Audio::fromStorage('clip.mp3');
 Document::fromUrl('https://example.com/report.pdf');
 Video::fromUpload($request->file('video'));
+Image::fromBase64($base64, 'image/png');
+Document::fromString('Laravel is a PHP framework.', 'text/plain');
 ```
 
 > [!NOTE]
-> Individual providers only support a subset of media types, and some providers require that every input in a single request share the same media source type. Consult your provider's documentation to determine which multimodal models and inputs are available.
+> VoyageAI does not allow remote URL media and Base64-encoded media to be mixed in a single request. Local, stored, and uploaded files are sent as Base64-encoded content, and text inputs may be combined with either media source. Consult your provider's documentation to determine which multimodal models and inputs are available.
 
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
