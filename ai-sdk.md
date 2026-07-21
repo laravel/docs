@@ -26,6 +26,7 @@
 - [Images](#images)
 - [Audio (TTS)](#audio)
 - [Transcription (STT)](#transcription)
+- [Text Summarization](#text-summarization)
 - [Embeddings](#embeddings)
     - [Querying Embeddings](#querying-embeddings)
     - [Caching Embeddings](#caching-embeddings)
@@ -303,7 +304,7 @@ By passing additional arguments to the `prompt` method, you may override the def
 $response = (new SalesCoach)->prompt(
     'Analyze this sales transcript...',
     provider: Lab::Anthropic,
-    model: 'claude-haiku-4-5-20251001',
+    model: 'claude-sonnet-5',
     timeout: 120,
 );
 ```
@@ -1257,7 +1258,7 @@ use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 
 #[Provider(Lab::Anthropic)]
-#[Model('claude-haiku-4-5-20251001')]
+#[Model('claude-sonnet-5')]
 #[MaxSteps(10)]
 #[MaxTokens(4096)]
 #[Temperature(0.7)]
@@ -1516,6 +1517,32 @@ Transcription::fromStorage('audio.mp3')
     ->then(function (TranscriptionResponse $transcript) {
         // ...
     });
+```
+
+<a name="text-summarization"></a>
+## Text Summarization
+
+You may summarize text using the `summarize` method available via Laravel's `Stringable` class. By default, the summary will contain no more than three sentences and will be generated using the configured provider's cheapest text model:
+
+```php
+use Illuminate\Support\Str;
+
+$summary = Str::of($article)->summarize();
+```
+
+You may specify the maximum number of sentences, provider, model, and timeout used to generate the summary. The `Str` class also offers a static version of the method:
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+$summary = Str::of($article)->summarize(
+    sentences: 4,
+    provider: Lab::Anthropic,
+    model: 'claude-sonnet-5',
+    timeout: 30,
+);
+
+$summary = Str::summarize($article, sentences: 4);
 ```
 
 <a name="embeddings"></a>

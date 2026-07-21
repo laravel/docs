@@ -367,7 +367,7 @@ class PhotoController extends Controller
 }
 ```
 
-In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `Context`, `DB`, `Give`, `Log`, `RouteParameter`, and [Tag](#tagging) attributes:
+In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`, `Context`, `DB`, `Give`, `Log`, `RequestAttribute`, `RouteParameter`, and [Tag](#tagging) attributes:
 
 ```php
 <?php
@@ -375,6 +375,7 @@ In addition to the `Storage` attribute, Laravel offers `Auth`, `Cache`, `Config`
 namespace App\Http\Controllers;
 
 use App\Contracts\UserRepository;
+use App\Models\Organization;
 use App\Models\Photo;
 use App\Repositories\DatabaseRepository;
 use Illuminate\Container\Attributes\Auth;
@@ -384,6 +385,7 @@ use Illuminate\Container\Attributes\Context;
 use Illuminate\Container\Attributes\DB;
 use Illuminate\Container\Attributes\Give;
 use Illuminate\Container\Attributes\Log;
+use Illuminate\Container\Attributes\RequestAttribute;
 use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Container\Attributes\Tag;
 use Illuminate\Contracts\Auth\Guard;
@@ -402,6 +404,7 @@ class PhotoController extends Controller
         #[DB('mysql')] protected Connection $connection,
         #[Give(DatabaseRepository::class)] protected UserRepository $users,
         #[Log('daily')] protected LoggerInterface $log,
+        #[RequestAttribute('organization')] protected Organization $organization,
         #[RouteParameter] protected Photo $photo,
         #[Tag('reports')] protected iterable $reports,
     ) {
@@ -411,6 +414,8 @@ class PhotoController extends Controller
 ```
 
 The `RouteParameter` attribute will resolve the route parameter matching the variable name. If needed, you may specify the route parameter name explicitly: `#[RouteParameter('photo')]`.
+
+The `RequestAttribute` attribute will resolve the value stored under the given key in the current request's [attribute bag](https://symfony.com/doc/current/components/http_foundation.html#accessing-request-data): `#[RequestAttribute('organization')]`.
 
 In addition, Laravel provides a `CurrentUser` attribute for injecting the currently authenticated user into a given route or class:
 

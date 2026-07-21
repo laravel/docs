@@ -634,15 +634,16 @@ Route::get('/posts/{post:slug}', function (Post $post) {
 });
 ```
 
-If you would like model binding to always use a database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
+If you would like model binding to always use a database column other than `id` when retrieving a given model class, you may apply the `RouteKey` attribute to the Eloquent model:
 
 ```php
-/**
- * Get the route key for the model.
- */
-public function getRouteKeyName(): string
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
+use Illuminate\Database\Eloquent\Model;
+
+#[RouteKey('slug')]
+class Post extends Model
 {
-    return 'slug';
+    // ...
 }
 ```
 

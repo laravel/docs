@@ -226,6 +226,10 @@ By default, processed images are encoded using their original format. However, y
 $image = $image->toWebp();
 $image = $image->toJpg();
 $image = $image->toJpeg();
+$image = $image->toPng();
+$image = $image->toGif();
+$image = $image->toAvif();
+$image = $image->toBmp();
 ```
 
 You may use the `quality` method to set the output quality. The quality will be clamped between `1` and `100`:
