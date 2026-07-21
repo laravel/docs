@@ -51,10 +51,10 @@ You should also ensure your PHP installation has either the GD or Imagick extens
 <a name="configuration"></a>
 ### Configuration
 
-Laravel's image configuration file is located at `config/image.php`. If your application does not have an `image` configuration file, you may publish it using the `config:publish` Artisan command:
+Laravel's image configuration file is located at `config/images.php`. If your application does not have an `images` configuration file, you may publish it using the `config:publish` Artisan command:
 
 ```shell
-php artisan config:publish image
+php artisan config:publish images
 ```
 
 The image configuration file allows you to specify your application's default image driver. You may also specify the default driver using the `IMAGE_DRIVER` environment variable. The supported drivers are `gd` and `imagick`:
@@ -384,7 +384,7 @@ $image = $request->image('avatar')
     ->cover(400, 400);
 ```
 
-You may also configure a custom driver as your application's default image driver using the `default` option in your application's `config/image.php` configuration file or the `IMAGE_DRIVER` environment variable:
+You may also configure a custom driver as your application's default image driver using the `default` option in your application's `config/images.php` configuration file or the `IMAGE_DRIVER` environment variable:
 
 ```ini
 IMAGE_DRIVER=vips
