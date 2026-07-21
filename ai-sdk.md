@@ -30,6 +30,7 @@
 - [Transcription (STT)](#transcription)
 - [Text Summarization](#text-summarization)
 - [Embeddings](#embeddings)
+    - [Multimodal Embeddings](#multimodal-embeddings)
     - [Querying Embeddings](#querying-embeddings)
     - [Caching Embeddings](#caching-embeddings)
 - [Reranking](#reranking)
@@ -1835,6 +1836,52 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
     ->dimensions(1536)
     ->generate(Lab::OpenAI, 'text-embedding-3-small');
 ```
+
+<a name="multimodal-embeddings"></a>
+### Multimodal Embeddings
+
+In addition to strings, the `Embeddings::for` method accepts image, audio, document, and video inputs, allowing you to generate embeddings for non-text content. Gemini supports image, audio, document, and video embeddings, while VoyageAI supports image and video embeddings:
+
+```php
+use Laravel\Ai\Embeddings;
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Files\Image;
+use Laravel\Ai\Files\Video;
+
+$response = Embeddings::for([
+    'A vineyard at sunset.',
+    Image::fromStorage('vineyard.jpg'),
+    Video::fromPath('/home/laravel/tour.mp4'),
+])->generate(Lab::Gemini);
+```
+
+Multimodal inputs use the same [file classes used for attachments](#attachments). These files may be created from a local path, a filesystem disk, a remote URL, or Base64-encoded content. Images, documents, and videos may also be created from uploaded files, while documents may be created from raw string content:
+
+```php
+use Laravel\Ai\Files\Audio;
+use Laravel\Ai\Files\Document;
+use Laravel\Ai\Files\Image;
+use Laravel\Ai\Files\Video;
+
+Image::fromPath('/home/laravel/photo.jpg');
+Image::fromStorage('photo.jpg');
+Image::fromUpload($request->file('photo'));
+
+Audio::fromPath('/home/laravel/clip.mp3');
+Audio::fromStorage('clip.mp3');
+Audio::fromUpload($request->file('clip.mp3'));
+
+Video::fromPath('/home/laravel/video.mp4');
+Video::fromStorage('video.mp4');
+Video::fromUpload($request->file('video'));
+
+Document::fromUrl('https://example.com/report.pdf');
+Document::fromString('Laravel is a PHP framework.', 'text/plain');
+Document::fromUpload($request->file('report'));
+```
+
+> [!NOTE]
+> VoyageAI does not allow remote URL media and Base64-encoded media to be mixed in a single request. Local, stored, and uploaded files are sent as Base64-encoded content, and text inputs may be combined with either media source. Consult your provider's documentation to determine which multimodal models and inputs are available.
 
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
