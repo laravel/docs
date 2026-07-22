@@ -89,7 +89,7 @@ If needed, you may set the `host` option to a UNIX socket path. If you do this, 
 <a name="redis"></a>
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~2.0) via Composer. [Laravel Sail](/docs/{{version}}/sail) already includes this extension. In addition, official Laravel application platforms such as [Laravel Cloud](https://cloud.laravel.com) and [Laravel Forge](https://forge.laravel.com) have the PhpRedis extension installed by default.
+Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package via Composer. [Laravel Sail](/docs/{{version}}/sail) already includes this extension. In addition, official Laravel application platforms such as [Laravel Cloud](https://cloud.laravel.com) and [Laravel Forge](https://forge.laravel.com) have the PhpRedis extension installed by default.
 
 For more information on configuring Redis, consult its [Laravel documentation page](/docs/{{version}}/redis#configuration).
 
