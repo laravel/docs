@@ -139,6 +139,9 @@ public function up(): void
 
 Sometimes a migration might be meant to support a feature that is not yet active and you do not want it to run yet. In this case you may define a `shouldRun` method on the migration. If the `shouldRun` method returns `false`, the migration will be skipped:
 
+> [!WARNING]
+> Be aware that skipping migrations violates Laravel's promise of safely running migrations in order, especially when the `shouldRun` condition is only temporary and will run later. The migration might successfully not run on all environments or when changes to the underlying configuration data are made inconsistently, the order might be different and result in a different state for the environment.
+
 ```php
 use App\Models\Flight;
 use Laravel\Pennant\Feature;
