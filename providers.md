@@ -1,43 +1,46 @@
-# Service Providers
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Сервіс-провайдери
 
-- [Introduction](#introduction)
-- [Writing Service Providers](#writing-service-providers)
-    - [The Register Method](#the-register-method)
-    - [The Boot Method](#the-boot-method)
-- [Registering Providers](#registering-providers)
-- [Deferred Providers](#deferred-providers)
+- [Вступ](#introduction)
+- [Написання сервіс-провайдерів](#writing-service-providers)
+    - [Метод register](#the-register-method)
+    - [Метод boot](#the-boot-method)
+- [Реєстрація провайдерів](#registering-providers)
+- [Відкладені провайдери](#deferred-providers)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Service providers are the central place of all Laravel application bootstrapping. Your own application, as well as all of Laravel's core services, are bootstrapped via service providers.
+Сервіс-провайдери - центральне місце завантаження всього застосунку Laravel. І ваш власний застосунок, і всі базові сервіси Laravel завантажуються саме через сервіс-провайдери.
 
-But, what do we mean by "bootstrapped"? In general, we mean **registering** things, including registering service container bindings, event listeners, middleware, and even routes. Service providers are the central place to configure your application.
+Але що ми маємо на увазі під «завантаженням»? Загалом - **реєстрацію** речей: прив'язок сервіс-контейнера, слухачів подій, `middleware` і навіть маршрутів. Сервіс-провайдери є центральним місцем налаштування вашого застосунку.
 
-Laravel uses dozens of service providers internally to bootstrap its core services, such as the mailer, queue, cache, and others. Many of these providers are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
+Внутрішньо Laravel використовує десятки сервіс-провайдерів, щоб завантажити свої базові сервіси - поштовий модуль, черги, кеш тощо. Багато з цих провайдерів «відкладені», тобто вони завантажуються не на кожному запиті, а лише тоді, коли сервіси, які вони надають, справді потрібні.
 
-All user-defined service providers are registered in the `bootstrap/providers.php` file. In the following documentation, you will learn how to write your own service providers and register them with your Laravel application.
+Усі визначені вами сервіс-провайдери реєструються у файлі `bootstrap/providers.php`. Далі в документації ви дізнаєтеся, як писати власні сервіс-провайдери та реєструвати їх у своєму застосунку Laravel.
 
 > [!NOTE]
-> If you would like to learn more about how Laravel handles requests and works internally, check out our documentation on the Laravel [request lifecycle](/docs/{{version}}/lifecycle).
+> Якщо ви хочете дізнатися більше про те, як Laravel обробляє запити й працює всередині, перегляньте нашу документацію про [життєвий цикл запиту](/docs/{{version}}/lifecycle).
 
 <a name="writing-service-providers"></a>
-## Writing Service Providers
+## Написання сервіс-провайдерів
 
-All service providers extend the `Illuminate\Support\ServiceProvider` class. Most service providers contain a `register` and a `boot` method. Within the `register` method, you should **only bind things into the [service container](/docs/{{version}}/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
+Усі сервіс-провайдери успадковують клас `Illuminate\Support\ServiceProvider`. Більшість сервіс-провайдерів містять методи `register` і `boot`. У методі `register` слід **лише прив'язувати речі до [сервіс-контейнера](/docs/{{version}}/container)**. Ніколи не намагайтеся реєструвати в методі `register` слухачів подій, маршрути чи будь-яку іншу функціональність.
 
-The Artisan CLI can generate a new provider via the `make:provider` command. Laravel will automatically register your new provider in your application's `bootstrap/providers.php` file:
+Artisan CLI може згенерувати новий провайдер командою `make:provider`. Laravel автоматично зареєструє ваш новий провайдер у файлі `bootstrap/providers.php` вашого застосунку:
 
 ```shell
 php artisan make:provider RiakServiceProvider
 ```
 
 <a name="the-register-method"></a>
-### The Register Method
+### Метод register
 
-As mentioned previously, within the `register` method, you should only bind things into the [service container](/docs/{{version}}/container). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method. Otherwise, you may accidentally use a service that is provided by a service provider which has not loaded yet.
+Як згадувалося раніше, у методі `register` слід лише прив'язувати речі до [сервіс-контейнера](/docs/{{version}}/container). Ніколи не намагайтеся реєструвати там слухачів подій, маршрути чи будь-яку іншу функціональність. Інакше ви можете випадково скористатися сервісом, який надає ще не завантажений сервіс-провайдер.
 
-Let's take a look at a basic service provider. Within any of your service provider methods, you always have access to the `$app` property which provides access to the service container:
+Погляньмо на простий сервіс-провайдер. У будь-якому з його методів вам завжди доступна властивість `$app`, що дає доступ до сервіс-контейнера:
 
 ```php
 <?php
@@ -62,12 +65,12 @@ class RiakServiceProvider extends ServiceProvider
 }
 ```
 
-This service provider only defines a `register` method, and uses that method to define an implementation of `App\Services\Riak\Connection` in the service container. If you're not yet familiar with Laravel's service container, check out [its documentation](/docs/{{version}}/container).
+Цей сервіс-провайдер визначає лише метод `register` і використовує його, щоб визначити реалізацію `App\Services\Riak\Connection` у сервіс-контейнері. Якщо ви ще не знайомі із сервіс-контейнером Laravel, перегляньте [його документацію](/docs/{{version}}/container).
 
 <a name="the-bindings-and-singletons-properties"></a>
-#### The `bindings` and `singletons` Properties
+#### Властивості `bindings` і `singletons`
 
-If your service provider registers many simple bindings, you may wish to use the `bindings` and `singletons` properties instead of manually registering each container binding. When the service provider is loaded by the framework, it will automatically check for these properties and register their bindings:
+Якщо ваш сервіс-провайдер реєструє багато простих прив'язок, ви можете скористатися властивостями `bindings` і `singletons` замість того, щоб реєструвати кожну прив'язку контейнера вручну. Коли фреймворк завантажує сервіс-провайдер, він автоматично перевіряє ці властивості й реєструє їхні прив'язки:
 
 ```php
 <?php
@@ -105,9 +108,9 @@ class AppServiceProvider extends ServiceProvider
 ```
 
 <a name="the-boot-method"></a>
-### The Boot Method
+### Метод boot
 
-So, what if we need to register a [view composer](/docs/{{version}}/views#view-composers) within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework:
+А що, якщо нам потрібно зареєструвати в сервіс-провайдері [компоновник представлень](/docs/{{version}}/views#view-composers)? Це слід робити в методі `boot`. **Цей метод викликається після реєстрації всіх інших сервіс-провайдерів**, тобто вам доступні всі інші сервіси, зареєстровані фреймворком:
 
 ```php
 <?php
@@ -132,9 +135,9 @@ class ComposerServiceProvider extends ServiceProvider
 ```
 
 <a name="boot-method-dependency-injection"></a>
-#### Boot Method Dependency Injection
+#### Впровадження залежностей у методі boot
 
-You may type-hint dependencies for your service provider's `boot` method. The [service container](/docs/{{version}}/container) will automatically inject any dependencies you need:
+Ви можете вказати типи залежностей для методу `boot` вашого сервіс-провайдера. [Сервіс-контейнер](/docs/{{version}}/container) автоматично впровадить усі потрібні вам залежності:
 
 ```php
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -151,9 +154,9 @@ public function boot(ResponseFactory $response): void
 ```
 
 <a name="registering-providers"></a>
-## Registering Providers
+## Реєстрація провайдерів
 
-All service providers are registered in the `bootstrap/providers.php` configuration file. This file returns an array that contains the class names of your application's service providers:
+Усі сервіс-провайдери реєструються в конфігураційному файлі `bootstrap/providers.php`. Цей файл повертає масив, що містить імена класів сервіс-провайдерів вашого застосунку:
 
 ```php
 <?php
@@ -163,7 +166,7 @@ return [
 ];
 ```
 
-When you invoke the `make:provider` Artisan command, Laravel will automatically add the generated provider to the `bootstrap/providers.php` file. However, if you have manually created the provider class, you should manually add the provider class to the array:
+Коли ви викликаєте команду Artisan `make:provider`, Laravel автоматично додає згенерований провайдер до файлу `bootstrap/providers.php`. Однак якщо ви створили клас провайдера вручну, вам слід самостійно додати його до масиву:
 
 ```php
 <?php
@@ -175,13 +178,13 @@ return [
 ```
 
 <a name="deferred-providers"></a>
-## Deferred Providers
+## Відкладені провайдери
 
-If your provider is **only** registering bindings in the [service container](/docs/{{version}}/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
+Якщо ваш провайдер **лише** реєструє прив'язки в [сервіс-контейнері](/docs/{{version}}/container), ви можете відкласти його реєстрацію до моменту, коли одна із зареєстрованих прив'язок справді знадобиться. Відкладене завантаження такого провайдера покращить швидкодію вашого застосунку, адже його не доведеться завантажувати з файлової системи на кожному запиті.
 
-Laravel compiles and stores a list of all of the services supplied by deferred service providers, along with the name of its service provider class. Then, only when you attempt to resolve one of these services does Laravel load the service provider.
+Laravel компілює та зберігає список усіх сервісів, які надають відкладені сервіс-провайдери, разом з іменами їхніх класів. Далі Laravel завантажує сервіс-провайдер лише тоді, коли ви намагаєтеся розв'язати один із цих сервісів.
 
-To defer the loading of a provider, implement the `\Illuminate\Contracts\Support\DeferrableProvider` interface and define a `provides` method. The `provides` method should return the service container bindings registered by the provider:
+Щоб відкласти завантаження провайдера, реалізуйте інтерфейс `\Illuminate\Contracts\Support\DeferrableProvider` і визначте метод `provides`. Метод `provides` має повертати прив'язки сервіс-контейнера, зареєстровані провайдером:
 
 ```php
 <?php
