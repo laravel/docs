@@ -1,109 +1,112 @@
-# AI Assisted Development
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Розробка за допомогою AI
 
- - [Introduction](#introduction)
-     - [Why Laravel for AI Development?](#why-laravel-for-ai-development)
+ - [Вступ](#introduction)
+     - [Чому Laravel для розробки з AI?](#why-laravel-for-ai-development)
  - [Laravel Boost](#laravel-boost)
-     - [Installation](#installation)
-     - [Available Tools](#available-tools)
-     - [AI Guidelines](#ai-guidelines)
-     - [Agent Skills](#agent-skills)
-     - [Documentation Search](#documentation-search)
-     - [Agents Integration](#agents-integration)
+     - [Встановлення](#installation)
+     - [Доступні інструменти](#available-tools)
+     - [Настанови для AI](#ai-guidelines)
+     - [Навички агентів](#agent-skills)
+     - [Пошук у документації](#documentation-search)
+     - [Інтеграція з агентами](#agents-integration)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel is uniquely positioned to be the best framework for AI assisted and agentic development. The rise of AI coding agents like [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://opencode.ai), [Cursor](https://cursor.com), and [GitHub Copilot](https://github.com/features/copilot) has transformed how developers write code. These tools can generate entire features, debug complex issues, and refactor code at unprecedented speed - but their effectiveness depends heavily on how well they understand your codebase.
+Laravel має унікальні передумови, щоб бути найкращим фреймворком для розробки за допомогою AI та агентів. Поява AI-агентів для написання коду - [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenCode](https://opencode.ai), [Cursor](https://cursor.com) і [GitHub Copilot](https://github.com/features/copilot) - змінила те, як розробники пишуть код. Ці інструменти можуть створювати цілі можливості, налагоджувати складні проблеми та рефакторити код із небаченою швидкістю, але їхня ефективність значною мірою залежить від того, наскільки добре вони розуміють вашу кодову базу.
 
 <a name="why-laravel-for-ai-development"></a>
-### Why Laravel for AI Development?
+### Чому Laravel для розробки з AI?
 
-Laravel's opinionated conventions and well-defined structure make it an ideal framework for AI assisted development. When you ask an AI agent to add a controller, it knows exactly where to place it. When you need a new migration, the naming conventions and file locations are predictable. This consistency eliminates the guesswork that often trips up AI tools in more flexible frameworks.
+Чіткі домовленості та добре визначена структура роблять Laravel ідеальним фреймворком для розробки за допомогою AI. Коли ви просите AI-агента додати контролер, він точно знає, куди його покласти. Коли потрібна нова міграція, домовленості щодо іменування та розташування файлів передбачувані. Ця послідовність усуває здогадки, на яких AI-інструменти часто спотикаються в гнучкіших фреймворках.
 
-Beyond file organization, Laravel's expressive syntax and comprehensive documentation give AI agents the context they need to generate accurate, idiomatic code. Features like Eloquent relationships, form requests, and middleware follow patterns that agents can reliably understand and replicate. The result is AI-generated code that looks like it was written by a seasoned Laravel developer, not stitched together from generic PHP snippets.
+Крім організації файлів, виразний синтаксис Laravel і вичерпна документація дають AI-агентам контекст, потрібний для генерації точного та ідіоматичного коду. Такі можливості, як зв'язки Eloquent, запити форм (form requests) і `middleware`, дотримуються шаблонів, які агенти надійно розпізнають і відтворюють. Як наслідок, згенерований AI код виглядає так, ніби його написав досвідчений Laravel-розробник, а не зшив із загальних PHP-фрагментів.
 
 <a name="laravel-boost"></a>
 ## Laravel Boost
 
-[Laravel Boost](https://github.com/laravel/boost) bridges the gap between AI coding agents and your Laravel application. Boost is an MCP (Model Context Protocol) server equipped with over 15 specialized tools that provide AI agents with deep insight into your application's structure, database, routes, and more. When you install Boost, your AI agent transforms from a general-purpose code assistant into a Laravel expert that understands your specific application.
+[Laravel Boost](https://github.com/laravel/boost) долає розрив між AI-агентами для написання коду та вашим застосунком Laravel. Boost - це MCP-сервер (Model Context Protocol) із понад 15 спеціалізованими інструментами, які дають AI-агентам глибоке розуміння структури вашого застосунку, бази даних, маршрутів тощо. Коли ви встановлюєте Boost, ваш AI-агент перетворюється із загального помічника з написання коду на експерта з Laravel, який розуміє саме ваш застосунок.
 
-Boost provides three major capabilities: a suite of MCP tools for inspecting and interacting with your application, composable AI guidelines crafted specifically for the Laravel ecosystem, and a powerful documentation API containing over 17,000 pieces of Laravel-specific knowledge.
+Boost надає три основні можливості: набір MCP-інструментів для інспекції вашого застосунку та взаємодії з ним, композиційні настанови для AI, створені спеціально для екосистеми Laravel, і потужний API документації, що містить понад 17 000 фрагментів знань про Laravel.
 
 <a name="installation"></a>
-### Installation
+### Встановлення
 
-Boost can be installed in Laravel 10, 11, 12, and 13 applications running PHP 8.1 or higher. To get started, install Boost as a development dependency:
+Boost можна встановити в застосунках Laravel 10, 11, 12 і 13, що працюють на PHP 8.1 або новішому. Щоб почати, встановіть Boost як залежність для розробки:
 
 ```shell
 composer require laravel/boost --dev
 ```
 
-Once installed, run the interactive installer:
+Після встановлення запустіть інтерактивний інсталятор:
 
 ```shell
 php artisan boost:install
 ```
 
-The installer will auto-detect your IDE and AI agents, allowing you to select the integrations that make sense for your project. Boost will generate the necessary configuration files, such as `.mcp.json` for MCP-compatible editors and guideline files for AI context.
+Інсталятор автоматично визначить вашу IDE та AI-агентів, дозволивши обрати інтеграції, які мають сенс для вашого проєкту. Boost згенерує потрібні конфігураційні файли, як-от `.mcp.json` для редакторів, сумісних з MCP, і файли настанов для контексту AI.
 
 > [!NOTE]
-> Generated configuration files like `.mcp.json`, `CLAUDE.md`, and `boost.json` can be safely added to your `.gitignore` if you prefer each developer to configure their own environment.
+> Згенеровані конфігураційні файли на кшталт `.mcp.json`, `CLAUDE.md` і `boost.json` можна безпечно додати до `.gitignore`, якщо ви віддаєте перевагу тому, щоб кожен розробник налаштовував власне середовище.
 
 <a name="available-tools"></a>
-### Available Tools
+### Доступні інструменти
 
-Boost exposes a comprehensive set of tools to AI agents via the Model Context Protocol. These tools allow agents to deeply understand and interact with your Laravel application:
+Boost надає AI-агентам вичерпний набір інструментів через Model Context Protocol. Ці інструменти дозволяють агентам глибоко розуміти ваш застосунок Laravel і взаємодіяти з ним:
 
 <div class="content-list" markdown="1">
 
-- **Application Introspection** - Query your PHP and Laravel versions, list installed packages, and inspect your application's configuration and environment variables.
-- **Database Tools** - Inspect your database schema, execute read-only queries, and understand your data structure without leaving the conversation.
-- **Route Inspection** - List all registered routes with their middleware, controllers, and parameters.
-- **Artisan Commands** - Discover available Artisan commands and their arguments, enabling agents to suggest and execute the right commands for your task.
-- **Log Analysis** - Read and analyze your application's log files to help debug issues.
-- **Browser Logs** - Access browser console logs and errors when developing with Laravel's frontend tools.
-- **Tinker Integration** - Execute PHP code in the context of your application via Laravel Tinker, allowing agents to test hypotheses and verify behavior.
-- **Documentation Search** - Search Laravel ecosystem documentation with results tailored to your installed package versions.
+- **Інспекція застосунку** - дізнаватися версії PHP і Laravel, переглядати список встановлених пакетів, а також конфігурацію застосунку та змінні середовища.
+- **Інструменти бази даних** - переглядати схему бази даних, виконувати запити лише на читання й розуміти структуру ваших даних, не полишаючи діалогу.
+- **Інспекція маршрутів** - переглядати всі зареєстровані маршрути разом із їхніми `middleware`, контролерами та параметрами.
+- **Команди Artisan** - знаходити доступні команди Artisan та їхні аргументи, щоб агенти могли пропонувати й виконувати потрібні для вашого завдання команди.
+- **Аналіз логів** - читати й аналізувати файли логів вашого застосунку, щоб допомогти в налагодженні.
+- **Логи браузера** - отримувати доступ до логів і помилок консолі браузера під час розробки з фронтенд-інструментами Laravel.
+- **Інтеграція з Tinker** - виконувати PHP-код у контексті вашого застосунку через Laravel Tinker, що дозволяє агентам перевіряти гіпотези та підтверджувати поведінку.
+- **Пошук у документації** - шукати в документації екосистеми Laravel з результатами, підібраними під версії ваших встановлених пакетів.
 
 </div>
 
 <a name="ai-guidelines"></a>
-### AI Guidelines
+### Настанови для AI
 
-Boost includes a comprehensive set of AI guidelines specifically crafted for the Laravel ecosystem. These guidelines teach AI agents how to write idiomatic Laravel code, follow framework conventions, and avoid common pitfalls. Guidelines are composable and version-aware, meaning agents receive instructions appropriate for your exact package versions.
+Boost містить вичерпний набір настанов для AI, створених спеціально для екосистеми Laravel. Ці настанови вчать AI-агентів писати ідіоматичний код Laravel, дотримуватися домовленостей фреймворку й уникати типових пасток. Настанови композиційні та враховують версії, тобто агенти отримують інструкції, доречні саме для ваших версій пакетів.
 
-Guidelines are available for Laravel itself and over 16 packages in the Laravel ecosystem, including:
+Настанови доступні для самого Laravel і понад 16 пакетів екосистеми Laravel, зокрема:
 
 <div class="content-list" markdown="1">
 
-- Livewire (2.x, 3.x, and 4.x)
-- Inertia.js (React, Svelte, and Vue variants)
-- Tailwind CSS (3.x and 4.x)
-- Filament (3.x and 4.x)
+- Livewire (2.x, 3.x і 4.x)
+- Inertia.js (варіанти для React, Svelte і Vue)
+- Tailwind CSS (3.x і 4.x)
+- Filament (3.x і 4.x)
 - PHPUnit
 - Pest PHP
 - Laravel Pint
-- And many more
+- І багато інших
 
 </div>
 
-When you run `boost:install`, Boost automatically detects which packages your application uses and assembles the relevant guidelines into your project's AI context files.
+Коли ви виконуєте `boost:install`, Boost автоматично визначає, які пакети використовує ваш застосунок, і збирає відповідні настанови у файли AI-контексту вашого проєкту.
 
 <a name="agent-skills"></a>
-### Agent Skills
+### Навички агентів
 
-[Agent Skills](https://agentskills.io/home) are lightweight, targeted knowledge modules that agents can activate on-demand when working on specific domains. Unlike guidelines, which are loaded upfront, skills allow detailed patterns and best practices to be loaded only when relevant, reducing context bloat and improving the relevance of AI-generated code.
+[Навички агентів](https://agentskills.io/home) - це легкі, цільові модулі знань, які агенти можуть активувати на вимогу, працюючи в конкретній предметній області. На відміну від настанов, які завантажуються наперед, навички дозволяють підвантажувати докладні шаблони й найкращі практики лише тоді, коли вони доречні, зменшуючи роздування контексту та підвищуючи релевантність згенерованого AI коду.
 
-Skills are available for popular Laravel packages like Livewire, Inertia, Tailwind CSS, Pest, and more. When you run `boost:install` and select skills as a feature, skills are automatically installed based on the packages detected in your `composer.json`.
+Навички доступні для популярних пакетів Laravel, як-от Livewire, Inertia, Tailwind CSS, Pest тощо. Коли ви виконуєте `boost:install` і обираєте навички як одну з можливостей, вони встановлюються автоматично на основі пакетів, виявлених у вашому `composer.json`.
 
 <a name="documentation-search"></a>
-### Documentation Search
+### Пошук у документації
 
-Boost includes a powerful documentation API that gives AI agents access to over 17,000 pieces of Laravel ecosystem documentation. Unlike generic web searches, this documentation is indexed, vectorized, and filtered to match your exact package versions.
+Boost містить потужний API документації, який дає AI-агентам доступ до понад 17 000 фрагментів документації екосистеми Laravel. На відміну від звичайного пошуку в інтернеті, ця документація проіндексована, векторизована та відфільтрована відповідно до ваших версій пакетів.
 
-When an agent needs to understand how a feature works, it can search Boost's documentation API and receive accurate, version-specific information. This eliminates the common problem of AI agents suggesting deprecated methods or syntax from older framework versions.
+Коли агентові потрібно зрозуміти, як працює якась можливість, він може виконати пошук через API документації Boost і отримати точну інформацію, прив'язану до конкретної версії. Це усуває поширену проблему, коли AI-агенти пропонують застарілі методи чи синтаксис зі старіших версій фреймворку.
 
 <a name="agents-integration"></a>
-### Agents Integration
+### Інтеграція з агентами
 
-Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. For detailed setup instructions for Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot, and Junie, see the [Set Up Your Agents](/docs/{{version}}/boost#set-up-your-agents) section of the Boost documentation.
+Boost інтегрується з популярними IDE та AI-інструментами, які підтримують Model Context Protocol. Докладні інструкції з налаштування для Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot і Junie дивіться в розділі [Налаштування ваших агентів](/docs/{{version}}/boost#set-up-your-agents) документації Boost.
