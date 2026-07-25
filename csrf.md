@@ -1,23 +1,26 @@
-# CSRF Protection
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Захист від CSRF
 
-- [Introduction](#csrf-introduction)
-- [Preventing CSRF Requests](#preventing-csrf-requests)
-    - [Origin Verification](#origin-verification)
-    - [Excluding URIs](#csrf-excluding-uris)
+- [Вступ](#csrf-introduction)
+- [Запобігання CSRF-запитам](#preventing-csrf-requests)
+    - [Перевірка джерела](#origin-verification)
+    - [Виключення URI](#csrf-excluding-uris)
 - [X-CSRF-Token](#csrf-x-csrf-token)
 - [X-XSRF-Token](#csrf-x-xsrf-token)
 
 <a name="csrf-introduction"></a>
-## Introduction
+## Вступ
 
-Cross-site request forgeries are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user. Thankfully, Laravel makes it easy to protect your application from [cross-site request forgery](https://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF) attacks.
+Міжсайтова підробка запитів - це різновид зловмисної атаки, за якої від імені автентифікованого користувача виконуються несанкціоновані команди. На щастя, Laravel спрощує захист вашого застосунку від атак [міжсайтової підробки запитів](https://en.wikipedia.org/wiki/Cross-site_request_forgery) (CSRF).
 
 <a name="csrf-explanation"></a>
-#### An Explanation of the Vulnerability
+#### Пояснення вразливості
 
-In case you're not familiar with cross-site request forgeries, let's discuss an example of how this vulnerability can be exploited. Imagine your application has a `/user/email` route that accepts a `POST` request to change the authenticated user's email address. Most likely, this route expects an `email` input field to contain the email address the user would like to begin using.
+Якщо ви не знайомі з міжсайтовою підробкою запитів, розгляньмо приклад того, як цю вразливість можна використати. Уявіть, що ваш застосунок має маршрут `/user/email`, який приймає `POST`-запит для зміни адреси електронної пошти автентифікованого користувача. Найімовірніше, цей маршрут очікує поле `email` із адресою, яку користувач хоче почати використовувати.
 
-Without CSRF protection, a malicious website could create an HTML form that points to your application's `/user/email` route and submits the malicious user's own email address:
+Без захисту від CSRF зловмисний сайт міг би створити HTML-форму, що вказує на маршрут `/user/email` вашого застосунку й надсилає власну адресу зловмисника:
 
 ```blade
 <form action="https://your-application.com/user/email" method="POST">
@@ -29,22 +32,22 @@ Without CSRF protection, a malicious website could create an HTML form that poin
 </script>
 ```
 
-If the malicious website automatically submits the form when the page is loaded, the malicious user only needs to lure an unsuspecting user of your application to visit their website and their email address will be changed in your application.
+Якщо зловмисний сайт автоматично надсилає форму під час завантаження сторінки, зловмиснику достатньо заманити нічого не підозрюючого користувача вашого застосунку на свій сайт - і адресу електронної пошти буде змінено.
 
-To prevent this vulnerability, we need to inspect every incoming `POST`, `PUT`, `PATCH`, or `DELETE` request for a secret session value that the malicious application is unable to access.
+Щоб запобігти цій вразливості, нам потрібно перевіряти кожен вхідний запит `POST`, `PUT`, `PATCH` чи `DELETE` на наявність секретного значення сесії, доступу до якого зловмисний застосунок не має.
 
 <a name="preventing-csrf-requests"></a>
-## Preventing CSRF Requests
+## Запобігання CSRF-запитам
 
-The `Illuminate\Foundation\Http\Middleware\PreventRequestForgery` [middleware](/docs/{{version}}/middleware), which is included in the `web` middleware group by default, protects your application from cross-site request forgeries using a two-layer approach.
+[`Middleware`](/docs/{{version}}/middleware) `Illuminate\Foundation\Http\Middleware\PreventRequestForgery`, який за замовчуванням входить до групи `web`, захищає ваш застосунок від міжсайтової підробки запитів двошаровим підходом.
 
-First, the middleware checks the browser's `Sec-Fetch-Site` header. Modern browsers automatically set this header on every request, indicating whether it originated from the same origin, the same site, or a cross-site source. If the header indicates the request came from the same origin, the request is allowed immediately without any token verification.
+Спершу `middleware` перевіряє заголовок браузера `Sec-Fetch-Site`. Сучасні браузери автоматично встановлюють цей заголовок для кожного запиту, вказуючи, чи походить він із того самого джерела (origin), того самого сайту, чи з міжсайтового джерела. Якщо заголовок свідчить, що запит надійшов із того самого джерела, його одразу пропускають без жодної перевірки токена.
 
-If origin verification does not pass — for example, because the request comes from an older browser that doesn't send the `Sec-Fetch-Site` header or because the connection is not secure — the middleware falls back to traditional CSRF token validation.
+Якщо перевірка джерела не проходить - наприклад, тому що запит надходить зі старішого браузера, який не надсилає заголовок `Sec-Fetch-Site`, або тому що з'єднання не є захищеним, - `middleware` повертається до традиційної перевірки CSRF-токена.
 
-Laravel automatically generates a CSRF "token" for each active [user session](/docs/{{version}}/session) managed by the application. This token is used to verify that the authenticated user is the person actually making the requests to the application. Since this token is stored in the user's session and changes each time the session is regenerated, a malicious application is unable to access it.
+Laravel автоматично генерує CSRF-«токен» для кожної активної [сесії користувача](/docs/{{version}}/session), якою керує застосунок. Цей токен використовується, щоб перевірити, що запити до застосунку робить саме автентифікований користувач. Оскільки токен зберігається в сесії користувача й змінюється щоразу, коли сесію регенеровано, зловмисний застосунок не може отримати до нього доступ.
 
-The current session's CSRF token can be accessed via the request's session or via the `csrf_token` helper function:
+Доступ до CSRF-токена поточної сесії можна отримати через сесію запиту або через функцію-хелпер `csrf_token`:
 
 ```php
 use Illuminate\Http\Request;
@@ -58,7 +61,7 @@ Route::get('/token', function (Request $request) {
 });
 ```
 
-Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your application, you should include a hidden CSRF `_token` field in the form so that the CSRF protection middleware can validate the request. For convenience, you may use the `@csrf` Blade directive to generate the hidden token input field:
+Щоразу, визначаючи у своєму застосунку HTML-форму з методом «POST», «PUT», «PATCH» чи «DELETE», додавайте до неї приховане поле CSRF `_token`, щоб `middleware` захисту від CSRF міг перевірити запит. Для зручності ви можете скористатися директивою Blade `@csrf`, яка згенерує приховане поле з токеном:
 
 ```blade
 <form method="POST" action="/profile">
@@ -70,16 +73,16 @@ Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your appli
 ```
 
 <a name="csrf-tokens-and-spas"></a>
-#### CSRF Tokens & SPAs
+#### CSRF-токени та SPA
 
-If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/docs/{{version}}/sanctum) for information on authenticating with your API and protecting against CSRF vulnerabilities.
+Якщо ви створюєте SPA, що використовує Laravel як бекенд для API, зверніться до [документації Laravel Sanctum](/docs/{{version}}/sanctum) по інформацію про автентифікацію з вашим API та захист від CSRF-вразливостей.
 
 <a name="origin-verification"></a>
-### Origin Verification
+### Перевірка джерела
 
-As discussed above, Laravel's request forgery middleware first checks the `Sec-Fetch-Site` header to determine if the request is from the same origin. By default, if this check does not pass, the middleware falls back to CSRF token validation.
+Як зазначено вище, `middleware` захисту від підробки запитів спершу перевіряє заголовок `Sec-Fetch-Site`, щоб визначити, чи надійшов запит із того самого джерела. За замовчуванням, якщо ця перевірка не проходить, `middleware` повертається до перевірки CSRF-токена.
 
-However, if you would like to rely solely on origin verification and disable the CSRF token fallback entirely, you may do so using the `preventRequestForgery` method in your application's `bootstrap/app.php` file:
+Однак якщо ви хочете покладатися виключно на перевірку джерела й повністю вимкнути запасну перевірку токена, скористайтеся методом `preventRequestForgery` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -87,12 +90,12 @@ However, if you would like to rely solely on origin verification and disable the
 })
 ```
 
-When using origin-only mode, requests that fail origin verification will receive a `403` HTTP response instead of the `419` response typically associated with CSRF token mismatches.
+У режимі перевірки лише за джерелом запити, які не пройшли цю перевірку, отримають HTTP-відповідь `403` замість відповіді `419`, яку зазвичай пов'язують із розбіжністю CSRF-токенів.
 
 > [!WARNING]
-> The `Sec-Fetch-Site` header is only sent by browsers over secure (HTTPS) connections. If your application is not served over HTTPS, origin verification will not be available and the middleware will fall back to CSRF token validation.
+> Заголовок `Sec-Fetch-Site` браузери надсилають лише через захищені (HTTPS) з'єднання. Якщо ваш застосунок працює не через HTTPS, перевірка джерела буде недоступна, і `middleware` повернеться до перевірки CSRF-токена.
 
-If your application needs to accept requests from subdomains (for example, `dashboard.example.com` accepting requests from `example.com`), you may allow same-site requests in addition to same-origin requests:
+Якщо ваш застосунок має приймати запити з піддоменів (наприклад, `dashboard.example.com` приймає запити від `example.com`), ви можете дозволити запити з того самого сайту на додачу до запитів із того самого джерела:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -101,11 +104,11 @@ If your application needs to accept requests from subdomains (for example, `dash
 ```
 
 <a name="csrf-excluding-uris"></a>
-### Excluding URIs From CSRF Protection
+### Виключення URI із захисту від CSRF
 
-Sometimes you may wish to exclude a set of URIs from CSRF protection. For example, if you are using [Stripe](https://stripe.com) to process payments and are utilizing their webhook system, you will need to exclude your Stripe webhook handler route from CSRF protection since Stripe will not know what CSRF token to send to your routes.
+Іноді вам може знадобитися виключити набір URI із захисту від CSRF. Наприклад, якщо ви використовуєте [Stripe](https://stripe.com) для обробки платежів і користуєтеся їхньою системою вебхуків, вам доведеться виключити маршрут обробника вебхуків Stripe із захисту від CSRF, адже Stripe не знатиме, який CSRF-токен надсилати до ваших маршрутів.
 
-Typically, you should place these kinds of routes outside of the `web` middleware group that Laravel applies to all routes in the `routes/web.php` file. However, you may also exclude specific routes by providing their URIs to the `preventRequestForgery` method in your application's `bootstrap/app.php` file:
+Зазвичай такі маршрути варто розміщувати поза групою `middleware` `web`, яку Laravel застосовує до всіх маршрутів у файлі `routes/web.php`. Утім, ви також можете виключити конкретні маршрути, передавши їхні URI методу `preventRequestForgery` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -118,18 +121,18 @@ Typically, you should place these kinds of routes outside of the `web` middlewar
 ```
 
 > [!NOTE]
-> For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/docs/{{version}}/testing).
+> Для зручності CSRF-`middleware` автоматично вимикається для всіх маршрутів під час [запуску тестів](/docs/{{version}}/testing).
 
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
 
-In addition to checking for the CSRF token as a POST parameter, the `PreventRequestForgery` middleware will also check for the `X-CSRF-TOKEN` request header. You could, for example, store the token in an HTML `meta` tag:
+Крім перевірки CSRF-токена як POST-параметра, `middleware` `PreventRequestForgery` також перевіряє заголовок запиту `X-CSRF-TOKEN`. Ви можете, наприклад, зберігати токен у HTML-тегу `meta`:
 
 ```blade
 <meta name="csrf-token" content="{{ csrf_token() }}">
 ```
 
-Then, you can instruct a library like jQuery to automatically add the token to all request headers. This provides simple, convenient CSRF protection for your AJAX based applications using legacy JavaScript technology:
+Далі ви можете вказати бібліотеці на кшталт jQuery автоматично додавати токен до всіх заголовків запитів. Це дає простий і зручний захист від CSRF для ваших AJAX-застосунків, що використовують застарілі JavaScript-технології:
 
 ```js
 $.ajaxSetup({
@@ -142,6 +145,6 @@ $.ajaxSetup({
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN
 
-Laravel stores the current CSRF token in an encrypted `XSRF-TOKEN` cookie that is included with each response generated by the framework. You can use the cookie value to set the `X-XSRF-TOKEN` request header.
+Laravel зберігає поточний CSRF-токен у зашифрованій cookie `XSRF-TOKEN`, яка додається до кожної відповіді, згенерованої фреймворком. Ви можете використати значення цієї cookie, щоб задати заголовок запиту `X-XSRF-TOKEN`.
 
-This cookie is primarily sent as a developer convenience since some JavaScript frameworks and libraries, like Angular and Axios, automatically place its value in the `X-XSRF-TOKEN` header on same-origin requests.
+Цю cookie надсилають насамперед задля зручності розробників, оскільки деякі JavaScript-фреймворки та бібліотеки - як-от Angular і Axios - автоматично підставляють її значення в заголовок `X-XSRF-TOKEN` для запитів із того самого джерела.
