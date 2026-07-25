@@ -1,23 +1,26 @@
-# Rate Limiting
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Обмеження частоти
 
-- [Introduction](#introduction)
-    - [Cache Configuration](#cache-configuration)
-- [Basic Usage](#basic-usage)
-    - [Manually Incrementing Attempts](#manually-incrementing-attempts)
-    - [Clearing Attempts](#clearing-attempts)
+- [Вступ](#introduction)
+    - [Конфігурація кешу](#cache-configuration)
+- [Базове використання](#basic-usage)
+    - [Ручне збільшення лічильника спроб](#manually-incrementing-attempts)
+    - [Скидання спроб](#clearing-attempts)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel includes a simple to use rate limiting abstraction which, in conjunction with your application's [cache](cache), provides an easy way to limit any action during a specified window of time.
+Laravel містить просту абстракцію обмеження частоти, яка разом із [кешем](cache) вашого застосунку дає легкий спосіб обмежити будь-яку дію в межах заданого проміжку часу.
 
 > [!NOTE]
-> If you are interested in rate limiting incoming HTTP requests, please consult the [rate limiter middleware documentation](/docs/{{version}}/routing#rate-limiting).
+> Якщо вас цікавить обмеження частоти вхідних HTTP-запитів, зверніться до [документації middleware обмежувача частоти](/docs/{{version}}/routing#rate-limiting).
 
 <a name="cache-configuration"></a>
-### Cache Configuration
+### Конфігурація кешу
 
-Typically, the rate limiter utilizes your default application cache as defined by the `default` key within your application's `cache` configuration file. However, you may specify which cache driver the rate limiter should use by defining a `limiter` key within your application's `cache` configuration file:
+Зазвичай обмежувач частоти використовує кеш застосунку за замовчуванням, заданий ключем `default` у файлі конфігурації `cache`. Проте ви можете вказати, який драйвер кешу має використовувати обмежувач частоти, описавши ключ `limiter` у файлі конфігурації `cache` вашого застосунку:
 
 ```php
 'default' => env('CACHE_STORE', 'database'),
@@ -26,11 +29,11 @@ Typically, the rate limiter utilizes your default application cache as defined b
 ```
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Базове використання
 
-The `Illuminate\Support\Facades\RateLimiter` facade may be used to interact with the rate limiter. The simplest method offered by the rate limiter is the `attempt` method, which rate limits a given callback for a given number of seconds.
+Для роботи з обмежувачем частоти призначено фасад `Illuminate\Support\Facades\RateLimiter`. Найпростіший метод, який пропонує обмежувач, - `attempt`: він обмежує частоту виконання заданого колбека протягом заданої кількості секунд.
 
-The `attempt` method returns `false` when the callback has no remaining attempts available; otherwise, the `attempt` method will return the callback's result or `true`. The first argument accepted by the `attempt` method is a rate limiter "key", which may be any string of your choosing that represents the action being rate limited:
+Метод `attempt` повертає `false`, коли в колбека не лишилося доступних спроб; інакше `attempt` поверне результат колбека або `true`. Перший аргумент, який приймає метод `attempt`, - «ключ» обмежувача частоти: це може бути будь-який рядок на ваш вибір, що представляє дію, частоту якої обмежують:
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
@@ -48,7 +51,7 @@ if (! $executed) {
 }
 ```
 
-If necessary, you may provide a fourth argument to the `attempt` method, which is the "decay rate", or the number of seconds until the available attempts are reset. For example, we can modify the example above to allow five attempts every two minutes:
+За потреби ви можете передати методу `attempt` четвертий аргумент - «швидкість згасання», тобто кількість секунд до скидання доступних спроб. Наприклад, ми можемо змінити приклад вище так, щоб дозволити п'ять спроб кожні дві хвилини:
 
 ```php
 $executed = RateLimiter::attempt(
@@ -62,9 +65,9 @@ $executed = RateLimiter::attempt(
 ```
 
 <a name="manually-incrementing-attempts"></a>
-### Manually Incrementing Attempts
+### Ручне збільшення лічильника спроб
 
-If you would like to manually interact with the rate limiter, a variety of other methods are available. For example, you may invoke the `tooManyAttempts` method to determine if a given rate limiter key has exceeded its maximum number of allowed attempts per minute:
+Якщо ви хочете працювати з обмежувачем частоти вручну, вам доступна низка інших методів. Наприклад, ви можете викликати метод `tooManyAttempts`, щоб визначити, чи перевищив заданий ключ обмежувача максимальну дозволену кількість спроб за хвилину:
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
@@ -78,7 +81,7 @@ RateLimiter::increment('send-message:'.$user->id);
 // Send message...
 ```
 
-When rate limiting an endpoint that may receive many simultaneous requests, you may wish to check the value returned by the `increment` method instead of using `tooManyAttempts` and `increment` as separate operations. When using the `redis`, `memcached`, or `database` cache stores, this value is incremented atomically, ensuring each concurrent request receives a unique count:
+Обмежуючи частоту точки, яка може отримувати багато одночасних запитів, вам, можливо, варто перевіряти значення, яке повертає метод `increment`, замість використовувати `tooManyAttempts` та `increment` як окремі операції. Зі сховищами кешу `redis`, `memcached` чи `database` це значення збільшується атомарно, тож кожен паралельний запит отримує унікальний лічильник:
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
@@ -92,7 +95,7 @@ if (RateLimiter::increment('send-message:'.$user->id) > $perMinute) {
 // Send message...
 ```
 
-Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `increment` method to increment the number of total attempts:
+Як варіант, ви можете скористатися методом `remaining`, щоб дізнатися, скільки спроб лишилося для заданого ключа. Якщо для ключа є спроби, ви можете викликати метод `increment`, щоб збільшити загальну кількість спроб:
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
@@ -104,16 +107,16 @@ if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
 }
 ```
 
-If you would like to increment the value for a given rate limiter key by more than one, you may provide the desired amount to the `increment` method:
+Якщо ви хочете збільшити значення для заданого ключа обмежувача більше ніж на одиницю, передайте потрібну величину методу `increment`:
 
 ```php
 RateLimiter::increment('send-message:'.$user->id, amount: 5);
 ```
 
 <a name="determining-limiter-availability"></a>
-#### Determining Limiter Availability
+#### Визначення доступності обмежувача
 
-When a key has no more attempts left, the `availableIn` method returns the number of seconds remaining until more attempts will be available:
+Коли в ключа не лишилося спроб, метод `availableIn` повертає кількість секунд до того, як спроби знову стануть доступними:
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
@@ -130,9 +133,9 @@ RateLimiter::increment('send-message:'.$user->id);
 ```
 
 <a name="clearing-attempts"></a>
-### Clearing Attempts
+### Скидання спроб
 
-You may reset the number of attempts for a given rate limiter key using the `clear` method. For example, you may reset the number of attempts when a given message is read by the receiver:
+Ви можете скинути кількість спроб для заданого ключа обмежувача методом `clear`. Наприклад, ви можете скидати кількість спроб, коли отримувач прочитав повідомлення:
 
 ```php
 use App\Models\Message;
