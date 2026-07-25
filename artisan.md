@@ -1,42 +1,45 @@
-# Artisan Console
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Консоль Artisan
 
-- [Introduction](#introduction)
+- [Вступ](#introduction)
     - [Tinker (REPL)](#tinker)
-- [Writing Commands](#writing-commands)
-    - [Generating Commands](#generating-commands)
-    - [Command Structure](#command-structure)
-    - [Closure Commands](#closure-commands)
-    - [Isolatable Commands](#isolatable-commands)
-- [Defining Input Expectations](#defining-input-expectations)
-    - [Arguments](#arguments)
-    - [Options](#options)
-    - [Input Arrays](#input-arrays)
-    - [Input Descriptions](#input-descriptions)
-    - [Prompting for Missing Input](#prompting-for-missing-input)
-- [Command I/O](#command-io)
-    - [Retrieving Input](#retrieving-input)
-    - [Prompting for Input](#prompting-for-input)
-    - [Writing Output](#writing-output)
-- [Registering Commands](#registering-commands)
-- [Programmatically Executing Commands](#programmatically-executing-commands)
-    - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
-- [Signal Handling](#signal-handling)
-- [The Dev Command](#the-dev-command)
-    - [Customizing Dev Processes](#customizing-dev-processes)
-    - [Filtering Dev Processes](#filtering-dev-processes)
-- [Stub Customization](#stub-customization)
-- [Events](#events)
+- [Написання команд](#writing-commands)
+    - [Генерація команд](#generating-commands)
+    - [Структура команди](#command-structure)
+    - [Команди на замиканнях](#closure-commands)
+    - [Ізольовані команди](#isolatable-commands)
+- [Опис очікуваного вводу](#defining-input-expectations)
+    - [Аргументи](#arguments)
+    - [Опції](#options)
+    - [Масиви вводу](#input-arrays)
+    - [Описи вводу](#input-descriptions)
+    - [Запит відсутнього вводу](#prompting-for-missing-input)
+- [Ввід і вивід команди](#command-io)
+    - [Отримання вводу](#retrieving-input)
+    - [Запит вводу в користувача](#prompting-for-input)
+    - [Виведення](#writing-output)
+- [Реєстрація команд](#registering-commands)
+- [Програмний запуск команд](#programmatically-executing-commands)
+    - [Виклик команд з інших команд](#calling-commands-from-other-commands)
+- [Обробка сигналів](#signal-handling)
+- [Команда dev](#the-dev-command)
+    - [Налаштування процесів dev](#customizing-dev-processes)
+    - [Фільтрування процесів dev](#filtering-dev-processes)
+- [Налаштування стабів](#stub-customization)
+- [Події](#events)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Artisan is the command line interface included with Laravel. Artisan exists at the root of your application as the `artisan` script and provides a number of helpful commands that can assist you while you build your application. To view a list of all available Artisan commands, you may use the `list` command:
+Artisan - це інтерфейс командного рядка, що входить до складу Laravel. Artisan лежить у корені вашого застосунку як скрипт `artisan` і надає чимало корисних команд, які стануть у пригоді під час розробки. Щоб побачити список усіх доступних команд Artisan, скористайтеся командою `list`:
 
 ```shell
 php artisan list
 ```
 
-Every command also includes a "help" screen which displays and describes the command's available arguments and options. To view a help screen, precede the name of the command with `help`:
+Кожна команда має також екран довідки, який показує та описує доступні аргументи й опції команди. Щоб побачити довідку, поставте перед назвою команди слово `help`:
 
 ```shell
 php artisan help migrate
@@ -45,7 +48,7 @@ php artisan help migrate
 <a name="laravel-sail"></a>
 #### Laravel Sail
 
-If you are using [Laravel Sail](/docs/{{version}}/sail) as your local development environment, remember to use the `sail` command line to invoke Artisan commands. Sail will execute your Artisan commands within your application's Docker containers:
+Якщо ви використовуєте [Laravel Sail](/docs/{{version}}/sail) як локальне середовище розробки, не забувайте викликати команди Artisan через командний рядок `sail`. Sail виконає ваші команди Artisan усередині Docker-контейнерів застосунку:
 
 ```shell
 ./vendor/bin/sail artisan list
@@ -54,42 +57,42 @@ If you are using [Laravel Sail](/docs/{{version}}/sail) as your local developmen
 <a name="tinker"></a>
 ### Tinker (REPL)
 
-[Laravel Tinker](https://github.com/laravel/tinker) is a powerful REPL for the Laravel framework, powered by the [PsySH](https://github.com/bobthecow/psysh) package.
+[Laravel Tinker](https://github.com/laravel/tinker) - це потужний REPL для фреймворку Laravel, побудований на пакеті [PsySH](https://github.com/bobthecow/psysh).
 
 <a name="installation"></a>
-#### Installation
+#### Встановлення
 
-All Laravel applications include Tinker by default. However, you may install Tinker using Composer if you have previously removed it from your application:
+Усі застосунки Laravel містять Tinker за замовчуванням. Проте, якщо ви раніше видалили його з застосунку, встановити Tinker можна через Composer:
 
 ```shell
 composer require laravel/tinker
 ```
 
 > [!NOTE]
-> Looking for hot reloading, multiline code editing, and autocompletion when interacting with your Laravel application? Check out [Tinkerwell](https://tinkerwell.app)!
+> Шукаєте гаряче перезавантаження, багаторядкове редагування коду й автодоповнення під час роботи з застосунком Laravel? Погляньте на [Tinkerwell](https://tinkerwell.app)!
 
 <a name="usage"></a>
-#### Usage
+#### Використання
 
-Tinker allows you to interact with your entire Laravel application on the command line, including your Eloquent models, jobs, events, and more. To enter the Tinker environment, run the `tinker` Artisan command:
+Tinker дозволяє взаємодіяти з усім вашим застосунком Laravel у командному рядку, включно з моделями Eloquent, завданнями, подіями тощо. Щоб увійти в середовище Tinker, виконайте команду Artisan `tinker`:
 
 ```shell
 php artisan tinker
 ```
 
-You can publish Tinker's configuration file using the `vendor:publish` command:
+Опублікувати файл конфігурації Tinker можна командою `vendor:publish`:
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
 > [!WARNING]
-> The `dispatch` helper function and `dispatch` method on the `Dispatchable` class depend on garbage collection to place the job on the queue. Therefore, when using Tinker, you should use `Bus::dispatch` or `Queue::push` to dispatch jobs.
+> Функція-хелпер `dispatch` і метод `dispatch` класу `Dispatchable` покладаються на збирач сміття, щоб покласти завдання в чергу. Тому в Tinker для диспетчеризації завдань слід використовувати `Bus::dispatch` або `Queue::push`.
 
 <a name="command-allow-list"></a>
-#### Command Allow List
+#### Список дозволених команд
 
-Tinker utilizes an "allow" list to determine which Artisan commands are allowed to be run within its shell. By default, you may run the `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `migrate:install`, `up`, and `optimize` commands. If you would like to allow more commands you may add them to the `commands` array in your `tinker.php` configuration file:
+Tinker використовує список дозволених команд, щоб визначити, які команди Artisan можна запускати в його оболонці. За замовчуванням доступні команди `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `migrate:install`, `up` та `optimize`. Якщо ви хочете дозволити більше команд, додайте їх до масиву `commands` у файлі конфігурації `tinker.php`:
 
 ```php
 'commands' => [
@@ -98,9 +101,9 @@ Tinker utilizes an "allow" list to determine which Artisan commands are allowed 
 ```
 
 <a name="classes-that-should-not-be-aliased"></a>
-#### Classes That Should Not Be Aliased
+#### Класи, для яких не слід створювати аліаси
 
-Typically, Tinker automatically aliases classes as you interact with them in Tinker. However, you may wish to never alias some classes. You may accomplish this by listing the classes in the `dont_alias` array of your `tinker.php` configuration file:
+Зазвичай Tinker автоматично створює аліаси для класів, з якими ви взаємодієте. Проте для деяких класів ви можете цього не хотіти. Перелічіть такі класи в масиві `dont_alias` файлу конфігурації `tinker.php`:
 
 ```php
 'dont_alias' => [
@@ -109,25 +112,25 @@ Typically, Tinker automatically aliases classes as you interact with them in Tin
 ```
 
 <a name="writing-commands"></a>
-## Writing Commands
+## Написання команд
 
-In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as you instruct Laravel to [scan other directories for Artisan commands](#registering-commands).
+Окрім команд, які постачаються з Artisan, ви можете створювати власні. Команди зазвичай зберігаються в каталозі `app/Console/Commands`; втім, ви вільні обрати інше місце, доки вказуєте Laravel [сканувати інші каталоги в пошуках команд Artisan](#registering-commands).
 
 <a name="generating-commands"></a>
-### Generating Commands
+### Генерація команд
 
-To create a new command, you may use the `make:command` Artisan command. This command will create a new command class in the `app/Console/Commands` directory. Don't worry if this directory does not exist in your application - it will be created the first time you run the `make:command` Artisan command:
+Щоб створити нову команду, скористайтеся командою Artisan `make:command`. Вона створить новий клас команди в каталозі `app/Console/Commands`. Не переймайтеся, якщо цього каталогу у вашому застосунку немає - його буде створено під час першого запуску `make:command`:
 
 ```shell
 php artisan make:command SendEmails
 ```
 
 <a name="command-structure"></a>
-### Command Structure
+### Структура команди
 
-After generating your command, you should define the command's signature and description using the `Signature` and `Description` attributes. The `Signature` attribute also allows you to define [your command's input expectations](#defining-input-expectations). The `handle` method will be called when your command is executed. You may place your command logic in this method.
+Після генерації команди опишіть її сигнатуру та опис за допомогою атрибутів `Signature` і `Description`. Атрибут `Signature` також дозволяє описати [очікуваний командою ввід](#defining-input-expectations). Метод `handle` викликається під час виконання команди - саме в ньому розміщується логіка.
 
-Let's take a look at an example command. Note that we are able to request any dependencies we need via the command's `handle` method. The Laravel [service container](/docs/{{version}}/container) will automatically inject all dependencies that are type-hinted in this method's signature:
+Погляньмо на приклад команди. Зверніть увагу, що ми можемо запросити будь-які потрібні залежності через метод `handle`. [Сервіс-контейнер](/docs/{{version}}/container) Laravel автоматично впровадить усі залежності, типи яких вказано в сигнатурі цього методу:
 
 ```php
 <?php
@@ -155,12 +158,12 @@ class SendEmails extends Command
 ```
 
 > [!NOTE]
-> For greater code reuse, it is good practice to keep your console commands light and let them defer to application services to accomplish their tasks. In the example above, note that we inject a service class to do the "heavy lifting" of sending the e-mails.
+> Задля кращого повторного використання коду варто тримати консольні команди легкими й доручати роботу сервісам застосунку. У прикладі вище ми впроваджуємо сервісний клас, який бере на себе «важку працю» з надсилання листів.
 
 <a name="exit-codes"></a>
-#### Exit Codes
+#### Коди виходу
 
-If nothing is returned from the `handle` method and the command executes successfully, the command will exit with a `0` exit code, indicating success. However, the `handle` method may optionally return an integer to manually specify the command's exit code:
+Якщо метод `handle` нічого не повертає і команда виконалася успішно, вона завершиться з кодом виходу `0`, що означає успіх. Проте `handle` може повернути ціле число, щоб задати код виходу вручну:
 
 ```php
 $this->error('Something went wrong.');
@@ -168,18 +171,18 @@ $this->error('Something went wrong.');
 return 1;
 ```
 
-If you would like to "fail" the command from any method within the command, you may utilize the `fail` method. The `fail` method will immediately terminate execution of the command and return an exit code of `1`:
+Якщо ви хочете «провалити» команду з будь-якого її методу, скористайтеся методом `fail`. Він негайно припинить виконання команди й поверне код виходу `1`:
 
 ```php
 $this->fail('Something went wrong.');
 ```
 
 <a name="closure-commands"></a>
-### Closure Commands
+### Команди на замиканнях
 
-Closure-based commands provide an alternative to defining console commands as classes. In the same way that route closures are an alternative to controllers, think of command closures as an alternative to command classes.
+Команди на замиканнях - це альтернатива описові консольних команд у вигляді класів. Так само, як замикання маршрутів є альтернативою контролерам, замикання команд є альтернативою класам команд.
 
-Even though the `routes/console.php` file does not define HTTP routes, it defines console-based entry points (routes) into your application. Within this file, you may define all of your closure-based console commands using the `Artisan::command` method. The `command` method accepts two arguments: the [command signature](#defining-input-expectations) and a closure which receives the command's arguments and options:
+Хоч файл `routes/console.php` і не описує HTTP-маршрути, він задає консольні точки входу (маршрути) до застосунку. У цьому файлі ви можете описати всі свої консольні команди на замиканнях за допомогою методу `Artisan::command`. Метод `command` приймає два аргументи: [сигнатуру команди](#defining-input-expectations) і замикання, яке отримує аргументи та опції команди:
 
 ```php
 Artisan::command('mail:send {user}', function (string $user) {
@@ -187,12 +190,12 @@ Artisan::command('mail:send {user}', function (string $user) {
 });
 ```
 
-The closure is bound to the underlying command instance, so you have full access to all of the helper methods you would typically be able to access on a full command class.
+Замикання прив'язане до екземпляра команди, тож вам доступні всі допоміжні методи, які ви зазвичай маєте в повноцінному класі команди.
 
 <a name="type-hinting-dependencies"></a>
-#### Type-Hinting Dependencies
+#### Типізація залежностей
 
-In addition to receiving your command's arguments and options, command closures may also type-hint additional dependencies that you would like resolved out of the [service container](/docs/{{version}}/container):
+Окрім аргументів і опцій команди, замикання можуть приймати типізовані додаткові залежності, які потрібно розв'язати із [сервіс-контейнера](/docs/{{version}}/container):
 
 ```php
 use App\Models\User;
@@ -205,9 +208,9 @@ Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) 
 ```
 
 <a name="closure-command-descriptions"></a>
-#### Closure Command Descriptions
+#### Описи команд на замиканнях
 
-When defining a closure-based command, you may use the `purpose` method to add a description to the command. This description will be displayed when you run the `php artisan list` or `php artisan help` commands:
+Описуючи команду на замиканні, ви можете додати їй опис методом `purpose`. Цей опис показуватиметься під час виконання команд `php artisan list` або `php artisan help`:
 
 ```php
 Artisan::command('mail:send {user}', function (string $user) {
@@ -216,12 +219,12 @@ Artisan::command('mail:send {user}', function (string $user) {
 ```
 
 <a name="isolatable-commands"></a>
-### Isolatable Commands
+### Ізольовані команди
 
 > [!WARNING]
-> To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> Щоб скористатися цією можливістю, ваш застосунок має використовувати драйвер кешу `memcached`, `redis`, `dynamodb`, `database`, `file` або `array` як драйвер за замовчуванням. Крім того, усі сервери мають спілкуватися з одним центральним сервером кешу.
 
-Sometimes you may wish to ensure that only one instance of a command can run at a time. To accomplish this, you may implement the `Illuminate\Contracts\Console\Isolatable` interface on your command class:
+Інколи потрібно гарантувати, що одночасно виконується лише один екземпляр команди. Для цього реалізуйте у класі команди інтерфейс `Illuminate\Contracts\Console\Isolatable`:
 
 ```php
 <?php
@@ -237,22 +240,22 @@ class SendEmails extends Command implements Isolatable
 }
 ```
 
-When you mark a command as `Isolatable`, Laravel automatically makes the `--isolated` option available for the command without needing to explicitly define it in the command's options. When the command is invoked with that option, Laravel will ensure that no other instances of that command are already running. Laravel accomplishes this by attempting to acquire an atomic lock using your application's default cache driver. If other instances of the command are running, the command will not execute; however, the command will still exit with a successful exit status code:
+Коли ви позначаєте команду як `Isolatable`, Laravel автоматично робить доступною опцію `--isolated` без потреби описувати її в опціях команди. Коли команду викликано з цією опцією, Laravel переконається, що інші екземпляри цієї команди ще не виконуються. Для цього він намагається отримати атомарне блокування через драйвер кешу за замовчуванням. Якщо інші екземпляри команди вже працюють, команда не виконається, проте все одно завершиться з успішним кодом виходу:
 
 ```shell
 php artisan mail:send 1 --isolated
 ```
 
-If you would like to specify the exit status code that the command should return if it is not able to execute, you may provide the desired status code via the `isolated` option:
+Якщо ви хочете задати код виходу, який команда має повертати, коли не змогла виконатися, передайте потрібний код через опцію `isolated`:
 
 ```shell
 php artisan mail:send 1 --isolated=12
 ```
 
 <a name="lock-id"></a>
-#### Lock ID
+#### Ідентифікатор блокування
 
-By default, Laravel will use the command's name to generate the string key that is used to acquire the atomic lock in your application's cache. However, you may customize this key by defining an `isolatableId` method on your Artisan command class, allowing you to integrate the command's arguments or options into the key:
+За замовчуванням Laravel використовує назву команди, щоб згенерувати рядковий ключ для атомарного блокування в кеші застосунку. Проте ви можете налаштувати цей ключ, визначивши метод `isolatableId` у класі команди Artisan, - це дозволяє вплести в ключ аргументи чи опції команди:
 
 ```php
 /**
@@ -265,9 +268,9 @@ public function isolatableId(): string
 ```
 
 <a name="lock-expiration-time"></a>
-#### Lock Expiration Time
+#### Час дії блокування
 
-By default, isolation locks expire after the command is finished. Or, if the command is interrupted and unable to finish, the lock will expire after one hour. However, you may adjust the lock expiration time by defining an `isolationLockExpiresAt` method on your command:
+За замовчуванням блокування ізоляції спливає після завершення команди. Якщо ж команду перервано і вона не змогла завершитися, блокування спливе за годину. Втім, ви можете змінити час дії блокування, визначивши в команді метод `isolationLockExpiresAt`:
 
 ```php
 use DateTimeInterface;
@@ -283,14 +286,14 @@ public function isolationLockExpiresAt(): DateTimeInterface|DateInterval
 ```
 
 <a name="defining-input-expectations"></a>
-## Defining Input Expectations
+## Опис очікуваного вводу
 
-When writing console commands, it is common to gather input from the user through arguments or options. Laravel makes it very convenient to define the input you expect from the user using the `signature` property on your commands. The `signature` property allows you to define the name, arguments, and options for the command in a single, expressive, route-like syntax.
+Пишучи консольні команди, часто доводиться збирати ввід від користувача через аргументи або опції. Laravel робить опис очікуваного вводу дуже зручним завдяки властивості `signature`. Вона дозволяє описати назву, аргументи та опції команди в одному виразному синтаксисі, схожому на маршрути.
 
 <a name="arguments"></a>
-### Arguments
+### Аргументи
 
-All user supplied arguments and options are wrapped in curly braces. In the following example, the command defines one required argument: `user`:
+Усі аргументи та опції, які надає користувач, беруться у фігурні дужки. У прикладі нижче команда описує один обов'язковий аргумент `user`:
 
 ```php
 /**
@@ -301,7 +304,7 @@ All user supplied arguments and options are wrapped in curly braces. In the foll
 protected $signature = 'mail:send {user}';
 ```
 
-You may also make arguments optional or define default values for arguments:
+Аргументи можна також робити необов'язковими або задавати їм значення за замовчуванням:
 
 ```php
 // Optional argument...
@@ -312,9 +315,9 @@ You may also make arguments optional or define default values for arguments:
 ```
 
 <a name="options"></a>
-### Options
+### Опції
 
-Options, like arguments, are another form of user input. Options are prefixed by two hyphens (`--`) when they are provided via the command line. There are two types of options: those that receive a value and those that don't. Options that don't receive a value serve as a boolean "switch". Let's take a look at an example of this type of option:
+Опції, як і аргументи, є ще однією формою користувацького вводу. У командному рядку опції записуються з двома дефісами (`--`). Є два типи опцій: ті, що приймають значення, і ті, що не приймають. Опції без значення слугують булевим «перемикачем». Погляньмо на приклад такої опції:
 
 ```php
 /**
@@ -325,16 +328,16 @@ Options, like arguments, are another form of user input. Options are prefixed by
 protected $signature = 'mail:send {user} {--queue}';
 ```
 
-In this example, the `--queue` switch may be specified when calling the Artisan command. If the `--queue` switch is passed, the value of the option will be `true`. Otherwise, the value will be `false`:
+У цьому прикладі перемикач `--queue` можна вказати під час виклику команди Artisan. Якщо його передано, значенням опції буде `true`. Інакше - `false`:
 
 ```shell
 php artisan mail:send 1 --queue
 ```
 
 <a name="options-with-values"></a>
-#### Options With Values
+#### Опції зі значеннями
 
-Next, let's take a look at an option that expects a value. If the user must specify a value for an option, you should suffix the option name with a `=` sign:
+Тепер погляньмо на опцію, яка очікує значення. Якщо користувач має вказати значення для опції, додайте до назви опції знак `=`:
 
 ```php
 /**
@@ -345,73 +348,73 @@ Next, let's take a look at an option that expects a value. If the user must spec
 protected $signature = 'mail:send {user} {--queue=}';
 ```
 
-In this example, the user may pass a value for the option like so. If the option is not specified when invoking the command, its value will be `null`:
+У цьому прикладі користувач може передати значення опції ось так. Якщо опцію не вказано під час виклику команди, її значенням буде `null`:
 
 ```shell
 php artisan mail:send 1 --queue=default
 ```
 
-You may assign default values to options by specifying the default value after the option name. If no option value is passed by the user, the default value will be used:
+Задати опціям значення за замовчуванням можна, вказавши його після назви опції. Якщо користувач не передасть значення, буде використано значення за замовчуванням:
 
 ```php
 'mail:send {user} {--queue=default}'
 ```
 
 <a name="option-shortcuts"></a>
-#### Option Shortcuts
+#### Скорочення опцій
 
-To assign a shortcut when defining an option, you may specify it before the option name and use the `|` character as a delimiter to separate the shortcut from the full option name:
+Щоб призначити опції скорочення, вкажіть його перед назвою опції та відділіть символом `|`:
 
 ```php
 'mail:send {user} {--Q|queue=}'
 ```
 
-When invoking the command on your terminal, option shortcuts should be prefixed with a single hyphen and no `=` character should be included when specifying a value for the option:
+Викликаючи команду в терміналі, скорочення опцій пишуться з одним дефісом, а символ `=` під час передавання значення не використовується:
 
 ```shell
 php artisan mail:send 1 -Qdefault
 ```
 
 <a name="input-arrays"></a>
-### Input Arrays
+### Масиви вводу
 
-If you would like to define arguments or options to expect multiple input values, you may use the `*` character. First, let's take a look at an example that specifies such an argument:
+Якщо ви хочете описати аргументи чи опції, які очікують кілька значень, скористайтеся символом `*`. Спершу погляньмо на приклад такого аргументу:
 
 ```php
 'mail:send {user*}'
 ```
 
-When running this command, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
+Під час запуску цієї команди аргументи `user` можна передати в командному рядку один за одним. Наприклад, наступна команда встановить значенням `user` масив зі значеннями `1` і `2`:
 
 ```shell
 php artisan mail:send 1 2
 ```
 
-This `*` character can be combined with an optional argument definition to allow zero or more instances of an argument:
+Символ `*` можна поєднати з описом необов'язкового аргументу, щоб дозволити нуль або більше екземплярів аргументу:
 
 ```php
 'mail:send {user?*}'
 ```
 
 <a name="option-arrays"></a>
-#### Option Arrays
+#### Масиви опцій
 
-When defining an option that expects multiple input values, each option value passed to the command should be prefixed with the option name:
+Коли ви описуєте опцію, що очікує кілька значень, кожне передане команді значення опції має мати префікс із назвою опції:
 
 ```php
 'mail:send {--id=*}'
 ```
 
-Such a command may be invoked by passing multiple `--id` arguments:
+Таку команду можна викликати, передавши кілька аргументів `--id`:
 
 ```shell
 php artisan mail:send --id=1 --id=2
 ```
 
 <a name="input-descriptions"></a>
-### Input Descriptions
+### Описи вводу
 
-You may assign descriptions to input arguments and options by separating the argument name from the description using a colon. If you need a little extra room to define your command, feel free to spread the definition across multiple lines:
+Ви можете додати описи до аргументів і опцій вводу, відділивши назву від опису двокрапкою. Якщо для опису команди потрібно трохи більше місця, сміливо розбивайте визначення на кілька рядків:
 
 ```php
 /**
@@ -425,9 +428,9 @@ protected $signature = 'mail:send
 ```
 
 <a name="prompting-for-missing-input"></a>
-### Prompting for Missing Input
+### Запит відсутнього вводу
 
-If your command contains required arguments, the user will receive an error message when they are not provided. Alternatively, you may configure your command to automatically prompt the user when required arguments are missing by implementing the `PromptsForMissingInput` interface:
+Якщо ваша команда містить обов'язкові аргументи, користувач отримає повідомлення про помилку, коли їх не передано. Натомість ви можете налаштувати команду так, щоб вона автоматично запитувала користувача про відсутні обов'язкові аргументи, - для цього реалізуйте інтерфейс `PromptsForMissingInput`:
 
 ```php
 <?php
@@ -450,7 +453,7 @@ class SendEmails extends Command implements PromptsForMissingInput
 }
 ```
 
-If Laravel needs to gather a required argument from the user, it will automatically ask the user for the argument by intelligently phrasing the question using either the argument name or description. If you wish to customize the question used to gather the required argument, you may implement the `promptForMissingArgumentsUsing` method, returning an array of questions keyed by the argument names:
+Якщо Laravel потрібно отримати від користувача обов'язковий аргумент, він автоматично запитає його, розумно сформулювавши питання на основі назви або опису аргументу. Якщо ви хочете змінити питання, яким збирається обов'язковий аргумент, реалізуйте метод `promptForMissingArgumentsUsing`, повернувши масив питань із ключами за назвами аргументів:
 
 ```php
 /**
@@ -466,7 +469,7 @@ protected function promptForMissingArgumentsUsing(): array
 }
 ```
 
-You may also provide placeholder text by using a tuple containing the question and placeholder:
+Ви також можете додати текст-підказку, скориставшись кортежем із питання та підказки:
 
 ```php
 return [
@@ -474,7 +477,7 @@ return [
 ];
 ```
 
-If you would like complete control over the prompt, you may provide a closure that should prompt the user and return their answer:
+Якщо вам потрібен повний контроль над запитом, передайте замикання, яке має запитати користувача й повернути його відповідь:
 
 ```php
 use App\Models\User;
@@ -494,9 +497,9 @@ return [
 ```
 
 > [!NOTE]
-The comprehensive [Laravel Prompts](/docs/{{version}}/prompts) documentation includes additional information on the available prompts and their usage.
+Вичерпна документація [Laravel Prompts](/docs/{{version}}/prompts) містить додаткову інформацію про доступні запити та їх використання.
 
-If you wish to prompt the user to select or enter [options](#options), you may include prompts in your command's `handle` method. However, if you only wish to prompt the user when they have also been automatically prompted for missing arguments, then you may implement the `afterPromptingForMissingArguments` method:
+Якщо ви хочете запропонувати користувачеві обрати чи ввести [опції](#options), додайте запити в метод `handle` команди. Проте, якщо ви хочете запитувати користувача лише тоді, коли його вже автоматично запитали про відсутні аргументи, реалізуйте метод `afterPromptingForMissingArguments`:
 
 ```php
 use Symfony\Component\Console\Input\InputInterface;
@@ -518,12 +521,12 @@ protected function afterPromptingForMissingArguments(InputInterface $input, Outp
 ```
 
 <a name="command-io"></a>
-## Command I/O
+## Ввід і вивід команди
 
 <a name="retrieving-input"></a>
-### Retrieving Input
+### Отримання вводу
 
-While your command is executing, you will likely need to access the values for the arguments and options accepted by your command. To do so, you may use the `argument` and `option` methods. If an argument or option does not exist, `null` will be returned:
+Під час виконання команди вам, найімовірніше, знадобиться доступ до значень аргументів і опцій, які вона приймає. Для цього скористайтеся методами `argument` і `option`. Якщо аргументу чи опції не існує, буде повернуто `null`:
 
 ```php
 /**
@@ -535,13 +538,13 @@ public function handle(): void
 }
 ```
 
-If you need to retrieve all of the arguments as an `array`, call the `arguments` method:
+Якщо потрібно отримати всі аргументи як `array`, викличте метод `arguments`:
 
 ```php
 $arguments = $this->arguments();
 ```
 
-Options may be retrieved just as easily as arguments using the `option` method. To retrieve all of the options as an array, call the `options` method:
+Опції отримуються так само просто, як аргументи, - методом `option`. Щоб отримати всі опції як масив, викличте метод `options`:
 
 ```php
 // Retrieve a specific option...
@@ -551,7 +554,7 @@ $queueName = $this->option('queue');
 $options = $this->options();
 ```
 
-You may use the `input` method to retrieve a command's arguments and options as an `Illuminate\Console\CommandInput` instance, which provides the same typed accessors that are available on HTTP requests and other data containers:
+Метод `input` дозволяє отримати аргументи й опції команди як екземпляр `Illuminate\Console\CommandInput`, який надає ті самі типізовані аксесори, що доступні для HTTP-запитів та інших контейнерів даних:
 
 ```php
 use App\Enums\ReportType;
@@ -567,19 +570,19 @@ public function handle(): void
 }
 ```
 
-The `input` method may also be used to retrieve a single input value from either the arguments or options:
+Метод `input` також можна використати, щоб отримати одне значення з аргументів або опцій:
 
 ```php
 $queue = $this->input('queue', 'default');
 ```
 
 <a name="prompting-for-input"></a>
-### Prompting for Input
+### Запит вводу в користувача
 
 > [!NOTE]
-> [Laravel Prompts](/docs/{{version}}/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
+> [Laravel Prompts](/docs/{{version}}/prompts) - це PHP-пакет для додавання гарних і зручних форм до ваших консольних застосунків, з можливостями на кшталт браузерних: текстом-підказкою та валідацією.
 
-In addition to displaying output, you may also ask the user to provide input during the execution of your command. The `ask` method will prompt the user with the given question, accept their input, and then return the user's input back to your command:
+Окрім виведення інформації, ви можете просити користувача ввести дані під час виконання команди. Метод `ask` покаже користувачеві задане питання, прийме його ввід і поверне його вашій команді:
 
 ```php
 /**
@@ -593,22 +596,22 @@ public function handle(): void
 }
 ```
 
-The `ask` method also accepts an optional second argument which specifies the default value that should be returned if no user input is provided:
+Метод `ask` також приймає необов'язковий другий аргумент - значення за замовчуванням, яке буде повернуто, якщо користувач нічого не ввів:
 
 ```php
 $name = $this->ask('What is your name?', 'Taylor');
 ```
 
-The `secret` method is similar to `ask`, but the user's input will not be visible to them as they type in the console. This method is useful when asking for sensitive information such as passwords:
+Метод `secret` схожий на `ask`, але ввід користувача не відображатиметься в консолі під час набору. Цей метод стане в пригоді, коли ви запитуєте чутливу інформацію на кшталт паролів:
 
 ```php
 $password = $this->secret('What is the password?');
 ```
 
 <a name="asking-for-confirmation"></a>
-#### Asking for Confirmation
+#### Запит підтвердження
 
-If you need to ask the user for a simple "yes or no" confirmation, you may use the `confirm` method. By default, this method will return `false`. However, if the user enters `y` or `yes` in response to the prompt, the method will return `true`.
+Якщо потрібно спитати користувача про просте підтвердження «так чи ні», скористайтеся методом `confirm`. За замовчуванням цей метод повертає `false`. Проте, якщо користувач введе `y` або `yes`, метод поверне `true`.
 
 ```php
 if ($this->confirm('Do you wish to continue?')) {
@@ -616,7 +619,7 @@ if ($this->confirm('Do you wish to continue?')) {
 }
 ```
 
-If necessary, you may specify that the confirmation prompt should return `true` by default by passing `true` as the second argument to the `confirm` method:
+За потреби ви можете вказати, що запит підтвердження має за замовчуванням повертати `true`, передавши `true` другим аргументом методу `confirm`:
 
 ```php
 if ($this->confirm('Do you wish to continue?', true)) {
@@ -625,15 +628,15 @@ if ($this->confirm('Do you wish to continue?', true)) {
 ```
 
 <a name="auto-completion"></a>
-#### Auto-Completion
+#### Автодоповнення
 
-The `anticipate` method can be used to provide auto-completion for possible choices. The user can still provide any answer, regardless of the auto-completion hints:
+Метод `anticipate` можна використати, щоб надати автодоповнення для можливих варіантів. Користувач усе одно може ввести будь-яку відповідь, незалежно від підказок автодоповнення:
 
 ```php
 $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 ```
 
-Alternatively, you may pass a closure as the second argument to the `anticipate` method. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far, and return an array of options for auto-completion:
+Як варіант, ви можете передати другим аргументом методу `anticipate` замикання. Воно викликатиметься щоразу, коли користувач вводить символ. Замикання має приймати рядковий параметр із поточним вводом користувача й повертати масив варіантів для автодоповнення:
 
 ```php
 use App\Models\Address;
@@ -647,9 +650,9 @@ $name = $this->anticipate('What is your address?', function (string $input) {
 ```
 
 <a name="multiple-choice-questions"></a>
-#### Multiple Choice Questions
+#### Питання з кількома варіантами
 
-If you need to give the user a predefined set of choices when asking a question, you may use the `choice` method. You may set the array index of the default value to be returned if no option is chosen by passing the index as the third argument to the method:
+Якщо потрібно запропонувати користувачеві наперед визначений набір варіантів, скористайтеся методом `choice`. Індекс масиву зі значенням за замовчуванням, яке буде повернуто, якщо користувач нічого не обрав, передається третім аргументом методу:
 
 ```php
 $name = $this->choice(
@@ -659,7 +662,7 @@ $name = $this->choice(
 );
 ```
 
-In addition, the `choice` method accepts optional fourth and fifth arguments for determining the maximum number of attempts to select a valid response and whether multiple selections are permitted:
+Крім того, метод `choice` приймає необов'язкові четвертий і п'ятий аргументи: максимальну кількість спроб обрати коректну відповідь і чи дозволено кілька варіантів вибору:
 
 ```php
 $name = $this->choice(
@@ -672,9 +675,9 @@ $name = $this->choice(
 ```
 
 <a name="writing-output"></a>
-### Writing Output
+### Виведення
 
-To send output to the console, you may use the `line`, `newLine`, `info`, `comment`, `question`, `warn`, `alert`, and `error` methods. Each of these methods will use appropriate ANSI colors for their purpose. For example, let's display some general information to the user. Typically, the `info` method will display in the console as green colored text:
+Щоб вивести щось у консоль, скористайтеся методами `line`, `newLine`, `info`, `comment`, `question`, `warn`, `alert` та `error`. Кожен із них використовує відповідні ANSI-кольори. Наприклад, покажемо користувачеві загальну інформацію. Зазвичай метод `info` виводить у консоль текст зеленого кольору:
 
 ```php
 /**
@@ -688,19 +691,19 @@ public function handle(): void
 }
 ```
 
-To display an error message, use the `error` method. Error message text is typically displayed in red:
+Щоб показати повідомлення про помилку, скористайтеся методом `error`. Текст помилки зазвичай виводиться червоним:
 
 ```php
 $this->error('Something went wrong!');
 ```
 
-You may use the `line` method to display plain, uncolored text:
+Метод `line` виводить простий неколірний текст:
 
 ```php
 $this->line('Display this on the screen');
 ```
 
-You may use the `newLine` method to display a blank line:
+Метод `newLine` виводить порожній рядок:
 
 ```php
 // Write a single blank line...
@@ -711,9 +714,9 @@ $this->newLine(3);
 ```
 
 <a name="tables"></a>
-#### Tables
+#### Таблиці
 
-The `table` method makes it easy to correctly format multiple rows / columns of data. All you need to do is provide the column names and the data for the table and Laravel will automatically calculate the appropriate width and height of the table for you:
+Метод `table` спрощує правильне форматування кількох рядків / стовпців даних. Усе, що вам потрібно, - передати назви стовпців і дані таблиці, а Laravel автоматично обчислить відповідну ширину й висоту таблиці:
 
 ```php
 use App\Models\User;
@@ -725,9 +728,9 @@ $this->table(
 ```
 
 <a name="progress-bars"></a>
-#### Progress Bars
+#### Індикатори прогресу
 
-For long running tasks, it can be helpful to show a progress bar that informs users how complete the task is. Using the `withProgressBar` method, Laravel will display a progress bar and advance its progress for each iteration over a given iterable value:
+Для тривалих завдань корисно показувати індикатор прогресу, який повідомляє користувачам, наскільки завдання виконане. З методом `withProgressBar` Laravel покаже індикатор прогресу й просуватиме його на кожній ітерації по заданому ітерабельному значенню:
 
 ```php
 use App\Models\User;
@@ -737,7 +740,7 @@ $users = $this->withProgressBar(User::all(), function (User $user) {
 });
 ```
 
-Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar after processing each item:
+Інколи потрібен більший контроль над тим, як просувається індикатор прогресу. Спершу задайте загальну кількість кроків, які пройде процес. Потім просувайте індикатор після обробки кожного елемента:
 
 ```php
 $users = App\Models\User::all();
@@ -756,12 +759,12 @@ $bar->finish();
 ```
 
 > [!NOTE]
-> For more advanced options, check out the [Symfony Progress Bar component documentation](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
+> Про більш просунуті можливості читайте в [документації компонента Symfony Progress Bar](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
-## Registering Commands
+## Реєстрація команд
 
-By default, Laravel automatically registers all commands within the `app/Console/Commands` directory. However, you can instruct Laravel to scan other directories for Artisan commands using the `withCommands` method in your application's `bootstrap/app.php` file:
+За замовчуванням Laravel автоматично реєструє всі команди в каталозі `app/Console/Commands`. Проте ви можете вказати Laravel сканувати інші каталоги в пошуках команд Artisan за допомогою методу `withCommands` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withCommands([
@@ -769,7 +772,7 @@ By default, Laravel automatically registers all commands within the `app/Console
 ])
 ```
 
-If necessary, you may also manually register commands by providing the command's class name to the `withCommands` method:
+За потреби ви можете зареєструвати команди й вручну, передавши методу `withCommands` назву класу команди:
 
 ```php
 use App\Domain\Orders\Commands\SendEmails;
@@ -779,12 +782,12 @@ use App\Domain\Orders\Commands\SendEmails;
 ])
 ```
 
-When Artisan boots, all the commands in your application will be resolved by the [service container](/docs/{{version}}/container) and registered with Artisan.
+Коли Artisan завантажується, усі команди застосунку будуть розв'язані через [сервіс-контейнер](/docs/{{version}}/container) і зареєстровані в Artisan.
 
 <a name="programmatically-executing-commands"></a>
-## Programmatically Executing Commands
+## Програмний запуск команд
 
-Sometimes you may wish to execute an Artisan command outside of the CLI. For example, you may wish to execute an Artisan command from a route or controller. You may use the `call` method on the `Artisan` facade to accomplish this. The `call` method accepts either the command's signature name or class name as its first argument, and an array of command parameters as the second argument. The exit code will be returned:
+Інколи потрібно виконати команду Artisan поза межами CLI. Наприклад, вам може знадобитися виконати команду Artisan з маршруту чи контролера. Для цього скористайтеся методом `call` фасаду `Artisan`. Метод `call` приймає першим аргументом назву сигнатури команди або назву класу, а другим - масив параметрів команди. Він повертає код виходу:
 
 ```php
 use Illuminate\Support\Facades\Artisan;
@@ -799,16 +802,16 @@ Route::post('/user/{user}/mail', function (string $user) {
 });
 ```
 
-Alternatively, you may pass the entire Artisan command to the `call` method as a string:
+Як варіант, ви можете передати методу `call` цілу команду Artisan рядком:
 
 ```php
 Artisan::call('mail:send 1 --queue=default');
 ```
 
 <a name="passing-array-values"></a>
-#### Passing Array Values
+#### Передавання масивів значень
 
-If your command defines an option that accepts an array, you may pass an array of values to that option:
+Якщо ваша команда описує опцію, що приймає масив, ви можете передати цій опції масив значень:
 
 ```php
 use Illuminate\Support\Facades\Artisan;
@@ -822,9 +825,9 @@ Route::post('/mail', function () {
 ```
 
 <a name="passing-boolean-values"></a>
-#### Passing Boolean Values
+#### Передавання булевих значень
 
-If you need to specify the value of an option that does not accept string values, such as the `--force` flag on the `migrate:refresh` command, you should pass `true` or `false` as the value of the option:
+Якщо потрібно задати значення опції, яка не приймає рядкових значень, - наприклад, прапорець `--force` команди `migrate:refresh`, - передайте як значення опції `true` або `false`:
 
 ```php
 $exitCode = Artisan::call('migrate:refresh', [
@@ -833,9 +836,9 @@ $exitCode = Artisan::call('migrate:refresh', [
 ```
 
 <a name="queueing-artisan-commands"></a>
-#### Queueing Artisan Commands
+#### Постановка команд Artisan у чергу
 
-Using the `queue` method on the `Artisan` facade, you may even queue Artisan commands so they are processed in the background by your [queue workers](/docs/{{version}}/queues). Before using this method, make sure you have configured your queue and are running a queue listener:
+За допомогою методу `queue` фасаду `Artisan` ви можете навіть ставити команди Artisan у чергу, щоб їх у фоні обробляли [воркери черги](/docs/{{version}}/queues). Перш ніж користуватися цим методом, переконайтеся, що ви налаштували чергу й запустили слухача черги:
 
 ```php
 use Illuminate\Support\Facades\Artisan;
@@ -850,7 +853,7 @@ Route::post('/user/{user}/mail', function (string $user) {
 });
 ```
 
-Using the `onConnection` and `onQueue` methods, you may specify the connection or queue the Artisan command should be dispatched to:
+Методами `onConnection` та `onQueue` можна вказати підключення або чергу, до якої слід відправити команду Artisan:
 
 ```php
 Artisan::queue('mail:send', [
@@ -859,9 +862,9 @@ Artisan::queue('mail:send', [
 ```
 
 <a name="calling-commands-from-other-commands"></a>
-### Calling Commands From Other Commands
+### Виклик команд з інших команд
 
-Sometimes you may wish to call other commands from an existing Artisan command. You may do so using the `call` method. This `call` method accepts the command name and an array of command arguments / options:
+Інколи потрібно викликати інші команди з наявної команди Artisan. Це робиться методом `call`. Він приймає назву команди та масив аргументів / опцій:
 
 ```php
 /**
@@ -877,7 +880,7 @@ public function handle(): void
 }
 ```
 
-If you would like to call another console command and suppress all of its output, you may use the `callSilently` method. The `callSilently` method has the same signature as the `call` method:
+Якщо ви хочете викликати іншу консольну команду й приховати весь її вивід, скористайтеся методом `callSilently`. Він має ту саму сигнатуру, що й метод `call`:
 
 ```php
 $this->callSilently('mail:send', [
@@ -886,9 +889,9 @@ $this->callSilently('mail:send', [
 ```
 
 <a name="signal-handling"></a>
-## Signal Handling
+## Обробка сигналів
 
-As you may know, operating systems allow signals to be sent to running processes. For example, the `SIGTERM` signal is how operating systems ask a program to terminate gracefully. If you wish to listen for signals in your Artisan console commands and execute code when they occur, you may use the `trap` method:
+Як ви, можливо, знаєте, операційні системи дозволяють надсилати сигнали запущеним процесам. Наприклад, сигналом `SIGTERM` операційна система просить програму коректно завершити роботу. Якщо ви хочете слухати сигнали у своїх консольних командах Artisan і виконувати код, коли вони надходять, скористайтеся методом `trap`:
 
 ```php
 /**
@@ -904,7 +907,7 @@ public function handle(): void
 }
 ```
 
-To listen for multiple signals at once, you may provide an array of signals to the `trap` method:
+Щоб слухати кілька сигналів одразу, передайте методу `trap` масив сигналів:
 
 ```php
 $this->trap([SIGTERM, SIGQUIT], function (int $signal) {
@@ -915,19 +918,19 @@ $this->trap([SIGTERM, SIGQUIT], function (int $signal) {
 ```
 
 <a name="the-dev-command"></a>
-## The Dev Command
+## Команда dev
 
-The `dev` Artisan command starts all of the processes needed for local development in a single terminal window. By default, it concurrently runs the PHP development server, a queue worker, log tailing via [Pail](/docs/{{version}}/logging#tailing-log-messages-using-pail), and Vite asset compilation:
+Команда Artisan `dev` запускає в одному вікні термінала всі процеси, потрібні для локальної розробки. За замовчуванням вона паралельно запускає сервер розробки PHP, воркер черги, стеження за логами через [Pail](/docs/{{version}}/logging#tailing-log-messages-using-pail) і компіляцію ресурсів Vite:
 
 ```shell
 php artisan dev
 ```
 
-Under the hood, the `dev` command uses the `concurrently` npm package to manage the processes. Each process is labeled and color-coded in your terminal output so you can easily distinguish between them. If any process fails, all other processes will be stopped automatically.
+Під капотом команда `dev` керує процесами через npm-пакет `concurrently`. Кожен процес має свою мітку й колір у виводі термінала, тож їх легко розрізнити. Якщо якийсь процес завершиться помилкою, усі інші процеси буде автоматично зупинено.
 
-The default processes are:
+Процеси за замовчуванням:
 
-| Name | Command |
+| Назва | Команда |
 | --- | --- |
 | `server` | `php artisan serve --host=localhost` |
 | `queue` | `php artisan queue:listen --tries=1 --timeout=0` |
@@ -935,12 +938,12 @@ The default processes are:
 | `vite` | `npm run dev` |
 
 > [!NOTE]
-> The `vite` process automatically detects your Node package manager (npm, pnpm, Yarn, or Bun) and uses the appropriate run command.
+> Процес `vite` автоматично визначає ваш менеджер пакетів Node (npm, pnpm, Yarn чи Bun) і використовує відповідну команду запуску.
 
 <a name="customizing-dev-processes"></a>
-### Customizing Dev Processes
+### Налаштування процесів dev
 
-You may customize the processes that the `dev` command runs by using the `DevCommands` class, typically within the `boot` method of your application's `AppServiceProvider`. The `register` method accepts a command string and an optional name:
+Ви можете налаштувати процеси, які запускає команда `dev`, за допомогою класу `DevCommands` - зазвичай у методі `boot` вашого `AppServiceProvider`. Метод `register` приймає рядок команди й необов'язкову назву:
 
 ```php
 use Illuminate\Foundation\DevCommands;
@@ -954,13 +957,13 @@ public function boot(): void
 }
 ```
 
-When registering an Artisan command, you may use the `artisan` method which automatically prefixes the command with `php artisan`:
+Реєструючи команду Artisan, ви можете скористатися методом `artisan`, який автоматично додає до команди префікс `php artisan`:
 
 ```php
 DevCommands::artisan('horizon', 'horizon');
 ```
 
-Likewise, the `node` method prefixes the command with your detected package manager's run command (e.g. `npm run`), and the `nodeExec` method prefixes the command with the package manager's exec command (e.g. `npx`):
+Так само метод `node` додає префікс із командою запуску вашого менеджера пакетів (наприклад, `npm run`), а метод `nodeExec` - префікс із командою виконання менеджера пакетів (наприклад, `npx`):
 
 ```php
 DevCommands::node('storybook', 'storybook');
@@ -968,13 +971,13 @@ DevCommands::node('storybook', 'storybook');
 DevCommands::nodeExec('tailwindcss -i resources/css/app.css -o public/css/app.css --watch', 'tailwind');
 ```
 
-If you register a process with the same name as a default process, your process will replace the default. For example, you may customize the server process to use a different port:
+Якщо ви зареєструєте процес із такою самою назвою, як у процесу за замовчуванням, ваш процес замінить стандартний. Наприклад, ви можете налаштувати процес сервера на інший порт:
 
 ```php
 DevCommands::artisan('serve --host=localhost --port=9000', 'server');
 ```
 
-You may also customize the color of a process label in your terminal. The available color methods are `blue`, `purple`, `pink`, `orange`, `green`, and `yellow`. You may also pass a custom hex color to the `color` method:
+Ви також можете змінити колір мітки процесу в терміналі. Доступні методи кольорів: `blue`, `purple`, `pink`, `orange`, `green` та `yellow`. Крім того, методу `color` можна передати власний hex-колір:
 
 ```php
 DevCommands::register('my-command', 'my-process')->green();
@@ -982,16 +985,16 @@ DevCommands::register('my-command', 'my-process')->green();
 DevCommands::register('my-command', 'my-process')->color('#ff6347');
 ```
 
-To see all registered dev processes without starting them, use the `dev:list` command:
+Щоб побачити всі зареєстровані процеси dev, не запускаючи їх, скористайтеся командою `dev:list`:
 
 ```shell
 php artisan dev:list
 ```
 
 <a name="filtering-dev-processes"></a>
-### Filtering Dev Processes
+### Фільтрування процесів dev
 
-You may instruct the `dev` command to only run specific processes when it is invoked using the `only` method. Similarly, you may exclude specific processes using the `except` method:
+Ви можете вказати команді `dev` запускати лише певні процеси за допомогою методу `only`. Так само можна виключити певні процеси методом `except`:
 
 ```php
 // Only run the server and vite processes...
@@ -1002,17 +1005,17 @@ DevCommands::except('queue');
 ```
 
 <a name="stub-customization"></a>
-## Stub Customization
+## Налаштування стабів
 
-The Artisan console's `make` commands are used to create a variety of classes, such as controllers, jobs, migrations, and tests. These classes are generated using "stub" files that are populated with values based on your input. However, you may want to make small changes to files generated by Artisan. To accomplish this, you may use the `stub:publish` command to publish the most common stubs to your application so that you can customize them:
+Команди `make` консолі Artisan створюють різноманітні класи: контролери, завдання, міграції, тести. Ці класи генеруються з файлів-«стабів», які заповнюються значеннями на основі вашого вводу. Проте вам може захотітися внести невеликі зміни у файли, які генерує Artisan. Для цього скористайтеся командою `stub:publish`, щоб опублікувати найпоширеніші стаби у ваш застосунок і налаштувати їх:
 
 ```shell
 php artisan stub:publish
 ```
 
-The published stubs will be located within a `stubs` directory in the root of your application. Any changes you make to these stubs will be reflected when you generate their corresponding classes using Artisan's `make` commands.
+Опубліковані стаби опиняться в каталозі `stubs` у корені застосунку. Усі зміни, які ви внесете в ці стаби, відображатимуться під час генерації відповідних класів командами `make` Artisan.
 
 <a name="events"></a>
-## Events
+## Події
 
-Artisan dispatches three events when running commands: `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting`, and `Illuminate\Console\Events\CommandFinished`. The `ArtisanStarting` event is dispatched immediately when Artisan starts running. Next, the `CommandStarting` event is dispatched immediately before a command runs. Finally, the `CommandFinished` event is dispatched once a command finishes executing.
+Під час виконання команд Artisan диспетчеризує три події: `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting` і `Illuminate\Console\Events\CommandFinished`. Подія `ArtisanStarting` диспетчеризується одразу, щойно Artisan починає роботу. Далі, безпосередньо перед виконанням команди, диспетчеризується подія `CommandStarting`. Нарешті, після завершення виконання команди диспетчеризується подія `CommandFinished`.
