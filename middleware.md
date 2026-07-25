@@ -1,33 +1,36 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Middleware
 
-- [Introduction](#introduction)
-- [Defining Middleware](#defining-middleware)
-- [Registering Middleware](#registering-middleware)
-    - [Global Middleware](#global-middleware)
-    - [Assigning Middleware to Routes](#assigning-middleware-to-routes)
-    - [Middleware Groups](#middleware-groups)
-    - [Middleware Aliases](#middleware-aliases)
-    - [Sorting Middleware](#sorting-middleware)
-- [Middleware Parameters](#middleware-parameters)
-- [Terminable Middleware](#terminable-middleware)
+- [Вступ](#introduction)
+- [Визначення middleware](#defining-middleware)
+- [Реєстрація middleware](#registering-middleware)
+    - [Глобальні middleware](#global-middleware)
+    - [Призначення middleware маршрутам](#assigning-middleware-to-routes)
+    - [Групи middleware](#middleware-groups)
+    - [Псевдоніми middleware](#middleware-aliases)
+    - [Впорядкування middleware](#sorting-middleware)
+- [Параметри middleware](#middleware-parameters)
+- [Завершувані middleware](#terminable-middleware)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. For example, Laravel includes a middleware that verifies the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to your application's login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application.
+`Middleware` дають зручний механізм для перевірки та фільтрації HTTP-запитів, що надходять до вашого застосунку. Наприклад, Laravel містить `middleware`, який перевіряє, чи автентифікований користувач вашого застосунку. Якщо ні - `middleware` перенаправить користувача на екран входу. Якщо ж користувач автентифікований, `middleware` дозволить запиту рухатися далі вглиб застосунку.
 
-Additional middleware can be written to perform a variety of tasks besides authentication. For example, a logging middleware might log all incoming requests to your application. A variety of middleware are included in Laravel, including middleware for authentication and CSRF protection; however, all user-defined middleware are typically located in your application's `app/Http/Middleware` directory.
+Додаткові `middleware` можна писати для найрізноманітніших завдань, окрім автентифікації. Наприклад, `middleware` логування може записувати всі вхідні запити до вашого застосунку. Laravel містить чимало `middleware`, зокрема для автентифікації та захисту від CSRF; утім, усі визначені вами `middleware` зазвичай розташовані в каталозі `app/Http/Middleware` вашого застосунку.
 
 <a name="defining-middleware"></a>
-## Defining Middleware
+## Визначення middleware
 
-To create a new middleware, use the `make:middleware` Artisan command:
+Щоб створити новий `middleware`, скористайтеся командою Artisan `make:middleware`:
 
 ```shell
 php artisan make:middleware EnsureTokenIsValid
 ```
 
-This command will place a new `EnsureTokenIsValid` class within your `app/Http/Middleware` directory. In this middleware, we will only allow access to the route if the supplied `token` input matches a specified value. Otherwise, we will redirect the users back to the `/home` URI:
+Ця команда помістить новий клас `EnsureTokenIsValid` до каталогу `app/Http/Middleware`. У цьому `middleware` ми дозволимо доступ до маршруту лише тоді, коли переданий вхідний параметр `token` збігається з визначеним значенням. Інакше ми перенаправимо користувачів назад на URI `/home`:
 
 ```php
 <?php
@@ -56,17 +59,17 @@ class EnsureTokenIsValid
 }
 ```
 
-As you can see, if the given `token` does not match our secret token, the middleware will return an HTTP redirect to the client; otherwise, the request will be passed further into the application. To pass the request deeper into the application (allowing the middleware to "pass"), you should call the `$next` callback with the `$request`.
+Як бачите, якщо переданий `token` не збігається з нашим секретним токеном, `middleware` поверне клієнту HTTP-перенаправлення; інакше запит буде передано далі вглиб застосунку. Щоб передати запит глибше (тобто дозволити `middleware` «пропустити» його), викличте колбек `$next` із `$request`.
 
-It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
+Найкраще уявляти `middleware` як низку «шарів», крізь які HTTP-запити мають пройти, перш ніж потраплять до вашого застосунку. Кожен шар може перевірити запит і навіть цілком його відхилити.
 
 > [!NOTE]
-> All middleware are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a middleware's constructor.
+> Усі `middleware` розв'язуються через [сервіс-контейнер](/docs/{{version}}/container), тож ви можете вказати типи будь-яких потрібних залежностей у конструкторі `middleware`.
 
 <a name="middleware-and-responses"></a>
-#### Middleware and Responses
+#### Middleware та відповіді
 
-Of course, a middleware can perform tasks before or after passing the request deeper into the application. For example, the following middleware would perform some task **before** the request is handled by the application:
+Звісно, `middleware` може виконувати завдання до або після передавання запиту глибше в застосунок. Наприклад, наведений нижче `middleware` виконає певне завдання **перед** тим, як застосунок обробить запит:
 
 ```php
 <?php
@@ -88,7 +91,7 @@ class BeforeMiddleware
 }
 ```
 
-However, this middleware would perform its task **after** the request is handled by the application:
+Натомість цей `middleware` виконає своє завдання **після** того, як застосунок обробить запит:
 
 ```php
 <?php
@@ -113,12 +116,12 @@ class AfterMiddleware
 ```
 
 <a name="registering-middleware"></a>
-## Registering Middleware
+## Реєстрація middleware
 
 <a name="global-middleware"></a>
-### Global Middleware
+### Глобальні middleware
 
-If you want a middleware to run during every HTTP request to your application, you may append it to the global middleware stack in your application's `bootstrap/app.php` file:
+Якщо ви хочете, щоб `middleware` виконувався під час кожного HTTP-запиту до вашого застосунку, додайте його до глобального стека `middleware` у файлі `bootstrap/app.php`:
 
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -128,12 +131,12 @@ use App\Http\Middleware\EnsureTokenIsValid;
 })
 ```
 
-The `$middleware` object provided to the `withMiddleware` closure is an instance of `Illuminate\Foundation\Configuration\Middleware` and is responsible for managing the middleware assigned to your application's routes. The `append` method adds the middleware to the end of the list of global middleware. If you would like to add a middleware to the beginning of the list, you should use the `prepend` method.
+Об'єкт `$middleware`, переданий замиканню `withMiddleware`, є екземпляром `Illuminate\Foundation\Configuration\Middleware` і відповідає за керування `middleware`, призначеними маршрутам вашого застосунку. Метод `append` додає `middleware` у кінець списку глобальних. Якщо ви хочете додати `middleware` на початок списку, скористайтеся методом `prepend`.
 
 <a name="manually-managing-laravels-default-global-middleware"></a>
-#### Manually Managing Laravel's Default Global Middleware
+#### Ручне керування типовими глобальними middleware Laravel
 
-If you would like to manage Laravel's global middleware stack manually, you may provide Laravel's default stack of global middleware to the `use` method. Then, you may adjust the default middleware stack as necessary:
+Якщо ви хочете керувати глобальним стеком `middleware` Laravel вручну, передайте типовий стек методу `use`. Далі ви можете коригувати його за потреби:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -151,9 +154,9 @@ If you would like to manage Laravel's global middleware stack manually, you may 
 ```
 
 <a name="assigning-middleware-to-routes"></a>
-### Assigning Middleware to Routes
+### Призначення middleware маршрутам
 
-If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:
+Якщо ви хочете призначити `middleware` конкретним маршрутам, викличте метод `middleware` під час визначення маршруту:
 
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -163,7 +166,7 @@ Route::get('/profile', function () {
 })->middleware(EnsureTokenIsValid::class);
 ```
 
-You may assign multiple middleware to the route by passing an array of middleware names to the `middleware` method:
+Ви можете призначити маршруту кілька `middleware`, передавши методу `middleware` масив їхніх імен:
 
 ```php
 Route::get('/', function () {
@@ -172,9 +175,9 @@ Route::get('/', function () {
 ```
 
 <a name="excluding-middleware"></a>
-#### Excluding Middleware
+#### Виключення middleware
 
-When assigning middleware to a group of routes, you may occasionally need to prevent the middleware from being applied to an individual route within the group. You may accomplish this using the `withoutMiddleware` method:
+Призначаючи `middleware` групі маршрутів, ви подекуди можете захотіти не застосовувати його до окремого маршруту в межах цієї групи. Це робиться методом `withoutMiddleware`:
 
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -190,7 +193,7 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
 });
 ```
 
-You may also exclude a given set of middleware from an entire [group](/docs/{{version}}/routing#route-groups) of route definitions:
+Ви також можете виключити певний набір `middleware` для цілої [групи](/docs/{{version}}/routing#route-groups) визначень маршрутів:
 
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -202,12 +205,12 @@ Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {
 });
 ```
 
-The `withoutMiddleware` method can only remove route middleware and does not apply to [global middleware](#global-middleware).
+Метод `withoutMiddleware` може прибирати лише `middleware` маршрутів і не діє на [глобальні `middleware`](#global-middleware).
 
 <a name="middleware-groups"></a>
-### Middleware Groups
+### Групи middleware
 
-Sometimes you may want to group several middleware under a single key to make them easier to assign to routes. You may accomplish this using the `appendToGroup` method within your application's `bootstrap/app.php` file:
+Іноді вам може знадобитися згрупувати кілька `middleware` під одним ключем, щоб їх було зручніше призначати маршрутам. Це робиться методом `appendToGroup` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 use App\Http\Middleware\First;
@@ -226,7 +229,7 @@ use App\Http\Middleware\Second;
 })
 ```
 
-Middleware groups may be assigned to routes and controller actions using the same syntax as individual middleware:
+Групи `middleware` можна призначати маршрутам і діям контролерів тим самим синтаксисом, що й окремі `middleware`:
 
 ```php
 Route::get('/', function () {
@@ -239,13 +242,13 @@ Route::middleware(['group-name'])->group(function () {
 ```
 
 <a name="laravels-default-middleware-groups"></a>
-#### Laravel's Default Middleware Groups
+#### Типові групи middleware Laravel
 
-Laravel includes predefined `web` and `api` middleware groups that contain common middleware you may want to apply to your web and API routes. Remember, Laravel automatically applies these middleware groups to the corresponding `routes/web.php` and `routes/api.php` files:
+Laravel містить наперед визначені групи `middleware` `web` та `api` із поширеними `middleware`, які ви можете захотіти застосувати до своїх веб- та API-маршрутів. Пам'ятайте: Laravel автоматично застосовує ці групи до відповідних файлів `routes/web.php` і `routes/api.php`:
 
 <div class="overflow-auto">
 
-| The `web` Middleware Group                                |
+| Група `middleware` `web`                                  |
 | --------------------------------------------------------- |
 | `Illuminate\Cookie\Middleware\EncryptCookies`             |
 | `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse` |
@@ -258,13 +261,13 @@ Laravel includes predefined `web` and `api` middleware groups that contain commo
 
 <div class="overflow-auto">
 
-| The `api` Middleware Group                         |
+| Група `middleware` `api`                           |
 | -------------------------------------------------- |
 | `Illuminate\Routing\Middleware\SubstituteBindings` |
 
 </div>
 
-If you would like to append or prepend middleware to these groups, you may use the `web` and `api` methods within your application's `bootstrap/app.php` file. The `web` and `api` methods are convenient alternatives to the `appendToGroup` method:
+Якщо ви хочете додати `middleware` в кінець чи на початок цих груп, скористайтеся методами `web` та `api` у файлі `bootstrap/app.php`. Вони є зручною альтернативою методу `appendToGroup`:
 
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -281,7 +284,7 @@ use App\Http\Middleware\EnsureUserIsSubscribed;
 })
 ```
 
-You may even replace one of Laravel's default middleware group entries with a custom middleware of your own:
+Ви можете навіть замінити один із записів типової групи `middleware` Laravel власним:
 
 ```php
 use App\Http\Middleware\StartCustomSession;
@@ -292,7 +295,7 @@ $middleware->web(replace: [
 ]);
 ```
 
-Or, you may remove a middleware entirely:
+Або ж цілком прибрати `middleware`:
 
 ```php
 $middleware->web(remove: [
@@ -301,9 +304,9 @@ $middleware->web(remove: [
 ```
 
 <a name="manually-managing-laravels-default-middleware-groups"></a>
-#### Manually Managing Laravel's Default Middleware Groups
+#### Ручне керування типовими групами middleware Laravel
 
-If you would like to manually manage all of the middleware within Laravel's default `web` and `api` middleware groups, you may redefine the groups entirely. The example below will define the `web` and `api` middleware groups with their default middleware, allowing you to customize them as necessary:
+Якщо ви хочете вручну керувати всіма `middleware` у типових групах `web` та `api`, ви можете повністю перевизначити ці групи. Приклад нижче визначає групи `web` та `api` з їхніми типовими `middleware`, дозволяючи налаштувати їх за потреби:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -326,12 +329,12 @@ If you would like to manually manage all of the middleware within Laravel's defa
 ```
 
 > [!NOTE]
-> By default, the `web` and `api` middleware groups are automatically applied to your application's corresponding `routes/web.php` and `routes/api.php` files by the `bootstrap/app.php` file.
+> За замовчуванням групи `middleware` `web` та `api` автоматично застосовуються до відповідних файлів `routes/web.php` і `routes/api.php` вашого застосунку через файл `bootstrap/app.php`.
 
 <a name="middleware-aliases"></a>
-### Middleware Aliases
+### Псевдоніми middleware
 
-You may assign aliases to middleware in your application's `bootstrap/app.php` file. Middleware aliases allow you to define a short alias for a given middleware class, which can be especially useful for middleware with long class names:
+Ви можете призначати `middleware` псевдоніми у файлі `bootstrap/app.php` вашого застосунку. Псевдоніми дозволяють визначити коротку назву для класу `middleware`, що особливо корисно для `middleware` з довгими іменами класів:
 
 ```php
 use App\Http\Middleware\EnsureUserIsSubscribed;
@@ -343,7 +346,7 @@ use App\Http\Middleware\EnsureUserIsSubscribed;
 })
 ```
 
-Once the middleware alias has been defined in your application's `bootstrap/app.php` file, you may use the alias when assigning the middleware to routes:
+Щойно псевдонім визначено у файлі `bootstrap/app.php`, ви можете використовувати його, призначаючи `middleware` маршрутам:
 
 ```php
 Route::get('/profile', function () {
@@ -351,11 +354,11 @@ Route::get('/profile', function () {
 })->middleware('subscribed');
 ```
 
-For convenience, some of Laravel's built-in middleware are aliased by default. For example, the `auth` middleware is an alias for the `Illuminate\Auth\Middleware\Authenticate` middleware. Below is a list of the default middleware aliases:
+Для зручності деякі вбудовані `middleware` Laravel мають псевдоніми за замовчуванням. Наприклад, `auth` - це псевдонім для `middleware` `Illuminate\Auth\Middleware\Authenticate`. Нижче наведено список типових псевдонімів:
 
 <div class="overflow-auto">
 
-| Alias              | Middleware                                                                                                    |
+| Псевдонім          | Middleware                                                                                                    |
 | ------------------ | ------------------------------------------------------------------------------------------------------------- |
 | `auth`             | `Illuminate\Auth\Middleware\Authenticate`                                                                     |
 | `auth.basic`       | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth`                                                        |
@@ -373,9 +376,9 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 </div>
 
 <a name="sorting-middleware"></a>
-### Sorting Middleware
+### Впорядкування middleware
 
-Rarely, you may need your middleware to execute in a specific order but not have control over their order when they are assigned to the route. In these situations, you may specify your middleware priority using the `priority` method in your application's `bootstrap/app.php` file:
+Зрідка вам може знадобитися, щоб ваші `middleware` виконувалися в певному порядку, але ви не маєте контролю над їхнім порядком під час призначення маршруту. У таких випадках ви можете задати пріоритет `middleware` методом `priority` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -397,11 +400,11 @@ Rarely, you may need your middleware to execute in a specific order but not have
 ```
 
 <a name="middleware-parameters"></a>
-## Middleware Parameters
+## Параметри middleware
 
-Middleware can also receive additional parameters. For example, if your application needs to verify that the authenticated user has a given "role" before performing a given action, you could create an `EnsureUserHasRole` middleware that receives a role name as an additional argument.
+`Middleware` можуть також отримувати додаткові параметри. Наприклад, якщо вашому застосунку потрібно перевірити, чи має автентифікований користувач певну «роль», перш ніж виконати дію, ви можете створити `middleware` `EnsureUserHasRole`, який отримує ім'я ролі як додатковий аргумент.
 
-Additional middleware parameters will be passed to the middleware after the `$next` argument:
+Додаткові параметри передаються `middleware` після аргументу `$next`:
 
 ```php
 <?php
@@ -430,7 +433,7 @@ class EnsureUserHasRole
 }
 ```
 
-Middleware parameters may be specified when defining the route by separating the middleware name and parameters with a `:`:
+Параметри `middleware` можна вказати під час визначення маршруту, відокремивши ім'я `middleware` від параметрів двокрапкою `:`:
 
 ```php
 use App\Http\Middleware\EnsureUserHasRole;
@@ -440,7 +443,7 @@ Route::put('/post/{id}', function (string $id) {
 })->middleware(EnsureUserHasRole::class.':editor');
 ```
 
-Multiple parameters may be delimited by commas:
+Кілька параметрів розділяються комами:
 
 ```php
 Route::put('/post/{id}', function (string $id) {
@@ -449,9 +452,9 @@ Route::put('/post/{id}', function (string $id) {
 ```
 
 <a name="terminable-middleware"></a>
-## Terminable Middleware
+## Завершувані middleware
 
-Sometimes a middleware may need to do some work after the HTTP response has been sent to the browser. If you define a `terminate` method on your middleware and your web server is using [FastCGI](https://www.php.net/manual/en/install.fpm.php), the `terminate` method will automatically be called after the response is sent to the browser:
+Іноді `middleware` може знадобитися виконати певну роботу після того, як HTTP-відповідь надіслано браузеру. Якщо ви визначите у своєму `middleware` метод `terminate`, а ваш веб-сервер використовує [FastCGI](https://www.php.net/manual/en/install.fpm.php), метод `terminate` буде автоматично викликано після надсилання відповіді браузеру:
 
 ```php
 <?php
@@ -484,9 +487,9 @@ class TerminatingMiddleware
 }
 ```
 
-The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in your application's `bootstrap/app.php` file.
+Метод `terminate` має отримувати і запит, і відповідь. Визначивши завершуваний `middleware`, додайте його до списку маршрутних чи глобальних `middleware` у файлі `bootstrap/app.php` вашого застосунку.
 
-When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/docs/{{version}}/container). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:
+Викликаючи метод `terminate` вашого `middleware`, Laravel розв'яже з [сервіс-контейнера](/docs/{{version}}/container) новий екземпляр `middleware`. Якщо ви хочете використовувати той самий екземпляр під час викликів методів `handle` і `terminate`, зареєструйте `middleware` в контейнері методом `singleton`. Зазвичай це варто робити в методі `register` вашого `AppServiceProvider`:
 
 ```php
 use App\Http\Middleware\TerminatingMiddleware;
