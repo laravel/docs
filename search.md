@@ -1,64 +1,67 @@
-# Search
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Пошук
 
-- [Introduction](#introduction)
-    - [Full-Text Search](#introduction-full-text-search)
-    - [Semantic / Vector Search](#introduction-semantic-vector-search)
-    - [Reranking](#introduction-reranking)
-    - [Scout Search Engines](#introduction-scout-search-engines)
-- [Full-Text Search](#full-text-search)
-    - [Adding Full-Text Indexes](#adding-full-text-indexes)
-    - [Running Full-Text Queries](#running-full-text-queries)
-- [Semantic / Vector Search](#semantic-vector-search)
-    - [Generating Embeddings](#generating-embeddings)
-    - [Storing and Indexing Vectors](#storing-and-indexing-vectors)
-    - [Querying by Similarity](#querying-by-similarity)
-- [Reranking Results](#reranking-results)
+- [Вступ](#introduction)
+    - [Повнотекстовий пошук](#introduction-full-text-search)
+    - [Семантичний / векторний пошук](#introduction-semantic-vector-search)
+    - [Переранжування](#introduction-reranking)
+    - [Пошукові рушії Scout](#introduction-scout-search-engines)
+- [Повнотекстовий пошук](#full-text-search)
+    - [Додавання повнотекстових індексів](#adding-full-text-indexes)
+    - [Виконання повнотекстових запитів](#running-full-text-queries)
+- [Семантичний / векторний пошук](#semantic-vector-search)
+    - [Генерація ембедингів](#generating-embeddings)
+    - [Збереження та індексація векторів](#storing-and-indexing-vectors)
+    - [Запити за схожістю](#querying-by-similarity)
+- [Переранжування результатів](#reranking-results)
 - [Laravel Scout](#laravel-scout)
-    - [Database Engine](#database-engine)
-    - [Third-Party Engines](#third-party-engines)
-- [Combining Techniques](#combining-techniques)
+    - [Рушій бази даних](#database-engine)
+    - [Сторонні рушії](#third-party-engines)
+- [Поєднання технік](#combining-techniques)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Almost every application needs search. Whether your users are searching a knowledge base for relevant articles, exploring a product catalog, or asking natural-language questions against a corpus of documents, Laravel provides built-in tools to handle each of these scenarios — and you often don't need any external services to get there.
+Майже кожному застосунку потрібен пошук. Незалежно від того, чи шукають ваші користувачі релевантні статті в базі знань, чи гортають каталог товарів, чи ставлять запитання природною мовою до корпусу документів, - Laravel надає вбудовані інструменти для кожного з цих сценаріїв, і зовнішні сервіси для цього часто взагалі не потрібні.
 
-Most applications will find that the built-in database-powered options provided by Laravel are more than sufficient — external search services are only necessary when you need features like typo tolerance, faceted filtering, or geo-search at massive scale.
+Більшості застосунків цілком вистачить вбудованих можливостей на основі бази даних, які надає Laravel: зовнішні пошукові сервіси потрібні лише тоді, коли вам потрібні толерантність до одруківок, фасетна фільтрація чи геопошук у величезних масштабах.
 
 <a name="introduction-full-text-search"></a>
-#### Full-Text Search
+#### Повнотекстовий пошук
 
-When you need keyword relevance ranking — where the database scores and sorts results based on how well they match the search terms — Laravel's `whereFullText` query builder method leverages native full-text indexes on MariaDB, MySQL, and PostgreSQL. Full-text search understands word boundaries and stemming, so a search for "running" can match records containing "run". No external service is required.
+Коли вам потрібне ранжування за релевантністю ключових слів - тобто щоб база даних оцінювала й сортувала результати за тим, наскільки добре вони збігаються з пошуковими термінами, - метод конструктора запитів `whereFullText` використовує рідні повнотекстові індекси MariaDB, MySQL та PostgreSQL. Повнотекстовий пошук розуміє межі слів і словотвір, тож пошук за «running» може знайти записи зі словом «run». Зовнішній сервіс не потрібен.
 
 <a name="introduction-semantic-vector-search"></a>
-#### Semantic / Vector Search
+#### Семантичний / векторний пошук
 
-For AI-powered semantic search that matches results by *meaning* rather than exact keywords, the `whereVectorSimilarTo` query builder method uses vector embeddings stored in PostgreSQL with the `pgvector` extension. For example, a search for "best wineries in Napa Valley" can surface an article titled "Top Vineyards to Visit" — even though the words don't overlap. Vector search requires PostgreSQL with the `pgvector` extension and the [Laravel AI SDK](/docs/{{version}}/ai-sdk).
+Для семантичного пошуку на базі AI, який добирає результати за *змістом*, а не за точними ключовими словами, метод конструктора запитів `whereVectorSimilarTo` використовує векторні ембединги, збережені в PostgreSQL із розширенням `pgvector`. Наприклад, пошук за «best wineries in Napa Valley» може підняти статтю «Top Vineyards to Visit», хоч слова й не перетинаються. Векторний пошук потребує PostgreSQL із розширенням `pgvector` та [Laravel AI SDK](/docs/{{version}}/ai-sdk).
 
 <a name="introduction-reranking"></a>
-#### Reranking
+#### Переранжування
 
-Laravel's [AI SDK](/docs/{{version}}/ai-sdk) provides reranking capabilities that use AI models to reorder any set of results by semantic relevance to a query. Reranking is especially powerful as a second stage after a fast initial retrieval step like full-text search — giving you both speed and semantic accuracy.
+[AI SDK](/docs/{{version}}/ai-sdk) Laravel надає можливості переранжування, які за допомогою AI-моделей перевпорядковують будь-який набір результатів за семантичною релевантністю до запиту. Переранжування особливо потужне як другий етап після швидкого початкового відбору - наприклад, повнотекстового пошуку, - даючи вам і швидкість, і семантичну точність.
 
 <a name="introduction-scout-search-engines"></a>
-#### Laravel Scout Search
+#### Пошук через Laravel Scout
 
-For applications that want a `Searchable` trait that automatically keeps search indexes in sync with Eloquent models, [Laravel Scout](/docs/{{version}}/scout) offers both a built-in database engine and drivers for third-party services like Algolia, Meilisearch, and Typesense.
+Для застосунків, яким потрібен трейт `Searchable`, що автоматично тримає пошукові індекси синхронізованими з моделями Eloquent, [Laravel Scout](/docs/{{version}}/scout) пропонує і вбудований рушій бази даних, і драйвери для сторонніх сервісів на кшталт Algolia, Meilisearch та Typesense.
 
 <a name="full-text-search"></a>
-## Full-Text Search
+## Повнотекстовий пошук
 
-While `LIKE` queries work well for simple substring matching, they don't understand language. A `LIKE` search for "running" won't find a record containing "run", and results aren't ranked by relevance — they're simply returned in whatever order the database finds them. Full-text search solves both of these problems by using specialized indexes that understand word boundaries, stemming, and relevance scoring, allowing the database to return the most relevant results first.
+Хоч запити з `LIKE` і добре працюють для простого пошуку підрядка, вони не розуміють мови. Пошук `LIKE` за «running» не знайде запису зі словом «run», та й результати не ранжуються за релевантністю - вони просто повертаються в тому порядку, у якому їх знайшла база. Повнотекстовий пошук розв'язує обидві проблеми за допомогою спеціалізованих індексів, які розуміють межі слів, словотвір і оцінку релевантності, дозволяючи базі повертати найрелевантніші результати першими.
 
-Fast full-text search is built into MariaDB, MySQL, and PostgreSQL — no external search service is required. You only need to add a full-text index to the columns you want to search, and then use the `whereFullText` query builder method to search against them.
+Швидкий повнотекстовий пошук вбудовано в MariaDB, MySQL та PostgreSQL - зовнішній пошуковий сервіс не потрібен. Вам треба лише додати повнотекстовий індекс до стовпців, за якими хочете шукати, а потім скористатися методом конструктора запитів `whereFullText`.
 
 > [!WARNING]
-> Full-text search is currently supported by MariaDB, MySQL, and PostgreSQL.
+> Наразі повнотекстовий пошук підтримують MariaDB, MySQL та PostgreSQL.
 
 <a name="adding-full-text-indexes"></a>
-### Adding Full-Text Indexes
+### Додавання повнотекстових індексів
 
-To use full-text search, first add a full-text index to the columns you want to search. You may add the index to a single column, or pass an array of columns to create a composite index that searches across multiple fields at once:
+Щоб користуватися повнотекстовим пошуком, спершу додайте повнотекстовий індекс до стовпців, за якими хочете шукати. Ви можете додати індекс до одного стовпця або передати масив стовпців, щоб створити складений індекс, який шукає одразу по кількох полях:
 
 ```php
 Schema::create('articles', function (Blueprint $table) {
@@ -71,26 +74,26 @@ Schema::create('articles', function (Blueprint $table) {
 });
 ```
 
-On PostgreSQL, you may specify a language configuration for the index, which controls how words are stemmed:
+У PostgreSQL ви можете вказати мовну конфігурацію індексу, яка керує словотвором:
 
 ```php
 $table->fullText('body')->language('english');
 ```
 
-For more information on creating indexes, consult the [migration documentation](/docs/{{version}}/migrations#available-index-types).
+Докладніше про створення індексів читайте в [документації з міграцій](/docs/{{version}}/migrations#available-index-types).
 
 <a name="running-full-text-queries"></a>
-### Running Full-Text Queries
+### Виконання повнотекстових запитів
 
-Once the index is in place, use the `whereFullText` query builder method to search against it. Laravel will generate the appropriate SQL for your database driver — for example, `MATCH(...) AGAINST(...)` on MariaDB and MySQL, and `to_tsvector(...) @@ plainto_tsquery(...)` on PostgreSQL:
+Щойно індекс на місці, скористайтеся методом конструктора запитів `whereFullText`, щоб шукати за ним. Laravel згенерує відповідний SQL для вашого драйвера бази - наприклад, `MATCH(...) AGAINST(...)` для MariaDB та MySQL і `to_tsvector(...) @@ plainto_tsquery(...)` для PostgreSQL:
 
 ```php
 $articles = Article::whereFullText('body', 'web developer')->get();
 ```
 
-When using MariaDB and MySQL, results are automatically ordered by relevance score. On PostgreSQL, `whereFullText` filters matching records but does not order them by relevance — if you need automatic relevance ordering on PostgreSQL, consider using [Scout's database engine](#database-engine), which handles this for you.
+У MariaDB та MySQL результати автоматично впорядковуються за оцінкою релевантності. У PostgreSQL `whereFullText` фільтрує відповідні записи, але не впорядковує їх за релевантністю; якщо вам потрібне автоматичне впорядкування за релевантністю в PostgreSQL, розгляньте [рушій бази даних Scout](#database-engine), який робить це за вас.
 
-If you created a composite full-text index across multiple columns, you may search against all of them by passing the same array of columns to `whereFullText`:
+Якщо ви створили складений повнотекстовий індекс по кількох стовпцях, шукати по всіх них можна, передавши той самий масив стовпців до `whereFullText`:
 
 ```php
 $articles = Article::whereFullText(
@@ -98,22 +101,22 @@ $articles = Article::whereFullText(
 )->get();
 ```
 
-The `orWhereFullText` method may be used to add a full-text search clause as an "or" condition. For complete details, consult the [query builder documentation](/docs/{{version}}/queries#full-text-where-clauses).
+Метод `orWhereFullText` дозволяє додати умову повнотекстового пошуку як умову «або». Усі подробиці шукайте в [документації конструктора запитів](/docs/{{version}}/queries#full-text-where-clauses).
 
 <a name="semantic-vector-search"></a>
-## Semantic / Vector Search
+## Семантичний / векторний пошук
 
-Full-text search relies on matching keywords — the words in the query must appear (in some form) in the data. Semantic search takes a fundamentally different approach: it uses AI-generated vector embeddings to represent the *meaning* of text as arrays of numbers, and then finds results whose meaning is most similar to the query. For example, a search for "best wineries in Napa Valley" can surface an article titled "Top Vineyards to Visit" — even though the words don't overlap at all.
+Повнотекстовий пошук покладається на збіг ключових слів: слова із запиту мають (у якійсь формі) траплятися в даних. Семантичний пошук діє принципово інакше: він використовує згенеровані AI векторні ембединги, щоб представити *зміст* тексту як масиви чисел, а потім знаходить результати, зміст яких найбільш схожий на запит. Наприклад, пошук за «best wineries in Napa Valley» може підняти статтю «Top Vineyards to Visit», хоч слова взагалі не перетинаються.
 
-The basic workflow for vector search is: generate an embedding (a numeric array) for each piece of content and store it alongside your data, then at search time, generate an embedding for the user's query and find the stored embeddings that are closest to it in vector space.
+Базовий робочий процес векторного пошуку такий: згенерувати ембединг (числовий масив) для кожної одиниці контенту й зберегти його поруч із даними, а під час пошуку згенерувати ембединг запиту користувача й знайти збережені ембединги, найближчі до нього у векторному просторі.
 
 > [!NOTE]
-> Vector search requires the [Laravel AI SDK](/docs/{{version}}/ai-sdk) and is supported by PostgreSQL (requires the `pgvector` extension) and MongoDB (requires the [Laravel MongoDB package](https://laravel.com/docs/13.x/mongodb)). All Postgres databases on [Laravel Cloud](https://laravel.com/cloud) already have `pgvector` installed.
+> Векторний пошук потребує [Laravel AI SDK](/docs/{{version}}/ai-sdk) і підтримується PostgreSQL (потрібне розширення `pgvector`) та MongoDB (потрібен [пакет Laravel MongoDB](https://laravel.com/docs/13.x/mongodb)). Усі бази Postgres на [Laravel Cloud](https://laravel.com/cloud) уже мають встановлений `pgvector`.
 
 <a name="generating-embeddings"></a>
-### Generating Embeddings
+### Генерація ембедингів
 
-An embedding is a high-dimensional numeric array (typically hundreds or thousands of numbers) that represents the semantic meaning of a piece of text. You may generate embeddings for a string using the `toEmbeddings` method available on Laravel's `Stringable` class:
+Ембединг - це багатовимірний числовий масив (зазвичай сотні чи тисячі чисел), який представляє семантичний зміст фрагмента тексту. Згенерувати ембединги для рядка можна методом `toEmbeddings`, доступним у класі `Stringable` Laravel:
 
 ```php
 use Illuminate\Support\Str;
@@ -121,7 +124,7 @@ use Illuminate\Support\Str;
 $embedding = Str::of('Napa Valley has great wine.')->toEmbeddings();
 ```
 
-To generate embeddings for multiple inputs at once — which is more efficient than generating them one at a time since it requires only a single API call to the embedding provider — use the `Embeddings` class:
+Щоб згенерувати ембединги для кількох вхідних значень одразу - що ефективніше, ніж по одному, адже потребує лише одного виклику API постачальника ембедингів, - скористайтеся класом `Embeddings`:
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -134,12 +137,12 @@ $response = Embeddings::for([
 $response->embeddings; // [[0.123, 0.456, ...], [0.789, 0.012, ...]]
 ```
 
-For more details on configuring embedding providers, customizing dimensions, and caching, consult the [AI SDK documentation](/docs/{{version}}/ai-sdk#embeddings).
+Докладніше про налаштування постачальників ембедингів, зміну розмірності та кешування читайте в [документації AI SDK](/docs/{{version}}/ai-sdk#embeddings).
 
 <a name="storing-and-indexing-vectors"></a>
-### Storing and Indexing Vectors
+### Збереження та індексація векторів
 
-To store vector embeddings, define a `vector` column in your migration, specifying the number of dimensions that matches your embedding provider's output (for example, 1536 for OpenAI's `text-embedding-3-small` model). You should also call `index` on the column to create an HNSW (Hierarchical Navigable Small World) index, which dramatically speeds up similarity searches on large datasets:
+Щоб зберігати векторні ембединги, опишіть у міграції стовпець `vector`, вказавши кількість вимірів, що відповідає виходу вашого постачальника ембедингів (наприклад, 1536 для моделі OpenAI `text-embedding-3-small`). Також викличте на стовпці `index`, щоб створити індекс HNSW (Hierarchical Navigable Small World), який різко пришвидшує пошук за схожістю на великих наборах даних:
 
 ```php
 Schema::ensureVectorExtensionExists();
@@ -153,9 +156,9 @@ Schema::create('documents', function (Blueprint $table) {
 });
 ```
 
-The `Schema::ensureVectorExtensionExists` method ensures the `pgvector` extension is enabled on your PostgreSQL database before creating the table.
+Метод `Schema::ensureVectorExtensionExists` переконується, що розширення `pgvector` увімкнено у вашій базі PostgreSQL, перед створенням таблиці.
 
-On your Eloquent model, cast the vector column to an `array` so that Laravel automatically handles the conversion between PHP arrays and the database's vector format:
+У моделі Eloquent приведіть векторний стовпець до `array`, щоб Laravel автоматично конвертував між PHP-масивами й векторним форматом бази:
 
 ```php
 protected function casts(): array
@@ -166,12 +169,12 @@ protected function casts(): array
 }
 ```
 
-For more details on vector columns and indexes, consult the [migration documentation](/docs/{{version}}/migrations#available-column-types).
+Докладніше про векторні стовпці та індекси читайте в [документації з міграцій](/docs/{{version}}/migrations#available-column-types).
 
 <a name="querying-by-similarity"></a>
-### Querying by Similarity
+### Запити за схожістю
 
-Once you have stored embeddings for your content, you can search for similar records using the `whereVectorSimilarTo` method. This method compares the given embedding against the stored vectors using cosine similarity, filters out results below the `minSimilarity` threshold, and automatically orders the results by relevance — with the most similar records first. The threshold should be a value between `0.0` and `1.0`, where `1.0` means the vectors are identical:
+Щойно ви зберегли ембединги свого контенту, ви можете шукати схожі записи методом `whereVectorSimilarTo`. Цей метод порівнює заданий ембединг зі збереженими векторами за косинусною схожістю, відсіює результати нижче порога `minSimilarity` й автоматично впорядковує результати за релевантністю - найсхожіші першими. Поріг має бути значенням від `0.0` до `1.0`, де `1.0` означає, що вектори ідентичні:
 
 ```php
 $documents = Document::query()
@@ -180,7 +183,7 @@ $documents = Document::query()
     ->get();
 ```
 
-As a convenience, when a plain string is given instead of an embedding array, Laravel will automatically generate the embedding for you using your configured embedding provider. This means you can pass the user's search query directly without manually converting it to an embedding first:
+Для зручності, коли замість масиву ембединга передано звичайний рядок, Laravel автоматично згенерує ембединг за вас через налаштованого постачальника. Це означає, що ви можете передати пошуковий запит користувача напряму, не конвертуючи його в ембединг вручну:
 
 ```php
 $documents = Document::query()
@@ -189,16 +192,16 @@ $documents = Document::query()
     ->get();
 ```
 
-For lower-level control over vector queries, the `whereVectorDistanceLessThan`, `selectVectorDistance`, and `orderByVectorDistance` methods are also available. These methods let you work directly with distance values rather than similarity scores, select the computed distance as a column in your results, or manually control the ordering. For complete details, consult the [query builder documentation](/docs/{{version}}/queries#vector-similarity-clauses) and the [AI SDK documentation](/docs/{{version}}/ai-sdk#querying-embeddings).
+Для нижчорівневого контролю над векторними запитами доступні також методи `whereVectorDistanceLessThan`, `selectVectorDistance` та `orderByVectorDistance`. Вони дозволяють працювати безпосередньо зі значеннями відстані, а не з оцінками схожості, вибирати обчислену відстань як стовпець результатів або вручну керувати впорядкуванням. Усі подробиці шукайте в [документації конструктора запитів](/docs/{{version}}/queries#vector-similarity-clauses) та [документації AI SDK](/docs/{{version}}/ai-sdk#querying-embeddings).
 
 <a name="reranking-results"></a>
-## Reranking Results
+## Переранжування результатів
 
-Reranking is a technique where an AI model reorders a set of results by how semantically relevant each result is to a given query. Unlike vector search, which requires you to pre-compute and store embeddings, reranking works on any collection of text — it takes the raw content and the query as input and returns the items sorted by relevance.
+Переранжування - це техніка, коли AI-модель перевпорядковує набір результатів за тим, наскільки семантично релевантний кожен результат до заданого запиту. На відміну від векторного пошуку, який вимагає наперед обчислити й зберегти ембединги, переранжування працює з будь-якою добіркою тексту: воно приймає сирий контент і запит, а повертає елементи, відсортовані за релевантністю.
 
-Reranking is especially powerful as a second stage after a fast initial retrieval step. For example, you might use full-text search to quickly narrow thousands of records down to the top 50 candidates, and then use reranking to put the most relevant results at the top. This "retrieve then rerank" pattern gives you both speed and semantic accuracy.
+Переранжування особливо потужне як другий етап після швидкого початкового відбору. Наприклад, ви можете повнотекстовим пошуком швидко звузити тисячі записів до 50 кандидатів, а потім переранжуванням підняти найрелевантніші вгору. Цей патерн «відібрати, потім переранжувати» дає вам і швидкість, і семантичну точність.
 
-You may rerank an array of strings using the `Reranking` class:
+Переранжувати масив рядків можна класом `Reranking`:
 
 ```php
 use Laravel\Ai\Reranking;
@@ -212,26 +215,26 @@ $response = Reranking::of([
 $response->first()->document; // "Laravel is a PHP web application framework."
 ```
 
-Laravel collections also have a `rerank` macro that accepts a field name (or closure) and a query, making it easy to rerank Eloquent results:
+Колекції Laravel також мають макрос `rerank`, який приймає назву поля (чи замикання) і запит, що спрощує переранжування результатів Eloquent:
 
 ```php
 $articles = Article::all()
     ->rerank('body', 'Laravel tutorials');
 ```
 
-For complete details on configuring reranking providers and available options, consult the [AI SDK documentation](/docs/{{version}}/ai-sdk#reranking).
+Усі подробиці про налаштування постачальників переранжування та доступні опції шукайте в [документації AI SDK](/docs/{{version}}/ai-sdk#reranking).
 
 <a name="laravel-scout"></a>
 ## Laravel Scout
 
-The search techniques described above are all query builder methods that you call directly in your code. [Laravel Scout](/docs/{{version}}/scout) takes a different approach: it provides a `Searchable` trait that you add to your Eloquent models, and Scout automatically keeps your search indexes in sync as records are created, updated, and deleted. This is particularly convenient when you want your models to always be searchable without manually managing index updates.
+Описані вище техніки пошуку - це методи конструктора запитів, які ви викликаєте безпосередньо у своєму коді. [Laravel Scout](/docs/{{version}}/scout) діє інакше: він надає трейт `Searchable`, який ви додаєте до моделей Eloquent, і Scout автоматично тримає пошукові індекси синхронізованими, коли записи створюються, оновлюються й видаляються. Це особливо зручно, коли ви хочете, щоб ваші моделі завжди були доступні для пошуку без ручного керування оновленням індексів.
 
 <a name="database-engine"></a>
-### Database Engine
+### Рушій бази даних
 
-Scout's built-in database engine performs full-text and `LIKE` searches against your existing database — no external service or extra infrastructure required. Simply add the `Searchable` trait to your model and define a `toSearchableArray` method that returns the columns you want to be searchable.
+Вбудований рушій бази даних Scout виконує повнотекстовий пошук і пошук через `LIKE` у вашій наявній базі - зовнішній сервіс чи додаткова інфраструктура не потрібні. Просто додайте до моделі трейт `Searchable` й опишіть метод `toSearchableArray`, який поверне стовпці, за якими має відбуватися пошук.
 
-You may use PHP attributes to control the search strategy for each column. `SearchUsingFullText` will use your database's full-text index, `SearchUsingPrefix` will only match from the beginning of the string (`example%`), and any columns without an attribute use a default `LIKE` strategy with wildcards on both sides (`%example%`):
+Ви можете керувати стратегією пошуку для кожного стовпця за допомогою PHP-атрибутів. `SearchUsingFullText` використає повнотекстовий індекс вашої бази, `SearchUsingPrefix` шукатиме лише з початку рядка (`example%`), а всі стовпці без атрибута використовують стандартну стратегію `LIKE` з підстановками з обох боків (`%example%`):
 
 ```php
 <?php
@@ -261,36 +264,36 @@ class Article extends Model
 ```
 
 > [!WARNING]
-> Before specifying that a column should use full-text query constraints, ensure that the column has been assigned a [full-text index](/docs/{{version}}/migrations#available-index-types).
+> Перш ніж вказувати, що стовпець має використовувати повнотекстові умови запиту, переконайтеся, що цьому стовпцю призначено [повнотекстовий індекс](/docs/{{version}}/migrations#available-index-types).
 
-Once the trait is added, you may search your model using Scout's `search` method. Scout's database engine will automatically order results by relevance, even on PostgreSQL:
+Щойно трейт додано, ви можете шукати у своїй моделі методом `search` зі Scout. Рушій бази даних Scout автоматично впорядкує результати за релевантністю, навіть у PostgreSQL:
 
 ```php
 $articles = Article::search('Laravel')->get();
 ```
 
-The database engine is a great choice when your search needs are moderate and you want the convenience of Scout's automatic index syncing without deploying an external service. It handles the most common search use cases well, including filtering, pagination, and soft-deleted record handling. For complete details, consult the [Scout documentation](/docs/{{version}}/scout#database-engine).
+Рушій бази даних - чудовий вибір, коли ваші потреби в пошуку помірні й вам потрібна зручність автоматичної синхронізації індексів у Scout без розгортання зовнішнього сервісу. Він добре покриває найпоширеніші сценарії пошуку, включно з фільтрацією, пагінацією та обробкою м'яко видалених записів. Усі подробиці шукайте в [документації Scout](/docs/{{version}}/scout#database-engine).
 
 <a name="third-party-engines"></a>
-### Third-Party Engines
+### Сторонні рушії
 
-Scout also supports third-party search engines such as [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), and [Typesense](https://typesense.org). These dedicated search services offer advanced features like typo tolerance, faceted filtering, geo-search, and custom ranking rules — features that become important at very large scale or when you need a highly polished search-as-you-type experience.
+Scout також підтримує сторонні пошукові рушії - [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com) та [Typesense](https://typesense.org). Ці спеціалізовані пошукові сервіси пропонують просунуті можливості: толерантність до одруківок, фасетну фільтрацію, геопошук і власні правила ранжування - те, що стає важливим у дуже великих масштабах або коли вам потрібен добре відшліфований досвід пошуку під час набору.
 
-Since Scout provides a unified API across all of its drivers, switching from the database engine to a third-party engine later requires minimal code changes. You may start with the database engine and migrate to a third-party service only if your application's needs outgrow what the database can provide.
+Оскільки Scout надає єдиний API для всіх своїх драйверів, перехід з рушія бази даних на сторонній згодом потребує мінімальних змін у коді. Ви можете почати з рушія бази даних і мігрувати на сторонній сервіс, лише якщо потреби вашого застосунку переростуть можливості бази.
 
-For complete details on configuring third-party engines, consult the [Scout documentation](/docs/{{version}}/scout).
+Усі подробиці про налаштування сторонніх рушіїв шукайте в [документації Scout](/docs/{{version}}/scout).
 
 > [!NOTE]
-> Many applications never need an external search engine. The built-in techniques described on this page cover the vast majority of use cases.
+> Багатьом застосункам зовнішній пошуковий рушій ніколи не знадобиться. Вбудовані техніки, описані на цій сторінці, покривають переважну більшість сценаріїв.
 
 <a name="combining-techniques"></a>
-## Combining Techniques
+## Поєднання технік
 
-The search techniques described on this page are not mutually exclusive — combining them often produces the best results. Here are two common patterns that demonstrate how these tools work together.
+Описані на цій сторінці техніки пошуку не є взаємовиключними - їх поєднання часто дає найкращі результати. Ось два поширені патерни, які демонструють, як ці інструменти працюють разом.
 
-**Full-Text Retrieval + Reranking**
+**Повнотекстовий відбір + переранжування**
 
-Use full-text search to quickly narrow a large dataset down to a candidate set, then apply reranking to sort those candidates by semantic relevance. This gives you the speed of database-native full-text search with the accuracy of AI-powered relevance scoring:
+Скористайтеся повнотекстовим пошуком, щоб швидко звузити великий набір даних до набору кандидатів, а потім застосуйте переранжування, щоб відсортувати цих кандидатів за семантичною релевантністю. Це дає вам швидкість рідного для бази повнотекстового пошуку разом із точністю оцінки релевантності на базі AI:
 
 ```php
 $articles = Article::query()
@@ -300,9 +303,9 @@ $articles = Article::query()
     ->rerank('body', $request->input('query'), limit: 10);
 ```
 
-**Vector Search + Traditional Filters**
+**Векторний пошук + традиційні фільтри**
 
-Combine vector similarity with standard `where` clauses to scope semantic search to a subset of records. This is useful when you want meaning-based search but need to restrict results by ownership, category, or any other attribute:
+Поєднайте векторну схожість зі звичайними умовами `where`, щоб обмежити семантичний пошук підмножиною записів. Це корисно, коли вам потрібен пошук за змістом, але результати треба обмежити за власником, категорією чи будь-яким іншим атрибутом:
 
 ```php
 $documents = Document::query()
