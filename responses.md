@@ -1,33 +1,36 @@
-# HTTP Responses
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# HTTP-відповіді
 
-- [Creating Responses](#creating-responses)
-    - [Attaching Headers to Responses](#attaching-headers-to-responses)
-    - [Attaching Cookies to Responses](#attaching-cookies-to-responses)
-    - [Cookies and Encryption](#cookies-and-encryption)
-- [Redirects](#redirects)
-    - [Redirecting to Named Routes](#redirecting-named-routes)
-    - [Redirecting to Controller Actions](#redirecting-controller-actions)
-    - [Redirecting to External Domains](#redirecting-external-domains)
-    - [Redirecting With Flashed Session Data](#redirecting-with-flashed-session-data)
-- [Other Response Types](#other-response-types)
-    - [View Responses](#view-responses)
-    - [JSON Responses](#json-responses)
-    - [File Downloads](#file-downloads)
-    - [File Responses](#file-responses)
-- [Streamed Responses](#streamed-responses)
-    - [Consuming Streamed Responses](#consuming-streamed-responses)
-    - [Streamed JSON Responses](#streamed-json-responses)
-    - [Event Streams (SSE)](#event-streams)
-    - [Streamed Downloads](#streamed-downloads)
-- [Response Macros](#response-macros)
+- [Створення відповідей](#creating-responses)
+    - [Додавання заголовків до відповідей](#attaching-headers-to-responses)
+    - [Додавання cookie до відповідей](#attaching-cookies-to-responses)
+    - [Cookie та шифрування](#cookies-and-encryption)
+- [Перенаправлення](#redirects)
+    - [Перенаправлення до іменованих маршрутів](#redirecting-named-routes)
+    - [Перенаправлення до дій контролерів](#redirecting-controller-actions)
+    - [Перенаправлення до зовнішніх доменів](#redirecting-external-domains)
+    - [Перенаправлення з флеш-даними сесії](#redirecting-with-flashed-session-data)
+- [Інші типи відповідей](#other-response-types)
+    - [Відповіді-представлення](#view-responses)
+    - [JSON-відповіді](#json-responses)
+    - [Завантаження файлів](#file-downloads)
+    - [Файлові відповіді](#file-responses)
+- [Потокові відповіді](#streamed-responses)
+    - [Споживання потокових відповідей](#consuming-streamed-responses)
+    - [Потокові JSON-відповіді](#streamed-json-responses)
+    - [Потоки подій (SSE)](#event-streams)
+    - [Потокові завантаження](#streamed-downloads)
+- [Макроси відповідей](#response-macros)
 
 <a name="creating-responses"></a>
-## Creating Responses
+## Створення відповідей
 
 <a name="strings-arrays"></a>
-#### Strings and Arrays
+#### Рядки та масиви
 
-All routes and controllers should return a response to be sent back to the user's browser. Laravel provides several different ways to return responses. The most basic response is returning a string from a route or controller. The framework will automatically convert the string into a full HTTP response:
+Усі маршрути й контролери мають повертати відповідь, яку буде надіслано до браузера користувача. Laravel пропонує кілька різних способів повертати відповіді. Найпростіша відповідь - це рядок, повернений із маршруту чи контролера. Фреймворк автоматично перетворить його на повноцінну HTTP-відповідь:
 
 ```php
 Route::get('/', function () {
@@ -35,7 +38,7 @@ Route::get('/', function () {
 });
 ```
 
-In addition to returning strings from your routes and controllers, you may also return arrays. The framework will automatically convert the array into a JSON response:
+Окрім рядків, ви можете повертати з маршрутів і контролерів масиви. Фреймворк автоматично перетворить масив на JSON-відповідь:
 
 ```php
 Route::get('/', function () {
@@ -44,14 +47,14 @@ Route::get('/', function () {
 ```
 
 > [!NOTE]
-> Did you know you can also return [Eloquent collections](/docs/{{version}}/eloquent-collections) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
+> А ви знали, що з маршрутів чи контролерів можна також повертати [колекції Eloquent](/docs/{{version}}/eloquent-collections)? Вони автоматично перетворяться на JSON. Спробуйте!
 
 <a name="response-objects"></a>
-#### Response Objects
+#### Об'єкти відповідей
 
-Typically, you won't just be returning simple strings or arrays from your route actions. Instead, you will be returning full `Illuminate\Http\Response` instances or [views](/docs/{{version}}/views).
+Зазвичай ви не повертатимете з дій маршрутів лише прості рядки чи масиви. Натомість ви повертатимете повноцінні екземпляри `Illuminate\Http\Response` або [представлення](/docs/{{version}}/views).
 
-Returning a full `Response` instance allows you to customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, which provides a variety of methods for building HTTP responses:
+Повернення повного екземпляра `Response` дозволяє налаштувати HTTP-статус і заголовки відповіді. Екземпляр `Response` успадковує клас `Symfony\Component\HttpFoundation\Response`, що надає різноманітні методи для побудови HTTP-відповідей:
 
 ```php
 Route::get('/home', function () {
@@ -61,9 +64,9 @@ Route::get('/home', function () {
 ```
 
 <a name="eloquent-models-and-collections"></a>
-#### Eloquent Models and Collections
+#### Моделі та колекції Eloquent
 
-You may also return [Eloquent ORM](/docs/{{version}}/eloquent) models and collections directly from your routes and controllers. When you do, Laravel will automatically convert the models and collections to JSON responses while respecting the model's [hidden attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json):
+Ви також можете повертати моделі й колекції [Eloquent ORM](/docs/{{version}}/eloquent) безпосередньо з маршрутів і контролерів. Тоді Laravel автоматично перетворить їх на JSON-відповіді, враховуючи [приховані атрибути](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) моделі:
 
 ```php
 use App\Models\User;
@@ -74,9 +77,9 @@ Route::get('/user/{user}', function (User $user) {
 ```
 
 <a name="attaching-headers-to-responses"></a>
-### Attaching Headers to Responses
+### Додавання заголовків до відповідей
 
-Keep in mind that most response methods are chainable, allowing for the fluent construction of response instances. For example, you may use the `header` method to add a series of headers to the response before sending it back to the user:
+Пам'ятайте, що більшість методів відповіді можна об'єднувати в ланцюжок, що дозволяє плинно будувати екземпляри відповідей. Наприклад, метод `header` дозволяє додати до відповіді низку заголовків перед надсиланням її користувачеві:
 
 ```php
 return response($content)
@@ -85,7 +88,7 @@ return response($content)
     ->header('X-Header-Two', 'Header Value');
 ```
 
-Or, you may use the `withHeaders` method to specify an array of headers to be added to the response:
+Або ж скористайтеся методом `withHeaders`, щоб указати масив заголовків, які слід додати до відповіді:
 
 ```php
 return response($content)
@@ -96,7 +99,7 @@ return response($content)
     ]);
 ```
 
-You can remove specific headers from an outgoing response using the `withoutHeader` method:
+Ви можете вилучити конкретні заголовки з вихідної відповіді методом `withoutHeader`:
 
 ```php
 return response($content)->withoutHeader('X-Debug');
@@ -105,9 +108,9 @@ return response($content)->withoutHeader(['X-Debug', 'X-Powered-By']);
 ```
 
 <a name="cache-control-middleware"></a>
-#### Cache Control Middleware
+#### Middleware керування кешем
 
-Laravel includes a `cache.headers` middleware, which may be used to quickly set the `Cache-Control` header for a group of routes. Directives should be provided using the "snake case" equivalent of the corresponding cache-control directive and should be separated by a semicolon. If `etag` is specified in the list of directives, an MD5 hash of the response content will automatically be set as the ETag identifier:
+Laravel містить `middleware` `cache.headers`, який дозволяє швидко задати заголовок `Cache-Control` для групи маршрутів. Директиви слід передавати у вигляді «snake case» відповідної директиви cache-control, розділяючи їх крапкою з комою. Якщо в списку директив указано `etag`, як ідентифікатор ETag автоматично буде встановлено MD5-хеш вмісту відповіді:
 
 ```php
 Route::middleware('cache.headers:public;max_age=30;s_maxage=300;stale_while_revalidate=600;etag')->group(function () {
@@ -122,9 +125,9 @@ Route::middleware('cache.headers:public;max_age=30;s_maxage=300;stale_while_reva
 ```
 
 <a name="attaching-cookies-to-responses"></a>
-### Attaching Cookies to Responses
+### Додавання cookie до відповідей
 
-You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and the number of minutes the cookie should be considered valid to this method:
+Ви можете додати cookie до вихідного екземпляра `Illuminate\Http\Response` методом `cookie`. Передайте цьому методу ім'я, значення та кількість хвилин, протягом яких cookie вважатиметься дійсною:
 
 ```php
 return response('Hello World')->cookie(
@@ -132,7 +135,7 @@ return response('Hello World')->cookie(
 );
 ```
 
-The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](https://secure.php.net/manual/en/function.setcookie.php) method:
+Метод `cookie` приймає ще кілька аргументів, які використовують рідше. Загалом вони мають те саме призначення й значення, що й аргументи нативного PHP-методу [setcookie](https://secure.php.net/manual/en/function.setcookie.php):
 
 ```php
 return response('Hello World')->cookie(
@@ -140,7 +143,7 @@ return response('Hello World')->cookie(
 );
 ```
 
-If you would like to ensure that a cookie is sent with the outgoing response but you do not yet have an instance of that response, you can use the `Cookie` facade to "queue" cookies for attachment to the response when it is sent. The `queue` method accepts the arguments needed to create a cookie instance. These cookies will be attached to the outgoing response before it is sent to the browser:
+Якщо ви хочете гарантувати, що cookie буде надіслано з вихідною відповіддю, але ще не маєте екземпляра цієї відповіді, скористайтеся фасадом `Cookie`, щоб поставити cookie в «чергу» на прикріплення до відповіді під час надсилання. Метод `queue` приймає аргументи, потрібні для створення екземпляра cookie. Ці cookie буде прикріплено до вихідної відповіді перед надсиланням її до браузера:
 
 ```php
 use Illuminate\Support\Facades\Cookie;
@@ -149,9 +152,9 @@ Cookie::queue('name', 'value', $minutes);
 ```
 
 <a name="generating-cookie-instances"></a>
-#### Generating Cookie Instances
+#### Створення екземплярів cookie
 
-If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be attached to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
+Якщо ви хочете створити екземпляр `Symfony\Component\HttpFoundation\Cookie`, який згодом можна буде прикріпити до екземпляра відповіді, скористайтеся глобальним хелпером `cookie`. Ця cookie не буде надіслана клієнту, доки її не прикріплено до екземпляра відповіді:
 
 ```php
 $cookie = cookie('name', 'value', $minutes);
@@ -160,24 +163,24 @@ return response('Hello World')->cookie($cookie);
 ```
 
 <a name="expiring-cookies-early"></a>
-#### Expiring Cookies Early
+#### Дострокове завершення дії cookie
 
-You may remove a cookie by expiring it via the `withoutCookie` method of an outgoing response:
+Ви можете вилучити cookie, завершивши її дію методом `withoutCookie` вихідної відповіді:
 
 ```php
 return response('Hello World')->withoutCookie('name');
 ```
 
-If you do not yet have an instance of the outgoing response, you may use the `Cookie` facade's `expire` method to expire a cookie:
+Якщо ви ще не маєте екземпляра вихідної відповіді, скористайтеся методом `expire` фасаду `Cookie`:
 
 ```php
 Cookie::expire('name');
 ```
 
 <a name="cookies-and-encryption"></a>
-### Cookies and Encryption
+### Cookie та шифрування
 
-By default, thanks to the `Illuminate\Cookie\Middleware\EncryptCookies` middleware, all cookies generated by Laravel are encrypted and signed so that they can't be modified or read by the client. If you would like to disable encryption for a subset of cookies generated by your application, you may use the `encryptCookies` method in your application's `bootstrap/app.php` file:
+За замовчуванням, завдяки `middleware` `Illuminate\Cookie\Middleware\EncryptCookies`, усі cookie, згенеровані Laravel, шифруються й підписуються, тож клієнт не може їх змінити чи прочитати. Якщо ви хочете вимкнути шифрування для частини cookie вашого застосунку, скористайтеся методом `encryptCookies` у файлі `bootstrap/app.php`:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -188,12 +191,12 @@ By default, thanks to the `Illuminate\Cookie\Middleware\EncryptCookies` middlewa
 ```
 
 > [!NOTE]
-> In general, cookie encryption should never be disabled, as this exposes your cookies to potential client-side data exposure and tampering.
+> Загалом шифрування cookie ніколи не слід вимикати, адже це наражає ваші cookie на потенційне розкриття даних і підробку на боці клієнта.
 
 <a name="redirects"></a>
-## Redirects
+## Перенаправлення
 
-Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper:
+Відповіді-перенаправлення є екземплярами класу `Illuminate\Http\RedirectResponse` і містять потрібні заголовки для перенаправлення користувача на іншу адресу. Створити екземпляр `RedirectResponse` можна кількома способами. Найпростіший - скористатися глобальним хелпером `redirect`:
 
 ```php
 Route::get('/dashboard', function () {
@@ -201,7 +204,7 @@ Route::get('/dashboard', function () {
 });
 ```
 
-Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](/docs/{{version}}/session), make sure the route calling the `back` function is using the `web` middleware group:
+Іноді вам може знадобитися перенаправити користувача на попередню сторінку - наприклад, коли надіслана форма виявилася недійсною. Це робиться глобальною функцією-хелпером `back`. Оскільки ця можливість використовує [сесію](/docs/{{version}}/session), переконайтеся, що маршрут, який викликає `back`, входить до групи `middleware` `web`:
 
 ```php
 Route::post('/user/profile', function () {
@@ -212,15 +215,15 @@ Route::post('/user/profile', function () {
 ```
 
 <a name="redirecting-named-routes"></a>
-### Redirecting to Named Routes
+### Перенаправлення до іменованих маршрутів
 
-When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
+Коли ви викликаєте хелпер `redirect` без параметрів, повертається екземпляр `Illuminate\Routing\Redirector`, що дозволяє викликати на ньому будь-який метод. Наприклад, щоб згенерувати `RedirectResponse` до іменованого маршруту, скористайтеся методом `route`:
 
 ```php
 return redirect()->route('login');
 ```
 
-If your route has parameters, you may pass them as the second argument to the `route` method:
+Якщо ваш маршрут має параметри, передайте їх другим аргументом методу `route`:
 
 ```php
 // For a route with the following URI: /profile/{id}
@@ -229,9 +232,9 @@ return redirect()->route('profile', ['id' => 1]);
 ```
 
 <a name="populating-parameters-via-eloquent-models"></a>
-#### Populating Parameters via Eloquent Models
+#### Заповнення параметрів через моделі Eloquent
 
-If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may pass the model itself. The ID will be extracted automatically:
+Якщо ви перенаправляєте до маршруту з параметром «ID», який заповнюється з моделі Eloquent, ви можете передати саму модель. Ідентифікатор буде вилучено автоматично:
 
 ```php
 // For a route with the following URI: /profile/{id}
@@ -239,7 +242,7 @@ If you are redirecting to a route with an "ID" parameter that is being populated
 return redirect()->route('profile', [$user]);
 ```
 
-If you would like to customize the value that is placed in the route parameter, you can specify the column in the route parameter definition (`/profile/{id:slug}`) or you can override the `getRouteKey` method on your Eloquent model:
+Якщо ви хочете налаштувати значення, що потрапляє в параметр маршруту, вкажіть колонку у визначенні параметра (`/profile/{id:slug}`) або перевизначте метод `getRouteKey` у своїй моделі Eloquent:
 
 ```php
 /**
@@ -252,9 +255,9 @@ public function getRouteKey(): mixed
 ```
 
 <a name="redirecting-controller-actions"></a>
-### Redirecting to Controller Actions
+### Перенаправлення до дій контролерів
 
-You may also generate redirects to [controller actions](/docs/{{version}}/controllers). To do so, pass the controller and action name to the `action` method:
+Ви також можете генерувати перенаправлення до [дій контролерів](/docs/{{version}}/controllers). Для цього передайте методу `action` контролер та ім'я дії:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -262,7 +265,7 @@ use App\Http\Controllers\UserController;
 return redirect()->action([UserController::class, 'index']);
 ```
 
-If your controller route requires parameters, you may pass them as the second argument to the `action` method:
+Якщо маршрут вашого контролера потребує параметрів, передайте їх другим аргументом методу `action`:
 
 ```php
 return redirect()->action(
@@ -271,18 +274,18 @@ return redirect()->action(
 ```
 
 <a name="redirecting-external-domains"></a>
-### Redirecting to External Domains
+### Перенаправлення до зовнішніх доменів
 
-Sometimes you may need to redirect to a domain outside of your application. You may do so by calling the `away` method, which creates a `RedirectResponse` without any additional URL encoding, validation, or verification:
+Іноді вам може знадобитися перенаправлення на домен поза вашим застосунком. Це робиться методом `away`, який створює `RedirectResponse` без додаткового кодування, валідації чи перевірки URL:
 
 ```php
 return redirect()->away('https://www.google.com');
 ```
 
 <a name="redirecting-with-flashed-session-data"></a>
-### Redirecting With Flashed Session Data
+### Перенаправлення з флеш-даними сесії
 
-Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/session#flash-data) are usually done at the same time. Typically, this is done after successfully performing an action when you flash a success message to the session. For convenience, you may create a `RedirectResponse` instance and flash data to the session in a single, fluent method chain:
+Перенаправлення на нову адресу та [запис флеш-даних до сесії](/docs/{{version}}/session#flash-data) зазвичай виконуються одночасно. Типово це роблять після успішного виконання дії, записуючи до сесії повідомлення про успіх. Для зручності ви можете створити екземпляр `RedirectResponse` і записати дані до сесії одним плинним ланцюжком методів:
 
 ```php
 Route::post('/user/profile', function () {
@@ -292,7 +295,7 @@ Route::post('/user/profile', function () {
 });
 ```
 
-After the user is redirected, you may display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/blade):
+Після перенаправлення користувача ви можете показати збережене повідомлення із [сесії](/docs/{{version}}/session). Наприклад, за допомогою [синтаксису Blade](/docs/{{version}}/blade):
 
 ```blade
 @if (session('status'))
@@ -303,23 +306,23 @@ After the user is redirected, you may display the flashed message from the [sess
 ```
 
 <a name="redirecting-with-input"></a>
-#### Redirecting With Input
+#### Перенаправлення з вхідними даними
 
-You may use the `withInput` method provided by the `RedirectResponse` instance to flash the current request's input data to the session before redirecting the user to a new location. This is typically done if the user has encountered a validation error. Once the input has been flashed to the session, you may easily [retrieve it](/docs/{{version}}/requests#retrieving-old-input) during the next request to repopulate the form:
+Метод `withInput` екземпляра `RedirectResponse` дозволяє записати вхідні дані поточного запиту до сесії перед перенаправленням користувача. Зазвичай це роблять, коли користувач натрапив на помилку валідації. Щойно вхідні дані записано до сесії, ви можете легко [отримати їх](/docs/{{version}}/requests#retrieving-old-input) під час наступного запиту, щоб заново заповнити форму:
 
 ```php
 return back()->withInput();
 ```
 
 <a name="other-response-types"></a>
-## Other Response Types
+## Інші типи відповідей
 
-The `response` helper may be used to generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/docs/{{version}}/contracts) is returned. This contract provides several helpful methods for generating responses.
+Хелпер `response` дозволяє генерувати інші типи екземплярів відповідей. Коли його викликають без аргументів, повертається реалізація [контракту](/docs/{{version}}/contracts) `Illuminate\Contracts\Routing\ResponseFactory`. Цей контракт надає кілька корисних методів для генерації відповідей.
 
 <a name="view-responses"></a>
-### View Responses
+### Відповіді-представлення
 
-If you need control over the response's status and headers but also need to return a [view](/docs/{{version}}/views) as the response's content, you should use the `view` method:
+Якщо вам потрібен контроль над статусом і заголовками відповіді, але водночас потрібно повернути [представлення](/docs/{{version}}/views) як її вміст, скористайтеся методом `view`:
 
 ```php
 return response()
@@ -327,12 +330,12 @@ return response()
     ->header('Content-Type', $type);
 ```
 
-Of course, if you do not need to pass a custom HTTP status code or custom headers, you may use the global `view` helper function.
+Звісно, якщо вам не потрібно передавати власний HTTP-статус чи заголовки, ви можете скористатися глобальною функцією-хелпером `view`.
 
 <a name="json-responses"></a>
-### JSON Responses
+### JSON-відповіді
 
-The `json` method will automatically set the `Content-Type` header to `application/json`, as well as convert the given array to JSON using the `json_encode` PHP function:
+Метод `json` автоматично встановить заголовок `Content-Type` у значення `application/json`, а також перетворить переданий масив на JSON PHP-функцією `json_encode`:
 
 ```php
 return response()->json([
@@ -341,7 +344,7 @@ return response()->json([
 ]);
 ```
 
-If you would like to create a JSONP response, you may use the `json` method in combination with the `withCallback` method:
+Якщо ви хочете створити JSONP-відповідь, скористайтеся методом `json` у поєднанні з методом `withCallback`:
 
 ```php
 return response()
@@ -350,9 +353,9 @@ return response()
 ```
 
 <a name="file-downloads"></a>
-### File Downloads
+### Завантаження файлів
 
-The `download` method may be used to generate a response that forces the user's browser to download the file at the given path. The `download` method accepts a filename as the second argument to the method, which will determine the filename that is seen by the user downloading the file. Finally, you may pass an array of HTTP headers as the third argument to the method:
+Метод `download` дозволяє згенерувати відповідь, що змусить браузер користувача завантажити файл за вказаним шляхом. Метод `download` приймає ім'я файлу другим аргументом - саме його побачить користувач, який завантажує файл. Нарешті, третім аргументом можна передати масив HTTP-заголовків:
 
 ```php
 return response()->download($pathToFile);
@@ -361,12 +364,12 @@ return response()->download($pathToFile, $name, $headers);
 ```
 
 > [!WARNING]
-> Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII filename.
+> Symfony HttpFoundation, який керує завантаженням файлів, вимагає, щоб файл мав ім'я з символів ASCII.
 
 <a name="file-responses"></a>
-### File Responses
+### Файлові відповіді
 
-The `file` method may be used to display a file, such as an image or PDF, directly in the user's browser instead of initiating a download. This method accepts the absolute path to the file as its first argument and an array of headers as its second argument:
+Метод `file` дозволяє показати файл - як-от зображення чи PDF - безпосередньо в браузері користувача замість того, щоб починати завантаження. Цей метод приймає абсолютний шлях до файлу першим аргументом і масив заголовків другим:
 
 ```php
 return response()->file($pathToFile);
@@ -375,9 +378,9 @@ return response()->file($pathToFile, $headers);
 ```
 
 <a name="streamed-responses"></a>
-## Streamed Responses
+## Потокові відповіді
 
-By streaming data to the client as it is generated, you can significantly reduce memory usage and improve performance, especially for very large responses. Streamed responses allow the client to begin processing data before the server has finished sending it:
+Передаючи дані клієнту в міру їх генерації, ви можете значно зменшити споживання пам'яті й покращити швидкодію - особливо для дуже великих відповідей. Потокові відповіді дозволяють клієнту почати обробку даних ще до того, як сервер завершить їх надсилання:
 
 ```php
 Route::get('/stream', function () {
@@ -392,7 +395,7 @@ Route::get('/stream', function () {
 });
 ```
 
-For convenience, if the closure you provide to the `stream` method returns a [Generator](https://www.php.net/manual/en/language.generators.overview.php), Laravel will automatically flush the output buffer between strings returned by the generator, as well as disable Nginx output buffering:
+Для зручності, якщо замикання, передане методу `stream`, повертає [генератор](https://www.php.net/manual/en/language.generators.overview.php), Laravel автоматично скидатиме буфер виводу між рядками, які повертає генератор, а також вимкне буферизацію виводу Nginx:
 
 ```php
 Route::post('/chat', function () {
@@ -407,9 +410,9 @@ Route::post('/chat', function () {
 ```
 
 <a name="consuming-streamed-responses"></a>
-### Consuming Streamed Responses
+### Споживання потокових відповідей
 
-Streamed responses may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel response and event streams. To get started, install the `@laravel/stream-react`, `@laravel/stream-vue`, or `@laravel/stream-svelte` package:
+Потокові відповіді можна споживати за допомогою npm-пакета `stream` від Laravel, який надає зручний API для роботи з відповідями та потоками подій Laravel. Щоб почати, встановіть пакет `@laravel/stream-react`, `@laravel/stream-vue` або `@laravel/stream-svelte`:
 
 ```shell tab=React
 npm install @laravel/stream-react
@@ -423,7 +426,7 @@ npm install @laravel/stream-vue
 npm install @laravel/stream-svelte
 ```
 
-Then, `useStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `data` with the concatenated response as content is returned from your Laravel application:
+Далі скористайтеся `useStream`, щоб споживати потік подій. Після вказання URL потоку хук автоматично оновлюватиме `data` об'єднаною відповіддю в міру її надходження від вашого застосунку Laravel:
 
 ```tsx tab=React
 import { useStream } from "@laravel/stream-react";
@@ -496,12 +499,12 @@ const sendMessage = () => {
 </div>
 ```
 
-When sending data back to the stream via `send`, the active connection to the stream is canceled before sending the new data. All requests are sent as JSON `POST` requests.
+Коли ви надсилаєте дані назад у потік через `send`, активне з'єднання з потоком скасовується перед надсиланням нових даних. Усі запити надсилаються як JSON-запити `POST`.
 
 > [!WARNING]
-> Since the `useStream` hook makes a `POST` request to your application, a valid CSRF token is required. The easiest way to provide the CSRF token is to [include it via a meta tag in your application layout's head](/docs/{{version}}/csrf#csrf-x-csrf-token).
+> Оскільки хук `useStream` робить `POST`-запит до вашого застосунку, потрібен дійсний CSRF-токен. Найпростіший спосіб його надати - [додати його через meta-тег у head макета вашого застосунку](/docs/{{version}}/csrf#csrf-x-csrf-token).
 
-The second argument given to `useStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
+Другий аргумент, переданий `useStream`, - це об'єкт опцій, яким можна налаштувати поведінку споживання потоку. Типові значення цього об'єкта наведено нижче:
 
 ```tsx tab=React
 import { useStream } from "@laravel/stream-react";
@@ -565,9 +568,9 @@ const stream = useStream("chat", {
 <div>{$stream.data}</div>
 ```
 
-`onResponse` is triggered after a successful initial response from the stream and the raw [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) is passed to the callback. `onData` is called as each chunk is received - the current chunk is passed to the callback. `onFinish` is called when a stream has finished and when an error is thrown during the fetch / read cycle.
+`onResponse` спрацьовує після успішної початкової відповіді з потоку, і в колбек передається сирий [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response). `onData` викликається для кожного отриманого фрагмента - у колбек передається поточний фрагмент. `onFinish` викликається, коли потік завершився, а також коли під час циклу отримання чи читання виникає помилка.
 
-By default, a request is not made to the stream on initialization. You may pass an initial payload to the stream by using the `initialInput` option:
+За замовчуванням під час ініціалізації запит до потоку не робиться. Ви можете передати потоку початкові дані опцією `initialInput`:
 
 ```tsx tab=React
 import { useStream } from "@laravel/stream-react";
@@ -613,7 +616,7 @@ const stream = useStream("chat", {
 <div>{$stream.data}</div>
 ```
 
-To cancel a stream manually, you may use the `cancel` method returned from the hook:
+Щоб скасувати потік вручну, скористайтеся методом `cancel`, який повертає хук:
 
 ```tsx tab=React
 import { useStream } from "@laravel/stream-react";
@@ -658,7 +661,7 @@ const stream = useStream("chat");
 </div>
 ```
 
-Each time the `useStream` hook is used, a random `id` is generated to identify the stream. This is sent back to the server with each request in the `X-STREAM-ID` header. When consuming the same stream from multiple components, you can read and write to the stream by providing your own `id`:
+Щоразу, коли використовується хук `useStream`, генерується випадковий `id` для ідентифікації потоку. Він надсилається на сервер із кожним запитом у заголовку `X-STREAM-ID`. Коли ви споживаєте той самий потік із кількох компонентів, ви можете читати з нього й писати до нього, надавши власний `id`:
 
 ```tsx tab=React
 // App.tsx
@@ -759,9 +762,9 @@ const stream = useStream("chat", { id });
 ```
 
 <a name="streamed-json-responses"></a>
-### Streamed JSON Responses
+### Потокові JSON-відповіді
 
-If you need to stream JSON data incrementally, you may utilize the `streamJson` method. This method is especially useful for large datasets that need to be sent progressively to the browser in a format that can be easily parsed by JavaScript:
+Якщо вам потрібно передавати JSON-дані поступово, скористайтеся методом `streamJson`. Він особливо корисний для великих наборів даних, які треба поступово надсилати браузеру у форматі, що легко розбирається JavaScript:
 
 ```php
 use App\Models\User;
@@ -773,7 +776,7 @@ Route::get('/users.json', function () {
 });
 ```
 
-The `useJsonStream` hook is identical to the [useStream hook](#consuming-streamed-responses) except that it will attempt to parse the data as JSON once it has finished streaming:
+Хук `useJsonStream` ідентичний [хуку useStream](#consuming-streamed-responses), за винятком того, що він намагатиметься розібрати дані як JSON після завершення потоку:
 
 ```tsx tab=React
 import { useJsonStream } from "@laravel/stream-react";
@@ -865,9 +868,9 @@ const loadUsers = () => {
 ```
 
 <a name="event-streams"></a>
-### Event Streams (SSE)
+### Потоки подій (SSE)
 
-The `eventStream` method may be used to return a server-sent events (SSE) streamed response using the `text/event-stream` content type. The `eventStream` method accepts a closure which should [yield](https://www.php.net/manual/en/language.generators.overview.php) responses to the stream as the responses become available:
+Метод `eventStream` дозволяє повернути потокову відповідь із подіями, надісланими сервером (SSE), із типом вмісту `text/event-stream`. Метод `eventStream` приймає замикання, яке має [віддавати](https://www.php.net/manual/en/language.generators.overview.php) відповіді в потік у міру їх появи:
 
 ```php
 Route::get('/chat', function () {
@@ -881,7 +884,7 @@ Route::get('/chat', function () {
 });
 ```
 
-If you would like to customize the name of the event, you may yield an instance of the `StreamedEvent` class:
+Якщо ви хочете налаштувати ім'я події, віддавайте екземпляр класу `StreamedEvent`:
 
 ```php
 use Illuminate\Http\StreamedEvent;
@@ -893,9 +896,9 @@ yield new StreamedEvent(
 ```
 
 <a name="consuming-event-streams"></a>
-#### Consuming Event Streams
+#### Споживання потоків подій
 
-Event streams may be consumed using Laravel's `stream` npm package, which provides a convenient API for interacting with Laravel event streams. To get started, install the `@laravel/stream-react`, `@laravel/stream-vue`, or `@laravel/stream-svelte` package:
+Потоки подій можна споживати за допомогою npm-пакета `stream` від Laravel, який надає зручний API для роботи з потоками подій Laravel. Щоб почати, встановіть пакет `@laravel/stream-react`, `@laravel/stream-vue` або `@laravel/stream-svelte`:
 
 ```shell tab=React
 npm install @laravel/stream-react
@@ -909,7 +912,7 @@ npm install @laravel/stream-vue
 npm install @laravel/stream-svelte
 ```
 
-Then, `useEventStream` may be used to consume the event stream. After providing your stream URL, the hook will automatically update the `message` with the concatenated response as messages are returned from your Laravel application:
+Далі скористайтеся `useEventStream`, щоб споживати потік подій. Після вказання URL потоку хук автоматично оновлюватиме `message` об'єднаною відповіддю в міру надходження повідомлень від вашого застосунку Laravel:
 
 ```jsx tab=React
 import { useEventStream } from "@laravel/stream-react";
@@ -943,7 +946,7 @@ const eventStream = useEventStream("/chat");
 <div>{$eventStream.message}</div>
 ```
 
-The second argument given to `useEventStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
+Другий аргумент, переданий `useEventStream`, - це об'єкт опцій, яким можна налаштувати поведінку споживання потоку. Типові значення цього об'єкта наведено нижче:
 
 ```jsx tab=React
 import { useEventStream } from "@laravel/stream-react";
@@ -1011,7 +1014,7 @@ const eventStream = useEventStream("/chat", {
 </script>
 ```
 
-Event streams may also be manually consumed via an [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) object by your application's frontend. The `eventStream` method will automatically send a `</stream>` update to the event stream when the stream is complete:
+Потоки подій можна також споживати вручну через об'єкт [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) на фронтенді вашого застосунку. Метод `eventStream` автоматично надішле в потік оновлення `</stream>`, коли потік завершиться:
 
 ```js
 const source = new EventSource('/chat');
@@ -1027,7 +1030,7 @@ source.addEventListener('update', (event) => {
 });
 ```
 
-To customize the final event that is sent to the event stream, you may provide a `StreamedEvent` instance to the `eventStream` method's `endStreamWith` argument:
+Щоб налаштувати останню подію, яку надсилають у потік, передайте екземпляр `StreamedEvent` в аргумент `endStreamWith` методу `eventStream`:
 
 ```php
 return response()->eventStream(function () {
@@ -1036,9 +1039,9 @@ return response()->eventStream(function () {
 ```
 
 <a name="streamed-downloads"></a>
-### Streamed Downloads
+### Потокові завантаження
 
-Sometimes you may wish to turn the string response of a given operation into a downloadable response without having to write the contents of the operation to disk. You may use the `streamDownload` method in this scenario. This method accepts a callback, filename, and an optional array of headers as its arguments:
+Іноді ви можете захотіти перетворити рядкову відповідь певної операції на завантажуваний файл, не записуючи її вміст на диск. У такому разі скористайтеся методом `streamDownload`. Він приймає колбек, ім'я файлу та необов'язковий масив заголовків:
 
 ```php
 use App\Services\GitHub;
@@ -1051,9 +1054,9 @@ return response()->streamDownload(function () {
 ```
 
 <a name="response-macros"></a>
-## Response Macros
+## Макроси відповідей
 
-If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on the `Response` facade. Typically, you should call this method from the `boot` method of one of your application's [service providers](/docs/{{version}}/providers), such as the `App\Providers\AppServiceProvider` service provider:
+Якщо ви хочете визначити власну відповідь, яку можна повторно використовувати в різних маршрутах і контролерах, скористайтеся методом `macro` фасаду `Response`. Зазвичай цей метод варто викликати з методу `boot` одного із [сервіс-провайдерів](/docs/{{version}}/providers) вашого застосунку - наприклад, `App\Providers\AppServiceProvider`:
 
 ```php
 <?php
@@ -1077,7 +1080,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-The `macro` function accepts a name as its first argument and a closure as its second argument. The macro's closure will be executed when calling the macro name from a `ResponseFactory` implementation or the `response` helper:
+Функція `macro` приймає ім'я першим аргументом і замикання другим. Замикання макроса виконуватиметься під час виклику імені макроса на реалізації `ResponseFactory` чи хелпері `response`:
 
 ```php
 return response()->caps('foo');
