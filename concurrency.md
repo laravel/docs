@@ -1,35 +1,38 @@
-# Concurrency
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Паралельність
 
-- [Introduction](#introduction)
-- [Running Concurrent Tasks](#running-concurrent-tasks)
-    - [Named Results](#named-results)
-    - [Task Timeouts](#task-timeouts)
-- [Deferring Concurrent Tasks](#deferring-concurrent-tasks)
+- [Вступ](#introduction)
+- [Запуск паралельних завдань](#running-concurrent-tasks)
+    - [Іменовані результати](#named-results)
+    - [Тайм-аути завдань](#task-timeouts)
+- [Відкладені паралельні завдання](#deferring-concurrent-tasks)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Sometimes you may need to execute several slow tasks which do not depend on one another. In many cases, significant performance improvements can be realized by executing the tasks concurrently. Laravel's `Concurrency` facade provides a simple, convenient API for executing closures concurrently.
+Іноді вам може знадобитися виконати кілька повільних завдань, які не залежать одне від одного. У багатьох випадках паралельне виконання дає значний приріст швидкодії. Фасад `Concurrency` у Laravel надає простий і зручний API для паралельного виконання замикань.
 
 <a name="how-it-works"></a>
-#### How it Works
+#### Як це працює
 
-Laravel achieves concurrency by serializing the given closures and dispatching them to a hidden Artisan CLI command, which unserializes the closures and invokes it within its own PHP process. After the closure has been invoked, the resulting value is serialized back to the parent process.
+Laravel досягає паралельності, серіалізуючи передані замикання й надсилаючи їх до прихованої команди Artisan CLI, яка десеріалізує замикання та виконує їх у власному процесі PHP. Після виконання замикання отриманий результат серіалізується назад до батьківського процесу.
 
-The `Concurrency` facade supports three drivers: `process` (the default), `fork`, and `sync`.
+Фасад `Concurrency` підтримує три драйвери: `process` (типовий), `fork` і `sync`.
 
-The `fork` driver offers improved performance compared to the default `process` driver, but it may only be used within PHP's CLI context, as PHP does not support forking during web requests. Before using the `fork` driver, you need to install the `spatie/fork` package:
+Драйвер `fork` дає кращу швидкодію порівняно з типовим `process`, але його можна використовувати лише в контексті PHP CLI, адже PHP не підтримує форкування під час веб-запитів. Перш ніж використовувати драйвер `fork`, потрібно встановити пакет `spatie/fork`:
 
 ```shell
 composer require spatie/fork
 ```
 
-The `sync` driver is primarily useful during testing when you want to disable all concurrency and simply execute the given closures in sequence within the parent process.
+Драйвер `sync` насамперед корисний під час тестування, коли ви хочете вимкнути будь-яку паралельність і просто виконати передані замикання послідовно в батьківському процесі.
 
 <a name="running-concurrent-tasks"></a>
-## Running Concurrent Tasks
+## Запуск паралельних завдань
 
-To run concurrent tasks, you may invoke the `Concurrency` facade's `run` method. The `run` method accepts an array of closures which should be executed simultaneously in child PHP processes:
+Щоб запустити паралельні завдання, викличте метод `run` фасаду `Concurrency`. Метод `run` приймає масив замикань, які слід виконати одночасно в дочірніх процесах PHP:
 
 ```php
 use Illuminate\Support\Facades\Concurrency;
@@ -41,22 +44,22 @@ use Illuminate\Support\Facades\DB;
 ]);
 ```
 
-To use a specific driver, you may use the `driver` method:
+Щоб скористатися конкретним драйвером, застосуйте метод `driver`:
 
 ```php
 $results = Concurrency::driver('fork')->run(...);
 ```
 
-Or, to change the default concurrency driver, you should publish the `concurrency` configuration file via the `config:publish` Artisan command and update the `default` option within the file:
+Або, щоб змінити типовий драйвер паралельності, опублікуйте конфігураційний файл `concurrency` командою Artisan `config:publish` і оновіть у ньому опцію `default`:
 
 ```shell
 php artisan config:publish concurrency
 ```
 
 <a name="named-results"></a>
-### Named Results
+### Іменовані результати
 
-If you would like to access concurrent task results by name rather than by position, you may provide an associative array of closures. Each result will be returned using the same key as its corresponding closure:
+Якщо ви хочете звертатися до результатів паралельних завдань за іменем, а не за позицією, передайте асоціативний масив замикань. Кожен результат буде повернуто під тим самим ключем, що й відповідне замикання:
 
 ```php
 use Illuminate\Support\Facades\Concurrency;
@@ -72,9 +75,9 @@ $orderCount = $results['orders'];
 ```
 
 <a name="task-timeouts"></a>
-### Task Timeouts
+### Тайм-аути завдань
 
-When using the `process` driver (the default), you may specify a maximum number of seconds a concurrent task is allowed to run before it is terminated by providing a timeout to the `run` method:
+Використовуючи драйвер `process` (типовий), ви можете вказати максимальну кількість секунд, протягом яких паралельному завданню дозволено виконуватися до примусового завершення, передавши тайм-аут методу `run`:
 
 ```php
 use Illuminate\Support\Facades\Concurrency;
@@ -86,7 +89,7 @@ use Illuminate\Support\Facades\DB;
 ], timeout: 30);
 ```
 
-You may also provide a `CarbonInterval` instance if you prefer a more expressive timeout definition:
+Ви також можете передати екземпляр `CarbonInterval`, якщо вам більше до вподоби виразніше визначення тайм-ауту:
 
 ```php
 use Illuminate\Support\Facades\Concurrency;
@@ -97,9 +100,9 @@ Concurrency::run([...], timeout: seconds(30));
 ```
 
 <a name="deferring-concurrent-tasks"></a>
-## Deferring Concurrent Tasks
+## Відкладені паралельні завдання
 
-If you would like to execute an array of closures concurrently, but are not interested in the results returned by those closures, you should consider using the `defer` method. When the `defer` method is invoked, the given closures are not executed immediately. Instead, Laravel will execute the closures concurrently after the HTTP response has been sent to the user:
+Якщо ви хочете виконати масив замикань паралельно, але вас не цікавлять їхні результати, скористайтеся методом `defer`. Коли викликано метод `defer`, передані замикання не виконуються одразу. Натомість Laravel виконає їх паралельно після того, як HTTP-відповідь буде надіслано користувачеві:
 
 ```php
 use App\Services\Metrics;
