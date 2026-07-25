@@ -1,34 +1,37 @@
-# Processes
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Процеси
 
-- [Introduction](#introduction)
-- [Invoking Processes](#invoking-processes)
-    - [Process Options](#process-options)
-    - [Process Output](#process-output)
-    - [Pipelines](#process-pipelines)
-- [Asynchronous Processes](#asynchronous-processes)
-    - [Process IDs and Signals](#process-ids-and-signals)
-    - [Asynchronous Process Output](#asynchronous-process-output)
-    - [Asynchronous Process Timeouts](#asynchronous-process-timeouts)
-- [Concurrent Processes](#concurrent-processes)
-    - [Naming Pool Processes](#naming-pool-processes)
-    - [Pool Process IDs and Signals](#pool-process-ids-and-signals)
-- [Testing](#testing)
-    - [Faking Processes](#faking-processes)
-    - [Faking Specific Processes](#faking-specific-processes)
-    - [Faking Process Sequences](#faking-process-sequences)
-    - [Faking Asynchronous Process Lifecycles](#faking-asynchronous-process-lifecycles)
-    - [Available Assertions](#available-assertions)
-    - [Preventing Stray Processes](#preventing-stray-processes)
+- [Вступ](#introduction)
+- [Виклик процесів](#invoking-processes)
+    - [Опції процесу](#process-options)
+    - [Вивід процесу](#process-output)
+    - [Конвеєри](#process-pipelines)
+- [Асинхронні процеси](#asynchronous-processes)
+    - [ID процесів і сигнали](#process-ids-and-signals)
+    - [Вивід асинхронних процесів](#asynchronous-process-output)
+    - [Таймаути асинхронних процесів](#asynchronous-process-timeouts)
+- [Паралельні процеси](#concurrent-processes)
+    - [Іменування процесів пулу](#naming-pool-processes)
+    - [ID процесів пулу та сигнали](#pool-process-ids-and-signals)
+- [Тестування](#testing)
+    - [Підміна процесів](#faking-processes)
+    - [Підміна конкретних процесів](#faking-specific-processes)
+    - [Підміна послідовностей процесів](#faking-process-sequences)
+    - [Підміна життєвого циклу асинхронних процесів](#faking-asynchronous-process-lifecycles)
+    - [Доступні перевірки](#available-assertions)
+    - [Запобігання «блукаючим» процесам](#preventing-stray-processes)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel provides an expressive, minimal API around the [Symfony Process component](https://symfony.com/doc/current/components/process.html), allowing you to conveniently invoke external processes from your Laravel application. Laravel's process features are focused on the most common use cases and a wonderful developer experience.
+Laravel надає виразний мінімалістичний API навколо [компонента Symfony Process](https://symfony.com/doc/current/components/process.html), який дозволяє зручно викликати зовнішні процеси з вашого застосунку Laravel. Можливості роботи з процесами в Laravel зосереджені на найпоширеніших сценаріях і чудовому досвіді розробника.
 
 <a name="invoking-processes"></a>
-## Invoking Processes
+## Виклик процесів
 
-To invoke a process, you may use the `run` and `start` methods offered by the `Process` facade. The `run` method will invoke a process and wait for the process to finish executing, while the `start` method is used for asynchronous process execution. We'll examine both approaches within this documentation. First, let's examine how to invoke a basic, synchronous process and inspect its result:
+Щоб викликати процес, скористайтеся методами `run` та `start` фасаду `Process`. Метод `run` викликає процес і чекає на завершення його виконання, а метод `start` призначений для асинхронного виконання. Ми розглянемо обидва підходи в цій документації. Спершу подивімося, як викликати простий синхронний процес і оглянути його результат:
 
 ```php
 use Illuminate\Support\Facades\Process;
@@ -38,7 +41,7 @@ $result = Process::run('ls -la');
 return $result->output();
 ```
 
-Of course, the `Illuminate\Contracts\Process\ProcessResult` instance returned by the `run` method offers a variety of helpful methods that may be used to inspect the process result:
+Звісно, екземпляр `Illuminate\Contracts\Process\ProcessResult`, який повертає метод `run`, пропонує низку корисних методів для огляду результату процесу:
 
 ```php
 $result = Process::run('ls -la');
@@ -52,9 +55,9 @@ $result->exitCode();
 ```
 
 <a name="throwing-exceptions"></a>
-#### Throwing Exceptions
+#### Викидання винятків
 
-If you have a process result and would like to throw an instance of `Illuminate\Process\Exceptions\ProcessFailedException` if the exit code is greater than zero (thus indicating failure), you may use the `throw` and `throwIf` methods. If the process did not fail, the `ProcessResult` instance will be returned:
+Якщо ви маєте результат процесу й хочете викинути екземпляр `Illuminate\Process\Exceptions\ProcessFailedException`, коли код виходу більший за нуль (що означає невдачу), скористайтеся методами `throw` та `throwIf`. Якщо процес не провалився, буде повернуто екземпляр `ProcessResult`:
 
 ```php
 $result = Process::run('ls -la')->throw();
@@ -63,38 +66,38 @@ $result = Process::run('ls -la')->throwIf($condition);
 ```
 
 <a name="process-options"></a>
-### Process Options
+### Опції процесу
 
-Of course, you may need to customize the behavior of a process before invoking it. Thankfully, Laravel allows you to tweak a variety of process features, such as the working directory, timeout, and environment variables.
+Звісно, вам може знадобитися налаштувати поведінку процесу перед його викликом. На щастя, Laravel дозволяє підкрутити різні характеристики процесу: робочий каталог, таймаут і змінні середовища.
 
 <a name="working-directory-path"></a>
-#### Working Directory Path
+#### Шлях робочого каталогу
 
-You may use the `path` method to specify the working directory of the process. If this method is not invoked, the process will inherit the working directory of the currently executing PHP script:
+Метод `path` дозволяє вказати робочий каталог процесу. Якщо цей метод не викликано, процес успадкує робочий каталог PHP-скрипта, що виконується:
 
 ```php
 $result = Process::path(__DIR__)->run('ls -la');
 ```
 
 <a name="input"></a>
-#### Input
+#### Ввід
 
-You may provide input via the "standard input" of the process using the `input` method:
+Ви можете передати ввід через «стандартний ввід» процесу методом `input`:
 
 ```php
 $result = Process::input('Hello World')->run('cat');
 ```
 
 <a name="timeouts"></a>
-#### Timeouts
+#### Таймаути
 
-By default, processes will throw an instance of `Illuminate\Process\Exceptions\ProcessTimedOutException` after executing for more than 60 seconds. However, you can customize this behavior via the `timeout` method:
+За замовчуванням процеси викидають екземпляр `Illuminate\Process\Exceptions\ProcessTimedOutException` після понад 60 секунд виконання. Проте ви можете змінити цю поведінку методом `timeout`:
 
 ```php
 $result = Process::timeout(120)->run('bash import.sh');
 ```
 
-The `timeout` and `idleTimeout` methods also accept `CarbonInterval` instances:
+Методи `timeout` та `idleTimeout` також приймають екземпляри `CarbonInterval`:
 
 ```php
 use function Illuminate\Support\minutes;
@@ -102,22 +105,22 @@ use function Illuminate\Support\minutes;
 $result = Process::timeout(minutes(2))->run('bash import.sh');
 ```
 
-Or, if you would like to disable the process timeout entirely, you may invoke the `forever` method:
+Або ж, якщо ви хочете вимкнути таймаут процесу взагалі, викличте метод `forever`:
 
 ```php
 $result = Process::forever()->run('bash import.sh');
 ```
 
-The `idleTimeout` method may be used to specify the maximum number of seconds the process may run without returning any output:
+Метод `idleTimeout` дозволяє вказати максимальну кількість секунд, які процес може працювати, не повертаючи жодного виводу:
 
 ```php
 $result = Process::timeout(60)->idleTimeout(30)->run('bash import.sh');
 ```
 
 <a name="environment-variables"></a>
-#### Environment Variables
+#### Змінні середовища
 
-Environment variables may be provided to the process via the `env` method. The invoked process will also inherit all of the environment variables defined by your system:
+Змінні середовища можна передати процесу методом `env`. Викликаний процес також успадкує всі змінні середовища, задані вашою системою:
 
 ```php
 $result = Process::forever()
@@ -125,7 +128,7 @@ $result = Process::forever()
     ->run('bash import.sh');
 ```
 
-If you wish to remove an inherited environment variable from the invoked process, you may provide that environment variable with a value of `false`:
+Якщо ви хочете прибрати успадковану змінну середовища з викликаного процесу, передайте цій змінній значення `false`:
 
 ```php
 $result = Process::forever()
@@ -134,21 +137,21 @@ $result = Process::forever()
 ```
 
 <a name="tty-mode"></a>
-#### TTY Mode
+#### Режим TTY
 
-The `tty` method may be used to enable TTY mode for your process. TTY mode connects the input and output of the process to the input and output of your program, allowing your process to open an editor like Vim or Nano as a process:
+Метод `tty` дозволяє увімкнути для вашого процесу режим TTY. Режим TTY під'єднує ввід і вивід процесу до вводу й виводу вашої програми, дозволяючи процесу відкрити редактор на кшталт Vim чи Nano:
 
 ```php
 Process::forever()->tty()->run('vim');
 ```
 
 > [!WARNING]
-> TTY mode is not supported on Windows.
+> Режим TTY не підтримується у Windows.
 
 <a name="process-output"></a>
-### Process Output
+### Вивід процесу
 
-As previously discussed, process output may be accessed using the `output` (stdout) and `errorOutput` (stderr) methods on a process result:
+Як уже згадувалося, до виводу процесу можна звернутися методами `output` (stdout) та `errorOutput` (stderr) на результаті процесу:
 
 ```php
 use Illuminate\Support\Facades\Process;
@@ -159,7 +162,7 @@ echo $result->output();
 echo $result->errorOutput();
 ```
 
-However, output may also be gathered in real-time by passing a closure as the second argument to the `run` method. The closure will receive two arguments: the "type" of output (`stdout` or `stderr`) and the output string itself:
+Проте вивід можна збирати й у реальному часі, передавши замикання другим аргументом методу `run`. Замикання отримає два аргументи: «тип» виводу (`stdout` чи `stderr`) і сам рядок виводу:
 
 ```php
 $result = Process::run('ls -la', function (string $type, string $output) {
@@ -167,7 +170,7 @@ $result = Process::run('ls -la', function (string $type, string $output) {
 });
 ```
 
-Laravel also offers the `seeInOutput` and `seeInErrorOutput` methods, which provide a convenient way to determine if a given string was contained in the process' output:
+Laravel також пропонує методи `seeInOutput` та `seeInErrorOutput`, які дають зручний спосіб визначити, чи містив вивід процесу заданий рядок:
 
 ```php
 if (Process::run('ls -la')->seeInOutput('laravel')) {
@@ -176,9 +179,9 @@ if (Process::run('ls -la')->seeInOutput('laravel')) {
 ```
 
 <a name="disabling-process-output"></a>
-#### Disabling Process Output
+#### Вимкнення виводу процесу
 
-If your process is writing a significant amount of output that you are not interested in, you can conserve memory by disabling output retrieval entirely. To accomplish this, invoke the `quietly` method while building the process:
+Якщо ваш процес пише багато виводу, який вас не цікавить, ви можете заощадити пам'ять, вимкнувши отримання виводу взагалі. Для цього викличте метод `quietly` під час побудови процесу:
 
 ```php
 use Illuminate\Support\Facades\Process;
@@ -187,9 +190,9 @@ $result = Process::quietly()->run('bash import.sh');
 ```
 
 <a name="process-pipelines"></a>
-### Pipelines
+### Конвеєри
 
-Sometimes you may want to make the output of one process the input of another process. This is often referred to as "piping" the output of a process into another. The `pipe` method provided by the `Process` facades makes this easy to accomplish. The `pipe` method will execute the piped processes synchronously and return the process result for the last process in the pipeline:
+Інколи вам може захотітися зробити вивід одного процесу вводом іншого. Це часто називають «пайпінгом» виводу одного процесу в інший. Метод `pipe` фасаду `Process` спрощує це завдання. Метод `pipe` виконає процеси конвеєра синхронно й поверне результат останнього процесу в конвеєрі:
 
 ```php
 use Illuminate\Process\Pipe;
@@ -205,7 +208,7 @@ if ($result->successful()) {
 }
 ```
 
-If you do not need to customize the individual processes that make up the pipeline, you may simply pass an array of command strings to the `pipe` method:
+Якщо вам не потрібно налаштовувати окремі процеси конвеєра, ви можете просто передати методу `pipe` масив рядків-команд:
 
 ```php
 $result = Process::pipe([
@@ -214,7 +217,7 @@ $result = Process::pipe([
 ]);
 ```
 
-The process output may be gathered in real-time by passing a closure as the second argument to the `pipe` method. The closure will receive two arguments: the "type" of output (`stdout` or `stderr`) and the output string itself:
+Вивід процесу можна збирати в реальному часі, передавши замикання другим аргументом методу `pipe`. Замикання отримає два аргументи: «тип» виводу (`stdout` чи `stderr`) і сам рядок виводу:
 
 ```php
 $result = Process::pipe(function (Pipe $pipe) {
@@ -225,7 +228,7 @@ $result = Process::pipe(function (Pipe $pipe) {
 });
 ```
 
-Laravel also allows you to assign string keys to each process within a pipeline via the `as` method. This key will also be passed to the output closure provided to the `pipe` method, allowing you to determine which process the output belongs to:
+Laravel також дозволяє призначати рядкові ключі кожному процесу конвеєра методом `as`. Цей ключ також буде передано до замикання виводу, переданого методу `pipe`, тож ви зможете визначити, якому процесу належить вивід:
 
 ```php
 $result = Process::pipe(function (Pipe $pipe) {
@@ -237,9 +240,9 @@ $result = Process::pipe(function (Pipe $pipe) {
 ```
 
 <a name="asynchronous-processes"></a>
-## Asynchronous Processes
+## Асинхронні процеси
 
-While the `run` method invokes processes synchronously, the `start` method may be used to invoke a process asynchronously. This allows your application to continue performing other tasks while the process runs in the background. Once the process has been invoked, you may utilize the `running` method to determine if the process is still running:
+Якщо метод `run` викликає процеси синхронно, то метод `start` дозволяє викликати процес асинхронно. Це дає вашому застосунку змогу виконувати інші задачі, доки процес працює у фоні. Щойно процес викликано, ви можете скористатися методом `running`, щоб визначити, чи він ще працює:
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
@@ -251,7 +254,7 @@ while ($process->running()) {
 $result = $process->wait();
 ```
 
-As you may have noticed, you may invoke the `wait` method to wait until the process is finished executing and retrieve the `ProcessResult` instance:
+Як ви могли помітити, ви можете викликати метод `wait`, щоб дочекатися завершення процесу й отримати екземпляр `ProcessResult`:
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
@@ -262,9 +265,9 @@ $result = $process->wait();
 ```
 
 <a name="process-ids-and-signals"></a>
-### Process IDs and Signals
+### ID процесів і сигнали
 
-The `id` method may be used to retrieve the operating system assigned process ID of the running process:
+Метод `id` дозволяє дізнатися ID запущеного процесу, призначений операційною системою:
 
 ```php
 $process = Process::start('bash import.sh');
@@ -272,16 +275,16 @@ $process = Process::start('bash import.sh');
 return $process->id();
 ```
 
-You may use the `signal` method to send a "signal" to the running process. A list of predefined signal constants can be found within the [PHP documentation](https://www.php.net/manual/en/pcntl.constants.php):
+Метод `signal` дозволяє надіслати «сигнал» запущеному процесу. Список наперед визначених констант сигналів можна знайти в [документації PHP](https://www.php.net/manual/en/pcntl.constants.php):
 
 ```php
 $process->signal(SIGUSR2);
 ```
 
 <a name="asynchronous-process-output"></a>
-### Asynchronous Process Output
+### Вивід асинхронних процесів
 
-While an asynchronous process is running, you may access its entire current output using the `output` and `errorOutput` methods; however, you may utilize the `latestOutput` and `latestErrorOutput` to access the output from the process that has occurred since the output was last retrieved:
+Доки асинхронний процес працює, ви можете звернутися до всього його поточного виводу методами `output` та `errorOutput`; проте методи `latestOutput` і `latestErrorOutput` дозволяють отримати вивід процесу, що з'явився з моменту останнього отримання:
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
@@ -294,7 +297,7 @@ while ($process->running()) {
 }
 ```
 
-Like the `run` method, output may also be gathered in real-time from asynchronous processes by passing a closure as the second argument to the `start` method. The closure will receive two arguments: the "type" of output (`stdout` or `stderr`) and the output string itself:
+Як і з методом `run`, вивід асинхронних процесів можна збирати в реальному часі, передавши замикання другим аргументом методу `start`. Замикання отримає два аргументи: «тип» виводу (`stdout` чи `stderr`) і сам рядок виводу:
 
 ```php
 $process = Process::start('bash import.sh', function (string $type, string $output) {
@@ -304,7 +307,7 @@ $process = Process::start('bash import.sh', function (string $type, string $outp
 $result = $process->wait();
 ```
 
-Instead of waiting until the process has finished, you may use the `waitUntil` method to stop waiting based on the output of the process. Laravel will stop waiting for the process to finish when the closure given to the `waitUntil` method returns `true`:
+Замість чекати на завершення процесу, ви можете скористатися методом `waitUntil`, щоб припинити очікування на основі виводу процесу. Laravel перестане чекати на завершення процесу, коли замикання, передане методу `waitUntil`, поверне `true`:
 
 ```php
 $process = Process::start('bash import.sh');
@@ -315,9 +318,9 @@ $process->waitUntil(function (string $type, string $output) {
 ```
 
 <a name="asynchronous-process-timeouts"></a>
-### Asynchronous Process Timeouts
+### Таймаути асинхронних процесів
 
-While an asynchronous process is running, you may verify that the process has not timed out using the `ensureNotTimedOut` method. This method will throw a [timeout exception](#timeouts) if the process has timed out:
+Доки асинхронний процес працює, ви можете перевірити, що він не вичерпав таймаут, методом `ensureNotTimedOut`. Цей метод викине [виняток таймауту](#timeouts), якщо процес його вичерпав:
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
@@ -332,11 +335,11 @@ while ($process->running()) {
 ```
 
 <a name="concurrent-processes"></a>
-## Concurrent Processes
+## Паралельні процеси
 
-Laravel also makes it a breeze to manage a pool of concurrent, asynchronous processes, allowing you to easily execute many tasks simultaneously. To get started, invoke the `pool` method, which accepts a closure that receives an instance of `Illuminate\Process\Pool`.
+Laravel також дуже спрощує керування пулом паралельних асинхронних процесів, дозволяючи легко виконувати багато задач одночасно. Для початку викличте метод `pool`, який приймає замикання, що отримує екземпляр `Illuminate\Process\Pool`.
 
-Within this closure, you may define the processes that belong to the pool. Once a process pool is started via the `start` method, you may access the [collection](/docs/{{version}}/collections) of running processes via the `running` method:
+У цьому замиканні ви можете описати процеси, які належать пулу. Щойно пул процесів запущено методом `start`, ви можете звернутися до [колекції](/docs/{{version}}/collections) запущених процесів методом `running`:
 
 ```php
 use Illuminate\Process\Pool;
@@ -357,7 +360,7 @@ while ($pool->running()->isNotEmpty()) {
 $results = $pool->wait();
 ```
 
-As you can see, you may wait for all of the pool processes to finish executing and resolve their results via the `wait` method. The `wait` method returns an array accessible object that allows you to access the `ProcessResult` instance of each process in the pool by its key:
+Як бачите, ви можете дочекатися завершення всіх процесів пулу й отримати їхні результати методом `wait`. Метод `wait` повертає об'єкт із доступом як до масиву, що дозволяє звертатися до екземпляра `ProcessResult` кожного процесу пулу за його ключем:
 
 ```php
 $results = $pool->wait();
@@ -365,7 +368,7 @@ $results = $pool->wait();
 echo $results[0]->output();
 ```
 
-Or, for convenience, the `concurrently` method may be used to start an asynchronous process pool and immediately wait on its results. This can provide particularly expressive syntax when combined with PHP's array destructuring capabilities:
+Або ж, для зручності, метод `concurrently` дозволяє запустити асинхронний пул процесів і одразу дочекатися його результатів. Це дає особливо виразний синтаксис у поєднанні з деструктуризацією масивів PHP:
 
 ```php
 [$first, $second, $third] = Process::concurrently(function (Pool $pool) {
@@ -378,9 +381,9 @@ echo $first->output();
 ```
 
 <a name="naming-pool-processes"></a>
-### Naming Pool Processes
+### Іменування процесів пулу
 
-Accessing process pool results via a numeric key is not very expressive; therefore, Laravel allows you to assign string keys to each process within a pool via the `as` method. This key will also be passed to the closure provided to the `start` method, allowing you to determine which process the output belongs to:
+Звертатися до результатів пулу за числовим ключем не надто виразно; тому Laravel дозволяє призначати рядкові ключі кожному процесу пулу методом `as`. Цей ключ також буде передано до замикання, переданого методу `start`, тож ви зможете визначити, якому процесу належить вивід:
 
 ```php
 $pool = Process::pool(function (Pool $pool) {
@@ -397,29 +400,29 @@ return $results['first']->output();
 ```
 
 <a name="pool-process-ids-and-signals"></a>
-### Pool Process IDs and Signals
+### ID процесів пулу та сигнали
 
-Since the process pool's `running` method provides a collection of all invoked processes within the pool, you may easily access the underlying pool process IDs:
+Оскільки метод `running` пулу процесів надає колекцію всіх викликаних у пулі процесів, ви можете легко дістати ID цих процесів:
 
 ```php
 $processIds = $pool->running()->each->id();
 ```
 
-And, for convenience, you may invoke the `signal` method on a process pool to send a signal to every process within the pool:
+А для зручності ви можете викликати на пулі процесів метод `signal`, щоб надіслати сигнал кожному процесу пулу:
 
 ```php
 $pool->signal(SIGUSR2);
 ```
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
-Many Laravel services provide functionality to help you easily and expressively write tests, and Laravel's process service is no exception. The `Process` facade's `fake` method allows you to instruct Laravel to return stubbed / dummy results when processes are invoked.
+Багато сервісів Laravel надають можливості, які допомагають легко й виразно писати тести, і сервіс процесів Laravel не виняток. Метод `fake` фасаду `Process` дозволяє сказати Laravel повертати підставні / фіктивні результати під час виклику процесів.
 
 <a name="faking-processes"></a>
-### Faking Processes
+### Підміна процесів
 
-To explore Laravel's ability to fake processes, let's imagine a route that invokes a process:
+Щоб дослідити можливості Laravel з підміни процесів, уявімо маршрут, який викликає процес:
 
 ```php
 use Illuminate\Support\Facades\Process;
@@ -432,7 +435,7 @@ Route::get('/import', function () {
 });
 ```
 
-When testing this route, we can instruct Laravel to return a fake, successful process result for every invoked process by calling the `fake` method on the `Process` facade with no arguments. In addition, we can even [assert](#available-assertions) that a given process was "run":
+Тестуючи цей маршрут, ми можемо сказати Laravel повертати фейковий успішний результат для кожного викликаного процесу, викликавши метод `fake` фасаду `Process` без аргументів. Ба більше, ми можемо навіть [перевірити](#available-assertions), що заданий процес було «запущено»:
 
 ```php tab=Pest
 <?php
@@ -487,7 +490,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-As discussed, invoking the `fake` method on the `Process` facade will instruct Laravel to always return a successful process result with no output. However, you may easily specify the output and exit code for faked processes using the `Process` facade's `result` method:
+Як уже зазначалося, виклик методу `fake` фасаду `Process` змусить Laravel завжди повертати успішний результат процесу без виводу. Проте ви легко можете задати вивід і код виходу підмінених процесів методом `result` фасаду `Process`:
 
 ```php
 Process::fake([
@@ -500,11 +503,11 @@ Process::fake([
 ```
 
 <a name="faking-specific-processes"></a>
-### Faking Specific Processes
+### Підміна конкретних процесів
 
-As you may have noticed in a previous example, the `Process` facade allows you to specify different fake results per process by passing an array to the `fake` method.
+Як ви могли помітити в попередньому прикладі, фасад `Process` дозволяє задавати різні фейкові результати для різних процесів, передавши методу `fake` масив.
 
-The array's keys should represent command patterns that you wish to fake and their associated results. The `*` character may be used as a wildcard character. Any process commands that have not been faked will actually be invoked. You may use the `Process` facade's `result` method to construct stub / fake results for these commands:
+Ключі масиву мають бути шаблонами команд, які ви хочете підмінити, а значення - відповідними результатами. Символ `*` можна використовувати як підстановку. Будь-які команди процесів, які не підмінено, буде викликано насправді. Щоб побудувати підставні / фейкові результати для цих команд, скористайтеся методом `result` фасаду `Process`:
 
 ```php
 Process::fake([
@@ -517,7 +520,7 @@ Process::fake([
 ]);
 ```
 
-If you do not need to customize the exit code or error output of a faked process, you may find it more convenient to specify the fake process results as simple strings:
+Якщо вам не потрібно налаштовувати код виходу чи вивід помилок підміненого процесу, вам може бути зручніше задати фейкові результати простими рядками:
 
 ```php
 Process::fake([
@@ -527,9 +530,9 @@ Process::fake([
 ```
 
 <a name="faking-process-sequences"></a>
-### Faking Process Sequences
+### Підміна послідовностей процесів
 
-If the code you are testing invokes multiple processes with the same command, you may wish to assign a different fake process result to each process invocation. You may accomplish this via the `Process` facade's `sequence` method:
+Якщо код, який ви тестуєте, викликає кілька процесів з однаковою командою, ви можете захотіти призначити кожному виклику інший фейковий результат. Це робиться методом `sequence` фасаду `Process`:
 
 ```php
 Process::fake([
@@ -540,11 +543,11 @@ Process::fake([
 ```
 
 <a name="faking-asynchronous-process-lifecycles"></a>
-### Faking Asynchronous Process Lifecycles
+### Підміна життєвого циклу асинхронних процесів
 
-Thus far, we have primarily discussed faking processes which are invoked synchronously using the `run` method. However, if you are attempting to test code that interacts with asynchronous processes invoked via `start`, you may need a more sophisticated approach to describing your fake processes.
+Досі ми переважно обговорювали підміну процесів, які викликаються синхронно методом `run`. Проте, якщо ви намагаєтеся тестувати код, який працює з асинхронними процесами, запущеними через `start`, вам може знадобитися складніший підхід до опису фейкових процесів.
 
-For example, let's imagine the following route which interacts with an asynchronous process:
+Наприклад, уявімо такий маршрут, який працює з асинхронним процесом:
 
 ```php
 use Illuminate\Support\Facades\Log;
@@ -562,7 +565,7 @@ Route::get('/import', function () {
 });
 ```
 
-To properly fake this process, we need to be able to describe how many times the `running` method should return `true`. In addition, we may want to specify multiple lines of output that should be returned in sequence. To accomplish this, we can use the `Process` facade's `describe` method:
+Щоб коректно підмінити цей процес, нам потрібно описати, скільки разів метод `running` має повертати `true`. Крім того, ми можемо хотіти вказати кілька рядків виводу, які слід повертати послідовно. Для цього ми можемо скористатися методом `describe` фасаду `Process`:
 
 ```php
 Process::fake([
@@ -575,17 +578,17 @@ Process::fake([
 ]);
 ```
 
-Let's dig into the example above. Using the `output` and `errorOutput` methods, we may specify multiple lines of output that will be returned in sequence. The `exitCode` method may be used to specify the final exit code of the fake process. Finally, the `iterations` method may be used to specify how many times the `running` method should return `true`.
+Розберімо приклад вище. Методами `output` та `errorOutput` ми можемо задати кілька рядків виводу, які повертатимуться послідовно. Метод `exitCode` дозволяє задати фінальний код виходу фейкового процесу. Нарешті, метод `iterations` дозволяє вказати, скільки разів метод `running` має повертати `true`.
 
 <a name="available-assertions"></a>
-### Available Assertions
+### Доступні перевірки
 
-As [previously discussed](#faking-processes), Laravel provides several process assertions for your feature tests. We'll discuss each of these assertions below.
+Як [зазначалося раніше](#faking-processes), Laravel надає кілька перевірок процесів для ваших функціональних тестів. Розгляньмо кожну з них нижче.
 
 <a name="assert-process-ran"></a>
 #### assertRan
 
-Assert that a given process was invoked:
+Перевірити, що заданий процес було викликано:
 
 ```php
 use Illuminate\Support\Facades\Process;
@@ -593,7 +596,7 @@ use Illuminate\Support\Facades\Process;
 Process::assertRan('ls -la');
 ```
 
-The `assertRan` method also accepts a closure, which will receive an instance of a process and a process result, allowing you to inspect the process' configured options. If this closure returns `true`, the assertion will "pass":
+Метод `assertRan` також приймає замикання, яке отримає екземпляр процесу та результат процесу, дозволяючи оглянути налаштовані опції процесу. Якщо це замикання поверне `true`, перевірка «пройде»:
 
 ```php
 Process::assertRan(fn ($process, $result) =>
@@ -603,12 +606,12 @@ Process::assertRan(fn ($process, $result) =>
 );
 ```
 
-The `$process` passed to the `assertRan` closure is an instance of `Illuminate\Process\PendingProcess`, while the `$result` is an instance of `Illuminate\Contracts\Process\ProcessResult`.
+`$process`, переданий до замикання `assertRan`, є екземпляром `Illuminate\Process\PendingProcess`, а `$result` - екземпляром `Illuminate\Contracts\Process\ProcessResult`.
 
 <a name="assert-process-didnt-run"></a>
 #### assertDidntRun
 
-Assert that a given process was not invoked:
+Перевірити, що заданий процес не було викликано:
 
 ```php
 use Illuminate\Support\Facades\Process;
@@ -616,7 +619,7 @@ use Illuminate\Support\Facades\Process;
 Process::assertDidntRun('ls -la');
 ```
 
-Like the `assertRan` method, the `assertDidntRun` method also accepts a closure, which will receive an instance of a process and a process result, allowing you to inspect the process' configured options. If this closure returns `true`, the assertion will "fail":
+Як і метод `assertRan`, метод `assertDidntRun` також приймає замикання, яке отримає екземпляр процесу та результат процесу, дозволяючи оглянути налаштовані опції процесу. Якщо це замикання поверне `true`, перевірка «провалиться»:
 
 ```php
 Process::assertDidntRun(fn (PendingProcess $process, ProcessResult $result) =>
@@ -627,7 +630,7 @@ Process::assertDidntRun(fn (PendingProcess $process, ProcessResult $result) =>
 <a name="assert-process-ran-times"></a>
 #### assertRanTimes
 
-Assert that a given process was invoked a given number of times:
+Перевірити, що заданий процес було викликано задану кількість разів:
 
 ```php
 use Illuminate\Support\Facades\Process;
@@ -635,7 +638,7 @@ use Illuminate\Support\Facades\Process;
 Process::assertRanTimes('ls -la', times: 3);
 ```
 
-The `assertRanTimes` method also accepts a closure, which will receive an instance of `PendingProcess` and `ProcessResult`, allowing you to inspect the process' configured options. If this closure returns `true` and the process was invoked the specified number of times, the assertion will "pass":
+Метод `assertRanTimes` також приймає замикання, яке отримає екземпляри `PendingProcess` та `ProcessResult`, дозволяючи оглянути налаштовані опції процесу. Якщо це замикання поверне `true` і процес було викликано вказану кількість разів, перевірка «пройде»:
 
 ```php
 Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result) {
@@ -644,9 +647,9 @@ Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result
 ```
 
 <a name="preventing-stray-processes"></a>
-### Preventing Stray Processes
+### Запобігання «блукаючим» процесам
 
-If you would like to ensure that all invoked processes have been faked throughout your individual test or complete test suite, you can call the `preventStrayProcesses` method. After calling this method, any processes that do not have a corresponding fake result will throw an exception rather than starting an actual process:
+Якщо ви хочете переконатися, що всі викликані процеси підмінено в окремому тесті чи в усьому наборі тестів, викличте метод `preventStrayProcesses`. Після виклику цього методу будь-які процеси, для яких немає відповідного фейкового результату, викидатимуть виняток замість того, щоб запускати справжній процес:
 
 ```php
 use Illuminate\Support\Facades\Process;
