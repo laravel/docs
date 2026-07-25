@@ -1,43 +1,46 @@
-# Error Handling
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Обробка помилок
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Handling Exceptions](#handling-exceptions)
-    - [Reporting Exceptions](#reporting-exceptions)
-    - [Exception Log Levels](#exception-log-levels)
-    - [Ignoring Exceptions by Type](#ignoring-exceptions-by-type)
-    - [Rendering Exceptions](#rendering-exceptions)
-    - [Reportable and Renderable Exceptions](#renderable-exceptions)
-- [Throttling Reported Exceptions](#throttling-reported-exceptions)
-- [HTTP Exceptions](#http-exceptions)
-    - [Custom HTTP Error Pages](#custom-http-error-pages)
+- [Вступ](#introduction)
+- [Конфігурація](#configuration)
+- [Обробка винятків](#handling-exceptions)
+    - [Звітування про винятки](#reporting-exceptions)
+    - [Рівні логування винятків](#exception-log-levels)
+    - [Ігнорування винятків за типом](#ignoring-exceptions-by-type)
+    - [Рендеринг винятків](#rendering-exceptions)
+    - [Винятки зі звітуванням і рендерингом](#renderable-exceptions)
+- [Обмеження частоти звітування про винятки](#throttling-reported-exceptions)
+- [HTTP-винятки](#http-exceptions)
+    - [Власні сторінки HTTP-помилок](#custom-http-error-pages)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-When you start a new Laravel project, error and exception handling is already configured for you; however, at any point, you may use the `withExceptions` method in your application's `bootstrap/app.php` to manage how exceptions are reported and rendered by your application.
+Коли ви розпочинаєте новий проєкт Laravel, обробку помилок і винятків уже налаштовано за вас; утім, будь-коли ви можете скористатися методом `withExceptions` у файлі `bootstrap/app.php` вашого застосунку, щоб керувати тим, як застосунок звітує про винятки та рендерить їх.
 
-The `$exceptions` object provided to the `withExceptions` closure is an instance of `Illuminate\Foundation\Configuration\Exceptions` and is responsible for managing exception handling in your application. We'll dive deeper into this object throughout this documentation.
+Об'єкт `$exceptions`, переданий замиканню `withExceptions`, є екземпляром `Illuminate\Foundation\Configuration\Exceptions` і відповідає за керування обробкою винятків у вашому застосунку. Ми глибше розглянемо цей об'єкт далі в документації.
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
-The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
+Опція `debug` у вашому конфігураційному файлі `config/app.php` визначає, скільки інформації про помилку насправді показується користувачеві. За замовчуванням ця опція налаштована на значення змінної середовища `APP_DEBUG`, яка зберігається у вашому файлі `.env`.
 
-During local development, you should set the `APP_DEBUG` environment variable to `true`.
+Під час локальної розробки змінній середовища `APP_DEBUG` варто задати значення `true`.
 
 > [!WARNING]
-> In your production environment, the value of `APP_DEBUG` should always be `false`. If the value is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.
+> У продакшен-середовищі значення `APP_DEBUG` завжди має бути `false`. Якщо в продакшені воно матиме значення `true`, ви ризикуєте розкрити конфіденційні значення конфігурації кінцевим користувачам вашого застосунку.
 
 <a name="handling-exceptions"></a>
-## Handling Exceptions
+## Обробка винятків
 
 <a name="reporting-exceptions"></a>
-### Reporting Exceptions
+### Звітування про винятки
 
-In Laravel, exception reporting is used to log exceptions or send them to an external service like [Laravel Nightwatch](https://nightwatch.laravel.com), [Sentry](https://github.com/getsentry/sentry-laravel), or [Flare](https://flareapp.io). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish.
+У Laravel звітування про винятки використовується, щоб логувати їх або надсилати до зовнішнього сервісу на кшталт [Laravel Nightwatch](https://nightwatch.laravel.com), [Sentry](https://github.com/getsentry/sentry-laravel) чи [Flare](https://flareapp.io). За замовчуванням винятки логуються відповідно до вашої конфігурації [логування](/docs/{{version}}/logging). Утім, ви вільні логувати їх як завгодно.
 
-If you need to report different types of exceptions in different ways, you may use the `report` exception method in your application's `bootstrap/app.php` to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:
+Якщо вам потрібно звітувати про різні типи винятків по-різному, скористайтеся методом винятків `report` у файлі `bootstrap/app.php`, щоб зареєструвати замикання, яке має виконуватися, коли потрібно відзвітувати про виняток певного типу. Laravel визначить тип винятку, про який звітує замикання, за вказаним у ньому типом:
 
 ```php
 use App\Exceptions\InvalidOrderException;
@@ -49,7 +52,7 @@ use App\Exceptions\InvalidOrderException;
 })
 ```
 
-When you register a custom exception reporting callback using the `report` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
+Коли ви реєструєте власний колбек звітування методом `report`, Laravel усе одно логуватиме виняток за типовою конфігурацією логування застосунку. Якщо ви хочете зупинити поширення винятку до типового стека логування, скористайтеся методом `stop` під час визначення колбека або поверніть із нього `false`:
 
 ```php
 use App\Exceptions\InvalidOrderException;
@@ -66,12 +69,12 @@ use App\Exceptions\InvalidOrderException;
 ```
 
 > [!NOTE]
-> To customize the exception reporting for a given exception, you may also utilize [reportable exceptions](/docs/{{version}}/errors#renderable-exceptions).
+> Щоб налаштувати звітування для конкретного винятку, ви також можете скористатися [винятками зі звітуванням](/docs/{{version}}/errors#renderable-exceptions).
 
 <a name="global-log-context"></a>
-#### Global Log Context
+#### Глобальний контекст логів
 
-If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data using the `context` exception method in your application's `bootstrap/app.php` file. This information will be included in every exception's log message written by your application:
+Якщо він доступний, Laravel автоматично додає ідентифікатор поточного користувача до повідомлення логу кожного винятку як контекстні дані. Ви можете визначити власні глобальні контекстні дані методом винятків `context` у файлі `bootstrap/app.php`. Цю інформацію буде додано до кожного повідомлення логу про виняток, що його записує ваш застосунок:
 
 ```php
 ->withExceptions(function (Exceptions $exceptions): void {
@@ -82,9 +85,9 @@ If available, Laravel automatically adds the current user's ID to every exceptio
 ```
 
 <a name="exception-log-context"></a>
-#### Exception Log Context
+#### Контекст логу винятку
 
-While adding context to every log message can be useful, sometimes a particular exception may have unique context that you would like to include in your logs. By defining a `context` method on one of your application's exceptions, you may specify any data relevant to that exception that should be added to the exception's log entry:
+Хоча додавати контекст до кожного повідомлення логу корисно, іноді конкретний виняток має унікальний контекст, який ви хотіли б бачити у логах. Визначивши метод `context` в одному з винятків вашого застосунку, ви можете вказати будь-які дані, доречні для цього винятку, які слід додати до його запису в логу:
 
 ```php
 <?php
@@ -110,9 +113,9 @@ class InvalidOrderException extends Exception
 ```
 
 <a name="the-report-helper"></a>
-#### The `report` Helper
+#### Хелпер `report`
 
-Sometimes you may need to report an exception but continue handling the current request. The `report` helper function allows you to quickly report an exception without rendering an error page to the user:
+Іноді вам може знадобитися відзвітувати про виняток, але продовжити обробку поточного запиту. Функція-хелпер `report` дозволяє швидко відзвітувати про виняток, не рендерячи користувачеві сторінку помилки:
 
 ```php
 public function isValid(string $value): bool
@@ -128,11 +131,11 @@ public function isValid(string $value): bool
 ```
 
 <a name="deduplicating-reported-exceptions"></a>
-#### Deduplicating Reported Exceptions
+#### Усунення дублікатів у звітах про винятки
 
-If you are using the `report` function throughout your application, you may occasionally report the same exception multiple times, creating duplicate entries in your logs.
+Якщо ви використовуєте функцію `report` у всьому застосунку, ви можете подекуди відзвітувати про той самий виняток кілька разів, створивши дублікати записів у логах.
 
-If you would like to ensure that a single instance of an exception is only ever reported once, you may invoke the `dontReportDuplicates` exception method in your application's `bootstrap/app.php` file:
+Якщо ви хочете, щоб про кожен окремий екземпляр винятку звітувалося лише раз, викличте метод винятків `dontReportDuplicates` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withExceptions(function (Exceptions $exceptions): void {
@@ -140,7 +143,7 @@ If you would like to ensure that a single instance of an exception is only ever 
 })
 ```
 
-Now, when the `report` helper is called with the same instance of an exception, only the first call will be reported:
+Тепер, коли хелпер `report` викликається з тим самим екземпляром винятку, буде відзвітовано лише перший виклик:
 
 ```php
 $original = new RuntimeException('Whoops!');
@@ -158,13 +161,13 @@ report($caught); // ignored
 ```
 
 <a name="exception-log-levels"></a>
-### Exception Log Levels
+### Рівні логування винятків
 
-When messages are written to your application's [logs](/docs/{{version}}/logging), the messages are written at a specified [log level](/docs/{{version}}/logging#log-levels), which indicates the severity or importance of the message being logged.
+Коли повідомлення записуються до [логів](/docs/{{version}}/logging) вашого застосунку, вони записуються на визначеному [рівні логування](/docs/{{version}}/logging#log-levels), що вказує на серйозність чи важливість повідомлення.
 
-As noted above, even when you register a custom exception reporting callback using the `report` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
+Як зазначено вище, навіть коли ви реєструєте власний колбек звітування методом `report`, Laravel усе одно логуватиме виняток за типовою конфігурацією логування; однак оскільки рівень логування іноді впливає на канали, до яких потрапляє повідомлення, ви можете захотіти налаштувати рівень, на якому логуються певні винятки.
 
-To accomplish this, you may use the `level` exception method in your application's `bootstrap/app.php` file. This method receives the exception type as its first argument and the log level as its second argument:
+Для цього скористайтеся методом винятків `level` у файлі `bootstrap/app.php`. Він приймає тип винятку першим аргументом і рівень логування другим:
 
 ```php
 use PDOException;
@@ -176,9 +179,9 @@ use Psr\Log\LogLevel;
 ```
 
 <a name="ignoring-exceptions-by-type"></a>
-### Ignoring Exceptions by Type
+### Ігнорування винятків за типом
 
-When building your application, there will be some types of exceptions you never want to report. To ignore these exceptions, you may use the `dontReport` exception method in your application's `bootstrap/app.php` file. Any class provided to this method will never be reported; however, they may still have custom rendering logic:
+Створюючи застосунок, ви матимете типи винятків, про які ніколи не захочете звітувати. Щоб ігнорувати їх, скористайтеся методом винятків `dontReport` у файлі `bootstrap/app.php`. Про будь-який клас, переданий цьому методу, ніколи не звітуватиметься; утім, він усе ще може мати власну логіку рендерингу:
 
 ```php
 use App\Exceptions\InvalidOrderException;
@@ -190,7 +193,7 @@ use App\Exceptions\InvalidOrderException;
 })
 ```
 
-Alternatively, you may simply "mark" an exception class with the `Illuminate\Contracts\Debug\ShouldntReport` interface. When an exception is marked with this interface, it will never be reported by Laravel's exception handler:
+Як альтернативу ви можете просто «позначити» клас винятку інтерфейсом `Illuminate\Contracts\Debug\ShouldntReport`. Коли виняток позначено цим інтерфейсом, обробник винятків Laravel ніколи про нього не звітуватиме:
 
 ```php
 <?php
@@ -206,7 +209,7 @@ class PodcastProcessingException extends Exception implements ShouldntReport
 }
 ```
 
-If you need even more control over when a particular type of exception is ignored, you may provide a closure to the `dontReportWhen` method:
+Якщо вам потрібен ще більший контроль над тим, коли ігнорується певний тип винятку, передайте замикання методу `dontReportWhen`:
 
 ```php
 use App\Exceptions\InvalidOrderException;
@@ -220,7 +223,7 @@ use Throwable;
 })
 ```
 
-Internally, Laravel already ignores some types of errors for you, such as exceptions resulting from 404 HTTP errors, 403 HTTP responses generated by origin mismatches, or 419 HTTP responses generated by invalid CSRF tokens. If you would like to instruct Laravel to stop ignoring a given type of exception, you may use the `stopIgnoring` exception method in your application's `bootstrap/app.php` file:
+Внутрішньо Laravel уже ігнорує деякі типи помилок за вас - як-от винятки від HTTP-помилок 404, відповідей 403 через розбіжність джерела чи відповідей 419 через недійсні CSRF-токени. Якщо ви хочете вказати Laravel припинити ігнорувати певний тип винятку, скористайтеся методом винятків `stopIgnoring` у файлі `bootstrap/app.php`:
 
 ```php
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -231,11 +234,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 ```
 
 <a name="rendering-exceptions"></a>
-### Rendering Exceptions
+### Рендеринг винятків
 
-By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `render` exception method in your application's `bootstrap/app.php` file.
+За замовчуванням обробник винятків Laravel перетворює винятки на HTTP-відповідь за вас. Однак ви вільні зареєструвати власне замикання рендерингу для винятків певного типу. Це робиться методом винятків `render` у файлі `bootstrap/app.php` вашого застосунку.
 
-The closure passed to the `render` method should return an instance of `Illuminate\Http\Response`, which may be generated via the `response` helper. Laravel will determine what type of exception the closure renders by examining the type-hint of the closure:
+Замикання, передане методу `render`, має повертати екземпляр `Illuminate\Http\Response`, який можна створити хелпером `response`. Laravel визначить тип винятку, який рендерить замикання, за вказаним у ньому типом:
 
 ```php
 use App\Exceptions\InvalidOrderException;
@@ -248,7 +251,7 @@ use Illuminate\Http\Request;
 })
 ```
 
-You may also use the `render` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `render` method does not return a value, Laravel's default exception rendering will be utilized:
+Ви також можете скористатися методом `render`, щоб перевизначити поведінку рендерингу вбудованих винятків Laravel чи Symfony - як-от `NotFoundHttpException`. Якщо передане методу `render` замикання не повертає значення, буде використано типовий рендеринг винятків Laravel:
 
 ```php
 use Illuminate\Http\Request;
@@ -266,9 +269,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 ```
 
 <a name="rendering-exceptions-as-json"></a>
-#### Rendering Exceptions as JSON
+#### Рендеринг винятків у форматі JSON
 
-When rendering an exception, Laravel will automatically determine if the exception should be rendered as an HTML or JSON response based on the `Accept` header of the request. If you would like to customize how Laravel determines whether to render HTML or JSON exception responses, you may utilize the `shouldRenderJsonWhen` method:
+Рендерячи виняток, Laravel автоматично визначає, чи слід віддати його як HTML- чи JSON-відповідь, спираючись на заголовок `Accept` запиту. Якщо ви хочете налаштувати, як саме Laravel це вирішує, скористайтеся методом `shouldRenderJsonWhen`:
 
 ```php
 use Illuminate\Http\Request;
@@ -286,9 +289,9 @@ use Throwable;
 ```
 
 <a name="customizing-the-exception-response"></a>
-#### Customizing the Exception Response
+#### Налаштування відповіді для винятку
 
-Rarely, you may need to customize the entire HTTP response rendered by Laravel's exception handler. To accomplish this, you may register a response customization closure using the `respond` method:
+Зрідка вам може знадобитися налаштувати всю HTTP-відповідь, яку рендерить обробник винятків Laravel. Для цього зареєструйте замикання налаштування відповіді методом `respond`:
 
 ```php
 use Symfony\Component\HttpFoundation\Response;
@@ -307,9 +310,9 @@ use Symfony\Component\HttpFoundation\Response;
 ```
 
 <a name="renderable-exceptions"></a>
-### Reportable and Renderable Exceptions
+### Винятки зі звітуванням і рендерингом
 
-Instead of defining custom reporting and rendering behavior in your application's `bootstrap/app.php` file, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:
+Замість визначати власну поведінку звітування та рендерингу у файлі `bootstrap/app.php`, ви можете визначити методи `report` і `render` безпосередньо у винятках свого застосунку. Коли ці методи існують, фреймворк викликатиме їх автоматично:
 
 ```php
 <?php
@@ -340,7 +343,7 @@ class InvalidOrderException extends Exception
 }
 ```
 
-If your exception extends an exception that is already renderable, such as a built-in Laravel or Symfony exception, you may return `false` from the exception's `render` method to render the exception's default HTTP response:
+Якщо ваш виняток успадковує виняток, який уже підлягає рендерингу - як-от вбудований виняток Laravel чи Symfony, - ви можете повернути `false` з методу `render`, щоб відрендерити типову HTTP-відповідь цього винятку:
 
 ```php
 /**
@@ -357,7 +360,7 @@ public function render(Request $request): Response|bool
 }
 ```
 
-If your exception contains custom reporting logic that is only necessary when certain conditions are met, you may need to instruct Laravel to sometimes report the exception using the default exception handling configuration. To accomplish this, you may return `false` from the exception's `report` method:
+Якщо ваш виняток містить власну логіку звітування, потрібну лише за певних умов, вам може знадобитися вказати Laravel іноді звітувати про виняток за типовою конфігурацією обробки. Для цього поверніть `false` з методу `report` винятку:
 
 ```php
 /**
@@ -377,14 +380,14 @@ public function report(): bool
 ```
 
 > [!NOTE]
-> You may type-hint any required dependencies of the `report` method and they will automatically be injected into the method by Laravel's [service container](/docs/{{version}}/container).
+> Ви можете вказати типи будь-яких потрібних залежностей методу `report`, і [сервіс-контейнер](/docs/{{version}}/container) Laravel автоматично впровадить їх у метод.
 
 <a name="throttling-reported-exceptions"></a>
-### Throttling Reported Exceptions
+### Обмеження частоти звітування про винятки
 
-If your application reports a very large number of exceptions, you may want to throttle how many exceptions are actually logged or sent to your application's external error tracking service.
+Якщо ваш застосунок звітує про дуже велику кількість винятків, ви можете захотіти обмежити, скільки з них справді логується чи надсилається до зовнішнього сервісу відстеження помилок.
 
-To take a random sample rate of exceptions, you may use the `throttle` exception method in your application's `bootstrap/app.php` file. The `throttle` method receives a closure that should return a `Lottery` instance:
+Щоб брати випадкову вибірку винятків, скористайтеся методом винятків `throttle` у файлі `bootstrap/app.php`. Метод `throttle` приймає замикання, яке має повертати екземпляр `Lottery`:
 
 ```php
 use Illuminate\Support\Lottery;
@@ -397,7 +400,7 @@ use Throwable;
 })
 ```
 
-It is also possible to conditionally sample based on the exception type. If you would like to only sample instances of a specific exception class, you may return a `Lottery` instance only for that class:
+Вибірку можна робити й умовно, залежно від типу винятку. Якщо ви хочете брати вибірку лише для екземплярів конкретного класу, повертайте `Lottery` тільки для нього:
 
 ```php
 use App\Exceptions\ApiMonitoringException;
@@ -413,7 +416,7 @@ use Throwable;
 })
 ```
 
-You may also rate limit exceptions logged or sent to an external error tracking service by returning a `Limit` instance instead of a `Lottery`. This is useful if you want to protect against sudden bursts of exceptions flooding your logs, for example, when a third-party service used by your application is down:
+Ви також можете обмежити частоту винятків, які логуються чи надсилаються до зовнішнього сервісу відстеження помилок, повернувши екземпляр `Limit` замість `Lottery`. Це корисно, якщо ви хочете захиститися від раптових сплесків винятків, що заповнюють ваші логи, - наприклад, коли сторонній сервіс, який використовує ваш застосунок, недоступний:
 
 ```php
 use Illuminate\Broadcasting\BroadcastException;
@@ -429,7 +432,7 @@ use Throwable;
 })
 ```
 
-By default, limits will use the exception's class as the rate limit key. You can customize this by specifying your own key using the `by` method on the `Limit`:
+За замовчуванням обмеження використовують клас винятку як ключ. Ви можете налаштувати це, вказавши власний ключ методом `by` на `Limit`:
 
 ```php
 use Illuminate\Broadcasting\BroadcastException;
@@ -445,7 +448,7 @@ use Throwable;
 })
 ```
 
-Of course, you may return a mixture of `Lottery` and `Limit` instances for different exceptions:
+Звісно, ви можете повертати поєднання екземплярів `Lottery` та `Limit` для різних винятків:
 
 ```php
 use App\Exceptions\ApiMonitoringException;
@@ -466,32 +469,32 @@ use Throwable;
 ```
 
 <a name="http-exceptions"></a>
-## HTTP Exceptions
+## HTTP-винятки
 
-Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401), or even a developer generated 500 error. In order to generate such a response from anywhere in your application, you may use the `abort` helper:
+Деякі винятки описують коди HTTP-помилок від сервера. Наприклад, це може бути помилка «сторінку не знайдено» (404), «неавторизовано» (401) чи навіть згенерована розробником помилка 500. Щоб згенерувати таку відповідь із будь-якого місця застосунку, скористайтеся хелпером `abort`:
 
 ```php
 abort(404);
 ```
 
 <a name="custom-http-error-pages"></a>
-### Custom HTTP Error Pages
+### Власні сторінки HTTP-помилок
 
-Laravel makes it easy to display custom error pages for various HTTP status codes. For example, to customize the error page for 404 HTTP status codes, create a `resources/views/errors/404.blade.php` view template. This view will be rendered for all 404 errors generated by your application. The views within this directory should be named to match the HTTP status code they correspond to. The `Symfony\Component\HttpKernel\Exception\HttpException` instance raised by the `abort` function will be passed to the view as an `$exception` variable:
+Laravel спрощує показ власних сторінок помилок для різних HTTP-статусів. Наприклад, щоб налаштувати сторінку помилки для статусу 404, створіть шаблон представлення `resources/views/errors/404.blade.php`. Це представлення рендеритиметься для всіх помилок 404, згенерованих вашим застосунком. Представлення в цьому каталозі мають називатися відповідно до HTTP-статусу, якому вони відповідають. Екземпляр `Symfony\Component\HttpKernel\Exception\HttpException`, створений функцією `abort`, буде передано представленню як змінну `$exception`:
 
 ```blade
 <h2>{{ $exception->getMessage() }}</h2>
 ```
 
-You may publish Laravel's default error page templates using the `vendor:publish` Artisan command. Once the templates have been published, you may customize them to your liking:
+Ви можете опублікувати типові шаблони сторінок помилок Laravel командою Artisan `vendor:publish`. Опублікувавши шаблони, ви можете налаштувати їх на свій смак:
 
 ```shell
 php artisan vendor:publish --tag=laravel-errors
 ```
 
 <a name="fallback-http-error-pages"></a>
-#### Fallback HTTP Error Pages
+#### Резервні сторінки HTTP-помилок
 
-You may also define a "fallback" error page for a given series of HTTP status codes. This page will be rendered if there is not a corresponding page for the specific HTTP status code that occurred. To accomplish this, define a `4xx.blade.php` template and a `5xx.blade.php` template in your application's `resources/views/errors` directory.
+Ви також можете визначити «резервну» сторінку помилки для певної серії HTTP-статусів. Вона рендеритиметься, якщо для конкретного статусу немає відповідної сторінки. Для цього визначте шаблони `4xx.blade.php` і `5xx.blade.php` у каталозі `resources/views/errors` вашого застосунку.
 
-When defining fallback error pages, the fallback pages will not affect `404`, `500`, and `503` error responses since Laravel has internal, dedicated pages for these status codes. To customize the pages rendered for these status codes, you should define a custom error page for each of them individually.
+Резервні сторінки не впливатимуть на відповіді з помилками `404`, `500` і `503`, оскільки Laravel має внутрішні спеціальні сторінки для цих статусів. Щоб налаштувати сторінки для них, визначте власну сторінку помилки для кожного окремо.
