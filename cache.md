@@ -785,7 +785,6 @@ class AppServiceProvider extends ServiceProvider
 
 | Ім'я події                                      |
 |-------------------------------------------------|
-
 | `Illuminate\Cache\Events\CacheFlushed`          |
 | `Illuminate\Cache\Events\CacheFlushing`         |
 | `Illuminate\Cache\Events\CacheFlushFailed`      |
