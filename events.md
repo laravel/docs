@@ -1,43 +1,46 @@
-# Events
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Події
 
-- [Introduction](#introduction)
-- [Generating Events and Listeners](#generating-events-and-listeners)
-- [Registering Events and Listeners](#registering-events-and-listeners)
-    - [Event Discovery](#event-discovery)
-    - [Manually Registering Events](#manually-registering-events)
-    - [Closure Listeners](#closure-listeners)
-- [Defining Events](#defining-events)
-- [Defining Listeners](#defining-listeners)
-- [Queued Event Listeners](#queued-event-listeners)
-    - [Manually Interacting With the Queue](#manually-interacting-with-the-queue)
-    - [Queued Event Listeners and Database Transactions](#queued-event-listeners-and-database-transactions)
-    - [Queued Listener Middleware](#queued-listener-middleware)
-    - [Encrypted Queued Listeners](#encrypted-queued-listeners)
-    - [Unique Event Listeners](#unique-event-listeners)
-        - [Keeping Listeners Unique Until Processing Begins](#keeping-listeners-unique-until-processing-begins)
-        - [Unique Listener Locks](#unique-listener-locks)
-    - [Handling Failed Jobs](#handling-failed-jobs)
-- [Dispatching Events](#dispatching-events)
-    - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
-    - [Deferring Events](#deferring-events)
-- [Event Subscribers](#event-subscribers)
-    - [Writing Event Subscribers](#writing-event-subscribers)
-    - [Registering Event Subscribers](#registering-event-subscribers)
-- [Testing](#testing)
-    - [Faking a Subset of Events](#faking-a-subset-of-events)
-    - [Scoped Events Fakes](#scoped-event-fakes)
+- [Вступ](#introduction)
+- [Генерація подій і слухачів](#generating-events-and-listeners)
+- [Реєстрація подій і слухачів](#registering-events-and-listeners)
+    - [Виявлення подій](#event-discovery)
+    - [Реєстрація подій вручну](#manually-registering-events)
+    - [Слухачі на замиканнях](#closure-listeners)
+- [Опис подій](#defining-events)
+- [Опис слухачів](#defining-listeners)
+- [Слухачі подій у черзі](#queued-event-listeners)
+    - [Ручна взаємодія з чергою](#manually-interacting-with-the-queue)
+    - [Слухачі в черзі та транзакції бази даних](#queued-event-listeners-and-database-transactions)
+    - [Middleware слухачів у черзі](#queued-listener-middleware)
+    - [Зашифровані слухачі в черзі](#encrypted-queued-listeners)
+    - [Унікальні слухачі подій](#unique-event-listeners)
+        - [Тримати слухачів унікальними до початку обробки](#keeping-listeners-unique-until-processing-begins)
+        - [Блокування унікальних слухачів](#unique-listener-locks)
+    - [Обробка невдалих завдань](#handling-failed-jobs)
+- [Диспетчеризація подій](#dispatching-events)
+    - [Диспетчеризація подій після транзакцій бази даних](#dispatching-events-after-database-transactions)
+    - [Відкладення подій](#deferring-events)
+- [Підписники подій](#event-subscribers)
+    - [Написання підписників подій](#writing-event-subscribers)
+    - [Реєстрація підписників подій](#registering-event-subscribers)
+- [Тестування](#testing)
+    - [Підміна частини подій](#faking-a-subset-of-events)
+    - [Обмежені підміни подій](#scoped-event-fakes)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen for various events that occur within your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.
+Події Laravel надають просту реалізацію патерну «спостерігач», яка дозволяє підписуватися на різні події вашого застосунку й слухати їх. Класи подій зазвичай зберігаються в каталозі `app/Events`, а їхні слухачі - в `app/Listeners`. Не переймайтеся, якщо цих каталогів у вашому застосунку немає: їх буде створено, коли ви генеруватимете події та слухачів консольними командами Artisan.
 
-Events serve as a great way to decouple various aspects of your application, since a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order has shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `App\Events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
+Події - чудовий спосіб розчепити різні частини застосунку, адже одна подія може мати кілька слухачів, які не залежать одне від одного. Наприклад, ви можете хотіти надсилати користувачеві сповіщення у Slack щоразу, коли замовлення відправлено. Замість зчіплювати код обробки замовлень із кодом сповіщень у Slack, ви можете підняти подію `App\Events\OrderShipped`, яку отримає слухач і надішле сповіщення у Slack.
 
 <a name="generating-events-and-listeners"></a>
-## Generating Events and Listeners
+## Генерація подій і слухачів
 
-To quickly generate events and listeners, you may use the `make:event` and `make:listener` Artisan commands:
+Щоб швидко згенерувати події та слухачів, скористайтеся командами Artisan `make:event` і `make:listener`:
 
 ```shell
 php artisan make:event PodcastProcessed
@@ -45,7 +48,7 @@ php artisan make:event PodcastProcessed
 php artisan make:listener SendPodcastNotification --event=PodcastProcessed
 ```
 
-For convenience, you may also invoke the `make:event` and `make:listener` Artisan commands without additional arguments. When you do so, Laravel will automatically prompt you for the class name and, when creating a listener, the event it should listen to:
+Для зручності ви можете викликати команди Artisan `make:event` і `make:listener` і без додаткових аргументів. Тоді Laravel сам запитає назву класу, а для слухача - подію, яку той має слухати:
 
 ```shell
 php artisan make:event
@@ -54,12 +57,12 @@ php artisan make:listener
 ```
 
 <a name="registering-events-and-listeners"></a>
-## Registering Events and Listeners
+## Реєстрація подій і слухачів
 
 <a name="event-discovery"></a>
-### Event Discovery
+### Виявлення подій
 
-By default, Laravel will automatically find and register your event listeners by scanning your application's `Listeners` directory. When Laravel finds any listener class method that begins with `handle` or `__invoke`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:
+За замовчуванням Laravel автоматично знаходить і реєструє ваших слухачів подій, скануючи каталог `Listeners` вашого застосунку. Коли Laravel знаходить у класі слухача метод, назва якого починається з `handle` або `__invoke`, він реєструє ці методи як слухачів події, тип якої вказано в сигнатурі методу:
 
 ```php
 use App\Events\PodcastProcessed;
@@ -76,7 +79,7 @@ class SendPodcastNotification
 }
 ```
 
-You may listen to multiple events using PHP's union types:
+Ви можете слухати кілька подій за допомогою об'єднаних типів PHP:
 
 ```php
 /**
@@ -88,7 +91,7 @@ public function handle(PodcastProcessed|PodcastPublished $event): void
 }
 ```
 
-If you plan to store your listeners in a different directory or within multiple directories, you may instruct Laravel to scan those directories using the `withEvents` method in your application's `bootstrap/app.php` file:
+Якщо ви плануєте зберігати слухачів в іншому каталозі чи в кількох каталогах, вкажіть Laravel сканувати ці каталоги методом `withEvents` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withEvents(discover: [
@@ -96,7 +99,7 @@ If you plan to store your listeners in a different directory or within multiple 
 ])
 ```
 
-You may scan for listeners in multiple similar directories using the `*` character as a wildcard:
+Ви можете шукати слухачів у кількох схожих каталогах, скориставшись символом `*` як підстановкою:
 
 ```php
 ->withEvents(discover: [
@@ -104,21 +107,21 @@ You may scan for listeners in multiple similar directories using the `*` charact
 ])
 ```
 
-The `event:list` command may be used to list all of the listeners registered within your application:
+Команда `event:list` дозволяє переглянути всіх слухачів, зареєстрованих у вашому застосунку:
 
 ```shell
 php artisan event:list
 ```
 
 <a name="event-discovery-in-production"></a>
-#### Event Discovery in Production
+#### Виявлення подій у продакшені
 
-To give your application a speed boost, you should cache a manifest of all of your application's listeners using the `optimize` or `event:cache` Artisan commands. Typically, this command should be run as part of your application's [deployment process](/docs/{{version}}/deployment#optimization). This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the event cache.
+Щоб пришвидшити застосунок, вам варто закешувати маніфест усіх слухачів командами Artisan `optimize` або `event:cache`. Зазвичай цю команду виконують у межах [процесу розгортання](/docs/{{version}}/deployment#optimization) вашого застосунку. Фреймворк використовуватиме цей маніфест, щоб пришвидшити реєстрацію подій. Команда `event:clear` дозволяє знищити кеш подій.
 
 <a name="dynamic-event-discovery"></a>
-#### Dynamic Event Discovery
+#### Динамічне виявлення подій
 
-To dynamically control whether a given listener is discovered, you may implement the `ShouldBeDiscovered` interface on the listener class and define a `shouldBeDiscovered` method that returns a boolean value. If the method returns `false`, the listener will not be registered during event discovery:
+Щоб динамічно керувати тим, чи буде виявлено конкретного слухача, реалізуйте в класі слухача інтерфейс `ShouldBeDiscovered` і опишіть метод `shouldBeDiscovered`, який повертає булеве значення. Якщо метод поверне `false`, слухача не буде зареєстровано під час виявлення подій:
 
 ```php
 use Illuminate\Contracts\Events\ShouldBeDiscovered;
@@ -144,9 +147,9 @@ class SendPodcastNotification implements ShouldBeDiscovered
 ```
 
 <a name="manually-registering-events"></a>
-### Manually Registering Events
+### Реєстрація подій вручну
 
-Using the `Event` facade, you may manually register events and their corresponding listeners within the `boot` method of your application's `AppServiceProvider`:
+За допомогою фасаду `Event` ви можете вручну реєструвати події та відповідних слухачів у методі `boot` вашого `AppServiceProvider`:
 
 ```php
 use App\Domain\Orders\Events\PodcastProcessed;
@@ -165,16 +168,16 @@ public function boot(): void
 }
 ```
 
-The `event:list` command may be used to list all of the listeners registered within your application:
+Команда `event:list` дозволяє переглянути всіх слухачів, зареєстрованих у вашому застосунку:
 
 ```shell
 php artisan event:list
 ```
 
 <a name="closure-listeners"></a>
-### Closure Listeners
+### Слухачі на замиканнях
 
-Typically, listeners are defined as classes; however, you may also manually register closure-based event listeners in the `boot` method of your application's `AppServiceProvider`:
+Зазвичай слухачів описують класами; проте ви можете вручну зареєструвати й слухачів подій на замиканнях у методі `boot` вашого `AppServiceProvider`:
 
 ```php
 use App\Events\PodcastProcessed;
@@ -192,9 +195,9 @@ public function boot(): void
 ```
 
 <a name="queueable-anonymous-event-listeners"></a>
-#### Queueable Anonymous Event Listeners
+#### Анонімні слухачі подій у черзі
 
-When registering closure-based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/{{version}}/queues):
+Реєструючи слухачів подій на замиканнях, ви можете загорнути замикання слухача у функцію `Illuminate\Events\queueable`, щоб Laravel виконував слухача через [чергу](/docs/{{version}}/queues):
 
 ```php
 use App\Events\PodcastProcessed;
@@ -212,7 +215,7 @@ public function boot(): void
 }
 ```
 
-Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods to customize the execution of the queued listener:
+Як і для завдань у черзі, ви можете скористатися методами `onConnection`, `onQueue` та `delay`, щоб налаштувати виконання слухача в черзі:
 
 ```php
 Event::listen(queueable(function (PodcastProcessed $event) {
@@ -220,7 +223,7 @@ Event::listen(queueable(function (PodcastProcessed $event) {
 })->onConnection('redis')->onQueue('podcasts')->delay(now()->plus(seconds: 10)));
 ```
 
-If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener. This closure will receive the event instance and the `Throwable` instance that caused the listener's failure:
+Якщо ви хочете обробляти невдачі анонімних слухачів у черзі, передайте замикання методу `catch` під час опису слухача `queueable`. Це замикання отримає екземпляр події та екземпляр `Throwable`, який спричинив невдачу слухача:
 
 ```php
 use App\Events\PodcastProcessed;
@@ -236,9 +239,9 @@ Event::listen(queueable(function (PodcastProcessed $event) {
 ```
 
 <a name="wildcard-event-listeners"></a>
-#### Wildcard Event Listeners
+#### Слухачі подій з підстановкою
 
-You may also register listeners using the `*` character as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument and the entire event data array as their second argument:
+Ви також можете реєструвати слухачів, використовуючи символ `*` як підстановочний параметр, - це дозволяє ловити кілька подій одним слухачем. Слухачі з підстановкою першим аргументом отримують ім'я події, а другим - увесь масив даних події:
 
 ```php
 Event::listen('event.*', function (string $eventName, array $data) {
@@ -247,9 +250,9 @@ Event::listen('event.*', function (string $eventName, array $data) {
 ```
 
 <a name="defining-events"></a>
-## Defining Events
+## Опис подій
 
-An event class is essentially a data container which holds the information related to the event. For example, let's assume an `App\Events\OrderShipped` event receives an [Eloquent ORM](/docs/{{version}}/eloquent) object:
+Клас події - це, по суті, контейнер даних, який містить інформацію, пов'язану з подією. Наприклад, припустімо, що подія `App\Events\OrderShipped` отримує об'єкт [Eloquent ORM](/docs/{{version}}/eloquent):
 
 ```php
 <?php
@@ -274,12 +277,12 @@ class OrderShipped
 }
 ```
 
-As you can see, this event class contains no logic. It is a container for the `App\Models\Order` instance that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function, such as when utilizing [queued listeners](#queued-event-listeners).
+Як бачите, цей клас події не містить логіки. Це контейнер для екземпляра `App\Models\Order`, який було куплено. Трейт `SerializesModels`, який використовує подія, коректно серіалізує будь-які моделі Eloquent, якщо об'єкт події серіалізується PHP-функцією `serialize`, - наприклад, коли ви користуєтеся [слухачами в черзі](#queued-event-listeners).
 
 <a name="defining-listeners"></a>
-## Defining Listeners
+## Опис слухачів
 
-Next, let's take a look at the listener for our example event. Event listeners receive event instances in their `handle` method. The `make:listener` Artisan command, when invoked with the `--event` option, will automatically import the proper event class and type-hint the event in the `handle` method. Within the `handle` method, you may perform any actions necessary to respond to the event:
+Далі погляньмо на слухача для нашої прикладної події. Слухачі подій отримують екземпляри подій у своєму методі `handle`. Команда Artisan `make:listener`, викликана з опцією `--event`, автоматично імпортує потрібний клас події й вкаже тип події в методі `handle`. У методі `handle` ви можете виконати будь-які дії, потрібні для реакції на подію:
 
 ```php
 <?php
@@ -306,19 +309,19 @@ class SendShipmentNotification
 ```
 
 > [!NOTE]
-> Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/{{version}}/container), so dependencies will be injected automatically.
+> Ваші слухачі подій можуть також вказувати типи потрібних їм залежностей у конструкторах. Усі слухачі подій розв'язуються через [сервіс-контейнер](/docs/{{version}}/container) Laravel, тож залежності буде впроваджено автоматично.
 
 <a name="stopping-the-propagation-of-an-event"></a>
-#### Stopping The Propagation Of An Event
+#### Припинення поширення події
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning `false` from your listener's `handle` method.
+Інколи вам може захотітися припинити поширення події до інших слухачів. Для цього поверніть `false` з методу `handle` вашого слухача.
 
 <a name="queued-event-listeners"></a>
-## Queued Event Listeners
+## Слухачі подій у черзі
 
-Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](/docs/{{version}}/queues) and start a queue worker on your server or local development environment.
+Ставити слухачів у чергу корисно, якщо слухач виконуватиме повільну задачу - наприклад, надсилатиме лист чи робитиме HTTP-запит. Перш ніж користуватися слухачами в черзі, обов'язково [налаштуйте чергу](/docs/{{version}}/queues) і запустіть воркер черги на сервері чи в локальному середовищі розробки.
 
-To specify that a listener should be queued, add the `ShouldQueue` interface to the listener class. Listeners generated by the `make:listener` Artisan commands already have this interface imported into the current namespace so you can use it immediately:
+Щоб вказати, що слухача слід ставити в чергу, додайте до класу слухача інтерфейс `ShouldQueue`. Слухачі, згенеровані командами Artisan `make:listener`, уже мають цей інтерфейс імпортованим у поточний простір імен, тож ви можете одразу ним скористатися:
 
 ```php
 <?php
@@ -334,12 +337,12 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-That's it! Now, when an event handled by this listener is dispatched, the listener will automatically be queued by the event dispatcher using Laravel's [queue system](/docs/{{version}}/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing.
+Ось і все! Тепер, коли диспетчеризується подія, яку обробляє цей слухач, диспетчер подій автоматично поставить слухача в чергу через [систему черг](/docs/{{version}}/queues) Laravel. Якщо під час виконання слухача чергою не викинуто винятків, завдання в черзі буде автоматично видалено після завершення обробки.
 
 <a name="customizing-the-queue-connection-queue-name"></a>
-#### Customizing The Queue Connection, Name, & Delay
+#### Налаштування підключення, імені та затримки черги
 
-If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may use the `Connection`, `Queue`, and `Delay` attributes on your listener class:
+Якщо ви хочете змінити підключення черги, ім'я черги чи час затримки для слухача подій, скористайтеся атрибутами `Connection`, `Queue` та `Delay` у класі слухача:
 
 ```php
 <?php
@@ -360,7 +363,7 @@ class SendShipmentNotification implements ShouldQueue
     // ...
 }
 ```
-If you would like to define the listener's queue connection, queue name, or delay at runtime, you may define `viaConnection`, `viaQueue`, or `withDelay` methods on the listener:
+Якщо ви хочете задати підключення черги, ім'я черги чи затримку слухача під час виконання, опишіть у слухачі методи `viaConnection`, `viaQueue` або `withDelay`:
 
 ```php
 /**
@@ -389,9 +392,9 @@ public function withDelay(OrderShipped $event): int
 ```
 
 <a name="conditionally-queueing-listeners"></a>
-#### Conditionally Queueing Listeners
+#### Умовна постановка слухачів у чергу
 
-Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be queued:
+Інколи вам може знадобитися визначити, чи слід ставити слухача в чергу, на основі даних, доступних лише під час виконання. Для цього до слухача можна додати метод `shouldQueue`, який визначатиме, чи ставити слухача в чергу. Якщо метод `shouldQueue` поверне `false`, слухача в чергу не поставлять:
 
 ```php
 <?php
@@ -422,9 +425,9 @@ class RewardGiftCard implements ShouldQueue
 ```
 
 <a name="manually-interacting-with-the-queue"></a>
-### Manually Interacting With the Queue
+### Ручна взаємодія з чергою
 
-If you need to manually access the listener's underlying queue job's `delete` and `release` methods, you may do so using the `Illuminate\Queue\InteractsWithQueue` trait. This trait is imported by default on generated listeners and provides access to these methods:
+Якщо вам потрібен ручний доступ до методів `delete` і `release` завдання черги, що стоїть за слухачем, скористайтеся трейтом `Illuminate\Queue\InteractsWithQueue`. Цей трейт імпортується у згенерованих слухачах за замовчуванням і надає доступ до цих методів:
 
 ```php
 <?php
@@ -452,11 +455,11 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 <a name="queued-event-listeners-and-database-transactions"></a>
-### Queued Event Listeners and Database Transactions
+### Слухачі в черзі та транзакції бази даних
 
-When queued listeners are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed.
+Коли слухачі в черзі диспетчеризуються всередині транзакцій бази даних, черга може обробити їх ще до того, як транзакцію буде зафіксовано. Коли таке трапляється, будь-які зміни, які ви внесли до моделей чи записів у базі під час транзакції, ще можуть не бути в базі. Ба більше, будь-які моделі чи записи, створені всередині транзакції, можуть у базі не існувати. Якщо ваш слухач залежить від цих моделей, під час обробки завдання, яке диспетчеризує слухача в черзі, можуть виникнути несподівані помилки.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by implementing the `ShouldQueueAfterCommit` interface on the listener class:
+Якщо опція конфігурації `after_commit` вашого підключення черги має значення `false`, ви все одно можете вказати, що конкретного слухача в черзі слід диспетчеризувати після фіксації всіх відкритих транзакцій бази даних, - реалізуйте в класі слухача інтерфейс `ShouldQueueAfterCommit`:
 
 ```php
 <?php
@@ -473,12 +476,12 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 ```
 
 > [!NOTE]
-> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
+> Щоб дізнатися більше про обхід цих проблем, перегляньте документацію про [завдання в черзі та транзакції бази даних](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="queued-listener-middleware"></a>
-### Queued Listener Middleware
+### Middleware слухачів у черзі
 
-Queued listeners can also utilize [job middleware](/docs/{{version}}/queues#job-middleware). Job middleware allow you to wrap custom logic around the execution of queued listeners, reducing boilerplate in the listeners themselves. After creating job middleware, they may be attached to a listener by returning them from the listener's `middleware` method:
+Слухачі в черзі можуть також користуватися [middleware завдань](/docs/{{version}}/queues#job-middleware). Middleware завдань дозволяє огорнути виконання слухачів у черзі власною логікою, зменшивши кількість шаблонного коду в самих слухачах. Створивши middleware завдання, ви можете причепити його до слухача, повернувши з методу `middleware` слухача:
 
 ```php
 <?php
@@ -512,9 +515,9 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 <a name="encrypted-queued-listeners"></a>
-#### Encrypted Queued Listeners
+#### Зашифровані слухачі в черзі
 
-Laravel allows you to ensure the privacy and integrity of a queued listener's data via [encryption](/docs/{{version}}/encryption). To get started, simply add the `ShouldBeEncrypted` interface to the listener class. Once this interface has been added to the class, Laravel will automatically encrypt your listener before pushing it onto a queue:
+Laravel дозволяє забезпечити приватність і цілісність даних слухача в черзі за допомогою [шифрування](/docs/{{version}}/encryption). Для початку просто додайте до класу слухача інтерфейс `ShouldBeEncrypted`. Щойно цей інтерфейс додано до класу, Laravel автоматично зашифрує вашого слухача перед тим, як покласти його в чергу:
 
 ```php
 <?php
@@ -532,12 +535,12 @@ class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
 ```
 
 <a name="unique-event-listeners"></a>
-### Unique Event Listeners
+### Унікальні слухачі подій
 
 > [!WARNING]
-> Unique listeners require a cache driver that supports [locks](/docs/{{version}}/cache#atomic-locks). Currently, the `memcached`, `redis`, `dynamodb`, `database`, `file`, and `array` cache drivers support atomic locks.
+> Унікальні слухачі потребують драйвера кешу, який підтримує [блокування](/docs/{{version}}/cache#atomic-locks). Наразі атомарні блокування підтримують драйвери кешу `memcached`, `redis`, `dynamodb`, `database`, `file` та `array`.
 
-Sometimes, you may want to ensure that only one instance of a specific listener is on the queue at any point in time. You may do so by implementing the `ShouldBeUnique` interface on your listener class:
+Інколи вам може знадобитися гарантувати, що в черзі одночасно перебуває лише один екземпляр конкретного слухача. Для цього реалізуйте в класі слухача інтерфейс `ShouldBeUnique`:
 
 ```php
 <?php
@@ -557,9 +560,9 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUnique
 }
 ```
 
-In the example above, the `AcquireProductKey` listener is unique. So, the listener will not be queued if another instance of the listener is already on the queue and has not finished processing. This ensures that only one product key is acquired for each license, even if the license is saved multiple times in quick succession.
+У прикладі вище слухач `AcquireProductKey` є унікальним. Тож слухача не поставлять у чергу, якщо інший його екземпляр уже в черзі й не завершив обробку. Це гарантує, що для кожної ліцензії буде отримано лише один ключ продукту, навіть якщо ліцензію збережено кілька разів поспіль.
 
-In certain cases, you may want to define a specific "key" that makes the listener unique or you may want to specify a timeout beyond which the listener no longer stays unique. To accomplish this, you may define `uniqueId` and `uniqueFor` properties or methods on your listener class. The methods receive the event instance, allowing you to use event data to construct the return value:
+У певних випадках вам може знадобитися задати конкретний «ключ», який робить слухача унікальним, або вказати таймаут, після якого слухач перестає бути унікальним. Для цього опишіть у класі слухача властивості або методи `uniqueId` та `uniqueFor`. Методи отримують екземпляр події, тож ви можете скористатися даними події, щоб побудувати повернене значення:
 
 ```php
 <?php
@@ -594,15 +597,15 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUnique
 }
 ```
 
-In the example above, the `AcquireProductKey` listener is unique by license ID. So, any new dispatches of the listener for the same license will be ignored until the existing listener has completed processing. This prevents duplicate product keys from being acquired for the same license. In addition, if the existing listener is not processed within one hour, the unique lock will be released and another listener with the same unique key can be queued.
+У прикладі вище слухач `AcquireProductKey` унікальний за ID ліцензії. Тож будь-які нові диспетчеризації слухача для тієї самої ліцензії ігноруватимуться, доки наявний слухач не завершить обробку. Це не дає отримати дублікати ключів продукту для однієї ліцензії. Крім того, якщо наявного слухача не оброблено протягом години, унікальне блокування буде звільнено, і в чергу можна буде поставити іншого слухача з тим самим унікальним ключем.
 
 > [!WARNING]
-> If your application dispatches events from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server so that Laravel can accurately determine if a listener is unique.
+> Якщо ваш застосунок диспетчеризує події з кількох вебсерверів чи контейнерів, подбайте, щоб усі сервери спілкувалися з одним центральним сервером кешу, - тоді Laravel зможе точно визначити, чи є слухач унікальним.
 
 <a name="keeping-listeners-unique-until-processing-begins"></a>
-#### Keeping Listeners Unique Until Processing Begins
+#### Тримати слухачів унікальними до початку обробки
 
-By default, unique listeners are "unlocked" after a listener completes processing or fails all of its retry attempts. However, there may be situations where you would like your listener to unlock immediately before it is processed. To accomplish this, your listener should implement the `ShouldBeUniqueUntilProcessing` contract instead of the `ShouldBeUnique` contract:
+За замовчуванням унікальні слухачі «розблоковуються» після того, як слухач завершить обробку або вичерпає всі спроби. Проте бувають ситуації, коли ви хочете, щоб слухач розблоковувався безпосередньо перед обробкою. Для цього ваш слухач має реалізувати контракт `ShouldBeUniqueUntilProcessing` замість `ShouldBeUnique`:
 
 ```php
 <?php
@@ -620,9 +623,9 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUniqueUntilProcessing
 ```
 
 <a name="unique-listener-locks"></a>
-#### Unique Listener Locks
+#### Блокування унікальних слухачів
 
-Behind the scenes, when a `ShouldBeUnique` listener is dispatched, Laravel attempts to acquire a [lock](/docs/{{version}}/cache#atomic-locks) with the `uniqueId` key. If the lock is already held, the listener is not dispatched. This lock is released when the listener completes processing or fails all of its retry attempts. By default, Laravel will use the default cache driver to obtain this lock. However, if you wish to use another driver for acquiring the lock, you may define a `uniqueVia` method that returns the cache driver that should be used:
+Під капотом, коли диспетчеризується слухач `ShouldBeUnique`, Laravel намагається отримати [блокування](/docs/{{version}}/cache#atomic-locks) з ключем `uniqueId`. Якщо блокування вже утримується, слухача не диспетчеризують. Це блокування звільняється, коли слухач завершує обробку або вичерпує всі спроби. За замовчуванням Laravel використовує для цього блокування драйвер кешу за замовчуванням. Проте, якщо ви хочете отримувати блокування іншим драйвером, опишіть метод `uniqueVia`, який поверне потрібний драйвер кешу:
 
 ```php
 <?php
@@ -648,12 +651,12 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUnique
 ```
 
 > [!NOTE]
-> If you only need to limit the concurrent processing of a listener, use the [WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
+> Якщо вам потрібно лише обмежити одночасну обробку слухача, скористайтеся натомість middleware завдання [WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps).
 
 <a name="handling-failed-jobs"></a>
-### Handling Failed Jobs
+### Обробка невдалих завдань
 
-Sometimes your queued event listeners may fail. If the queued listener exceeds the maximum number of attempts as defined by your queue worker, the `failed` method will be called on your listener. The `failed` method receives the event instance and the `Throwable` that caused the failure:
+Інколи ваші слухачі подій у черзі можуть зазнавати невдачі. Якщо слухач у черзі перевищить максимальну кількість спроб, задану вашим воркером черги, у слухачі буде викликано метод `failed`. Метод `failed` отримує екземпляр події та `Throwable`, який спричинив невдачу:
 
 ```php
 <?php
@@ -688,11 +691,11 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 <a name="specifying-queued-listener-maximum-attempts"></a>
-#### Specifying Queued Listener Maximum Attempts
+#### Задання максимальної кількості спроб для слухача в черзі
 
-If one of your queued listeners is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
+Якщо один з ваших слухачів у черзі натрапляє на помилку, ви навряд чи хочете, щоб він повторював спроби нескінченно. Тому Laravel надає різні способи вказати, скільки разів або як довго можна намагатися виконати слухача.
 
-You may use the `Tries` attribute on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
+Ви можете скористатися атрибутом `Tries` у класі слухача, щоб вказати, скільки разів можна намагатися виконати слухача, перш ніж він вважатиметься невдалим:
 
 ```php
 <?php
@@ -713,7 +716,7 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-As an alternative to defining how many times a listener may be attempted before it fails, you may define a time at which the listener should no longer be attempted. This allows a listener to be attempted any number of times within a given time frame. To define the time at which a listener should no longer be attempted, add a `retryUntil` method to your listener class. This method should return a `DateTimeInterface` instance:
+Як альтернативу заданню кількості спроб перед невдачею ви можете вказати момент, після якого спроби виконати слухача припиняються. Це дозволяє виконувати слухача будь-яку кількість разів у межах заданого проміжку часу. Щоб задати момент, після якого слухача більше не намагатимуться виконати, додайте до класу слухача метод `retryUntil`. Цей метод має повернути екземпляр `DateTimeInterface`:
 
 ```php
 use DateTimeInterface;
@@ -727,12 +730,12 @@ public function retryUntil(): DateTimeInterface
 }
 ```
 
-If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
+Якщо описано і `retryUntil`, і `tries`, Laravel віддає перевагу методу `retryUntil`.
 
 <a name="specifying-queued-listener-backoff"></a>
-#### Specifying Queued Listener Backoff
+#### Задання відступу для слухача в черзі
 
-If you would like to configure how many seconds Laravel should wait before retrying a listener that has encountered an exception, you may use the `Backoff` attribute on your listener class:
+Якщо ви хочете налаштувати, скільки секунд Laravel має чекати перед повторною спробою виконати слухача, який натрапив на виняток, скористайтеся атрибутом `Backoff` у класі слухача:
 
 ```php
 <?php
@@ -749,7 +752,7 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-If you require more complex logic for determining the listeners's backoff time, you may define a `backoff` method on your listener class:
+Якщо для визначення часу відступу слухача вам потрібна складніша логіка, опишіть у класі слухача метод `backoff`:
 
 ```php
 /**
@@ -761,7 +764,7 @@ public function backoff(OrderShipped $event): int
 }
 ```
 
-You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
+Ви легко можете налаштувати «експоненційні» відступи, повернувши з методу `backoff` масив значень. У цьому прикладі затримка перед повтором становитиме 1 секунду для першого повтору, 5 секунд для другого, 10 секунд для третього і 10 секунд для кожного наступного, якщо спроби ще лишилися:
 
 ```php
 /**
@@ -776,9 +779,9 @@ public function backoff(OrderShipped $event): array
 ```
 
 <a name="specifying-queued-listener-max-exceptions"></a>
-#### Specifying Queued Listener Max Exceptions
+#### Задання максимальної кількості винятків для слухача в черзі
 
-Sometimes you may wish to specify that a queued listener may be attempted many times, but should fail if the retries are triggered by a given number of unhandled exceptions (as opposed to being released by the `release` method directly). To accomplish this, you may use the `Tries` and `MaxExceptions` attributes on your listener class:
+Інколи вам може знадобитися вказати, що слухача в черзі можна намагатися виконати багато разів, але він має зазнати невдачі, якщо повтори спричинено заданою кількістю необроблених винятків (на відміну від звільнення методом `release` напряму). Для цього скористайтеся атрибутами `Tries` і `MaxExceptions` у класі слухача:
 
 ```php
 <?php
@@ -807,12 +810,12 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-In this example, the listener will be retried up to 25 times. However, the listener will fail if three unhandled exceptions are thrown by the listener.
+У цьому прикладі слухача буде повторено до 25 разів. Проте слухач зазнає невдачі, якщо викине три необроблені винятки.
 
 <a name="specifying-queued-listener-timeout"></a>
-#### Specifying Queued Listener Timeout
+#### Задання таймауту для слухача в черзі
 
-Often, you know roughly how long you expect your queued listeners to take. For this reason, Laravel allows you to specify a "timeout" value. If a listener is processing for longer than the number of seconds specified by the timeout value, the worker processing the listener will exit with an error. You may define the maximum number of seconds a listener should be allowed to run by using the `Timeout` attribute on your listener class:
+Часто ви приблизно знаєте, скільки часу мають виконуватися ваші слухачі в черзі. Тому Laravel дозволяє задати значення «таймауту». Якщо слухач обробляється довше за вказану кількість секунд, воркер, який його обробляє, завершиться з помилкою. Задати максимальну кількість секунд, яку дозволено виконуватися слухачеві, можна атрибутом `Timeout` у класі слухача:
 
 ```php
 <?php
@@ -830,7 +833,7 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-If you would like to indicate that a listener should be marked as failed on timeout, you may use the `FailOnTimeout` attribute on the listener class:
+Якщо ви хочете, щоб слухача позначало як невдалого після таймауту, скористайтеся атрибутом `FailOnTimeout` у класі слухача:
 
 ```php
 <?php
@@ -849,9 +852,9 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 <a name="dispatching-events"></a>
-## Dispatching Events
+## Диспетчеризація подій
 
-To dispatch an event, you may call the static `dispatch` method on the event. This method is made available on the event by the `Illuminate\Foundation\Events\Dispatchable` trait. Any arguments passed to the `dispatch` method will be passed to the event's constructor:
+Щоб диспетчеризувати подію, викличте на ній статичний метод `dispatch`. Цей метод стає доступним у події завдяки трейту `Illuminate\Foundation\Events\Dispatchable`. Будь-які аргументи, передані методу `dispatch`, буде передано в конструктор події:
 
 ```php
 <?php
@@ -881,7 +884,7 @@ class OrderShipmentController extends Controller
 }
 ```
 
-If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
+Якщо ви хочете диспетчеризувати подію умовно, скористайтеся методами `dispatchIf` та `dispatchUnless`:
 
 ```php
 OrderShipped::dispatchIf($condition, $order);
@@ -890,14 +893,14 @@ OrderShipped::dispatchUnless($condition, $order);
 ```
 
 > [!NOTE]
-> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
+> Під час тестування буває корисно перевірити, що певні події було диспетчеризовано, не запускаючи їхніх слухачів. [Вбудовані тестові хелпери](#testing) Laravel роблять це елементарним.
 
 <a name="dispatching-events-after-database-transactions"></a>
-### Dispatching Events After Database Transactions
+### Диспетчеризація подій після транзакцій бази даних
 
-Sometimes, you may want to instruct Laravel to only dispatch an event after the active database transaction has committed. To do so, you may implement the `ShouldDispatchAfterCommit` interface on the event class.
+Інколи вам може захотітися сказати Laravel диспетчеризувати подію лише після фіксації активної транзакції бази даних. Для цього реалізуйте в класі події інтерфейс `ShouldDispatchAfterCommit`.
 
-This interface instructs Laravel to not dispatch the event until the current database transaction is committed. If the transaction fails, the event will be discarded. If no database transaction is in progress when the event is dispatched, the event will be dispatched immediately:
+Цей інтерфейс каже Laravel не диспетчеризувати подію, доки поточну транзакцію бази даних не зафіксовано. Якщо транзакція провалиться, подію буде відкинуто. Якщо на момент диспетчеризації події жодної транзакції не відкрито, подію буде диспетчеризовано негайно:
 
 ```php
 <?php
@@ -924,11 +927,11 @@ class OrderShipped implements ShouldDispatchAfterCommit
 ```
 
 <a name="deferring-events"></a>
-### Deferring Events
+### Відкладення подій
 
-Deferred events allow you to delay the dispatching of model events and execution of event listeners until after a specific block of code has completed. This is particularly useful when you need to ensure that all related records are created before event listeners are triggered.
+Відкладені події дозволяють затримати диспетчеризацію подій моделей і виконання слухачів подій до завершення певного блоку коду. Це особливо корисно, коли вам потрібно переконатися, що всі пов'язані записи створено, перш ніж спрацюють слухачі подій.
 
-To defer events, provide a closure to the `Event::defer()` method:
+Щоб відкласти події, передайте замикання методу `Event::defer()`:
 
 ```php
 use App\Models\User;
@@ -941,9 +944,9 @@ Event::defer(function () {
 });
 ```
 
-All events triggered within the closure will be dispatched after the closure is executed. This ensures that event listeners have access to all related records that were created during the deferred execution. If an exception occurs within the closure, the deferred events will not be dispatched.
+Усі події, спричинені всередині замикання, буде диспетчеризовано після його виконання. Це гарантує, що слухачі подій матимуть доступ до всіх пов'язаних записів, створених під час відкладеного виконання. Якщо всередині замикання станеться виняток, відкладені події не буде диспетчеризовано.
 
-To defer only specific events, pass an array of events as the second argument to the `defer` method:
+Щоб відкласти лише певні події, передайте масив подій другим аргументом методу `defer`:
 
 ```php
 use App\Models\User;
@@ -957,12 +960,12 @@ Event::defer(function () {
 ```
 
 <a name="event-subscribers"></a>
-## Event Subscribers
+## Підписники подій
 
 <a name="writing-event-subscribers"></a>
-### Writing Event Subscribers
+### Написання підписників подій
 
-Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which receives an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
+Підписники подій - це класи, які можуть підписуватися на кілька подій зсередини самого класу підписника, дозволяючи описати кілька обробників подій в одному класі. Підписники мають описувати метод `subscribe`, який отримує екземпляр диспетчера подій. Щоб зареєструвати слухачів подій, викличте на переданому диспетчері метод `listen`:
 
 ```php
 <?php
@@ -1003,7 +1006,7 @@ class UserEventSubscriber
 }
 ```
 
-If your event listener methods are defined within the subscriber itself, you may find it more convenient to return an array of events and method names from the subscriber's `subscribe` method. Laravel will automatically determine the subscriber's class name when registering the event listeners:
+Якщо методи-слухачі подій описано в самому підписнику, вам може бути зручніше повернути з методу `subscribe` масив подій і назв методів. Реєструючи слухачів подій, Laravel автоматично визначить назву класу підписника:
 
 ```php
 <?php
@@ -1042,9 +1045,9 @@ class UserEventSubscriber
 ```
 
 <a name="registering-event-subscribers"></a>
-### Registering Event Subscribers
+### Реєстрація підписників подій
 
-After writing the subscriber, Laravel will automatically register handler methods within the subscriber if they follow Laravel's [event discovery conventions](#event-discovery). Otherwise, you may manually register your subscriber using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
+Коли підписника написано, Laravel автоматично зареєструє його методи-обробники, якщо ті відповідають [домовленостям виявлення подій](#event-discovery) Laravel. Інакше ви можете зареєструвати підписника вручну методом `subscribe` фасаду `Event`. Зазвичай це роблять у методі `boot` вашого `AppServiceProvider`:
 
 ```php
 <?php
@@ -1068,11 +1071,11 @@ class AppServiceProvider extends ServiceProvider
 ```
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
-When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners, since the listener's code can be tested directly and separately of the code that dispatches the corresponding event. Of course, to test the listener itself, you may instantiate a listener instance and invoke the `handle` method directly in your test.
+Тестуючи код, який диспетчеризує події, ви можете захотіти сказати Laravel не виконувати слухачів події, адже код слухача можна протестувати напряму й окремо від коду, який диспетчеризує відповідну подію. Звісно, щоб протестувати самого слухача, ви можете створити його екземпляр і викликати метод `handle` напряму у вашому тесті.
 
-Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:
+За допомогою методу `fake` фасаду `Event` ви можете завадити виконанню слухачів, виконати тестований код, а потім перевірити, які події диспетчеризував ваш застосунок, методами `assertDispatched`, `assertNotDispatched` та `assertNothingDispatched`:
 
 ```php tab=Pest
 <?php
@@ -1142,7 +1145,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given "truth test". If at least one event was dispatched that passes the given truth test then the assertion will be successful:
+Ви можете передати замикання методам `assertDispatched` чи `assertNotDispatched`, щоб перевірити, що було диспетчеризовано подію, яка проходить заданий тест. Якщо диспетчеризовано щонайменше одну подію, яка проходить заданий тест, перевірка буде успішною:
 
 ```php
 Event::assertDispatched(function (OrderShipped $event) use ($order) {
@@ -1150,7 +1153,7 @@ Event::assertDispatched(function (OrderShipped $event) use ($order) {
 });
 ```
 
-If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
+Якщо ви просто хочете перевірити, що слухач подій слухає задану подію, скористайтеся методом `assertListening`:
 
 ```php
 Event::assertListening(
@@ -1160,12 +1163,12 @@ Event::assertListening(
 ```
 
 > [!WARNING]
-> After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
+> Після виклику `Event::fake()` жоден слухач подій не виконуватиметься. Тож, якщо ваші тести використовують фабрики моделей, які покладаються на події - наприклад, створення UUID під час події `creating` моделі, - викликайте `Event::fake()` **після** використання фабрик.
 
 <a name="faking-a-subset-of-events"></a>
-### Faking a Subset of Events
+### Підміна частини подій
 
-If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
+Якщо ви хочете підмінити слухачів подій лише для певного набору подій, передайте їх методу `fake` або `fakeFor`:
 
 ```php tab=Pest
 test('orders can be processed', function () {
@@ -1205,7 +1208,7 @@ public function test_orders_can_be_processed(): void
 }
 ```
 
-You may fake all events except for a set of specified events using the `except` method:
+Ви можете підмінити всі події, окрім заданого набору, методом `except`:
 
 ```php
 Event::fake()->except([
@@ -1214,9 +1217,9 @@ Event::fake()->except([
 ```
 
 <a name="scoped-event-fakes"></a>
-### Scoped Event Fakes
+### Обмежені підміни подій
 
-If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
+Якщо ви хочете підмінити слухачів подій лише для частини вашого тесту, скористайтеся методом `fakeFor`:
 
 ```php tab=Pest
 <?php
