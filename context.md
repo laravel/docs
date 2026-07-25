@@ -1,26 +1,29 @@
-# Context
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Контекст
 
-- [Introduction](#introduction)
-    - [How it Works](#how-it-works)
-- [Capturing Context](#capturing-context)
-    - [Stacks](#stacks)
-- [Retrieving Context](#retrieving-context)
-    - [Determining Item Existence](#determining-item-existence)
-- [Removing Context](#removing-context)
-- [Hidden Context](#hidden-context)
-- [Events](#events)
-    - [Dehydrating](#dehydrating)
-    - [Hydrated](#hydrated)
+- [Вступ](#introduction)
+    - [Як це працює](#how-it-works)
+- [Збереження контексту](#capturing-context)
+    - [Стеки](#stacks)
+- [Отримання контексту](#retrieving-context)
+    - [Перевірка наявності елемента](#determining-item-existence)
+- [Видалення контексту](#removing-context)
+- [Прихований контекст](#hidden-context)
+- [Події](#events)
+    - [Дегідратація](#dehydrating)
+    - [Гідратація](#hydrated)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel's "context" capabilities enable you to capture, retrieve, and share information throughout requests, jobs, and commands executing within your application. This captured information is also included in logs written by your application, giving you deeper insight into the surrounding code execution history that occurred before a log entry was written and allowing you to trace execution flows throughout a distributed system.
+Можливості «контексту» в Laravel дозволяють зберігати, отримувати та передавати інформацію крізь запити, завдання й команди, що виконуються у вашому застосунку. Ця збережена інформація також потрапляє до логів, які пише ваш застосунок, даючи глибше розуміння історії виконання коду перед появою запису в логу й дозволяючи простежити потоки виконання в розподіленій системі.
 
 <a name="how-it-works"></a>
-### How it Works
+### Як це працює
 
-The best way to understand Laravel's context capabilities is to see it in action using  the built-in logging features. To get started, you may [add information to the context](#capturing-context) using the `Context` facade. In this example, we will use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID to the context on every incoming request:
+Найкращий спосіб зрозуміти можливості контексту в Laravel - побачити їх у дії разом із вбудованим логуванням. Щоб почати, [додайте інформацію до контексту](#capturing-context) через фасад `Context`. У цьому прикладі ми скористаємося [`middleware`](/docs/{{version}}/middleware), щоб додавати URL запиту та унікальний ідентифікатор трасування до контексту для кожного вхідного запиту:
 
 ```php
 <?php
@@ -48,19 +51,19 @@ class AddContext
 }
 ```
 
-Information added to the context is automatically appended as metadata to any [log entries](/docs/{{version}}/logging) that are written throughout the request. Appending context as metadata allows information passed to individual log entries to be differentiated from the information shared via `Context`. For example, imagine we write the following log entry:
+Інформація, додана до контексту, автоматично додається як метадані до всіх [записів логу](/docs/{{version}}/logging), що пишуться протягом запиту. Додавання контексту саме як метаданих дозволяє відрізнити інформацію, передану окремим записам логу, від інформації, спільної через `Context`. Наприклад, уявімо, що ми пишемо такий запис:
 
 ```php
 Log::info('User authenticated.', ['auth_id' => Auth::id()]);
 ```
 
-The written log will contain the `auth_id` passed to the log entry, but it will also contain the context's `url` and `trace_id` as metadata:
+Записаний лог міститиме `auth_id`, переданий запису, а також `url` і `trace_id` із контексту як метадані:
 
 ```text
 User authenticated. {"auth_id":27} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
-Information added to the context is also made available to jobs dispatched to the queue. For example, imagine we dispatch a `ProcessPodcast` job to the queue after adding some information to the context:
+Інформація, додана до контексту, також стає доступною завданням, надісланим до черги. Наприклад, уявімо, що ми надсилаємо до черги завдання `ProcessPodcast` після додавання певної інформації до контексту:
 
 ```php
 // In our middleware...
@@ -71,7 +74,7 @@ Context::add('trace_id', Str::uuid()->toString());
 ProcessPodcast::dispatch($podcast);
 ```
 
-When the job is dispatched, any information currently stored in the context is captured and shared with the job. The captured information is then hydrated back into the current context while the job is executing. So, if our job's handle method was to write to the log:
+Коли завдання надсилається, уся інформація, що зараз зберігається в контексті, захоплюється й передається завданню. Далі, поки завдання виконується, її гідратують назад у поточний контекст. Тож якби метод `handle` нашого завдання писав до логу:
 
 ```php
 class ProcessPodcast implements ShouldQueue
@@ -94,18 +97,18 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
-The resulting log entry would contain the information that was added to the context during the request that originally dispatched the job:
+Отриманий запис логу міститиме інформацію, додану до контексту під час запиту, який спочатку надіслав це завдання:
 
 ```text
 Processing podcast. {"podcast_id":95} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
-Although we have focused on the built-in logging related features of Laravel's context, the following documentation will illustrate how context allows you to share information across the HTTP request / queued job boundary and even how to add [hidden context data](#hidden-context) that is not written with log entries.
+Хоча ми зосередилися на вбудованих можливостях логування, наведена далі документація покаже, як контекст дозволяє передавати інформацію через межу «HTTP-запит - завдання в черзі», а також як додавати [приховані дані контексту](#hidden-context), які не потрапляють до записів логу.
 
 <a name="capturing-context"></a>
-## Capturing Context
+## Збереження контексту
 
-You may store information in the current context using the `Context` facade's `add` method:
+Ви можете зберегти інформацію в поточному контексті методом `add` фасаду `Context`:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -113,7 +116,7 @@ use Illuminate\Support\Facades\Context;
 Context::add('key', 'value');
 ```
 
-To add multiple items at once, you may pass an associative array to the `add` method:
+Щоб додати кілька елементів одразу, передайте методу `add` асоціативний масив:
 
 ```php
 Context::add([
@@ -122,7 +125,7 @@ Context::add([
 ]);
 ```
 
-The `add` method will override any existing value that shares the same key. If you only wish to add information to the context if the key does not already exist, you may use the `addIf` method:
+Метод `add` перезапише будь-яке наявне значення з тим самим ключем. Якщо ви хочете додати інформацію лише тоді, коли ключа ще немає, скористайтеся методом `addIf`:
 
 ```php
 Context::add('key', 'first');
@@ -136,7 +139,7 @@ Context::get('key');
 // "first"
 ```
 
-Context also provides convenient methods for incrementing or decrementing a given key. Both of these methods accept at least one argument: the key to track. A second argument may be provided to specify the amount by which the key should be incremented or decremented:
+Контекст також надає зручні методи для збільшення чи зменшення значення за ключем. Обидва приймають щонайменше один аргумент - ключ, який відстежуємо. Другим аргументом можна вказати величину, на яку слід змінити значення:
 
 ```php
 Context::increment('records_added');
@@ -147,9 +150,9 @@ Context::decrement('records_added', 5);
 ```
 
 <a name="conditional-context"></a>
-#### Conditional Context
+#### Умовний контекст
 
-The `when` method may be used to add data to the context based on a given condition. The first closure provided to the `when` method will be invoked if the given condition evaluates to `true`, while the second closure will be invoked if the condition evaluates to `false`:
+Метод `when` дозволяє додавати дані до контексту залежно від певної умови. Перше замикання, передане методу `when`, буде викликано, якщо умова дає `true`, а друге - якщо `false`:
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -163,9 +166,9 @@ Context::when(
 ```
 
 <a name="scoped-context"></a>
-#### Scoped Context
+#### Контекст з обмеженою областю
 
-The `scope` method provides a way to temporarily modify the context during the execution of a given callback and restore the context to its original state when the callback finishes executing. Additionally, you can pass extra data that should be merged into the context (as the second and third arguments) while the closure executes.
+Метод `scope` дає спосіб тимчасово змінити контекст під час виконання переданого колбека й відновити його початковий стан після завершення. Крім того, ви можете передати додаткові дані (другим і третім аргументами), які буде об'єднано з контекстом на час виконання замикання.
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -199,12 +202,12 @@ Context::allHidden();
 ```
 
 > [!WARNING]
-> If an object within the context is modified inside the scoped closure, that mutation will be reflected outside of the scope.
+> Якщо об'єкт усередині контексту змінено всередині замикання зі scope, ця зміна відобразиться й поза межами області.
 
 <a name="stacks"></a>
-### Stacks
+### Стеки
 
-Context offers the ability to create "stacks", which are lists of data stored in the order that they were added. You can add information to a stack by invoking the `push` method:
+Контекст дозволяє створювати «стеки» - списки даних, збережених у порядку додавання. Додати інформацію до стека можна методом `push`:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -221,7 +224,7 @@ Context::get('breadcrumbs');
 // ]
 ```
 
-Stacks can be useful to capture historical information about a request, such as events that are happening throughout your application. For example, you could create an event listener to push to a stack every time a query is executed, capturing the query SQL and duration as a tuple:
+Стеки корисні для збереження історичної інформації про запит - наприклад, подій, що відбуваються у вашому застосунку. Скажімо, ви можете створити слухач подій, який додаватиме до стека запис щоразу, коли виконується запит до бази, зберігаючи SQL і тривалість як кортеж:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -233,7 +236,7 @@ DB::listen(function ($event) {
 });
 ```
 
-You may determine if a value is in a stack using the `stackContains` and `hiddenStackContains` methods:
+Визначити, чи є значення в стеці, можна методами `stackContains` і `hiddenStackContains`:
 
 ```php
 if (Context::stackContains('breadcrumbs', 'first_value')) {
@@ -245,7 +248,7 @@ if (Context::hiddenStackContains('secrets', 'first_value')) {
 }
 ```
 
-The `stackContains` and `hiddenStackContains` methods also accept a closure as their second argument, allowing more control over the value comparison operation:
+Методи `stackContains` і `hiddenStackContains` також приймають замикання другим аргументом, що дає більший контроль над порівнянням значень:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -257,9 +260,9 @@ return Context::stackContains('breadcrumbs', function ($value) {
 ```
 
 <a name="retrieving-context"></a>
-## Retrieving Context
+## Отримання контексту
 
-You may retrieve information from the context using the `Context` facade's `get` method:
+Отримати інформацію з контексту можна методом `get` фасаду `Context`:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -267,7 +270,7 @@ use Illuminate\Support\Facades\Context;
 $value = Context::get('key');
 ```
 
-The `only` and `except` methods may be used to retrieve a subset of the information in the context:
+Методи `only` та `except` дозволяють отримати підмножину інформації з контексту:
 
 ```php
 $data = Context::only(['first_key', 'second_key']);
@@ -275,13 +278,13 @@ $data = Context::only(['first_key', 'second_key']);
 $data = Context::except(['first_key']);
 ```
 
-The `pull` method may be used to retrieve information from the context and immediately remove it from the context:
+Метод `pull` дозволяє отримати інформацію з контексту й одразу вилучити її звідти:
 
 ```php
 $value = Context::pull('key');
 ```
 
-If context data is stored in a [stack](#stacks), you may pop items from the stack using the `pop` method:
+Якщо дані контексту зберігаються у [стеці](#stacks), ви можете дістати елементи зі стека методом `pop`:
 
 ```php
 Context::push('breadcrumbs', 'first_value', 'second_value');
@@ -293,7 +296,7 @@ Context::get('breadcrumbs');
 // ['first_value']
 ```
 
-The `remember` and `rememberHidden` methods may be used to retrieve information from the context, while setting the context value to the value returned by the given closure if the requested information doesn't exist:
+Методи `remember` і `rememberHidden` дозволяють отримати інформацію з контексту, водночас задавши значення контексту тим, що повертає передане замикання, якщо запитаної інформації немає:
 
 ```php
 $permissions = Context::remember(
@@ -302,16 +305,16 @@ $permissions = Context::remember(
 );
 ```
 
-If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
+Якщо ви хочете отримати всю збережену в контексті інформацію, викличте метод `all`:
 
 ```php
 $data = Context::all();
 ```
 
 <a name="determining-item-existence"></a>
-### Determining Item Existence
+### Перевірка наявності елемента
 
-You may use the `has` and `missing` methods to determine if the context has any value stored for the given key:
+Методи `has` і `missing` дозволяють визначити, чи має контекст будь-яке значення для вказаного ключа:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -325,7 +328,7 @@ if (Context::missing('key')) {
 }
 ```
 
-The `has` method will return `true` regardless of the value stored. So, for example, a key with a `null` value will be considered present:
+Метод `has` поверне `true` незалежно від збереженого значення. Тож, наприклад, ключ зі значенням `null` вважатиметься присутнім:
 
 ```php
 Context::add('key', null);
@@ -335,9 +338,9 @@ Context::has('key');
 ```
 
 <a name="removing-context"></a>
-## Removing Context
+## Видалення контексту
 
-The `forget` method may be used to remove a key and its value from the current context:
+Метод `forget` дозволяє вилучити ключ та його значення з поточного контексту:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -351,16 +354,16 @@ Context::all();
 // ['second_key' => 2]
 ```
 
-You may forget several keys at once by providing an array to the `forget` method:
+Ви можете вилучити кілька ключів одразу, передавши методу `forget` масив:
 
 ```php
 Context::forget(['first_key', 'second_key']);
 ```
 
 <a name="hidden-context"></a>
-## Hidden Context
+## Прихований контекст
 
-Context offers the ability to store "hidden" data. This hidden information is not appended to logs, and is not accessible via the data retrieval methods documented above. Context provides a different set of methods to interact with hidden context information:
+Контекст дозволяє зберігати «приховані» дані. Ця інформація не додається до логів і недоступна через описані вище методи отримання даних. Для роботи з прихованим контекстом контекст надає окремий набір методів:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -374,7 +377,7 @@ Context::get('key');
 // null
 ```
 
-The "hidden" methods mirror the functionality of the non-hidden methods documented above:
+«Приховані» методи дзеркалять функціональність звичайних методів, описаних вище:
 
 ```php
 Context::addHidden(/* ... */);
@@ -392,18 +395,18 @@ Context::forgetHidden(/* ... */);
 ```
 
 <a name="events"></a>
-## Events
+## Події
 
-Context dispatches two events that allow you to hook into the hydration and dehydration process of the context.
+Контекст надсилає дві події, що дозволяють підключитися до процесів гідратації та дегідратації контексту.
 
-To illustrate how these events may be used, imagine that in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture this value during the request and restore it on the queue, ensuring notifications sent on the queue have the correct `app.locale` value. We can use context's events and [hidden](#hidden-context) data to achieve this, which the following documentation will illustrate.
+Щоб проілюструвати їх використання, уявіть, що в `middleware` вашого застосунку ви задаєте значення конфігурації `app.locale` на основі заголовка `Accept-Language` вхідного HTTP-запиту. Події контексту дозволяють зберегти це значення під час запиту й відновити його в черзі, гарантуючи, що сповіщення, надіслані з черги, матимуть правильне значення `app.locale`. Досягти цього можна за допомогою подій контексту та [прихованих](#hidden-context) даних, що й показує наведена далі документація.
 
 <a name="dehydrating"></a>
-### Dehydrating
+### Дегідратація
 
-Whenever a job is dispatched to the queue the data in the context is "dehydrated" and captured alongside the job's payload. The `Context::dehydrating` method allows you to register a closure that will be invoked during the dehydration process. Within this closure, you may make changes to the data that will be shared with the queued job.
+Щоразу, коли завдання надсилається до черги, дані контексту «дегідратуються» й зберігаються разом із даними завдання. Метод `Context::dehydrating` дозволяє зареєструвати замикання, яке буде викликано під час дегідратації. У цьому замиканні ви можете змінити дані, які буде передано завданню в черзі.
 
-Typically, you should register `dehydrating` callbacks within the `boot` method of your application's `AppServiceProvider` class:
+Зазвичай колбеки `dehydrating` слід реєструвати в методі `boot` класу `AppServiceProvider` вашого застосунку:
 
 ```php
 use Illuminate\Log\Context\Repository;
@@ -422,14 +425,14 @@ public function boot(): void
 ```
 
 > [!NOTE]
-> You should not use the `Context` facade within the `dehydrating` callback, as that will change the context of the current process. Ensure you only make changes to the repository passed to the callback.
+> Не використовуйте фасад `Context` усередині колбека `dehydrating`, адже це змінить контекст поточного процесу. Переконайтеся, що вносите зміни лише до репозиторію, переданого колбеку.
 
 <a name="hydrated"></a>
-### Hydrated
+### Гідратація
 
-Whenever a queued job begins executing on the queue, any context that was shared with the job will be "hydrated" back into the current context. The `Context::hydrated` method allows you to register a closure that will be invoked during the hydration process.
+Щоразу, коли завдання з черги починає виконуватися, будь-який контекст, переданий разом із ним, «гідратується» назад у поточний контекст. Метод `Context::hydrated` дозволяє зареєструвати замикання, яке буде викликано під час гідратації.
 
-Typically, you should register `hydrated` callbacks within the `boot` method of your application's `AppServiceProvider` class:
+Зазвичай колбеки `hydrated` слід реєструвати в методі `boot` класу `AppServiceProvider` вашого застосунку:
 
 ```php
 use Illuminate\Log\Context\Repository;
@@ -450,4 +453,4 @@ public function boot(): void
 ```
 
 > [!NOTE]
-> You should not use the `Context` facade within the `hydrated` callback and instead ensure you only make changes to the repository passed to the callback.
+> Не використовуйте фасад `Context` усередині колбека `hydrated` - натомість вносьте зміни лише до репозиторію, переданого колбеку.
