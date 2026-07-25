@@ -1,51 +1,54 @@
-# Starter Kits
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Стартові набори
 
-- [Introduction](#introduction)
-- [Creating an Application Using a Starter Kit](#creating-an-application)
-- [Available Starter Kits](#available-starter-kits)
+- [Вступ](#introduction)
+- [Створення застосунку за допомогою стартового набору](#creating-an-application)
+- [Доступні стартові набори](#available-starter-kits)
     - [React](#react)
     - [Svelte](#svelte)
     - [Vue](#vue)
     - [Livewire](#livewire)
-- [Starter Kit Customization](#starter-kit-customization)
+- [Налаштування стартового набору](#starter-kit-customization)
     - [React](#react-customization)
     - [Svelte](#svelte-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
-- [Authentication](#authentication)
-    - [Enabling and Disabling Features](#enabling-and-disabling-features)
-    - [Customizing User Creation and Password Reset](#customizing-actions)
-    - [Two-Factor Authentication](#two-factor-authentication)
-    - [Rate Limiting](#rate-limiting)
-- [Teams](#teams)
-- [WorkOS AuthKit Authentication](#workos)
+- [Автентифікація](#authentication)
+    - [Увімкнення та вимкнення можливостей](#enabling-and-disabling-features)
+    - [Налаштування створення користувача та скидання пароля](#customizing-actions)
+    - [Двофакторна автентифікація](#two-factor-authentication)
+    - [Обмеження частоти](#rate-limiting)
+- [Команди](#teams)
+- [Автентифікація через WorkOS AuthKit](#workos)
 - [Inertia SSR](#inertia-ssr)
-- [Community Maintained Starter Kits](#community-maintained-starter-kits)
-- [Frequently Asked Questions](#faqs)
+- [Стартові набори від спільноти](#community-maintained-starter-kits)
+- [Часті запитання](#faqs)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users. The starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to provide authentication.
+Щоб дати вам фору в розробці нового застосунку Laravel, ми з радістю пропонуємо [стартові набори застосунків](https://laravel.com/starter-kits). Ці набори дають фору в створенні вашого наступного застосунку Laravel і містять маршрути, контролери та представлення, потрібні для реєстрації та автентифікації користувачів. Для автентифікації стартові набори використовують [Laravel Fortify](/docs/{{version}}/fortify).
 
-While you are welcome to use these starter kits, they are not required. You are free to build your own application from the ground up by simply installing a fresh copy of Laravel. Either way, we know you will build something great!
+Хоча ви можете вільно користуватися цими наборами, вони не обов'язкові. Ви можете створити власний застосунок з нуля, просто встановивши свіжу копію Laravel. Хай там як, ми знаємо, що ви створите щось чудове!
 
 <a name="creating-an-application"></a>
-## Creating an Application Using a Starter Kit
+## Створення застосунку за допомогою стартового набору
 
-To create a new Laravel application using one of our starter kits, you should first [install PHP and the Laravel CLI tool](/docs/{{version}}/installation#installing-php). If you already have PHP and Composer installed, you may install the Laravel installer CLI tool via Composer:
+Щоб створити новий застосунок Laravel за допомогою одного з наших стартових наборів, спершу [встановіть PHP та CLI-інструмент Laravel](/docs/{{version}}/installation#installing-php). Якщо PHP і Composer уже встановлені, ви можете встановити CLI-інструмент інсталятора Laravel через Composer:
 
 ```shell
 composer global require laravel/installer
 ```
 
-Then, create a new Laravel application using the Laravel installer CLI. The Laravel installer will prompt you to select your preferred starter kit:
+Далі створіть новий застосунок Laravel за допомогою CLI інсталятора Laravel. Інсталятор запропонує обрати бажаний стартовий набір:
 
 ```shell
 laravel new my-app
 ```
 
-After creating your Laravel application, you only need to install its frontend dependencies via NPM and start the Laravel development server:
+Після створення застосунку Laravel вам залишиться лише встановити фронтенд-залежності через NPM і запустити сервер розробки Laravel:
 
 ```shell
 cd my-app
@@ -53,56 +56,56 @@ npm install && npm run build
 composer run dev
 ```
 
-Once you have started the Laravel development server, your application will be accessible in your web browser at [http://localhost:8000](http://localhost:8000).
+Щойно ви запустите сервер розробки Laravel, ваш застосунок буде доступний у браузері за адресою [http://localhost:8000](http://localhost:8000).
 
 <a name="available-starter-kits"></a>
-## Available Starter Kits
+## Доступні стартові набори
 
 <a name="react"></a>
 ### React
 
-Our React starter kit provides a robust, modern starting point for building Laravel applications with a React frontend using [Inertia](https://inertiajs.com).
+Наш стартовий набір React дає надійну сучасну відправну точку для створення застосунків Laravel із фронтендом на React за допомогою [Inertia](https://inertiajs.com).
 
-Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+Inertia дозволяє створювати сучасні односторінкові застосунки на React, використовуючи класичну серверну маршрутизацію та контролери. Це дає змогу поєднати потужність React на фронтенді з неймовірною продуктивністю Laravel на бекенді та блискавичною компіляцією Vite.
 
-The React starter kit utilizes React 19, TypeScript, Tailwind, and the [shadcn/ui](https://ui.shadcn.com) component library.
+Стартовий набір React використовує React 19, TypeScript, Tailwind і бібліотеку компонентів [shadcn/ui](https://ui.shadcn.com).
 
 <a name="svelte"></a>
 ### Svelte
 
-Our Svelte starter kit provides a robust, modern starting point for building Laravel applications with a Svelte frontend using [Inertia](https://inertiajs.com).
+Наш стартовий набір Svelte дає надійну сучасну відправну точку для створення застосунків Laravel із фронтендом на Svelte за допомогою [Inertia](https://inertiajs.com).
 
-Inertia allows you to build modern, single-page Svelte applications using classic server-side routing and controllers. This lets you enjoy the frontend power of Svelte combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+Inertia дозволяє створювати сучасні односторінкові застосунки на Svelte, використовуючи класичну серверну маршрутизацію та контролери. Це дає змогу поєднати потужність Svelte на фронтенді з неймовірною продуктивністю Laravel на бекенді та блискавичною компіляцією Vite.
 
-The Svelte starter kit utilizes Svelte 5, TypeScript, Tailwind, and the [shadcn-svelte](https://www.shadcn-svelte.com/) component library.
+Стартовий набір Svelte використовує Svelte 5, TypeScript, Tailwind і бібліотеку компонентів [shadcn-svelte](https://www.shadcn-svelte.com/).
 
 <a name="vue"></a>
 ### Vue
 
-Our Vue starter kit provides a great starting point for building Laravel applications with a Vue frontend using [Inertia](https://inertiajs.com).
+Наш стартовий набір Vue дає чудову відправну точку для створення застосунків Laravel із фронтендом на Vue за допомогою [Inertia](https://inertiajs.com).
 
-Inertia allows you to build modern, single-page Vue applications using classic server-side routing and controllers. This lets you enjoy the frontend power of Vue combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
+Inertia дозволяє створювати сучасні односторінкові застосунки на Vue, використовуючи класичну серверну маршрутизацію та контролери. Це дає змогу поєднати потужність Vue на фронтенді з неймовірною продуктивністю Laravel на бекенді та блискавичною компіляцією Vite.
 
-The Vue starter kit utilizes the Vue Composition API, TypeScript, Tailwind, and the [shadcn-vue](https://www.shadcn-vue.com/) component library.
+Стартовий набір Vue використовує Vue Composition API, TypeScript, Tailwind і бібліотеку компонентів [shadcn-vue](https://www.shadcn-vue.com/).
 
 <a name="livewire"></a>
 ### Livewire
 
-Our Livewire starter kit provides the perfect starting point for building Laravel applications with a [Laravel Livewire](https://livewire.laravel.com) frontend.
+Наш стартовий набір Livewire дає ідеальну відправну точку для створення застосунків Laravel із фронтендом на [Laravel Livewire](https://livewire.laravel.com).
 
-Livewire is a powerful way of building dynamic, reactive, frontend UIs using just PHP. It's a great fit for teams that primarily use Blade templates and are looking for a simpler alternative to JavaScript-driven SPA frameworks like React, Svelte, and Vue.
+Livewire - це потужний спосіб створювати динамічні реактивні інтерфейси, використовуючи лише PHP. Він чудово підходить командам, які здебільшого працюють із шаблонами Blade і шукають простішу альтернативу SPA-фреймворкам на JavaScript, як-от React, Svelte і Vue.
 
-The Livewire starter kit utilizes Livewire, Tailwind, and the [Flux UI](https://fluxui.dev) component library.
+Стартовий набір Livewire використовує Livewire, Tailwind і бібліотеку компонентів [Flux UI](https://fluxui.dev).
 
 <a name="starter-kit-customization"></a>
-## Starter Kit Customization
+## Налаштування стартового набору
 
 <a name="react-customization"></a>
 ### React
 
-Our React starter kit is built with Inertia 3, React 19, Tailwind 4, and [shadcn/ui](https://ui.shadcn.com). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+Наш стартовий набір React побудований на Inertia 3, React 19, Tailwind 4 і [shadcn/ui](https://ui.shadcn.com). Як і в усіх наших наборах, увесь код бекенду та фронтенду міститься у вашому застосунку, що дозволяє повністю його налаштувати.
 
-The majority of the frontend code is located in the `resources/js` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+Більшість коду фронтенду розташована в каталозі `resources/js`. Ви вільні змінювати будь-який код, щоб налаштувати вигляд і поведінку свого застосунку:
 
 ```text
 resources/js/
@@ -114,13 +117,13 @@ resources/js/
 └── types/         # TypeScript definitions
 ```
 
-To publish additional shadcn components, first [find the component you want to publish](https://ui.shadcn.com). Then, publish the component using `npx`:
+Щоб опублікувати додаткові компоненти shadcn, спершу [знайдіть потрібний компонент](https://ui.shadcn.com). Далі опублікуйте його за допомогою `npx`:
 
 ```shell
 npx shadcn@latest add switch
 ```
 
-In this example, the command will publish the Switch component to `resources/js/components/ui/switch.tsx`. Once the component has been published, you can use it in any of your pages:
+У цьому прикладі команда опублікує компонент Switch у `resources/js/components/ui/switch.tsx`. Щойно компонент опубліковано, ви можете використовувати його на будь-якій зі своїх сторінок:
 
 ```jsx
 import { Switch } from "@/components/ui/switch"
@@ -137,9 +140,9 @@ export default MyPage;
 ```
 
 <a name="react-available-layouts"></a>
-#### Available Layouts
+#### Доступні макети
 
-The React starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/app-layout.tsx` file:
+Стартовий набір React містить два основні макети на вибір: макет із бічною панеллю («sidebar») і макет із шапкою («header»). За замовчуванням використовується макет із бічною панеллю, але ви можете перемкнутися на макет із шапкою, змінивши макет, що імпортується на початку файлу `resources/js/layouts/app-layout.tsx` вашого застосунку:
 
 ```js
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout'; // [tl! remove]
@@ -147,9 +150,9 @@ import AppLayoutTemplate from '@/layouts/app/app-header-layout'; // [tl! add]
 ```
 
 <a name="react-sidebar-variants"></a>
-#### Sidebar Variants
+#### Варіанти бічної панелі
 
-The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/app-sidebar.tsx` component:
+Макет із бічною панеллю має три варіанти: типовий, «inset» і «floating». Ви можете обрати той, що подобається найбільше, змінивши компонент `resources/js/components/app-sidebar.tsx`:
 
 ```text
 <Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
@@ -157,11 +160,11 @@ The sidebar layout includes three different variants: the default sidebar varian
 ```
 
 <a name="react-authentication-page-layout-variants"></a>
-#### Authentication Page Layout Variants
+#### Варіанти макета сторінок автентифікації
 
-The authentication pages included with the React starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+Сторінки автентифікації, що входять до стартового набору React, - як-от сторінки входу та реєстрації, - також мають три варіанти макета: «simple», «card» і «split».
 
-To change your authentication layout, modify the layout that is imported at the top of your application's `resources/js/layouts/auth-layout.tsx` file:
+Щоб змінити макет автентифікації, змініть макет, що імпортується на початку файлу `resources/js/layouts/auth-layout.tsx` вашого застосунку:
 
 ```js
 import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout'; // [tl! remove]
@@ -171,9 +174,9 @@ import AuthLayoutTemplate from '@/layouts/auth/auth-split-layout'; // [tl! add]
 <a name="svelte-customization"></a>
 ### Svelte
 
-Our Svelte starter kit is built with Inertia 3, Svelte 5, Tailwind, and [shadcn-svelte](https://www.shadcn-svelte.com/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+Наш стартовий набір Svelte побудований на Inertia 3, Svelte 5, Tailwind і [shadcn-svelte](https://www.shadcn-svelte.com/). Як і в усіх наших наборах, увесь код бекенду та фронтенду міститься у вашому застосунку, що дозволяє повністю його налаштувати.
 
-The majority of the frontend code is located in the `resources/js` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+Більшість коду фронтенду розташована в каталозі `resources/js`. Ви вільні змінювати будь-який код, щоб налаштувати вигляд і поведінку свого застосунку:
 
 ```text
 resources/js/
@@ -184,13 +187,13 @@ resources/js/
 └── types/         # TypeScript definitions
 ```
 
-To publish additional shadcn-svelte components, first [find the component you want to publish](https://www.shadcn-svelte.com). Then, publish the component using `npx`:
+Щоб опублікувати додаткові компоненти shadcn-svelte, спершу [знайдіть потрібний компонент](https://www.shadcn-svelte.com). Далі опублікуйте його за допомогою `npx`:
 
 ```shell
 npx shadcn-svelte@latest add switch
 ```
 
-In this example, the command will publish the Switch component to `resources/js/components/ui/switch/switch.svelte`. Once the component has been published, you can use it in any of your pages:
+У цьому прикладі команда опублікує компонент Switch у `resources/js/components/ui/switch/switch.svelte`. Щойно компонент опубліковано, ви можете використовувати його на будь-якій зі своїх сторінок:
 
 ```svelte
 <script lang="ts">
@@ -203,9 +206,9 @@ In this example, the command will publish the Switch component to `resources/js/
 ```
 
 <a name="svelte-available-layouts"></a>
-#### Available Layouts
+#### Доступні макети
 
-The Svelte starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.svelte` file:
+Стартовий набір Svelte містить два основні макети на вибір: макет із бічною панеллю («sidebar») і макет із шапкою («header»). За замовчуванням використовується макет із бічною панеллю, але ви можете перемкнутися на макет із шапкою, змінивши макет, що імпортується на початку файлу `resources/js/layouts/AppLayout.svelte` вашого застосунку:
 
 ```js
 import AppLayout from '@/layouts/app/AppSidebarLayout.svelte'; // [tl! remove]
@@ -213,9 +216,9 @@ import AppLayout from '@/layouts/app/AppHeaderLayout.svelte'; // [tl! add]
 ```
 
 <a name="svelte-sidebar-variants"></a>
-#### Sidebar Variants
+#### Варіанти бічної панелі
 
-The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/AppSidebar.svelte` component:
+Макет із бічною панеллю має три варіанти: типовий, «inset» і «floating». Ви можете обрати той, що подобається найбільше, змінивши компонент `resources/js/components/AppSidebar.svelte`:
 
 ```text
 <Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
@@ -223,11 +226,11 @@ The sidebar layout includes three different variants: the default sidebar varian
 ```
 
 <a name="svelte-authentication-page-layout-variants"></a>
-#### Authentication Page Layout Variants
+#### Варіанти макета сторінок автентифікації
 
-The authentication pages included with the Svelte starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+Сторінки автентифікації, що входять до стартового набору Svelte, - як-от сторінки входу та реєстрації, - також мають три варіанти макета: «simple», «card» і «split».
 
-To change your authentication layout, modify the layout that is imported at the top of your application's `resources/js/layouts/AuthLayout.svelte` file:
+Щоб змінити макет автентифікації, змініть макет, що імпортується на початку файлу `resources/js/layouts/AuthLayout.svelte` вашого застосунку:
 
 ```js
 import AuthLayout from '@/layouts/auth/AuthSimpleLayout.svelte'; // [tl! remove]
@@ -237,9 +240,9 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.svelte'; // [tl! add]
 <a name="vue-customization"></a>
 ### Vue
 
-Our Vue starter kit is built with Inertia 3, Vue 3 Composition API, Tailwind, and [shadcn-vue](https://www.shadcn-vue.com/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+Наш стартовий набір Vue побудований на Inertia 3, Vue 3 Composition API, Tailwind і [shadcn-vue](https://www.shadcn-vue.com/). Як і в усіх наших наборах, увесь код бекенду та фронтенду міститься у вашому застосунку, що дозволяє повністю його налаштувати.
 
-The majority of the frontend code is located in the `resources/js` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+Більшість коду фронтенду розташована в каталозі `resources/js`. Ви вільні змінювати будь-який код, щоб налаштувати вигляд і поведінку свого застосунку:
 
 ```text
 resources/js/
@@ -251,13 +254,13 @@ resources/js/
 └── types/         # TypeScript definitions
 ```
 
-To publish additional shadcn-vue components, first [find the component you want to publish](https://www.shadcn-vue.com). Then, publish the component using `npx`:
+Щоб опублікувати додаткові компоненти shadcn-vue, спершу [знайдіть потрібний компонент](https://www.shadcn-vue.com). Далі опублікуйте його за допомогою `npx`:
 
 ```shell
 npx shadcn-vue@latest add switch
 ```
 
-In this example, the command will publish the Switch component to `resources/js/components/ui/Switch.vue`. Once the component has been published, you can use it in any of your pages:
+У цьому прикладі команда опублікує компонент Switch у `resources/js/components/ui/Switch.vue`. Щойно компонент опубліковано, ви можете використовувати його на будь-якій зі своїх сторінок:
 
 ```vue
 <script setup lang="ts">
@@ -272,9 +275,9 @@ import { Switch } from '@/components/ui/switch'
 ```
 
 <a name="vue-available-layouts"></a>
-#### Available Layouts
+#### Доступні макети
 
-The Vue starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is imported at the top of your application's `resources/js/layouts/AppLayout.vue` file:
+Стартовий набір Vue містить два основні макети на вибір: макет із бічною панеллю («sidebar») і макет із шапкою («header»). За замовчуванням використовується макет із бічною панеллю, але ви можете перемкнутися на макет із шапкою, змінивши макет, що імпортується на початку файлу `resources/js/layouts/AppLayout.vue` вашого застосунку:
 
 ```js
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue'; // [tl! remove]
@@ -282,9 +285,9 @@ import AppLayout from '@/layouts/app/AppHeaderLayout.vue'; // [tl! add]
 ```
 
 <a name="vue-sidebar-variants"></a>
-#### Sidebar Variants
+#### Варіанти бічної панелі
 
-The sidebar layout includes three different variants: the default sidebar variant, the "inset" variant, and the "floating" variant. You may choose the variant you like best by modifying the `resources/js/components/AppSidebar.vue` component:
+Макет із бічною панеллю має три варіанти: типовий, «inset» і «floating». Ви можете обрати той, що подобається найбільше, змінивши компонент `resources/js/components/AppSidebar.vue`:
 
 ```text
 <Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
@@ -292,11 +295,11 @@ The sidebar layout includes three different variants: the default sidebar varian
 ```
 
 <a name="vue-authentication-page-layout-variants"></a>
-#### Authentication Page Layout Variants
+#### Варіанти макета сторінок автентифікації
 
-The authentication pages included with the Vue starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+Сторінки автентифікації, що входять до стартового набору Vue, - як-от сторінки входу та реєстрації, - також мають три варіанти макета: «simple», «card» і «split».
 
-To change your authentication layout, modify the layout that is imported at the top of your application's `resources/js/layouts/AuthLayout.vue` file:
+Щоб змінити макет автентифікації, змініть макет, що імпортується на початку файлу `resources/js/layouts/AuthLayout.vue` вашого застосунку:
 
 ```js
 import AuthLayout from '@/layouts/auth/AuthSimpleLayout.vue'; // [tl! remove]
@@ -306,9 +309,9 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 <a name="livewire-customization"></a>
 ### Livewire
 
-Our Livewire starter kit is built with Livewire 4, Tailwind, and [Flux UI](https://fluxui.dev/). As with all of our starter kits, all of the backend and frontend code exists within your application to allow for full customization.
+Наш стартовий набір Livewire побудований на Livewire 4, Tailwind і [Flux UI](https://fluxui.dev/). Як і в усіх наших наборах, увесь код бекенду та фронтенду міститься у вашому застосунку, що дозволяє повністю його налаштувати.
 
-The majority of the frontend code is located in the `resources/views` directory. You are free to modify any of the code to customize the appearance and behavior of your application:
+Більшість коду фронтенду розташована в каталозі `resources/views`. Ви вільні змінювати будь-який код, щоб налаштувати вигляд і поведінку свого застосунку:
 
 ```text
 resources/views
@@ -322,9 +325,9 @@ resources/views
 ```
 
 <a name="livewire-available-layouts"></a>
-#### Available Layouts
+#### Доступні макети
 
-The Livewire starter kit includes two different primary layouts for you to choose from: a "sidebar" layout and a "header" layout. The sidebar layout is the default, but you can switch to the header layout by modifying the layout that is used by your application's `resources/views/layouts/app.blade.php` file. In addition, you should add the `container` attribute to the main Flux component:
+Стартовий набір Livewire містить два основні макети на вибір: макет із бічною панеллю («sidebar») і макет із шапкою («header»). За замовчуванням використовується макет із бічною панеллю, але ви можете перемкнутися на макет із шапкою, змінивши макет, який використовує файл `resources/views/layouts/app.blade.php` вашого застосунку. Крім того, вам слід додати атрибут `container` до головного компонента Flux:
 
 ```blade
 <x-layouts::app.header>
@@ -335,11 +338,11 @@ The Livewire starter kit includes two different primary layouts for you to choos
 ```
 
 <a name="livewire-authentication-page-layout-variants"></a>
-#### Authentication Page Layout Variants
+#### Варіанти макета сторінок автентифікації
 
-The authentication pages included with the Livewire starter kit, such as the login page and registration page, also offer three different layout variants: "simple", "card", and "split".
+Сторінки автентифікації, що входять до стартового набору Livewire, - як-от сторінки входу та реєстрації, - також мають три варіанти макета: «simple», «card» і «split».
 
-To change your authentication layout, modify the layout that is used by your application's `resources/views/layouts/auth.blade.php` file:
+Щоб змінити макет автентифікації, змініть макет, який використовує файл `resources/views/layouts/auth.blade.php` вашого застосунку:
 
 ```blade
 <x-layouts::auth.split>
@@ -348,41 +351,41 @@ To change your authentication layout, modify the layout that is used by your app
 ```
 
 <a name="authentication"></a>
-## Authentication
+## Автентифікація
 
-All starter kits use [Laravel Fortify](/docs/{{version}}/fortify) to handle authentication. Fortify provides routes, controllers, and logic for login, registration, password reset, email verification, and more.
+Усі стартові набори використовують [Laravel Fortify](/docs/{{version}}/fortify) для обробки автентифікації. Fortify надає маршрути, контролери та логіку для входу, реєстрації, скидання пароля, підтвердження електронної пошти тощо.
 
-Fortify automatically registers the following authentication routes based on the features that are enabled in your application's `config/fortify.php` configuration file:
+Fortify автоматично реєструє наведені нижче маршрути автентифікації залежно від того, які можливості увімкнено у вашому конфігураційному файлі `config/fortify.php`:
 
 <div class="overflow-auto">
 
-| Route                              | Method | Description                         |
-| ---------------------------------- | ------ | ----------------------------------- |
-| `/login`                           | `GET`    | Display login form                  |
-| `/login`                           | `POST`   | Authenticate user                   |
-| `/logout`                          | `POST`   | Log user out                        |
-| `/register`                        | `GET`    | Display registration form           |
-| `/register`                        | `POST`   | Create new user                     |
-| `/forgot-password`                 | `GET`    | Display password reset request form |
-| `/forgot-password`                 | `POST`   | Send password reset link            |
-| `/reset-password/{token}`          | `GET`    | Display password reset form         |
-| `/reset-password`                  | `POST`   | Update password                     |
-| `/email/verify`                    | `GET`    | Display email verification notice   |
-| `/email/verify/{id}/{hash}`        | `GET`    | Verify email address                |
-| `/email/verification-notification` | `POST`   | Resend verification email           |
-| `/user/confirm-password`           | `GET`    | Display password confirmation form  |
-| `/user/confirm-password`           | `POST`   | Confirm password                    |
-| `/two-factor-challenge`            | `GET`    | Display 2FA challenge form          |
-| `/two-factor-challenge`            | `POST`   | Verify 2FA code                     |
+| Маршрут                            | Метод  | Опис                                    |
+| ---------------------------------- | ------ | --------------------------------------- |
+| `/login`                           | `GET`    | Показати форму входу                  |
+| `/login`                           | `POST`   | Автентифікувати користувача           |
+| `/logout`                          | `POST`   | Вийти з облікового запису             |
+| `/register`                        | `GET`    | Показати форму реєстрації             |
+| `/register`                        | `POST`   | Створити нового користувача           |
+| `/forgot-password`                 | `GET`    | Показати форму запиту скидання пароля |
+| `/forgot-password`                 | `POST`   | Надіслати посилання для скидання      |
+| `/reset-password/{token}`          | `GET`    | Показати форму скидання пароля        |
+| `/reset-password`                  | `POST`   | Оновити пароль                        |
+| `/email/verify`                    | `GET`    | Показати повідомлення про підтвердження |
+| `/email/verify/{id}/{hash}`        | `GET`    | Підтвердити адресу електронної пошти  |
+| `/email/verification-notification` | `POST`   | Надіслати лист підтвердження ще раз   |
+| `/user/confirm-password`           | `GET`    | Показати форму підтвердження пароля   |
+| `/user/confirm-password`           | `POST`   | Підтвердити пароль                    |
+| `/two-factor-challenge`            | `GET`    | Показати форму перевірки 2FA          |
+| `/two-factor-challenge`            | `POST`   | Перевірити код 2FA                    |
 
 </div>
 
-The `php artisan route:list` Artisan command can be used to display all of the routes in your application.
+Команда Artisan `php artisan route:list` дозволяє переглянути всі маршрути вашого застосунку.
 
 <a name="enabling-and-disabling-features"></a>
-### Enabling and Disabling Features
+### Увімкнення та вимкнення можливостей
 
-You can control which Fortify features are enabled in your application's `config/fortify.php` configuration file:
+Ви можете керувати тим, які можливості Fortify увімкнено, у конфігураційному файлі `config/fortify.php` вашого застосунку:
 
 ```php
 use Laravel\Fortify\Features;
@@ -398,26 +401,26 @@ use Laravel\Fortify\Features;
 ],
 ```
 
-To disable a feature, comment out or remove that feature entry from the `features` array. For example, remove `Features::registration()` to disable public registration.
+Щоб вимкнути можливість, закоментуйте або вилучіть відповідний запис із масиву `features`. Наприклад, вилучіть `Features::registration()`, щоб вимкнути публічну реєстрацію.
 
-When using the [React](#react), [Svelte](#svelte) or [Vue](#vue) starter kits, you will also need to remove any references to the disabled feature's routes in your frontend code. For example, if you disable email verification, you should remove the imports and references to the `verification` routes in your React, Svelte, or Vue components. This is necessary because these starter kits use Wayfinder for type-safe routing, which generates route definitions at build time. If you reference routes that no longer exist, your application will fail to build.
+Використовуючи стартові набори [React](#react), [Svelte](#svelte) чи [Vue](#vue), вам також потрібно буде прибрати всі згадки маршрутів вимкненої можливості у коді фронтенду. Наприклад, якщо ви вимикаєте підтвердження електронної пошти, слід прибрати імпорти та звернення до маршрутів `verification` у ваших компонентах React, Svelte чи Vue. Це потрібно, бо ці набори використовують Wayfinder для типобезпечної маршрутизації, який генерує визначення маршрутів під час збірки. Якщо ви посилатиметеся на маршрути, яких більше немає, збірка вашого застосунку завершиться помилкою.
 
 <a name="customizing-actions"></a>
-### Customizing User Creation and Password Reset
+### Налаштування створення користувача та скидання пароля
 
-When a user registers or resets their password, Fortify invokes action classes located in your application's `app/Actions/Fortify` directory:
+Коли користувач реєструється або скидає пароль, Fortify викликає класи дій, розташовані в каталозі `app/Actions/Fortify` вашого застосунку:
 
 <div class="overflow-auto">
 
-| File                          | Description                           |
-| ----------------------------- | ------------------------------------- |
-| `CreateNewUser.php`           | Validates and creates new users       |
-| `ResetUserPassword.php`       | Validates and updates user passwords  |
-| `PasswordValidationRules.php` | Defines password validation rules     |
+| Файл                          | Опис                                       |
+| ----------------------------- | ------------------------------------------ |
+| `CreateNewUser.php`           | Валідує та створює нових користувачів      |
+| `ResetUserPassword.php`       | Валідує та оновлює паролі користувачів     |
+| `PasswordValidationRules.php` | Визначає правила валідації паролів         |
 
 </div>
 
-For example, to customize your application's registration logic, you should edit the `CreateNewUser` action:
+Наприклад, щоб налаштувати логіку реєстрації вашого застосунку, відредагуйте дію `CreateNewUser`:
 
 ```php
 public function create(array $input): User
@@ -439,16 +442,16 @@ public function create(array $input): User
 ```
 
 <a name="two-factor-authentication"></a>
-### Two-Factor Authentication
+### Двофакторна автентифікація
 
-Starter kits include built-in two-factor authentication (2FA), allowing users to secure their accounts using any TOTP-compatible authenticator app. 2FA is enabled by default via `Features::twoFactorAuthentication()` in your application's `config/fortify.php` configuration file.
+Стартові набори містять вбудовану двофакторну автентифікацію (2FA), що дозволяє користувачам захистити свої облікові записи будь-яким TOTP-сумісним застосунком-автентифікатором. 2FA увімкнено за замовчуванням через `Features::twoFactorAuthentication()` у конфігураційному файлі `config/fortify.php` вашого застосунку.
 
-The `confirm` option requires users to verify a code before 2FA is fully enabled, while `confirmPassword` requires password confirmation before enabling or disabling 2FA. For more details, see [Fortify's two-factor authentication documentation](/docs/{{version}}/fortify#two-factor-authentication).
+Опція `confirm` вимагає від користувачів підтвердити код, перш ніж 2FA буде повністю увімкнено, а `confirmPassword` вимагає підтвердження пароля перед увімкненням чи вимкненням 2FA. Докладніше дивіться в [документації Fortify щодо двофакторної автентифікації](/docs/{{version}}/fortify#two-factor-authentication).
 
 <a name="rate-limiting"></a>
-### Rate Limiting
+### Обмеження частоти
 
-Rate limiting prevents brute-forcing and repeated login attempts from overwhelming your authentication endpoints. You can customize Fortify's rate limiting behavior in your application's `FortifyServiceProvider`:
+Обмеження частоти запобігає перебору паролів і повторним спробам входу, які могли б перевантажити ваші точки автентифікації. Ви можете налаштувати поведінку обмеження частоти Fortify у `FortifyServiceProvider` вашого застосунку:
 
 ```php
 use Illuminate\Support\Facades\RateLimiter;
@@ -460,37 +463,37 @@ RateLimiter::for('login', function ($request) {
 ```
 
 <a name="teams"></a>
-## Teams
+## Команди
 
-The React, Svelte, Vue, and Livewire starter kits may also be generated with team support. When the teams feature is enabled, each user belongs to one or more teams and has a current team. During registration, new users are automatically given a personal team. The starter kits also include team management screens for creating teams, switching between teams, inviting members, and updating team details.
+Стартові набори React, Svelte, Vue і Livewire можна також згенерувати з підтримкою команд. Коли можливість команд увімкнено, кожен користувач належить до однієї чи кількох команд і має поточну команду. Під час реєстрації нові користувачі автоматично отримують особисту команду. Набори також містять екрани керування командами: створення команд, перемикання між ними, запрошення учасників і оновлення даних команди.
 
-When a route is scoped to the current team, the current team's slug is included in the URL. For example, the dashboard route becomes `/{current_team}/dashboard`, while team management pages use routes such as `settings/teams/{team}`. When using the `{current_team}` and `{team}` route parameters, the starter kits automatically ensure that the authenticated user belongs to the requested team before allowing access to the route.
+Коли маршрут прив'язаний до поточної команди, її slug входить до URL. Наприклад, маршрут панелі керування стає `/{current_team}/dashboard`, а сторінки керування командами використовують маршрути на кшталт `settings/teams/{team}`. Використовуючи параметри маршруту `{current_team}` і `{team}`, стартові набори автоматично перевіряють, що автентифікований користувач належить до запитаної команди, перш ніж надати доступ до маршруту.
 
-To make generating team-aware URLs more convenient, the starter kits register URL defaults for the authenticated user's current team. This allows calls to helpers such as `route('dashboard')` to automatically include the current team's slug. When a user signs in, registers, or switches teams, the starter kits update the current team and refresh these URL defaults so generated links continue to use the correct team context.
+Щоб зручніше генерувати URL з урахуванням команди, стартові набори реєструють значення URL за замовчуванням для поточної команди автентифікованого користувача. Це дозволяє викликам хелперів на кшталт `route('dashboard')` автоматично включати slug поточної команди. Коли користувач входить, реєструється чи перемикає команди, набори оновлюють поточну команду та ці значення за замовчуванням, тож згенеровані посилання й далі використовують правильний контекст команди.
 
-When creating or renaming a team, the starter kits also prevent users from choosing reserved names that could produce unsafe or conflicting route segments. For example, names that would collide with route prefixes such as `settings`, `login`, or `dashboard` may not be used.
+Створюючи чи перейменовуючи команду, стартові набори також не дають користувачам обирати зарезервовані імена, які могли б утворити небезпечні чи конфліктні сегменти маршрутів. Наприклад, не можна використовувати імена, що збігалися б із префіксами маршрутів на кшталт `settings`, `login` чи `dashboard`.
 
 <a name="workos"></a>
-## WorkOS AuthKit Authentication
+## Автентифікація через WorkOS AuthKit
 
-By default, the React, Svelte, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we also offer a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit that offers:
+За замовчуванням стартові набори React, Svelte, Vue і Livewire використовують вбудовану систему автентифікації Laravel, що пропонує вхід, реєстрацію, скидання пароля, підтвердження електронної пошти тощо. Крім того, ми пропонуємо варіант кожного набору на основі [WorkOS AuthKit](https://authkit.com), який дає:
 
 <div class="content-list" markdown="1">
 
-- Social authentication (Google, Microsoft, GitHub, and Apple)
-- Passkey authentication
-- Email based "Magic Auth"
+- Соціальну автентифікацію (Google, Microsoft, GitHub та Apple)
+- Автентифікацію за допомогою passkey
+- «Magic Auth» на основі електронної пошти
 - SSO
 
 </div>
 
-Using WorkOS as your authentication provider [requires a WorkOS account](https://workos.com). WorkOS offers free authentication for applications up to 1 million monthly active users.
+Використання WorkOS як провайдера автентифікації [потребує облікового запису WorkOS](https://workos.com). WorkOS пропонує безкоштовну автентифікацію для застосунків із до 1 мільйона активних користувачів на місяць.
 
-To use WorkOS AuthKit as your application's authentication provider, select the WorkOS option when creating your new starter kit powered application via `laravel new`.
+Щоб використовувати WorkOS AuthKit як провайдера автентифікації вашого застосунку, оберіть варіант WorkOS під час створення нового застосунку зі стартовим набором через `laravel new`.
 
-### Configuring Your WorkOS Starter Kit
+### Налаштування вашого стартового набору WorkOS
 
-After creating a new application using a WorkOS powered starter kit, you should set the `WORKOS_CLIENT_ID`, `WORKOS_API_KEY`, and `WORKOS_REDIRECT_URL` environment variables in your application's `.env` file. These variables should match the values provided to you in the WorkOS dashboard for your application:
+Після створення нового застосунку зі стартовим набором на основі WorkOS задайте змінні середовища `WORKOS_CLIENT_ID`, `WORKOS_API_KEY` і `WORKOS_REDIRECT_URL` у файлі `.env` вашого застосунку. Ці значення мають збігатися з тими, що надані вам у панелі WorkOS для вашого застосунку:
 
 ```ini
 WORKOS_CLIENT_ID=your-client-id
@@ -498,59 +501,59 @@ WORKOS_API_KEY=your-api-key
 WORKOS_REDIRECT_URL="${APP_URL}/authenticate"
 ```
 
-Additionally, you should configure the application homepage URL in your WorkOS dashboard. This URL is where users will be redirected after they log out of your application.
+Крім того, налаштуйте URL головної сторінки застосунку в панелі WorkOS. Саме на цей URL перенаправлятимуться користувачі після виходу з вашого застосунку.
 
 <a name="configuring-authkit-authentication-methods"></a>
-#### Configuring AuthKit Authentication Methods
+#### Налаштування методів автентифікації AuthKit
 
-When using a WorkOS powered starter kit, we recommend that you disable "Email + Password" authentication within your application's WorkOS AuthKit configuration settings, allowing users to only authenticate via social authentication providers, passkeys, "Magic Auth", and SSO. This allows your application to totally avoid handling user passwords.
+Використовуючи стартовий набір на основі WorkOS, ми радимо вимкнути автентифікацію «Email + Password» у налаштуваннях WorkOS AuthKit вашого застосунку, дозволивши користувачам автентифікуватися лише через провайдерів соціальної автентифікації, passkey, «Magic Auth» і SSO. Це дозволяє вашому застосунку взагалі не мати справи з паролями користувачів.
 
 <a name="configuring-authkit-session-timeouts"></a>
-#### Configuring AuthKit Session Timeouts
+#### Налаштування тайм-аутів сесії AuthKit
 
-In addition, we recommend that you configure your WorkOS AuthKit session inactivity timeout to match your Laravel application's configured session timeout threshold, which is typically two hours.
+Крім того, ми радимо налаштувати тайм-аут неактивності сесії WorkOS AuthKit так, щоб він відповідав налаштованому порогу тайм-ауту сесії вашого застосунку Laravel, який зазвичай становить дві години.
 
 <a name="inertia-ssr"></a>
 ### Inertia SSR
 
-The React, Svelte, and Vue starter kits are compatible with Inertia's [server-side rendering](https://inertiajs.com/server-side-rendering) capabilities. To build an Inertia SSR compatible bundle for your application, run the `build:ssr` command:
+Стартові набори React, Svelte і Vue сумісні з можливостями [рендерингу на боці сервера](https://inertiajs.com/server-side-rendering) від Inertia. Щоб зібрати сумісний з Inertia SSR бандл для вашого застосунку, виконайте команду `build:ssr`:
 
 ```shell
 npm run build:ssr
 ```
 
-For convenience, a `composer dev:ssr` command is also available. This command will start the Laravel development server and Inertia SSR server after building an SSR compatible bundle for your application, allowing you to test your application locally using Inertia's server-side rendering engine:
+Для зручності також доступна команда `composer dev:ssr`. Вона запустить сервер розробки Laravel і сервер Inertia SSR після збірки SSR-сумісного бандла, дозволяючи протестувати застосунок локально з рушієм серверного рендерингу Inertia:
 
 ```shell
 composer dev:ssr
 ```
 
 <a name="community-maintained-starter-kits"></a>
-### Community Maintained Starter Kits
+### Стартові набори від спільноти
 
-When creating a new Laravel application using the Laravel installer, you may provide any community maintained starter kit available on Packagist to the `--using` flag:
+Створюючи новий застосунок Laravel за допомогою інсталятора Laravel, ви можете передати прапорцю `--using` будь-який стартовий набір від спільноти, доступний на Packagist:
 
 ```shell
 laravel new my-app --using=example/starter-kit
 ```
 
 <a name="creating-starter-kits"></a>
-#### Creating Starter Kits
+#### Створення стартових наборів
 
-To ensure your starter kit is available to others, you will need to publish it to [Packagist](https://packagist.org). Your starter kit should define its required environment variables in its `.env.example` file, and any necessary post-installation commands should be listed in the `post-create-project-cmd` array of the starter kit's `composer.json` file.
+Щоб ваш стартовий набір був доступний іншим, вам потрібно опублікувати його на [Packagist](https://packagist.org). Ваш набір має визначати потрібні йому змінні середовища у файлі `.env.example`, а всі потрібні команди після встановлення слід перелічити в масиві `post-create-project-cmd` файлу `composer.json` набору.
 
 <a name="faqs"></a>
-### Frequently Asked Questions
+### Часті запитання
 
 <a name="faq-upgrade"></a>
-#### How do I upgrade?
+#### Як мені оновитися?
 
-Every starter kit gives you a solid starting point for your next application. With full ownership of the code, you can tweak, customize, and build your application exactly as you envision. However, there is no need to update the starter kit itself.
+Кожен стартовий набір дає вам надійну відправну точку для наступного застосунку. Маючи повне право власності на код, ви можете доопрацьовувати, налаштовувати й будувати свій застосунок саме так, як задумали. Утім, оновлювати сам стартовий набір не потрібно.
 
 <a name="faq-enable-email-verification"></a>
-#### How do I enable email verification?
+#### Як увімкнути підтвердження електронної пошти?
 
-Email verification can be added by uncommenting the `MustVerifyEmail` import in your `App/Models/User.php` model and ensuring the model implements the `MustVerifyEmail` interface:
+Підтвердження електронної пошти можна додати, розкоментувавши імпорт `MustVerifyEmail` у вашій моделі `App/Models/User.php` і переконавшись, що модель реалізує інтерфейс `MustVerifyEmail`:
 
 ```php
 <?php
@@ -566,7 +569,7 @@ class User extends Authenticatable implements MustVerifyEmail
 }
 ```
 
-After registration, users will receive a verification email. To restrict access to certain routes until the user's email address is verified, add the `verified` middleware to the routes:
+Після реєстрації користувачі отримуватимуть лист підтвердження. Щоб обмежити доступ до певних маршрутів, доки адресу користувача не підтверджено, додайте до цих маршрутів `middleware` `verified`:
 
 ```php
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -577,15 +580,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 ```
 
 > [!NOTE]
-> Email verification is not required when using the [WorkOS](#workos) variant of the starter kits.
+> Підтвердження електронної пошти не потрібне, коли ви використовуєте варіант стартових наборів на основі [WorkOS](#workos).
 
 <a name="faq-modify-email-template"></a>
-#### How do I modify the default email template?
+#### Як змінити типовий шаблон листа?
 
-You may want to customize the default email template to better align with your application's branding. To modify this template, you should publish the email views to your application with the following command:
+Можливо, ви захочете налаштувати типовий шаблон листа, щоб він краще відповідав брендингу вашого застосунку. Щоб змінити цей шаблон, опублікуйте представлення листів у своєму застосунку такою командою:
 
 ```
 php artisan vendor:publish --tag=laravel-mail
 ```
 
-This will generate several files in `resources/views/vendor/mail`. You can modify any of these files as well as the `resources/views/vendor/mail/themes/default.css` file to change the look and appearance of the default email template.
+Це створить кілька файлів у `resources/views/vendor/mail`. Ви можете змінювати будь-який із них, а також файл `resources/views/vendor/mail/themes/default.css`, щоб змінити вигляд типового шаблону листа.
