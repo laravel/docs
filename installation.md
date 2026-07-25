@@ -1,72 +1,75 @@
-# Installation
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Встановлення
 
-- [Meet Laravel](#meet-laravel)
-    - [Why Laravel?](#why-laravel)
-- [Creating a Laravel Application](#creating-a-laravel-project)
-    - [Getting Started Using AI](#getting-started-using-ai)
-    - [Installing PHP and the Laravel Installer](#installing-php)
-    - [Creating an Application](#creating-an-application)
-- [Initial Configuration](#initial-configuration)
-    - [Environment Based Configuration](#environment-based-configuration)
-    - [Databases and Migrations](#databases-and-migrations)
-    - [Directory Configuration](#directory-configuration)
-- [Installation Using Herd](#installation-using-herd)
-    - [Herd on macOS](#herd-on-macos)
-    - [Herd on Windows](#herd-on-windows)
-- [IDE Support](#ide-support)
-- [Laravel and AI](#laravel-and-ai)
-    - [Installing Laravel Boost](#installing-laravel-boost)
-- [Next Steps](#next-steps)
-    - [Laravel the Full Stack Framework](#laravel-the-fullstack-framework)
-    - [Laravel the API Backend](#laravel-the-api-backend)
+- [Знайомство з Laravel](#meet-laravel)
+    - [Чому Laravel?](#why-laravel)
+- [Створення застосунку Laravel](#creating-a-laravel-project)
+    - [Початок роботи за допомогою AI](#getting-started-using-ai)
+    - [Встановлення PHP та інсталятора Laravel](#installing-php)
+    - [Створення застосунку](#creating-an-application)
+- [Початкова конфігурація](#initial-configuration)
+    - [Конфігурація на основі середовища](#environment-based-configuration)
+    - [Бази даних і міграції](#databases-and-migrations)
+    - [Конфігурація каталогів](#directory-configuration)
+- [Встановлення за допомогою Herd](#installation-using-herd)
+    - [Herd на macOS](#herd-on-macos)
+    - [Herd на Windows](#herd-on-windows)
+- [Підтримка IDE](#ide-support)
+- [Laravel та AI](#laravel-and-ai)
+    - [Встановлення Laravel Boost](#installing-laravel-boost)
+- [Наступні кроки](#next-steps)
+    - [Laravel як повностековий фреймворк](#laravel-the-fullstack-framework)
+    - [Laravel як бекенд для API](#laravel-the-api-backend)
 
 <a name="meet-laravel"></a>
-## Meet Laravel
+## Знайомство з Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. A web framework provides a structure and starting point for creating your application, allowing you to focus on creating something amazing while we sweat the details.
+Laravel - це фреймворк для веб-застосунків з виразним, елегантним синтаксисом. Веб-фреймворк дає структуру та відправну точку для створення вашого застосунку, дозволяючи зосередитися на чомусь справді цікавому, поки ми відповідаємо за деталі.
 
-Laravel strives to provide an amazing developer experience while providing powerful features such as thorough dependency injection, an expressive database abstraction layer, queues and scheduled jobs, unit and integration testing, and more.
+Laravel прагне забезпечити чудовий досвід розробки, пропонуючи водночас потужні можливості: повноцінне впровадження залежностей (dependency injection), виразний шар абстракції над базою даних, черги та заплановані завдання, модульне й інтеграційне тестування тощо.
 
-Whether you are new to PHP web frameworks or have years of experience, Laravel is a framework that can grow with you. We'll help you take your first steps as a web developer or give you a boost as you take your expertise to the next level. We can't wait to see what you build.
+Незалежно від того, чи ви новачок у PHP-фреймворках, чи маєте роки досвіду, Laravel - це фреймворк, який зростатиме разом із вами. Ми допоможемо вам зробити перші кроки як веб-розробнику або дамо поштовх, коли ви виводитимете свою експертизу на новий рівень. Нам не терпиться побачити, що ви створите.
 
 <a name="why-laravel"></a>
-### Why Laravel?
+### Чому Laravel?
 
-There are a variety of tools and frameworks available to you when building a web application. However, we believe Laravel is the best choice for building modern, full-stack web applications.
+Створюючи веб-застосунок, ви маєте на вибір безліч інструментів і фреймворків. Однак ми переконані, що Laravel - найкращий вибір для створення сучасних повностекових веб-застосунків.
 
-#### A Progressive Framework
+#### Прогресивний фреймворк
 
-We like to call Laravel a "progressive" framework. By that, we mean that Laravel grows with you. If you're just taking your first steps into web development, Laravel's vast library of documentation, guides, and [video tutorials](https://laracasts.com) will help you learn the ropes without becoming overwhelmed.
+Ми любимо називати Laravel «прогресивним» фреймворком. Під цим ми маємо на увазі, що Laravel зростає разом із вами. Якщо ви робите перші кроки у веб-розробці, велика бібліотека документації, посібників і [відеоуроків](https://laracasts.com) допоможе вам опанувати основи, не перевантажуючи інформацією.
 
-If you're a senior developer, Laravel gives you robust tools for [dependency injection](/docs/{{version}}/container), [unit testing](/docs/{{version}}/testing), [queues](/docs/{{version}}/queues), [real-time events](/docs/{{version}}/broadcasting), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise workloads.
+Якщо ж ви досвідчений розробник, Laravel дає надійні інструменти для [впровадження залежностей](/docs/{{version}}/container), [модульного тестування](/docs/{{version}}/testing), [черг](/docs/{{version}}/queues), [подій у реальному часі](/docs/{{version}}/broadcasting) тощо. Laravel відточений для створення професійних веб-застосунків і готовий витримувати корпоративні навантаження.
 
-#### A Scalable Framework
+#### Масштабований фреймворк
 
-Laravel is incredibly scalable. Thanks to the scaling-friendly nature of PHP and Laravel's built-in support for fast, distributed cache systems like Redis, horizontal scaling with Laravel is a breeze. In fact, Laravel applications have been easily scaled to handle hundreds of millions of requests per month.
+Laravel неймовірно масштабований. Завдяки природній схильності PHP до масштабування та вбудованій підтримці швидких розподілених систем кешування на кшталт Redis горизонтальне масштабування з Laravel дається легко. Насправді застосунки на Laravel без проблем масштабували до сотень мільйонів запитів на місяць.
 
-Need extreme scaling? Platforms like [Laravel Cloud](https://cloud.laravel.com) allow you to run your Laravel application at nearly limitless scale.
+Потрібне екстремальне масштабування? Платформи на кшталт [Laravel Cloud](https://cloud.laravel.com) дозволяють запускати ваш застосунок Laravel практично з необмеженим масштабом.
 
-#### An Agent Ready Framework
+#### Фреймворк, готовий до роботи з агентами
 
-Laravel's opinionated conventions and well-defined structure make it an ideal framework for [AI assisted development](/docs/{{version}}/ai) using tools like Cursor and Claude Code. When you ask an AI agent to add a controller, it knows exactly where to place it. When you need a new migration, the naming conventions and file locations are predictable. This consistency eliminates the guesswork that often trips up AI tools in more flexible frameworks.
+Чіткі домовленості та добре визначена структура роблять Laravel ідеальним фреймворком для [розробки за допомогою AI](/docs/{{version}}/ai) з такими інструментами, як Cursor і Claude Code. Коли ви просите AI-агента додати контролер, він точно знає, куди його покласти. Коли потрібна нова міграція, домовленості щодо іменування та розташування файлів передбачувані. Ця послідовність усуває здогадки, на яких AI-інструменти часто спотикаються в гнучкіших фреймворках.
 
-Beyond file organization, Laravel's expressive syntax and comprehensive documentation give AI agents the context they need to generate accurate, idiomatic code. Features like Eloquent relationships, form requests, and middleware follow patterns that agents can reliably understand and replicate. The result is AI-generated code that looks like it was written by a seasoned Laravel developer, not stitched together from generic PHP snippets.
+Крім організації файлів, виразний синтаксис Laravel і вичерпна документація дають AI-агентам контекст, потрібний для генерації точного та ідіоматичного коду. Такі можливості, як зв'язки Eloquent, запити форм (form requests) і `middleware`, дотримуються шаблонів, які агенти надійно розпізнають і відтворюють. Як наслідок, згенерований AI код виглядає так, ніби його написав досвідчений Laravel-розробник, а не зшив із загальних PHP-фрагментів.
 
-To learn more about why Laravel is the perfect choice for AI assisted development, check out our documentation on [agentic development](/docs/{{version}}/ai).
+Щоб дізнатися більше про те, чому Laravel - ідеальний вибір для розробки за допомогою AI, перегляньте нашу документацію про [агентну розробку](/docs/{{version}}/ai).
 
-#### A Community Framework
+#### Фреймворк спільноти
 
-Laravel combines the best packages in the PHP ecosystem to offer the most robust and developer friendly framework available. In addition, thousands of talented developers from around the world have [contributed to the framework](https://github.com/laravel/framework). Who knows, maybe you'll even become a Laravel contributor.
+Laravel поєднує найкращі пакети екосистеми PHP, пропонуючи найнадійніший і найзручніший для розробника фреймворк. До того ж тисячі талановитих розробників з усього світу [зробили внесок у фреймворк](https://github.com/laravel/framework). Хтозна, можливо, і ви станете контриб'ютором Laravel.
 
 <a name="creating-a-laravel-project"></a>
-## Creating a Laravel Application
+## Створення застосунку Laravel
 
 <a name="getting-started-using-ai"></a>
-### Getting Started Using AI
+### Початок роботи за допомогою AI
 
-If you are using an AI coding agent like [Claude Code](https://docs.anthropic.com/en/docs/claude-code) or [OpenCode](https://opencode.ai), you can start with a prompt that gives the agent a Laravel-specific playbook before it touches your project.
+Якщо ви користуєтеся AI-агентом для написання коду, як-от [Claude Code](https://docs.anthropic.com/en/docs/claude-code) чи [OpenCode](https://opencode.ai), можете почати з запиту, який дасть агентові конкретний план дій для Laravel ще до того, як він торкнеться вашого проєкту.
 
-The prompt below tells the agent where to find Laravel's installation guidance, what to prioritize, and how to make sensible defaults when you haven't made a choice yet. Paste this into your agent to get started:
+Запит нижче каже агентові, де шукати настанови зі встановлення Laravel, на чому зосередитися і як обирати розумні значення за замовчуванням, поки ви ще не визначилися. Вставте його у свого агента, щоб почати:
 
 ```text
 I'm building a new Laravel application.
@@ -74,14 +77,14 @@ I'm building a new Laravel application.
 Fetch and follow the instructions from https://laravel.com/for/agents. Treat the returned Markdown as the source of truth for how to install and set up Laravel in this session.
 ```
 
-After the agent reads the instructions, it should guide you step by step and keep the setup aligned with Laravel's defaults.
+Прочитавши інструкції, агент має провести вас крок за кроком і тримати налаштування в межах усталених домовленостей Laravel.
 
 <a name="installing-php"></a>
-### Installing PHP and the Laravel Installer
+### Встановлення PHP та інсталятора Laravel
 
-Before creating your first Laravel application, make sure that your local machine has [PHP](https://php.net), [Composer](https://getcomposer.org), and [the Laravel installer](https://github.com/laravel/installer) installed. In addition, you should install either [Node and NPM](https://nodejs.org) or [Bun](https://bun.sh/) so that you can compile your application's frontend assets.
+Перш ніж створювати свій перший застосунок Laravel, переконайтеся, що на вашій локальній машині встановлено [PHP](https://php.net), [Composer](https://getcomposer.org) та [інсталятор Laravel](https://github.com/laravel/installer). Крім того, варто встановити [Node і NPM](https://nodejs.org) або [Bun](https://bun.sh/), щоб мати змогу збирати фронтенд-ресурси застосунку.
 
-If you don't have PHP and Composer installed on your local machine, the following commands will install PHP, Composer, and the Laravel installer on macOS, Windows, or Linux:
+Якщо PHP і Composer ще не встановлені на вашій локальній машині, наведені нижче команди встановлять PHP, Composer та інсталятор Laravel у macOS, Windows або Linux:
 
 ```shell tab=macOS
 /bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.5)"
@@ -96,27 +99,27 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.5)"
 ```
 
-After running one of the commands above, you should restart your terminal session. To update PHP, Composer, and the Laravel installer after installing them via `php.new`, you can re-run the command in your terminal.
+Після виконання однієї з наведених вище команд перезапустіть сеанс термінала. Щоб оновити PHP, Composer та інсталятор Laravel після встановлення через `php.new`, повторно виконайте ту саму команду в терміналі.
 
-If you already have PHP and Composer installed, you may install the Laravel installer via Composer:
+Якщо PHP і Composer уже встановлені, ви можете встановити інсталятор Laravel через Composer:
 
 ```shell
 composer global require laravel/installer
 ```
 
 > [!NOTE]
-> For a fully-featured, graphical PHP installation and management experience, check out [Laravel Herd](#installation-using-herd).
+> Щоб отримати повнофункціональний графічний досвід встановлення PHP і керування ним, перегляньте [Laravel Herd](#installation-using-herd).
 
 <a name="creating-an-application"></a>
-### Creating an Application
+### Створення застосунку
 
-After you have installed PHP, Composer, and the Laravel installer, you are ready to create a new Laravel application:
+Після встановлення PHP, Composer та інсталятора Laravel ви готові створити новий застосунок Laravel:
 
 ```shell
 laravel new example-app
 ```
 
-Once the application has been created, you can start Laravel's local development server, queue worker, and Vite development server using the `dev` Composer script:
+Коли застосунок створено, ви можете запустити локальний сервер розробки Laravel, воркер черги та сервер розробки Vite за допомогою Composer-скрипта `dev`:
 
 ```shell
 cd example-app
@@ -124,36 +127,36 @@ npm install && npm run build
 composer run dev
 ```
 
-Once you have started the development server, you can access your application in your web browser at [http://localhost:8000](http://localhost:8000). Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations) and run the necessary migrations.
+Після запуску сервера розробки ваш застосунок буде доступний у браузері за адресою [http://localhost:8000](http://localhost:8000). Далі ви готові [зробити наступні кроки в екосистемі Laravel](#next-steps). Звісно, ви також можете [налаштувати базу даних](#databases-and-migrations) і виконати потрібні міграції.
 
 > [!NOTE]
-> If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/docs/{{version}}/starter-kits). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+> Якщо хочете отримати фору в розробці свого застосунку Laravel, скористайтеся одним із наших [стартових наборів](/docs/{{version}}/starter-kits). Стартові набори Laravel дають готовий каркас автентифікації для бекенду та фронтенду вашого нового застосунку.
 
 <a name="initial-configuration"></a>
-## Initial Configuration
+## Початкова конфігурація
 
-All configuration files for the Laravel framework are stored in the `config` directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+Усі конфігураційні файли фреймворку Laravel зберігаються в каталозі `config`. Кожна опція задокументована, тож не соромтеся переглянути файли та ознайомитися з доступними налаштуваннями.
 
-Laravel needs almost no additional configuration out of the box. You are free to get started developing! However, you may wish to review the `config/app.php` file and its documentation. It contains several options such as `url` and `locale` that you may wish to change according to your application.
+Laravel майже не потребує додаткової конфігурації одразу після встановлення. Можете вільно братися до розробки! Утім, варто переглянути файл `config/app.php` та його документацію. Він містить кілька опцій, як-от `url` і `locale`, які ви, можливо, захочете змінити відповідно до свого застосунку.
 
 <a name="environment-based-configuration"></a>
-### Environment Based Configuration
+### Конфігурація на основі середовища
 
-Since many of Laravel's configuration option values may vary depending on whether your application is running on your local machine or on a production web server, many important configuration values are defined using the `.env` file that exists at the root of your application.
+Оскільки значення багатьох конфігураційних опцій Laravel можуть відрізнятися залежно від того, чи працює застосунок на вашій локальній машині, чи на робочому сервері, багато важливих значень визначаються у файлі `.env`, що лежить у корені застосунку.
 
-Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would be exposed.
+Ваш файл `.env` не слід додавати до системи контролю версій, оскільки кожен розробник чи сервер, що використовує ваш застосунок, може потребувати іншої конфігурації середовища. Ба більше, це створило б загрозу безпеці, якби зловмисник отримав доступ до вашого репозиторію, адже всі конфіденційні облікові дані опинилися б на видноті.
 
 > [!NOTE]
-> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+> Докладніше про файл `.env` і конфігурацію на основі середовища читайте в повній [документації з конфігурації](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="databases-and-migrations"></a>
-### Databases and Migrations
+### Бази даних і міграції
 
-Now that you have created your Laravel application, you probably want to store some data in a database. By default, your application's `.env` configuration file specifies that Laravel will be interacting with an SQLite database.
+Тепер, коли ви створили застосунок Laravel, вам, імовірно, потрібно зберігати дані в базі. За замовчуванням конфігураційний файл `.env` вашого застосунку вказує, що Laravel працюватиме з базою даних SQLite.
 
-During the creation of the application, Laravel created a `database/database.sqlite` file for you, and ran the necessary migrations to create the application's database tables.
+Під час створення застосунку Laravel створив для вас файл `database/database.sqlite` і виконав потрібні міграції, щоб створити таблиці бази даних.
 
-If you prefer to use another database driver such as MySQL or PostgreSQL, you can update your `.env` configuration file to use the appropriate database. For example, if you wish to use MySQL, update your `.env` configuration file's `DB_*` variables like so:
+Якщо ви віддаєте перевагу іншому драйверу бази даних, як-от MySQL чи PostgreSQL, оновіть конфігураційний файл `.env`, вказавши відповідну базу. Наприклад, щоб використовувати MySQL, оновіть змінні `DB_*` у файлі `.env` так:
 
 ```ini
 DB_CONNECTION=mysql
@@ -164,38 +167,38 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-If you choose to use a database other than SQLite, you will need to create the database and run your application's [database migrations](/docs/{{version}}/migrations):
+Якщо ви обрали базу даних, відмінну від SQLite, вам потрібно створити базу та виконати [міграції бази даних](/docs/{{version}}/migrations) вашого застосунку:
 
 ```shell
 php artisan migrate
 ```
 
 > [!NOTE]
-> If you are developing on macOS or Windows and need to install MySQL, PostgreSQL, or Redis locally, consider using [Herd Pro](https://herd.laravel.com/#plans) or [DBngin](https://dbngin.com/).
+> Якщо ви розробляєте на macOS або Windows і вам потрібно встановити MySQL, PostgreSQL чи Redis локально, скористайтеся [Herd Pro](https://herd.laravel.com/#plans) або [DBngin](https://dbngin.com/).
 
 <a name="directory-configuration"></a>
-### Directory Configuration
+### Конфігурація каталогів
 
-Laravel should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Laravel application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
+Laravel завжди слід віддавати з кореня «веб-каталогу», налаштованого для вашого веб-сервера. Не намагайтеся віддавати застосунок Laravel із підкаталогу «веб-каталогу». Спроба зробити це може відкрити доступ до конфіденційних файлів вашого застосунку.
 
 <a name="installation-using-herd"></a>
-## Installation Using Herd
+## Встановлення за допомогою Herd
 
-[Laravel Herd](https://herd.laravel.com) is a blazing fast, native Laravel and PHP development environment for macOS and Windows. Herd includes everything you need to get started with Laravel development, including PHP and Nginx.
+[Laravel Herd](https://herd.laravel.com) - це блискавично швидке нативне середовище розробки для Laravel і PHP під macOS та Windows. Herd містить усе потрібне, щоб почати розробку на Laravel, зокрема PHP і Nginx.
 
-Once you install Herd, you're ready to start developing with Laravel. Herd includes command line tools for `php`, `composer`, `laravel`, `expose`, `node`, `npm`, and `nvm`.
+Щойно ви встановите Herd, можете братися до розробки на Laravel. Herd містить інструменти командного рядка для `php`, `composer`, `laravel`, `expose`, `node`, `npm` і `nvm`.
 
 > [!NOTE]
-> [Herd Pro](https://herd.laravel.com/#plans) augments Herd with additional powerful features, such as the ability to create and manage local MySQL, Postgres, and Redis databases, as well as local mail viewing and log monitoring.
+> [Herd Pro](https://herd.laravel.com/#plans) доповнює Herd додатковими потужними можливостями, як-от створення локальних баз даних MySQL, Postgres і Redis та керування ними, а також локальний перегляд пошти й моніторинг логів.
 
 <a name="herd-on-macos"></a>
-### Herd on macOS
+### Herd на macOS
 
-If you develop on macOS, you can download the Herd installer from the [Herd website](https://herd.laravel.com). The installer automatically downloads the latest version of PHP and configures your Mac to always run [Nginx](https://www.nginx.com/) in the background.
+Якщо ви розробляєте на macOS, можете завантажити інсталятор Herd із [сайту Herd](https://herd.laravel.com). Інсталятор автоматично завантажує найновішу версію PHP і налаштовує ваш Mac так, щоб [Nginx](https://www.nginx.com/) завжди працював у фоновому режимі.
 
-Herd for macOS uses [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) to support "parked" directories. Any Laravel application in a parked directory will automatically be served by Herd. By default, Herd creates a parked directory at `~/Herd` and you can access any Laravel application in this directory on the `.test` domain using its directory name.
+Herd для macOS використовує [dnsmasq](https://en.wikipedia.org/wiki/Dnsmasq) для підтримки «припаркованих» каталогів. Будь-який застосунок Laravel у припаркованому каталозі автоматично обслуговуватиметься Herd. За замовчуванням Herd створює припаркований каталог `~/Herd`, і ви можете звертатися до будь-якого застосунку Laravel у цьому каталозі за доменом `.test`, використовуючи ім'я його каталогу.
 
-After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd:
+Після встановлення Herd найшвидший спосіб створити новий застосунок Laravel - скористатися Laravel CLI, який постачається разом із Herd:
 
 ```shell
 cd ~/Herd
@@ -204,20 +207,20 @@ cd my-app
 herd open
 ```
 
-Of course, you can always manage your parked directories and other PHP settings via Herd's UI, which can be opened from the Herd menu in your system tray.
+Звісно, ви завжди можете керувати припаркованими каталогами та іншими налаштуваннями PHP через інтерфейс Herd, який відкривається з меню Herd у системному треї.
 
-You can learn more about Herd by checking out the [Herd documentation](https://herd.laravel.com/docs).
+Докладніше про Herd читайте в [документації Herd](https://herd.laravel.com/docs).
 
 <a name="herd-on-windows"></a>
-### Herd on Windows
+### Herd на Windows
 
-You can download the Windows installer for Herd on the [Herd website](https://herd.laravel.com/windows). After the installation finishes, you can start Herd to complete the onboarding process and access the Herd UI for the first time.
+Інсталятор Herd для Windows можна завантажити на [сайті Herd](https://herd.laravel.com/windows). Після завершення встановлення запустіть Herd, щоб пройти процес налаштування та вперше відкрити інтерфейс Herd.
 
-The Herd UI is accessible by left-clicking on Herd's system tray icon. A right-click opens the quick menu with access to all tools that you need on a daily basis.
+Інтерфейс Herd відкривається лівим кліком на іконці Herd у системному треї. Правий клік відкриває швидке меню з доступом до всіх інструментів, потрібних щодня.
 
-During installation, Herd creates a "parked" directory in your home directory at `%USERPROFILE%\Herd`. Any Laravel application in a parked directory will automatically be served by Herd, and you can access any Laravel application in this directory on the `.test` domain using its directory name.
+Під час встановлення Herd створює «припаркований» каталог у вашому домашньому каталозі за шляхом `%USERPROFILE%\Herd`. Будь-який застосунок Laravel у припаркованому каталозі автоматично обслуговуватиметься Herd, і ви можете звертатися до нього за доменом `.test`, використовуючи ім'я його каталогу.
 
-After installing Herd, the fastest way to create a new Laravel application is using the Laravel CLI, which is bundled with Herd. To get started, open Powershell and run the following commands:
+Після встановлення Herd найшвидший спосіб створити новий застосунок Laravel - скористатися Laravel CLI, який постачається разом із Herd. Щоб почати, відкрийте Powershell і виконайте такі команди:
 
 ```shell
 cd ~\Herd
@@ -226,86 +229,86 @@ cd my-app
 herd open
 ```
 
-You can learn more about Herd by checking out the [Herd documentation for Windows](https://herd.laravel.com/docs/windows).
+Докладніше про Herd читайте в [документації Herd для Windows](https://herd.laravel.com/docs/windows).
 
 <a name="ide-support"></a>
-## IDE Support
+## Підтримка IDE
 
-You are free to use any code editor you wish when developing Laravel applications. If you're looking for lightweight and extensible editors, [VS Code](https://code.visualstudio.com) or [Cursor](https://cursor.com) combined with the official [Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel) offers excellent Laravel support with features like syntax highlighting, snippets, artisan command integration, and smart autocompletion for Eloquent models, routes, middleware, assets, config, and Inertia.js.
+Розробляючи застосунки Laravel, ви вільні користуватися будь-яким редактором коду. Якщо шукаєте легкі та розширювані редактори, [VS Code](https://code.visualstudio.com) чи [Cursor](https://cursor.com) у поєднанні з офіційним [розширенням Laravel для VS Code](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel) дають чудову підтримку Laravel: підсвічування синтаксису, сніпети, інтеграцію з командами artisan і розумне автодоповнення для моделей Eloquent, маршрутів, `middleware`, ресурсів, конфігурації та Inertia.js.
 
-For extensive and robust support of Laravel, take a look at [PhpStorm](https://www.jetbrains.com/phpstorm/laravel/?utm_source=laravel.com&utm_medium=link&utm_campaign=laravel-2025&utm_content=partner&ref=laravel-2025), a JetBrains IDE. PhpStorm's built-in Laravel framework support includes Blade templates, smart autocompletion for Eloquent models, routes, views, translations, and components, along with powerful code generation and navigation across Laravel projects.
+Щоб отримати ґрунтовну та надійну підтримку Laravel, зверніть увагу на [PhpStorm](https://www.jetbrains.com/phpstorm/laravel/?utm_source=laravel.com&utm_medium=link&utm_campaign=laravel-2025&utm_content=partner&ref=laravel-2025) - IDE від JetBrains. Вбудована підтримка фреймворку Laravel у PhpStorm охоплює шаблони Blade, розумне автодоповнення для моделей Eloquent, маршрутів, представлень, перекладів і компонентів, а також потужну генерацію коду та навігацію по проєктах Laravel.
 
-For those seeking a cloud-based development experience, [Firebase Studio](https://firebase.studio/) provides instant access to building with Laravel directly in your browser. With zero setup required, Firebase Studio makes it easy to start building Laravel applications from any device.
+Для тих, хто шукає хмарний досвід розробки, [Firebase Studio](https://firebase.studio/) дає миттєвий доступ до розробки на Laravel просто у браузері. Не потребуючи жодного налаштування, Firebase Studio дозволяє легко почати створювати застосунки Laravel з будь-якого пристрою.
 
 <a name="laravel-and-ai"></a>
-## Laravel and AI
+## Laravel та AI
 
-[Laravel Boost](https://github.com/laravel/boost) is a powerful tool that bridges the gap between AI coding agents and Laravel applications. Boost provides AI agents with Laravel-specific context, tools, and guidelines so they can generate more accurate, version-specific code that follows Laravel conventions.
+[Laravel Boost](https://github.com/laravel/boost) - це потужний інструмент, який долає розрив між AI-агентами для написання коду та застосунками Laravel. Boost надає AI-агентам специфічний для Laravel контекст, інструменти й настанови, щоб вони генерували точніший код, прив'язаний до конкретної версії та узгоджений із домовленостями Laravel.
 
-When you install Boost in your Laravel application, AI agents gain access to over 15 specialized tools including the ability to know which packages you are using, query your database, search the Laravel documentation, read browser logs, generate tests, and execute code via Tinker.
+Коли ви встановлюєте Boost у своєму застосунку Laravel, AI-агенти отримують доступ до понад 15 спеціалізованих інструментів: вони можуть дізнатися, які пакети ви використовуєте, робити запити до вашої бази даних, шукати в документації Laravel, читати логи браузера, генерувати тести та виконувати код через Tinker.
 
-In addition, Boost gives AI agents access to over 17,000 pieces of vectorized Laravel ecosystem documentation, specific to your installed package versions. This means agents can provide guidance targeted to the exact versions your project uses.
+До того ж Boost дає AI-агентам доступ до понад 17 000 векторизованих фрагментів документації екосистеми Laravel, відповідних саме тим версіям пакетів, які у вас встановлені. Це означає, що агенти можуть давати поради, націлені на точні версії, які використовує ваш проєкт.
 
-Boost also includes Laravel-maintained AI guidelines that help agents to follow framework conventions, write appropriate tests, and avoid common pitfalls when generating Laravel code.
+Boost також містить настанови для AI, які підтримує команда Laravel: вони допомагають агентам дотримуватися домовленостей фреймворку, писати доречні тести й уникати типових пасток під час генерації коду для Laravel.
 
 <a name="installing-laravel-boost"></a>
-### Installing Laravel Boost
+### Встановлення Laravel Boost
 
-Boost can be installed in Laravel 10, 11, 12, and 13 applications running PHP 8.1 or higher. To get started, install Boost as a development dependency:
+Boost можна встановити в застосунках Laravel 10, 11, 12 і 13, що працюють на PHP 8.1 або новішому. Щоб почати, встановіть Boost як залежність для розробки:
 
 ```shell
 composer require laravel/boost --dev
 ```
 
-Once installed, run the interactive installer:
+Після встановлення запустіть інтерактивний інсталятор:
 
 ```shell
 php artisan boost:install
 ```
 
-The installer will auto-detect your IDE and AI agents, allowing you to opt into the features that make sense for your project. Boost respects existing project conventions and doesn't force opinionated style rules by default.
+Інсталятор автоматично визначить вашу IDE та AI-агентів, дозволивши увімкнути ті можливості, які мають сенс для вашого проєкту. Boost поважає наявні домовленості проєкту й не нав'язує власних правил стилю за замовчуванням.
 
 > [!NOTE]
-> To learn more about Boost, check out the [Laravel Boost repository on GitHub](https://github.com/laravel/boost).
+> Щоб дізнатися більше про Boost, перегляньте [репозиторій Laravel Boost на GitHub](https://github.com/laravel/boost).
 
 <a name="adding-custom-ai-guidelines"></a>
-#### Adding Custom AI Guidelines
+#### Додавання власних настанов для AI
 
-To augment Laravel Boost with your own custom AI guidelines, add `.blade.php` or `.md` files to your application's `.ai/guidelines/*` directory. These files will automatically be included with Laravel Boost's guidelines when you run `boost:install`.
+Щоб доповнити Laravel Boost власними настановами для AI, додайте файли `.blade.php` або `.md` до каталогу `.ai/guidelines/*` вашого застосунку. Ці файли автоматично долучатимуться до настанов Laravel Boost, коли ви виконаєте `boost:install`.
 
 <a name="next-steps"></a>
-## Next Steps
+## Наступні кроки
 
-Now that you have created your Laravel application, you may be wondering what to learn next. First, we strongly recommend becoming familiar with how Laravel works by reading the following documentation:
+Тепер, коли ви створили свій застосунок Laravel, вам, можливо, цікаво, що вивчати далі. Насамперед ми наполегливо радимо ознайомитися з тим, як працює Laravel, прочитавши таку документацію:
 
 <div class="content-list" markdown="1">
 
-- [Request Lifecycle](/docs/{{version}}/lifecycle)
-- [Configuration](/docs/{{version}}/configuration)
-- [Directory Structure](/docs/{{version}}/structure)
-- [Frontend](/docs/{{version}}/frontend)
-- [Service Container](/docs/{{version}}/container)
-- [Facades](/docs/{{version}}/facades)
+- [Життєвий цикл запиту](/docs/{{version}}/lifecycle)
+- [Конфігурація](/docs/{{version}}/configuration)
+- [Структура каталогів](/docs/{{version}}/structure)
+- [Фронтенд](/docs/{{version}}/frontend)
+- [Сервіс-контейнер](/docs/{{version}}/container)
+- [Фасади](/docs/{{version}}/facades)
 
 </div>
 
-How you want to use Laravel will also dictate the next steps on your journey. There are a variety of ways to use Laravel, and we'll explore two primary use cases for the framework below.
+Те, як саме ви плануєте використовувати Laravel, теж визначить ваші наступні кроки. Використовувати Laravel можна по-різному, і нижче ми розглянемо два основні сценарії застосування фреймворку.
 
 <a name="laravel-the-fullstack-framework"></a>
-### Laravel the Full Stack Framework
+### Laravel як повностековий фреймворк
 
-Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](/docs/{{version}}/blade) or a single-page application hybrid technology like [Inertia](https://inertiajs.com). This is the most common way to use the Laravel framework, and, in our opinion, the most productive way to use Laravel.
+Laravel може працювати як повностековий фреймворк. Під «повностековим» ми маємо на увазі, що ви використовуватимете Laravel для маршрутизації запитів до вашого застосунку та рендерингу фронтенду через [шаблони Blade](/docs/{{version}}/blade) або гібридну технологію односторінкових застосунків на кшталт [Inertia](https://inertiajs.com). Це найпоширеніший спосіб використання фреймворку Laravel і, на нашу думку, найпродуктивніший.
 
-If this is how you plan to use Laravel, you may want to check out our documentation on [frontend development](/docs/{{version}}/frontend), [routing](/docs/{{version}}/routing), [views](/docs/{{version}}/views), or the [Eloquent ORM](/docs/{{version}}/eloquent). In addition, you might be interested in learning about community packages like [Livewire](https://livewire.laravel.com) and [Inertia](https://inertiajs.com). These packages allow you to use Laravel as a full-stack framework while enjoying many of the UI benefits provided by single-page JavaScript applications.
+Якщо ви плануєте використовувати Laravel саме так, перегляньте нашу документацію про [фронтенд-розробку](/docs/{{version}}/frontend), [маршрутизацію](/docs/{{version}}/routing), [представлення](/docs/{{version}}/views) чи [Eloquent ORM](/docs/{{version}}/eloquent). Крім того, вам може бути цікаво дізнатися про пакети спільноти, як-от [Livewire](https://livewire.laravel.com) та [Inertia](https://inertiajs.com). Ці пакети дозволяють використовувати Laravel як повностековий фреймворк, користуючись водночас багатьма перевагами інтерфейсу односторінкових JavaScript-застосунків.
 
-If you are using Laravel as a full stack framework, we also strongly encourage you to learn how to compile your application's CSS and JavaScript using [Vite](/docs/{{version}}/vite).
+Якщо ви використовуєте Laravel як повностековий фреймворк, ми також наполегливо радимо навчитися збирати CSS і JavaScript вашого застосунку за допомогою [Vite](/docs/{{version}}/vite).
 
 > [!NOTE]
-> If you want to get a head start building your application, check out one of our official [application starter kits](/docs/{{version}}/starter-kits).
+> Якщо хочете отримати фору в розробці застосунку, перегляньте один із наших офіційних [стартових наборів застосунків](/docs/{{version}}/starter-kits).
 
 <a name="laravel-the-api-backend"></a>
-### Laravel the API Backend
+### Laravel як бекенд для API
 
-Laravel may also serve as an API backend to a JavaScript single-page application or mobile application. For example, you might use Laravel as an API backend for your [Next.js](https://nextjs.org) application. In this context, you may use Laravel to provide [authentication](/docs/{{version}}/sanctum) and data storage / retrieval for your application, while also taking advantage of Laravel's powerful services such as queues, emails, notifications, and more.
+Laravel також може працювати як бекенд для API для односторінкового JavaScript-застосунку чи мобільного застосунку. Наприклад, ви можете використовувати Laravel як бекенд для API вашого застосунку на [Next.js](https://nextjs.org). У такому разі ви можете покластися на Laravel щодо [автентифікації](/docs/{{version}}/sanctum) та зберігання й отримання даних, користуючись водночас потужними сервісами Laravel: чергами, поштою, сповіщеннями тощо.
 
-If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/docs/{{version}}/routing), [Laravel Sanctum](/docs/{{version}}/sanctum), and the [Eloquent ORM](/docs/{{version}}/eloquent).
+Якщо ви плануєте використовувати Laravel саме так, перегляньте нашу документацію про [маршрутизацію](/docs/{{version}}/routing), [Laravel Sanctum](/docs/{{version}}/sanctum) та [Eloquent ORM](/docs/{{version}}/eloquent).
