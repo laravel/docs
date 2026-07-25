@@ -1,42 +1,45 @@
-# Controllers
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Контролери
 
-- [Introduction](#introduction)
-- [Writing Controllers](#writing-controllers)
-    - [Basic Controllers](#basic-controllers)
-    - [Single Action Controllers](#single-action-controllers)
-- [Controller Middleware](#controller-middleware)
-    - [Middleware Attributes](#middleware-attributes)
-    - [Authorization Attributes](#authorization-attributes)
-- [Resource Controllers](#resource-controllers)
-    - [Partial Resource Routes](#restful-partial-resource-routes)
-    - [Nested Resources](#restful-nested-resources)
-    - [Naming Resource Routes](#restful-naming-resource-routes)
-    - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
-    - [Scoping Resource Routes](#restful-scoping-resource-routes)
-    - [Localizing Resource URIs](#restful-localizing-resource-uris)
-    - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
-    - [Singleton Resource Controllers](#singleton-resource-controllers)
-    - [Middleware and Resource Controllers](#middleware-and-resource-controllers)
-- [Dependency Injection and Controllers](#dependency-injection-and-controllers)
+- [Вступ](#introduction)
+- [Написання контролерів](#writing-controllers)
+    - [Базові контролери](#basic-controllers)
+    - [Контролери однієї дії](#single-action-controllers)
+- [Middleware контролерів](#controller-middleware)
+    - [Атрибути middleware](#middleware-attributes)
+    - [Атрибути авторизації](#authorization-attributes)
+- [Ресурсні контролери](#resource-controllers)
+    - [Часткові ресурсні маршрути](#restful-partial-resource-routes)
+    - [Вкладені ресурси](#restful-nested-resources)
+    - [Іменування ресурсних маршрутів](#restful-naming-resource-routes)
+    - [Іменування параметрів ресурсних маршрутів](#restful-naming-resource-route-parameters)
+    - [Обмеження області ресурсних маршрутів](#restful-scoping-resource-routes)
+    - [Локалізація URI ресурсів](#restful-localizing-resource-uris)
+    - [Доповнення ресурсних контролерів](#restful-supplementing-resource-controllers)
+    - [Синглтон-ресурсні контролери](#singleton-resource-controllers)
+    - [Middleware та ресурсні контролери](#middleware-and-resource-controllers)
+- [Впровадження залежностей і контролери](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using "controller" classes. Controllers can group related request handling logic into a single class. For example, a `UserController` class might handle all incoming requests related to users, including showing, creating, updating, and deleting users. By default, controllers are stored in the `app/Http/Controllers` directory.
+Замість визначати всю логіку обробки запитів замиканнями у файлах маршрутів, ви можете організувати цю поведінку класами-«контролерами». Контролери групують пов'язану логіку обробки запитів в одному класі. Наприклад, клас `UserController` може обробляти всі вхідні запити, пов'язані з користувачами: показ, створення, оновлення та видалення. За замовчуванням контролери зберігаються в каталозі `app/Http/Controllers`.
 
 <a name="writing-controllers"></a>
-## Writing Controllers
+## Написання контролерів
 
 <a name="basic-controllers"></a>
-### Basic Controllers
+### Базові контролери
 
-To quickly generate a new controller, you may run the `make:controller` Artisan command. By default, all of the controllers for your application are stored in the `app/Http/Controllers` directory:
+Щоб швидко згенерувати новий контролер, виконайте команду Artisan `make:controller`. За замовчуванням усі контролери вашого застосунку зберігаються в каталозі `app/Http/Controllers`:
 
 ```shell
 php artisan make:controller UserController
 ```
 
-Let's take a look at an example of a basic controller. A controller may have any number of public methods which will respond to incoming HTTP requests:
+Погляньмо на приклад базового контролера. Контролер може мати будь-яку кількість публічних методів, які відповідатимуть на вхідні HTTP-запити:
 
 ```php
 <?php
@@ -60,7 +63,7 @@ class UserController extends Controller
 }
 ```
 
-Once you have written a controller class and method, you may define a route to the controller method like so:
+Написавши клас контролера та метод, ви можете визначити маршрут до методу контролера так:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -68,15 +71,15 @@ use App\Http\Controllers\UserController;
 Route::get('/user/{id}', [UserController::class, 'show']);
 ```
 
-When an incoming request matches the specified route URI, the `show` method on the `App\Http\Controllers\UserController` class will be invoked and the route parameters will be passed to the method.
+Коли вхідний запит збігається з указаним URI маршруту, буде викликано метод `show` класу `App\Http\Controllers\UserController`, а параметри маршруту буде передано методу.
 
 > [!NOTE]
-> Controllers are not **required** to extend a base class. However, it is sometimes convenient to extend a base controller class that contains methods that should be shared across all of your controllers.
+> Контролери **не зобов'язані** успадковувати базовий клас. Утім, іноді зручно успадкувати базовий контролер із методами, спільними для всіх ваших контролерів.
 
 <a name="single-action-controllers"></a>
-### Single Action Controllers
+### Контролери однієї дії
 
-If a controller action is particularly complex, you might find it convenient to dedicate an entire controller class to that single action. To accomplish this, you may define a single `__invoke` method within the controller:
+Якщо дія контролера особливо складна, вам може бути зручно виділити для неї цілий клас контролера. Для цього визначте в контролері єдиний метод `__invoke`:
 
 ```php
 <?php
@@ -95,7 +98,7 @@ class ProvisionServer extends Controller
 }
 ```
 
-When registering routes for single action controllers, you do not need to specify a controller method. Instead, you may simply pass the name of the controller to the router:
+Реєструючи маршрути для контролерів однієї дії, вам не потрібно вказувати метод контролера. Натомість просто передайте маршрутизатору ім'я контролера:
 
 ```php
 use App\Http\Controllers\ProvisionServer;
@@ -103,25 +106,25 @@ use App\Http\Controllers\ProvisionServer;
 Route::post('/server', ProvisionServer::class);
 ```
 
-You may generate an invokable controller by using the `--invokable` option of the `make:controller` Artisan command:
+Ви можете згенерувати викликаний контролер за допомогою опції `--invokable` команди Artisan `make:controller`:
 
 ```shell
 php artisan make:controller ProvisionServer --invokable
 ```
 
 > [!NOTE]
-> Controller stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
+> Заготовки контролерів можна налаштувати через [публікацію заготовок](/docs/{{version}}/artisan#stub-customization).
 
 <a name="controller-middleware"></a>
-## Controller Middleware
+## Middleware контролерів
 
-[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
+[`Middleware`](/docs/{{version}}/middleware) можна призначати маршрутам контролера у файлах маршрутів:
 
 ```php
 Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
 ```
 
-Or, you may find it convenient to specify middleware within your controller class. To do so, your controller should implement the `HasMiddleware` interface, which dictates that the controller should have a static `middleware` method. From this method, you may return an array of middleware that should be applied to the controller's actions:
+Або ж вам може бути зручно вказати `middleware` у самому класі контролера. Для цього ваш контролер має реалізувати інтерфейс `HasMiddleware`, який вимагає наявності статичного методу `middleware`. З цього методу ви можете повернути масив `middleware`, які слід застосувати до дій контролера:
 
 ```php
 <?php
@@ -149,7 +152,7 @@ class UserController implements HasMiddleware
 }
 ```
 
-You may also define controller middleware as closures, which provides a convenient way to define an inline middleware without writing an entire middleware class:
+Ви також можете визначати `middleware` контролера як замикання - це зручний спосіб задати вбудований `middleware`, не пишучи цілого класу:
 
 ```php
 use Closure;
@@ -169,9 +172,9 @@ public static function middleware(): array
 ```
 
 <a name="middleware-attributes"></a>
-### Middleware Attributes
+### Атрибути middleware
 
-You may also assign middleware to controllers using PHP attributes:
+Ви також можете призначати `middleware` контролерам за допомогою атрибутів PHP:
 
 ```php
 <?php
@@ -189,7 +192,7 @@ class UserController
 }
 ```
 
-You may place middleware attributes on individual controller methods as well. Middleware assigned to methods will be merged with middleware assigned at the class level:
+Атрибути `middleware` можна розміщувати й на окремих методах контролера. `Middleware`, призначені методам, буде об'єднано з тими, що призначені на рівні класу:
 
 ```php
 <?php
@@ -222,7 +225,7 @@ class UserController
 }
 ```
 
-To exclude middleware from a controller or individual controller methods, use the `WithoutMiddleware` attribute. You may use the `only` and `except` arguments to limit a class-level attribute to particular controller methods:
+Щоб виключити `middleware` з контролера чи окремих його методів, скористайтеся атрибутом `WithoutMiddleware`. Аргументи `only` та `except` дозволяють обмежити атрибут рівня класу конкретними методами:
 
 ```php
 <?php
@@ -248,12 +251,12 @@ class UserController
 }
 ```
 
-Class-level `WithoutMiddleware` attributes are inherited by child controllers. The attribute can only remove route middleware and does not apply to [global middleware](/docs/{{version}}/middleware#global-middleware).
+Атрибути `WithoutMiddleware` рівня класу успадковуються дочірніми контролерами. Атрибут може прибирати лише `middleware` маршрутів і не діє на [глобальні `middleware`](/docs/{{version}}/middleware#global-middleware).
 
 <a name="authorization-attributes"></a>
-### Authorization Attributes
+### Атрибути авторизації
 
-If you are authorizing controller actions via policies, you may use the `Authorize` attribute as a convenient shortcut for the `can` middleware:
+Якщо ви авторизуєте дії контролера через політики, скористайтеся атрибутом `Authorize` як зручним скороченням для `middleware` `can`:
 
 ```php
 <?php
@@ -280,20 +283,20 @@ class CommentController
 }
 ```
 
-The first argument is the ability you wish to authorize. The second argument is the model class, route parameter, or parameters that should be passed to the policy.
+Перший аргумент - здатність (ability), яку ви хочете авторизувати. Другий - клас моделі, параметр маршруту чи параметри, які слід передати політиці.
 
 <a name="resource-controllers"></a>
-## Resource Controllers
+## Ресурсні контролери
 
-If you think of each Eloquent model in your application as a "resource", it is typical to perform the same sets of actions against each resource in your application. For example, imagine your application contains a `Photo` model and a `Movie` model. It is likely that users can create, read, update, or delete these resources.
+Якщо уявляти кожну модель Eloquent у вашому застосунку як «ресурс», то типово над кожним ресурсом виконуються одні й ті самі набори дій. Наприклад, уявіть, що ваш застосунок містить моделі `Photo` і `Movie`. Найімовірніше, користувачі можуть створювати, читати, оновлювати чи видаляти ці ресурси.
 
-Because of this common use case, Laravel resource routing assigns the typical create, read, update, and delete ("CRUD") routes to a controller with a single line of code. To get started, we can use the `make:controller` Artisan command's `--resource` option to quickly create a controller to handle these actions:
+Через цей поширений сценарій ресурсна маршрутизація Laravel призначає контролеру типові маршрути створення, читання, оновлення та видалення («CRUD») одним рядком коду. Щоб почати, скористаймося опцією `--resource` команди Artisan `make:controller`, аби швидко створити контролер для цих дій:
 
 ```shell
 php artisan make:controller PhotoController --resource
 ```
 
-This command will generate a controller at `app/Http/Controllers/PhotoController.php`. The controller will contain a method for each of the available resource operations. Next, you may register a resource route that points to the controller:
+Ця команда згенерує контролер за шляхом `app/Http/Controllers/PhotoController.php`. Контролер міститиме метод для кожної доступної операції над ресурсом. Далі ви можете зареєструвати ресурсний маршрут, що вказує на контролер:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -301,9 +304,9 @@ use App\Http\Controllers\PhotoController;
 Route::resource('photos', PhotoController::class);
 ```
 
-This single route declaration creates multiple routes to handle a variety of actions on the resource. The generated controller will already have methods stubbed for each of these actions. Remember, you can always get a quick overview of your application's routes by running the `route:list` Artisan command.
+Це єдине оголошення маршруту створює кілька маршрутів для різних дій над ресурсом. Згенерований контролер уже матиме заготовки методів для кожної з цих дій. Пам'ятайте: ви завжди можете швидко переглянути маршрути свого застосунку командою Artisan `route:list`.
 
-You may even register many resource controllers at once by passing an array to the `resources` method:
+Ви навіть можете зареєструвати багато ресурсних контролерів одразу, передавши масив методу `resources`:
 
 ```php
 Route::resources([
@@ -312,7 +315,7 @@ Route::resources([
 ]);
 ```
 
-The `softDeletableResources` method registers many resources controllers that all use the `withTrashed` method:
+Метод `softDeletableResources` реєструє багато ресурсних контролерів, які всі використовують метод `withTrashed`:
 
 ```php
 Route::softDeletableResources([
@@ -322,11 +325,11 @@ Route::softDeletableResources([
 ```
 
 <a name="actions-handled-by-resource-controllers"></a>
-#### Actions Handled by Resource Controllers
+#### Дії, які обробляють ресурсні контролери
 
 <div class="overflow-auto">
 
-| Verb      | URI                    | Action  | Route Name     |
+| Метод     | URI                    | Дія     | Ім'я маршруту  |
 | --------- | ---------------------- | ------- | -------------- |
 | GET       | `/photos`              | index   | photos.index   |
 | GET       | `/photos/create`       | create  | photos.create  |
@@ -339,9 +342,9 @@ Route::softDeletableResources([
 </div>
 
 <a name="customizing-missing-model-behavior"></a>
-#### Customizing Missing Model Behavior
+#### Налаштування поведінки для відсутньої моделі
 
-Typically, a 404 HTTP response will be generated if an implicitly bound resource model is not found. However, you may customize this behavior by calling the `missing` method when defining your resource route. The `missing` method accepts a closure that will be invoked if an implicitly bound model cannot be found for any of the resource's routes:
+Зазвичай, якщо неявно прив'язану модель ресурсу не знайдено, генерується HTTP-відповідь 404. Утім, ви можете налаштувати цю поведінку, викликавши метод `missing` під час визначення ресурсного маршруту. Метод `missing` приймає замикання, яке буде викликано, якщо неявно прив'язану модель не вдалося знайти для будь-якого з маршрутів ресурсу:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -355,9 +358,9 @@ Route::resource('photos', PhotoController::class)
 ```
 
 <a name="soft-deleted-models"></a>
-#### Soft Deleted Models
+#### М'яко видалені моделі
 
-Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
+Зазвичай неявна прив'язка моделей не отримує [м'яко видалені](/docs/{{version}}/eloquent#soft-deleting) моделі, а натомість повертає HTTP-відповідь 404. Однак ви можете вказати фреймворку дозволити м'яко видалені моделі, викликавши метод `withTrashed` під час визначення ресурсного маршруту:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -365,34 +368,34 @@ use App\Http\Controllers\PhotoController;
 Route::resource('photos', PhotoController::class)->withTrashed();
 ```
 
-Calling `withTrashed` with no arguments will allow soft deleted models for the `show`, `edit`, and `update` resource routes. You may specify a subset of these routes by passing an array to the `withTrashed` method:
+Виклик `withTrashed` без аргументів дозволить м'яко видалені моделі для ресурсних маршрутів `show`, `edit` та `update`. Ви можете вказати підмножину цих маршрутів, передавши масив методу `withTrashed`:
 
 ```php
 Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 ```
 
 <a name="specifying-the-resource-model"></a>
-#### Specifying the Resource Model
+#### Вказання моделі ресурсу
 
-If you are using [route model binding](/docs/{{version}}/routing#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
+Якщо ви використовуєте [прив'язку моделей до маршрутів](/docs/{{version}}/routing#route-model-binding) і хочете, щоб методи ресурсного контролера вказували тип екземпляра моделі, скористайтеся опцією `--model` під час генерації контролера:
 
 ```shell
 php artisan make:controller PhotoController --model=Photo --resource
 ```
 
 <a name="generating-form-requests"></a>
-#### Generating Form Requests
+#### Генерація запитів форм
 
-You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/docs/{{version}}/validation#form-request-validation) for the controller's storage and update methods:
+Ви можете передати опцію `--requests` під час генерації ресурсного контролера, щоб Artisan згенерував [класи запитів форм](/docs/{{version}}/validation#form-request-validation) для методів збереження та оновлення:
 
 ```shell
 php artisan make:controller PhotoController --model=Photo --resource --requests
 ```
 
 <a name="restful-partial-resource-routes"></a>
-### Partial Resource Routes
+### Часткові ресурсні маршрути
 
-When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
+Оголошуючи ресурсний маршрут, ви можете вказати підмножину дій, які має обробляти контролер, замість повного набору типових дій:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -407,9 +410,9 @@ Route::resource('photos', PhotoController::class)->except([
 ```
 
 <a name="api-resource-routes"></a>
-#### API Resource Routes
+#### Ресурсні маршрути API
 
-When declaring resource routes that will be consumed by APIs, you will commonly want to exclude routes that present HTML templates such as `create` and `edit`. For convenience, you may use the `apiResource` method to automatically exclude these two routes:
+Оголошуючи ресурсні маршрути, які споживатимуть API, ви зазвичай захочете виключити маршрути, що показують HTML-шаблони, - як-от `create` та `edit`. Для зручності скористайтеся методом `apiResource`, який автоматично виключає ці два маршрути:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -417,7 +420,7 @@ use App\Http\Controllers\PhotoController;
 Route::apiResource('photos', PhotoController::class);
 ```
 
-You may register many API resource controllers at once by passing an array to the `apiResources` method:
+Ви можете зареєструвати багато ресурсних контролерів API одразу, передавши масив методу `apiResources`:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -429,16 +432,16 @@ Route::apiResources([
 ]);
 ```
 
-To quickly generate an API resource controller that does not include the `create` or `edit` methods, use the `--api` switch when executing the `make:controller` command:
+Щоб швидко згенерувати ресурсний контролер API без методів `create` та `edit`, скористайтеся перемикачем `--api` під час виконання команди `make:controller`:
 
 ```shell
 php artisan make:controller PhotoController --api
 ```
 
 <a name="restful-nested-resources"></a>
-### Nested Resources
+### Вкладені ресурси
 
-Sometimes you may need to define routes to a nested resource. For example, a photo resource may have multiple comments that may be attached to the photo. To nest the resource controllers, you may use "dot" notation in your route declaration:
+Іноді вам може знадобитися визначити маршрути до вкладеного ресурсу. Наприклад, ресурс фотографії може мати кілька коментарів, прикріплених до неї. Щоб вкласти ресурсні контролери, скористайтеся «крапковою» нотацією в оголошенні маршруту:
 
 ```php
 use App\Http\Controllers\PhotoCommentController;
@@ -446,21 +449,21 @@ use App\Http\Controllers\PhotoCommentController;
 Route::resource('photos.comments', PhotoCommentController::class);
 ```
 
-This route will register a nested resource that may be accessed with URIs like the following:
+Цей маршрут зареєструє вкладений ресурс, доступний за URI на кшталт такого:
 
 ```text
 /photos/{photo}/comments/{comment}
 ```
 
 <a name="scoping-nested-resources"></a>
-#### Scoping Nested Resources
+#### Обмеження області вкладених ресурсів
 
-Laravel's [implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by. For more information on how to accomplish this, please see the documentation on [scoping resource routes](#restful-scoping-resource-routes).
+Можливість [неявної прив'язки моделей](/docs/{{version}}/routing#implicit-model-binding-scoping) Laravel може автоматично обмежувати область вкладених прив'язок так, щоб розв'язана дочірня модель гарантовано належала батьківській. Скориставшись методом `scoped` під час визначення вкладеного ресурсу, ви можете увімкнути автоматичне обмеження області, а також вказати Laravel, за яким полем слід отримувати дочірній ресурс. Докладніше про це дивіться в документації з [обмеження області ресурсних маршрутів](#restful-scoping-resource-routes).
 
 <a name="shallow-nesting"></a>
-#### Shallow Nesting
+#### Поверхневе вкладення
 
-Often, it is not entirely necessary to have both the parent and the child IDs within a URI since the child ID is already a unique identifier. When using unique identifiers such as auto-incrementing primary keys to identify your models in URI segments, you may choose to use "shallow nesting":
+Часто мати в URI одночасно ідентифікатори батька й дитини зовсім не обов'язково, адже ідентифікатор дитини вже унікальний. Використовуючи унікальні ідентифікатори на кшталт автоінкрементних первинних ключів для позначення моделей у сегментах URI, ви можете обрати «поверхневе вкладення»:
 
 ```php
 use App\Http\Controllers\CommentController;
@@ -468,11 +471,11 @@ use App\Http\Controllers\CommentController;
 Route::resource('photos.comments', CommentController::class)->shallow();
 ```
 
-This route definition will define the following routes:
+Це визначення маршруту створить такі маршрути:
 
 <div class="overflow-auto">
 
-| Verb      | URI                               | Action  | Route Name             |
+| Метод     | URI                               | Дія     | Ім'я маршруту          |
 | --------- | --------------------------------- | ------- | ---------------------- |
 | GET       | `/photos/{photo}/comments`        | index   | photos.comments.index  |
 | GET       | `/photos/{photo}/comments/create` | create  | photos.comments.create |
@@ -485,9 +488,9 @@ This route definition will define the following routes:
 </div>
 
 <a name="restful-naming-resource-routes"></a>
-### Naming Resource Routes
+### Іменування ресурсних маршрутів
 
-By default, all resource controller actions have a route name; however, you can override these names by passing a `names` array with your desired route names:
+За замовчуванням усі дії ресурсного контролера мають ім'я маршруту; утім, ви можете перевизначити ці імена, передавши масив `names` із бажаними іменами:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -498,9 +501,9 @@ Route::resource('photos', PhotoController::class)->names([
 ```
 
 <a name="restful-naming-resource-route-parameters"></a>
-### Naming Resource Route Parameters
+### Іменування параметрів ресурсних маршрутів
 
-By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis using the `parameters` method. The array passed into the `parameters` method should be an associative array of resource names and parameter names:
+За замовчуванням `Route::resource` створює параметри ваших ресурсних маршрутів на основі форми однини від імені ресурсу. Ви можете легко перевизначити це для кожного ресурсу окремо методом `parameters`. Масив, переданий методу `parameters`, має бути асоціативним масивом імен ресурсів та імен параметрів:
 
 ```php
 use App\Http\Controllers\AdminUserController;
@@ -510,16 +513,16 @@ Route::resource('users', AdminUserController::class)->parameters([
 ]);
 ```
 
-The example above generates the following URI for the resource's `show` route:
+Наведений вище приклад генерує такий URI для маршруту `show` цього ресурсу:
 
 ```text
 /users/{admin_user}
 ```
 
 <a name="restful-scoping-resource-routes"></a>
-### Scoping Resource Routes
+### Обмеження області ресурсних маршрутів
 
-Laravel's [scoped implicit model binding](/docs/{{version}}/routing#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
+Можливість [неявної прив'язки моделей з обмеженням області](/docs/{{version}}/routing#implicit-model-binding-scoping) Laravel може автоматично обмежувати область вкладених прив'язок так, щоб розв'язана дочірня модель гарантовано належала батьківській. Скориставшись методом `scoped` під час визначення вкладеного ресурсу, ви можете увімкнути автоматичне обмеження області, а також вказати Laravel, за яким полем слід отримувати дочірній ресурс:
 
 ```php
 use App\Http\Controllers\PhotoCommentController;
@@ -529,18 +532,18 @@ Route::resource('photos.comments', PhotoCommentController::class)->scoped([
 ]);
 ```
 
-This route will register a scoped nested resource that may be accessed with URIs like the following:
+Цей маршрут зареєструє вкладений ресурс з обмеженою областю, доступний за URI на кшталт такого:
 
 ```text
 /photos/{photo}/comments/{comment:slug}
 ```
 
-When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `Photo` model has a relationship named `comments` (the plural of the route parameter name) which can be used to retrieve the `Comment` model.
+Коли ви використовуєте неявну прив'язку з власним ключем як параметр вкладеного маршруту, Laravel автоматично обмежить запит так, щоб отримати вкладену модель через її батька, використовуючи домовленості для вгадування імені зв'язку на батьківській моделі. У цьому випадку припускатиметься, що модель `Photo` має зв'язок `comments` (множина від імені параметра маршруту), через який можна отримати модель `Comment`.
 
 <a name="restful-localizing-resource-uris"></a>
-### Localizing Resource URIs
+### Локалізація URI ресурсів
 
-By default, `Route::resource` will create resource URIs using English verbs and plural rules. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done at the beginning of the `boot` method within your application's `App\Providers\AppServiceProvider`:
+За замовчуванням `Route::resource` створює URI ресурсів, використовуючи англійські дієслова та правила множини. Якщо вам потрібно локалізувати дієслова дій `create` та `edit`, скористайтеся методом `Route::resourceVerbs`. Це можна зробити на початку методу `boot` у `App\Providers\AppServiceProvider` вашого застосунку:
 
 ```php
 /**
@@ -555,7 +558,7 @@ public function boot(): void
 }
 ```
 
-Laravel's pluralizer supports [several different languages which you may configure based on your needs](/docs/{{version}}/localization#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
+Плюралізатор Laravel підтримує [кілька різних мов, які ви можете налаштувати за потреби](/docs/{{version}}/localization#pluralization-language). Щойно дієслова та мову множини налаштовано, реєстрація ресурсного маршруту на кшталт `Route::resource('publicacion', PublicacionController::class)` створить такі URI:
 
 ```text
 /publicacion/crear
@@ -564,9 +567,9 @@ Laravel's pluralizer supports [several different languages which you may configu
 ```
 
 <a name="restful-supplementing-resource-controllers"></a>
-### Supplementing Resource Controllers
+### Доповнення ресурсних контролерів
 
-If you need to add additional routes to a resource controller beyond the default set of resource routes, you should define those routes before your call to the `Route::resource` method; otherwise, the routes defined by the `resource` method may unintentionally take precedence over your supplemental routes:
+Якщо вам потрібно додати до ресурсного контролера маршрути поза типовим набором ресурсних маршрутів, визначайте їх **до** виклику методу `Route::resource`; інакше маршрути, визначені методом `resource`, можуть ненавмисно взяти гору над вашими додатковими маршрутами:
 
 ```php
 use App\Http\Controller\PhotoController;
@@ -576,12 +579,12 @@ Route::resource('photos', PhotoController::class);
 ```
 
 > [!NOTE]
-> Remember to keep your controllers focused. If you find yourself routinely needing methods outside of the typical set of resource actions, consider splitting your controller into two, smaller controllers.
+> Пам'ятайте: тримайте свої контролери зосередженими. Якщо ви регулярно потребуєте методів поза типовим набором ресурсних дій, подумайте про поділ контролера на два менші.
 
 <a name="singleton-resource-controllers"></a>
-### Singleton Resource Controllers
+### Синглтон-ресурсні контролери
 
-Sometimes, your application will have resources that may only have a single instance. For example, a user's "profile" can be edited or updated, but a user may not have more than one "profile". Likewise, an image may have a single "thumbnail". These resources are called "singleton resources", meaning one and only one instance of the resource may exist. In these scenarios, you may register a "singleton" resource controller:
+Іноді ваш застосунок матиме ресурси, які можуть існувати лише в одному екземплярі. Наприклад, «профіль» користувача можна редагувати чи оновлювати, але користувач не може мати більш ніж один «профіль». Так само зображення може мати одну «мініатюру». Такі ресурси називають «синглтон-ресурсами»: існує один і тільки один екземпляр ресурсу. У цих сценаріях ви можете зареєструвати «синглтон»-ресурсний контролер:
 
 ```php
 use App\Http\Controllers\ProfileController;
@@ -590,11 +593,11 @@ use Illuminate\Support\Facades\Route;
 Route::singleton('profile', ProfileController::class);
 ```
 
-The singleton resource definition above will register the following routes. As you can see, "creation" routes are not registered for singleton resources, and the registered routes do not accept an identifier since only one instance of the resource may exist:
+Наведене вище визначення синглтон-ресурсу зареєструє такі маршрути. Як бачите, маршрути «створення» для синглтон-ресурсів не реєструються, а зареєстровані маршрути не приймають ідентифікатора, адже може існувати лише один екземпляр ресурсу:
 
 <div class="overflow-auto">
 
-| Verb      | URI             | Action | Route Name     |
+| Метод     | URI             | Дія    | Ім'я маршруту  |
 | --------- | --------------- | ------ | -------------- |
 | GET       | `/profile`      | show   | profile.show   |
 | GET       | `/profile/edit` | edit   | profile.edit   |
@@ -602,17 +605,17 @@ The singleton resource definition above will register the following routes. As y
 
 </div>
 
-Singleton resources may also be nested within a standard resource:
+Синглтон-ресурси можна також вкладати у стандартний ресурс:
 
 ```php
 Route::singleton('photos.thumbnail', ThumbnailController::class);
 ```
 
-In this example, the `photos` resource would receive all of the [standard resource routes](#actions-handled-by-resource-controllers); however, the `thumbnail` resource would be a singleton resource with the following routes:
+У цьому прикладі ресурс `photos` отримає всі [стандартні ресурсні маршрути](#actions-handled-by-resource-controllers); однак ресурс `thumbnail` буде синглтон-ресурсом із такими маршрутами:
 
 <div class="overflow-auto">
 
-| Verb      | URI                              | Action | Route Name              |
+| Метод     | URI                              | Дія    | Ім'я маршруту           |
 | --------- | -------------------------------- | ------ | ----------------------- |
 | GET       | `/photos/{photo}/thumbnail`      | show   | photos.thumbnail.show   |
 | GET       | `/photos/{photo}/thumbnail/edit` | edit   | photos.thumbnail.edit   |
@@ -621,19 +624,19 @@ In this example, the `photos` resource would receive all of the [standard resour
 </div>
 
 <a name="creatable-singleton-resources"></a>
-#### Creatable Singleton Resources
+#### Синглтон-ресурси зі створенням
 
-Occasionally, you may want to define creation and storage routes for a singleton resource. To accomplish this, you may invoke the `creatable` method when registering the singleton resource route:
+Подекуди ви можете захотіти визначити маршрути створення та збереження для синглтон-ресурсу. Для цього викличте метод `creatable` під час реєстрації маршруту синглтон-ресурсу:
 
 ```php
 Route::singleton('photos.thumbnail', ThumbnailController::class)->creatable();
 ```
 
-In this example, the following routes will be registered. As you can see, a `DELETE` route will also be registered for creatable singleton resources:
+У цьому прикладі буде зареєстровано такі маршрути. Як бачите, для синглтон-ресурсів зі створенням реєструється також маршрут `DELETE`:
 
 <div class="overflow-auto">
 
-| Verb      | URI                                | Action  | Route Name               |
+| Метод     | URI                                | Дія     | Ім'я маршруту            |
 | --------- | ---------------------------------- | ------- | ------------------------ |
 | GET       | `/photos/{photo}/thumbnail/create` | create  | photos.thumbnail.create  |
 | POST      | `/photos/{photo}/thumbnail`        | store   | photos.thumbnail.store   |
@@ -644,34 +647,34 @@ In this example, the following routes will be registered. As you can see, a `DEL
 
 </div>
 
-If you would like Laravel to register the `DELETE` route for a singleton resource but not register the creation or storage routes, you may utilize the `destroyable` method:
+Якщо ви хочете, щоб Laravel зареєстрував для синглтон-ресурсу маршрут `DELETE`, але не реєстрував маршрутів створення чи збереження, скористайтеся методом `destroyable`:
 
 ```php
 Route::singleton(...)->destroyable();
 ```
 
 <a name="api-singleton-resources"></a>
-#### API Singleton Resources
+#### Синглтон-ресурси API
 
-The `apiSingleton` method may be used to register a singleton resource that will be manipulated via an API, thus rendering the `create` and `edit` routes unnecessary:
+Метод `apiSingleton` дозволяє зареєструвати синглтон-ресурс, яким керуватимуть через API, роблячи маршрути `create` та `edit` непотрібними:
 
 ```php
 Route::apiSingleton('profile', ProfileController::class);
 ```
 
-Of course, API singleton resources may also be `creatable`, which will register `store` and `destroy` routes for the resource:
+Звісно, синглтон-ресурси API також можуть бути `creatable`, що зареєструє для ресурсу маршрути `store` та `destroy`:
 
 ```php
 Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 ```
 <a name="middleware-and-resource-controllers"></a>
-### Middleware and Resource Controllers
+### Middleware та ресурсні контролери
 
-Laravel allows you to assign middleware to all, or only specific, methods of resource routes using the `middleware`, `middlewareFor`, and `withoutMiddlewareFor` methods. These methods provide fine-grained control over which middleware is applied to each resource action.
+Laravel дозволяє призначати `middleware` всім або лише певним методам ресурсних маршрутів за допомогою методів `middleware`, `middlewareFor` і `withoutMiddlewareFor`. Ці методи дають тонкий контроль над тим, який `middleware` застосовується до кожної ресурсної дії.
 
-#### Applying Middleware to all Methods
+#### Застосування middleware до всіх методів
 
-You may use the `middleware` method to assign middleware to all routes generated by a resource or singleton resource route:
+Скористайтеся методом `middleware`, щоб призначити `middleware` всім маршрутам, згенерованим ресурсним чи синглтон-ресурсним маршрутом:
 
 ```php
 Route::resource('users', UserController::class)
@@ -681,9 +684,9 @@ Route::singleton('profile', ProfileController::class)
     ->middleware('auth');
 ```
 
-#### Applying Middleware to Specific Methods
+#### Застосування middleware до конкретних методів
 
-You may use the `middlewareFor` method to assign middleware to one or more specific methods of a given resource controller:
+Скористайтеся методом `middlewareFor`, щоб призначити `middleware` одному чи кільком конкретним методам ресурсного контролера:
 
 ```php
 Route::resource('users', UserController::class)
@@ -700,7 +703,7 @@ Route::apiResource('users', UserController::class)
     ->middlewareFor(['show', 'update'], ['auth', 'verified']);
 ```
 
-The `middlewareFor` method may also be used in conjunction with singleton and API singleton resource controllers:
+Метод `middlewareFor` можна також використовувати разом із синглтон-ресурсними контролерами та їхніми API-варіантами:
 
 ```php
 Route::singleton('profile', ProfileController::class)
@@ -710,9 +713,9 @@ Route::apiSingleton('profile', ProfileController::class)
     ->middlewareFor(['show', 'update'], 'auth');
 ```
 
-#### Excluding Middleware from Specific Methods
+#### Виключення middleware з конкретних методів
 
-You may use the `withoutMiddlewareFor` method to exclude middleware from specific methods of a resource controller:
+Скористайтеся методом `withoutMiddlewareFor`, щоб виключити `middleware` з конкретних методів ресурсного контролера:
 
 ```php
 Route::middleware(['auth', 'verified', 'subscribed'])->group(function () {
@@ -724,12 +727,12 @@ Route::middleware(['auth', 'verified', 'subscribed'])->group(function () {
 ```
 
 <a name="dependency-injection-and-controllers"></a>
-## Dependency Injection and Controllers
+## Впровадження залежностей і контролери
 
 <a name="constructor-injection"></a>
-#### Constructor Injection
+#### Впровадження через конструктор
 
-The Laravel [service container](/docs/{{version}}/container) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
+[Сервіс-контейнер](/docs/{{version}}/container) Laravel використовується для розв'язання всіх контролерів Laravel. Завдяки цьому ви можете вказати типи будь-яких потрібних контролеру залежностей у його конструкторі. Оголошені залежності буде автоматично розв'язано й впроваджено в екземпляр контролера:
 
 ```php
 <?php
@@ -750,9 +753,9 @@ class UserController extends Controller
 ```
 
 <a name="method-injection"></a>
-#### Method Injection
+#### Впровадження через метод
 
-In addition to constructor injection, you may also type-hint dependencies on your controller's methods. A common use-case for method injection is injecting the `Illuminate\Http\Request` instance into your controller methods:
+Крім впровадження через конструктор, ви можете вказувати типи залежностей у методах контролера. Поширений сценарій - впровадження екземпляра `Illuminate\Http\Request` у методи контролера:
 
 ```php
 <?php
@@ -778,7 +781,7 @@ class UserController extends Controller
 }
 ```
 
-If your controller method is also expecting input from a route parameter, list your route arguments after your other dependencies. For example, if your route is defined like so:
+Якщо ваш метод контролера також очікує вхідні дані з параметра маршруту, перелічуйте аргументи маршруту після інших залежностей. Наприклад, якщо ваш маршрут визначено так:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -786,7 +789,7 @@ use App\Http\Controllers\UserController;
 Route::put('/user/{id}', [UserController::class, 'update']);
 ```
 
-You may still type-hint the `Illuminate\Http\Request` and access your `id` parameter by defining your controller method as follows:
+Ви все одно можете вказати тип `Illuminate\Http\Request` і звертатися до параметра `id`, визначивши метод контролера так:
 
 ```php
 <?php
