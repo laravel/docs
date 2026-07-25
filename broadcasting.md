@@ -1,140 +1,143 @@
-# Broadcasting
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Бродкастинг
 
-- [Introduction](#introduction)
-- [Quickstart](#quickstart)
-- [Server Side Installation](#server-side-installation)
+- [Вступ](#introduction)
+- [Швидкий старт](#quickstart)
+- [Встановлення на боці сервера](#server-side-installation)
     - [Reverb](#reverb)
     - [Pusher Channels](#pusher-channels)
     - [Ably](#ably)
-- [Client Side Installation](#client-side-installation)
+- [Встановлення на боці клієнта](#client-side-installation)
     - [Reverb](#client-reverb)
     - [Pusher Channels](#client-pusher-channels)
     - [Ably](#client-ably)
-- [Concept Overview](#concept-overview)
-    - [Using an Example Application](#using-example-application)
-- [Defining Broadcast Events](#defining-broadcast-events)
-    - [Broadcast Name](#broadcast-name)
-    - [Broadcast Data](#broadcast-data)
-    - [Broadcast Queue](#broadcast-queue)
-    - [Broadcast Conditions](#broadcast-conditions)
-    - [Broadcasting and Database Transactions](#broadcasting-and-database-transactions)
-- [Authorizing Channels](#authorizing-channels)
-    - [Defining Authorization Callbacks](#defining-authorization-callbacks)
-    - [Defining Channel Classes](#defining-channel-classes)
-- [Broadcasting Events](#broadcasting-events)
-    - [Only to Others](#only-to-others)
-    - [Customizing the Connection](#customizing-the-connection)
-    - [Anonymous Events](#anonymous-events)
-    - [Rescuing Broadcasts](#rescuing-broadcasts)
-- [Receiving Broadcasts](#receiving-broadcasts)
-    - [Listening for Events](#listening-for-events)
-    - [Leaving a Channel](#leaving-a-channel)
-    - [Namespaces](#namespaces)
-    - [Using React, Vue, or Svelte](#using-react-or-vue)
-- [Presence Channels](#presence-channels)
-    - [Authorizing Presence Channels](#authorizing-presence-channels)
-    - [Joining Presence Channels](#joining-presence-channels)
-    - [Broadcasting to Presence Channels](#broadcasting-to-presence-channels)
-- [Model Broadcasting](#model-broadcasting)
-    - [Model Broadcasting Conventions](#model-broadcasting-conventions)
-    - [Listening for Model Broadcasts](#listening-for-model-broadcasts)
-- [Client Events](#client-events)
-- [Notifications](#notifications)
+- [Огляд концепції](#concept-overview)
+    - [На прикладі застосунку](#using-example-application)
+- [Опис подій для бродкастингу](#defining-broadcast-events)
+    - [Ім'я бродкасту](#broadcast-name)
+    - [Дані бродкасту](#broadcast-data)
+    - [Черга бродкасту](#broadcast-queue)
+    - [Умови бродкасту](#broadcast-conditions)
+    - [Бродкастинг і транзакції бази даних](#broadcasting-and-database-transactions)
+- [Авторизація каналів](#authorizing-channels)
+    - [Опис колбеків авторизації](#defining-authorization-callbacks)
+    - [Класи каналів](#defining-channel-classes)
+- [Бродкастинг подій](#broadcasting-events)
+    - [Лише іншим](#only-to-others)
+    - [Налаштування підключення](#customizing-the-connection)
+    - [Анонімні події](#anonymous-events)
+    - [Убезпечення бродкастів](#rescuing-broadcasts)
+- [Отримання бродкастів](#receiving-broadcasts)
+    - [Прослуховування подій](#listening-for-events)
+    - [Вихід з каналу](#leaving-a-channel)
+    - [Простори імен](#namespaces)
+    - [Використання React, Vue чи Svelte](#using-react-or-vue)
+- [Канали присутності](#presence-channels)
+    - [Авторизація каналів присутності](#authorizing-presence-channels)
+    - [Приєднання до каналів присутності](#joining-presence-channels)
+    - [Бродкастинг у канали присутності](#broadcasting-to-presence-channels)
+- [Бродкастинг моделей](#model-broadcasting)
+    - [Домовленості бродкастингу моделей](#model-broadcasting-conventions)
+    - [Прослуховування бродкастів моделей](#listening-for-model-broadcasts)
+- [Клієнтські події](#client-events)
+- [Сповіщення](#notifications)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-In many modern web applications, WebSockets are used to implement realtime, live-updating user interfaces. When some data is updated on the server, a message is typically sent over a WebSocket connection to be handled by the client. WebSockets provide a more efficient alternative to continually polling your application's server for data changes that should be reflected in your UI.
+У багатьох сучасних вебзастосунках WebSocket використовують, щоб будувати інтерфейси, які оновлюються в реальному часі. Коли на сервері оновлюються якісь дані, через WebSocket-з'єднання зазвичай надсилається повідомлення, яке обробляє клієнт. WebSocket - ефективніша альтернатива постійному опитуванню сервера на предмет змін, які мають відобразитися в інтерфейсі.
 
-For example, imagine your application is able to export a user's data to a CSV file and email it to them. However, creating this CSV file takes several minutes so you choose to create and mail the CSV within a [queued job](/docs/{{version}}/queues). When the CSV has been created and mailed to the user, we can use event broadcasting to dispatch an `App\Events\UserDataExported` event that is received by our application's JavaScript. Once the event is received, we can display a message to the user that their CSV has been emailed to them without them ever needing to refresh the page.
+Наприклад, уявіть, що ваш застосунок уміє експортувати дані користувача у CSV-файл і надсилати його поштою. Проте створення цього CSV-файлу займає кілька хвилин, тож ви створюєте й надсилаєте CSV у [завданні в черзі](/docs/{{version}}/queues). Коли CSV створено й надіслано користувачеві, ми можемо скористатися бродкастингом подій, щоб диспетчеризувати подію `App\Events\UserDataExported`, яку отримає JavaScript нашого застосунку. Отримавши подію, ми можемо показати користувачеві повідомлення, що його CSV надіслано поштою, - і йому не доведеться оновлювати сторінку.
 
-To assist you in building these types of features, Laravel makes it easy to "broadcast" your server-side Laravel [events](/docs/{{version}}/events) over a WebSocket connection. Broadcasting your Laravel events allows you to share the same event names and data between your server-side Laravel application and your client-side JavaScript application.
+Щоб допомогти вам будувати такі можливості, Laravel спрощує «бродкастинг» серверних [подій](/docs/{{version}}/events) Laravel через WebSocket-з'єднання. Бродкастинг подій Laravel дозволяє мати спільні імена подій і дані між серверним застосунком Laravel і клієнтським застосунком на JavaScript.
 
-The core concepts behind broadcasting are simple: clients connect to named channels on the frontend, while your Laravel application broadcasts events to these channels on the backend. These events can contain any additional data you wish to make available to the frontend.
+Основні ідеї бродкастингу прості: на фронтенді клієнти підключаються до іменованих каналів, а ваш застосунок Laravel на бекенді надсилає події в ці канали. Ці події можуть містити будь-які додаткові дані, які ви хочете зробити доступними на фронтенді.
 
 <a name="supported-drivers"></a>
-#### Supported Drivers
+#### Підтримувані драйвери
 
-By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com).
+За замовчуванням Laravel містить три серверні драйвери бродкастингу на вибір: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels) та [Ably](https://ably.com).
 
 > [!NOTE]
-> Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
+> Перш ніж занурюватися в бродкастинг подій, обов'язково прочитайте документацію Laravel про [події та слухачів](/docs/{{version}}/events).
 
 <a name="quickstart"></a>
-## Quickstart
+## Швидкий старт
 
-By default, broadcasting is not enabled in new Laravel applications. You may enable broadcasting using the `install:broadcasting` Artisan command:
+За замовчуванням у нових застосунках Laravel бродкастинг вимкнено. Увімкнути його можна командою Artisan `install:broadcasting`:
 
 ```shell
 php artisan install:broadcasting
 ```
 
-The `install:broadcasting` command will prompt you for which event broadcasting service you would like to use. In addition, it will create the `config/broadcasting.php` configuration file and the `routes/channels.php` file where you may register your application's broadcast authorization routes and callbacks.
+Команда `install:broadcasting` запитає, який сервіс бродкастингу подій ви хочете використовувати. Крім того, вона створить файл конфігурації `config/broadcasting.php` і файл `routes/channels.php`, де ви можете реєструвати маршрути та колбеки авторизації бродкастингу вашого застосунку.
 
-Laravel supports several broadcast drivers out of the box: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), and a `log` driver for local development and debugging. Additionally, a `null` driver is included which allows you to disable broadcasting during testing. A configuration example is included for each of these drivers in the `config/broadcasting.php` configuration file.
+Laravel «з коробки» підтримує кілька драйверів бродкастингу: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com), а також драйвер `log` для локальної розробки й налагодження. Крім того, є драйвер `null`, який дозволяє вимкнути бродкастинг під час тестування. Приклад конфігурації для кожного з цих драйверів є у файлі `config/broadcasting.php`.
 
-All of your application's event broadcasting configuration is stored in the `config/broadcasting.php` configuration file. Don't worry if this file does not exist in your application; it will be created when you run the `install:broadcasting` Artisan command.
+Уся конфігурація бродкастингу подій вашого застосунку зберігається у файлі `config/broadcasting.php`. Не переймайтеся, якщо цього файлу у вашому застосунку немає, - його буде створено, коли ви виконаєте команду Artisan `install:broadcasting`.
 
 <a name="quickstart-next-steps"></a>
-#### Next Steps
+#### Наступні кроки
 
-Once you have enabled event broadcasting, you're ready to learn more about [defining broadcast events](#defining-broadcast-events) and [listening for events](#listening-for-events). If you're using Laravel's React, Vue, or Svelte [starter kits](/docs/{{version}}/starter-kits), you may listen for events using Echo's [useEcho hook](#using-react-or-vue).
+Щойно ви увімкнули бродкастинг подій, можна вивчати [опис подій для бродкастингу](#defining-broadcast-events) і [прослуховування подій](#listening-for-events). Якщо ви користуєтеся [стартовими наборами](/docs/{{version}}/starter-kits) Laravel для React, Vue чи Svelte, слухати події можна через [хук useEcho](#using-react-or-vue) з Echo.
 
 > [!NOTE]
-> Before broadcasting any events, you should first configure and run a [queue worker](/docs/{{version}}/queues). All event broadcasting is done via queued jobs so that the response time of your application is not seriously affected by events being broadcast.
+> Перш ніж надсилати будь-які події, вам слід налаштувати й запустити [воркер черги](/docs/{{version}}/queues). Увесь бродкастинг подій відбувається через завдання в черзі, щоб час відповіді вашого застосунку суттєво не страждав від надсилання подій.
 
 <a name="server-side-installation"></a>
-## Server Side Installation
+## Встановлення на боці сервера
 
-To get started using Laravel's event broadcasting, we need to do some configuration within the Laravel application as well as install a few packages.
+Щоб почати користуватися бродкастингом подій у Laravel, нам потрібно дещо налаштувати в застосунку Laravel, а також встановити кілька пакетів.
 
-Event broadcasting is accomplished by a server-side broadcasting driver that broadcasts your Laravel events so that Laravel Echo (a JavaScript library) can receive them within the browser client. Don't worry - we'll walk through each part of the installation process step-by-step.
+Бродкастинг подій виконує серверний драйвер бродкастингу, який надсилає ваші події Laravel так, щоб Laravel Echo (бібліотека на JavaScript) могла отримати їх у браузері. Не хвилюйтеся - ми пройдемо кожен крок встановлення по черзі.
 
 <a name="reverb"></a>
 ### Reverb
 
-To quickly enable support for Laravel's broadcasting features while using Reverb as your event broadcaster, invoke the `install:broadcasting` Artisan command with the `--reverb` option. This Artisan command will install Reverb's required Composer and NPM packages and update your application's `.env` file with the appropriate variables:
+Щоб швидко увімкнути підтримку бродкастингу в Laravel із Reverb як бродкастером подій, виконайте команду Artisan `install:broadcasting` з опцією `--reverb`. Ця команда встановить потрібні Reverb пакети Composer і NPM та оновить файл `.env` вашого застосунку відповідними змінними:
 
 ```shell
 php artisan install:broadcasting --reverb
 ```
 
 <a name="reverb-manual-installation"></a>
-#### Manual Installation
+#### Встановлення вручну
 
-When running the `install:broadcasting` command, you will be prompted to install [Laravel Reverb](/docs/{{version}}/reverb). Of course, you may also install Reverb manually using the Composer package manager:
+Під час виконання команди `install:broadcasting` вам запропонують встановити [Laravel Reverb](/docs/{{version}}/reverb). Звісно, ви можете встановити Reverb і вручну через менеджер пакетів Composer:
 
 ```shell
 composer require laravel/reverb
 ```
 
-Once the package is installed, you may run Reverb's installation command to publish the configuration, add Reverb's required environment variables, and enable event broadcasting in your application:
+Щойно пакет встановлено, ви можете виконати команду встановлення Reverb, щоб опублікувати конфігурацію, додати потрібні Reverb змінні середовища й увімкнути бродкастинг подій у застосунку:
 
 ```shell
 php artisan reverb:install
 ```
 
-You can find detailed Reverb installation and usage instructions in the [Reverb documentation](/docs/{{version}}/reverb).
+Детальні інструкції зі встановлення та використання Reverb ви знайдете в [документації Reverb](/docs/{{version}}/reverb).
 
 <a name="pusher-channels"></a>
 ### Pusher Channels
 
-To quickly enable support for Laravel's broadcasting features while using Pusher as your event broadcaster, invoke the `install:broadcasting` Artisan command with the `--pusher` option. This Artisan command will prompt you for your Pusher credentials, install the Pusher PHP and JavaScript SDKs, and update your application's `.env` file with the appropriate variables:
+Щоб швидко увімкнути підтримку бродкастингу в Laravel із Pusher як бродкастером подій, виконайте команду Artisan `install:broadcasting` з опцією `--pusher`. Ця команда запитає ваші облікові дані Pusher, встановить PHP- та JavaScript-SDK Pusher і оновить файл `.env` вашого застосунку відповідними змінними:
 
 ```shell
 php artisan install:broadcasting --pusher
 ```
 
 <a name="pusher-manual-installation"></a>
-#### Manual Installation
+#### Встановлення вручну
 
-To install Pusher support manually, you should install the Pusher Channels PHP SDK using the Composer package manager:
+Щоб встановити підтримку Pusher вручну, встановіть PHP SDK Pusher Channels через менеджер пакетів Composer:
 
 ```shell
 composer require pusher/pusher-php-server
 ```
 
-Next, you should configure your Pusher Channels credentials in the `config/broadcasting.php` configuration file. An example Pusher Channels configuration is already included in this file, allowing you to quickly specify your key, secret, and application ID. Typically, you should configure your Pusher Channels credentials in your application's `.env` file:
+Далі налаштуйте облікові дані Pusher Channels у файлі конфігурації `config/broadcasting.php`. Приклад конфігурації Pusher Channels уже є в цьому файлі, тож ви можете швидко вказати свої ключ, секрет та ID застосунку. Зазвичай облікові дані Pusher Channels налаштовують у файлі `.env` вашого застосунку:
 
 ```ini
 PUSHER_APP_ID="your-pusher-app-id"
@@ -146,73 +149,73 @@ PUSHER_SCHEME="https"
 PUSHER_APP_CLUSTER="mt1"
 ```
 
-The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
+Конфігурація `pusher` у файлі `config/broadcasting.php` також дозволяє вказати додаткові `options`, які підтримує Channels, - наприклад, кластер.
 
-Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
+Далі задайте змінній середовища `BROADCAST_CONNECTION` значення `pusher` у файлі `.env` вашого застосунку:
 
 ```ini
 BROADCAST_CONNECTION=pusher
 ```
 
-Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
+Нарешті, ви готові встановити й налаштувати [Laravel Echo](#client-side-installation), яка отримуватиме події бродкастингу на боці клієнта.
 
 <a name="ably"></a>
 ### Ably
 
 > [!NOTE]
-> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
+> Документація нижче описує використання Ably в режимі «сумісності з Pusher». Проте команда Ably рекомендує й підтримує власні бродкастер та клієнт Echo, які вміють користуватися унікальними можливостями Ably. Докладніше про драйвери від Ably читайте в [документації бродкастера Ably для Laravel](https://github.com/ably/laravel-broadcaster).
 
-To quickly enable support for Laravel's broadcasting features while using [Ably](https://ably.com) as your event broadcaster, invoke the `install:broadcasting` Artisan command with the `--ably` option. This Artisan command will prompt you for your Ably credentials, install the Ably PHP and JavaScript SDKs, and update your application's `.env` file with the appropriate variables:
+Щоб швидко увімкнути підтримку бродкастингу в Laravel з [Ably](https://ably.com) як бродкастером подій, виконайте команду Artisan `install:broadcasting` з опцією `--ably`. Ця команда запитає ваші облікові дані Ably, встановить PHP- та JavaScript-SDK Ably і оновить файл `.env` вашого застосунку відповідними змінними:
 
 ```shell
 php artisan install:broadcasting --ably
 ```
 
-**Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
+**Перш ніж продовжувати, увімкніть підтримку протоколу Pusher у налаштуваннях вашого застосунку Ably. Зробити це можна в розділі «Protocol Adapter Settings» панелі налаштувань застосунку Ably.**
 
 <a name="ably-manual-installation"></a>
-#### Manual Installation
+#### Встановлення вручну
 
-To install Ably support manually, you should install the Ably PHP SDK using the Composer package manager:
+Щоб встановити підтримку Ably вручну, встановіть PHP SDK Ably через менеджер пакетів Composer:
 
 ```shell
 composer require ably/ably-php
 ```
 
-Next, you should configure your Ably credentials in the `config/broadcasting.php` configuration file. An example Ably configuration is already included in this file, allowing you to quickly specify your key. Typically, this value should be set via the `ABLY_KEY` [environment variable](/docs/{{version}}/configuration#environment-configuration):
+Далі налаштуйте облікові дані Ably у файлі конфігурації `config/broadcasting.php`. Приклад конфігурації Ably уже є в цьому файлі, тож ви можете швидко вказати свій ключ. Зазвичай це значення задають через [змінну середовища](/docs/{{version}}/configuration#environment-configuration) `ABLY_KEY`:
 
 ```ini
 ABLY_KEY=your-ably-key
 ```
 
-Then, set the `BROADCAST_CONNECTION` environment variable to `ably` in your application's `.env` file:
+Далі задайте змінній середовища `BROADCAST_CONNECTION` значення `ably` у файлі `.env` вашого застосунку:
 
 ```ini
 BROADCAST_CONNECTION=ably
 ```
 
-Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
+Нарешті, ви готові встановити й налаштувати [Laravel Echo](#client-side-installation), яка отримуватиме події бродкастингу на боці клієнта.
 
 <a name="client-side-installation"></a>
-## Client Side Installation
+## Встановлення на боці клієнта
 
 <a name="client-reverb"></a>
 ### Reverb
 
-[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver.
+[Laravel Echo](https://github.com/laravel/echo) - це бібліотека на JavaScript, яка робить підписку на канали й прослуховування подій, надісланих вашим серверним драйвером бродкастингу, безболісними.
 
-When installing Laravel Reverb via the `install:broadcasting` Artisan command, Reverb and Echo's scaffolding and configuration will be injected into your application automatically. However, if you wish to manually configure Laravel Echo, you may do so by following the instructions below.
+Коли ви встановлюєте Laravel Reverb командою Artisan `install:broadcasting`, каркас і конфігурацію Reverb та Echo буде додано до вашого застосунку автоматично. Проте, якщо ви хочете налаштувати Laravel Echo вручну, скористайтеся інструкціями нижче.
 
 <a name="reverb-client-manual-installation"></a>
-#### Manual Installation
+#### Встановлення вручну
 
-To manually configure Laravel Echo for your application's frontend, first install the `pusher-js` package since Reverb utilizes the Pusher protocol for WebSocket subscriptions, channels, and messages:
+Щоб налаштувати Laravel Echo для фронтенду вашого застосунку вручну, спершу встановіть пакет `pusher-js`, оскільки Reverb використовує протокол Pusher для WebSocket-підписок, каналів і повідомлень:
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's JavaScript. A great place to do this is at the bottom of the `resources/js/app.js` file that is included with the Laravel framework:
+Щойно Echo встановлено, ви можете створити свіжий екземпляр Echo у JavaScript вашого застосунку. Чудове місце для цього - кінець файлу `resources/js/app.js`, який входить до складу фреймворку Laravel:
 
 ```js tab=JavaScript
 import Echo from 'laravel-echo';
@@ -273,32 +276,32 @@ configureEcho({
 });
 ```
 
-Next, you should compile your application's assets:
+Далі скомпілюйте ресурси вашого застосунку:
 
 ```shell
 npm run build
 ```
 
 > [!WARNING]
-> The Laravel Echo `reverb` broadcaster requires laravel-echo v1.16.0+.
+> Бродкастер `reverb` для Laravel Echo потребує laravel-echo v1.16.0+.
 
 <a name="client-pusher-channels"></a>
 ### Pusher Channels
 
-[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver.
+[Laravel Echo](https://github.com/laravel/echo) - це бібліотека на JavaScript, яка робить підписку на канали й прослуховування подій, надісланих вашим серверним драйвером бродкастингу, безболісними.
 
-When installing broadcasting support via the `install:broadcasting --pusher` Artisan command, Pusher and Echo's scaffolding and configuration will be injected into your application automatically. However, if you wish to manually configure Laravel Echo, you may do so by following the instructions below.
+Коли ви встановлюєте підтримку бродкастингу командою Artisan `install:broadcasting --pusher`, каркас і конфігурацію Pusher та Echo буде додано до вашого застосунку автоматично. Проте, якщо ви хочете налаштувати Laravel Echo вручну, скористайтеся інструкціями нижче.
 
 <a name="pusher-client-manual-installation"></a>
-#### Manual Installation
+#### Встановлення вручну
 
-To manually configure Laravel Echo for your application's frontend, first install the `laravel-echo` and `pusher-js` packages which utilize the Pusher protocol for WebSocket subscriptions, channels, and messages:
+Щоб налаштувати Laravel Echo для фронтенду вашого застосунку вручну, спершу встановіть пакети `laravel-echo` та `pusher-js`, які використовують протокол Pusher для WebSocket-підписок, каналів і повідомлень:
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's `resources/js/app.js` file:
+Щойно Echo встановлено, ви можете створити свіжий екземпляр Echo у файлі `resources/js/app.js` вашого застосунку:
 
 ```js tab=JavaScript
 import Echo from 'laravel-echo';
@@ -359,7 +362,7 @@ configureEcho({
 });
 ```
 
-Next, you should define the appropriate values for the Pusher environment variables in your application's `.env` file. If these variables do not already exist in your `.env` file, you should add them:
+Далі задайте відповідні значення змінних середовища Pusher у файлі `.env` вашого застосунку. Якщо цих змінних у файлі `.env` ще немає, додайте їх:
 
 ```ini
 PUSHER_APP_ID="your-pusher-app-id"
@@ -378,19 +381,19 @@ VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 ```
 
-Once you have adjusted the Echo configuration according to your application's needs, you may compile your application's assets:
+Щойно ви скоригували конфігурацію Echo під потреби свого застосунку, можете скомпілювати його ресурси:
 
 ```shell
 npm run build
 ```
 
 > [!NOTE]
-> To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
+> Щоб дізнатися більше про компіляцію JavaScript-ресурсів вашого застосунку, зверніться до документації про [Vite](/docs/{{version}}/vite).
 
 <a name="using-an-existing-client-instance"></a>
-#### Using an Existing Client Instance
+#### Використання наявного екземпляра клієнта
 
-If you already have a pre-configured Pusher Channels client instance that you would like Echo to utilize, you may pass it to Echo via the `client` configuration option:
+Якщо у вас уже є попередньо налаштований екземпляр клієнта Pusher Channels, який ви хочете віддати Echo, передайте його через опцію конфігурації `client`:
 
 ```js
 import Echo from 'laravel-echo';
@@ -411,24 +414,24 @@ window.Echo = new Echo({
 ### Ably
 
 > [!NOTE]
-> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team recommends and maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
+> Документація нижче описує використання Ably в режимі «сумісності з Pusher». Проте команда Ably рекомендує й підтримує власні бродкастер та клієнт Echo, які вміють користуватися унікальними можливостями Ably. Докладніше про драйвери від Ably читайте в [документації бродкастера Ably для Laravel](https://github.com/ably/laravel-broadcaster).
 
-[Laravel Echo](https://github.com/laravel/echo) is a JavaScript library that makes it painless to subscribe to channels and listen for events broadcast by your server-side broadcasting driver.
+[Laravel Echo](https://github.com/laravel/echo) - це бібліотека на JavaScript, яка робить підписку на канали й прослуховування подій, надісланих вашим серверним драйвером бродкастингу, безболісними.
 
-When installing broadcasting support via the `install:broadcasting --ably` Artisan command, Ably and Echo's scaffolding and configuration will be injected into your application automatically. However, if you wish to manually configure Laravel Echo, you may do so by following the instructions below.
+Коли ви встановлюєте підтримку бродкастингу командою Artisan `install:broadcasting --ably`, каркас і конфігурацію Ably та Echo буде додано до вашого застосунку автоматично. Проте, якщо ви хочете налаштувати Laravel Echo вручну, скористайтеся інструкціями нижче.
 
 <a name="ably-client-manual-installation"></a>
-#### Manual Installation
+#### Встановлення вручну
 
-To manually configure Laravel Echo for your application's frontend, first install the `laravel-echo` and `pusher-js` packages which utilize the Pusher protocol for WebSocket subscriptions, channels, and messages:
+Щоб налаштувати Laravel Echo для фронтенду вашого застосунку вручну, спершу встановіть пакети `laravel-echo` та `pusher-js`, які використовують протокол Pusher для WebSocket-підписок, каналів і повідомлень:
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 
-**Before continuing, you should enable Pusher protocol support in your Ably application settings. You may enable this feature within the "Protocol Adapter Settings" portion of your Ably application's settings dashboard.**
+**Перш ніж продовжувати, увімкніть підтримку протоколу Pusher у налаштуваннях вашого застосунку Ably. Зробити це можна в розділі «Protocol Adapter Settings» панелі налаштувань застосунку Ably.**
 
-Once Echo is installed, you are ready to create a fresh Echo instance in your application's `resources/js/app.js` file:
+Щойно Echo встановлено, ви можете створити свіжий екземпляр Echo у файлі `resources/js/app.js` вашого застосунку:
 
 ```js tab=JavaScript
 import Echo from 'laravel-echo';
@@ -485,30 +488,30 @@ configureEcho({
 });
 ```
 
-You may have noticed our Ably Echo configuration references a `VITE_ABLY_PUBLIC_KEY` environment variable. This variable's value should be your Ably public key. Your public key is the portion of your Ably key that occurs before the `:` character.
+Ви могли помітити, що наша конфігурація Echo для Ably посилається на змінну середовища `VITE_ABLY_PUBLIC_KEY`. Значенням цієї змінної має бути ваш публічний ключ Ably. Публічний ключ - це частина вашого ключа Ably до символу `:`.
 
-Once you have adjusted the Echo configuration according to your needs, you may compile your application's assets:
+Щойно ви скоригували конфігурацію Echo під свої потреби, можете скомпілювати ресурси застосунку:
 
 ```shell
 npm run dev
 ```
 
 > [!NOTE]
-> To learn more about compiling your application's JavaScript assets, please consult the documentation on [Vite](/docs/{{version}}/vite).
+> Щоб дізнатися більше про компіляцію JavaScript-ресурсів вашого застосунку, зверніться до документації про [Vite](/docs/{{version}}/vite).
 
 <a name="concept-overview"></a>
-## Concept Overview
+## Огляд концепції
 
-Laravel's event broadcasting allows you to broadcast your server-side Laravel events to your client-side JavaScript application using a driver-based approach to WebSockets. Currently, Laravel ships with [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com) drivers. The events may be easily consumed on the client-side using the [Laravel Echo](#client-side-installation) JavaScript package.
+Бродкастинг подій у Laravel дозволяє надсилати серверні події Laravel до клієнтського застосунку на JavaScript, використовуючи драйверний підхід до WebSocket. Наразі Laravel постачається з драйверами [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels) та [Ably](https://ably.com). Події легко спожити на боці клієнта за допомогою JavaScript-пакета [Laravel Echo](#client-side-installation).
 
-Events are broadcast over "channels", which may be specified as public or private. Any visitor to your application may subscribe to a public channel without any authentication or authorization; however, in order to subscribe to a private channel, a user must be authenticated and authorized to listen on that channel.
+Події надсилаються через «канали», які можуть бути публічними або приватними. Будь-який відвідувач вашого застосунку може підписатися на публічний канал без автентифікації чи авторизації; натомість, щоб підписатися на приватний канал, користувач має бути автентифікований і авторизований слухати цей канал.
 
 <a name="using-example-application"></a>
-### Using an Example Application
+### На прикладі застосунку
 
-Before diving into each component of event broadcasting, let's take a high level overview using an e-commerce store as an example.
+Перш ніж заглиблюватися в кожен компонент бродкастингу подій, розгляньмо все з висоти пташиного польоту на прикладі інтернет-магазину.
 
-In our application, let's assume we have a page that allows users to view the shipping status for their orders. Let's also assume that an `OrderShipmentStatusUpdated` event is fired when a shipping status update is processed by the application:
+Припустімо, у нашому застосунку є сторінка, на якій користувачі бачать статус доставки своїх замовлень. Припустімо також, що коли застосунок обробляє оновлення статусу доставки, спрацьовує подія `OrderShipmentStatusUpdated`:
 
 ```php
 use App\Events\OrderShipmentStatusUpdated;
@@ -517,9 +520,9 @@ OrderShipmentStatusUpdated::dispatch($order);
 ```
 
 <a name="the-shouldbroadcast-interface"></a>
-#### The `ShouldBroadcast` Interface
+#### Інтерфейс `ShouldBroadcast`
 
-When a user is viewing one of their orders, we don't want them to have to refresh the page to view status updates. Instead, we want to broadcast the updates to the application as they are created. So, we need to mark the `OrderShipmentStatusUpdated` event with the `ShouldBroadcast` interface. This will instruct Laravel to broadcast the event when it is fired:
+Коли користувач переглядає одне зі своїх замовлень, ми не хочемо, щоб йому доводилося оновлювати сторінку заради оновлень статусу. Натомість ми хочемо надсилати оновлення в застосунок щойно вони з'являються. Отже, нам потрібно позначити подію `OrderShipmentStatusUpdated` інтерфейсом `ShouldBroadcast`. Це скаже Laravel надсилати подію, коли вона спрацьовує:
 
 ```php
 <?php
@@ -544,7 +547,7 @@ class OrderShipmentStatusUpdated implements ShouldBroadcast
 }
 ```
 
-The `ShouldBroadcast` interface requires our event to define a `broadcastOn` method. This method is responsible for returning the channels that the event should broadcast on. An empty stub of this method is already defined on generated event classes, so we only need to fill in its details. We only want the creator of the order to be able to view status updates, so we will broadcast the event on a private channel that is tied to the order:
+Інтерфейс `ShouldBroadcast` вимагає, щоб наша подія описала метод `broadcastOn`. Цей метод відповідає за повернення каналів, у які має надсилатися подія. Порожня заготовка цього методу вже є у згенерованих класах подій, тож нам залишається лише заповнити її. Ми хочемо, щоб оновлення статусу бачив лише автор замовлення, тому надсилатимемо подію в приватний канал, прив'язаний до замовлення:
 
 ```php
 use Illuminate\Broadcasting\Channel;
@@ -559,7 +562,7 @@ public function broadcastOn(): Channel
 }
 ```
 
-If you wish the event to broadcast on multiple channels, you may return an `array` instead:
+Якщо ви хочете надсилати подію в кілька каналів, поверніть замість цього `array`:
 
 ```php
 use Illuminate\Broadcasting\PrivateChannel;
@@ -579,9 +582,9 @@ public function broadcastOn(): array
 ```
 
 <a name="example-application-authorizing-channels"></a>
-#### Authorizing Channels
+#### Авторизація каналів
 
-Remember, users must be authorized to listen on private channels. We may define our channel authorization rules in our application's `routes/channels.php` file. In this example, we need to verify that any user attempting to listen on the private `orders.1` channel is actually the creator of the order:
+Пам'ятайте: щоб слухати приватні канали, користувачі мають бути авторизовані. Правила авторизації каналів ми можемо описати у файлі `routes/channels.php` нашого застосунку. У цьому прикладі нам потрібно перевірити, що будь-який користувач, який намагається слухати приватний канал `orders.1`, справді є автором замовлення:
 
 ```php
 use App\Models\Order;
@@ -592,14 +595,14 @@ Broadcast::channel('orders.{orderId}', function (User $user, int $orderId) {
 });
 ```
 
-The `channel` method accepts two arguments: the name of the channel and a callback which returns `true` or `false` indicating whether the user is authorized to listen on the channel.
+Метод `channel` приймає два аргументи: ім'я каналу й колбек, який повертає `true` або `false` залежно від того, чи авторизований користувач слухати цей канал.
 
-All authorization callbacks receive the currently authenticated user as their first argument and any additional wildcard parameters as their subsequent arguments. In this example, we are using the `{orderId}` placeholder to indicate that the "ID" portion of the channel name is a wildcard.
+Усі колбеки авторизації першим аргументом отримують поточного автентифікованого користувача, а наступними - будь-які додаткові підстановочні параметри. У цьому прикладі ми використовуємо плейсхолдер `{orderId}`, щоб позначити, що частина імені каналу з «ID» є підстановкою.
 
 <a name="listening-for-event-broadcasts"></a>
-#### Listening for Event Broadcasts
+#### Прослуховування бродкастів подій
 
-Next, all that remains is to listen for the event in our JavaScript application. We can do this using [Laravel Echo](#client-side-installation). Laravel Echo's built-in React, Vue, and Svelte hooks make it simple to get started, and, by default, all of the event's public properties will be included on the broadcast event:
+Далі лишається тільки послухати подію в нашому застосунку на JavaScript. Зробити це можна за допомогою [Laravel Echo](#client-side-installation). Вбудовані в Laravel Echo хуки для React, Vue та Svelte роблять старт простим, і за замовчуванням усі публічні властивості події потраплять до надісланої події:
 
 ```js tab=React
 import { useEcho } from "@laravel/echo-react";
@@ -642,11 +645,11 @@ useEcho(
 ```
 
 <a name="defining-broadcast-events"></a>
-## Defining Broadcast Events
+## Опис подій для бродкастингу
 
-To inform Laravel that a given event should be broadcast, you must implement the `Illuminate\Contracts\Broadcasting\ShouldBroadcast` interface on the event class. This interface is already imported into all event classes generated by the framework so you may easily add it to any of your events.
+Щоб повідомити Laravel, що певну подію слід надсилати, реалізуйте в класі події інтерфейс `Illuminate\Contracts\Broadcasting\ShouldBroadcast`. Цей інтерфейс уже імпортовано в усі класи подій, згенеровані фреймворком, тож ви легко можете додати його до будь-якої своєї події.
 
-The `ShouldBroadcast` interface requires you to implement a single method: `broadcastOn`. The `broadcastOn` method should return a channel or array of channels that the event should broadcast on. The channels should be instances of `Channel`, `PrivateChannel`, or `PresenceChannel`. Instances of `Channel` represent public channels that any user may subscribe to, while `PrivateChannels` and `PresenceChannels` represent private channels that require [channel authorization](#authorizing-channels):
+Інтерфейс `ShouldBroadcast` вимагає реалізувати єдиний метод - `broadcastOn`. Метод `broadcastOn` має повернути канал або масив каналів, у які слід надсилати подію. Канали мають бути екземплярами `Channel`, `PrivateChannel` чи `PresenceChannel`. Екземпляри `Channel` представляють публічні канали, на які може підписатися будь-який користувач, а `PrivateChannels` і `PresenceChannels` - приватні канали, які потребують [авторизації каналу](#authorizing-channels):
 
 ```php
 <?php
@@ -686,12 +689,12 @@ class ServerCreated implements ShouldBroadcast
 }
 ```
 
-After implementing the `ShouldBroadcast` interface, you only need to [fire the event](/docs/{{version}}/events) as you normally would. Once the event has been fired, a [queued job](/docs/{{version}}/queues) will automatically broadcast the event using your specified broadcast driver.
+Реалізувавши інтерфейс `ShouldBroadcast`, вам залишається лише [запустити подію](/docs/{{version}}/events) як зазвичай. Щойно подію запущено, [завдання в черзі](/docs/{{version}}/queues) автоматично надішле її через вказаний драйвер бродкастингу.
 
 <a name="broadcast-name"></a>
-### Broadcast Name
+### Ім'я бродкасту
 
-By default, Laravel will broadcast the event using the event's class name. However, you may customize the broadcast name by defining a `broadcastAs` method on the event:
+За замовчуванням Laravel надсилає подію під іменем її класу. Проте ви можете змінити ім'я бродкасту, описавши в події метод `broadcastAs`:
 
 ```php
 /**
@@ -703,7 +706,7 @@ public function broadcastAs(): string
 }
 ```
 
-If you customize the broadcast name using the `broadcastAs` method, you should make sure to register your listener with a leading `.` character. This will instruct Echo to not prepend the application's namespace to the event:
+Якщо ви змінюєте ім'я бродкасту методом `broadcastAs`, обов'язково реєструйте слухача з провідною крапкою `.`. Це скаже Echo не додавати до події простір імен застосунку:
 
 ```javascript
 .listen('.server.created', function (e) {
@@ -712,9 +715,9 @@ If you customize the broadcast name using the `broadcastAs` method, you should m
 ```
 
 <a name="broadcast-data"></a>
-### Broadcast Data
+### Дані бродкасту
 
-When an event is broadcast, all of its `public` properties are automatically serialized and broadcast as the event's payload, allowing you to access any of its public data from your JavaScript application. So, for example, if your event has a single public `$user` property that contains an Eloquent model, the event's broadcast payload would be:
+Коли подію надіслано, усі її `public` властивості автоматично серіалізуються й передаються як дані події, тож ви маєте доступ до будь-яких її публічних даних із застосунку на JavaScript. Наприклад, якщо ваша подія має єдину публічну властивість `$user` з моделлю Eloquent, дані бродкасту події будуть такими:
 
 ```json
 {
@@ -726,7 +729,7 @@ When an event is broadcast, all of its `public` properties are automatically ser
 }
 ```
 
-However, if you wish to have more fine-grained control over your broadcast payload, you may add a `broadcastWith` method to your event. This method should return the array of data that you wish to broadcast as the event payload:
+Проте, якщо ви хочете тонше контролювати дані бродкасту, додайте до події метод `broadcastWith`. Цей метод має повернути масив даних, які ви хочете надіслати як дані події:
 
 ```php
 /**
@@ -741,9 +744,9 @@ public function broadcastWith(): array
 ```
 
 <a name="broadcast-queue"></a>
-### Broadcast Queue
+### Черга бродкасту
 
-By default, each broadcast event is placed on the default queue for the default queue connection specified in your `queue.php` configuration file. You may customize the queue connection and name used by the broadcaster by using the `Connection` and `Queue` attributes on your event class:
+За замовчуванням кожна подія бродкастингу потрапляє до черги за замовчуванням для підключення черги за замовчуванням, вказаного у файлі конфігурації `queue.php`. Ви можете змінити підключення й ім'я черги, які використовує бродкастер, за допомогою атрибутів `Connection` та `Queue` у класі події:
 
 ```php
 use Illuminate\Queue\Attributes\Connection;
@@ -757,7 +760,7 @@ class ServerCreated implements ShouldBroadcast
 }
 ```
 
-Alternatively, you may customize the queue name by defining a `broadcastQueue` method on your event:
+Як варіант, ви можете змінити ім'я черги, описавши в події метод `broadcastQueue`:
 
 ```php
 /**
@@ -769,7 +772,7 @@ public function broadcastQueue(): string
 }
 ```
 
-If you would like to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
+Якщо ви хочете надсилати подію через чергу `sync` замість драйвера черги за замовчуванням, реалізуйте інтерфейс `ShouldBroadcastNow` замість `ShouldBroadcast`:
 
 ```php
 <?php
@@ -785,9 +788,9 @@ class OrderShipmentStatusUpdated implements ShouldBroadcastNow
 ```
 
 <a name="broadcast-conditions"></a>
-### Broadcast Conditions
+### Умови бродкасту
 
-Sometimes you want to broadcast your event only if a given condition is true. You may define these conditions by adding a `broadcastWhen` method to your event class:
+Інколи потрібно надсилати подію лише за певної умови. Описати такі умови можна, додавши до класу події метод `broadcastWhen`:
 
 ```php
 /**
@@ -800,11 +803,11 @@ public function broadcastWhen(): bool
 ```
 
 <a name="broadcasting-and-database-transactions"></a>
-#### Broadcasting and Database Transactions
+#### Бродкастинг і транзакції бази даних
 
-When broadcast events are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your event depends on these models, unexpected errors can occur when the job that broadcasts the event is processed.
+Коли події бродкастингу диспетчеризуються всередині транзакцій бази даних, черга може обробити їх ще до того, як транзакцію буде зафіксовано. Коли таке трапляється, будь-які зміни, які ви внесли до моделей чи записів у базі під час транзакції, ще можуть не бути в базі. Ба більше, будь-які моделі чи записи, створені всередині транзакції, можуть у базі не існувати. Якщо ваша подія залежить від цих моделей, під час обробки завдання, яке надсилає подію, можуть виникнути несподівані помилки.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular broadcast event should be dispatched after all open database transactions have been committed by implementing the `ShouldDispatchAfterCommit` interface on the event class:
+Якщо опція конфігурації `after_commit` вашого підключення черги має значення `false`, ви все одно можете вказати, що конкретну подію бродкастингу слід диспетчеризувати після фіксації всіх відкритих транзакцій бази даних, - реалізуйте в класі події інтерфейс `ShouldDispatchAfterCommit`:
 
 ```php
 <?php
@@ -822,14 +825,14 @@ class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit
 ```
 
 > [!NOTE]
-> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
+> Щоб дізнатися більше про обхід цих проблем, перегляньте документацію про [завдання в черзі та транзакції бази даних](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="authorizing-channels"></a>
-## Authorizing Channels
+## Авторизація каналів
 
-Private channels require you to authorize that the currently authenticated user can actually listen on the channel. This is accomplished by making an HTTP request to your Laravel application with the channel name and allowing your application to determine if the user can listen on that channel. When using [Laravel Echo](#client-side-installation), the HTTP request to authorize subscriptions to private channels will be made automatically.
+Приватні канали вимагають перевірити, що поточний автентифікований користувач справді може слухати канал. Це робиться через HTTP-запит до вашого застосунку Laravel з іменем каналу, і застосунок вирішує, чи може користувач слухати цей канал. Коли ви користуєтеся [Laravel Echo](#client-side-installation), HTTP-запит на авторизацію підписок на приватні канали виконується автоматично.
 
-When broadcasting is installed Laravel attempts to automatically register the `/broadcasting/auth` route to handle authorization requests. If Laravel fails to automatically register these routes, you may register them manually in your application's `/bootstrap/app.php` file:
+Коли бродкастинг встановлено, Laravel намагається автоматично зареєструвати маршрут `/broadcasting/auth` для обробки запитів авторизації. Якщо Laravel не вдасться зареєструвати ці маршрути автоматично, ви можете зареєструвати їх вручну у файлі `/bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withRouting(
@@ -840,9 +843,9 @@ When broadcasting is installed Laravel attempts to automatically register the `/
 ```
 
 <a name="defining-authorization-callbacks"></a>
-### Defining Authorization Callbacks
+### Опис колбеків авторизації
 
-Next, we need to define the logic that will actually determine if the currently authenticated user can listen to a given channel. This is done in the `routes/channels.php` file that was created by the `install:broadcasting` Artisan command. In this file, you may use the `Broadcast::channel` method to register channel authorization callbacks:
+Далі нам потрібно описати логіку, яка визначатиме, чи може поточний автентифікований користувач слухати певний канал. Це робиться у файлі `routes/channels.php`, який створює команда Artisan `install:broadcasting`. У цьому файлі ви можете реєструвати колбеки авторизації каналів методом `Broadcast::channel`:
 
 ```php
 use App\Models\User;
@@ -852,20 +855,20 @@ Broadcast::channel('orders.{orderId}', function (User $user, int $orderId) {
 });
 ```
 
-The `channel` method accepts two arguments: the name of the channel and a callback which returns `true` or `false` indicating whether the user is authorized to listen on the channel.
+Метод `channel` приймає два аргументи: ім'я каналу й колбек, який повертає `true` або `false` залежно від того, чи авторизований користувач слухати цей канал.
 
-All authorization callbacks receive the currently authenticated user as their first argument and any additional wildcard parameters as their subsequent arguments. In this example, we are using the `{orderId}` placeholder to indicate that the "ID" portion of the channel name is a wildcard.
+Усі колбеки авторизації першим аргументом отримують поточного автентифікованого користувача, а наступними - будь-які додаткові підстановочні параметри. У цьому прикладі ми використовуємо плейсхолдер `{orderId}`, щоб позначити, що частина імені каналу з «ID» є підстановкою.
 
-You may view a list of your application's broadcast authorization callbacks using the `channel:list` Artisan command:
+Переглянути список колбеків авторизації бродкастингу вашого застосунку можна командою Artisan `channel:list`:
 
 ```shell
 php artisan channel:list
 ```
 
 <a name="authorization-callback-model-binding"></a>
-#### Authorization Callback Model Binding
+#### Прив'язка моделей у колбеках авторизації
 
-Just like HTTP routes, channel routes may also take advantage of implicit and explicit [route model binding](/docs/{{version}}/routing#route-model-binding). For example, instead of receiving a string or numeric order ID, you may request an actual `Order` model instance:
+Так само як HTTP-маршрути, маршрути каналів можуть користуватися неявною та явною [прив'язкою моделей до маршрутів](/docs/{{version}}/routing#route-model-binding). Наприклад, замість рядкового чи числового ID замовлення ви можете запросити справжній екземпляр моделі `Order`:
 
 ```php
 use App\Models\Order;
@@ -877,12 +880,12 @@ Broadcast::channel('orders.{order}', function (User $user, Order $order) {
 ```
 
 > [!WARNING]
-> Unlike HTTP route model binding, channel model binding does not support automatic [implicit model binding scoping](/docs/{{version}}/routing#implicit-model-binding-scoping). However, this is rarely a problem because most channels can be scoped based on a single model's unique, primary key.
+> На відміну від прив'язки моделей у HTTP-маршрутах, прив'язка моделей у каналах не підтримує автоматичне [скопування неявної прив'язки моделей](/docs/{{version}}/routing#implicit-model-binding-scoping). Утім, це рідко стає проблемою, бо більшість каналів можна скопувати за унікальним первинним ключем однієї моделі.
 
 <a name="authorization-callback-authentication"></a>
-#### Authorization Callback Authentication
+#### Автентифікація в колбеках авторизації
 
-Private and presence broadcast channels authenticate the current user via your application's default authentication guard. If the user is not authenticated, channel authorization is automatically denied and the authorization callback is never executed. However, you may assign multiple, custom guards that should authenticate the incoming request if necessary:
+Приватні канали та канали присутності автентифікують поточного користувача через гард автентифікації за замовчуванням вашого застосунку. Якщо користувач не автентифікований, авторизацію каналу буде автоматично відхилено, а колбек авторизації ніколи не виконається. Проте за потреби ви можете призначити кілька власних гардів, які мають автентифікувати вхідний запит:
 
 ```php
 Broadcast::channel('channel', function () {
@@ -891,15 +894,15 @@ Broadcast::channel('channel', function () {
 ```
 
 <a name="defining-channel-classes"></a>
-### Defining Channel Classes
+### Класи каналів
 
-If your application is consuming many different channels, your `routes/channels.php` file could become bulky. So, instead of using closures to authorize channels, you may use channel classes. To generate a channel class, use the `make:channel` Artisan command. This command will place a new channel class in the `App/Broadcasting` directory.
+Якщо ваш застосунок споживає багато різних каналів, файл `routes/channels.php` може розростися. Тож замість замикань для авторизації каналів ви можете скористатися класами каналів. Щоб згенерувати клас каналу, скористайтеся командою Artisan `make:channel`. Вона покладе новий клас каналу в каталог `App/Broadcasting`.
 
 ```shell
 php artisan make:channel OrderChannel
 ```
 
-Next, register your channel in your `routes/channels.php` file:
+Далі зареєструйте свій канал у файлі `routes/channels.php`:
 
 ```php
 use App\Broadcasting\OrderChannel;
@@ -907,7 +910,7 @@ use App\Broadcasting\OrderChannel;
 Broadcast::channel('orders.{order}', OrderChannel::class);
 ```
 
-Finally, you may place the authorization logic for your channel in the channel class' `join` method. This `join` method will house the same logic you would have typically placed in your channel authorization closure. You may also take advantage of channel model binding:
+Нарешті, ви можете розмістити логіку авторизації каналу в методі `join` класу каналу. Цей метод `join` міститиме ту саму логіку, яку ви зазвичай розмістили б у замиканні авторизації каналу. Ви так само можете користуватися прив'язкою моделей у каналах:
 
 ```php
 <?php
@@ -935,12 +938,12 @@ class OrderChannel
 ```
 
 > [!NOTE]
-> Like many other classes in Laravel, channel classes will automatically be resolved by the [service container](/docs/{{version}}/container). So, you may type-hint any dependencies required by your channel in its constructor.
+> Як і багато інших класів у Laravel, класи каналів автоматично розв'язуються [сервіс-контейнером](/docs/{{version}}/container). Тож ви можете вказати типи будь-яких залежностей, потрібних вашому каналу, у його конструкторі.
 
 <a name="broadcasting-events"></a>
-## Broadcasting Events
+## Бродкастинг подій
 
-Once you have defined an event and marked it with the `ShouldBroadcast` interface, you only need to fire the event using the event's dispatch method. The event dispatcher will notice that the event is marked with the `ShouldBroadcast` interface and will queue the event for broadcasting:
+Щойно ви описали подію й позначили її інтерфейсом `ShouldBroadcast`, вам залишається лише запустити подію її методом диспетчеризації. Диспетчер подій помітить, що подію позначено інтерфейсом `ShouldBroadcast`, і поставить її в чергу на бродкастинг:
 
 ```php
 use App\Events\OrderShipmentStatusUpdated;
@@ -949,9 +952,9 @@ OrderShipmentStatusUpdated::dispatch($order);
 ```
 
 <a name="only-to-others"></a>
-### Only to Others
+### Лише іншим
 
-When building an application that utilizes event broadcasting, you may occasionally need to broadcast an event to all subscribers to a given channel except for the current user. You may accomplish this using the `broadcast` helper and the `toOthers` method:
+Будуючи застосунок з бродкастингом подій, ви інколи можете потребувати надіслати подію всім підписникам каналу, окрім поточного користувача. Зробити це можна за допомогою хелпера `broadcast` і методу `toOthers`:
 
 ```php
 use App\Events\OrderShipmentStatusUpdated;
@@ -959,7 +962,7 @@ use App\Events\OrderShipmentStatusUpdated;
 broadcast(new OrderShipmentStatusUpdated($update))->toOthers();
 ```
 
-To better understand when you may want to use the `toOthers` method, let's imagine a task list application where a user may create a new task by entering a task name. To create a task, your application might make a request to a `/task` URL which broadcasts the task's creation and returns a JSON representation of the new task. When your JavaScript application receives the response from the end-point, it might directly insert the new task into its task list like so:
+Щоб краще зрозуміти, коли вам знадобиться метод `toOthers`, уявімо застосунок зі списком завдань, у якому користувач створює нове завдання, вводячи його назву. Щоб створити завдання, ваш застосунок може надіслати запит на URL `/task`, який надсилає подію про створення завдання й повертає JSON-представлення нового завдання. Коли ваш застосунок на JavaScript отримує відповідь від точки входу, він може одразу вставити нове завдання до свого списку ось так:
 
 ```js
 axios.post('/task', task)
@@ -968,26 +971,26 @@ axios.post('/task', task)
     });
 ```
 
-However, remember that we also broadcast the task's creation. If your JavaScript application is also listening for this event in order to add tasks to the task list, you will have duplicate tasks in your list: one from the end-point and one from the broadcast. You may solve this by using the `toOthers` method to instruct the broadcaster to not broadcast the event to the current user.
+Проте пам'ятайте, що ми також надсилаємо подію про створення завдання. Якщо ваш застосунок на JavaScript теж слухає цю подію, щоб додавати завдання до списку, у списку з'являться дублікати: один із точки входу, другий - з бродкасту. Розв'язати це можна методом `toOthers`, який скаже бродкастеру не надсилати подію поточному користувачеві.
 
 > [!WARNING]
-> Your event must use the `Illuminate\Broadcasting\InteractsWithSockets` trait in order to call the `toOthers` method.
+> Щоб викликати метод `toOthers`, ваша подія має використовувати трейт `Illuminate\Broadcasting\InteractsWithSockets`.
 
 <a name="only-to-others-configuration"></a>
-#### Configuration
+#### Конфігурація
 
-When you initialize a Laravel Echo instance, a socket ID is assigned to the connection. If you are using a global [Axios](https://github.com/axios/axios) instance to make HTTP requests from your JavaScript application, the socket ID will automatically be attached to every outgoing request as an `X-Socket-ID` header. Then, when you call the `toOthers` method, Laravel will extract the socket ID from the header and instruct the broadcaster to not broadcast to any connections with that socket ID.
+Коли ви ініціалізуєте екземпляр Laravel Echo, з'єднанню призначається ID сокета. Якщо ви користуєтеся глобальним екземпляром [Axios](https://github.com/axios/axios) для HTTP-запитів із застосунку на JavaScript, ID сокета автоматично додається до кожного вихідного запиту заголовком `X-Socket-ID`. Тоді, коли ви викликаєте метод `toOthers`, Laravel дістане ID сокета із заголовка й скаже бродкастеру не надсилати подію жодному з'єднанню з цим ID сокета.
 
-If you are not using a global Axios instance, you will need to manually configure your JavaScript application to send the `X-Socket-ID` header with all outgoing requests. You may retrieve the socket ID using the `Echo.socketId` method:
+Якщо ви не користуєтеся глобальним екземпляром Axios, вам доведеться вручну налаштувати ваш застосунок на JavaScript надсилати заголовок `X-Socket-ID` з усіма вихідними запитами. Отримати ID сокета можна методом `Echo.socketId`:
 
 ```js
 var socketId = Echo.socketId();
 ```
 
 <a name="customizing-the-connection"></a>
-### Customizing the Connection
+### Налаштування підключення
 
-If your application interacts with multiple broadcast connections and you want to broadcast an event using a broadcaster other than your default, you may specify which connection to push an event to using the `via` method:
+Якщо ваш застосунок працює з кількома підключеннями бродкастингу і ви хочете надіслати подію не через бродкастер за замовчуванням, вказати підключення, до якого слід віддати подію, можна методом `via`:
 
 ```php
 use App\Events\OrderShipmentStatusUpdated;
@@ -995,7 +998,7 @@ use App\Events\OrderShipmentStatusUpdated;
 broadcast(new OrderShipmentStatusUpdated($update))->via('pusher');
 ```
 
-Alternatively, you may specify the event's broadcast connection by calling the `broadcastVia` method within the event's constructor. However, before doing so, you should ensure that the event class uses the `InteractsWithBroadcasting` trait:
+Як варіант, ви можете вказати підключення бродкастингу події, викликавши метод `broadcastVia` у її конструкторі. Проте перед цим переконайтеся, що клас події використовує трейт `InteractsWithBroadcasting`:
 
 ```php
 <?php
@@ -1025,15 +1028,15 @@ class OrderShipmentStatusUpdated implements ShouldBroadcast
 ```
 
 <a name="anonymous-events"></a>
-### Anonymous Events
+### Анонімні події
 
-Sometimes, you may want to broadcast a simple event to your application's frontend without creating a dedicated event class. To accommodate this, the `Broadcast` facade allows you to broadcast "anonymous events":
+Інколи вам може захотітися надіслати просту подію на фронтенд застосунку, не створюючи окремого класу події. Для цього фасад `Broadcast` дозволяє надсилати «анонімні події»:
 
 ```php
 Broadcast::on('orders.'.$order->id)->send();
 ```
 
-The example above will broadcast the following event:
+Приклад вище надішле таку подію:
 
 ```json
 {
@@ -1043,7 +1046,7 @@ The example above will broadcast the following event:
 }
 ```
 
-Using the `as` and `with` methods, you may customize the event's name and data:
+Методами `as` і `with` ви можете змінити ім'я та дані події:
 
 ```php
 Broadcast::on('orders.'.$order->id)
@@ -1052,7 +1055,7 @@ Broadcast::on('orders.'.$order->id)
     ->send();
 ```
 
-The example above will broadcast an event like the following:
+Приклад вище надішле подію на кшталт такої:
 
 ```json
 {
@@ -1062,20 +1065,20 @@ The example above will broadcast an event like the following:
 }
 ```
 
-If you would like to broadcast the anonymous event on a private or presence channel, you may utilize the `private` and `presence` methods:
+Якщо ви хочете надіслати анонімну подію в приватний канал або канал присутності, скористайтеся методами `private` та `presence`:
 
 ```php
 Broadcast::private('orders.'.$order->id)->send();
 Broadcast::presence('channels.'.$channel->id)->send();
 ```
 
-Broadcasting an anonymous event using the `send` method dispatches the event to your application's [queue](/docs/{{version}}/queues) for processing. However, if you would like to broadcast the event immediately, you may use the `sendNow` method:
+Надсилання анонімної події методом `send` диспетчеризує подію до [черги](/docs/{{version}}/queues) вашого застосунку на обробку. Проте, якщо ви хочете надіслати подію негайно, скористайтеся методом `sendNow`:
 
 ```php
 Broadcast::on('orders.'.$order->id)->sendNow();
 ```
 
-To broadcast the event to all channel subscribers except the currently authenticated user, you can invoke the `toOthers` method:
+Щоб надіслати подію всім підписникам каналу, окрім поточного автентифікованого користувача, викличте метод `toOthers`:
 
 ```php
 Broadcast::on('orders.'.$order->id)
@@ -1084,11 +1087,11 @@ Broadcast::on('orders.'.$order->id)
 ```
 
 <a name="rescuing-broadcasts"></a>
-### Rescuing Broadcasts
+### Убезпечення бродкастів
 
-When your application's queue server is unavailable or Laravel encounters an error while broadcasting an event, an exception is thrown that typically causes the end user to see an application error. Since event broadcasting is often supplementary to your application's core functionality, you can prevent these exceptions from disrupting the user experience by implementing the `ShouldRescue` interface on your events.
+Коли сервер черги вашого застосунку недоступний або Laravel натрапляє на помилку під час надсилання події, викидається виняток, через який кінцевий користувач зазвичай бачить помилку застосунку. Оскільки бродкастинг подій часто є доповненням до основної функціональності застосунку, ви можете не дати цим винятками псувати користувацький досвід, - реалізуйте у своїх подіях інтерфейс `ShouldRescue`.
 
-Events that implement the `ShouldRescue` interface automatically utilize Laravel's [rescue helper function](/docs/{{version}}/helpers#method-rescue) during broadcast attempts. This helper catches any exceptions, reports them to your application's exception handler for logging, and allows the application to continue executing normally without interrupting the user's workflow:
+Події, які реалізують інтерфейс `ShouldRescue`, під час спроб бродкастингу автоматично використовують [функцію-хелпер rescue](/docs/{{version}}/helpers#method-rescue) Laravel. Цей хелпер ловить будь-які винятки, повідомляє про них обробнику винятків вашого застосунку для логування й дозволяє застосунку працювати далі, не перериваючи роботу користувача:
 
 ```php
 <?php
@@ -1105,12 +1108,12 @@ class ServerCreated implements ShouldBroadcast, ShouldRescue
 ```
 
 <a name="receiving-broadcasts"></a>
-## Receiving Broadcasts
+## Отримання бродкастів
 
 <a name="listening-for-events"></a>
-### Listening for Events
+### Прослуховування подій
 
-Once you have [installed and instantiated Laravel Echo](#client-side-installation), you are ready to start listening for events that are broadcast from your Laravel application. First, use the `channel` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event:
+Щойно ви [встановили та створили екземпляр Laravel Echo](#client-side-installation), можна починати слухати події, які надсилає ваш застосунок Laravel. Спершу отримайте екземпляр каналу методом `channel`, а потім викличте метод `listen`, щоб слухати вказану подію:
 
 ```js
 Echo.channel(`orders.${this.order.id}`)
@@ -1119,7 +1122,7 @@ Echo.channel(`orders.${this.order.id}`)
     });
 ```
 
-If you would like to listen for events on a private channel, use the `private` method instead. You may continue to chain calls to the `listen` method to listen for multiple events on a single channel:
+Якщо ви хочете слухати події в приватному каналі, скористайтеся методом `private`. Ви можете й далі ланцюжком викликати метод `listen`, щоб слухати кілька подій в одному каналі:
 
 ```js
 Echo.private(`orders.${this.order.id}`)
@@ -1129,9 +1132,9 @@ Echo.private(`orders.${this.order.id}`)
 ```
 
 <a name="stop-listening-for-events"></a>
-#### Stop Listening for Events
+#### Припинення прослуховування подій
 
-If you would like to stop listening to a given event without [leaving the channel](#leaving-a-channel), you may use the `stopListening` method:
+Якщо ви хочете перестати слухати певну подію, не [виходячи з каналу](#leaving-a-channel), скористайтеся методом `stopListening`:
 
 ```js
 Echo.private(`orders.${this.order.id}`)
@@ -1139,23 +1142,23 @@ Echo.private(`orders.${this.order.id}`)
 ```
 
 <a name="leaving-a-channel"></a>
-### Leaving a Channel
+### Вихід з каналу
 
-To leave a channel, you may call the `leaveChannel` method on your Echo instance:
+Щоб вийти з каналу, викличте метод `leaveChannel` вашого екземпляра Echo:
 
 ```js
 Echo.leaveChannel(`orders.${this.order.id}`);
 ```
 
-If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:
+Якщо ви хочете вийти з каналу разом із пов'язаними з ним приватним каналом і каналом присутності, викличте метод `leave`:
 
 ```js
 Echo.leave(`orders.${this.order.id}`);
 ```
 <a name="namespaces"></a>
-### Namespaces
+### Простори імен
 
-You may have noticed in the examples above that we did not specify the full `App\Events` namespace for the event classes. This is because Echo will automatically assume the events are located in the `App\Events` namespace. However, you may configure the root namespace when you instantiate Echo by passing a `namespace` configuration option:
+Ви могли помітити в прикладах вище, що ми не вказували повний простір імен `App\Events` для класів подій. Це тому, що Echo автоматично вважає, що події лежать у просторі імен `App\Events`. Проте ви можете налаштувати кореневий простір імен під час створення екземпляра Echo, передавши опцію конфігурації `namespace`:
 
 ```js
 window.Echo = new Echo({
@@ -1165,7 +1168,7 @@ window.Echo = new Echo({
 });
 ```
 
-Alternatively, you may prefix event classes with a `.` when subscribing to them using Echo. This will allow you to always specify the fully-qualified class name:
+Як варіант, ви можете додавати до класів подій префікс `.`, підписуючись на них через Echo. Це дозволить завжди вказувати повне ім'я класу:
 
 ```js
 Echo.channel('orders')
@@ -1175,9 +1178,9 @@ Echo.channel('orders')
 ```
 
 <a name="using-react-or-vue"></a>
-### Using React, Vue, or Svelte
+### Використання React, Vue чи Svelte
 
-Laravel Echo includes React, Vue, and Svelte hooks that make it painless to listen for events. To get started, invoke the `useEcho` hook, which is used to listen for private events. The `useEcho` hook will automatically leave channels when the consuming component is unmounted:
+Laravel Echo містить хуки для React, Vue та Svelte, які роблять прослуховування подій безболісним. Для початку викличте хук `useEcho`, який слухає приватні події. Хук `useEcho` автоматично виходить з каналів, коли компонент, який його використовує, демонтується:
 
 ```js tab=React
 import { useEcho } from "@laravel/echo-react";
@@ -1219,7 +1222,7 @@ useEcho(
 </script>
 ```
 
-You may listen to multiple events by providing an array of events to `useEcho`:
+Ви можете слухати кілька подій, передавши до `useEcho` масив подій:
 
 ```js
 useEcho(
@@ -1231,7 +1234,7 @@ useEcho(
 );
 ```
 
-You may also specify the shape of the broadcast event payload data, providing greater type safety and editing convenience:
+Ви також можете описати форму даних події бродкасту, отримавши кращу типобезпеку й зручність редагування:
 
 ```ts
 type OrderData = {
@@ -1251,7 +1254,7 @@ useEcho<OrderData>(`orders.${orderId}`, "OrderShipmentStatusUpdated", (e) => {
 });
 ```
 
-The `useEcho` hook will automatically leave channels when the consuming component is unmounted; however, you may utilize the returned functions to manually stop / start listening to channels programmatically when necessary:
+Хук `useEcho` автоматично виходить з каналів, коли компонент, який його використовує, демонтується; проте за потреби ви можете скористатися поверненими функціями, щоб програмно зупиняти / поновлювати прослуховування каналів вручну:
 
 ```js tab=React
 import { useEcho } from "@laravel/echo-react";
@@ -1330,9 +1333,9 @@ leave();
 ```
 
 <a name="react-vue-connecting-to-public-channels"></a>
-#### Connecting to Public Channels
+#### Підключення до публічних каналів
 
-To connect to a public channel, you may use the `useEchoPublic` hook:
+Щоб підключитися до публічного каналу, скористайтеся хуком `useEchoPublic`:
 
 ```js tab=React
 import { useEchoPublic } from "@laravel/echo-react";
@@ -1363,9 +1366,9 @@ useEchoPublic("posts", "PostPublished", (e) => {
 ```
 
 <a name="react-vue-connecting-to-presence-channels"></a>
-#### Connecting to Presence Channels
+#### Підключення до каналів присутності
 
-To connect to a presence channel, you may use the `useEchoPresence` hook:
+Щоб підключитися до каналу присутності, скористайтеся хуком `useEchoPresence`:
 
 ```js tab=React
 import { useEchoPresence } from "@laravel/echo-react";
@@ -1396,9 +1399,9 @@ useEchoPresence("posts", "PostPublished", (e) => {
 ```
 
 <a name="react-vue-connection-status"></a>
-#### Connection Status
+#### Статус з'єднання
 
-You may retrieve the current WebSocket connection status using the `useConnectionStatus` hook, which provides reactive status that automatically updates when the connection state changes:
+Отримати поточний статус WebSocket-з'єднання можна хуком `useConnectionStatus`, який надає реактивний статус, що автоматично оновлюється зі зміною стану з'єднання:
 
 ```js tab=React
 import { useConnectionStatus } from "@laravel/echo-react";
@@ -1432,22 +1435,22 @@ const status = useConnectionStatus();
 <div>Connection: {status()}</div>
 ```
 
-The possible status values are:
+Можливі значення статусу:
 
 <div class="content-list" markdown="1">
 
-- `connected` - Successfully connected to the WebSocket server.
-- `connecting` - Initial connection attempt in progress.
-- `reconnecting` - Attempting to reconnect after a disconnection.
-- `disconnected` - Not connected and not attempting to reconnect.
-- `failed` - Connection failed and won't retry.
+- `connected` - успішно підключено до WebSocket-сервера.
+- `connecting` - триває початкова спроба підключення.
+- `reconnecting` - триває спроба перепідключитися після розриву.
+- `disconnected` - не підключено й спроб перепідключитися немає.
+- `failed` - підключення не вдалося, повторів не буде.
 
 </div>
 
 <a name="react-vue-socket-id"></a>
-#### Socket ID
+#### ID сокета
 
-You may retrieve the current WebSocket socket ID using the `useSocketId` hook, which provides a reactive value that automatically updates when the connection reconnects with a new socket ID:
+Отримати поточний ID WebSocket-сокета можна хуком `useSocketId`, який надає реактивне значення, що автоматично оновлюється, коли з'єднання перепідключається з новим ID сокета:
 
 ```js tab=React
 import { useSocketId } from "@laravel/echo-react";
@@ -1482,16 +1485,16 @@ const socketId = useSocketId();
 ```
 
 <a name="presence-channels"></a>
-## Presence Channels
+## Канали присутності
 
-Presence channels build on the security of private channels while exposing the additional feature of awareness of who is subscribed to the channel. This makes it easy to build powerful, collaborative application features such as notifying users when another user is viewing the same page or listing the inhabitants of a chat room.
+Канали присутності будуються на безпеці приватних каналів, додаючи можливість знати, хто підписаний на канал. Це спрощує створення потужних спільних можливостей - наприклад, сповіщати користувачів, що ту саму сторінку переглядає хтось іще, або показувати список учасників чату.
 
 <a name="authorizing-presence-channels"></a>
-### Authorizing Presence Channels
+### Авторизація каналів присутності
 
-All presence channels are also private channels; therefore, users must be [authorized to access them](#authorizing-channels). However, when defining authorization callbacks for presence channels, you will not return `true` if the user is authorized to join the channel. Instead, you should return an array of data about the user.
+Усі канали присутності є також приватними, тому користувачі мають бути [авторизовані для доступу до них](#authorizing-channels). Проте, описуючи колбеки авторизації для каналів присутності, ви не повертаєте `true`, коли користувач має право приєднатися до каналу. Натомість вам слід повернути масив даних про користувача.
 
-The data returned by the authorization callback will be made available to the presence channel event listeners in your JavaScript application. If the user is not authorized to join the presence channel, you should return `false` or `null`:
+Дані, які повернув колбек авторизації, стануть доступні слухачам подій каналу присутності у вашому застосунку на JavaScript. Якщо користувач не має права приєднатися до каналу присутності, поверніть `false` або `null`:
 
 ```php
 use App\Models\User;
@@ -1504,9 +1507,9 @@ Broadcast::channel('chat.{roomId}', function (User $user, int $roomId) {
 ```
 
 <a name="joining-presence-channels"></a>
-### Joining Presence Channels
+### Приєднання до каналів присутності
 
-To join a presence channel, you may use Echo's `join` method. The `join` method will return a `PresenceChannel` implementation which, along with exposing the `listen` method, allows you to subscribe to the `here`, `joining`, and `leaving` events.
+Щоб приєднатися до каналу присутності, скористайтеся методом `join` з Echo. Метод `join` поверне реалізацію `PresenceChannel`, яка, окрім методу `listen`, дозволяє підписатися на події `here`, `joining` та `leaving`.
 
 ```js
 Echo.join(`chat.${roomId}`)
@@ -1524,12 +1527,12 @@ Echo.join(`chat.${roomId}`)
     });
 ```
 
-The `here` callback will be executed immediately once the channel is joined successfully, and will receive an array containing the user information for all of the other users currently subscribed to the channel. The `joining` method will be executed when a new user joins a channel, while the `leaving` method will be executed when a user leaves the channel. The `error` method will be executed when the authentication endpoint returns an HTTP status code other than 200 or if there is a problem parsing the returned JSON.
+Колбек `here` виконається одразу після успішного приєднання до каналу й отримає масив з інформацією про всіх інших користувачів, які наразі підписані на канал. Метод `joining` виконається, коли до каналу приєднається новий користувач, а метод `leaving` - коли користувач залишить канал. Метод `error` виконається, коли точка автентифікації поверне HTTP-статус, відмінний від 200, або якщо виникне проблема з розбором повернутого JSON.
 
 <a name="broadcasting-to-presence-channels"></a>
-### Broadcasting to Presence Channels
+### Бродкастинг у канали присутності
 
-Presence channels may receive events just like public or private channels. Using the example of a chatroom, we may want to broadcast `NewMessage` events to the room's presence channel. To do so, we'll return an instance of `PresenceChannel` from the event's `broadcastOn` method:
+Канали присутності можуть отримувати події так само, як публічні чи приватні канали. На прикладі чат-кімнати ми можемо захотіти надсилати події `NewMessage` до каналу присутності кімнати. Для цього повернемо екземпляр `PresenceChannel` з методу `broadcastOn` події:
 
 ```php
 /**
@@ -1545,7 +1548,7 @@ public function broadcastOn(): array
 }
 ```
 
-As with other events, you may use the `broadcast` helper and the `toOthers` method to exclude the current user from receiving the broadcast:
+Як і з іншими подіями, ви можете скористатися хелпером `broadcast` і методом `toOthers`, щоб виключити поточного користувача з отримувачів бродкасту:
 
 ```php
 broadcast(new NewMessage($message));
@@ -1553,7 +1556,7 @@ broadcast(new NewMessage($message));
 broadcast(new NewMessage($message))->toOthers();
 ```
 
-As typical of other types of events, you may listen for events sent to presence channels using Echo's `listen` method:
+Як і для інших типів подій, слухати події, надіслані до каналів присутності, можна методом `listen` з Echo:
 
 ```js
 Echo.join(`chat.${roomId}`)
@@ -1566,16 +1569,16 @@ Echo.join(`chat.${roomId}`)
 ```
 
 <a name="model-broadcasting"></a>
-## Model Broadcasting
+## Бродкастинг моделей
 
 > [!WARNING]
-> Before reading the following documentation about model broadcasting, we recommend you become familiar with the general concepts of Laravel's model broadcasting services as well as how to manually create and listen to broadcast events.
+> Перш ніж читати документацію нижче про бродкастинг моделей, радимо ознайомитися із загальними концепціями сервісів бродкастингу моделей у Laravel, а також із тим, як вручну створювати й слухати події бродкастингу.
 
-It is common to broadcast events when your application's [Eloquent models](/docs/{{version}}/eloquent) are created, updated, or deleted. Of course, this can easily be accomplished by manually [defining custom events for Eloquent model state changes](/docs/{{version}}/eloquent#events) and marking those events with the `ShouldBroadcast` interface.
+Часто буває потрібно надсилати події, коли [моделі Eloquent](/docs/{{version}}/eloquent) вашого застосунку створюються, оновлюються чи видаляються. Звісно, це легко зробити, вручну [описавши власні події для змін стану моделі Eloquent](/docs/{{version}}/eloquent#events) і позначивши ці події інтерфейсом `ShouldBroadcast`.
 
-However, if you are not using these events for any other purposes in your application, it can be cumbersome to create event classes for the sole purpose of broadcasting them. To remedy this, Laravel allows you to indicate that an Eloquent model should automatically broadcast its state changes.
+Проте, якщо ви не використовуєте ці події для чогось іще у своєму застосунку, створювати класи подій лише заради бродкастингу може бути обтяжливо. Щоб зарадити цьому, Laravel дозволяє вказати, що модель Eloquent має автоматично надсилати свої зміни стану.
 
-To get started, your Eloquent model should use the `Illuminate\Database\Eloquent\BroadcastsEvents` trait. In addition, the model should define a `broadcastOn` method, which will return an array of channels that the model's events should broadcast on:
+Для початку ваша модель Eloquent має використовувати трейт `Illuminate\Database\Eloquent\BroadcastsEvents`. Крім того, модель має описати метод `broadcastOn`, який поверне масив каналів, у які слід надсилати події моделі:
 
 ```php
 <?php
@@ -1613,9 +1616,9 @@ class Post extends Model
 }
 ```
 
-Once your model includes this trait and defines its broadcast channels, it will begin automatically broadcasting events when a model instance is created, updated, deleted, trashed, or restored.
+Щойно ваша модель містить цей трейт і описує свої канали бродкастингу, вона почне автоматично надсилати події, коли екземпляр моделі створюється, оновлюється, видаляється, потрапляє в кошик чи відновлюється.
 
-In addition, you may have noticed that the `broadcastOn` method receives a string `$event` argument. This argument contains the type of event that has occurred on the model and will have a value of `created`, `updated`, `deleted`, `trashed`, or `restored`. By inspecting the value of this variable, you may determine which channels (if any) the model should broadcast to for a particular event:
+Крім того, ви могли помітити, що метод `broadcastOn` отримує рядковий аргумент `$event`. Цей аргумент містить тип події, що сталася з моделлю, і матиме значення `created`, `updated`, `deleted`, `trashed` або `restored`. Перевіряючи значення цієї змінної, ви можете визначити, у які канали (якщо взагалі в якісь) модель має надсилати конкретну подію:
 
 ```php
 /**
@@ -1633,9 +1636,9 @@ public function broadcastOn(string $event): array
 ```
 
 <a name="customizing-model-broadcasting-event-creation"></a>
-#### Customizing Model Broadcasting Event Creation
+#### Налаштування створення події бродкастингу моделі
 
-Occasionally, you may wish to customize how Laravel creates the underlying model broadcasting event. You may accomplish this by defining a `newBroadcastableEvent` method on your Eloquent model. This method should return an `Illuminate\Database\Eloquent\BroadcastableModelEventOccurred` instance:
+Інколи вам може захотітися змінити те, як Laravel створює подію бродкастингу моделі під капотом. Зробити це можна, описавши в моделі Eloquent метод `newBroadcastableEvent`. Цей метод має повернути екземпляр `Illuminate\Database\Eloquent\BroadcastableModelEventOccurred`:
 
 ```php
 use Illuminate\Database\Eloquent\BroadcastableModelEventOccurred;
@@ -1652,14 +1655,14 @@ protected function newBroadcastableEvent(string $event): BroadcastableModelEvent
 ```
 
 <a name="model-broadcasting-conventions"></a>
-### Model Broadcasting Conventions
+### Домовленості бродкастингу моделей
 
 <a name="model-broadcasting-channel-conventions"></a>
-#### Channel Conventions
+#### Домовленості щодо каналів
 
-As you may have noticed, the `broadcastOn` method in the model example above did not return `Channel` instances. Instead, Eloquent models were returned directly. If an Eloquent model instance is returned by your model's `broadcastOn` method (or is contained in an array returned by the method), Laravel will automatically instantiate a private channel instance for the model using the model's class name and primary key identifier as the channel name.
+Як ви могли помітити, метод `broadcastOn` у прикладі моделі вище повертав не екземпляри `Channel`. Натомість поверталися самі моделі Eloquent. Якщо метод `broadcastOn` вашої моделі повертає екземпляр моделі Eloquent (або містить його в поверненому масиві), Laravel автоматично створить екземпляр приватного каналу для моделі, використавши як ім'я каналу назву класу моделі та її первинний ключ.
 
-So, an `App\Models\User` model with an `id` of `1` would be converted into an `Illuminate\Broadcasting\PrivateChannel` instance with a name of `App.Models.User.1`. Of course, in addition to returning Eloquent model instances from your model's `broadcastOn` method, you may return complete `Channel` instances in order to have full control over the model's channel names:
+Тож модель `App\Models\User` з `id` `1` перетвориться на екземпляр `Illuminate\Broadcasting\PrivateChannel` з іменем `App.Models.User.1`. Звісно, окрім повернення екземплярів моделей Eloquent із методу `broadcastOn`, ви можете повертати повноцінні екземпляри `Channel`, щоб повністю контролювати імена каналів моделі:
 
 ```php
 use Illuminate\Broadcasting\PrivateChannel;
@@ -1677,24 +1680,24 @@ public function broadcastOn(string $event): array
 }
 ```
 
-If you plan to explicitly return a channel instance from your model's `broadcastOn` method, you may pass an Eloquent model instance to the channel's constructor. When doing so, Laravel will use the model channel conventions discussed above to convert the Eloquent model into a channel name string:
+Якщо ви плануєте явно повертати екземпляр каналу з методу `broadcastOn` моделі, ви можете передати екземпляр моделі Eloquent у конструктор каналу. У такому разі Laravel скористається домовленостями щодо каналів моделей, описаними вище, щоб перетворити модель Eloquent на рядкове ім'я каналу:
 
 ```php
 return [new Channel($this->user)];
 ```
 
-If you need to determine the channel name of a model, you may call the `broadcastChannel` method on any model instance. For example, this method returns the string `App.Models.User.1` for an `App\Models\User` model with an `id` of `1`:
+Якщо вам потрібно дізнатися ім'я каналу моделі, викличте метод `broadcastChannel` на будь-якому екземплярі моделі. Наприклад, для моделі `App\Models\User` з `id` `1` цей метод поверне рядок `App.Models.User.1`:
 
 ```php
 $user->broadcastChannel();
 ```
 
 <a name="model-broadcasting-event-conventions"></a>
-#### Event Conventions
+#### Домовленості щодо подій
 
-Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, they are assigned a name and a payload based on conventions. Laravel's convention is to broadcast the event using the class name of the model (not including the namespace) and the name of the model event that triggered the broadcast.
+Оскільки події бродкастингу моделей не пов'язані зі «справжньою» подією в каталозі `App\Events` вашого застосунку, ім'я та дані їм призначаються за домовленостями. Домовленість Laravel така: подія надсилається під назвою класу моделі (без простору імен) і назвою події моделі, яка спричинила бродкаст.
 
-So, for example, an update to the `App\Models\Post` model would broadcast an event to your client-side application as `PostUpdated` with the following payload:
+Тож, наприклад, оновлення моделі `App\Models\Post` надішле до вашого клієнтського застосунку подію `PostUpdated` з такими даними:
 
 ```json
 {
@@ -1708,9 +1711,9 @@ So, for example, an update to the `App\Models\Post` model would broadcast an eve
 }
 ```
 
-The deletion of the `App\Models\User` model would broadcast an event named `UserDeleted`.
+Видалення моделі `App\Models\User` надішле подію з назвою `UserDeleted`.
 
-If you would like, you may define a custom broadcast name and payload by adding a `broadcastAs` and `broadcastWith` method to your model. These methods receive the name of the model event / operation that is occurring, allowing you to customize the event's name and payload for each model operation. If `null` is returned from the `broadcastAs` method, Laravel will use the model broadcasting event name conventions discussed above when broadcasting the event:
+За бажанням ви можете описати власні ім'я бродкасту й дані, додавши до моделі методи `broadcastAs` і `broadcastWith`. Ці методи отримують назву події / операції моделі, що відбувається, дозволяючи налаштувати ім'я та дані події для кожної операції з моделлю. Якщо метод `broadcastAs` повертає `null`, надсилаючи подію, Laravel скористається домовленостями щодо імен подій бродкастингу моделей, описаними вище:
 
 ```php
 /**
@@ -1739,13 +1742,13 @@ public function broadcastWith(string $event): array
 ```
 
 <a name="listening-for-model-broadcasts"></a>
-### Listening for Model Broadcasts
+### Прослуховування бродкастів моделей
 
-Once you have added the `BroadcastsEvents` trait to your model and defined your model's `broadcastOn` method, you are ready to start listening for broadcasted model events within your client-side application. Before getting started, you may wish to consult the complete documentation on [listening for events](#listening-for-events).
+Щойно ви додали до моделі трейт `BroadcastsEvents` і описали її метод `broadcastOn`, можна починати слухати надіслані події моделі у клієнтському застосунку. Перш ніж почати, вам може бути корисно переглянути повну документацію про [прослуховування подій](#listening-for-events).
 
-First, use the `private` method to retrieve an instance of a channel, then call the `listen` method to listen for a specified event. Typically, the channel name given to the `private` method should correspond to Laravel's [model broadcasting conventions](#model-broadcasting-conventions).
+Спершу отримайте екземпляр каналу методом `private`, а потім викличте метод `listen`, щоб слухати вказану подію. Зазвичай ім'я каналу, передане методу `private`, має відповідати [домовленостям бродкастингу моделей](#model-broadcasting-conventions) у Laravel.
 
-Once you have obtained a channel instance, you may use the `listen` method to listen for a particular event. Since model broadcast events are not associated with an "actual" event within your application's `App\Events` directory, the [event name](#model-broadcasting-event-conventions) must be prefixed with a `.` to indicate it does not belong to a particular namespace. Each model broadcast event has a `model` property which contains all of the broadcastable properties of the model:
+Отримавши екземпляр каналу, ви можете слухати конкретну подію методом `listen`. Оскільки події бродкастингу моделей не пов'язані зі «справжньою» подією в каталозі `App\Events` вашого застосунку, [ім'я події](#model-broadcasting-event-conventions) має мати префікс `.`, який вказує, що вона не належить до жодного простору імен. Кожна подія бродкастингу моделі має властивість `model`, яка містить усі властивості моделі, придатні для бродкастингу:
 
 ```js
 Echo.private(`App.Models.User.${this.user.id}`)
@@ -1755,9 +1758,9 @@ Echo.private(`App.Models.User.${this.user.id}`)
 ```
 
 <a name="model-broadcasts-with-react-or-vue"></a>
-#### Using React, Vue, or Svelte
+#### Використання React, Vue чи Svelte
 
-If you are using React, Vue, or Svelte, you may use Laravel Echo's included `useEchoModel` hook to easily listen for model broadcasts:
+Якщо ви користуєтеся React, Vue чи Svelte, для зручного прослуховування бродкастів моделей скористайтеся хуком `useEchoModel`, який входить до Laravel Echo:
 
 ```js tab=React
 import { useEchoModel } from "@laravel/echo-react";
@@ -1787,7 +1790,7 @@ useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
 </script>
 ```
 
-You may also specify the shape of the model event payload data, providing greater type safety and editing convenience:
+Ви також можете описати форму даних події моделі, отримавши кращу типобезпеку й зручність редагування:
 
 ```ts
 type User = {
@@ -1803,14 +1806,14 @@ useEchoModel<User, "App.Models.User">("App.Models.User", userId, ["UserUpdated"]
 ```
 
 <a name="client-events"></a>
-## Client Events
+## Клієнтські події
 
 > [!NOTE]
-> When using [Pusher Channels](https://pusher.com/channels), you must enable the "Client Events" option in the "App Settings" section of your [application dashboard](https://dashboard.pusher.com/) in order to send client events.
+> Користуючись [Pusher Channels](https://pusher.com/channels), ви маєте увімкнути опцію «Client Events» у розділі «App Settings» вашої [панелі застосунку](https://dashboard.pusher.com/), щоб надсилати клієнтські події.
 
-Sometimes you may wish to broadcast an event to other connected clients without hitting your Laravel application at all. This can be particularly useful for things like "typing" notifications, where you want to alert users of your application that another user is typing a message on a given screen.
+Інколи вам може захотітися надіслати подію іншим підключеним клієнтам, узагалі не звертаючись до застосунку Laravel. Це особливо корисно для речей на кшталт сповіщень «набирає повідомлення», коли ви хочете попередити користувачів застосунку, що інший користувач набирає повідомлення на певному екрані.
 
-To broadcast client events, you may use Echo's `whisper` method:
+Щоб надсилати клієнтські події, скористайтеся методом `whisper` з Echo:
 
 ```js tab=JavaScript
 Echo.private(`chat.${roomId}`)
@@ -1853,7 +1856,7 @@ channel().whisper('typing', { name: user.name });
 </script>
 ```
 
-To listen for client events, you may use the `listenForWhisper` method:
+Щоб слухати клієнтські події, скористайтеся методом `listenForWhisper`:
 
 ```js tab=JavaScript
 Echo.private(`chat.${roomId}`)
@@ -1903,11 +1906,11 @@ channel().listenForWhisper('typing', (e) => {
 ```
 
 <a name="notifications"></a>
-## Notifications
+## Сповіщення
 
-By pairing event broadcasting with [notifications](/docs/{{version}}/notifications), your JavaScript application may receive new notifications as they occur without needing to refresh the page. Before getting started, be sure to read over the documentation on using [the broadcast notification channel](/docs/{{version}}/notifications#broadcast-notifications).
+Поєднавши бродкастинг подій зі [сповіщеннями](/docs/{{version}}/notifications), ваш застосунок на JavaScript зможе отримувати нові сповіщення щойно вони з'являються, без оновлення сторінки. Перш ніж почати, обов'язково прочитайте документацію про [канал сповіщень broadcast](/docs/{{version}}/notifications#broadcast-notifications).
 
-Once you have configured a notification to use the broadcast channel, you may listen for the broadcast events using Echo's `notification` method. Remember, the channel name should match the class name of the entity receiving the notifications:
+Щойно ви налаштували сповіщення на використання каналу broadcast, слухати події бродкастингу можна методом `notification` з Echo. Пам'ятайте: ім'я каналу має збігатися з назвою класу сутності, яка отримує сповіщення:
 
 ```js tab=JavaScript
 Echo.private(`App.Models.User.${userId}`)
@@ -1950,12 +1953,12 @@ channel().notification((notification) => {
 </script>
 ```
 
-In this example, all notifications sent to `App\Models\User` instances via the `broadcast` channel would be received by the callback. A channel authorization callback for the `App.Models.User.{id}` channel is included in your application's `routes/channels.php` file.
+У цьому прикладі всі сповіщення, надіслані екземплярам `App\Models\User` через канал `broadcast`, отримуватиме колбек. Колбек авторизації каналу `App.Models.User.{id}` уже є у файлі `routes/channels.php` вашого застосунку.
 
 <a name="stop-listening-for-notifications"></a>
-#### Stop Listening for Notifications
+#### Припинення прослуховування сповіщень
 
-If you would like to stop listening to notifications without [leaving the channel](#leaving-a-channel), you may use the `stopListeningForNotification` method:
+Якщо ви хочете перестати слухати сповіщення, не [виходячи з каналу](#leaving-a-channel), скористайтеся методом `stopListeningForNotification`:
 
 ```js
 const callback = (notification) => {
