@@ -1,29 +1,32 @@
-# Frontend
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Фронтенд
 
-- [Introduction](#introduction)
-- [Using PHP](#using-php)
-    - [PHP and Blade](#php-and-blade)
+- [Вступ](#introduction)
+- [Використання PHP](#using-php)
+    - [PHP і Blade](#php-and-blade)
     - [Livewire](#livewire)
-    - [Starter Kits](#php-starter-kits)
-- [Using React, Svelte, or Vue](#using-react-svelte-or-vue)
+    - [Стартові набори](#php-starter-kits)
+- [Використання React, Svelte чи Vue](#using-react-svelte-or-vue)
     - [Inertia](#inertia)
-    - [Starter Kits](#inertia-starter-kits)
-- [Bundling Assets](#bundling-assets)
+    - [Стартові набори](#inertia-starter-kits)
+- [Складання ресурсів](#bundling-assets)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel is a backend framework that provides all of the features you need to build modern web applications, such as [routing](/docs/{{version}}/routing), [validation](/docs/{{version}}/validation), [caching](/docs/{{version}}/cache), [queues](/docs/{{version}}/queues), [file storage](/docs/{{version}}/filesystem), and more. However, we believe it's important to offer developers a beautiful full-stack experience, including powerful approaches for building your application's frontend.
+Laravel - це бекенд-фреймворк, який дає всі можливості, потрібні для створення сучасних веб-застосунків: [маршрутизацію](/docs/{{version}}/routing), [валідацію](/docs/{{version}}/validation), [кешування](/docs/{{version}}/cache), [черги](/docs/{{version}}/queues), [файлове сховище](/docs/{{version}}/filesystem) тощо. Утім, ми вважаємо важливим давати розробникам приємний повностековий досвід, зокрема потужні підходи до створення фронтенду вашого застосунку.
 
-There are two primary ways to tackle frontend development when building an application with Laravel, and which approach you choose is determined by whether you would like to build your frontend by leveraging PHP or by using JavaScript frameworks such as React, Svelte, and Vue. We'll discuss both of these options below so that you can make an informed decision regarding the best approach to frontend development for your application.
+Є два основні способи підійти до фронтенд-розробки, створюючи застосунок на Laravel, і вибір залежить від того, чи хочете ви будувати фронтенд засобами PHP, чи за допомогою JavaScript-фреймворків на кшталт React, Svelte і Vue. Нижче ми розглянемо обидва варіанти, щоб ви могли зважено обрати найкращий підхід до фронтенду для свого застосунку.
 
 <a name="using-php"></a>
-## Using PHP
+## Використання PHP
 
 <a name="php-and-blade"></a>
-### PHP and Blade
+### PHP і Blade
 
-In the past, most PHP applications rendered HTML to the browser using simple HTML templates interspersed with PHP `echo` statements which render data that was retrieved from a database during the request:
+Колись більшість PHP-застосунків віддавали HTML у браузер за допомогою простих HTML-шаблонів, перемежованих інструкціями `echo`, які виводили дані, отримані з бази під час запиту:
 
 ```blade
 <div>
@@ -33,7 +36,7 @@ In the past, most PHP applications rendered HTML to the browser using simple HTM
 </div>
 ```
 
-In Laravel, this approach to rendering HTML can still be achieved using [views](/docs/{{version}}/views) and [Blade](/docs/{{version}}/blade). Blade is an extremely light-weight templating language that provides convenient, short syntax for displaying data, iterating over data, and more:
+У Laravel такий підхід до рендерингу HTML усе ще доступний завдяки [представленням](/docs/{{version}}/views) і [Blade](/docs/{{version}}/blade). Blade - надзвичайно легка мова шаблонів, що дає зручний короткий синтаксис для виведення даних, ітерування по них тощо:
 
 ```blade
 <div>
@@ -43,23 +46,23 @@ In Laravel, this approach to rendering HTML can still be achieved using [views](
 </div>
 ```
 
-When building applications in this fashion, form submissions and other page interactions typically receive an entirely new HTML document from the server and the entire page is re-rendered by the browser. Even today, many applications may be perfectly suited to having their frontends constructed in this way using simple Blade templates.
+Коли застосунки будуються в такий спосіб, надсилання форм та інші взаємодії зі сторінкою зазвичай отримують із сервера цілком новий HTML-документ, і браузер перерендерює всю сторінку. Навіть сьогодні багатьом застосункам чудово підходить фронтенд, побудований саме так - на простих шаблонах Blade.
 
 <a name="growing-expectations"></a>
-#### Growing Expectations
+#### Зростання очікувань
 
-However, as user expectations regarding web applications have matured, many developers have found the need to build more dynamic frontends with interactions that feel more polished. In light of this, some developers choose to begin building their application's frontend using JavaScript frameworks such as React, Svelte, and Vue.
+Однак у міру того, як очікування користувачів від веб-застосунків зростали, багато розробників відчули потребу створювати динамічніші фронтенди з відточенішими взаємодіями. З огляду на це частина розробників обирає будувати фронтенд свого застосунку за допомогою JavaScript-фреймворків, як-от React, Svelte і Vue.
 
-Others, preferring to stick with the backend language they are comfortable with, have developed solutions that allow the construction of modern web application UIs while still primarily utilizing their backend language of choice. For example, in the [Rails](https://rubyonrails.org/) ecosystem, this has spurred the creation of libraries such as [Turbo](https://turbo.hotwired.dev/) [Hotwire](https://hotwired.dev/), and [Stimulus](https://stimulus.hotwired.dev/).
+Інші, віддаючи перевагу звичній для себе бекенд-мові, розробили рішення, що дозволяють створювати сучасні інтерфейси веб-застосунків, залишаючись переважно в межах обраної бекенд-мови. Наприклад, в екосистемі [Rails](https://rubyonrails.org/) це спонукало появу бібліотек на кшталт [Turbo](https://turbo.hotwired.dev/), [Hotwire](https://hotwired.dev/) і [Stimulus](https://stimulus.hotwired.dev/).
 
-Within the Laravel ecosystem, the need to create modern, dynamic frontends by primarily using PHP has led to the creation of [Laravel Livewire](https://livewire.laravel.com) and [Alpine.js](https://alpinejs.dev/).
+В екосистемі Laravel потреба створювати сучасні динамічні фронтенди переважно засобами PHP привела до появи [Laravel Livewire](https://livewire.laravel.com) та [Alpine.js](https://alpinejs.dev/).
 
 <a name="livewire"></a>
 ### Livewire
 
-[Laravel Livewire](https://livewire.laravel.com) is a framework for building Laravel powered frontends that feel dynamic, modern, and alive just like frontends built with modern JavaScript frameworks like React, Svelte, and Vue.
+[Laravel Livewire](https://livewire.laravel.com) - це фреймворк для створення фронтендів на базі Laravel, які відчуваються динамічними, сучасними й живими - так само, як фронтенди, побудовані на сучасних JavaScript-фреймворках на кшталт React, Svelte і Vue.
 
-When using Livewire, you will create Livewire "components" that render a discrete portion of your UI and expose methods and data that can be invoked and interacted with from your application's frontend. For example, a simple "Counter" component might look like the following:
+Використовуючи Livewire, ви створюватимете «компоненти» Livewire, які рендерять окрему частину вашого інтерфейсу та надають методи й дані, що їх можна викликати й з якими можна взаємодіяти з фронтенду вашого застосунку. Наприклад, простий компонент «лічильник» може виглядати так:
 
 ```php
 <?php
@@ -84,32 +87,32 @@ new class extends Component
 
 ```
 
-As you can see, Livewire enables you to write new HTML attributes such as `wire:click` that connect your Laravel application's frontend and backend. In addition, you can render your component's current state using simple Blade expressions.
+Як бачите, Livewire дозволяє писати нові HTML-атрибути на кшталт `wire:click`, які з'єднують фронтенд і бекенд вашого застосунку Laravel. Крім того, ви можете виводити поточний стан компонента звичайними виразами Blade.
 
-For many, Livewire has revolutionized frontend development with Laravel, allowing them to stay within the comfort of Laravel while constructing modern, dynamic web applications. Typically, developers using Livewire will also utilize [Alpine.js](https://alpinejs.dev/) to "sprinkle" JavaScript onto their frontend only where it is needed, such as in order to render a dialog window.
+Для багатьох Livewire став революцією у фронтенд-розробці з Laravel, дозволивши залишатися в комфорті Laravel, створюючи водночас сучасні динамічні веб-застосунки. Зазвичай розробники, які використовують Livewire, також беруть [Alpine.js](https://alpinejs.dev/), щоб «присипати» фронтенд JavaScript лише там, де це потрібно - наприклад, щоб показати діалогове вікно.
 
-If you're new to Laravel, we recommend getting familiar with the basic usage of [views](/docs/{{version}}/views) and [Blade](/docs/{{version}}/blade). Then, consult the official [Laravel Livewire documentation](https://livewire.laravel.com/docs) to learn how to take your application to the next level with interactive Livewire components.
+Якщо ви новачок у Laravel, радимо спершу ознайомитися з базовим використанням [представлень](/docs/{{version}}/views) і [Blade](/docs/{{version}}/blade). Далі зверніться до офіційної [документації Laravel Livewire](https://livewire.laravel.com/docs), щоб дізнатися, як вивести застосунок на новий рівень за допомогою інтерактивних компонентів Livewire.
 
 <a name="php-starter-kits"></a>
-### Starter Kits
+### Стартові набори
 
-If you would like to build your frontend using PHP and Livewire, you can leverage our [Livewire starter kit](/docs/{{version}}/starter-kits) to jump-start your application's development.
+Якщо ви хочете будувати фронтенд засобами PHP і Livewire, скористайтеся нашим [стартовим набором Livewire](/docs/{{version}}/starter-kits), щоб пришвидшити початок розробки застосунку.
 
 <a name="using-react-svelte-or-vue"></a>
-## Using React, Svelte, or Vue
+## Використання React, Svelte чи Vue
 
-Although it's possible to build modern frontends using Laravel and Livewire, many developers still prefer to leverage the power of a JavaScript framework like React, Svelte, or Vue. This allows developers to take advantage of the rich ecosystem of JavaScript packages and tools available via NPM.
+Хоча сучасні фронтенди цілком можна створювати за допомогою Laravel і Livewire, багато розробників усе ж віддають перевагу потужності JavaScript-фреймворків на кшталт React, Svelte чи Vue. Це дозволяє скористатися багатою екосистемою JavaScript-пакетів та інструментів, доступних через NPM.
 
-However, without additional tooling, pairing Laravel with React, Svelte, or Vue would leave us needing to solve a variety of complicated problems such as client-side routing, data hydration, and authentication. Client-side routing is often simplified by using opinionated React / Svelte / Vue frameworks such as [Next](https://nextjs.org/) and [Nuxt](https://nuxt.com/); however, data hydration and authentication remain complicated and cumbersome problems to solve when pairing a backend framework like Laravel with these frontend frameworks.
+Однак без додаткових інструментів поєднання Laravel із React, Svelte чи Vue залишило б нам купу складних проблем: маршрутизацію на боці клієнта, гідратацію даних і автентифікацію. Маршрутизацію на боці клієнта часто спрощують фреймворки з чіткими домовленостями, як-от [Next](https://nextjs.org/) і [Nuxt](https://nuxt.com/), але гідратація даних і автентифікація лишаються складними й марудними задачами, коли ви поєднуєте бекенд-фреймворк на кшталт Laravel із цими фронтенд-фреймворками.
 
-In addition, developers are left maintaining two separate code repositories, often needing to coordinate maintenance, releases, and deployments across both repositories. While these problems are not insurmountable, we don't believe it's a productive or enjoyable way to develop applications.
+До того ж розробникам доводиться підтримувати два окремі репозиторії коду, часто узгоджуючи супровід, релізи й розгортання в обох. Хоча ці проблеми й не є нездоланними, ми не вважаємо це продуктивним чи приємним способом розробляти застосунки.
 
 <a name="inertia"></a>
 ### Inertia
 
-Thankfully, Laravel offers the best of both worlds. [Inertia](https://inertiajs.com) bridges the gap between your Laravel application and your modern React, Svelte, or Vue frontend, allowing you to build full-fledged, modern frontends using React, Svelte, or Vue while leveraging Laravel routes and controllers for routing, data hydration, and authentication — all within a single code repository. With this approach, you can enjoy the full power of both Laravel and React / Svelte / Vue without crippling the capabilities of either tool.
+На щастя, Laravel пропонує найкраще з обох світів. [Inertia](https://inertiajs.com) долає розрив між вашим застосунком Laravel і сучасним фронтендом на React, Svelte чи Vue, дозволяючи створювати повноцінні сучасні фронтенди на React, Svelte чи Vue, використовуючи водночас маршрути й контролери Laravel для маршрутизації, гідратації даних і автентифікації - і все це в одному репозиторії. За такого підходу ви отримуєте всю потужність і Laravel, і React / Svelte / Vue, не обмежуючи можливостей жодного з інструментів.
 
-After installing Inertia into your Laravel application, you will write routes and controllers like normal. However, instead of returning a Blade template from your controller, you will return an Inertia page:
+Після встановлення Inertia у ваш застосунок Laravel ви писатимете маршрути й контролери як зазвичай. Однак замість повернення шаблону Blade із контролера ви повертатимете сторінку Inertia:
 
 ```php
 <?php
@@ -134,7 +137,7 @@ class UserController extends Controller
 }
 ```
 
-An Inertia page corresponds to a React, Svelte, or Vue component, typically stored within the `resources/js/pages` directory of your application. The data given to the page via the `Inertia::render` method will be used to hydrate the "props" of the page component:
+Сторінці Inertia відповідає компонент React, Svelte чи Vue, який зазвичай зберігається в каталозі `resources/js/pages` вашого застосунку. Дані, передані сторінці через метод `Inertia::render`, використовуються для гідратації «props» компонента сторінки:
 
 ```jsx
 import Layout from '@/layouts/authenticated';
@@ -151,25 +154,25 @@ export default function Show({ user }) {
 }
 ```
 
-As you can see, Inertia allows you to leverage the full power of React, Svelte, or Vue when building your frontend, while providing a light-weight bridge between your Laravel powered backend and your JavaScript powered frontend.
+Як бачите, Inertia дозволяє скористатися всією потужністю React, Svelte чи Vue під час створення фронтенду, даючи водночас легкий місток між вашим бекендом на Laravel і фронтендом на JavaScript.
 
-#### Server-Side Rendering
+#### Рендеринг на боці сервера
 
-If you're concerned about diving into Inertia because your application requires server-side rendering, don't worry. Inertia offers [server-side rendering support](https://inertiajs.com/server-side-rendering). And, when deploying your application via [Laravel Cloud](https://cloud.laravel.com) or [Laravel Forge](https://forge.laravel.com), it's a breeze to ensure that Inertia's server-side rendering process is always running.
+Якщо ви вагаєтеся братися за Inertia, бо ваш застосунок потребує рендерингу на боці сервера, не хвилюйтеся. Inertia пропонує [підтримку рендерингу на боці сервера](https://inertiajs.com/server-side-rendering). А розгортаючи застосунок через [Laravel Cloud](https://cloud.laravel.com) чи [Laravel Forge](https://forge.laravel.com), ви легко забезпечите, щоб процес серверного рендерингу Inertia працював завжди.
 
 <a name="inertia-starter-kits"></a>
-### Starter Kits
+### Стартові набори
 
-If you would like to build your frontend using Inertia and React / Svelte / Vue, you can leverage our [React, Svelte, or Vue application starter kits](/docs/{{version}}/starter-kits) to jump-start your application's development. All of these starter kits scaffold your application's backend and frontend authentication flow using Inertia, React / Svelte / Vue, [Tailwind](https://tailwindcss.com), and [Vite](https://vitejs.dev) so that you can start building your next big idea.
+Якщо ви хочете будувати фронтенд за допомогою Inertia і React / Svelte / Vue, скористайтеся нашими [стартовими наборами застосунків для React, Svelte чи Vue](/docs/{{version}}/starter-kits), щоб пришвидшити початок розробки. Усі ці набори створюють каркас автентифікації для бекенду та фронтенду вашого застосунку за допомогою Inertia, React / Svelte / Vue, [Tailwind](https://tailwindcss.com) і [Vite](https://vitejs.dev), тож ви можете братися до втілення своєї наступної великої ідеї.
 
 <a name="bundling-assets"></a>
-## Bundling Assets
+## Складання ресурсів
 
-Regardless of whether you choose to develop your frontend using Blade and Livewire or React / Svelte / Vue and Inertia, you will likely need to bundle your application's CSS into production-ready assets. Of course, if you choose to build your application's frontend with React, Svelte, or Vue, you will also need to bundle your components into browser ready JavaScript assets.
+Незалежно від того, чи розробляєте ви фронтенд на Blade і Livewire, чи на React / Svelte / Vue та Inertia, вам, найімовірніше, знадобиться зібрати CSS вашого застосунку у готові до продакшену ресурси. Звісно, якщо ви будуєте фронтенд на React, Svelte чи Vue, вам також потрібно буде зібрати компоненти в готові для браузера JavaScript-ресурси.
 
-By default, Laravel utilizes [Vite](https://vitejs.dev) to bundle your assets. Vite provides lightning-fast build times and near instantaneous Hot Module Replacement (HMR) during local development. In all new Laravel applications, including those using our [starter kits](/docs/{{version}}/starter-kits), you will find a `vite.config.js` file that loads our light-weight Laravel Vite plugin that makes Vite a joy to use with Laravel applications.
+За замовчуванням Laravel використовує [Vite](https://vitejs.dev) для складання ваших ресурсів. Vite забезпечує блискавичну швидкість збірки та майже миттєву гарячу заміну модулів (HMR) під час локальної розробки. У всіх нових застосунках Laravel, зокрема тих, що використовують наші [стартові набори](/docs/{{version}}/starter-kits), ви знайдете файл `vite.config.js`, який завантажує наш легкий плагін Laravel Vite, завдяки чому користуватися Vite із застосунками Laravel - справжнє задоволення.
 
-The fastest way to get started with Laravel and Vite is by beginning your application's development using [our application starter kits](/docs/{{version}}/starter-kits), which jump-starts your application by providing frontend and backend authentication scaffolding.
+Найшвидший спосіб почати з Laravel і Vite - розпочати розробку застосунку з [наших стартових наборів](/docs/{{version}}/starter-kits), які дають фору, надаючи готовий каркас автентифікації для фронтенду й бекенду.
 
 > [!NOTE]
-> For more detailed documentation on utilizing Vite with Laravel, please see our [dedicated documentation on bundling and compiling your assets](/docs/{{version}}/vite).
+> Докладнішу документацію щодо використання Vite з Laravel дивіться в нашій [окремій документації про складання та компіляцію ресурсів](/docs/{{version}}/vite).

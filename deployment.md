@@ -1,59 +1,62 @@
-# Deployment
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Розгортання
 
-- [Introduction](#introduction)
-- [Server Requirements](#server-requirements)
-- [Server Configuration](#server-configuration)
+- [Вступ](#introduction)
+- [Вимоги до сервера](#server-requirements)
+- [Конфігурація сервера](#server-configuration)
     - [Nginx](#nginx)
     - [FrankenPHP](#frankenphp)
-    - [Directory Permissions](#directory-permissions)
-- [Optimization](#optimization)
-    - [Caching Configuration](#optimizing-configuration-loading)
-    - [Caching Events](#caching-events)
-    - [Caching Routes](#optimizing-route-loading)
-    - [Caching Views](#optimizing-view-loading)
-- [Reloading Services](#reloading-services)
-- [Debug Mode](#debug-mode)
-- [The Health Route](#the-health-route)
-- [Deploying With Laravel Cloud or Forge](#deploying-with-cloud-or-forge)
+    - [Права на каталоги](#directory-permissions)
+- [Оптимізація](#optimization)
+    - [Кешування конфігурації](#optimizing-configuration-loading)
+    - [Кешування подій](#caching-events)
+    - [Кешування маршрутів](#optimizing-route-loading)
+    - [Кешування представлень](#optimizing-view-loading)
+- [Перезавантаження сервісів](#reloading-services)
+- [Режим налагодження](#debug-mode)
+- [Маршрут перевірки стану](#the-health-route)
+- [Розгортання за допомогою Laravel Cloud чи Forge](#deploying-with-cloud-or-forge)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-When you're ready to deploy your Laravel application to production, there are some important things you can do to make sure your application is running as efficiently as possible. In this document, we'll cover some great starting points for making sure your Laravel application is deployed properly.
+Коли ви готові розгорнути свій застосунок Laravel у продакшені, є кілька важливих речей, які варто зробити, щоб застосунок працював якомога ефективніше. У цьому документі ми розглянемо гарні відправні точки для правильного розгортання вашого застосунку Laravel.
 
 <a name="server-requirements"></a>
-## Server Requirements
+## Вимоги до сервера
 
-The Laravel framework has a few system requirements. You should ensure that your web server has the following minimum PHP version and extensions:
+Фреймворк Laravel має кілька системних вимог. Переконайтеся, що ваш веб-сервер має таку мінімальну версію PHP і розширення:
 
 <div class="content-list" markdown="1">
 
 - PHP >= 8.3
-- Ctype PHP Extension
-- cURL PHP Extension
-- DOM PHP Extension
-- Fileinfo PHP Extension
-- Filter PHP Extension
-- Hash PHP Extension
-- Mbstring PHP Extension
-- OpenSSL PHP Extension
-- PCRE PHP Extension
-- PDO PHP Extension
-- Session PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
+- Розширення PHP Ctype
+- Розширення PHP cURL
+- Розширення PHP DOM
+- Розширення PHP Fileinfo
+- Розширення PHP Filter
+- Розширення PHP Hash
+- Розширення PHP Mbstring
+- Розширення PHP OpenSSL
+- Розширення PHP PCRE
+- Розширення PHP PDO
+- Розширення PHP Session
+- Розширення PHP Tokenizer
+- Розширення PHP XML
 
 </div>
 
 <a name="server-configuration"></a>
-## Server Configuration
+## Конфігурація сервера
 
 <a name="nginx"></a>
 ### Nginx
 
-If you are deploying your application to a server that is running Nginx, you may use the following configuration file as a starting point for configuring your web server. Most likely, this file will need to be customized depending on your server's configuration. **If you would like assistance in managing your server, consider using a fully-managed Laravel platform like [Laravel Cloud](https://cloud.laravel.com).**
+Якщо ви розгортаєте застосунок на сервері з Nginx, можете взяти наведений нижче конфігураційний файл за відправну точку для налаштування веб-сервера. Найімовірніше, цей файл доведеться адаптувати під конфігурацію вашого сервера. **Якщо вам потрібна допомога в керуванні сервером, розгляньте повністю керовану платформу для Laravel, як-от [Laravel Cloud](https://cloud.laravel.com).**
 
-Please ensure, like the configuration below, your web server directs all requests to your application's `public/index.php` file. You should never attempt to move the `index.php` file to your project's root, as serving the application from the project root will expose many sensitive configuration files to the public Internet:
+Переконайтеся, що ваш веб-сервер спрямовує всі запити до файлу `public/index.php` вашого застосунку, як у конфігурації нижче. Ніколи не намагайтеся перенести файл `index.php` до кореня проєкту: віддавання застосунку з кореня проєкту відкриє публічному інтернету багато конфіденційних конфігураційних файлів:
 
 ```nginx
 server {
@@ -94,109 +97,109 @@ server {
 <a name="frankenphp"></a>
 ### FrankenPHP
 
-[FrankenPHP](https://frankenphp.dev/) may also be used to serve your Laravel applications. FrankenPHP is a modern PHP application server written in Go. To serve a Laravel PHP application using FrankenPHP, you may simply invoke its `php-server` command:
+[FrankenPHP](https://frankenphp.dev/) також можна використовувати для віддавання ваших застосунків Laravel. FrankenPHP - це сучасний сервер PHP-застосунків, написаний мовою Go. Щоб віддавати PHP-застосунок Laravel через FrankenPHP, просто викличте його команду `php-server`:
 
 ```shell
 frankenphp php-server -r public/
 ```
 
-To take advantage of more powerful features supported by FrankenPHP, such as its [Laravel Octane](/docs/{{version}}/octane) integration, HTTP/3, modern compression, or the ability to package Laravel applications as standalone binaries, please consult FrankenPHP's [Laravel documentation](https://frankenphp.dev/docs/laravel/).
+Щоб скористатися потужнішими можливостями FrankenPHP - як-от інтеграцією з [Laravel Octane](/docs/{{version}}/octane), HTTP/3, сучасним стисненням чи можливістю пакувати застосунки Laravel в окремі виконувані файли, - зверніться до [документації FrankenPHP щодо Laravel](https://frankenphp.dev/docs/laravel/).
 
 <a name="directory-permissions"></a>
-### Directory Permissions
+### Права на каталоги
 
-Laravel will need to write to the `bootstrap/cache` and `storage` directories, so you should ensure the web server process owner has permission to write to these directories.
+Laravel потребує запису в каталоги `bootstrap/cache` і `storage`, тож переконайтеся, що власник процесу веб-сервера має права на запис до цих каталогів.
 
 <a name="optimization"></a>
-## Optimization
+## Оптимізація
 
-When deploying your application to production, there are a variety of files that should be cached, including your configuration, events, routes, and views. Laravel provides a single, convenient `optimize` Artisan command that will cache all of these files. This command should typically be invoked as part of your application's deployment process:
+Розгортаючи застосунок у продакшені, слід закешувати низку файлів: конфігурацію, події, маршрути та представлення. Laravel надає одну зручну команду Artisan `optimize`, яка закешує всі ці файли. Зазвичай її варто викликати як частину процесу розгортання вашого застосунку:
 
 ```shell
 php artisan optimize
 ```
 
-The `optimize:clear` method may be used to remove all of the cache files generated by the `optimize` command as well as all keys in the default cache driver:
+Метод `optimize:clear` дозволяє видалити всі файли кешу, згенеровані командою `optimize`, а також усі ключі в драйвері кешу за замовчуванням:
 
 ```shell
 php artisan optimize:clear
 ```
 
-In the following documentation, we will discuss each of the granular optimization commands that are executed by the `optimize` command.
+Далі в документації ми розглянемо кожну з окремих команд оптимізації, які виконує команда `optimize`.
 
 <a name="optimizing-configuration-loading"></a>
-### Caching Configuration
+### Кешування конфігурації
 
-When deploying your application to production, you should make sure that you run the `config:cache` Artisan command during your deployment process:
+Розгортаючи застосунок у продакшені, переконайтеся, що під час розгортання виконується команда Artisan `config:cache`:
 
 ```shell
 php artisan config:cache
 ```
 
-This command will combine all of Laravel's configuration files into a single, cached file, which greatly reduces the number of trips the framework must make to the filesystem when loading your configuration values.
+Ця команда об'єднає всі конфігураційні файли Laravel в один закешований файл, що значно зменшує кількість звернень фреймворку до файлової системи під час завантаження значень конфігурації.
 
 > [!WARNING]
-> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`.
+> Якщо ви виконуєте команду `config:cache` під час розгортання, переконайтеся, що викликаєте функцію `env` лише всередині конфігураційних файлів. Щойно конфігурацію закешовано, файл `.env` не завантажуватиметься, і всі виклики функції `env` для змінних із `.env` повертатимуть `null`.
 
 <a name="caching-events"></a>
-### Caching Events
+### Кешування подій
 
-You should cache your application's auto-discovered event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:
+Під час розгортання варто закешувати автоматично виявлені зіставлення подій зі слухачами. Це робиться викликом команди Artisan `event:cache`:
 
 ```shell
 php artisan event:cache
 ```
 
 <a name="optimizing-route-loading"></a>
-### Caching Routes
+### Кешування маршрутів
 
-If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:
+Якщо ви створюєте великий застосунок із багатьма маршрутами, переконайтеся, що під час розгортання виконується команда Artisan `route:cache`:
 
 ```shell
 php artisan route:cache
 ```
 
-This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes.
+Ця команда зводить усі реєстрації маршрутів до одного виклику методу в закешованому файлі, що покращує швидкодію реєстрації, коли маршрутів сотні.
 
 <a name="optimizing-view-loading"></a>
-### Caching Views
+### Кешування представлень
 
-When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:
+Розгортаючи застосунок у продакшені, переконайтеся, що під час розгортання виконується команда Artisan `view:cache`:
 
 ```shell
 php artisan view:cache
 ```
 
-This command precompiles all your Blade views so they are not compiled on demand, improving the performance of each request that returns a view.
+Ця команда попередньо компілює всі ваші представлення Blade, щоб вони не компілювалися на вимогу, покращуючи швидкодію кожного запиту, який повертає представлення.
 
 <a name="reloading-services"></a>
-## Reloading Services
+## Перезавантаження сервісів
 
 > [!NOTE]
-> When deploying to [Laravel Cloud](https://cloud.laravel.com), it is not necessary to use the `reload` command, as gracefully reloading of all services is handled automatically.
+> Розгортаючись у [Laravel Cloud](https://cloud.laravel.com), використовувати команду `reload` не потрібно - коректне перезавантаження всіх сервісів відбувається автоматично.
 
-After deploying a new version of your application, any long-running services such as queue workers, Laravel Reverb, or Laravel Octane should be reloaded / restarted to use the new code. Laravel provides a single `reload` Artisan command that will terminate these services:
+Після розгортання нової версії застосунку всі довготривалі сервіси - як-от воркери черг, Laravel Reverb чи Laravel Octane - слід перезавантажити чи перезапустити, щоб вони використовували новий код. Laravel надає одну команду Artisan `reload`, яка завершує роботу цих сервісів:
 
 ```shell
 php artisan reload
 ```
 
-If you are not using [Laravel Cloud](https://cloud.laravel.com), you should manually configure a process monitor that can detect when your reloadable processes exit and automatically restart them.
+Якщо ви не користуєтеся [Laravel Cloud](https://cloud.laravel.com), вам слід самостійно налаштувати монітор процесів, який виявлятиме завершення ваших перезавантажуваних процесів і автоматично перезапускатиме їх.
 
 <a name="debug-mode"></a>
-## Debug Mode
+## Режим налагодження
 
-The debug option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file.
+Опція debug у вашому конфігураційному файлі `config/app.php` визначає, скільки інформації про помилку насправді показується користувачеві. За замовчуванням ця опція налаштована на значення змінної середовища `APP_DEBUG`, яка зберігається у файлі `.env` вашого застосунку.
 
 > [!WARNING]
-> **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+> **У продакшен-середовищі це значення завжди має бути `false`. Якщо в продакшені змінна `APP_DEBUG` матиме значення `true`, ви ризикуєте розкрити конфіденційні значення конфігурації кінцевим користувачам вашого застосунку.**
 
 <a name="the-health-route"></a>
-## The Health Route
+## Маршрут перевірки стану
 
-Laravel includes a built-in health check route that can be used to monitor the status of your application. In production, this route may be used to report the status of your application to an uptime monitor, load balancer, or orchestration system such as Kubernetes.
+Laravel містить вбудований маршрут перевірки стану, за яким можна стежити за станом вашого застосунку. У продакшені цей маршрут можна використовувати, щоб повідомляти про стан застосунку монітору доступності, балансувальнику навантаження чи системі оркестрації на кшталт Kubernetes.
 
-By default, the health check route is served at `/up` and will return a 200 HTTP response if the application has booted without exceptions. Otherwise, a 500 HTTP response will be returned. You may configure the URI for this route in your application's `bootstrap/app` file:
+За замовчуванням маршрут перевірки стану доступний за адресою `/up` і повертає HTTP-відповідь 200, якщо застосунок завантажився без винятків. Інакше повертається HTTP-відповідь 500. Ви можете налаштувати URI цього маршруту у файлі `bootstrap/app` вашого застосунку:
 
 ```php
 ->withRouting(
@@ -207,21 +210,21 @@ By default, the health check route is served at `/up` and will return a 200 HTTP
 )
 ```
 
-When HTTP requests are made to this route, Laravel will also dispatch a `Illuminate\Foundation\Events\DiagnosingHealth` event, allowing you to perform additional health checks relevant to your application. Within a [listener](/docs/{{version}}/events) for this event, you may check your application's database or cache status. If you detect a problem with your application, you may simply throw an exception from the listener.
+Коли до цього маршруту надходять HTTP-запити, Laravel також надсилає подію `Illuminate\Foundation\Events\DiagnosingHealth`, що дозволяє виконати додаткові перевірки стану, доречні для вашого застосунку. У [слухачі](/docs/{{version}}/events) цієї події ви можете перевірити стан бази даних чи кешу вашого застосунку. Якщо ви виявите проблему, просто викиньте виняток зі слухача.
 
 <a name="deploying-with-cloud-or-forge"></a>
-## Deploying With Laravel Cloud or Forge
+## Розгортання за допомогою Laravel Cloud чи Forge
 
 <a name="laravel-cloud"></a>
 #### Laravel Cloud
 
-If you would like a fully-managed, auto-scaling deployment platform tuned for Laravel, check out [Laravel Cloud](https://cloud.laravel.com). Laravel Cloud is a robust deployment platform for Laravel, offering managed compute, databases, caches, and object storage.
+Якщо вам потрібна повністю керована платформа розгортання з автомасштабуванням, налаштована під Laravel, перегляньте [Laravel Cloud](https://cloud.laravel.com). Laravel Cloud - це надійна платформа розгортання для Laravel, що пропонує керовані обчислення, бази даних, кеші та об'єктне сховище.
 
-Launch your Laravel application on Cloud and fall in love with the scalable simplicity. Laravel Cloud is fine-tuned by Laravel's creators to work seamlessly with the framework so you can keep writing your Laravel applications exactly like you're used to.
+Запустіть свій застосунок Laravel у Cloud і закохайтеся в масштабовану простоту. Laravel Cloud відточений творцями Laravel так, щоб бездоганно працювати з фреймворком, тож ви можете й далі писати свої застосунки Laravel звичним для себе способом.
 
 <a name="laravel-forge"></a>
 #### Laravel Forge
 
-If you prefer to manage your own servers but aren't comfortable configuring all of the various services needed to run a robust Laravel application, [Laravel Forge](https://forge.laravel.com) is a VPS server management platform for Laravel applications.
+Якщо ви віддаєте перевагу керуванню власними серверами, але не почуваєтеся впевнено, налаштовуючи всі потрібні сервіси для роботи надійного застосунку Laravel, [Laravel Forge](https://forge.laravel.com) - це платформа керування VPS-серверами для застосунків Laravel.
 
-Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more.
+Laravel Forge може створювати сервери в різних інфраструктурних провайдерів: DigitalOcean, Linode, AWS тощо. Крім того, Forge встановлює всі потрібні для створення надійних застосунків Laravel інструменти - Nginx, MySQL, Redis, Memcached, Beanstalk тощо - і керує ними.
