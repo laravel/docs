@@ -1,28 +1,31 @@
-# Image Manipulation
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Обробка зображень
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [Configuration](#configuration)
-- [Reading Images](#reading-images)
-    - [Uploaded Files](#uploaded-files)
-    - [Storage Files](#storage-files)
-    - [Other Sources](#other-sources)
-- [Manipulating Images](#manipulating-images)
-    - [Resizing Images](#resizing-images)
-    - [Other Transformations](#other-transformations)
-- [Encoding Images](#encoding-images)
-- [Storing Images](#storing-images)
-- [Inspecting Images](#inspecting-images)
-- [Image Drivers](#image-drivers)
-    - [Custom Image Drivers](#custom-image-drivers)
-    - [Custom Transformations](#custom-transformations)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+    - [Конфігурація](#configuration)
+- [Читання зображень](#reading-images)
+    - [Завантажені файли](#uploaded-files)
+    - [Файли у сховищі](#storage-files)
+    - [Інші джерела](#other-sources)
+- [Обробка зображень](#manipulating-images)
+    - [Зміна розміру зображень](#resizing-images)
+    - [Інші перетворення](#other-transformations)
+- [Кодування зображень](#encoding-images)
+- [Збереження зображень](#storing-images)
+- [Огляд зображень](#inspecting-images)
+- [Драйвери зображень](#image-drivers)
+    - [Власні драйвери зображень](#custom-image-drivers)
+    - [Власні перетворення](#custom-transformations)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel provides a fluent image manipulation API that allows you to resize, crop, encode, and store images using the same expressive conventions found throughout the framework. Laravel's image features are powered by [Intervention Image](https://image.intervention.io/) and support the GD and Imagick PHP extensions.
+Laravel надає плавний API для обробки зображень, який дозволяє змінювати розмір, обрізати, кодувати й зберігати зображення за тими самими виразними домовленостями, що діють в усьому фреймворку. Можливості роботи із зображеннями в Laravel побудовані на [Intervention Image](https://image.intervention.io/) і підтримують PHP-розширення GD та Imagick.
 
-The image API is useful when working with uploaded files, files stored on Laravel [filesystem disks](/docs/{{version}}/filesystem), local files, remote URLs, or raw image bytes:
+API зображень стане в пригоді під час роботи із завантаженими файлами, файлами на [дисках файлової системи](/docs/{{version}}/filesystem) Laravel, локальними файлами, віддаленими URL чи сирими байтами зображення:
 
 ```php
 use Illuminate\Support\Facades\Image;
@@ -35,43 +38,43 @@ $path = Image::fromStorage('avatars/photo.jpg', 'public')
 ```
 
 > [!WARNING]
-> Image manipulation can be CPU and memory-intensive. Consider performing large image processing workloads on a [queued job](/docs/{{version}}/queues) instead of during the HTTP request that receives the upload.
+> Обробка зображень може бути вимогливою до процесора й пам'яті. Розгляньте можливість виконувати великі обсяги обробки зображень у [завданні в черзі](/docs/{{version}}/queues), а не під час HTTP-запиту, який приймає завантаження.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-Before using Laravel's image manipulation features, install the Intervention Image package via Composer:
+Перш ніж користуватися можливостями обробки зображень у Laravel, встановіть пакет Intervention Image через Composer:
 
 ```shell
 composer require intervention/image:^4.0
 ```
 
-You should also ensure your PHP installation has either the GD or Imagick extension installed, depending on which driver your application will use.
+Також переконайтеся, що у вашій інсталяції PHP встановлено розширення GD або Imagick - залежно від того, який драйвер використовуватиме ваш застосунок.
 
 <a name="configuration"></a>
-### Configuration
+### Конфігурація
 
-Laravel's image configuration file is located at `config/images.php`. If your application does not have an `images` configuration file, you may publish it using the `config:publish` Artisan command:
+Файл конфігурації зображень Laravel лежить у `config/images.php`. Якщо у вашому застосунку немає файлу конфігурації `images`, опублікуйте його командою Artisan `config:publish`:
 
 ```shell
 php artisan config:publish images
 ```
 
-The image configuration file allows you to specify your application's default image driver. You may also specify the default driver using the `IMAGE_DRIVER` environment variable. The supported drivers are `gd` and `imagick`:
+Файл конфігурації зображень дозволяє вказати драйвер зображень за замовчуванням для вашого застосунку. Ви також можете вказати драйвер за замовчуванням через змінну середовища `IMAGE_DRIVER`. Підтримувані драйвери - `gd` та `imagick`:
 
 ```ini
 IMAGE_DRIVER=imagick
 ```
 
 <a name="reading-images"></a>
-## Reading Images
+## Читання зображень
 
-The `Image` facade provides several methods for reading images from common sources. Image contents are loaded lazily, so the source is typically not read until the image is processed or its bytes are requested.
+Фасад `Image` надає кілька методів для читання зображень із поширених джерел. Вміст зображень завантажується ліниво, тож джерело зазвичай не читається, доки зображення не оброблено або доки не запитано його байти.
 
 <a name="uploaded-files"></a>
-### Uploaded Files
+### Завантажені файли
 
-You may retrieve an uploaded image from an incoming request using the `image` method. This method returns an `Illuminate\Image\Image` instance for the uploaded file, or `null` if the file is not present:
+Ви можете дістати завантажене зображення з вхідного запиту методом `image`. Цей метод повертає екземпляр `Illuminate\Image\Image` для завантаженого файлу або `null`, якщо файлу немає:
 
 ```php
 use Illuminate\Http\Request;
@@ -88,7 +91,7 @@ Route::post('/avatar', function (Request $request) {
 });
 ```
 
-Alternatively, you may create an image instance from an `Illuminate\Http\UploadedFile` instance using the `fromUpload` method:
+Як варіант, ви можете створити екземпляр зображення з екземпляра `Illuminate\Http\UploadedFile` методом `fromUpload`:
 
 ```php
 use Illuminate\Support\Facades\Image;
@@ -96,16 +99,16 @@ use Illuminate\Support\Facades\Image;
 $image = Image::fromUpload($request->file('avatar'));
 ```
 
-When an image is created from an uploaded file, you may retrieve the underlying uploaded file using the `file` method:
+Коли зображення створено із завантаженого файлу, ви можете дістати цей файл методом `file`:
 
 ```php
 $file = $image->file();
 ```
 
 <a name="storage-files"></a>
-### Storage Files
+### Файли у сховищі
 
-You may create an image instance from a file stored on one of your application's [filesystem disks](/docs/{{version}}/filesystem) using the `fromStorage` method. The first argument is the path to the file, while the second argument is the disk name:
+Ви можете створити екземпляр зображення з файлу, що зберігається на одному з [дисків файлової системи](/docs/{{version}}/filesystem) вашого застосунку, методом `fromStorage`. Перший аргумент - шлях до файлу, другий - назва диска:
 
 ```php
 use Illuminate\Support\Facades\Image;
@@ -113,7 +116,7 @@ use Illuminate\Support\Facades\Image;
 $image = Image::fromStorage('avatars/photo.jpg', disk: 'public');
 ```
 
-You may also create image instances directly from a filesystem disk instance using the `image` method:
+Ви також можете створювати екземпляри зображень безпосередньо з екземпляра диска методом `image`:
 
 ```php
 use Illuminate\Support\Facades\Storage;
@@ -122,9 +125,9 @@ $image = Storage::disk('public')->image('avatars/photo.jpg');
 ```
 
 <a name="other-sources"></a>
-### Other Sources
+### Інші джерела
 
-The `Image` facade also includes methods for creating image instances from raw bytes, local file paths, remote URLs, and Base64 encoded strings:
+Фасад `Image` також містить методи для створення екземплярів зображень із сирих байтів, локальних шляхів, віддалених URL і рядків у Base64:
 
 ```php
 use Illuminate\Support\Facades\Image;
@@ -136,9 +139,9 @@ $image = Image::fromUrl('https://example.com/photo.jpg');
 ```
 
 <a name="manipulating-images"></a>
-## Manipulating Images
+## Обробка зображень
 
-Image instances are immutable. Each manipulation method returns a new image instance with the transformation appended to its processing pipeline, allowing methods to be chained fluently:
+Екземпляри зображень незмінні. Кожен метод обробки повертає новий екземпляр зображення з доданим до його конвеєра перетворенням, тож методи можна плавно поєднувати ланцюжком:
 
 ```php
 $image = $request->image('avatar')
@@ -147,12 +150,12 @@ $image = $request->image('avatar')
     ->sharpen(10);
 ```
 
-Transformations are processed in the order they are added to the image pipeline and the image is only encoded once at the end.
+Перетворення обробляються в порядку, у якому їх додано до конвеєра зображення, а саме зображення кодується лише один раз, у кінці.
 
 <a name="resizing-images"></a>
-### Resizing Images
+### Зміна розміру зображень
 
-The `resize` method resizes an image to the given dimensions. You may provide both a width and height, or provide only one dimension using named arguments:
+Метод `resize` змінює розмір зображення до заданих величин. Ви можете передати і ширину, і висоту або лише одну величину через іменовані аргументи:
 
 ```php
 $image = $image->resize(800, 600);
@@ -160,7 +163,7 @@ $image = $image->resize(width: 800);
 $image = $image->resize(height: 600);
 ```
 
-The `scale` method proportionally scales an image down so that it fits within the given dimensions. This method will never increase the size of an image:
+Метод `scale` пропорційно зменшує зображення так, щоб воно вмістилося в задані величини. Цей метод ніколи не збільшує зображення:
 
 ```php
 $image = $image->scale(800, 600);
@@ -168,20 +171,20 @@ $image = $image->scale(width: 800);
 $image = $image->scale(height: 600);
 ```
 
-The `cover` method resizes and crops an image to completely cover the given dimensions:
+Метод `cover` змінює розмір і обрізає зображення так, щоб воно повністю вкривало задані величини:
 
 ```php
 $image = $image->cover(400, 400);
 ```
 
-The `contain` method resizes an image to fit within the given dimensions while preserving the entire image. If necessary, empty space will be filled using the optional background color:
+Метод `contain` змінює розмір зображення так, щоб воно вмістилося в задані величини, зберігши все зображення. За потреби порожній простір буде заповнено необов'язковим кольором тла:
 
 ```php
 $image = $image->contain(400, 400);
 $image = $image->contain(400, 400, '#ffffff');
 ```
 
-You may crop an image using the `crop` method. The first two arguments are the desired width and height, and the optional third and fourth arguments specify the crop's `x` and `y` coordinates:
+Обрізати зображення можна методом `crop`. Перші два аргументи - потрібні ширина й висота, а необов'язкові третій і четвертий задають координати `x` та `y` обрізання:
 
 ```php
 $image = $image->crop(300, 200);
@@ -189,9 +192,9 @@ $image = $image->crop(300, 200, x: 50, y: 25);
 ```
 
 <a name="other-transformations"></a>
-### Other Transformations
+### Інші перетворення
 
-Laravel also provides a variety of additional image transformation methods:
+Laravel також надає низку додаткових методів перетворення зображень:
 
 ```php
 $image = $image->orient();
@@ -204,12 +207,12 @@ $image = $image->flipVertically();
 $image = $image->flipHorizontally();
 ```
 
-The `orient` method rotates the image according to its EXIF orientation data. The `rotate` method rotates the image clockwise by the given angle and accepts an optional background color. The `blur` and `sharpen` methods accept values between `0` and `100`.
+Метод `orient` повертає зображення відповідно до даних орієнтації EXIF. Метод `rotate` повертає зображення за годинниковою стрілкою на заданий кут і приймає необов'язковий колір тла. Методи `blur` і `sharpen` приймають значення від `0` до `100`.
 
 <a name="conditional-transformations"></a>
-#### Conditional Transformations
+#### Умовні перетворення
 
-Image instances support Laravel's `Conditionable` trait, allowing you to conditionally apply transformations using the `when` and `unless` methods:
+Екземпляри зображень підтримують трейт `Conditionable` Laravel, тож ви можете застосовувати перетворення умовно, методами `when` та `unless`:
 
 ```php
 $image = $request->image('avatar')
@@ -218,9 +221,9 @@ $image = $request->image('avatar')
 ```
 
 <a name="encoding-images"></a>
-## Encoding Images
+## Кодування зображень
 
-By default, processed images are encoded using their original format. However, you may convert the image to another supported format before retrieving or storing it:
+За замовчуванням оброблені зображення кодуються у своєму оригінальному форматі. Проте ви можете конвертувати зображення в інший підтримуваний формат перед отриманням чи збереженням:
 
 ```php
 $image = $image->toWebp();
@@ -232,13 +235,13 @@ $image = $image->toAvif();
 $image = $image->toBmp();
 ```
 
-You may use the `quality` method to set the output quality. The quality will be clamped between `1` and `100`:
+Метод `quality` дозволяє задати якість на виході. Якість буде обмежено діапазоном від `1` до `100`:
 
 ```php
 $image = $image->toWebp()->quality(80);
 ```
 
-The `optimize` method is a convenient shortcut for converting the image to a given format and setting its quality. By default, images are optimized as WebP images with a quality of `70`:
+Метод `optimize` - зручне скорочення для конвертації зображення в заданий формат із заданням якості. За замовчуванням зображення оптимізуються як WebP з якістю `70`:
 
 ```php
 $image = $image->optimize();
@@ -246,7 +249,7 @@ $image = $image->optimize();
 $image = $image->optimize(format: 'jpg', quality: 85);
 ```
 
-You may retrieve the processed image contents as a string of bytes, base64 encoded string, or data URI:
+Ви можете отримати вміст обробленого зображення як рядок байтів, рядок у Base64 чи data URI:
 
 ```php
 $bytes = $image->toBytes();
@@ -254,16 +257,16 @@ $base64 = $image->toBase64();
 $dataUri = $image->toDataUri();
 ```
 
-An image instance may also be cast to a string to retrieve its processed bytes:
+Екземпляр зображення можна також привести до рядка, щоб отримати його оброблені байти:
 
 ```php
 $bytes = (string) $image;
 ```
 
 <a name="storing-images"></a>
-## Storing Images
+## Збереження зображень
 
-The `store` method stores the processed image on one of your application's filesystem disks. Like uploaded files, Laravel will generate a unique filename and return the stored path. The second argument may be used to specify the disk:
+Метод `store` зберігає оброблене зображення на одному з дисків файлової системи вашого застосунку. Як і для завантажених файлів, Laravel згенерує унікальне ім'я файлу й поверне шлях збереження. Другим аргументом можна вказати диск:
 
 ```php
 $path = $request->image('avatar')
@@ -275,7 +278,7 @@ $path = $request->image('avatar')
     ->store(path: 'avatars', disk: 's3');
 ```
 
-You may use the `storeAs` method to specify the stored filename:
+Метод `storeAs` дозволяє вказати ім'я збереженого файлу:
 
 ```php
 $path = $request->image('avatar')
@@ -283,7 +286,7 @@ $path = $request->image('avatar')
     ->storeAs(path: 'avatars', name: 'avatar.jpg', disk: 'public');
 ```
 
-The `storePublicly` and `storePubliclyAs` methods store the image with `public` visibility:
+Методи `storePublicly` та `storePubliclyAs` зберігають зображення з видимістю `public`:
 
 ```php
 $path = $request->image('avatar')
@@ -295,12 +298,12 @@ $path = $request->image('avatar')
     ->storePubliclyAs(path: 'avatars', name: 'avatar.webp', disk: 'public');
 ```
 
-If the image could not be stored, the storage methods return `false`.
+Якщо зображення не вдалося зберегти, методи збереження повертають `false`.
 
 <a name="inspecting-images"></a>
-## Inspecting Images
+## Огляд зображень
 
-You may retrieve the image's MIME type, extension, dimensions, width, and height using the following methods:
+Отримати MIME-тип, розширення, розміри, ширину й висоту зображення можна такими методами:
 
 ```php
 $mimeType = $image->mimeType();
@@ -311,17 +314,17 @@ $width = $image->width();
 $height = $image->height();
 ```
 
-These methods operate on the processed image. For example, calling `width` after `cover(400, 400)` will return `400`.
+Ці методи працюють з обробленим зображенням. Наприклад, виклик `width` після `cover(400, 400)` поверне `400`.
 
 <a name="image-drivers"></a>
-## Image Drivers
+## Драйвери зображень
 
 <a name="custom-image-drivers"></a>
-### Custom Image Drivers
+### Власні драйвери зображень
 
-Laravel's image manager extends Laravel's base `Illuminate\Support\Manager` class. This means you may register custom image drivers using the `extend` method available on the image manager and `Image` facade.
+Менеджер зображень Laravel розширює базовий клас `Illuminate\Support\Manager`. Це означає, що ви можете реєструвати власні драйвери зображень методом `extend`, доступним у менеджері зображень і фасаді `Image`.
 
-Custom image drivers should implement the `Illuminate\Contracts\Image\Driver` interface. The `process` method receives the original image contents and the ordered `Illuminate\Image\ImagePipeline` that should be applied to the image, and should return the processed image bytes:
+Власні драйвери зображень мають реалізовувати інтерфейс `Illuminate\Contracts\Image\Driver`. Метод `process` отримує оригінальний вміст зображення та впорядкований `Illuminate\Image\ImagePipeline`, який слід застосувати до зображення, і має повернути оброблені байти:
 
 ```php
 <?php
@@ -356,9 +359,9 @@ class VipsDriver implements Driver
 ```
 
 > [!NOTE]
-> To better understand how to implement a custom image driver, you may review the framework's built-in `Illuminate\Image\Drivers\InterventionDriver` class.
+> Щоб краще зрозуміти, як реалізувати власний драйвер зображень, перегляньте вбудований клас фреймворку `Illuminate\Image\Drivers\InterventionDriver`.
 
-Once you have implemented your custom driver, you may register it using the `Image` facade's `extend` method. Typically, this should be done in the `boot` method of a service provider:
+Щойно ви реалізували власний драйвер, зареєструйте його методом `extend` фасаду `Image`. Зазвичай це роблять у методі `boot` сервіс-провайдера:
 
 ```php
 use App\Images\VipsDriver;
@@ -376,7 +379,7 @@ public function boot(): void
 }
 ```
 
-After registering the driver, you may use it for a specific image using the `using` method:
+Зареєструвавши драйвер, ви можете скористатися ним для конкретного зображення методом `using`:
 
 ```php
 $image = $request->image('avatar')
@@ -384,16 +387,16 @@ $image = $request->image('avatar')
     ->cover(400, 400);
 ```
 
-You may also configure a custom driver as your application's default image driver using the `default` option in your application's `config/images.php` configuration file or the `IMAGE_DRIVER` environment variable:
+Ви також можете зробити власний драйвер драйвером зображень за замовчуванням для вашого застосунку через опцію `default` у файлі `config/images.php` або змінну середовища `IMAGE_DRIVER`:
 
 ```ini
 IMAGE_DRIVER=vips
 ```
 
 <a name="custom-transformations"></a>
-### Custom Transformations
+### Власні перетворення
 
-Applications and packages may define custom transformations by creating a class that implements the `Illuminate\Contracts\Image\Transformation` contract. Custom transformations can then be added to an image pipeline using the `transform` method:
+Застосунки й пакети можуть описувати власні перетворення, створивши клас, який реалізує контракт `Illuminate\Contracts\Image\Transformation`. Далі власні перетворення можна додавати до конвеєра зображення методом `transform`:
 
 ```php
 <?php
@@ -412,7 +415,7 @@ class Pixelate implements Transformation
 }
 ```
 
-Next, register a handler for the transformation and driver using the `Image` facade's `transformUsing` method. Typically, this should be done in the `boot` method of a service provider:
+Далі зареєструйте обробник для перетворення й драйвера методом `transformUsing` фасаду `Image`. Зазвичай це роблять у методі `boot` сервіс-провайдера:
 
 ```php
 use App\Images\Transformations\Pixelate;
@@ -424,7 +427,7 @@ Image::transformUsing('gd', Pixelate::class, function (ImageInterface $image, Pi
 });
 ```
 
-Once the transformation handler has been registered, you may apply the transformation to an image:
+Щойно обробник перетворення зареєстровано, ви можете застосувати перетворення до зображення:
 
 ```php
 use App\Images\Transformations\Pixelate;
