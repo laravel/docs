@@ -1,29 +1,32 @@
-# Contribution Guide
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Посібник з внеску
 
-- [Bug Reports](#bug-reports)
-- [Support Questions](#support-questions)
-- [Core Development Discussion](#core-development-discussion)
-- [Which Branch?](#which-branch)
-- [Compiled Assets](#compiled-assets)
-- [AI-Generated Contributions](#ai-generated-contributions)
-- [Security Vulnerabilities](#security-vulnerabilities)
-- [Coding Style](#coding-style)
+- [Повідомлення про помилки](#bug-reports)
+- [Питання щодо підтримки](#support-questions)
+- [Обговорення розробки ядра](#core-development-discussion)
+- [Яку гілку обрати?](#which-branch)
+- [Скомпільовані ресурси](#compiled-assets)
+- [Внески, згенеровані AI](#ai-generated-contributions)
+- [Вразливості безпеки](#security-vulnerabilities)
+- [Стиль коду](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
-- [Code of Conduct](#code-of-conduct)
+- [Кодекс поведінки](#code-of-conduct)
 
 <a name="bug-reports"></a>
-## Bug Reports
+## Повідомлення про помилки
 
-To encourage active collaboration, Laravel strongly encourages pull requests, not just bug reports. Pull requests will only be reviewed when marked as "ready for review" (not in the "draft" state) and all tests for new features are passing. Lingering, non-active pull requests left in the "draft" state will be closed after a few days.
+Щоб заохотити активну співпрацю, Laravel наполегливо радить надсилати pull request'и, а не просто повідомлення про помилки. Pull request'и розглядатимуться лише тоді, коли їх позначено як «ready for review» (тобто не в стані «draft») і всі тести для нових можливостей проходять. Застарілі неактивні pull request'и, залишені у стані «draft», будуть закриті за кілька днів.
 
-However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+Утім, якщо ви створюєте повідомлення про помилку, воно має містити заголовок і чіткий опис проблеми. Також варто додати якомога більше доречної інформації та приклад коду, що демонструє проблему. Мета повідомлення про помилку - полегшити вам і іншим відтворення помилки та розробку виправлення.
 
-Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem. If you want to chip in, you can help out by fixing [any bugs listed in our issue trackers](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). You must be authenticated with GitHub to view all of Laravel's issues.
+Пам'ятайте: повідомлення про помилки створюються з надією, що інші з такою самою проблемою зможуть співпрацювати з вами над її розв'язанням. Не очікуйте, що повідомлення автоматично привабить увагу або що хтось кинеться його виправляти. Створення повідомлення допомагає вам та іншим стати на шлях вирішення проблеми. Якщо хочете долучитися, можете допомогти, виправивши [будь-яку з помилок у наших трекерах](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). Щоб побачити всі issue Laravel, потрібно бути автентифікованим на GitHub.
 
-If you notice improper DocBlock, PHPStan, or IDE warnings while using Laravel, do not create a GitHub issue. Instead, please submit a pull request to fix the problem.
+Якщо під час роботи з Laravel ви помітили некоректний DocBlock або попередження PHPStan чи IDE, не створюйте issue на GitHub. Натомість надішліть pull request із виправленням.
 
-The Laravel source code is managed on GitHub, and there are repositories for each of the Laravel projects:
+Вихідний код Laravel розміщено на GitHub, і для кожного з проєктів Laravel є свій репозиторій:
 
 <div class="content-list" markdown="1">
 
@@ -57,9 +60,9 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 </div>
 
 <a name="support-questions"></a>
-## Support Questions
+## Питання щодо підтримки
 
-Laravel's GitHub issue trackers are not intended to provide Laravel help or support. Instead, use one of the following channels:
+Трекери issue на GitHub не призначені для надання допомоги чи підтримки щодо Laravel. Натомість скористайтеся одним із таких каналів:
 
 <div class="content-list" markdown="1">
 
@@ -74,51 +77,51 @@ Laravel's GitHub issue trackers are not intended to provide Laravel help or supp
 </div>
 
 <a name="core-development-discussion"></a>
-## Core Development Discussion
+## Обговорення розробки ядра
 
-You may propose new features or improvements of existing Laravel behavior in the Laravel framework repository's [GitHub discussion board](https://github.com/laravel/framework/discussions). If you propose a new feature, please be willing to implement at least some of the code that would be needed to complete the feature.
+Ви можете пропонувати нові можливості або покращення наявної поведінки Laravel на [дошці обговорень GitHub](https://github.com/laravel/framework/discussions) у репозиторії фреймворку. Якщо ви пропонуєте нову можливість, будьте готові реалізувати хоча б частину коду, потрібного для її втілення.
 
-Informal discussion regarding bugs, new features, and implementation of existing features takes place in the `#internals` channel of the [Laravel Discord server](https://discord.gg/laravel). Taylor Otwell, the maintainer of Laravel, is typically present in the channel on weekdays from 8am-5pm (UTC-06:00 or America/Chicago), and sporadically present in the channel at other times.
+Неформальне обговорення помилок, нових можливостей і реалізації наявних відбувається в каналі `#internals` на [сервері Laravel у Discord](https://discord.gg/laravel). Тейлор Отвелл, супровідник Laravel, зазвичай присутній у каналі в будні з 8:00 до 17:00 (UTC-06:00 або America/Chicago) та епізодично в інший час.
 
 <a name="which-branch"></a>
-## Which Branch?
+## Яку гілку обрати?
 
-**All** bug fixes should be sent to the latest version that supports bug fixes (currently `13.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**Усі** виправлення помилок слід надсилати до найновішої версії, яка підтримує виправлення помилок (наразі `13.x`). Виправлення помилок **ніколи** не слід надсилати до гілки `master`, окрім випадків, коли вони виправляють можливості, що існують лише в майбутньому релізі.
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch (currently `13.x`).
+**Незначні** можливості, **повністю зворотно сумісні** з поточним релізом, можна надсилати до останньої стабільної гілки (наразі `13.x`).
 
-**Major** new features or features with breaking changes should always be sent to the `master` branch, which contains the upcoming release.
+**Великі** нові можливості або можливості зі змінами, що порушують сумісність, завжди слід надсилати до гілки `master`, яка містить майбутній реліз.
 
 <a name="compiled-assets"></a>
-## Compiled Assets
+## Скомпільовані ресурси
 
-If you are submitting a change that will affect a compiled file, such as most of the files in `resources/css` or `resources/js` of the `laravel/laravel` repository, do not commit the compiled files. Due to their large size, they cannot realistically be reviewed by a maintainer. This could be exploited as a way to inject malicious code into Laravel. In order to defensively prevent this, all compiled files will be generated and committed by Laravel maintainers.
+Якщо ви надсилаєте зміну, яка вплине на скомпільований файл - як-от більшість файлів у `resources/css` чи `resources/js` репозиторію `laravel/laravel`, - не комітьте скомпільовані файли. Через їхній великий розмір супровідник не зможе реально їх перевірити. Цим можна скористатися, щоб впровадити зловмисний код у Laravel. Щоб запобігти цьому, усі скомпільовані файли генеруються й комітяться супровідниками Laravel.
 
 <a name="ai-generated-contributions"></a>
-## AI-Generated Contributions
+## Внески, згенеровані AI
 
-We appreciate every pull request submitted to Laravel. However, contributions that are primarily AI-generated without thoughtful human review and consideration are not acceptable.
+Ми цінуємо кожен pull request, надісланий до Laravel. Однак внески, здебільшого згенеровані AI без вдумливого перегляду й осмислення людиною, неприйнятні.
 
-If you choose to use AI tools to assist with your contribution, the resulting code **must** be thoroughly reviewed, tested, and understood by you before submitting.
+Якщо ви вирішили скористатися AI-інструментами для підготовки свого внеску, отриманий код **обов'язково** має бути ретельно переглянутий, протестований і зрозумілий вам перед надсиланням.
 
-**Mass opening issues or pull requests that are entirely AI-generated will not be tolerated.** Such pull requests will be closed without review, and the contributing user may be blocked from the repository.
+**Масове створення issue чи pull request'ів, повністю згенерованих AI, не буде терпітися.** Такі pull request'и закриватимуться без розгляду, а користувача, який їх надіслав, може бути заблоковано в репозиторії.
 
-We encourage contributors to familiarize themselves with the existing codebase, engage with the community, and submit pull requests that reflect their own understanding and careful consideration of the problem they are solving.
+Ми заохочуємо контриб'юторів ознайомлюватися з наявною кодовою базою, взаємодіяти зі спільнотою та надсилати pull request'и, які відображають їхнє власне розуміння й уважне осмислення проблеми, яку вони розв'язують.
 
 <a name="security-vulnerabilities"></a>
-## Security Vulnerabilities
+## Вразливості безпеки
 
-If you discover a security vulnerability within Laravel, please email our security team at <a href="mailto:security@laravel.com">security@laravel.com</a>. All security vulnerabilities will be promptly addressed.
+Якщо ви виявили вразливість безпеки в Laravel, надішліть листа нашій команді безпеки на <a href="mailto:security@laravel.com">security@laravel.com</a>. Усі вразливості безпеки буде оперативно опрацьовано.
 
 <a name="coding-style"></a>
-## Coding Style
+## Стиль коду
 
-Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
+Laravel дотримується стандарту кодування [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) та стандарту автозавантаження [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md).
 
 <a name="phpdoc"></a>
 ### PHPDoc
 
-Below is an example of a valid Laravel documentation block. Note that the `@param` attribute is followed by two spaces, the argument type, two more spaces, and finally the variable name:
+Нижче наведено приклад коректного блоку документації Laravel. Зверніть увагу, що після атрибута `@param` іде два пробіли, тип аргументу, ще два пробіли й нарешті ім'я змінної:
 
 ```php
 /**
@@ -137,7 +140,7 @@ public function bind($abstract, $concrete = null, $shared = false)
 }
 ```
 
-When the `@param` or `@return` attributes are redundant due to the use of native types, they can be removed:
+Коли атрибути `@param` чи `@return` є надлишковими через використання нативних типів, їх можна прибрати:
 
 ```php
 /**
@@ -151,7 +154,7 @@ public function handle(AudioProcessor $processor): void
 }
 ```
 
-However, when the native type is generic, please specify the generic type through the use of the `@param` or `@return` attributes:
+Однак якщо нативний тип є узагальненим (generic), вкажіть узагальнений тип за допомогою атрибутів `@param` чи `@return`:
 
 ```php
 /**
@@ -170,18 +173,18 @@ public function attachments(): array
 <a name="styleci"></a>
 ### StyleCI
 
-Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+Не хвилюйтеся, якщо стиль вашого коду не бездоганний! [StyleCI](https://styleci.io/) автоматично зіллє всі виправлення стилю до репозиторію Laravel після злиття pull request'ів. Це дозволяє нам зосередитися на змісті внеску, а не на стилі коду.
 
 <a name="code-of-conduct"></a>
-## Code of Conduct
+## Кодекс поведінки
 
-The Laravel code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Taylor Otwell (taylor@laravel.com):
+Кодекс поведінки Laravel походить від кодексу поведінки Ruby. Про будь-які порушення кодексу поведінки можна повідомити Тейлору Отвеллу (taylor@laravel.com):
 
 <div class="content-list" markdown="1">
 
-- Participants will be tolerant of opposing views.
-- Participants must ensure that their language and actions are free of personal attacks and disparaging personal remarks.
-- When interpreting the words and actions of others, participants should always assume good intentions.
-- Behavior that can be reasonably considered harassment will not be tolerated.
+- Учасники мають бути толерантними до протилежних поглядів.
+- Учасники повинні стежити, щоб їхні висловлювання та дії були вільними від особистих нападів і принизливих зауважень на адресу інших.
+- Тлумачачи слова й дії інших, учасники завжди мають припускати добрі наміри.
+- Поведінка, яку можна обґрунтовано вважати домаганням, не буде терпітися.
 
 </div>
