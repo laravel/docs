@@ -1,7 +1,61 @@
-# Laravel Documentation
+# Українська документація Laravel
 
-You can find the online version of the Laravel documentation at [https://laravel.com/docs](https://laravel.com/docs)
+Український переклад офіційної документації Laravel.
 
-## Contribution Guidelines
+Читати онлайн: **[laravelukraine.com/docs](https://laravelukraine.com/docs)**
 
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 12 would be submitted to the `12.x` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
+Оригінал: [laravel.com/docs](https://laravel.com/docs) · [laravel/docs](https://github.com/laravel/docs)
+
+## Про переклад
+
+Репозиторій є форком [laravel/docs](https://github.com/laravel/docs) з дзеркальними
+іменами гілок: переклад для Laravel 13 живе в гілці `13.x`, як і в оригіналі. Імена
+файлів і якорі заголовків збігаються з англійськими - завдяки цьому адреси сторінок
+ідентичні оригінальним:
+
+```
+laravel.com/docs/13.x/installation
+laravelukraine.com/docs/13.x/installation
+```
+
+Кожен перекладений файл починається з YAML-хедера, що фіксує коміт оригіналу, з якого
+зроблено переклад:
+
+```
+---
+git: 0d61029ee4473fc32ef843ea6051b2db54647a34
+---
+```
+
+Це дозволяє бачити, які сторінки відстали від оригіналу.
+Актуальний стан: [laravelukraine.com/docs-status](https://laravelukraine.com/docs-status).
+
+## Синхронізація з оригіналом
+
+Щодня автоматика перевіряє [laravel/docs](https://github.com/laravel/docs) на зміни.
+Якщо вони є - перекладає їх і відкриває Pull Request, який переглядає та зливає
+супровідник. Гілка `upstream-13.x` - дзеркало англійського оригіналу, потрібне для
+обчислення різниці.
+
+## Як допомогти
+
+Помітили помилку, неточність або незграбну фразу - відкривайте
+[issue](https://github.com/laravelukraine/docs/issues) або Pull Request у гілку `13.x`.
+
+Перед тим як перекладати, загляньте в [GLOSSARY.md](GLOSSARY.md) - там узгоджений
+словник термінів і правила оформлення. Єдина термінологія важливіша за красу окремої
+фрази: коли `middleware` в одному розділі «проміжне ПЗ», а в іншому «посередник»,
+читати стає важче.
+
+Коротко, що **не** перекладається: вміст блоків коду, якорі `<a name="...">`, адреси
+посилань, плейсхолдер `{{version}}`, імена класів, методів і команд.
+
+## Ліцензія
+
+Оригінальна документація Laravel поширюється за ліцензією MIT,
+Copyright (c) Taylor Otwell - див. [license.md](license.md).
+
+Переклад є похідною роботою і поширюється за тією ж ліцензією.
+
+Laravel є торговельною маркою Laravel Holdings Inc. Цей переклад - незалежна
+ініціатива спільноти, не пов'язана з Laravel Holdings Inc.
