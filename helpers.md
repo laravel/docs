@@ -1,24 +1,27 @@
-# Helpers
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Хелпери
 
-- [Introduction](#introduction)
-- [Available Methods](#available-methods)
-- [Other Utilities](#other-utilities)
-    - [Benchmarking](#benchmarking)
-    - [Dates and Time](#dates)
-    - [Deferred Functions](#deferred-functions)
-    - [Lottery](#lottery)
-    - [Pipeline](#pipeline)
+- [Вступ](#introduction)
+- [Доступні методи](#available-methods)
+- [Інші утиліти](#other-utilities)
+    - [Бенчмаркінг](#benchmarking)
+    - [Дата й час](#dates)
+    - [Відкладені функції](#deferred-functions)
+    - [Лотерея](#lottery)
+    - [Конвеєр](#pipeline)
     - [Sleep](#sleep)
     - [Timebox](#timebox)
     - [URI](#uri)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel includes a variety of global "helper" PHP functions. Many of these functions are used by the framework itself; however, you are free to use them in your own applications if you find them convenient.
+Laravel містить чимало глобальних «хелперів» - PHP-функцій. Багато з них використовує сам фреймворк; проте ви вільні користуватися ними і у власних застосунках, якщо вважаєте їх зручними.
 
 <a name="available-methods"></a>
-## Available Methods
+## Доступні методи
 
 <style>
     .collection-method-list > p {
@@ -34,7 +37,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 </style>
 
 <a name="arrays-and-objects-method-list"></a>
-### Arrays & Objects
+### Масиви та об'єкти
 
 <div class="collection-method-list" markdown="1">
 
@@ -104,7 +107,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 </div>
 
 <a name="numbers-method-list"></a>
-### Numbers
+### Числа
 
 <div class="collection-method-list" markdown="1">
 
@@ -133,7 +136,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 </div>
 
 <a name="paths-method-list"></a>
-### Paths
+### Шляхи
 
 <div class="collection-method-list" markdown="1">
 
@@ -149,7 +152,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 </div>
 
 <a name="urls-method-list"></a>
-### URLs
+### URL
 
 <div class="collection-method-list" markdown="1">
 
@@ -166,7 +169,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 </div>
 
 <a name="miscellaneous-method-list"></a>
-### Miscellaneous
+### Різне
 
 <div class="collection-method-list" markdown="1">
 
@@ -233,12 +236,12 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 </div>
 
 <a name="arrays"></a>
-## Arrays & Objects
+## Масиви та об'єкти
 
 <a name="method-array-accessible"></a>
 #### `Arr::accessible()` {.collection-method .first-collection-method}
 
-The `Arr::accessible` method determines if the given value is array accessible:
+Метод `Arr::accessible` визначає, чи є задане значення доступним як масив:
 
 ```php
 use Illuminate\Support\Arr;
@@ -264,7 +267,7 @@ $isAccessible = Arr::accessible(new stdClass);
 <a name="method-array-add"></a>
 #### `Arr::add()` {.collection-method}
 
-The `Arr::add` method adds a given key / value pair to an array if the given key doesn't already exist in the array or is set to `null`:
+Метод `Arr::add` додає до масиву задану пару ключ / значення, якщо такого ключа в масиві ще немає або він має значення `null`:
 
 ```php
 use Illuminate\Support\Arr;
@@ -281,7 +284,7 @@ $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 <a name="method-array-array"></a>
 #### `Arr::array()` {.collection-method}
 
-The `Arr::array` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `array`:
+Метод `Arr::array` дістає значення з глибоко вкладеного масиву за «крапковою» нотацією (так само, як [Arr::get()](#method-array-get)), але викидає `InvalidArgumentException`, якщо запитане значення не є `array`:
 
 ```
 use Illuminate\Support\Arr;
@@ -300,7 +303,7 @@ $value = Arr::array($array, 'name');
 <a name="method-array-boolean"></a>
 #### `Arr::boolean()` {.collection-method}
 
-The `Arr::boolean` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `boolean`:
+Метод `Arr::boolean` дістає значення з глибоко вкладеного масиву за «крапковою» нотацією (так само, як [Arr::get()](#method-array-get)), але викидає `InvalidArgumentException`, якщо запитане значення не є `boolean`:
 
 ```
 use Illuminate\Support\Arr;
@@ -320,7 +323,7 @@ $value = Arr::boolean($array, 'name');
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
-The `Arr::collapse` method collapses an array of arrays or collections into a single array:
+Метод `Arr::collapse` згортає масив масивів або колекцій в один масив:
 
 ```php
 use Illuminate\Support\Arr;
@@ -333,7 +336,7 @@ $array = Arr::collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 <a name="method-array-crossjoin"></a>
 #### `Arr::crossJoin()` {.collection-method}
 
-The `Arr::crossJoin` method cross joins the given arrays, returning a Cartesian product with all possible permutations:
+Метод `Arr::crossJoin` перехресно поєднує задані масиви, повертаючи декартів добуток з усіма можливими комбінаціями:
 
 ```php
 use Illuminate\Support\Arr;
@@ -368,7 +371,7 @@ $matrix = Arr::crossJoin([1, 2], ['a', 'b'], ['I', 'II']);
 <a name="method-array-divide"></a>
 #### `Arr::divide()` {.collection-method}
 
-The `Arr::divide` method returns two arrays: one containing the keys and the other containing the values of the given array:
+Метод `Arr::divide` повертає два масиви: один з ключами, другий зі значеннями заданого масиву:
 
 ```php
 use Illuminate\Support\Arr;
@@ -383,7 +386,7 @@ use Illuminate\Support\Arr;
 <a name="method-array-dot"></a>
 #### `Arr::dot()` {.collection-method}
 
-The `Arr::dot` method flattens a multi-dimensional array into a single level array that uses "dot" notation to indicate depth:
+Метод `Arr::dot` сплющує багатовимірний масив в одновимірний, використовуючи «крапкову» нотацію для позначення вкладеності:
 
 ```php
 use Illuminate\Support\Arr;
@@ -398,7 +401,7 @@ $flattened = Arr::dot($array);
 <a name="method-array-every"></a>
 #### `Arr::every()` {.collection-method}
 
-The `Arr::every` method ensures that all values in the array pass a given truth test:
+Метод `Arr::every` переконується, що всі значення масиву проходять заданий тест:
 
 ```php
 use Illuminate\Support\Arr;
@@ -417,7 +420,7 @@ Arr::every($array, fn ($i) => $i > 2);
 <a name="method-array-except"></a>
 #### `Arr::except()` {.collection-method}
 
-The `Arr::except` method removes the given key / value pairs from an array:
+Метод `Arr::except` вилучає з масиву задані пари ключ / значення:
 
 ```php
 use Illuminate\Support\Arr;
@@ -432,7 +435,7 @@ $filtered = Arr::except($array, ['price']);
 <a name="method-array-except-values"></a>
 #### `Arr::exceptValues()` {.collection-method}
 
-The `Arr::exceptValues` method removes the specified values from an array:
+Метод `Arr::exceptValues` вилучає з масиву вказані значення:
 
 ```php
 use Illuminate\Support\Arr;
@@ -444,7 +447,7 @@ $filtered = Arr::exceptValues($array, ['foo', 'baz']);
 // ['bar', 'qux']
 ```
 
-You may also pass `true` to the `strict` argument to use strict type comparisons when filtering:
+Ви також можете передати `true` в аргумент `strict`, щоб під час фільтрування використовувати строге порівняння типів:
 
 ```php
 use Illuminate\Support\Arr;
@@ -459,7 +462,7 @@ $filtered = Arr::exceptValues($array, [1, 2], strict: true);
 <a name="method-array-exists"></a>
 #### `Arr::exists()` {.collection-method}
 
-The `Arr::exists` method checks that the given key exists in the provided array:
+Метод `Arr::exists` перевіряє, чи існує заданий ключ у переданому масиві:
 
 ```php
 use Illuminate\Support\Arr;
@@ -478,7 +481,7 @@ $exists = Arr::exists($array, 'salary');
 <a name="method-array-first"></a>
 #### `Arr::first()` {.collection-method}
 
-The `Arr::first` method returns the first element of an array passing a given truth test:
+Метод `Arr::first` повертає перший елемент масиву, який проходить заданий тест:
 
 ```php
 use Illuminate\Support\Arr;
@@ -492,7 +495,7 @@ $first = Arr::first($array, function (int $value, int $key) {
 // 200
 ```
 
-A default value may also be passed as the third parameter to the method. This value will be returned if no value passes the truth test:
+Третім параметром методу можна передати значення за замовчуванням. Його буде повернуто, якщо жодне значення не пройде тест:
 
 ```php
 use Illuminate\Support\Arr;
@@ -503,7 +506,7 @@ $first = Arr::first($array, $callback, $default);
 <a name="method-array-flatten"></a>
 #### `Arr::flatten()` {.collection-method}
 
-The `Arr::flatten` method flattens a multi-dimensional array into a single level array:
+Метод `Arr::flatten` сплющує багатовимірний масив в одновимірний:
 
 ```php
 use Illuminate\Support\Arr;
@@ -518,7 +521,7 @@ $flattened = Arr::flatten($array);
 <a name="method-array-float"></a>
 #### `Arr::float()` {.collection-method}
 
-The `Arr::float` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `float`:
+Метод `Arr::float` дістає значення з глибоко вкладеного масиву за «крапковою» нотацією (так само, як [Arr::get()](#method-array-get)), але викидає `InvalidArgumentException`, якщо запитане значення не є `float`:
 
 ```
 use Illuminate\Support\Arr;
@@ -537,7 +540,7 @@ $value = Arr::float($array, 'name');
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {.collection-method}
 
-The `Arr::forget` method removes a given key / value pairs from a deeply nested array using "dot" notation:
+Метод `Arr::forget` вилучає задані пари ключ / значення з глибоко вкладеного масиву за «крапковою» нотацією:
 
 ```php
 use Illuminate\Support\Arr;
@@ -552,7 +555,7 @@ Arr::forget($array, 'products.desk');
 <a name="method-array-from"></a>
 #### `Arr::from()` {.collection-method}
 
-The `Arr::from` method converts various input types into a plain PHP array. It supports a range of input types, including arrays, objects, and several common Laravel interfaces, such as `Arrayable`, `Enumerable`, `Jsonable`, and `JsonSerializable`. Additionally, it handles `Traversable` and `WeakMap` instances:
+Метод `Arr::from` перетворює різні типи вводу на звичайний PHP-масив. Він підтримує низку типів, зокрема масиви, об'єкти та кілька поширених інтерфейсів Laravel - `Arrayable`, `Enumerable`, `Jsonable` та `JsonSerializable`. Крім того, він обробляє екземпляри `Traversable` і `WeakMap`:
 
 ```php
 use Illuminate\Support\Arr;
@@ -573,7 +576,7 @@ Arr::from(new TestJsonableObject); // ['foo' => 'bar']
 <a name="method-array-get"></a>
 #### `Arr::get()` {.collection-method}
 
-The `Arr::get` method retrieves a value from a deeply nested array using "dot" notation:
+Метод `Arr::get` дістає значення з глибоко вкладеного масиву за «крапковою» нотацією:
 
 ```php
 use Illuminate\Support\Arr;
@@ -585,7 +588,7 @@ $price = Arr::get($array, 'products.desk.price');
 // 100
 ```
 
-The `Arr::get` method also accepts a default value, which will be returned if the specified key is not present in the array:
+Метод `Arr::get` також приймає значення за замовчуванням, яке буде повернуто, якщо вказаного ключа в масиві немає:
 
 ```php
 use Illuminate\Support\Arr;
@@ -598,7 +601,7 @@ $discount = Arr::get($array, 'products.desk.discount', 0);
 <a name="method-array-has"></a>
 #### `Arr::has()` {.collection-method}
 
-The `Arr::has` method checks whether a given item or items exists in an array using "dot" notation:
+Метод `Arr::has` перевіряє, чи існує в масиві заданий елемент або елементи, за «крапковою» нотацією:
 
 ```php
 use Illuminate\Support\Arr;
@@ -617,7 +620,7 @@ $contains = Arr::has($array, ['product.price', 'product.discount']);
 <a name="method-array-hasall"></a>
 #### `Arr::hasAll()` {.collection-method}
 
-The `Arr::hasAll` method determines if all of the specified keys exist in the given array using "dot" notation:
+Метод `Arr::hasAll` визначає, чи існують у заданому масиві всі вказані ключі, за «крапковою» нотацією:
 
 ```php
 use Illuminate\Support\Arr;
@@ -632,7 +635,7 @@ Arr::hasAll($array, ['name', 'IDE']); // false
 <a name="method-array-hasany"></a>
 #### `Arr::hasAny()` {.collection-method}
 
-The `Arr::hasAny` method checks whether any item in a given set exists in an array using "dot" notation:
+Метод `Arr::hasAny` перевіряє, чи існує в масиві хоч один елемент із заданого набору, за «крапковою» нотацією:
 
 ```php
 use Illuminate\Support\Arr;
@@ -655,7 +658,7 @@ $contains = Arr::hasAny($array, ['category', 'product.discount']);
 <a name="method-array-integer"></a>
 #### `Arr::integer()` {.collection-method}
 
-The `Arr::integer` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `int`:
+Метод `Arr::integer` дістає значення з глибоко вкладеного масиву за «крапковою» нотацією (так само, як [Arr::get()](#method-array-get)), але викидає `InvalidArgumentException`, якщо запитане значення не є `int`:
 
 ```
 use Illuminate\Support\Arr;
@@ -674,7 +677,7 @@ $value = Arr::integer($array, 'name');
 <a name="method-array-isassoc"></a>
 #### `Arr::isAssoc()` {.collection-method}
 
-The `Arr::isAssoc` method returns `true` if the given array is an associative array. An array is considered "associative" if it doesn't have sequential numerical keys beginning with zero:
+Метод `Arr::isAssoc` повертає `true`, якщо заданий масив є асоціативним. Масив вважається «асоціативним», якщо він не має послідовних числових ключів, що починаються з нуля:
 
 ```php
 use Illuminate\Support\Arr;
@@ -691,7 +694,7 @@ $isAssoc = Arr::isAssoc([1, 2, 3]);
 <a name="method-array-islist"></a>
 #### `Arr::isList()` {.collection-method}
 
-The `Arr::isList` method returns `true` if the given array's keys are sequential integers beginning from zero:
+Метод `Arr::isList` повертає `true`, якщо ключі заданого масиву - послідовні цілі числа, що починаються з нуля:
 
 ```php
 use Illuminate\Support\Arr;
@@ -708,7 +711,7 @@ $isList = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 <a name="method-array-join"></a>
 #### `Arr::join()` {.collection-method}
 
-The `Arr::join` method joins array elements with a string. Using this method's third argument, you may also specify the joining string for the final element of the array:
+Метод `Arr::join` склеює елементи масиву рядком. Третім аргументом цього методу ви можете вказати рядок, яким приєднується останній елемент масиву:
 
 ```php
 use Illuminate\Support\Arr;
@@ -727,7 +730,7 @@ $joined = Arr::join($array, ', ', ', and ');
 <a name="method-array-keyby"></a>
 #### `Arr::keyBy()` {.collection-method}
 
-The `Arr::keyBy` method keys the array by the given key. If multiple items have the same key, only the last one will appear in the new array:
+Метод `Arr::keyBy` робить заданий ключ ключем масиву. Якщо кілька елементів мають однаковий ключ, у новому масиві залишиться тільки останній:
 
 ```php
 use Illuminate\Support\Arr;
@@ -750,7 +753,7 @@ $keyed = Arr::keyBy($array, 'product_id');
 <a name="method-array-last"></a>
 #### `Arr::last()` {.collection-method}
 
-The `Arr::last` method returns the last element of an array passing a given truth test:
+Метод `Arr::last` повертає останній елемент масиву, який проходить заданий тест:
 
 ```php
 use Illuminate\Support\Arr;
@@ -764,7 +767,7 @@ $last = Arr::last($array, function (int $value, int $key) {
 // 300
 ```
 
-A default value may be passed as the third argument to the method. This value will be returned if no value passes the truth test:
+Третім аргументом методу можна передати значення за замовчуванням. Його буде повернуто, якщо жодне значення не пройде тест:
 
 ```php
 use Illuminate\Support\Arr;
@@ -775,7 +778,7 @@ $last = Arr::last($array, $callback, $default);
 <a name="method-array-map"></a>
 #### `Arr::map()` {.collection-method}
 
-The `Arr::map` method iterates through the array and passes each value and key to the given callback. The array value is replaced by the value returned by the callback:
+Метод `Arr::map` проходить масив і передає кожне значення та ключ до заданого колбека. Значення масиву замінюється тим, що повернув колбек:
 
 ```php
 use Illuminate\Support\Arr;
@@ -792,7 +795,7 @@ $mapped = Arr::map($array, function (string $value, string $key) {
 <a name="method-array-map-spread"></a>
 #### `Arr::mapSpread()` {.collection-method}
 
-The `Arr::mapSpread` method iterates over the array, passing each nested item value into the given closure. The closure is free to modify the item and return it, thus forming a new array of modified items:
+Метод `Arr::mapSpread` проходить масив, передаючи значення кожного вкладеного елемента до заданого замикання. Замикання вільне змінити елемент і повернути його, утворюючи так новий масив змінених елементів:
 
 ```php
 use Illuminate\Support\Arr;
@@ -817,7 +820,7 @@ $mapped = Arr::mapSpread($array, function (int $even, int $odd) {
 <a name="method-array-map-with-keys"></a>
 #### `Arr::mapWithKeys()` {.collection-method}
 
-The `Arr::mapWithKeys` method iterates through the array and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:
+Метод `Arr::mapWithKeys` проходить масив і передає кожне значення до заданого колбека. Колбек має повернути асоціативний масив з єдиною парою ключ / значення:
 
 ```php
 use Illuminate\Support\Arr;
@@ -850,7 +853,7 @@ $mapped = Arr::mapWithKeys($array, function (array $item, int $key) {
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
 
-The `Arr::only` method returns only the specified key / value pairs from the given array:
+Метод `Arr::only` повертає із заданого масиву лише вказані пари ключ / значення:
 
 ```php
 use Illuminate\Support\Arr;
@@ -865,7 +868,7 @@ $slice = Arr::only($array, ['name', 'price']);
 <a name="method-array-only-values"></a>
 #### `Arr::onlyValues()` {.collection-method}
 
-The `Arr::onlyValues` method returns only the specified values from an array:
+Метод `Arr::onlyValues` повертає з масиву лише вказані значення:
 
 ```php
 use Illuminate\Support\Arr;
@@ -877,7 +880,7 @@ $filtered = Arr::onlyValues($array, ['foo', 'baz']);
 // ['foo', 'baz']
 ```
 
-You may also pass `true` to the `strict` argument to use strict type comparisons when filtering:
+Ви також можете передати `true` в аргумент `strict`, щоб під час фільтрування використовувати строге порівняння типів:
 
 ```php
 use Illuminate\Support\Arr;
@@ -892,7 +895,7 @@ $filtered = Arr::onlyValues($array, [1, 2], strict: true);
 <a name="method-array-partition"></a>
 #### `Arr::partition()` {.collection-method}
 
-The `Arr::partition` method may be combined with PHP array destructuring to separate elements that pass a given truth test from those that do not:
+Метод `Arr::partition` можна поєднати з деструктуризацією масивів PHP, щоб відділити елементи, які проходять заданий тест, від тих, які його не проходять:
 
 ```php
 <?php
@@ -917,7 +920,7 @@ dump($equalOrAboveThree);
 <a name="method-array-pluck"></a>
 #### `Arr::pluck()` {.collection-method}
 
-The `Arr::pluck` method retrieves all of the values for a given key from an array:
+Метод `Arr::pluck` дістає з масиву всі значення за заданим ключем:
 
 ```php
 use Illuminate\Support\Arr;
@@ -932,7 +935,7 @@ $names = Arr::pluck($array, 'developer.name');
 // ['Taylor', 'Abigail']
 ```
 
-You may also specify how you wish the resulting list to be keyed:
+Ви також можете вказати, за яким ключем має будуватися отриманий список:
 
 ```php
 use Illuminate\Support\Arr;
@@ -945,7 +948,7 @@ $names = Arr::pluck($array, 'developer.name', 'developer.id');
 <a name="method-array-prepend"></a>
 #### `Arr::prepend()` {.collection-method}
 
-The `Arr::prepend` method will push an item onto the beginning of an array:
+Метод `Arr::prepend` додає елемент на початок масиву:
 
 ```php
 use Illuminate\Support\Arr;
@@ -957,7 +960,7 @@ $array = Arr::prepend($array, 'zero');
 // ['zero', 'one', 'two', 'three', 'four']
 ```
 
-If needed, you may specify the key that should be used for the value:
+За потреби ви можете вказати ключ, який слід використати для значення:
 
 ```php
 use Illuminate\Support\Arr;
@@ -972,7 +975,7 @@ $array = Arr::prepend($array, 'Desk', 'name');
 <a name="method-array-prependkeyswith"></a>
 #### `Arr::prependKeysWith()` {.collection-method}
 
-The `Arr::prependKeysWith` prepends all key names of an associative array with the given prefix:
+Метод `Arr::prependKeysWith` додає заданий префікс до всіх назв ключів асоціативного масиву:
 
 ```php
 use Illuminate\Support\Arr;
@@ -995,7 +998,7 @@ $keyed = Arr::prependKeysWith($array, 'product.');
 <a name="method-array-pull"></a>
 #### `Arr::pull()` {.collection-method}
 
-The `Arr::pull` method returns and removes a key / value pair from an array:
+Метод `Arr::pull` повертає й вилучає з масиву пару ключ / значення:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1009,7 +1012,7 @@ $name = Arr::pull($array, 'name');
 // $array: ['price' => 100]
 ```
 
-A default value may be passed as the third argument to the method. This value will be returned if the key doesn't exist:
+Третім аргументом методу можна передати значення за замовчуванням. Його буде повернуто, якщо ключа не існує:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1020,7 +1023,7 @@ $value = Arr::pull($array, $key, $default);
 <a name="method-array-push"></a>
 #### `Arr::push()` {.collection-method}
 
-The `Arr::push` method pushes an item into an array using "dot" notation. If an array does not exist at the given key, it will be created:
+Метод `Arr::push` додає елемент до масиву за «крапковою» нотацією. Якщо за заданим ключем масиву немає, його буде створено:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1035,7 +1038,7 @@ Arr::push($array, 'office.furniture', 'Desk');
 <a name="method-array-query"></a>
 #### `Arr::query()` {.collection-method}
 
-The `Arr::query` method converts the array into a query string:
+Метод `Arr::query` перетворює масив на рядок запиту:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1056,7 +1059,7 @@ Arr::query($array);
 <a name="method-array-random"></a>
 #### `Arr::random()` {.collection-method}
 
-The `Arr::random` method returns a random value from an array:
+Метод `Arr::random` повертає випадкове значення з масиву:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1068,7 +1071,7 @@ $random = Arr::random($array);
 // 4 - (retrieved randomly)
 ```
 
-You may also specify the number of items to return as an optional second argument. Note that providing this argument will return an array even if only one item is desired:
+Необов'язковим другим аргументом ви можете вказати кількість елементів, які слід повернути. Зверніть увагу: якщо передати цей аргумент, буде повернуто масив, навіть коли потрібен лише один елемент:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1081,7 +1084,7 @@ $items = Arr::random($array, 2);
 <a name="method-array-reject"></a>
 #### `Arr::reject()` {.collection-method}
 
-The `Arr::reject` method removes items from an array using the given closure:
+Метод `Arr::reject` вилучає елементи з масиву за допомогою заданого замикання:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1098,7 +1101,7 @@ $filtered = Arr::reject($array, function (string|int $value, int $key) {
 <a name="method-array-select"></a>
 #### `Arr::select()` {.collection-method}
 
-The `Arr::select` method selects an array of values from an array:
+Метод `Arr::select` вибирає з масиву масив значень:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1117,7 +1120,7 @@ Arr::select($array, ['name', 'price']);
 <a name="method-array-set"></a>
 #### `Arr::set()` {.collection-method}
 
-The `Arr::set` method sets a value within a deeply nested array using "dot" notation:
+Метод `Arr::set` встановлює значення в глибоко вкладеному масиві за «крапковою» нотацією:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1132,7 +1135,7 @@ Arr::set($array, 'products.desk.price', 200);
 <a name="method-array-shuffle"></a>
 #### `Arr::shuffle()` {.collection-method}
 
-The `Arr::shuffle` method randomly shuffles the items in the array:
+Метод `Arr::shuffle` випадково перемішує елементи масиву:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1145,7 +1148,7 @@ $array = Arr::shuffle([1, 2, 3, 4, 5]);
 <a name="method-array-sole"></a>
 #### `Arr::sole()` {.collection-method}
 
-The `Arr::sole` method retrieves a single value from an array using the given closure. If more than one value within the array matches the given truth test, an `Illuminate\Support\MultipleItemsFoundException` exception will be thrown. If no values match the truth test, an `Illuminate\Support\ItemNotFoundException` exception will be thrown:
+Метод `Arr::sole` дістає з масиву єдине значення за допомогою заданого замикання. Якщо заданий тест проходить більше ніж одне значення масиву, буде викинуто виняток `Illuminate\Support\MultipleItemsFoundException`. Якщо тест не проходить жодне значення, буде викинуто виняток `Illuminate\Support\ItemNotFoundException`:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1160,7 +1163,7 @@ $value = Arr::sole($array, fn (string $value) => $value === 'Desk');
 <a name="method-array-some"></a>
 #### `Arr::some()` {.collection-method}
 
-The `Arr::some` method ensures that at least one of the values in the array passes a given truth test:
+Метод `Arr::some` переконується, що заданий тест проходить щонайменше одне значення масиву:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1175,7 +1178,7 @@ Arr::some($array, fn ($i) => $i > 2);
 <a name="method-array-sort"></a>
 #### `Arr::sort()` {.collection-method}
 
-The `Arr::sort` method sorts an array by its values:
+Метод `Arr::sort` сортує масив за його значеннями:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1187,7 +1190,7 @@ $sorted = Arr::sort($array);
 // ['Chair', 'Desk', 'Table']
 ```
 
-You may also sort the array by the results of a given closure:
+Ви також можете відсортувати масив за результатами заданого замикання:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1214,7 +1217,7 @@ $sorted = array_values(Arr::sort($array, function (array $value) {
 <a name="method-array-sort-desc"></a>
 #### `Arr::sortDesc()` {.collection-method}
 
-The `Arr::sortDesc` method sorts an array in descending order by its values:
+Метод `Arr::sortDesc` сортує масив за його значеннями у спадному порядку:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1226,7 +1229,7 @@ $sorted = Arr::sortDesc($array);
 // ['Table', 'Desk', 'Chair']
 ```
 
-You may also sort the array by the results of a given closure:
+Ви також можете відсортувати масив за результатами заданого замикання:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1253,7 +1256,7 @@ $sorted = array_values(Arr::sortDesc($array, function (array $value) {
 <a name="method-array-sort-recursive"></a>
 #### `Arr::sortRecursive()` {.collection-method}
 
-The `Arr::sortRecursive` method recursively sorts an array using the `sort` function for numerically indexed sub-arrays and the `ksort` function for associative sub-arrays:
+Метод `Arr::sortRecursive` рекурсивно сортує масив, використовуючи функцію `sort` для підмасивів з числовими індексами та функцію `ksort` для асоціативних підмасивів:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1275,7 +1278,7 @@ $sorted = Arr::sortRecursive($array);
 */
 ```
 
-If you would like the results sorted in descending order, you may use the `Arr::sortRecursiveDesc` method.
+Якщо ви хочете отримати результати у спадному порядку, скористайтеся методом `Arr::sortRecursiveDesc`.
 
 ```php
 $sorted = Arr::sortRecursiveDesc($array);
@@ -1284,7 +1287,7 @@ $sorted = Arr::sortRecursiveDesc($array);
 <a name="method-array-string"></a>
 #### `Arr::string()` {.collection-method}
 
-The `Arr::string` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `string`:
+Метод `Arr::string` дістає значення з глибоко вкладеного масиву за «крапковою» нотацією (так само, як [Arr::get()](#method-array-get)), але викидає `InvalidArgumentException`, якщо запитане значення не є `string`:
 
 ```
 use Illuminate\Support\Arr;
@@ -1303,7 +1306,7 @@ $value = Arr::string($array, 'languages');
 <a name="method-array-take"></a>
 #### `Arr::take()` {.collection-method}
 
-The `Arr::take` method returns a new array with the specified number of items:
+Метод `Arr::take` повертає новий масив із вказаною кількістю елементів:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1315,7 +1318,7 @@ $chunk = Arr::take($array, 3);
 // [0, 1, 2]
 ```
 
-You may also pass a negative integer to take the specified number of items from the end of the array:
+Ви також можете передати від'ємне ціле число, щоб узяти вказану кількість елементів з кінця масиву:
 
 ```php
 $array = [0, 1, 2, 3, 4, 5];
@@ -1328,7 +1331,7 @@ $chunk = Arr::take($array, -2);
 <a name="method-array-to-css-classes"></a>
 #### `Arr::toCssClasses()` {.collection-method}
 
-The `Arr::toCssClasses` method conditionally compiles a CSS class string. The method accepts an array of classes where the array key contains the class or classes you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
+Метод `Arr::toCssClasses` умовно збирає рядок CSS-класів. Метод приймає масив класів, де ключ масиву містить клас або класи, які ви хочете додати, а значення є булевим виразом. Якщо елемент масиву має числовий ключ, він завжди потрапить до згенерованого списку класів:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1348,7 +1351,7 @@ $classes = Arr::toCssClasses($array);
 <a name="method-array-to-css-styles"></a>
 #### `Arr::toCssStyles()` {.collection-method}
 
-The `Arr::toCssStyles` method conditionally compiles a CSS style string. The method accepts an array of CSS declarations where the array key contains the CSS declaration you wish to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the compiled CSS style string:
+Метод `Arr::toCssStyles` умовно збирає рядок CSS-стилів. Метод приймає масив CSS-оголошень, де ключ масиву містить CSS-оголошення, яке ви хочете додати, а значення є булевим виразом. Якщо елемент масиву має числовий ключ, він завжди потрапить до зібраного рядка CSS-стилів:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1364,12 +1367,12 @@ $classes = Arr::toCssStyles($array);
 */
 ```
 
-This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](/docs/{{version}}/blade#conditionally-merge-classes) as well as the `@class` [Blade directive](/docs/{{version}}/blade#conditional-classes).
+Цей метод лежить в основі можливості Laravel [зливати класи з мішком атрибутів Blade-компонента](/docs/{{version}}/blade#conditionally-merge-classes), а також [директиви Blade](/docs/{{version}}/blade#conditional-classes) `@class`.
 
 <a name="method-array-undot"></a>
 #### `Arr::undot()` {.collection-method}
 
-The `Arr::undot` method expands a single-dimensional array that uses "dot" notation into a multi-dimensional array:
+Метод `Arr::undot` розгортає одновимірний масив з «крапковою» нотацією на багатовимірний:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1387,7 +1390,7 @@ $array = Arr::undot($array);
 <a name="method-array-where"></a>
 #### `Arr::where()` {.collection-method}
 
-The `Arr::where` method filters an array using the given closure:
+Метод `Arr::where` фільтрує масив за допомогою заданого замикання:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1404,7 +1407,7 @@ $filtered = Arr::where($array, function (string|int $value, int $key) {
 <a name="method-array-where-not-null"></a>
 #### `Arr::whereNotNull()` {.collection-method}
 
-The `Arr::whereNotNull` method removes all `null` values from the given array:
+Метод `Arr::whereNotNull` вилучає із заданого масиву всі значення `null`:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1419,7 +1422,7 @@ $filtered = Arr::whereNotNull($array);
 <a name="method-array-wrap"></a>
 #### `Arr::wrap()` {.collection-method}
 
-The `Arr::wrap` method wraps the given value in an array. If the given value is already an array it will be returned without modification:
+Метод `Arr::wrap` загортає задане значення в масив. Якщо задане значення вже є масивом, його буде повернуто без змін:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1431,7 +1434,7 @@ $array = Arr::wrap($string);
 // ['Laravel']
 ```
 
-If the given value is `null`, an empty array will be returned:
+Якщо задане значення - `null`, буде повернуто порожній масив:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1444,7 +1447,7 @@ $array = Arr::wrap(null);
 <a name="method-data-fill"></a>
 #### `data_fill()` {.collection-method}
 
-The `data_fill` function sets a missing value within a nested array or object using "dot" notation:
+Функція `data_fill` встановлює відсутнє значення у вкладеному масиві чи об'єкті за «крапковою» нотацією:
 
 ```php
 $data = ['products' => ['desk' => ['price' => 100]]];
@@ -1458,7 +1461,7 @@ data_fill($data, 'products.desk.discount', 10);
 // ['products' => ['desk' => ['price' => 100, 'discount' => 10]]]
 ```
 
-This function also accepts asterisks as wildcards and will fill the target accordingly:
+Ця функція також приймає зірочки як підстановки й заповнить ціль відповідно:
 
 ```php
 $data = [
@@ -1483,7 +1486,7 @@ data_fill($data, 'products.*.price', 200);
 <a name="method-data-get"></a>
 #### `data_get()` {.collection-method}
 
-The `data_get` function retrieves a value from a nested array or object using "dot" notation:
+Функція `data_get` дістає значення з вкладеного масиву чи об'єкта за «крапковою» нотацією:
 
 ```php
 $data = ['products' => ['desk' => ['price' => 100]]];
@@ -1493,7 +1496,7 @@ $price = data_get($data, 'products.desk.price');
 // 100
 ```
 
-The `data_get` function also accepts a default value, which will be returned if the specified key is not found:
+Функція `data_get` також приймає значення за замовчуванням, яке буде повернуто, якщо вказаного ключа не знайдено:
 
 ```php
 $discount = data_get($data, 'products.desk.discount', 0);
@@ -1501,7 +1504,7 @@ $discount = data_get($data, 'products.desk.discount', 0);
 // 0
 ```
 
-The function also accepts wildcards using asterisks, which may target any key of the array or object:
+Функція також приймає підстановки у вигляді зірочок, які можуть вказувати на будь-який ключ масиву чи об'єкта:
 
 ```php
 $data = [
@@ -1514,7 +1517,7 @@ data_get($data, '*.name');
 // ['Desk 1', 'Desk 2'];
 ```
 
-The `{first}` and `{last}` placeholders may be used to retrieve the first or last items in an array:
+Плейсхолдери `{first}` та `{last}` дозволяють дістати перший чи останній елементи масиву:
 
 ```php
 $flight = [
@@ -1532,7 +1535,7 @@ data_get($flight, 'segments.{first}.arrival');
 <a name="method-data-set"></a>
 #### `data_set()` {.collection-method}
 
-The `data_set` function sets a value within a nested array or object using "dot" notation:
+Функція `data_set` встановлює значення у вкладеному масиві чи об'єкті за «крапковою» нотацією:
 
 ```php
 $data = ['products' => ['desk' => ['price' => 100]]];
@@ -1542,7 +1545,7 @@ data_set($data, 'products.desk.price', 200);
 // ['products' => ['desk' => ['price' => 200]]]
 ```
 
-This function also accepts wildcards using asterisks and will set values on the target accordingly:
+Ця функція також приймає підстановки у вигляді зірочок і встановить значення в цілі відповідно:
 
 ```php
 $data = [
@@ -1564,7 +1567,7 @@ data_set($data, 'products.*.price', 200);
 */
 ```
 
-By default, any existing values are overwritten. If you wish to only set a value if it doesn't exist, you may pass `false` as the fourth argument to the function:
+За замовчуванням будь-які наявні значення перезаписуються. Якщо ви хочете встановити значення, лише коли його ще немає, передайте четвертим аргументом функції `false`:
 
 ```php
 $data = ['products' => ['desk' => ['price' => 100]]];
@@ -1577,7 +1580,7 @@ data_set($data, 'products.desk.price', 200, overwrite: false);
 <a name="method-data-forget"></a>
 #### `data_forget()` {.collection-method}
 
-The `data_forget` function removes a value within a nested array or object using "dot" notation:
+Функція `data_forget` вилучає значення з вкладеного масиву чи об'єкта за «крапковою» нотацією:
 
 ```php
 $data = ['products' => ['desk' => ['price' => 100]]];
@@ -1587,7 +1590,7 @@ data_forget($data, 'products.desk.price');
 // ['products' => ['desk' => []]]
 ```
 
-This function also accepts wildcards using asterisks and will remove values on the target accordingly:
+Ця функція також приймає підстановки у вигляді зірочок і вилучить значення в цілі відповідно:
 
 ```php
 $data = [
@@ -1612,7 +1615,7 @@ data_forget($data, 'products.*.price');
 <a name="method-head"></a>
 #### `head()` {.collection-method}
 
-The `head` function returns the first element in the given array. If the array is empty, `false` will be returned:
+Функція `head` повертає перший елемент заданого масиву. Якщо масив порожній, буде повернуто `false`:
 
 ```php
 $array = [100, 200, 300];
@@ -1625,7 +1628,7 @@ $first = head($array);
 <a name="method-last"></a>
 #### `last()` {.collection-method}
 
-The `last` function returns the last element in the given array. If the array is empty, `false` will be returned:
+Функція `last` повертає останній елемент заданого масиву. Якщо масив порожній, буде повернуто `false`:
 
 ```php
 $array = [100, 200, 300];
@@ -1636,12 +1639,12 @@ $last = last($array);
 ```
 
 <a name="numbers"></a>
-## Numbers
+## Числа
 
 <a name="method-number-abbreviate"></a>
 #### `Number::abbreviate()` {.collection-method}
 
-The `Number::abbreviate` method returns the human-readable format of the provided numerical value, with an abbreviation for the units:
+Метод `Number::abbreviate` повертає зручний для читання формат переданого числового значення зі скороченням одиниць:
 
 ```php
 use Illuminate\Support\Number;
@@ -1662,7 +1665,7 @@ $number = Number::abbreviate(1230000, precision: 2);
 <a name="method-number-clamp"></a>
 #### `Number::clamp()` {.collection-method}
 
-The `Number::clamp` method ensures a given number stays within a specified range. If the number is lower than the minimum, the minimum value is returned. If the number is higher than the maximum, the maximum value is returned:
+Метод `Number::clamp` гарантує, що задане число лишається у вказаному діапазоні. Якщо число менше за мінімум, повертається мінімальне значення. Якщо число більше за максимум, повертається максимальне значення:
 
 ```php
 use Illuminate\Support\Number;
@@ -1687,7 +1690,7 @@ $number = Number::clamp(20, min: 10, max: 100);
 <a name="method-number-currency"></a>
 #### `Number::currency()` {.collection-method}
 
-The `Number::currency` method returns the currency representation of the given value as a string:
+Метод `Number::currency` повертає рядкове представлення заданого значення у вигляді валюти:
 
 ```php
 use Illuminate\Support\Number;
@@ -1712,7 +1715,7 @@ $currency = Number::currency(1000, in: 'EUR', locale: 'de', precision: 0);
 <a name="method-default-currency"></a>
 #### `Number::defaultCurrency()` {.collection-method}
 
-The `Number::defaultCurrency` method returns the default currency being used by the `Number` class:
+Метод `Number::defaultCurrency` повертає валюту за замовчуванням, яку використовує клас `Number`:
 
 ```php
 use Illuminate\Support\Number;
@@ -1725,7 +1728,7 @@ $currency = Number::defaultCurrency();
 <a name="method-default-locale"></a>
 #### `Number::defaultLocale()` {.collection-method}
 
-The `Number::defaultLocale` method returns the default locale being used by the `Number` class:
+Метод `Number::defaultLocale` повертає локаль за замовчуванням, яку використовує клас `Number`:
 
 ```php
 use Illuminate\Support\Number;
@@ -1738,7 +1741,7 @@ $locale = Number::defaultLocale();
 <a name="method-number-file-size"></a>
 #### `Number::fileSize()` {.collection-method}
 
-The `Number::fileSize` method returns the file size representation of the given byte value as a string:
+Метод `Number::fileSize` повертає рядкове представлення заданої кількості байтів у вигляді розміру файлу:
 
 ```php
 use Illuminate\Support\Number;
@@ -1759,7 +1762,7 @@ $size = Number::fileSize(1024, precision: 2);
 <a name="method-number-for-humans"></a>
 #### `Number::forHumans()` {.collection-method}
 
-The `Number::forHumans` method returns the human-readable format of the provided numerical value:
+Метод `Number::forHumans` повертає зручний для читання формат переданого числового значення:
 
 ```php
 use Illuminate\Support\Number;
@@ -1780,7 +1783,7 @@ $number = Number::forHumans(1230000, precision: 2);
 <a name="method-number-format"></a>
 #### `Number::format()` {.collection-method}
 
-The `Number::format` method formats the given number into a locale specific string:
+Метод `Number::format` форматує задане число в рядок відповідно до локалі:
 
 ```php
 use Illuminate\Support\Number;
@@ -1805,7 +1808,7 @@ $number = Number::format(100000, locale: 'de');
 <a name="method-number-ordinal"></a>
 #### `Number::ordinal()` {.collection-method}
 
-The `Number::ordinal` method returns a number's ordinal representation:
+Метод `Number::ordinal` повертає порядкове представлення числа:
 
 ```php
 use Illuminate\Support\Number;
@@ -1826,7 +1829,7 @@ $number = Number::ordinal(21);
 <a name="method-number-pairs"></a>
 #### `Number::pairs()` {.collection-method}
 
-The `Number::pairs` method generates an array of number pairs (sub-ranges) based on a specified range and step value. This method can be useful for dividing a larger range of numbers into smaller, manageable sub-ranges for things like pagination or batching tasks. The `pairs` method returns an array of arrays, where each inner array represents a pair (sub-range) of numbers:
+Метод `Number::pairs` генерує масив пар чисел (піддіапазонів) на основі заданого діапазону й кроку. Цей метод стане в пригоді, коли треба розділити великий діапазон чисел на менші, зручні піддіапазони - наприклад, для пагінації чи пакетної обробки. Метод `pairs` повертає масив масивів, де кожен внутрішній масив представляє пару (піддіапазон) чисел:
 
 ```php
 use Illuminate\Support\Number;
@@ -1843,7 +1846,7 @@ $result = Number::pairs(25, 10, offset: 0);
 <a name="method-number-parse"></a>
 #### `Number::parse()` {.collection-method}
 
-The `Number::parse` method parses a localized numeric string using PHP's `NumberFormatter`:
+Метод `Number::parse` розбирає локалізований числовий рядок за допомогою PHP-класу `NumberFormatter`:
 
 ```php
 use Illuminate\Support\Number;
@@ -1860,7 +1863,7 @@ $result = Number::parse('10,123', locale: 'fr');
 <a name="method-number-parse-int"></a>
 #### `Number::parseInt()` {.collection-method}
 
-The `Number::parseInt` method parse a string into an integer according to the specified locale:
+Метод `Number::parseInt` розбирає рядок на ціле число відповідно до вказаної локалі:
 
 ```php
 use Illuminate\Support\Number;
@@ -1877,7 +1880,7 @@ $result = Number::parseInt('10,123', locale: 'fr');
 <a name="method-number-parse-float"></a>
 #### `Number::parseFloat()` {.collection-method}
 
-The `Number::parseFloat` method parse a string into a float according to the specified locale:
+Метод `Number::parseFloat` розбирає рядок на число з рухомою комою відповідно до вказаної локалі:
 
 ```php
 use Illuminate\Support\Number;
@@ -1894,7 +1897,7 @@ $result = Number::parseFloat('10', locale: 'fr');
 <a name="method-number-percentage"></a>
 #### `Number::percentage()` {.collection-method}
 
-The `Number::percentage` method returns the percentage representation of the given value as a string:
+Метод `Number::percentage` повертає рядкове представлення заданого значення у вигляді відсотка:
 
 ```php
 use Illuminate\Support\Number;
@@ -1919,7 +1922,7 @@ $percentage = Number::percentage(10, precision: 2, locale: 'de');
 <a name="method-number-spell"></a>
 #### `Number::spell()` {.collection-method}
 
-The `Number::spell` method transforms the given number into a string of words:
+Метод `Number::spell` перетворює задане число на рядок зі слів:
 
 ```php
 use Illuminate\Support\Number;
@@ -1933,7 +1936,7 @@ $number = Number::spell(88, locale: 'fr');
 // quatre-vingt-huit
 ```
 
-The `after` argument allows you to specify a value after which all numbers should be spelled out:
+Аргумент `after` дозволяє вказати значення, після якого всі числа слід писати словами:
 
 ```php
 $number = Number::spell(10, after: 10);
@@ -1945,7 +1948,7 @@ $number = Number::spell(11, after: 10);
 // eleven
 ```
 
-The `until` argument allows you to specify a value before which all numbers should be spelled out:
+Аргумент `until` дозволяє вказати значення, до якого всі числа слід писати словами:
 
 ```php
 $number = Number::spell(5, until: 10);
@@ -1960,7 +1963,7 @@ $number = Number::spell(10, until: 10);
 <a name="method-number-spell-ordinal"></a>
 #### `Number::spellOrdinal()` {.collection-method}
 
-The `Number::spellOrdinal` method returns the number's ordinal representation as a string of words:
+Метод `Number::spellOrdinal` повертає порядкове представлення числа у вигляді рядка зі слів:
 
 ```php
 use Illuminate\Support\Number;
@@ -1981,7 +1984,7 @@ $number = Number::spellOrdinal(21);
 <a name="method-number-trim"></a>
 #### `Number::trim()` {.collection-method}
 
-The `Number::trim` method removes any trailing zero digits after the decimal point of the given number:
+Метод `Number::trim` вилучає всі кінцеві нулі після десяткової крапки заданого числа:
 
 ```php
 use Illuminate\Support\Number;
@@ -1998,7 +2001,7 @@ $number = Number::trim(12.30);
 <a name="method-number-use-locale"></a>
 #### `Number::useLocale()` {.collection-method}
 
-The `Number::useLocale` method sets the default number locale globally, which affects how numbers and currency are formatted by subsequent invocations to the `Number` class's methods:
+Метод `Number::useLocale` глобально задає локаль чисел за замовчуванням, що впливає на форматування чисел і валюти під час наступних викликів методів класу `Number`:
 
 ```php
 use Illuminate\Support\Number;
@@ -2015,7 +2018,7 @@ public function boot(): void
 <a name="method-number-with-locale"></a>
 #### `Number::withLocale()` {.collection-method}
 
-The `Number::withLocale` method executes the given closure using the specified locale and then restores the original locale after the callback has executed:
+Метод `Number::withLocale` виконує задане замикання із вказаною локаллю, а після виконання колбека відновлює оригінальну локаль:
 
 ```php
 use Illuminate\Support\Number;
@@ -2028,7 +2031,7 @@ $number = Number::withLocale('de', function () {
 <a name="method-number-use-currency"></a>
 #### `Number::useCurrency()` {.collection-method}
 
-The `Number::useCurrency` method sets the default number currency globally, which affects how the currency is formatted by subsequent invocations to the `Number` class's methods:
+Метод `Number::useCurrency` глобально задає валюту чисел за замовчуванням, що впливає на форматування валюти під час наступних викликів методів класу `Number`:
 
 ```php
 use Illuminate\Support\Number;
@@ -2045,7 +2048,7 @@ public function boot(): void
 <a name="method-number-with-currency"></a>
 #### `Number::withCurrency()` {.collection-method}
 
-The `Number::withCurrency` method executes the given closure using the specified currency and then restores the original currency after the callback has executed:
+Метод `Number::withCurrency` виконує задане замикання із вказаною валютою, а після виконання колбека відновлює оригінальну валюту:
 
 ```php
 use Illuminate\Support\Number;
@@ -2056,12 +2059,12 @@ $number = Number::withCurrency('GBP', function () {
 ```
 
 <a name="paths"></a>
-## Paths
+## Шляхи
 
 <a name="method-app-path"></a>
 #### `app_path()` {.collection-method}
 
-The `app_path` function returns the fully qualified path to your application's `app` directory. You may also use the `app_path` function to generate a fully qualified path to a file relative to the application directory:
+Функція `app_path` повертає повний шлях до каталогу `app` вашого застосунку. Ви також можете скористатися функцією `app_path`, щоб згенерувати повний шлях до файлу відносно каталогу застосунку:
 
 ```php
 $path = app_path();
@@ -2072,7 +2075,7 @@ $path = app_path('Http/Controllers/Controller.php');
 <a name="method-base-path"></a>
 #### `base_path()` {.collection-method}
 
-The `base_path` function returns the fully qualified path to your application's root directory. You may also use the `base_path` function to generate a fully qualified path to a given file relative to the project root directory:
+Функція `base_path` повертає повний шлях до кореневого каталогу вашого застосунку. Ви також можете скористатися функцією `base_path`, щоб згенерувати повний шлях до заданого файлу відносно кореня проєкту:
 
 ```php
 $path = base_path();
@@ -2083,7 +2086,7 @@ $path = base_path('vendor/bin');
 <a name="method-config-path"></a>
 #### `config_path()` {.collection-method}
 
-The `config_path` function returns the fully qualified path to your application's `config` directory. You may also use the `config_path` function to generate a fully qualified path to a given file within the application's configuration directory:
+Функція `config_path` повертає повний шлях до каталогу `config` вашого застосунку. Ви також можете скористатися функцією `config_path`, щоб згенерувати повний шлях до заданого файлу в каталозі конфігурації застосунку:
 
 ```php
 $path = config_path();
@@ -2094,7 +2097,7 @@ $path = config_path('app.php');
 <a name="method-database-path"></a>
 #### `database_path()` {.collection-method}
 
-The `database_path` function returns the fully qualified path to your application's `database` directory. You may also use the `database_path` function to generate a fully qualified path to a given file within the database directory:
+Функція `database_path` повертає повний шлях до каталогу `database` вашого застосунку. Ви також можете скористатися функцією `database_path`, щоб згенерувати повний шлях до заданого файлу в каталозі бази даних:
 
 ```php
 $path = database_path();
@@ -2105,7 +2108,7 @@ $path = database_path('factories/UserFactory.php');
 <a name="method-lang-path"></a>
 #### `lang_path()` {.collection-method}
 
-The `lang_path` function returns the fully qualified path to your application's `lang` directory. You may also use the `lang_path` function to generate a fully qualified path to a given file within the directory:
+Функція `lang_path` повертає повний шлях до каталогу `lang` вашого застосунку. Ви також можете скористатися функцією `lang_path`, щоб згенерувати повний шлях до заданого файлу в цьому каталозі:
 
 ```php
 $path = lang_path();
@@ -2114,12 +2117,12 @@ $path = lang_path('en/messages.php');
 ```
 
 > [!NOTE]
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+> За замовчуванням каркас застосунку Laravel не містить каталогу `lang`. Якщо ви хочете налаштувати мовні файли Laravel, опублікуйте їх командою Artisan `lang:publish`.
 
 <a name="method-public-path"></a>
 #### `public_path()` {.collection-method}
 
-The `public_path` function returns the fully qualified path to your application's `public` directory. You may also use the `public_path` function to generate a fully qualified path to a given file within the public directory:
+Функція `public_path` повертає повний шлях до каталогу `public` вашого застосунку. Ви також можете скористатися функцією `public_path`, щоб згенерувати повний шлях до заданого файлу в каталозі public:
 
 ```php
 $path = public_path();
@@ -2130,7 +2133,7 @@ $path = public_path('css/app.css');
 <a name="method-resource-path"></a>
 #### `resource_path()` {.collection-method}
 
-The `resource_path` function returns the fully qualified path to your application's `resources` directory. You may also use the `resource_path` function to generate a fully qualified path to a given file within the resources directory:
+Функція `resource_path` повертає повний шлях до каталогу `resources` вашого застосунку. Ви також можете скористатися функцією `resource_path`, щоб згенерувати повний шлях до заданого файлу в каталозі resources:
 
 ```php
 $path = resource_path();
@@ -2141,7 +2144,7 @@ $path = resource_path('sass/app.scss');
 <a name="method-storage-path"></a>
 #### `storage_path()` {.collection-method}
 
-The `storage_path` function returns the fully qualified path to your application's `storage` directory. You may also use the `storage_path` function to generate a fully qualified path to a given file within the storage directory:
+Функція `storage_path` повертає повний шлях до каталогу `storage` вашого застосунку. Ви також можете скористатися функцією `storage_path`, щоб згенерувати повний шлях до заданого файлу в каталозі storage:
 
 ```php
 $path = storage_path();
@@ -2150,12 +2153,12 @@ $path = storage_path('app/file.txt');
 ```
 
 <a name="urls"></a>
-## URLs
+## URL
 
 <a name="method-action"></a>
 #### `action()` {.collection-method}
 
-The `action` function generates a URL for the given controller action:
+Функція `action` генерує URL для заданої дії контролера:
 
 ```php
 use App\Http\Controllers\HomeController;
@@ -2163,7 +2166,7 @@ use App\Http\Controllers\HomeController;
 $url = action([HomeController::class, 'index']);
 ```
 
-If the method accepts route parameters, you may pass them as the second argument to the method:
+Якщо метод приймає параметри маршруту, передайте їх другим аргументом:
 
 ```php
 $url = action([UserController::class, 'profile'], ['id' => 1]);
@@ -2172,13 +2175,13 @@ $url = action([UserController::class, 'profile'], ['id' => 1]);
 <a name="method-asset"></a>
 #### `asset()` {.collection-method}
 
-The `asset` function generates a URL for an asset using the current scheme of the request (HTTP or HTTPS):
+Функція `asset` генерує URL для ресурсу, використовуючи поточну схему запиту (HTTP чи HTTPS):
 
 ```php
 $url = asset('img/photo.jpg');
 ```
 
-You can configure the asset URL host by setting the `ASSET_URL` variable in your `.env` file. This can be useful if you host your assets on an external service like Amazon S3 or another CDN:
+Ви можете налаштувати хост URL ресурсів, задавши змінну `ASSET_URL` у файлі `.env`. Це стане в пригоді, якщо ви розміщуєте ресурси на зовнішньому сервісі на кшталт Amazon S3 чи іншого CDN:
 
 ```php
 // ASSET_URL=http://example.com/assets
@@ -2189,19 +2192,19 @@ $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
 <a name="method-route"></a>
 #### `route()` {.collection-method}
 
-The `route` function generates a URL for a given [named route](/docs/{{version}}/routing#named-routes):
+Функція `route` генерує URL для заданого [іменованого маршруту](/docs/{{version}}/routing#named-routes):
 
 ```php
 $url = route('route.name');
 ```
 
-If the route accepts parameters, you may pass them as the second argument to the function:
+Якщо маршрут приймає параметри, передайте їх другим аргументом функції:
 
 ```php
 $url = route('route.name', ['id' => 1]);
 ```
 
-By default, the `route` function generates an absolute URL. If you wish to generate a relative URL, you may pass `false` as the third argument to the function:
+За замовчуванням функція `route` генерує абсолютний URL. Якщо ви хочете згенерувати відносний URL, передайте третім аргументом функції `false`:
 
 ```php
 $url = route('route.name', ['id' => 1], false);
@@ -2210,7 +2213,7 @@ $url = route('route.name', ['id' => 1], false);
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {.collection-method}
 
-The `secure_asset` function generates a URL for an asset using HTTPS:
+Функція `secure_asset` генерує URL для ресурсу через HTTPS:
 
 ```php
 $url = secure_asset('img/photo.jpg');
@@ -2219,7 +2222,7 @@ $url = secure_asset('img/photo.jpg');
 <a name="method-secure-url"></a>
 #### `secure_url()` {.collection-method}
 
-The `secure_url` function generates a fully qualified HTTPS URL to the given path. Additional URL segments may be passed in the function's second argument:
+Функція `secure_url` генерує повний HTTPS-URL до заданого шляху. Додаткові сегменти URL можна передати другим аргументом функції:
 
 ```php
 $url = secure_url('user/profile');
@@ -2230,7 +2233,7 @@ $url = secure_url('user/profile', [1]);
 <a name="method-to-action"></a>
 #### `to_action()` {.collection-method}
 
-The `to_action` function generates a [redirect HTTP response](/docs/{{version}}/responses#redirects) for a given controller action:
+Функція `to_action` генерує [HTTP-відповідь із перенаправленням](/docs/{{version}}/responses#redirects) для заданої дії контролера:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -2238,7 +2241,7 @@ use App\Http\Controllers\UserController;
 return to_action([UserController::class, 'show'], ['user' => 1]);
 ```
 
-If necessary, you may pass the HTTP status code that should be assigned to the redirect and any additional response headers as the third and fourth arguments to the `to_action` method:
+За потреби ви можете передати третім і четвертим аргументами методу `to_action` HTTP-статус, який слід призначити перенаправленню, і будь-які додаткові заголовки відповіді:
 
 ```php
 return to_action(
@@ -2252,13 +2255,13 @@ return to_action(
 <a name="method-to-route"></a>
 #### `to_route()` {.collection-method}
 
-The `to_route` function generates a [redirect HTTP response](/docs/{{version}}/responses#redirects) for a given [named route](/docs/{{version}}/routing#named-routes):
+Функція `to_route` генерує [HTTP-відповідь із перенаправленням](/docs/{{version}}/responses#redirects) для заданого [іменованого маршруту](/docs/{{version}}/routing#named-routes):
 
 ```php
 return to_route('users.show', ['user' => 1]);
 ```
 
-If necessary, you may pass the HTTP status code that should be assigned to the redirect and any additional response headers as the third and fourth arguments to the `to_route` method:
+За потреби ви можете передати третім і четвертим аргументами методу `to_route` HTTP-статус, який слід призначити перенаправленню, і будь-які додаткові заголовки відповіді:
 
 ```php
 return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
@@ -2267,7 +2270,7 @@ return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
 <a name="method-uri"></a>
 #### `uri()` {.collection-method}
 
-The `uri` function generates a [fluent URI instance](#uri) for the given URI:
+Функція `uri` генерує [плавний екземпляр URI](#uri) для заданого URI:
 
 ```php
 $uri = uri('https://example.com')
@@ -2275,7 +2278,7 @@ $uri = uri('https://example.com')
     ->withQuery(['page' => 1]);
 ```
 
-If the `uri` function is given an array containing a callable controller and method pair, the function will create a `Uri` instance for the controller method's route path:
+Якщо функції `uri` передано масив із парою «контролер - метод», яку можна викликати, функція створить екземпляр `Uri` для шляху маршруту цього методу контролера:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -2283,7 +2286,7 @@ use App\Http\Controllers\UserController;
 $uri = uri([UserController::class, 'show'], ['user' => $user]);
 ```
 
-If the controller is invokable, you may simply provide the controller class name:
+Якщо контролер викликаємий, ви можете просто передати назву його класу:
 
 ```php
 use App\Http\Controllers\UserIndexController;
@@ -2291,7 +2294,7 @@ use App\Http\Controllers\UserIndexController;
 $uri = uri(UserIndexController::class);
 ```
 
-If the value given to the `uri` function matches the name of a [named route](/docs/{{version}}/routing#named-routes), a `Uri` instance will be generated for that route's path:
+Якщо значення, передане функції `uri`, збігається з іменем [іменованого маршруту](/docs/{{version}}/routing#named-routes), буде згенеровано екземпляр `Uri` для шляху цього маршруту:
 
 ```php
 $uri = uri('users.show', ['user' => $user]);
@@ -2300,7 +2303,7 @@ $uri = uri('users.show', ['user' => $user]);
 <a name="method-url"></a>
 #### `url()` {.collection-method}
 
-The `url` function generates a fully qualified URL to the given path:
+Функція `url` генерує повний URL до заданого шляху:
 
 ```php
 $url = url('user/profile');
@@ -2308,7 +2311,7 @@ $url = url('user/profile');
 $url = url('user/profile', [1]);
 ```
 
-If no path is provided, an `Illuminate\Routing\UrlGenerator` instance is returned:
+Якщо шлях не передано, повертається екземпляр `Illuminate\Routing\UrlGenerator`:
 
 ```php
 $current = url()->current();
@@ -2318,21 +2321,21 @@ $full = url()->full();
 $previous = url()->previous();
 ```
 
-For more information on working with the `url` function, consult the [URL generation documentation](/docs/{{version}}/urls#generating-urls).
+Докладніше про роботу з функцією `url` читайте в [документації з генерації URL](/docs/{{version}}/urls#generating-urls).
 
 <a name="miscellaneous"></a>
-## Miscellaneous
+## Різне
 
 <a name="method-abort"></a>
 #### `abort()` {.collection-method}
 
-The `abort` function throws [an HTTP exception](/docs/{{version}}/errors#http-exceptions) which will be rendered by the [exception handler](/docs/{{version}}/errors#handling-exceptions):
+Функція `abort` викидає [HTTP-виняток](/docs/{{version}}/errors#http-exceptions), який відрендерить [обробник винятків](/docs/{{version}}/errors#handling-exceptions):
 
 ```php
 abort(403);
 ```
 
-You may also provide the exception's message and custom HTTP response headers that should be sent to the browser:
+Ви також можете передати повідомлення винятку й власні заголовки HTTP-відповіді, які слід надіслати браузеру:
 
 ```php
 abort(403, 'Unauthorized.', $headers);
@@ -2341,35 +2344,35 @@ abort(403, 'Unauthorized.', $headers);
 <a name="method-abort-if"></a>
 #### `abort_if()` {.collection-method}
 
-The `abort_if` function throws an HTTP exception if a given boolean expression evaluates to `true`:
+Функція `abort_if` викидає HTTP-виняток, якщо заданий булевий вираз дає `true`:
 
 ```php
 abort_if(! Auth::user()->isAdmin(), 403);
 ```
 
-Like the `abort` method, you may also provide the exception's response text as the third argument and an array of custom response headers as the fourth argument to the function.
+Як і методу `abort`, ви можете передати функції третім аргументом текст відповіді винятку, а четвертим - масив власних заголовків відповіді.
 
 <a name="method-abort-unless"></a>
 #### `abort_unless()` {.collection-method}
 
-The `abort_unless` function throws an HTTP exception if a given boolean expression evaluates to `false`:
+Функція `abort_unless` викидає HTTP-виняток, якщо заданий булевий вираз дає `false`:
 
 ```php
 abort_unless(Auth::user()->isAdmin(), 403);
 ```
 
-Like the `abort` method, you may also provide the exception's response text as the third argument and an array of custom response headers as the fourth argument to the function.
+Як і методу `abort`, ви можете передати функції третім аргументом текст відповіді винятку, а четвертим - масив власних заголовків відповіді.
 
 <a name="method-app"></a>
 #### `app()` {.collection-method}
 
-The `app` function returns the [service container](/docs/{{version}}/container) instance:
+Функція `app` повертає екземпляр [сервіс-контейнера](/docs/{{version}}/container):
 
 ```php
 $container = app();
 ```
 
-You may pass a class or interface name to resolve it from the container:
+Ви можете передати назву класу чи інтерфейсу, щоб розв'язати його з контейнера:
 
 ```php
 $api = app('HelpSpot\API');
@@ -2378,13 +2381,13 @@ $api = app('HelpSpot\API');
 <a name="method-auth"></a>
 #### `auth()` {.collection-method}
 
-The `auth` function returns an [authenticator](/docs/{{version}}/authentication) instance. You may use it as an alternative to the `Auth` facade:
+Функція `auth` повертає екземпляр [автентифікатора](/docs/{{version}}/authentication). Ви можете скористатися нею як альтернативою фасаду `Auth`:
 
 ```php
 $user = auth()->user();
 ```
 
-If needed, you may specify which guard instance you would like to access:
+За потреби ви можете вказати, до якого гарда хочете звернутися:
 
 ```php
 $user = auth('admin')->user();
@@ -2393,7 +2396,7 @@ $user = auth('admin')->user();
 <a name="method-back"></a>
 #### `back()` {.collection-method}
 
-The `back` function generates a [redirect HTTP response](/docs/{{version}}/responses#redirects) to the user's previous location:
+Функція `back` генерує [HTTP-відповідь із перенаправленням](/docs/{{version}}/responses#redirects) на попереднє місце користувача:
 
 ```php
 return back($status = 302, $headers = [], $fallback = '/');
@@ -2404,7 +2407,7 @@ return back();
 <a name="method-bcrypt"></a>
 #### `bcrypt()` {.collection-method}
 
-The `bcrypt` function [hashes](/docs/{{version}}/hashing) the given value using Bcrypt. You may use this function as an alternative to the `Hash` facade:
+Функція `bcrypt` [хешує](/docs/{{version}}/hashing) задане значення алгоритмом Bcrypt. Ви можете скористатися цією функцією як альтернативою фасаду `Hash`:
 
 ```php
 $password = bcrypt('my-secret-password');
@@ -2413,7 +2416,7 @@ $password = bcrypt('my-secret-password');
 <a name="method-blank"></a>
 #### `blank()` {.collection-method}
 
-The `blank` function determines whether the given value is "blank":
+Функція `blank` визначає, чи є задане значення «порожнім»:
 
 ```php
 blank('');
@@ -2430,12 +2433,12 @@ blank(false);
 // false
 ```
 
-For the inverse of `blank`, see the [filled](#method-filled) function.
+Протилежність `blank` - функція [filled](#method-filled).
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
 
-The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners:
+Функція `broadcast` [надсилає](/docs/{{version}}/broadcasting) задану [подію](/docs/{{version}}/events) її слухачам:
 
 ```php
 broadcast(new UserRegistered($user));
@@ -2446,7 +2449,7 @@ broadcast(new UserRegistered($user))->toOthers();
 <a name="method-broadcast-if"></a>
 #### `broadcast_if()` {.collection-method}
 
-The `broadcast_if` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `true`:
+Функція `broadcast_if` [надсилає](/docs/{{version}}/broadcasting) задану [подію](/docs/{{version}}/events) її слухачам, якщо заданий булевий вираз дає `true`:
 
 ```php
 broadcast_if($user->isActive(), new UserRegistered($user));
@@ -2457,7 +2460,7 @@ broadcast_if($user->isActive(), new UserRegistered($user))->toOthers();
 <a name="method-broadcast-unless"></a>
 #### `broadcast_unless()` {.collection-method}
 
-The `broadcast_unless` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `false`:
+Функція `broadcast_unless` [надсилає](/docs/{{version}}/broadcasting) задану [подію](/docs/{{version}}/events) її слухачам, якщо заданий булевий вираз дає `false`:
 
 ```php
 broadcast_unless($user->isBanned(), new UserRegistered($user));
@@ -2468,7 +2471,7 @@ broadcast_unless($user->isBanned(), new UserRegistered($user))->toOthers();
 <a name="method-cache"></a>
 #### `cache()` {.collection-method}
 
-The `cache` function may be used to get values from the [cache](/docs/{{version}}/cache). If the given key does not exist in the cache, an optional default value will be returned:
+Функція `cache` дозволяє отримувати значення з [кешу](/docs/{{version}}/cache). Якщо заданого ключа в кеші немає, буде повернуто необов'язкове значення за замовчуванням:
 
 ```php
 $value = cache('key');
@@ -2476,7 +2479,7 @@ $value = cache('key');
 $value = cache('key', 'default');
 ```
 
-You may add items to the cache by passing an array of key / value pairs to the function. You should also pass the number of seconds or duration the cached value should be considered valid:
+Ви можете додавати елементи до кешу, передавши функції масив пар ключ / значення. Також слід передати кількість секунд або тривалість, протягом якої закешоване значення вважатиметься дійсним:
 
 ```php
 cache(['key' => 'value'], 300);
@@ -2487,7 +2490,7 @@ cache(['key' => 'value'], now()->plus(seconds: 10));
 <a name="method-class-uses-recursive"></a>
 #### `class_uses_recursive()` {.collection-method}
 
-The `class_uses_recursive` function returns all traits used by a class, including traits used by all of its parent classes:
+Функція `class_uses_recursive` повертає всі трейти, які використовує клас, включно з трейтами всіх його батьківських класів:
 
 ```php
 $traits = class_uses_recursive(App\Models\User::class);
@@ -2496,7 +2499,7 @@ $traits = class_uses_recursive(App\Models\User::class);
 <a name="method-collect"></a>
 #### `collect()` {.collection-method}
 
-The `collect` function creates a [collection](/docs/{{version}}/collections) instance from the given value:
+Функція `collect` створює екземпляр [колекції](/docs/{{version}}/collections) із заданого значення:
 
 ```php
 $collection = collect(['Taylor', 'Abigail']);
@@ -2505,7 +2508,7 @@ $collection = collect(['Taylor', 'Abigail']);
 <a name="method-config"></a>
 #### `config()` {.collection-method}
 
-The `config` function gets the value of a [configuration](/docs/{{version}}/configuration) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. You may also provide a default value that will be returned if the configuration option does not exist:
+Функція `config` отримує значення змінної [конфігурації](/docs/{{version}}/configuration). До значень конфігурації звертаються за «крапковим» синтаксисом, який містить назву файлу та потрібну опцію. Ви також можете передати значення за замовчуванням, яке буде повернуто, якщо опції конфігурації не існує:
 
 ```php
 $value = config('app.timezone');
@@ -2513,7 +2516,7 @@ $value = config('app.timezone');
 $value = config('app.timezone', $default);
 ```
 
-You may set configuration variables at runtime by passing an array of key / value pairs. However, note that this function only affects the configuration value for the current request and does not update your actual configuration values:
+Ви можете задавати змінні конфігурації під час виконання, передавши масив пар ключ / значення. Проте зауважте: ця функція впливає лише на значення конфігурації для поточного запиту й не оновлює ваших справжніх значень конфігурації:
 
 ```php
 config(['app.debug' => true]);
@@ -2522,7 +2525,7 @@ config(['app.debug' => true]);
 <a name="method-context"></a>
 #### `context()` {.collection-method}
 
-The `context` function gets the value from the current [context](/docs/{{version}}/context). You may also provide a default value that will be returned if the context key does not exist:
+Функція `context` отримує значення з поточного [контексту](/docs/{{version}}/context). Ви також можете передати значення за замовчуванням, яке буде повернуто, якщо ключа контексту не існує:
 
 ```php
 $value = context('trace_id');
@@ -2530,7 +2533,7 @@ $value = context('trace_id');
 $value = context('trace_id', $default);
 ```
 
-You may set context values by passing an array of key / value pairs:
+Ви можете задавати значення контексту, передавши масив пар ключ / значення:
 
 ```php
 use Illuminate\Support\Str;
@@ -2541,7 +2544,7 @@ context(['trace_id' => Str::uuid()->toString()]);
 <a name="method-cookie"></a>
 #### `cookie()` {.collection-method}
 
-The `cookie` function creates a new [cookie](/docs/{{version}}/requests#cookies) instance:
+Функція `cookie` створює новий екземпляр [cookie](/docs/{{version}}/requests#cookies):
 
 ```php
 $cookie = cookie('name', 'value', $minutes);
@@ -2550,7 +2553,7 @@ $cookie = cookie('name', 'value', $minutes);
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {.collection-method}
 
-The `csrf_field` function generates an HTML `hidden` input field containing the value of the CSRF token. For example, using [Blade syntax](/docs/{{version}}/blade):
+Функція `csrf_field` генерує HTML-поле `hidden` зі значенням CSRF-токена. Наприклад, із [синтаксисом Blade](/docs/{{version}}/blade):
 
 ```blade
 {{ csrf_field() }}
@@ -2559,7 +2562,7 @@ The `csrf_field` function generates an HTML `hidden` input field containing the 
 <a name="method-csrf-token"></a>
 #### `csrf_token()` {.collection-method}
 
-The `csrf_token` function retrieves the value of the current CSRF token:
+Функція `csrf_token` дістає значення поточного CSRF-токена:
 
 ```php
 $token = csrf_token();
@@ -2568,18 +2571,18 @@ $token = csrf_token();
 <a name="method-decrypt"></a>
 #### `decrypt()` {.collection-method}
 
-The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
+Функція `decrypt` [розшифровує](/docs/{{version}}/encryption) задане значення. Ви можете скористатися цією функцією як альтернативою фасаду `Crypt`:
 
 ```php
 $password = decrypt($value);
 ```
 
-For the inverse of `decrypt`, see the [encrypt](#method-encrypt) function.
+Протилежність `decrypt` - функція [encrypt](#method-encrypt).
 
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
 
-The `dd` function dumps the given variables and ends the execution of the script:
+Функція `dd` виводить задані змінні та припиняє виконання скрипта:
 
 ```php
 dd($value);
@@ -2587,12 +2590,12 @@ dd($value);
 dd($value1, $value2, $value3, ...);
 ```
 
-If you do not want to halt the execution of your script, use the [dump](#method-dump) function instead.
+Якщо ви не хочете зупиняти виконання скрипта, скористайтеся натомість функцією [dump](#method-dump).
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {.collection-method}
 
-The `dispatch` function pushes the given [job](/docs/{{version}}/queues#creating-jobs) onto the Laravel [job queue](/docs/{{version}}/queues):
+Функція `dispatch` кладе задане [завдання](/docs/{{version}}/queues#creating-jobs) до [черги завдань](/docs/{{version}}/queues) Laravel:
 
 ```php
 dispatch(new App\Jobs\SendEmails);
@@ -2601,7 +2604,7 @@ dispatch(new App\Jobs\SendEmails);
 <a name="method-dispatch-sync"></a>
 #### `dispatch_sync()` {.collection-method}
 
-The `dispatch_sync` function pushes the given job to the [sync](/docs/{{version}}/queues#synchronous-dispatching) queue so that it is processed immediately:
+Функція `dispatch_sync` кладе задане завдання до черги [sync](/docs/{{version}}/queues#synchronous-dispatching), тож воно обробляється негайно:
 
 ```php
 dispatch_sync(new App\Jobs\SendEmails);
@@ -2610,7 +2613,7 @@ dispatch_sync(new App\Jobs\SendEmails);
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
 
-The `dump` function dumps the given variables:
+Функція `dump` виводить задані змінні:
 
 ```php
 dump($value);
@@ -2618,23 +2621,23 @@ dump($value);
 dump($value1, $value2, $value3, ...);
 ```
 
-If you want to stop executing the script after dumping the variables, use the [dd](#method-dd) function instead.
+Якщо ви хочете припинити виконання скрипта після виведення змінних, скористайтеся натомість функцією [dd](#method-dd).
 
 <a name="method-encrypt"></a>
 #### `encrypt()` {.collection-method}
 
-The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value. You may use this function as an alternative to the `Crypt` facade:
+Функція `encrypt` [шифрує](/docs/{{version}}/encryption) задане значення. Ви можете скористатися цією функцією як альтернативою фасаду `Crypt`:
 
 ```php
 $secret = encrypt('my-secret-value');
 ```
 
-For the inverse of `encrypt`, see the [decrypt](#method-decrypt) function.
+Протилежність `encrypt` - функція [decrypt](#method-decrypt).
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
 
-The `env` function retrieves the value of an [environment variable](/docs/{{version}}/configuration#environment-configuration) or returns a default value:
+Функція `env` дістає значення [змінної середовища](/docs/{{version}}/configuration#environment-configuration) або повертає значення за замовчуванням:
 
 ```php
 $env = env('APP_ENV');
@@ -2643,12 +2646,12 @@ $env = env('APP_ENV', 'production');
 ```
 
 > [!WARNING]
-> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function will return external environment variables such as server-level or system-level environment variables or `null`.
+> Якщо під час розгортання ви виконуєте команду `config:cache`, переконайтеся, що викликаєте функцію `env` лише у файлах конфігурації. Щойно конфігурацію закешовано, файл `.env` не завантажується, і всі виклики функції `env` повертатимуть зовнішні змінні середовища - на рівні сервера чи системи - або `null`.
 
 <a name="method-event"></a>
 #### `event()` {.collection-method}
 
-The `event` function dispatches the given [event](/docs/{{version}}/events) to its listeners:
+Функція `event` диспетчеризує задану [подію](/docs/{{version}}/events) її слухачам:
 
 ```php
 event(new UserRegistered($user));
@@ -2657,7 +2660,7 @@ event(new UserRegistered($user));
 <a name="method-fake"></a>
 #### `fake()` {.collection-method}
 
-The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) singleton from the container, which can be useful when creating fake data in model factories, database seeding, tests, and prototyping views:
+Функція `fake` розв'язує з контейнера сінглтон [Faker](https://github.com/FakerPHP/Faker), що стане в пригоді для створення фейкових даних у фабриках моделей, наповненні бази, тестах і прототипуванні представлень:
 
 ```blade
 @for ($i = 0; $i < 10; $i++)
@@ -2671,7 +2674,7 @@ The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) single
 @endfor
 ```
 
-By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration. Typically, this configuration option is set via the `APP_FAKER_LOCALE` environment variable. You may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
+За замовчуванням функція `fake` використовує опцію конфігурації `app.faker_locale` у вашому `config/app.php`. Зазвичай цю опцію задають через змінну середовища `APP_FAKER_LOCALE`. Ви також можете вказати локаль, передавши її функції `fake`. Для кожної локалі буде розв'язано окремий сінглтон:
 
 ```php
 fake('nl_NL')->name()
@@ -2680,7 +2683,7 @@ fake('nl_NL')->name()
 <a name="method-filled"></a>
 #### `filled()` {.collection-method}
 
-The `filled` function determines whether the given value is not "blank":
+Функція `filled` визначає, чи не є задане значення «порожнім»:
 
 ```php
 filled(0);
@@ -2697,18 +2700,18 @@ filled(collect());
 // false
 ```
 
-For the inverse of `filled`, see the [blank](#method-blank) function.
+Протилежність `filled` - функція [blank](#method-blank).
 
 <a name="method-info"></a>
 #### `info()` {.collection-method}
 
-The `info` function will write information to your application's [log](/docs/{{version}}/logging):
+Функція `info` запише інформацію до [логу](/docs/{{version}}/logging) вашого застосунку:
 
 ```php
 info('Some helpful information!');
 ```
 
-An array of contextual data may also be passed to the function:
+Функції також можна передати масив контекстних даних:
 
 ```php
 info('User login attempt failed.', ['id' => $user->id]);
@@ -2717,7 +2720,7 @@ info('User login attempt failed.', ['id' => $user->id]);
 <a name="method-literal"></a>
 #### `literal()` {.collection-method}
 
-The `literal` function creates a new [stdClass](https://www.php.net/manual/en/class.stdclass.php) instance with the given named arguments as properties:
+Функція `literal` створює новий екземпляр [stdClass](https://www.php.net/manual/en/class.stdclass.php), де задані іменовані аргументи стають властивостями:
 
 ```php
 $obj = literal(
@@ -2732,19 +2735,19 @@ $obj->languages; // ['PHP', 'Ruby']
 <a name="method-logger"></a>
 #### `logger()` {.collection-method}
 
-The `logger` function can be used to write a `debug` level message to the [log](/docs/{{version}}/logging):
+Функція `logger` дозволяє записати до [логу](/docs/{{version}}/logging) повідомлення рівня `debug`:
 
 ```php
 logger('Debug message');
 ```
 
-An array of contextual data may also be passed to the function:
+Функції також можна передати масив контекстних даних:
 
 ```php
 logger('User has logged in.', ['id' => $user->id]);
 ```
 
-A [logger](/docs/{{version}}/logging) instance will be returned if no value is passed to the function:
+Якщо функції не передано значення, буде повернуто екземпляр [логера](/docs/{{version}}/logging):
 
 ```php
 logger()->error('You are not allowed here.');
@@ -2753,7 +2756,7 @@ logger()->error('You are not allowed here.');
 <a name="method-method-field"></a>
 #### `method_field()` {.collection-method}
 
-The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form's HTTP verb. For example, using [Blade syntax](/docs/{{version}}/blade):
+Функція `method_field` генерує HTML-поле `hidden`, яке містить підмінене значення HTTP-дієслова форми. Наприклад, із [синтаксисом Blade](/docs/{{version}}/blade):
 
 ```blade
 <form method="POST">
@@ -2764,7 +2767,7 @@ The `method_field` function generates an HTML `hidden` input field containing th
 <a name="method-now"></a>
 #### `now()` {.collection-method}
 
-The `now` function creates a new `Illuminate\Support\Carbon` instance for the current time:
+Функція `now` створює новий екземпляр `Illuminate\Support\Carbon` для поточного часу:
 
 ```php
 $now = now();
@@ -2773,7 +2776,7 @@ $now = now();
 <a name="method-old"></a>
 #### `old()` {.collection-method}
 
-The `old` function [retrieves](/docs/{{version}}/requests#retrieving-input) an [old input](/docs/{{version}}/requests#old-input) value flashed into the session:
+Функція `old` [дістає](/docs/{{version}}/requests#retrieving-input) значення [старого вводу](/docs/{{version}}/requests#old-input), збереженого в сесії:
 
 ```php
 $value = old('value');
@@ -2781,7 +2784,7 @@ $value = old('value');
 $value = old('value', 'default');
 ```
 
-Since the "default value" provided as the second argument to the `old` function is often an attribute of an Eloquent model, Laravel allows you to simply pass the entire Eloquent model as the second argument to the `old` function. When doing so, Laravel will assume the first argument provided to the `old` function is the name of the Eloquent attribute that should be considered the "default value":
+Оскільки «значення за замовчуванням», яке передають другим аргументом функції `old`, часто є атрибутом моделі Eloquent, Laravel дозволяє просто передати другим аргументом усю модель Eloquent. У такому разі Laravel вважатиме, що перший аргумент функції `old` - це назва атрибута Eloquent, який слід узяти за «значення за замовчуванням»:
 
 ```blade
 {{ old('name', $user->name) }}
@@ -2794,7 +2797,7 @@ Since the "default value" provided as the second argument to the `old` function 
 <a name="method-once"></a>
 #### `once()` {.collection-method}
 
-The `once` function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the previously cached result:
+Функція `once` виконує заданий колбек і кешує результат у пам'яті на час запиту. Будь-які наступні виклики функції `once` з тим самим колбеком повертатимуть раніше закешований результат:
 
 ```php
 function random(): int
@@ -2809,7 +2812,7 @@ random(); // 123 (cached result)
 random(); // 123 (cached result)
 ```
 
-When the `once` function is executed from within an object instance, the cached result will be unique to that object instance:
+Коли функцію `once` виконано зсередини екземпляра об'єкта, закешований результат буде унікальним для цього екземпляра:
 
 ```php
 <?php
@@ -2835,7 +2838,7 @@ $secondService->all(); // (cached result)
 <a name="method-optional"></a>
 #### `optional()` {.collection-method}
 
-The `optional` function accepts any argument and allows you to access properties or call methods on that object. If the given object is `null`, properties and methods will return `null` instead of causing an error:
+Функція `optional` приймає будь-який аргумент і дозволяє звертатися до властивостей або викликати методи цього об'єкта. Якщо заданий об'єкт - `null`, властивості й методи повернуть `null` замість того, щоб спричинити помилку:
 
 ```php
 return optional($user->address)->street;
@@ -2843,7 +2846,7 @@ return optional($user->address)->street;
 {!! old('name', optional($user)->name) !!}
 ```
 
-The `optional` function also accepts a closure as its second argument. The closure will be invoked if the value provided as the first argument is not null:
+Функція `optional` також приймає замикання другим аргументом. Замикання буде викликано, якщо значення, передане першим аргументом, не є null:
 
 ```php
 return optional(User::find($id), function (User $user) {
@@ -2854,7 +2857,7 @@ return optional(User::find($id), function (User $user) {
 <a name="method-policy"></a>
 #### `policy()` {.collection-method}
 
-The `policy` method retrieves a [policy](/docs/{{version}}/authorization#creating-policies) instance for a given class:
+Метод `policy` дістає екземпляр [політики](/docs/{{version}}/authorization#creating-policies) для заданого класу:
 
 ```php
 $policy = policy(App\Models\User::class);
@@ -2863,7 +2866,7 @@ $policy = policy(App\Models\User::class);
 <a name="method-redirect"></a>
 #### `redirect()` {.collection-method}
 
-The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/responses#redirects), or returns the redirector instance if called with no arguments:
+Функція `redirect` повертає [HTTP-відповідь із перенаправленням](/docs/{{version}}/responses#redirects) або, якщо викликана без аргументів, екземпляр редиректора:
 
 ```php
 return redirect($to = null, $status = 302, $headers = [], $secure = null);
@@ -2876,13 +2879,13 @@ return redirect()->route('route.name');
 <a name="method-report"></a>
 #### `report()` {.collection-method}
 
-The `report` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions):
+Функція `report` повідомить про виняток через ваш [обробник винятків](/docs/{{version}}/errors#handling-exceptions):
 
 ```php
 report($e);
 ```
 
-The `report` function also accepts a string as an argument. When a string is given to the function, the function will create an exception with the given string as its message:
+Функція `report` також приймає рядок як аргумент. Коли функції передано рядок, вона створить виняток із цим рядком як повідомленням:
 
 ```php
 report('Something went wrong.');
@@ -2891,7 +2894,7 @@ report('Something went wrong.');
 <a name="method-report-if"></a>
 #### `report_if()` {.collection-method}
 
-The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if a given boolean expression evaluates to `true`:
+Функція `report_if` повідомить про виняток через ваш [обробник винятків](/docs/{{version}}/errors#handling-exceptions), якщо заданий булевий вираз дає `true`:
 
 ```php
 report_if($shouldReport, $e);
@@ -2902,7 +2905,7 @@ report_if($shouldReport, 'Something went wrong.');
 <a name="method-report-unless"></a>
 #### `report_unless()` {.collection-method}
 
-The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if a given boolean expression evaluates to `false`:
+Функція `report_unless` повідомить про виняток через ваш [обробник винятків](/docs/{{version}}/errors#handling-exceptions), якщо заданий булевий вираз дає `false`:
 
 ```php
 report_unless($reportingDisabled, $e);
@@ -2913,7 +2916,7 @@ report_unless($reportingDisabled, 'Something went wrong.');
 <a name="method-request"></a>
 #### `request()` {.collection-method}
 
-The `request` function returns the current [request](/docs/{{version}}/requests) instance or obtains an input field's value from the current request:
+Функція `request` повертає поточний екземпляр [запиту](/docs/{{version}}/requests) або дістає значення поля вводу з поточного запиту:
 
 ```php
 $request = request();
@@ -2924,7 +2927,7 @@ $value = request('key', $default);
 <a name="method-rescue"></a>
 #### `rescue()` {.collection-method}
 
-The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/docs/{{version}}/errors#handling-exceptions); however, the request will continue processing:
+Функція `rescue` виконує задане замикання й ловить будь-які винятки, що трапляються під час його виконання. Усі спіймані винятки буде надіслано вашому [обробнику винятків](/docs/{{version}}/errors#handling-exceptions); проте обробка запиту продовжиться:
 
 ```php
 return rescue(function () {
@@ -2932,7 +2935,7 @@ return rescue(function () {
 });
 ```
 
-You may also pass a second argument to the `rescue` function. This argument will be the "default" value that should be returned if an exception occurs while executing the closure:
+Ви також можете передати функції `rescue` другий аргумент. Це буде значення «за замовчуванням», яке слід повернути, якщо під час виконання замикання станеться виняток:
 
 ```php
 return rescue(function () {
@@ -2946,7 +2949,7 @@ return rescue(function () {
 });
 ```
 
-A `report` argument may be provided to the `rescue` function to determine if the exception should be reported via the `report` function:
+Функції `rescue` можна передати аргумент `report`, щоб визначити, чи слід повідомляти про виняток через функцію `report`:
 
 ```php
 return rescue(function () {
@@ -2959,7 +2962,7 @@ return rescue(function () {
 <a name="method-resolve"></a>
 #### `resolve()` {.collection-method}
 
-The `resolve` function resolves a given class or interface name to an instance using the [service container](/docs/{{version}}/container):
+Функція `resolve` розв'язує задану назву класу чи інтерфейсу в екземпляр через [сервіс-контейнер](/docs/{{version}}/container):
 
 ```php
 $api = resolve('HelpSpot\API');
@@ -2968,7 +2971,7 @@ $api = resolve('HelpSpot\API');
 <a name="method-response"></a>
 #### `response()` {.collection-method}
 
-The `response` function creates a [response](/docs/{{version}}/responses) instance or obtains an instance of the response factory:
+Функція `response` створює екземпляр [відповіді](/docs/{{version}}/responses) або отримує екземпляр фабрики відповідей:
 
 ```php
 return response('Hello World', 200, $headers);
@@ -2979,7 +2982,7 @@ return response()->json(['foo' => 'bar'], 200, $headers);
 <a name="method-retry"></a>
 #### `retry()` {.collection-method}
 
-The `retry` function attempts to execute the given callback until the given maximum attempt threshold is met. If the callback does not throw an exception, its return value will be returned. If the callback throws an exception, it will automatically be retried. If the maximum attempt count is exceeded, the exception will be thrown:
+Функція `retry` намагається виконати заданий колбек, доки не буде досягнуто заданої максимальної кількості спроб. Якщо колбек не викидає винятку, буде повернуто його значення. Якщо колбек викидає виняток, спробу буде автоматично повторено. Якщо максимальну кількість спроб перевищено, виняток буде викинуто:
 
 ```php
 return retry(5, function () {
@@ -2987,7 +2990,7 @@ return retry(5, function () {
 }, 100);
 ```
 
-The sleep duration also accepts a `CarbonInterval` instance:
+Тривалість паузи також приймає екземпляр `CarbonInterval`:
 
 ```php
 use function Illuminate\Support\seconds;
@@ -2997,7 +3000,7 @@ return retry(5, function () {
 }, seconds(5));
 ```
 
-If you would like to manually calculate the number of milliseconds to sleep between attempts, you may pass a closure as the third argument to the `retry` function:
+Якщо ви хочете вручну обчислювати кількість мілісекунд паузи між спробами, передайте третім аргументом функції `retry` замикання:
 
 ```php
 use Exception;
@@ -3009,7 +3012,7 @@ return retry(5, function () {
 });
 ```
 
-For convenience, you may provide an array as the first argument to the `retry` function. This array will be used to determine how many milliseconds to sleep between subsequent attempts:
+Для зручності ви можете передати першим аргументом функції `retry` масив. За цим масивом визначатиметься, скільки мілісекунд чекати між наступними спробами:
 
 ```php
 return retry([100, 200], function () {
@@ -3017,7 +3020,7 @@ return retry([100, 200], function () {
 });
 ```
 
-To only retry under specific conditions, you may pass a closure as the fourth argument to the `retry` function:
+Щоб повторювати спроби лише за певних умов, передайте четвертим аргументом функції `retry` замикання:
 
 ```php
 use App\Exceptions\TemporaryException;
@@ -3033,19 +3036,19 @@ return retry(5, function () {
 <a name="method-session"></a>
 #### `session()` {.collection-method}
 
-The `session` function may be used to get or set [session](/docs/{{version}}/session) values:
+Функція `session` дозволяє отримувати або задавати значення [сесії](/docs/{{version}}/session):
 
 ```php
 $value = session('key');
 ```
 
-You may set values by passing an array of key / value pairs to the function:
+Ви можете задавати значення, передавши функції масив пар ключ / значення:
 
 ```php
 session(['chairs' => 7, 'instruments' => 3]);
 ```
 
-The session store will be returned if no value is passed to the function:
+Якщо функції не передано значення, буде повернуто сховище сесії:
 
 ```php
 $value = session()->get('key');
@@ -3056,7 +3059,7 @@ session()->put('key', $value);
 <a name="method-tap"></a>
 #### `tap()` {.collection-method}
 
-The `tap` function accepts two arguments: an arbitrary `$value` and a closure. The `$value` will be passed to the closure and then be returned by the `tap` function. The return value of the closure is irrelevant:
+Функція `tap` приймає два аргументи: довільне `$value` і замикання. `$value` буде передано до замикання, а потім повернуто функцією `tap`. Значення, яке повертає замикання, не має значення:
 
 ```php
 $user = tap(User::first(), function (User $user) {
@@ -3066,7 +3069,7 @@ $user = tap(User::first(), function (User $user) {
 });
 ```
 
-If no closure is passed to the `tap` function, you may call any method on the given `$value`. The return value of the method you call will always be `$value`, regardless of what the method actually returns in its definition. For example, the Eloquent `update` method typically returns an integer. However, we can force the method to return the model itself by chaining the `update` method call through the `tap` function:
+Якщо функції `tap` не передано замикання, ви можете викликати будь-який метод на заданому `$value`. Значенням, яке поверне викликаний метод, завжди буде `$value`, незалежно від того, що метод справді повертає у своєму описі. Наприклад, метод Eloquent `update` зазвичай повертає ціле число. Проте ми можемо змусити метод повернути саму модель, зробивши виклик `update` ланцюжком через функцію `tap`:
 
 ```php
 $user = tap($user)->update([
@@ -3075,7 +3078,7 @@ $user = tap($user)->update([
 ]);
 ```
 
-To add a `tap` method to a class, you may add the `Illuminate\Support\Traits\Tappable` trait to the class. The `tap` method of this trait accepts a Closure as its only argument. The object instance itself will be passed to the Closure and then be returned by the `tap` method:
+Щоб додати до класу метод `tap`, додайте до нього трейт `Illuminate\Support\Traits\Tappable`. Метод `tap` цього трейта приймає єдиним аргументом Closure. Сам екземпляр об'єкта буде передано до Closure, а потім повернуто методом `tap`:
 
 ```php
 return $user->tap(function (User $user) {
@@ -3086,7 +3089,7 @@ return $user->tap(function (User $user) {
 <a name="method-throw-if"></a>
 #### `throw_if()` {.collection-method}
 
-The `throw_if` function throws the given exception if a given boolean expression evaluates to `true`:
+Функція `throw_if` викидає заданий виняток, якщо заданий булевий вираз дає `true`:
 
 ```php
 throw_if(! Auth::user()->isAdmin(), AuthorizationException::class);
@@ -3101,7 +3104,7 @@ throw_if(
 <a name="method-throw-unless"></a>
 #### `throw_unless()` {.collection-method}
 
-The `throw_unless` function throws the given exception if a given boolean expression evaluates to `false`:
+Функція `throw_unless` викидає заданий виняток, якщо заданий булевий вираз дає `false`:
 
 ```php
 throw_unless(Auth::user()->isAdmin(), AuthorizationException::class);
@@ -3116,7 +3119,7 @@ throw_unless(
 <a name="method-today"></a>
 #### `today()` {.collection-method}
 
-The `today` function creates a new `Illuminate\Support\Carbon` instance for the current date:
+Функція `today` створює новий екземпляр `Illuminate\Support\Carbon` для поточної дати:
 
 ```php
 $today = today();
@@ -3125,7 +3128,7 @@ $today = today();
 <a name="method-trait-uses-recursive"></a>
 #### `trait_uses_recursive()` {.collection-method}
 
-The `trait_uses_recursive` function returns all traits used by a trait:
+Функція `trait_uses_recursive` повертає всі трейти, які використовує трейт:
 
 ```php
 $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
@@ -3134,7 +3137,7 @@ $traits = trait_uses_recursive(\Illuminate\Notifications\Notifiable::class);
 <a name="method-transform"></a>
 #### `transform()` {.collection-method}
 
-The `transform` function executes a closure on a given value if the value is not [blank](#method-blank) and then returns the return value of the closure:
+Функція `transform` виконує замикання над заданим значенням, якщо воно не [порожнє](#method-blank), і повертає значення, яке повернуло замикання:
 
 ```php
 $callback = function (int $value) {
@@ -3146,7 +3149,7 @@ $result = transform(5, $callback);
 // 10
 ```
 
-A default value or closure may be passed as the third argument to the function. This value will be returned if the given value is blank:
+Третім аргументом функції можна передати значення за замовчуванням або замикання. Його буде повернуто, якщо задане значення порожнє:
 
 ```php
 $result = transform(null, $callback, 'The value is blank');
@@ -3157,7 +3160,7 @@ $result = transform(null, $callback, 'The value is blank');
 <a name="method-validator"></a>
 #### `validator()` {.collection-method}
 
-The `validator` function creates a new [validator](/docs/{{version}}/validation) instance with the given arguments. You may use it as an alternative to the `Validator` facade:
+Функція `validator` створює новий екземпляр [валідатора](/docs/{{version}}/validation) із заданими аргументами. Ви можете скористатися нею як альтернативою фасаду `Validator`:
 
 ```php
 $validator = validator($data, $rules, $messages);
@@ -3166,7 +3169,7 @@ $validator = validator($data, $rules, $messages);
 <a name="method-value"></a>
 #### `value()` {.collection-method}
 
-The `value` function returns the value it is given. However, if you pass a closure to the function, the closure will be executed and its returned value will be returned:
+Функція `value` повертає передане їй значення. Проте, якщо ви передасте функції замикання, воно буде виконане, і буде повернуто його результат:
 
 ```php
 $result = value(true);
@@ -3180,7 +3183,7 @@ $result = value(function () {
 // false
 ```
 
-Additional arguments may be passed to the `value` function. If the first argument is a closure then the additional parameters will be passed to the closure as arguments, otherwise they will be ignored:
+Функції `value` можна передати додаткові аргументи. Якщо перший аргумент - замикання, додаткові параметри буде передано замиканню як аргументи, інакше їх буде проігноровано:
 
 ```php
 $result = value(function (string $name) {
@@ -3193,7 +3196,7 @@ $result = value(function (string $name) {
 <a name="method-view"></a>
 #### `view()` {.collection-method}
 
-The `view` function retrieves a [view](/docs/{{version}}/views) instance:
+Функція `view` дістає екземпляр [представлення](/docs/{{version}}/views):
 
 ```php
 return view('auth.login');
@@ -3202,7 +3205,7 @@ return view('auth.login');
 <a name="method-with"></a>
 #### `with()` {.collection-method}
 
-The `with` function returns the value it is given. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
+Функція `with` повертає передане їй значення. Якщо другим аргументом функції передано замикання, воно буде виконане, і буде повернуто його результат:
 
 ```php
 $callback = function (mixed $value) {
@@ -3225,7 +3228,7 @@ $result = with(5, null);
 <a name="method-when"></a>
 #### `when()` {.collection-method}
 
-The `when` function returns the value it is given if a given condition evaluates to `true`. Otherwise, `null` is returned. If a closure is passed as the second argument to the function, the closure will be executed and its returned value will be returned:
+Функція `when` повертає передане їй значення, якщо задана умова дає `true`. Інакше повертається `null`. Якщо другим аргументом функції передано замикання, воно буде виконане, і буде повернуто його результат:
 
 ```php
 $value = when(true, 'Hello World');
@@ -3233,7 +3236,7 @@ $value = when(true, 'Hello World');
 $value = when(true, fn () => 'Hello World');
 ```
 
-The `when` function is primarily useful for conditionally rendering HTML attributes:
+Функція `when` насамперед корисна для умовного рендерингу HTML-атрибутів:
 
 ```blade
 <div {!! when($condition, 'wire:poll="calculate"') !!}>
@@ -3242,12 +3245,12 @@ The `when` function is primarily useful for conditionally rendering HTML attribu
 ```
 
 <a name="other-utilities"></a>
-## Other Utilities
+## Інші утиліти
 
 <a name="benchmarking"></a>
-### Benchmarking
+### Бенчмаркінг
 
-Sometimes you may wish to quickly test the performance of certain parts of your application. On those occasions, you may utilize the `Benchmark` support class to measure the number of milliseconds it takes for the given callbacks to complete:
+Інколи вам може захотітися швидко перевірити швидкодію певних частин застосунку. У таких випадках скористайтеся допоміжним класом `Benchmark`, щоб виміряти, скільки мілісекунд потрібно заданим колбекам на виконання:
 
 ```php
 <?php
@@ -3263,30 +3266,30 @@ Benchmark::dd([
 ]);
 ```
 
-By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console.
+За замовчуванням задані колбеки виконуються один раз (одна ітерація), а їхня тривалість відображається в браузері / консолі.
 
-To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average number of milliseconds it took to execute the callback across all iterations:
+Щоб викликати колбек більше одного разу, вкажіть другим аргументом методу кількість ітерацій. Коли колбек виконується кілька разів, клас `Benchmark` поверне середню кількість мілісекунд, витрачених на його виконання по всіх ітераціях:
 
 ```php
 Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
 ```
 
-Sometimes, you may want to benchmark the execution of a callback while still obtaining the value returned by the callback. The `value` method will return a tuple containing the value returned by the callback and the number of milliseconds it took to execute the callback:
+Інколи вам може захотітися виміряти виконання колбека й водночас отримати значення, яке він повертає. Метод `value` поверне кортеж зі значенням, яке повернув колбек, і кількістю мілісекунд, витрачених на його виконання:
 
 ```php
 [$count, $duration] = Benchmark::value(fn () => User::count());
 ```
 
 <a name="dates"></a>
-### Dates and Time
+### Дата й час
 
-Laravel includes [Carbon](https://carbon.nesbot.com/guide/getting-started/introduction.html), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:
+Laravel містить [Carbon](https://carbon.nesbot.com/guide/getting-started/introduction.html) - потужну бібліотеку для роботи з датою й часом. Щоб створити новий екземпляр `Carbon`, викличте функцію `now`. Ця функція глобально доступна у вашому застосунку Laravel:
 
 ```php
 $now = now();
 ```
 
-Or, you may create a new `Carbon` instance using the `Illuminate\Support\Carbon` class:
+Або ж ви можете створити новий екземпляр `Carbon` через клас `Illuminate\Support\Carbon`:
 
 ```php
 use Illuminate\Support\Carbon;
@@ -3294,7 +3297,7 @@ use Illuminate\Support\Carbon;
 $now = Carbon::now();
 ```
 
-Laravel also augments `Carbon` instances with `plus` and `minus` methods, allowing easy manipulation of the instance's date and time:
+Laravel також розширює екземпляри `Carbon` методами `plus` і `minus`, які дозволяють легко змінювати дату й час екземпляра:
 
 ```php
 return now()->plus(minutes: 5);
@@ -3306,12 +3309,12 @@ return now()->minus(hours: 8);
 return now()->minus(weeks: 4);
 ```
 
-For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/guide/getting-started/introduction.html).
+Докладний огляд Carbon і його можливостей ви знайдете в [офіційній документації Carbon](https://carbon.nesbot.com/guide/getting-started/introduction.html).
 
 <a name="interval-functions"></a>
-#### Interval Functions
+#### Функції інтервалів
 
-Laravel also offers `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `weeks`, `months`, and `years` functions that return `CarbonInterval` instances, which extend PHP's [DateInterval](https://www.php.net/manual/en/class.dateinterval.php) class. These functions may be used anywhere that Laravel accepts a `DateInterval` instance:
+Laravel також пропонує функції `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `weeks`, `months` та `years`, які повертають екземпляри `CarbonInterval`, що розширюють PHP-клас [DateInterval](https://www.php.net/manual/en/class.dateinterval.php). Ці функції можна використовувати всюди, де Laravel приймає екземпляр `DateInterval`:
 
 ```php
 use Illuminate\Support\Facades\Cache;
@@ -3322,11 +3325,11 @@ Cache::put('metrics', $metrics, minutes(10));
 ```
 
 <a name="deferred-functions"></a>
-### Deferred Functions
+### Відкладені функції
 
-While Laravel's [queued jobs](/docs/{{version}}/queues) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
+Хоч [завдання в черзі](/docs/{{version}}/queues) Laravel і дозволяють ставити задачі в чергу на фонову обробку, інколи у вас є прості задачі, які хочеться відкласти, не налаштовуючи й не підтримуючи довгограючого воркера черги.
 
-Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `Illuminate\Support\defer` function:
+Відкладені функції дозволяють відкласти виконання замикання до моменту, коли HTTP-відповідь уже надіслано користувачеві, - і застосунок і далі здається швидким та чуйним. Щоб відкласти виконання замикання, просто передайте його функції `Illuminate\Support\defer`:
 
 ```php
 use App\Services\Metrics;
@@ -3343,19 +3346,19 @@ Route::post('/orders', function (Request $request) {
 });
 ```
 
-By default, deferred functions will only be executed if the HTTP response, Artisan command, or queued job from which `Illuminate\Support\defer` is invoked completes successfully. This means that deferred functions will not be executed if a request results in a `4xx` or `5xx` HTTP response. If you would like a deferred function to always execute, you may chain the `always` method onto your deferred function:
+За замовчуванням відкладені функції виконуються, лише якщо HTTP-відповідь, команда Artisan чи завдання в черзі, з яких викликано `Illuminate\Support\defer`, завершилися успішно. Це означає, що відкладені функції не виконаються, якщо запит дасть HTTP-відповідь `4xx` чи `5xx`. Якщо ви хочете, щоб відкладена функція виконувалася завжди, додайте до неї ланцюжком метод `always`:
 
 ```php
 defer(fn () => Metrics::reportOrder($order))->always();
 ```
 
 > [!WARNING]
-> If you have the [Swoole PHP extension](https://www.php.net/manual/en/book.swoole.php) installed, Laravel's `defer` function may conflict with Swoole's own global `defer` function, leading to web server errors. Make sure you call Laravel's `defer` helper by explicitly namespacing it: `use function Illuminate\Support\defer;`
+> Якщо у вас встановлено [розширення PHP Swoole](https://www.php.net/manual/en/book.swoole.php), функція `defer` Laravel може конфліктувати з власною глобальною функцією `defer` від Swoole, що призведе до помилок вебсервера. Обов'язково викликайте хелпер `defer` Laravel, явно вказавши простір імен: `use function Illuminate\Support\defer;`
 
 <a name="cancelling-deferred-functions"></a>
-#### Cancelling Deferred Functions
+#### Скасування відкладених функцій
 
-If you need to cancel a deferred function before it is executed, you can use the `forget` method to cancel the function by its name. To name a deferred function, provide a second argument to the `Illuminate\Support\defer` function:
+Якщо вам потрібно скасувати відкладену функцію до її виконання, скористайтеся методом `forget`, щоб скасувати функцію за її іменем. Щоб назвати відкладену функцію, передайте другий аргумент функції `Illuminate\Support\defer`:
 
 ```php
 defer(fn () => Metrics::report(), 'reportMetrics');
@@ -3364,9 +3367,9 @@ defer()->forget('reportMetrics');
 ```
 
 <a name="disabling-deferred-functions-in-tests"></a>
-#### Disabling Deferred Functions in Tests
+#### Вимкнення відкладених функцій у тестах
 
-When writing tests, it may be useful to disable deferred functions. You may call `withoutDefer` in your test to instruct Laravel to invoke all deferred functions immediately:
+Пишучи тести, буває корисно вимкнути відкладені функції. Ви можете викликати у своєму тесті `withoutDefer`, щоб Laravel виконував усі відкладені функції негайно:
 
 ```php tab=Pest
 test('without defer', function () {
@@ -3390,7 +3393,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-If you would like to disable deferred functions for all tests within a test case, you may call the `withoutDefer` method from the `setUp` method on your base `TestCase` class:
+Якщо ви хочете вимкнути відкладені функції для всіх тестів у тест-кейсі, викличте метод `withoutDefer` у методі `setUp` вашого базового класу `TestCase`:
 
 ```php
 <?php
@@ -3411,9 +3414,9 @@ abstract class TestCase extends BaseTestCase
 ```
 
 <a name="lottery"></a>
-### Lottery
+### Лотерея
 
-Laravel's lottery class may be used to execute callbacks based on a set of given odds. This can be particularly useful when you only want to execute code for a percentage of your incoming requests:
+Клас лотереї Laravel дозволяє виконувати колбеки на основі заданих шансів. Це особливо корисно, коли ви хочете виконувати код лише для певного відсотка вхідних запитів:
 
 ```php
 use Illuminate\Support\Lottery;
@@ -3424,7 +3427,7 @@ Lottery::odds(1, 20)
     ->choose();
 ```
 
-You may combine Laravel's lottery class with other Laravel features. For example, you may wish to only report a small percentage of slow queries to your exception handler. And, since the lottery class is callable, we may pass an instance of the class into any method that accepts callables:
+Ви можете поєднувати клас лотереї Laravel з іншими можливостями фреймворку. Наприклад, ви можете хотіти повідомляти обробнику винятків лише про невеликий відсоток повільних запитів. А оскільки клас лотереї є викликаємим, ми можемо передати його екземпляр до будь-якого методу, який приймає щось викликаєме:
 
 ```php
 use Carbon\CarbonInterval;
@@ -3438,9 +3441,9 @@ DB::whenQueryingForLongerThan(
 ```
 
 <a name="testing-lotteries"></a>
-#### Testing Lotteries
+#### Тестування лотерей
 
-Laravel provides some simple methods to allow you to easily test your application's lottery invocations:
+Laravel надає кілька простих методів, які дозволяють легко тестувати виклики лотереї у вашому застосунку:
 
 ```php
 // Lottery will always win...
@@ -3457,9 +3460,9 @@ Lottery::determineResultsNormally();
 ```
 
 <a name="pipeline"></a>
-### Pipeline
+### Конвеєр
 
-Laravel's `Pipeline` facade provides a convenient way to "pipe" a given input through a series of invokable classes, closures, or callables, giving each class the opportunity to inspect or modify the input and invoke the next callable in the pipeline:
+Фасад `Pipeline` Laravel надає зручний спосіб «пропустити» заданий ввід через низку викликаємих класів, замикань чи колбеків, даючи кожному класу можливість оглянути чи змінити ввід і викликати наступний елемент конвеєра:
 
 ```php
 use Closure;
@@ -3482,11 +3485,11 @@ $user = Pipeline::send($user)
     ->then(fn (User $user) => $user);
 ```
 
-As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/docs/{{version}}/middleware).
+Як бачите, кожен викликаємий клас чи замикання в конвеєрі отримує ввід і замикання `$next`. Виклик замикання `$next` викличе наступний елемент конвеєра. Як ви могли помітити, це дуже схоже на [middleware](/docs/{{version}}/middleware).
 
-When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input. For convenience, if you simply want to return the input after it has been processed, you may use the `thenReturn` method.
+Коли останній елемент конвеєра викликає замикання `$next`, буде викликано колбек, переданий методу `then`. Зазвичай цей колбек просто повертає заданий ввід. Для зручності, якщо ви просто хочете повернути ввід після обробки, скористайтеся методом `thenReturn`.
 
-Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](/docs/{{version}}/container), allowing dependencies to be injected into the invokable class:
+Звісно, як уже зазначалося, ви не обмежені замиканнями в конвеєрі. Ви можете передавати й викликаємі класи. Якщо передано назву класу, його буде створено через [сервіс-контейнер](/docs/{{version}}/container) Laravel, що дозволяє впровадити залежності у викликаємий клас:
 
 ```php
 $user = Pipeline::send($user)
@@ -3498,7 +3501,7 @@ $user = Pipeline::send($user)
     ->thenReturn();
 ```
 
-The `withinTransaction` method may be invoked on the pipeline to automatically wrap all steps of the pipeline within a single database transaction:
+Метод `withinTransaction` можна викликати на конвеєрі, щоб автоматично огорнути всі його кроки однією транзакцією бази даних:
 
 ```php
 $user = Pipeline::send($user)
@@ -3514,7 +3517,7 @@ $user = Pipeline::send($user)
 <a name="sleep"></a>
 ### Sleep
 
-Laravel's `Sleep` class is a light-weight wrapper around PHP's native `sleep` and `usleep` functions, offering greater testability while also exposing a developer friendly API for working with time:
+Клас `Sleep` Laravel - це легка обгортка над нативними функціями PHP `sleep` та `usleep`, яка забезпечує кращу тестованість і водночас надає зручний для розробника API для роботи з часом:
 
 ```php
 use Illuminate\Support\Sleep;
@@ -3528,7 +3531,7 @@ while ($waiting) {
 }
 ```
 
-The `Sleep` class offers a variety of methods that allow you to work with different units of time:
+Клас `Sleep` пропонує різноманітні методи для роботи з різними одиницями часу:
 
 ```php
 // Return a value after sleeping...
@@ -3559,16 +3562,16 @@ Sleep::sleep(2);
 Sleep::usleep(5000);
 ```
 
-To easily combine units of time, you may use the `and` method:
+Щоб легко поєднувати одиниці часу, скористайтеся методом `and`:
 
 ```php
 Sleep::for(1)->second()->and(10)->milliseconds();
 ```
 
 <a name="testing-sleep"></a>
-#### Testing Sleep
+#### Тестування Sleep
 
-When testing code that utilizes the `Sleep` class or PHP's native sleep functions, your test will pause execution. As you might expect, this makes your test suite significantly slower. For example, imagine you are testing the following code:
+Коли ви тестуєте код, який використовує клас `Sleep` чи нативні функції sleep у PHP, ваш тест зупинятиме виконання. Як ви й очікуєте, це суттєво сповільнює набір тестів. Наприклад, уявіть, що ви тестуєте такий код:
 
 ```php
 $waiting = /* ... */;
@@ -3582,7 +3585,7 @@ while ($waiting) {
 }
 ```
 
-Typically, testing this code would take _at least_ one second. Luckily, the `Sleep` class allows us to "fake" sleeping so that our test suite stays fast:
+Зазвичай тестування цього коду тривало б _щонайменше_ секунду. На щастя, клас `Sleep` дозволяє «підмінити» паузи, тож наш набір тестів лишається швидким:
 
 ```php tab=Pest
 it('waits until ready', function () {
@@ -3601,9 +3604,9 @@ public function test_it_waits_until_ready()
 }
 ```
 
-When faking the `Sleep` class, the actual execution pause is bypassed, leading to a substantially faster test.
+Коли клас `Sleep` підмінено, справжню паузу у виконанні буде пропущено, і тест стане значно швидшим.
 
-Once the `Sleep` class has been faked, it is possible to make assertions against the expected "sleeps" that should have occurred. To illustrate this, let's imagine we are testing code that pauses execution three times, with each pause increasing by a single second. Using the `assertSequence` method, we can assert that our code "slept" for the proper amount of time while keeping our test fast:
+Щойно клас `Sleep` підмінено, можна робити перевірки очікуваних «пауз». Щоб проілюструвати це, уявімо, що ми тестуємо код, який зупиняє виконання тричі, і кожна пауза довша на секунду. Методом `assertSequence` ми можемо перевірити, що наш код «спав» належний час, і водночас лишити тест швидким:
 
 ```php tab=Pest
 it('checks if ready three times', function () {
@@ -3634,7 +3637,7 @@ public function test_it_checks_if_ready_three_times()
 }
 ```
 
-Of course, the `Sleep` class offers a variety of other assertions you may use when testing:
+Звісно, клас `Sleep` пропонує й низку інших перевірок, якими ви можете скористатися під час тестування:
 
 ```php
 use Carbon\CarbonInterval as Duration;
@@ -3655,7 +3658,7 @@ Sleep::assertNeverSlept();
 Sleep::assertInsomniac();
 ```
 
-Sometimes it may be useful to perform an action whenever a fake sleep occurs. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/docs/{{version}}/mocking#interacting-with-time) to instantly progress time by the duration of each sleep:
+Інколи буває корисно виконувати якусь дію щоразу, коли трапляється підмінена пауза. Для цього передайте колбек методу `whenFakingSleep`. У прикладі нижче ми користуємося [хелперами маніпуляції часом](/docs/{{version}}/mocking#interacting-with-time) Laravel, щоб миттєво просувати час на тривалість кожної паузи:
 
 ```php
 use Carbon\CarbonInterval as Duration;
@@ -3670,7 +3673,7 @@ Sleep::whenFakingSleep(function (Duration $duration) {
 });
 ```
 
-As progressing time is a common requirement, the `fake` method accepts a `syncWithCarbon` argument to keep Carbon in sync when sleeping within a test:
+Оскільки просування часу - поширена потреба, метод `fake` приймає аргумент `syncWithCarbon`, який тримає Carbon синхронізованим під час пауз у тесті:
 
 ```php
 Sleep::fake(syncWithCarbon: true);
@@ -3682,16 +3685,16 @@ Sleep::for(1)->second();
 $start->diffForHumans(); // 1 second ago
 ```
 
-Laravel uses the `Sleep` class internally whenever it is pausing execution. For example, the [retry](#method-retry) helper uses the `Sleep` class when sleeping, allowing for improved testability when using that helper.
+Laravel використовує клас `Sleep` усередині, коли зупиняє виконання. Наприклад, хелпер [retry](#method-retry) під час пауз користується класом `Sleep`, що покращує тестованість роботи з цим хелпером.
 
 <a name="timebox"></a>
 ### Timebox
 
-Laravel's `Timebox` class ensures that the given callback always takes a fixed amount of time to execute, even if its actual execution completes sooner. This is particularly useful for cryptographic operations and user authentication checks, where attackers might exploit variations in execution time to infer sensitive information.
+Клас `Timebox` Laravel гарантує, що заданий колбек завжди виконується фіксований час, навіть якщо насправді завершується раніше. Це особливо корисно для криптографічних операцій і перевірок автентифікації користувачів, де зловмисники могли б скористатися різницею в часі виконання, щоб вивідати чутливу інформацію.
 
-If the execution exceeds the fixed duration, `Timebox` has no effect. It is up to the developer to choose a sufficiently long time as the fixed duration to account for worst-case scenarios.
+Якщо виконання перевищує фіксовану тривалість, `Timebox` не має ефекту. Розробник сам має обрати достатньо довгу фіксовану тривалість, щоб урахувати найгірші сценарії.
 
-The call method accepts a closure and a time limit in microseconds, and then executes the closure and waits until the time limit is reached:
+Метод call приймає замикання й ліміт часу в мікросекундах, після чого виконує замикання й чекає, доки не буде досягнуто ліміту:
 
 ```php
 use Illuminate\Support\Timebox;
@@ -3701,14 +3704,14 @@ use Illuminate\Support\Timebox;
 }, microseconds: 10000);
 ```
 
-If an exception is thrown within the closure, this class will respect the defined delay and re-throw the exception after the delay.
+Якщо всередині замикання викинуто виняток, цей клас дотримається заданої затримки й перевикине виняток після неї.
 
 <a name="uri"></a>
 ### URI
 
-Laravel's `Uri` class provides a convenient and fluent interface for creating and manipulating URIs. This class wraps the functionality provided by the underlying League URI package and integrates seamlessly with Laravel's routing system.
+Клас `Uri` Laravel надає зручний і плавний інтерфейс для створення URI та роботи з ними. Цей клас обгортає функціональність пакета League URI й безшовно інтегрується із системою маршрутизації Laravel.
 
-You can create a `Uri` instance easily using static methods:
+Створити екземпляр `Uri` легко за допомогою статичних методів:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -3730,7 +3733,7 @@ $uri = Uri::action(InvokableController::class);
 $uri = $request->uri();
 ```
 
-Once you have a URI instance, you can fluently modify it:
+Щойно ви маєте екземпляр URI, ви можете плавно його змінювати:
 
 ```php
 $uri = Uri::of('https://example.com')
@@ -3743,9 +3746,9 @@ $uri = Uri::of('https://example.com')
 ```
 
 <a name="inspecting-uris"></a>
-#### Inspecting URIs
+#### Огляд URI
 
-The `Uri` class also allows you to easily inspect the various components of the underlying URI:
+Клас `Uri` також дозволяє легко оглядати різні складові URI:
 
 ```php
 $scheme = $uri->scheme();
@@ -3759,42 +3762,42 @@ $fragment = $uri->fragment();
 ```
 
 <a name="manipulating-query-strings"></a>
-#### Manipulating Query Strings
+#### Робота з рядками запиту
 
-The `Uri` class offers several methods that may be used to manipulate a URI's query string. The `withQuery` method may be used to merge additional query string parameters into the existing query string:
+Клас `Uri` пропонує кілька методів для роботи з рядком запиту URI. Метод `withQuery` дозволяє злити додаткові параметри до наявного рядка запиту:
 
 ```php
 $uri = $uri->withQuery(['sort' => 'name']);
 ```
 
-The `withQueryIfMissing` method may be used to merge additional query string parameters into the existing query string if the given keys do not already exist in the query string:
+Метод `withQueryIfMissing` дозволяє злити додаткові параметри до наявного рядка запиту, якщо заданих ключів у ньому ще немає:
 
 ```php
 $uri = $uri->withQueryIfMissing(['page' => 1]);
 ```
 
-The `replaceQuery` method may be used to complete replace the existing query string with a new one:
+Метод `replaceQuery` дозволяє повністю замінити наявний рядок запиту новим:
 
 ```php
 $uri = $uri->replaceQuery(['page' => 1]);
 ```
 
-The `pushOntoQuery` method may be used to push additional parameters onto a query string parameter that has an array value:
+Метод `pushOntoQuery` дозволяє додати додаткові параметри до параметра рядка запиту, який має значення-масив:
 
 ```php
 $uri = $uri->pushOntoQuery('filter', ['active', 'pending']);
 ```
 
-The `withoutQuery` method may be used to remove parameters from the query string:
+Метод `withoutQuery` дозволяє вилучити параметри з рядка запиту:
 
 ```php
 $uri = $uri->withoutQuery(['page']);
 ```
 
 <a name="generating-responses-from-uris"></a>
-#### Generating Responses From URIs
+#### Генерація відповідей з URI
 
-The `redirect` method may be used to generate a `RedirectResponse` instance to the given URI:
+Метод `redirect` дозволяє згенерувати екземпляр `RedirectResponse` до заданого URI:
 
 ```php
 $uri = Uri::of('https://example.com');
@@ -3802,7 +3805,7 @@ $uri = Uri::of('https://example.com');
 return $uri->redirect();
 ```
 
-Or, you may simply return the `Uri` instance from a route or controller action, which will automatically generate a redirect response to the returned URI:
+Або ж ви можете просто повернути екземпляр `Uri` з маршруту чи дії контролера - і буде автоматично згенеровано відповідь із перенаправленням на цей URI:
 
 ```php
 use Illuminate\Support\Facades\Route;
