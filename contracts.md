@@ -1,42 +1,45 @@
-# Contracts
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Контракти
 
-- [Introduction](#introduction)
-    - [Contracts vs. Facades](#contracts-vs-facades)
-- [When to Use Contracts](#when-to-use-contracts)
-- [How to Use Contracts](#how-to-use-contracts)
-- [Contract Reference](#contract-reference)
+- [Вступ](#introduction)
+    - [Контракти проти фасадів](#contracts-vs-facades)
+- [Коли використовувати контракти](#when-to-use-contracts)
+- [Як використовувати контракти](#how-to-use-contracts)
+- [Довідник контрактів](#contract-reference)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel's "contracts" are a set of interfaces that define the core services provided by the framework. For example, an `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending e-mail.
+«Контракти» Laravel - це набір інтерфейсів, що визначають основні сервіси фреймворку. Наприклад, контракт `Illuminate\Contracts\Queue\Queue` визначає методи, потрібні для постановки завдань у чергу, а контракт `Illuminate\Contracts\Mail\Mailer` - методи, потрібні для надсилання електронної пошти.
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [Symfony Mailer](https://symfony.com/doc/current/mailer.html).
+Кожен контракт має відповідну реалізацію, яку надає фреймворк. Наприклад, Laravel надає реалізацію черг із різноманітними драйверами та реалізацію поштового модуля на основі [Symfony Mailer](https://symfony.com/doc/current/mailer.html).
 
-All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized when building packages that interact with Laravel services.
+Усі контракти Laravel живуть у [власному репозиторії на GitHub](https://github.com/illuminate/contracts). Це дає швидкий довідник усіх доступних контрактів, а також єдиний незалежний пакет, який можна використовувати, створюючи пакети, що взаємодіють із сервісами Laravel.
 
 <a name="contracts-vs-facades"></a>
-### Contracts vs. Facades
+### Контракти проти фасадів
 
-Laravel's [facades](/docs/{{version}}/facades) and helper functions provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. In most cases, each facade has an equivalent contract.
+[Фасади](/docs/{{version}}/facades) та функції-хелпери Laravel дають простий спосіб користуватися сервісами Laravel, не вказуючи типів і не розв'язуючи контракти із сервіс-контейнера. У більшості випадків кожен фасад має рівнозначний контракт.
 
-Unlike facades, which do not require you to require them in your class' constructor, contracts allow you to define explicit dependencies for your classes. Some developers prefer to explicitly define their dependencies in this way and therefore prefer to use contracts, while other developers enjoy the convenience of facades. **In general, most applications can use facades without issue during development.**
+На відміну від фасадів, які не потребують оголошення в конструкторі вашого класу, контракти дозволяють визначати явні залежності класів. Одні розробники віддають перевагу такому явному визначенню залежностей і тому обирають контракти, інші ж цінують зручність фасадів. **Загалом більшість застосунків може без проблем користуватися фасадами під час розробки.**
 
 <a name="when-to-use-contracts"></a>
-## When to Use Contracts
+## Коли використовувати контракти
 
-The decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. Contracts and facades are not mutually exclusive. Some parts of your applications may use facades while others depend on contracts. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
+Вибір між контрактами й фасадами залежить від особистих уподобань ваших і вашої команди розробки. І контракти, і фасади дозволяють створювати надійні, добре протестовані застосунки Laravel. Вони не є взаємовиключними. Одні частини вашого застосунку можуть використовувати фасади, тоді як інші залежатимуть від контрактів. Доки ви тримаєте відповідальність класів зосередженою, практичної різниці між контрактами й фасадами майже не помітите.
 
-In general, most applications can use facades without issue during development. If you are building a package that integrates with multiple PHP frameworks you may wish to use the `illuminate/contracts` package to define your integration with Laravel's services without the need to require Laravel's concrete implementations in your package's `composer.json` file.
+Загалом більшість застосунків може без проблем користуватися фасадами під час розробки. Якщо ж ви створюєте пакет, що інтегрується з кількома PHP-фреймворками, вам може знадобитися пакет `illuminate/contracts`, щоб визначити свою інтеграцію із сервісами Laravel, не додаючи конкретних реалізацій Laravel до файлу `composer.json` вашого пакета.
 
 <a name="how-to-use-contracts"></a>
-## How to Use Contracts
+## Як використовувати контракти
 
-So, how do you get an implementation of a contract? It's actually quite simple.
+Отже, як отримати реалізацію контракту? Насправді це доволі просто.
 
-Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+Багато типів класів у Laravel розв'язуються через [сервіс-контейнер](/docs/{{version}}/container) - зокрема контролери, слухачі подій, `middleware`, завдання в чергах і навіть замикання маршрутів. Тож щоб отримати реалізацію контракту, достатньо вказати тип інтерфейсу в конструкторі класу, який розв'язується.
 
-For example, take a look at this event listener:
+Наприклад, погляньте на цей слухач подій:
 
 ```php
 <?php
@@ -66,16 +69,16 @@ class CacheOrderInformation
 }
 ```
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
+Коли слухач подій розв'язується, сервіс-контейнер читає вказані типи в конструкторі класу й впроваджує відповідне значення. Щоб дізнатися більше про реєстрацію в сервіс-контейнері, перегляньте [його документацію](/docs/{{version}}/container).
 
 <a name="contract-reference"></a>
-## Contract Reference
+## Довідник контрактів
 
-This table provides a quick reference to all of the Laravel contracts and their equivalent facades:
+Ця таблиця дає швидкий довідник усіх контрактів Laravel та рівнозначних їм фасадів:
 
 <div class="overflow-auto">
 
-| Contract | References Facade |
+| Контракт | Відповідний фасад |
 | --- | --- |
 | [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) | &nbsp; |
 | [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php) | `Gate` |
@@ -155,5 +158,4 @@ This table provides a quick reference to all of the Laravel contracts and their 
 | [Illuminate\Contracts\View\Engine](https://github.com/illuminate/contracts/blob/{{version}}/View/Engine.php) | &nbsp; |
 | [Illuminate\Contracts\View\Factory](https://github.com/illuminate/contracts/blob/{{version}}/View/Factory.php) | `View` |
 | [Illuminate\Contracts\View\View](https://github.com/illuminate/contracts/blob/{{version}}/View/View.php) | `View::make()` |
-
 </div>
