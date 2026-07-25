@@ -1,39 +1,42 @@
-# Routing
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Маршрутизація
 
-- [Basic Routing](#basic-routing)
-    - [The Default Route Files](#the-default-route-files)
-    - [Redirect Routes](#redirect-routes)
-    - [View Routes](#view-routes)
-    - [Listing Your Routes](#listing-your-routes)
-    - [Routing Customization](#routing-customization)
-- [Route Parameters](#route-parameters)
-    - [Required Parameters](#required-parameters)
-    - [Optional Parameters](#parameters-optional-parameters)
-    - [Regular Expression Constraints](#parameters-regular-expression-constraints)
-- [Named Routes](#named-routes)
-- [Route Groups](#route-groups)
+- [Базова маршрутизація](#basic-routing)
+    - [Типові файли маршрутів](#the-default-route-files)
+    - [Маршрути-перенаправлення](#redirect-routes)
+    - [Маршрути-представлення](#view-routes)
+    - [Перегляд списку маршрутів](#listing-your-routes)
+    - [Налаштування маршрутизації](#routing-customization)
+- [Параметри маршруту](#route-parameters)
+    - [Обов'язкові параметри](#required-parameters)
+    - [Необов'язкові параметри](#parameters-optional-parameters)
+    - [Обмеження регулярними виразами](#parameters-regular-expression-constraints)
+- [Іменовані маршрути](#named-routes)
+- [Групи маршрутів](#route-groups)
     - [Middleware](#route-group-middleware)
-    - [Controllers](#route-group-controllers)
-    - [Subdomain Routing](#route-group-subdomain-routing)
-    - [Route Prefixes](#route-group-prefixes)
-    - [Route Name Prefixes](#route-group-name-prefixes)
-- [Route Model Binding](#route-model-binding)
-    - [Implicit Binding](#implicit-binding)
-    - [Implicit Enum Binding](#implicit-enum-binding)
-    - [Explicit Binding](#explicit-binding)
-- [Fallback Routes](#fallback-routes)
-- [Rate Limiting](#rate-limiting)
-    - [Defining Rate Limiters](#defining-rate-limiters)
-    - [Attaching Rate Limiters to Routes](#attaching-rate-limiters-to-routes)
-- [Form Method Spoofing](#form-method-spoofing)
-- [Accessing the Current Route](#accessing-the-current-route)
-- [Cross-Origin Resource Sharing (CORS)](#cors)
-- [Route Caching](#route-caching)
+    - [Контролери](#route-group-controllers)
+    - [Маршрутизація піддоменів](#route-group-subdomain-routing)
+    - [Префікси маршрутів](#route-group-prefixes)
+    - [Префікси імен маршрутів](#route-group-name-prefixes)
+- [Прив'язка моделей до маршрутів](#route-model-binding)
+    - [Неявна прив'язка](#implicit-binding)
+    - [Неявна прив'язка enum](#implicit-enum-binding)
+    - [Явна прив'язка](#explicit-binding)
+- [Резервні маршрути](#fallback-routes)
+- [Обмеження частоти](#rate-limiting)
+    - [Визначення обмежувачів частоти](#defining-rate-limiters)
+    - [Призначення обмежувачів маршрутам](#attaching-rate-limiters-to-routes)
+- [Підміна методу форми](#form-method-spoofing)
+- [Доступ до поточного маршруту](#accessing-the-current-route)
+- [Спільне використання ресурсів між джерелами (CORS)](#cors)
+- [Кешування маршрутів](#route-caching)
 
 <a name="basic-routing"></a>
-## Basic Routing
+## Базова маршрутизація
 
-The most basic Laravel routes accept a URI and a closure, providing a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
+Найпростіші маршрути Laravel приймають URI та замикання, даючи дуже простий і виразний спосіб визначати маршрути й поведінку без складних конфігураційних файлів:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -44,11 +47,11 @@ Route::get('/greeting', function () {
 ```
 
 <a name="the-default-route-files"></a>
-### The Default Route Files
+### Типові файли маршрутів
 
-All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` [middleware group](/docs/{{version}}/middleware#laravels-default-middleware-groups), which provides features like session state and CSRF protection.
+Усі маршрути Laravel визначаються у файлах маршрутів, розташованих у каталозі `routes`. Ці файли автоматично завантажуються Laravel за конфігурацією, вказаною у файлі `bootstrap/app.php` вашого застосунку. Файл `routes/web.php` визначає маршрути для вашого веб-інтерфейсу. Цим маршрутам призначається [група `middleware`](/docs/{{version}}/middleware#laravels-default-middleware-groups) `web`, що дає такі можливості, як стан сесії та захист від CSRF.
 
-For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
+Для більшості застосунків ви почнете з визначення маршрутів у файлі `routes/web.php`. До маршрутів, визначених у `routes/web.php`, можна звертатися, ввівши URL маршруту в браузері. Наприклад, до наведеного нижче маршруту можна звернутися, перейшовши на `http://example.com/user`:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -57,15 +60,15 @@ Route::get('/user', [UserController::class, 'index']);
 ```
 
 <a name="api-routes"></a>
-#### API Routes
+#### Маршрути API
 
-If your application will also offer a stateless API, you may enable API routing using the `install:api` Artisan command:
+Якщо ваш застосунок також надаватиме безстанове API, ви можете увімкнути маршрутизацію API командою Artisan `install:api`:
 
 ```shell
 php artisan install:api
 ```
 
-The `install:api` command installs [Laravel Sanctum](/docs/{{version}}/sanctum), which provides a robust, yet simple API token authentication guard which can be used to authenticate third-party API consumers, SPAs, or mobile applications. In addition, the `install:api` command creates the `routes/api.php` file:
+Команда `install:api` встановлює [Laravel Sanctum](/docs/{{version}}/sanctum), який надає надійний і водночас простий гард автентифікації за API-токенами - його можна використовувати для автентифікації сторонніх споживачів API, SPA чи мобільних застосунків. Крім того, команда `install:api` створює файл `routes/api.php`:
 
 ```php
 Route::get('/user', function (Request $request) {
@@ -73,9 +76,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 ```
 
-Of course, you are free to omit the `auth:sanctum` middleware on routes that should be publicly accessible.
+Звісно, ви вільні не додавати `middleware` `auth:sanctum` до маршрутів, які мають бути загальнодоступними.
 
-The routes in `routes/api.php` are stateless and are assigned to the `api` [middleware group](/docs/{{version}}/middleware#laravels-default-middleware-groups). Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
+Маршрути у `routes/api.php` є безстановими й належать до [групи `middleware`](/docs/{{version}}/middleware#laravels-default-middleware-groups) `api`. Крім того, до цих маршрутів автоматично застосовується префікс URI `/api`, тож вам не потрібно додавати його вручну до кожного маршруту у файлі. Змінити префікс можна у файлі `bootstrap/app.php`:
 
 ```php
 ->withRouting(
@@ -86,9 +89,9 @@ The routes in `routes/api.php` are stateless and are assigned to the `api` [midd
 ```
 
 <a name="available-router-methods"></a>
-#### Available Router Methods
+#### Доступні методи маршрутизатора
 
-The router allows you to register routes that respond to any HTTP verb:
+Маршрутизатор дозволяє реєструвати маршрути, що відповідають на будь-який HTTP-метод:
 
 ```php
 Route::get($uri, $callback);
@@ -99,7 +102,7 @@ Route::delete($uri, $callback);
 Route::options($uri, $callback);
 ```
 
-Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs using the `any` method:
+Іноді вам може знадобитися зареєструвати маршрут, що відповідає на кілька HTTP-методів. Це робиться методом `match`. Або ж ви можете зареєструвати маршрут, що відповідає на всі HTTP-методи, методом `any`:
 
 ```php
 Route::match(['get', 'post'], '/', function () {
@@ -112,12 +115,12 @@ Route::any('/', function () {
 ```
 
 > [!NOTE]
-> When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
+> Визначаючи кілька маршрутів зі спільним URI, маршрути з методами `get`, `post`, `put`, `patch`, `delete` та `options` слід визначати перед маршрутами з методами `any`, `match` і `redirect`. Це гарантує, що вхідний запит буде зіставлено з правильним маршрутом.
 
 <a name="dependency-injection"></a>
-#### Dependency Injection
+#### Впровадження залежностей
 
-You may type-hint any dependencies required by your route in your route's callback signature. The declared dependencies will automatically be resolved and injected into the callback by the Laravel [service container](/docs/{{version}}/container). For example, you may type-hint the `Illuminate\Http\Request` class to have the current HTTP request automatically injected into your route callback:
+Ви можете вказати типи будь-яких потрібних маршруту залежностей у сигнатурі його колбека. Оголошені залежності буде автоматично розв'язано й впроваджено в колбек [сервіс-контейнером](/docs/{{version}}/container) Laravel. Наприклад, ви можете вказати тип `Illuminate\Http\Request`, щоб поточний HTTP-запит автоматично впроваджувався у колбек маршруту:
 
 ```php
 use Illuminate\Http\Request;
@@ -128,9 +131,9 @@ Route::get('/users', function (Request $request) {
 ```
 
 <a name="csrf-protection"></a>
-#### CSRF Protection
+#### Захист від CSRF
 
-Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/{{version}}/csrf):
+Пам'ятайте: будь-які HTML-форми, що вказують на маршрути `POST`, `PUT`, `PATCH` чи `DELETE`, визначені у файлі маршрутів `web`, мають містити поле з CSRF-токеном. Інакше запит буде відхилено. Докладніше про захист від CSRF читайте в [документації з CSRF](/docs/{{version}}/csrf):
 
 ```blade
 <form method="POST" action="/profile">
@@ -140,33 +143,33 @@ Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes 
 ```
 
 <a name="redirect-routes"></a>
-### Redirect Routes
+### Маршрути-перенаправлення
 
-If you are defining a route that redirects to another URI, you may use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
+Якщо ви визначаєте маршрут, який перенаправляє на інший URI, скористайтеся методом `Route::redirect`. Він дає зручне скорочення, тож вам не доведеться визначати повноцінний маршрут чи контролер заради простого перенаправлення:
 
 ```php
 Route::redirect('/here', '/there');
 ```
 
-By default, `Route::redirect` returns a `302` status code. You may customize the status code using the optional third parameter:
+За замовчуванням `Route::redirect` повертає статус-код `302`. Ви можете змінити його необов'язковим третім параметром:
 
 ```php
 Route::redirect('/here', '/there', 301);
 ```
 
-Or, you may use the `Route::permanentRedirect` method to return a `301` status code:
+Або ж скористайтеся методом `Route::permanentRedirect`, щоб повернути статус-код `301`:
 
 ```php
 Route::permanentRedirect('/here', '/there');
 ```
 
 > [!WARNING]
-> When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
+> Використовуючи параметри маршруту в маршрутах-перенаправленнях, пам'ятайте: параметри `destination` і `status` зарезервовані Laravel і не можуть бути використані.
 
 <a name="view-routes"></a>
-### View Routes
+### Маршрути-представлення
 
-If your route only needs to return a [view](/docs/{{version}}/views), you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
+Якщо ваш маршрут має лише повернути [представлення](/docs/{{version}}/views), скористайтеся методом `Route::view`. Як і метод `redirect`, він дає просте скорочення, тож вам не доведеться визначати повноцінний маршрут чи контролер. Метод `view` приймає URI першим аргументом та ім'я представлення другим. Крім того, ви можете передати масив даних для представлення необов'язковим третім аргументом:
 
 ```php
 Route::view('/welcome', 'welcome');
@@ -175,18 +178,18 @@ Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 ```
 
 > [!WARNING]
-> When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
+> Використовуючи параметри маршруту в маршрутах-представленнях, пам'ятайте: параметри `view`, `data`, `status` і `headers` зарезервовані Laravel і не можуть бути використані.
 
 <a name="listing-your-routes"></a>
-### Listing Your Routes
+### Перегляд списку маршрутів
 
-The `route:list` Artisan command can easily provide an overview of all of the routes that are defined by your application:
+Команда Artisan `route:list` дає зручний огляд усіх маршрутів, визначених вашим застосунком:
 
 ```shell
 php artisan route:list
 ```
 
-By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware and middleware group names by adding the `-v` option to the command:
+За замовчуванням `middleware`, призначені кожному маршруту, у виводі `route:list` не показуються; однак ви можете вказати Laravel показувати `middleware` маршрутів та імена їхніх груп, додавши до команди опцію `-v`:
 
 ```shell
 php artisan route:list -v
@@ -195,28 +198,28 @@ php artisan route:list -v
 php artisan route:list -vv
 ```
 
-You may also instruct Laravel to only show routes that begin with a given URI:
+Ви також можете вказати Laravel показувати лише маршрути, що починаються з певного URI:
 
 ```shell
 php artisan route:list --path=api
 ```
 
-In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
+Крім того, ви можете сховати маршрути, визначені сторонніми пакетами, передавши опцію `--except-vendor` під час виконання команди `route:list`:
 
 ```shell
 php artisan route:list --except-vendor
 ```
 
-Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:
+І навпаки, ви можете показати лише маршрути, визначені сторонніми пакетами, передавши опцію `--only-vendor`:
 
 ```shell
 php artisan route:list --only-vendor
 ```
 
 <a name="routing-customization"></a>
-### Routing Customization
+### Налаштування маршрутизації
 
-By default, your application's routes are configured and loaded by the `bootstrap/app.php` file:
+За замовчуванням маршрути вашого застосунку налаштовуються й завантажуються файлом `bootstrap/app.php`:
 
 ```php
 <?php
@@ -231,7 +234,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )->create();
 ```
 
-However, sometimes you may want to define an entirely new file to contain a subset of your application's routes. To accomplish this, you may provide a `then` closure to the `withRouting` method. Within this closure, you may register any additional routes that are necessary for your application:
+Утім, іноді вам може знадобитися визначити цілком новий файл для частини маршрутів застосунку. Для цього передайте замикання `then` методу `withRouting`. У цьому замиканні ви можете зареєструвати будь-які додаткові маршрути, потрібні вашому застосунку:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -249,7 +252,7 @@ use Illuminate\Support\Facades\Route;
 )
 ```
 
-Or, you may even take complete control over route registration by providing a `using` closure to the `withRouting` method. When this argument is passed, no HTTP routes will be registered by the framework and you are responsible for manually registering all routes:
+Або ж ви можете взяти повний контроль над реєстрацією маршрутів, передавши замикання `using` методу `withRouting`. Коли передано цей аргумент, фреймворк не зареєструє жодного HTTP-маршруту, і ви відповідаєте за реєстрацію всіх маршрутів вручну:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -268,12 +271,12 @@ use Illuminate\Support\Facades\Route;
 ```
 
 <a name="route-parameters"></a>
-## Route Parameters
+## Параметри маршруту
 
 <a name="required-parameters"></a>
-### Required Parameters
+### Обов'язкові параметри
 
-Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
+Іноді вам знадобиться захопити сегменти URI у своєму маршруті. Наприклад, вам може знадобитися взяти з URL ідентифікатор користувача. Це робиться визначенням параметрів маршруту:
 
 ```php
 Route::get('/user/{id}', function (string $id) {
@@ -281,7 +284,7 @@ Route::get('/user/{id}', function (string $id) {
 });
 ```
 
-You may define as many route parameters as required by your route:
+Ви можете визначити стільки параметрів маршруту, скільки потрібно:
 
 ```php
 Route::get('/posts/{post}/comments/{comment}', function (string $postId, string $commentId) {
@@ -289,12 +292,12 @@ Route::get('/posts/{post}/comments/{comment}', function (string $postId, string 
 });
 ```
 
-Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
+Параметри маршруту завжди беруться у фігурні дужки `{}` і мають складатися з літер. Символи підкреслення (`_`) в іменах параметрів теж допустимі. Параметри впроваджуються в колбеки чи контролери маршрутів за їхнім порядком - імена аргументів колбека чи контролера значення не мають.
 
 <a name="parameters-and-dependency-injection"></a>
-#### Parameters and Dependency Injection
+#### Параметри та впровадження залежностей
 
-If your route has dependencies that you would like the Laravel service container to automatically inject into your route's callback, you should list your route parameters after your dependencies:
+Якщо ваш маршрут має залежності, які сервіс-контейнер Laravel має автоматично впровадити в колбек, перелічуйте параметри маршруту після залежностей:
 
 ```php
 use Illuminate\Http\Request;
@@ -305,9 +308,9 @@ Route::get('/user/{id}', function (Request $request, string $id) {
 ```
 
 <a name="parameters-optional-parameters"></a>
-### Optional Parameters
+### Необов'язкові параметри
 
-Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
+Подекуди вам може знадобитися параметр маршруту, який не завжди присутній в URI. Для цього поставте `?` після імені параметра. Обов'язково задайте відповідній змінній маршруту значення за замовчуванням:
 
 ```php
 Route::get('/user/{name?}', function (?string $name = null) {
@@ -320,9 +323,9 @@ Route::get('/user/{name?}', function (?string $name = 'John') {
 ```
 
 <a name="parameters-regular-expression-constraints"></a>
-### Regular Expression Constraints
+### Обмеження регулярними виразами
 
-You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+Ви можете обмежити формат параметрів маршруту методом `where` на екземплярі маршруту. Метод `where` приймає ім'я параметра та регулярний вираз, що визначає обмеження:
 
 ```php
 Route::get('/user/{name}', function (string $name) {
@@ -338,7 +341,7 @@ Route::get('/user/{id}/{name}', function (string $id, string $name) {
 })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 ```
 
-For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
+Для зручності деякі поширені регулярні вирази мають методи-хелпери, що дозволяють швидко додати обмеження до ваших маршрутів:
 
 ```php
 Route::get('/user/{id}/{name}', function (string $id, string $name) {
@@ -366,12 +369,12 @@ Route::get('/category/{category}', function (string $category) {
 })->whereIn('category', CategoryEnum::cases());
 ```
 
-If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
+Якщо вхідний запит не відповідає обмеженням маршруту, буде повернуто HTTP-відповідь 404.
 
 <a name="parameters-global-constraints"></a>
-#### Global Constraints
+#### Глобальні обмеження
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+Якщо ви хочете, щоб параметр маршруту завжди був обмежений певним регулярним виразом, скористайтеся методом `pattern`. Ці шаблони слід визначати в методі `boot` класу `App\Providers\AppServiceProvider` вашого застосунку:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -385,7 +388,7 @@ public function boot(): void
 }
 ```
 
-Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
+Щойно шаблон визначено, він автоматично застосовується до всіх маршрутів із цим іменем параметра:
 
 ```php
 Route::get('/user/{id}', function (string $id) {
@@ -394,9 +397,9 @@ Route::get('/user/{id}', function (string $id) {
 ```
 
 <a name="parameters-encoded-forward-slashes"></a>
-#### Encoded Forward Slashes
+#### Закодовані прямі скісні риски
 
-The Laravel routing component allows all characters except `/` to be present within route parameter values. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
+Компонент маршрутизації Laravel дозволяє будь-які символи, окрім `/`, у значеннях параметрів маршруту. Щоб `/` міг бути частиною вашого заповнювача, потрібно явно дозволити це регулярним виразом в умові `where`:
 
 ```php
 Route::get('/search/{search}', function (string $search) {
@@ -405,12 +408,12 @@ Route::get('/search/{search}', function (string $search) {
 ```
 
 > [!WARNING]
-> Encoded forward slashes are only supported within the last route segment.
+> Закодовані прямі скісні риски підтримуються лише в останньому сегменті маршруту.
 
 <a name="named-routes"></a>
-## Named Routes
+## Іменовані маршрути
 
-Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
+Іменовані маршрути дозволяють зручно генерувати URL чи перенаправлення для конкретних маршрутів. Задати ім'я маршруту можна, приєднавши метод `name` до його визначення:
 
 ```php
 Route::get('/user/profile', function () {
@@ -418,7 +421,7 @@ Route::get('/user/profile', function () {
 })->name('profile');
 ```
 
-You may also specify route names for controller actions:
+Ви також можете задавати імена маршрутів для дій контролерів:
 
 ```php
 Route::get(
@@ -428,12 +431,12 @@ Route::get(
 ```
 
 > [!WARNING]
-> Route names should always be unique.
+> Імена маршрутів завжди мають бути унікальними.
 
 <a name="generating-urls-to-named-routes"></a>
-#### Generating URLs to Named Routes
+#### Генерація URL до іменованих маршрутів
 
-Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via Laravel's `route` and `redirect` helper functions:
+Щойно ви призначили маршруту ім'я, ви можете використовувати його під час генерації URL чи перенаправлень через функції-хелпери `route` і `redirect`:
 
 ```php
 // Generating URLs...
@@ -445,7 +448,7 @@ return redirect()->route('profile');
 return to_route('profile');
 ```
 
-If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the generated URL in their correct positions:
+Якщо іменований маршрут визначає параметри, ви можете передати їх другим аргументом функції `route`. Передані параметри буде автоматично вставлено в згенерований URL у правильних позиціях:
 
 ```php
 Route::get('/user/{id}/profile', function (string $id) {
@@ -455,7 +458,7 @@ Route::get('/user/{id}/profile', function (string $id) {
 $url = route('profile', ['id' => 1]);
 ```
 
-If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
+Якщо ви передасте в масиві додаткові параметри, ці пари «ключ - значення» буде автоматично додано до рядка запиту згенерованого URL:
 
 ```php
 Route::get('/user/{id}/profile', function (string $id) {
@@ -468,12 +471,12 @@ $url = route('profile', ['id' => 1, 'photos' => 'yes']);
 ```
 
 > [!NOTE]
-> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [URL::defaults method](/docs/{{version}}/urls#default-values).
+> Іноді вам може знадобитися задати значення за замовчуванням для параметрів URL у межах усього запиту - наприклад, поточну локаль. Для цього скористайтеся [методом URL::defaults](/docs/{{version}}/urls#default-values).
 
 <a name="inspecting-the-current-route"></a>
-#### Inspecting the Current Route
+#### Перевірка поточного маршруту
 
-If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
+Якщо ви хочете визначити, чи спрямовано поточний запит до певного іменованого маршруту, скористайтеся методом `named` на екземплярі Route. Наприклад, ви можете перевірити ім'я поточного маршруту з `middleware` маршруту:
 
 ```php
 use Closure;
@@ -496,16 +499,16 @@ public function handle(Request $request, Closure $next): Response
 ```
 
 <a name="route-groups"></a>
-## Route Groups
+## Групи маршрутів
 
-Route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route.
+Групи маршрутів дозволяють спільно використовувати атрибути маршрутів - як-от `middleware` - для великої кількості маршрутів, не визначаючи ці атрибути для кожного окремо.
 
-Nested groups attempt to intelligently "merge" attributes with their parent group. Middleware and `where` conditions are merged while names and prefixes are appended. Namespace delimiters and slashes in URI prefixes are automatically added where appropriate.
+Вкладені групи намагаються розумно «об'єднати» атрибути з батьківською групою. `Middleware` та умови `where` об'єднуються, а імена й префікси додаються в кінець. Роздільники просторів імен і скісні риски в префіксах URI додаються автоматично там, де це доречно.
 
 <a name="route-group-middleware"></a>
 ### Middleware
 
-To assign [middleware](/docs/{{version}}/middleware) to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
+Щоб призначити [`middleware`](/docs/{{version}}/middleware) усім маршрутам групи, скористайтеся методом `middleware` перед визначенням групи. `Middleware` виконуються в тому порядку, у якому їх перелічено в масиві:
 
 ```php
 Route::middleware(['first', 'second'])->group(function () {
@@ -520,9 +523,9 @@ Route::middleware(['first', 'second'])->group(function () {
 ```
 
 <a name="route-group-controllers"></a>
-### Controllers
+### Контролери
 
-If a group of routes all utilize the same [controller](/docs/{{version}}/controllers), you may use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
+Якщо група маршрутів використовує той самий [контролер](/docs/{{version}}/controllers), ви можете скористатися методом `controller`, щоб визначити спільний контролер для всіх маршрутів групи. Тоді, визначаючи маршрути, вам потрібно вказати лише метод контролера, який вони викликають:
 
 ```php
 use App\Http\Controllers\OrderController;
@@ -534,9 +537,9 @@ Route::controller(OrderController::class)->group(function () {
 ```
 
 <a name="route-group-subdomain-routing"></a>
-### Subdomain Routing
+### Маршрутизація піддоменів
 
-Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
+Групи маршрутів також можна використовувати для маршрутизації піддоменів. Піддоменам можна призначати параметри маршруту так само, як і URI, що дозволяє захопити частину піддомену для використання у вашому маршруті чи контролері. Піддомен вказується викликом методу `domain` перед визначенням групи:
 
 ```php
 Route::domain('{account}.example.com')->group(function () {
@@ -547,9 +550,9 @@ Route::domain('{account}.example.com')->group(function () {
 ```
 
 <a name="route-group-prefixes"></a>
-### Route Prefixes
+### Префікси маршрутів
 
-The `prefix` method may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
+Метод `prefix` дозволяє додати кожному маршруту групи вказаний префікс URI. Наприклад, ви можете захотіти додати всім URI маршрутів групи префікс `admin`:
 
 ```php
 Route::prefix('admin')->group(function () {
@@ -560,9 +563,9 @@ Route::prefix('admin')->group(function () {
 ```
 
 <a name="route-group-name-prefixes"></a>
-### Route Name Prefixes
+### Префікси імен маршрутів
 
-The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix the names of all of the routes in the group with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
+Метод `name` дозволяє додати кожному імені маршруту в групі вказаний рядок-префікс. Наприклад, ви можете захотіти додати іменам усіх маршрутів групи префікс `admin`. Переданий рядок додається до імені маршруту точно так, як його вказано, тож не забудьте про крапку `.` наприкінці префікса:
 
 ```php
 Route::name('admin.')->group(function () {
@@ -573,14 +576,14 @@ Route::name('admin.')->group(function () {
 ```
 
 <a name="route-model-binding"></a>
-## Route Model Binding
+## Прив'язка моделей до маршрутів
 
-When injecting a model ID to a route or controller action, you will often query the database to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
+Впроваджуючи ідентифікатор моделі в маршрут чи дію контролера, ви часто робите запит до бази даних, щоб отримати модель, яка відповідає цьому ідентифікатору. Прив'язка моделей до маршрутів у Laravel дає зручний спосіб автоматично впроваджувати екземпляри моделей просто у ваші маршрути. Наприклад, замість впроваджувати ідентифікатор користувача, ви можете впровадити цілий екземпляр моделі `User`, що відповідає цьому ідентифікатору.
 
 <a name="implicit-binding"></a>
-### Implicit Binding
+### Неявна прив'язка
 
-Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
+Laravel автоматично розв'язує моделі Eloquent, визначені в маршрутах чи діях контролерів, коли імена їхніх типізованих змінних збігаються з іменем сегмента маршруту. Наприклад:
 
 ```php
 use App\Models\User;
@@ -590,9 +593,9 @@ Route::get('/users/{user}', function (User $user) {
 });
 ```
 
-Since the `$user` variable is type-hinted as the `App\Models\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
+Оскільки змінна `$user` має тип моделі Eloquent `App\Models\User`, а ім'я змінної збігається із сегментом URI `{user}`, Laravel автоматично впровадить екземпляр моделі з ідентифікатором, що відповідає значенню з URI запиту. Якщо відповідного екземпляра в базі даних не знайдено, автоматично буде згенеровано HTTP-відповідь 404.
 
-Of course, implicit binding is also possible when using controller methods. Again, note the `{user}` URI segment matches the `$user` variable in the controller which contains an `App\Models\User` type-hint:
+Звісно, неявна прив'язка можлива й у методах контролерів. Знову ж таки, зверніть увагу: сегмент URI `{user}` збігається зі змінною `$user` у контролері, яка має тип `App\Models\User`:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -609,9 +612,9 @@ public function show(User $user)
 ```
 
 <a name="implicit-soft-deleted-models"></a>
-#### Soft Deleted Models
+#### М'яко видалені моделі
 
-Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/{{version}}/eloquent#soft-deleting). However, you may instruct the implicit binding to retrieve these models by chaining the `withTrashed` method onto your route's definition:
+Зазвичай неявна прив'язка не отримує моделі, які було [м'яко видалено](/docs/{{version}}/eloquent#soft-deleting). Утім, ви можете вказати неявній прив'язці отримувати такі моделі, приєднавши метод `withTrashed` до визначення маршруту:
 
 ```php
 use App\Models\User;
@@ -622,9 +625,9 @@ Route::get('/users/{user}', function (User $user) {
 ```
 
 <a name="customizing-the-default-key-name"></a>
-#### Customizing the Key
+#### Налаштування ключа
 
-Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
+Іноді ви можете захотіти розв'язувати моделі Eloquent за колонкою, відмінною від `id`. Для цього вкажіть колонку у визначенні параметра маршруту:
 
 ```php
 use App\Models\Post;
@@ -634,7 +637,7 @@ Route::get('/posts/{post:slug}', function (Post $post) {
 });
 ```
 
-If you would like model binding to always use a database column other than `id` when retrieving a given model class, you may apply the `RouteKey` attribute to the Eloquent model:
+Якщо ви хочете, щоб прив'язка моделей завжди використовувала колонку, відмінну від `id`, під час отримання певного класу моделі, застосуйте до моделі Eloquent атрибут `RouteKey`:
 
 ```php
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
@@ -648,9 +651,9 @@ class Post extends Model
 ```
 
 <a name="implicit-model-binding-scoping"></a>
-#### Custom Keys and Scoping
+#### Власні ключі та обмеження області
 
-When implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the previous Eloquent model. For example, consider this route definition that retrieves a blog post by slug for a specific user:
+Неявно прив'язуючи кілька моделей Eloquent в одному визначенні маршруту, ви можете захотіти обмежити другу модель так, щоб вона обов'язково була дочірньою щодо попередньої. Наприклад, розгляньмо визначення маршруту, що отримує допис блогу за slug для конкретного користувача:
 
 ```php
 use App\Models\Post;
@@ -661,9 +664,9 @@ Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) 
 });
 ```
 
-When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural form of the route parameter name) which can be used to retrieve the `Post` model.
+Коли ви використовуєте неявну прив'язку з власним ключем як параметр вкладеного маршруту, Laravel автоматично обмежить запит так, щоб отримати вкладену модель через її батька, використовуючи домовленості для вгадування імені зв'язку. У цьому випадку припускатиметься, що модель `User` має зв'язок `posts` (множина від імені параметра маршруту), через який можна отримати модель `Post`.
 
-If you wish, you may instruct Laravel to scope "child" bindings even when a custom key is not provided. To do so, you may invoke the `scopeBindings` method when defining your route:
+За бажанням ви можете вказати Laravel обмежувати «дочірні» прив'язки навіть тоді, коли власного ключа не передано. Для цього викличте метод `scopeBindings` під час визначення маршруту:
 
 ```php
 use App\Models\Post;
@@ -674,7 +677,7 @@ Route::get('/users/{user}/posts/{post}', function (User $user, Post $post) {
 })->scopeBindings();
 ```
 
-Or, you may instruct an entire group of route definitions to use scoped bindings:
+Або ж ви можете вказати цілій групі визначень маршрутів використовувати прив'язки з обмеженою областю:
 
 ```php
 Route::scopeBindings()->group(function () {
@@ -684,7 +687,7 @@ Route::scopeBindings()->group(function () {
 });
 ```
 
-Similarly, you may explicitly instruct Laravel to not scope bindings by invoking the `withoutScopedBindings` method:
+Так само ви можете явно вказати Laravel не обмежувати прив'язки, викликавши метод `withoutScopedBindings`:
 
 ```php
 Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
@@ -693,9 +696,9 @@ Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) 
 ```
 
 <a name="customizing-missing-model-behavior"></a>
-#### Customizing Missing Model Behavior
+#### Налаштування поведінки для відсутньої моделі
 
-Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model cannot be found:
+Зазвичай, якщо неявно прив'язану модель не знайдено, генерується HTTP-відповідь 404. Утім, ви можете налаштувати цю поведінку, викликавши метод `missing` під час визначення маршруту. Метод `missing` приймає замикання, яке буде викликано, якщо неявно прив'язану модель не вдалося знайти:
 
 ```php
 use App\Http\Controllers\LocationsController;
@@ -710,9 +713,9 @@ Route::get('/locations/{location:slug}', [LocationsController::class, 'show'])
 ```
 
 <a name="implicit-enum-binding"></a>
-### Implicit Enum Binding
+### Неявна прив'язка enum
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [string-backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+PHP 8.1 запровадив підтримку [enum](https://www.php.net/manual/en/language.enumerations.backed.php). Доповнюючи цю можливість, Laravel дозволяє вказати у визначенні маршруту тип [enum на основі рядка](https://www.php.net/manual/en/language.enumerations.backed.php), і Laravel викличе маршрут лише тоді, коли сегмент маршруту відповідає дійсному значенню enum. Інакше автоматично буде повернуто HTTP-відповідь 404. Наприклад, маючи такий enum:
 
 ```php
 <?php
@@ -726,7 +729,7 @@ enum Category: string
 }
 ```
 
-You may define a route that will only be invoked if the `{category}` route segment is `fruits` or `people`. Otherwise, Laravel will return a 404 HTTP response:
+Ви можете визначити маршрут, який буде викликано лише тоді, коли сегмент `{category}` дорівнює `fruits` чи `people`. Інакше Laravel поверне HTTP-відповідь 404:
 
 ```php
 use App\Enums\Category;
@@ -738,9 +741,9 @@ Route::get('/categories/{category}', function (Category $category) {
 ```
 
 <a name="explicit-binding"></a>
-### Explicit Binding
+### Явна прив'язка
 
-You are not required to use Laravel's implicit, convention based model resolution in order to use model binding. You can also explicitly define how route parameters correspond to models. To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `AppServiceProvider` class:
+Ви не зобов'язані використовувати неявне розв'язання моделей за домовленостями, щоб користуватися прив'язкою моделей. Ви також можете явно визначити, як параметри маршруту відповідають моделям. Щоб зареєструвати явну прив'язку, скористайтеся методом `model` маршрутизатора, вказавши клас для певного параметра. Явні прив'язки моделей слід визначати на початку методу `boot` вашого класу `AppServiceProvider`:
 
 ```php
 use App\Models\User;
@@ -755,7 +758,7 @@ public function boot(): void
 }
 ```
 
-Next, define a route that contains a `{user}` parameter:
+Далі визначте маршрут, що містить параметр `{user}`:
 
 ```php
 use App\Models\User;
@@ -765,14 +768,14 @@ Route::get('/users/{user}', function (User $user) {
 });
 ```
 
-Since we have bound all `{user}` parameters to the `App\Models\User` model, an instance of that class will be injected into the route. So, for example, a request to `users/1` will inject the `User` instance from the database which has an ID of `1`.
+Оскільки ми прив'язали всі параметри `{user}` до моделі `App\Models\User`, у маршрут буде впроваджено екземпляр цього класу. Тож, наприклад, запит до `users/1` впровадить екземпляр `User` із бази даних, що має ідентифікатор `1`.
 
-If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
+Якщо відповідного екземпляра в базі даних не знайдено, автоматично буде згенеровано HTTP-відповідь 404.
 
 <a name="customizing-the-resolution-logic"></a>
-#### Customizing the Resolution Logic
+#### Налаштування логіки розв'язання
 
-If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `AppServiceProvider`:
+Якщо ви хочете визначити власну логіку розв'язання прив'язок моделей, скористайтеся методом `Route::bind`. Замикання, передане методу `bind`, отримає значення сегмента URI й має повернути екземпляр класу, який слід впровадити в маршрут. Знову ж таки, це налаштування має відбуватися в методі `boot` вашого `AppServiceProvider`:
 
 ```php
 use App\Models\User;
@@ -789,7 +792,7 @@ public function boot(): void
 }
 ```
 
-Alternatively, you may override the `resolveRouteBinding` method on your Eloquent model. This method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
+Як альтернативу ви можете перевизначити метод `resolveRouteBinding` у своїй моделі Eloquent. Він отримає значення сегмента URI й має повернути екземпляр класу для впровадження в маршрут:
 
 ```php
 /**
@@ -805,7 +808,7 @@ public function resolveRouteBinding($value, $field = null)
 }
 ```
 
-If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:
+Якщо маршрут використовує [обмеження області неявних прив'язок](#implicit-model-binding-scoping), для розв'язання дочірньої прив'язки батьківської моделі буде використано метод `resolveChildRouteBinding`:
 
 ```php
 /**
@@ -823,9 +826,9 @@ public function resolveChildRouteBinding($childType, $value, $field)
 ```
 
 <a name="fallback-routes"></a>
-## Fallback Routes
+## Резервні маршрути
 
-Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you would typically define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:
+За допомогою методу `Route::fallback` ви можете визначити маршрут, який виконуватиметься, коли жоден інший маршрут не збігається з вхідним запитом. Зазвичай необроблені запити автоматично рендерять сторінку «404» через обробник винятків вашого застосунку. Однак оскільки резервний маршрут ви зазвичай визначаєте у файлі `routes/web.php`, до нього застосовуватимуться всі `middleware` групи `web`. Ви вільні додавати до цього маршруту й інші `middleware` за потреби:
 
 ```php
 Route::fallback(function () {
@@ -834,14 +837,14 @@ Route::fallback(function () {
 ```
 
 <a name="rate-limiting"></a>
-## Rate Limiting
+## Обмеження частоти
 
 <a name="defining-rate-limiters"></a>
-### Defining Rate Limiters
+### Визначення обмежувачів частоти
 
-Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs.
+Laravel містить потужні й гнучкі сервіси обмеження частоти, якими можна скористатися, щоб обмежити обсяг трафіку для певного маршруту чи групи маршрутів. Щоб почати, визначте конфігурації обмежувачів, що відповідають потребам вашого застосунку.
 
-Rate limiters may be defined within the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+Обмежувачі частоти можна визначати в методі `boot` класу `App\Providers\AppServiceProvider` вашого застосунку:
 
 ```php
 use Illuminate\Cache\RateLimiting\Limit;
@@ -859,7 +862,7 @@ public function boot(): void
 }
 ```
 
-Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\Cache\RateLimiting\Limit` class. This class contains helpful "builder" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:
+Обмежувачі визначаються методом `for` фасаду `RateLimiter`. Метод `for` приймає ім'я обмежувача й замикання, що повертає конфігурацію обмеження для маршрутів, яким призначено цей обмежувач. Конфігурації обмежень є екземплярами класу `Illuminate\Cache\RateLimiting\Limit`. Цей клас містить корисні методи-будівельники, щоб ви могли швидко визначити своє обмеження. Ім'ям обмежувача може бути будь-який рядок:
 
 ```php
 use Illuminate\Cache\RateLimiting\Limit;
@@ -877,7 +880,7 @@ public function boot(): void
 }
 ```
 
-If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
+Якщо вхідний запит перевищує вказане обмеження, Laravel автоматично поверне відповідь зі статус-кодом 429. Якщо ви хочете визначити власну відповідь для перевищення обмеження, скористайтеся методом `response`:
 
 ```php
 RateLimiter::for('global', function (Request $request) {
@@ -887,7 +890,7 @@ RateLimiter::for('global', function (Request $request) {
 });
 ```
 
-Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
+Оскільки колбеки обмежувачів отримують екземпляр вхідного HTTP-запиту, ви можете будувати відповідне обмеження динамічно на основі запиту чи автентифікованого користувача:
 
 ```php
 RateLimiter::for('uploads', function (Request $request) {
@@ -898,9 +901,9 @@ RateLimiter::for('uploads', function (Request $request) {
 ```
 
 <a name="segmenting-rate-limits"></a>
-#### Segmenting Rate Limits
+#### Сегментація обмежень частоти
 
-Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `by` method when building your rate limit:
+Іноді ви можете захотіти сегментувати обмеження за якимось довільним значенням. Наприклад, ви можете дозволити користувачам звертатися до маршруту 100 разів на хвилину з однієї IP-адреси. Для цього скористайтеся методом `by` під час побудови обмеження:
 
 ```php
 RateLimiter::for('uploads', function (Request $request) {
@@ -910,7 +913,7 @@ RateLimiter::for('uploads', function (Request $request) {
 });
 ```
 
-To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
+Проілюструймо цю можливість ще одним прикладом: ми можемо обмежити доступ до маршруту до 100 разів на хвилину для автентифікованого користувача або 10 разів на хвилину з IP-адреси для гостей:
 
 ```php
 RateLimiter::for('uploads', function (Request $request) {
@@ -921,9 +924,9 @@ RateLimiter::for('uploads', function (Request $request) {
 ```
 
 <a name="multiple-rate-limits"></a>
-#### Multiple Rate Limits
+#### Кілька обмежень частоти
 
-If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:
+За потреби ви можете повернути масив обмежень для конфігурації обмежувача. Кожне обмеження оцінюватиметься для маршруту в тому порядку, у якому їх розміщено в масиві:
 
 ```php
 RateLimiter::for('login', function (Request $request) {
@@ -934,7 +937,7 @@ RateLimiter::for('login', function (Request $request) {
 });
 ```
 
-If you're assigning multiple rate limits segmented by identical `by` values, you should ensure that each `by` value is unique. The easiest way to achieve this is to prefix the values given to the `by` method:
+Якщо ви призначаєте кілька обмежень, сегментованих однаковими значеннями `by`, переконайтеся, що кожне значення `by` унікальне. Найпростіший спосіб цього досягти - додати до переданих методу `by` значень префікси:
 
 ```php
 RateLimiter::for('uploads', function (Request $request) {
@@ -946,11 +949,11 @@ RateLimiter::for('uploads', function (Request $request) {
 ```
 
 <a name="response-base-rate-limiting"></a>
-#### Response-Based Rate Limiting
+#### Обмеження частоти на основі відповіді
 
-In addition to rate limiting incoming requests, Laravel allows you to rate limit based on the response using the `after` method. This is useful when you only want to count certain responses toward the rate limit, such as validation errors, 404 responses, or other specific HTTP status codes.
+Окрім обмеження вхідних запитів, Laravel дозволяє обмежувати частоту на основі відповіді за допомогою методу `after`. Це корисно, коли ви хочете зараховувати до обмеження лише певні відповіді - як-от помилки валідації, відповіді 404 чи інші конкретні HTTP-статуси.
 
-The `after` method accepts a closure that receives the response and should return `true` if the response should be counted toward the rate limit, or `false` if it should be ignored. This is particularly useful for preventing enumeration attacks by limiting consecutive 404 responses, or allowing users to retry requests that fail validation without exhausting their rate limit on an endpoint that should only throttle successful operations:
+Метод `after` приймає замикання, яке отримує відповідь і має повернути `true`, якщо цю відповідь слід зарахувати до обмеження, або `false`, якщо її слід проігнорувати. Це особливо корисно, щоб запобігти атакам перебору, обмеживши послідовні відповіді 404, або щоб дозволити користувачам повторювати запити, які не пройшли валідацію, не вичерпуючи ліміт на точці, що має обмежувати лише успішні операції:
 
 ```php
 use Illuminate\Cache\RateLimiting\Limit;
@@ -969,9 +972,9 @@ RateLimiter::for('resource-not-found', function (Request $request) {
 ```
 
 <a name="attaching-rate-limiters-to-routes"></a>
-### Attaching Rate Limiters to Routes
+### Призначення обмежувачів маршрутам
 
-Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/{{version}}/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
+Обмежувачі частоти можна призначати маршрутам чи групам маршрутів за допомогою [`middleware`](/docs/{{version}}/middleware) `throttle`. Цей `middleware` приймає ім'я обмежувача, який ви хочете призначити маршруту:
 
 ```php
 Route::middleware(['throttle:uploads'])->group(function () {
@@ -986,9 +989,9 @@ Route::middleware(['throttle:uploads'])->group(function () {
 ```
 
 <a name="throttling-with-redis"></a>
-#### Throttling With Redis
+#### Обмеження частоти з Redis
 
-By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to instruct Laravel to use Redis to manage rate limiting. To do so, you should use the `throttleWithRedis` method in your application's `bootstrap/app.php` file. This method maps the `throttle` middleware to the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` middleware class:
+За замовчуванням `middleware` `throttle` зіставлено з класом `Illuminate\Routing\Middleware\ThrottleRequests`. Однак якщо ви використовуєте Redis як драйвер кешу застосунку, ви можете захотіти вказати Laravel керувати обмеженням частоти через Redis. Для цього скористайтеся методом `throttleWithRedis` у файлі `bootstrap/app.php`. Він зіставляє `middleware` `throttle` із класом `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis`:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -998,9 +1001,9 @@ By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middl
 ```
 
 <a name="form-method-spoofing"></a>
-## Form Method Spoofing
+## Підміна методу форми
 
-HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining `PUT`, `PATCH`, or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:
+HTML-форми не підтримують дій `PUT`, `PATCH` чи `DELETE`. Тож, визначаючи маршрути `PUT`, `PATCH` чи `DELETE`, які викликаються з HTML-форми, вам потрібно додати до форми приховане поле `_method`. Значення, надіслане з полем `_method`, буде використано як метод HTTP-запиту:
 
 ```blade
 <form action="/example" method="POST">
@@ -1009,7 +1012,7 @@ HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining
 </form>
 ```
 
-For convenience, you may use the `@method` [Blade directive](/docs/{{version}}/blade) to generate the `_method` input field:
+Для зручності ви можете скористатися [директивою Blade](/docs/{{version}}/blade) `@method`, щоб згенерувати поле `_method`:
 
 ```blade
 <form action="/example" method="POST">
@@ -1019,9 +1022,9 @@ For convenience, you may use the `@method` [Blade directive](/docs/{{version}}/b
 ```
 
 <a name="accessing-the-current-route"></a>
-## Accessing the Current Route
+## Доступ до поточного маршруту
 
-You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
+Ви можете скористатися методами `current`, `currentRouteName` і `currentRouteAction` фасаду `Route`, щоб отримати інформацію про маршрут, який обробляє вхідний запит:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -1031,36 +1034,36 @@ $name = Route::currentRouteName(); // string
 $action = Route::currentRouteAction(); // string
 ```
 
-You may refer to the API documentation for both the [underlying class of the Route facade](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Router.html) and [Route instance](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Route.html) to review all of the methods that are available on the router and route classes.
+Щоб переглянути всі доступні методи маршрутизатора та класів маршрутів, зверніться до документації API [базового класу фасаду Route](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Router.html) та [екземпляра Route](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Route.html).
 
 <a name="cors"></a>
-## Cross-Origin Resource Sharing (CORS)
+## Спільне використання ресурсів між джерелами (CORS)
 
-Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/{{version}}/middleware) that is automatically included in your application's global middleware stack.
+Laravel може автоматично відповідати на HTTP-запити CORS `OPTIONS` значеннями, які ви налаштуєте. Запити `OPTIONS` автоматично обробляє [`middleware`](/docs/{{version}}/middleware) `HandleCors`, який автоматично входить до глобального стека вашого застосунку.
 
-Sometimes, you may need to customize the CORS configuration values for your application. You may do so by publishing the `cors` configuration file using the `config:publish` Artisan command:
+Іноді вам може знадобитися налаштувати значення конфігурації CORS. Це можна зробити, опублікувавши конфігураційний файл `cors` командою Artisan `config:publish`:
 
 ```shell
 php artisan config:publish cors
 ```
 
-This command will place a `cors.php` configuration file within your application's `config` directory.
+Ця команда розмістить конфігураційний файл `cors.php` у каталозі `config` вашого застосунку.
 
 > [!NOTE]
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+> Докладніше про CORS і заголовки CORS читайте у [веб-документації MDN щодо CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
 
 <a name="route-caching"></a>
-## Route Caching
+## Кешування маршрутів
 
-When deploying your application to production, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. To generate a route cache, execute the `route:cache` Artisan command:
+Розгортаючи застосунок у продакшені, скористайтеся кешем маршрутів Laravel. Використання кешу різко зменшить час, потрібний для реєстрації всіх маршрутів вашого застосунку. Щоб згенерувати кеш маршрутів, виконайте команду Artisan `route:cache`:
 
 ```shell
 php artisan route:cache
 ```
 
-After running this command, your cached routes file will be loaded on every request. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
+Після виконання цієї команди закешований файл маршрутів завантажуватиметься під час кожного запиту. Пам'ятайте: якщо ви додасте нові маршрути, вам потрібно буде згенерувати новий кеш. Через це команду `route:cache` варто виконувати лише під час розгортання проєкту.
 
-You may use the `route:clear` command to clear the route cache:
+Щоб очистити кеш маршрутів, скористайтеся командою `route:clear`:
 
 ```shell
 php artisan route:clear
