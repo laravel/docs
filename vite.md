@@ -1,65 +1,68 @@
-# Asset Bundling (Vite)
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Складання ресурсів (Vite)
 
-- [Introduction](#introduction)
-- [Installation & Setup](#installation)
-  - [Installing Node](#installing-node)
-  - [Installing Vite and the Laravel Plugin](#installing-vite-and-laravel-plugin)
-  - [Configuring Vite](#configuring-vite)
-  - [Loading Your Scripts and Styles](#loading-your-scripts-and-styles)
-- [Running Vite](#running-vite)
-- [Working With JavaScript](#working-with-scripts)
-  - [Aliases](#aliases)
+- [Вступ](#introduction)
+- [Встановлення та налаштування](#installation)
+  - [Встановлення Node](#installing-node)
+  - [Встановлення Vite та плагіна Laravel](#installing-vite-and-laravel-plugin)
+  - [Налаштування Vite](#configuring-vite)
+  - [Завантаження скриптів і стилів](#loading-your-scripts-and-styles)
+- [Запуск Vite](#running-vite)
+- [Робота з JavaScript](#working-with-scripts)
+  - [Псевдоніми](#aliases)
   - [Vue](#vue)
   - [React](#react)
   - [Svelte](#svelte)
   - [Inertia](#inertia)
-  - [URL Processing](#url-processing)
-- [Working With Stylesheets](#working-with-stylesheets)
-- [Working With Fonts](#working-with-fonts)
-  - [Font Providers](#font-providers)
-  - [Local Fonts](#local-fonts)
-  - [Font Options](#font-options)
-- [Working With Blade and Routes](#working-with-blade-and-routes)
-  - [Processing Static Assets With Vite](#blade-processing-static-assets)
-  - [Refreshing on Save](#blade-refreshing-on-save)
-  - [Aliases](#blade-aliases)
-- [Asset Prefetching](#asset-prefetching)
-- [Custom Base URLs](#custom-base-urls)
-- [Environment Variables](#environment-variables)
-- [Disabling Vite in Tests](#disabling-vite-in-tests)
-- [Server-Side Rendering (SSR)](#ssr)
-- [Script and Style Tag Attributes](#script-and-style-attributes)
-  - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
-  - [Subresource Integrity (SRI)](#subresource-integrity-sri)
-  - [Arbitrary Attributes](#arbitrary-attributes)
-- [Advanced Customization](#advanced-customization)
-  - [Dev Server Cross-Origin Resource Sharing (CORS)](#cors)
-  - [Correcting Dev Server URLs](#correcting-dev-server-urls)
+  - [Обробка URL](#url-processing)
+- [Робота зі стилями](#working-with-stylesheets)
+- [Робота зі шрифтами](#working-with-fonts)
+  - [Провайдери шрифтів](#font-providers)
+  - [Локальні шрифти](#local-fonts)
+  - [Опції шрифтів](#font-options)
+- [Робота з Blade і маршрутами](#working-with-blade-and-routes)
+  - [Обробка статичних ресурсів через Vite](#blade-processing-static-assets)
+  - [Оновлення під час збереження](#blade-refreshing-on-save)
+  - [Псевдоніми](#blade-aliases)
+- [Попереднє завантаження ресурсів](#asset-prefetching)
+- [Власні базові URL](#custom-base-urls)
+- [Змінні середовища](#environment-variables)
+- [Вимкнення Vite у тестах](#disabling-vite-in-tests)
+- [Рендеринг на боці сервера (SSR)](#ssr)
+- [Атрибути тегів script і style](#script-and-style-attributes)
+  - [Nonce для політики безпеки вмісту (CSP)](#content-security-policy-csp-nonce)
+  - [Цілісність підресурсів (SRI)](#subresource-integrity-sri)
+  - [Довільні атрибути](#arbitrary-attributes)
+- [Розширене налаштування](#advanced-customization)
+  - [CORS сервера розробки](#cors)
+  - [Виправлення URL сервера розробки](#correcting-dev-server-urls)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Vite](https://vitejs.dev) is a modern frontend build tool that provides an extremely fast development environment and bundles your code for production. When building applications with Laravel, you will typically use Vite to bundle your application's CSS and JavaScript files into production-ready assets.
+[Vite](https://vitejs.dev) - це сучасний інструмент збірки фронтенду, що дає надзвичайно швидке середовище розробки й пакує ваш код для продакшену. Створюючи застосунки на Laravel, ви зазвичай використовуватимете Vite, щоб зібрати файли CSS і JavaScript у готові до продакшену ресурси.
 
-Laravel integrates seamlessly with Vite by providing an official plugin and Blade directive to load your assets for development and production.
+Laravel бездоганно інтегрується з Vite завдяки офіційному плагіну та директиві Blade, які завантажують ваші ресурси для розробки й продакшену.
 
 <a name="installation"></a>
-## Installation & Setup
+## Встановлення та налаштування
 
 > [!NOTE]
-> The following documentation discusses how to manually install and configure the Laravel Vite plugin. However, Laravel's [starter kits](/docs/{{version}}/starter-kits) already include all of this scaffolding and are the fastest way to get started with Laravel and Vite.
+> Наведена нижче документація описує, як встановити й налаштувати плагін Laravel Vite вручну. Утім, [стартові набори](/docs/{{version}}/starter-kits) Laravel уже містять увесь цей каркас і є найшвидшим способом почати роботу з Laravel і Vite.
 
 <a name="installing-node"></a>
-### Installing Node
+### Встановлення Node
 
-You must ensure that Node.js (16+) and NPM are installed before running Vite and the Laravel plugin:
+Перш ніж запускати Vite та плагін Laravel, переконайтеся, що встановлено Node.js (16+) і NPM:
 
 ```shell
 node -v
 npm -v
 ```
 
-You can easily install the latest version of Node and NPM using simple graphical installers from [the official Node website](https://nodejs.org/en/download/). Or, if you are using [Laravel Sail](https://laravel.com/docs/{{version}}/sail), you may invoke Node and NPM through Sail:
+Ви можете легко встановити найновішу версію Node і NPM за допомогою простих графічних інсталяторів з [офіційного сайту Node](https://nodejs.org/en/download/). Або, якщо ви користуєтеся [Laravel Sail](https://laravel.com/docs/{{version}}/sail), викликайте Node і NPM через Sail:
 
 ```shell
 ./vendor/bin/sail node -v
@@ -67,20 +70,20 @@ You can easily install the latest version of Node and NPM using simple graphical
 ```
 
 <a name="installing-vite-and-laravel-plugin"></a>
-### Installing Vite and the Laravel Plugin
+### Встановлення Vite та плагіна Laravel
 
-Within a fresh installation of Laravel, you will find a `package.json` file in the root of your application's directory structure. The default `package.json` file already includes everything you need to get started using Vite and the Laravel plugin. You may install your application's frontend dependencies via NPM:
+У щойно встановленому Laravel ви знайдете файл `package.json` у корені каталогу застосунку. Типовий `package.json` уже містить усе потрібне, щоб почати роботу з Vite і плагіном Laravel. Встановити фронтенд-залежності застосунку можна через NPM:
 
 ```shell
 npm install
 ```
 
 <a name="configuring-vite"></a>
-### Configuring Vite
+### Налаштування Vite
 
-Vite is configured via a `vite.config.js` file in the root of your project. You are free to customize this file based on your needs, and you may also install any other plugins your application requires, such as `@vitejs/plugin-react`, `@sveltejs/vite-plugin-svelte` or `@vitejs/plugin-vue`.
+Vite налаштовується через файл `vite.config.js` у корені вашого проєкту. Ви вільні змінювати цей файл під свої потреби, а також встановлювати будь-які інші потрібні застосунку плагіни - як-от `@vitejs/plugin-react`, `@sveltejs/vite-plugin-svelte` чи `@vitejs/plugin-vue`.
 
-The Laravel Vite plugin requires you to specify the entry points for your application. These may be JavaScript or CSS files, and include preprocessed languages such as TypeScript, JSX, TSX, and Sass.
+Плагін Laravel Vite вимагає вказати точки входу вашого застосунку. Це можуть бути файли JavaScript чи CSS, зокрема мови з попередньою обробкою - TypeScript, JSX, TSX і Sass.
 
 ```js
 import { defineConfig } from 'vite';
@@ -96,7 +99,7 @@ export default defineConfig({
 });
 ```
 
-If you are building an SPA, including applications built using Inertia, Vite works best without CSS entry points:
+Якщо ви створюєте SPA, зокрема застосунки на Inertia, Vite найкраще працює без CSS-точок входу:
 
 ```js
 import { defineConfig } from 'vite';
@@ -112,23 +115,23 @@ export default defineConfig({
 });
 ```
 
-Instead, you should import your CSS via JavaScript. Typically, this would be done in your application's `resources/js/app.js` file:
+Натомість вам слід імпортувати CSS через JavaScript. Зазвичай це роблять у файлі `resources/js/app.js` вашого застосунку:
 
 ```js
 import './bootstrap';
 import '../css/app.css'; // [tl! add]
 ```
 
-The Laravel plugin also supports multiple entry points and advanced configuration options such as [SSR entry points](#ssr).
+Плагін Laravel також підтримує кілька точок входу та розширені опції конфігурації - як-от [точки входу SSR](#ssr).
 
 <a name="working-with-a-secure-development-server"></a>
-#### Working With a Secure Development Server
+#### Робота із захищеним сервером розробки
 
-If your local development web server is serving your application via HTTPS, you may run into issues connecting to the Vite development server.
+Якщо ваш локальний веб-сервер віддає застосунок через HTTPS, ви можете натрапити на проблеми з підключенням до сервера розробки Vite.
 
-If you are using [Laravel Herd](https://herd.laravel.com) and have secured the site or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, the Laravel Vite plugin will automatically detect and use the generated TLS certificate for you.
+Якщо ви користуєтеся [Laravel Herd](https://herd.laravel.com) і захистили сайт, або користуєтеся [Laravel Valet](/docs/{{version}}/valet) і виконали [команду secure](/docs/{{version}}/valet#securing-sites) для свого застосунку, плагін Laravel Vite автоматично виявить і використає згенерований TLS-сертифікат.
 
-If you secured the site using a host that does not match the application's directory name, you may manually specify the host in your application's `vite.config.js` file:
+Якщо ви захистили сайт хостом, що не збігається з іменем каталогу застосунку, ви можете вказати хост вручну у файлі `vite.config.js`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -144,7 +147,7 @@ export default defineConfig({
 });
 ```
 
-When using another web server, you should generate a trusted certificate and manually configure Vite to use the generated certificates:
+Використовуючи інший веб-сервер, вам слід згенерувати довірений сертифікат і вручну налаштувати Vite на його використання:
 
 ```js
 // ...
@@ -165,12 +168,12 @@ export default defineConfig({
 });
 ```
 
-If you are unable to generate a trusted certificate for your system, you may install and configure the [@vitejs/plugin-basic-ssl plugin](https://github.com/vitejs/vite-plugin-basic-ssl). When using untrusted certificates, you will need to accept the certificate warning for Vite's development server in your browser by following the "Local" link in your console when running the `npm run dev` command.
+Якщо ви не можете згенерувати довірений сертифікат для своєї системи, встановіть і налаштуйте [плагін @vitejs/plugin-basic-ssl](https://github.com/vitejs/vite-plugin-basic-ssl). Використовуючи недовірені сертифікати, вам доведеться прийняти попередження про сертифікат для сервера розробки Vite у браузері, перейшовши за посиланням «Local» у консолі під час виконання команди `npm run dev`.
 
 <a name="configuring-hmr-in-sail-on-wsl2"></a>
-#### Running the Development Server in Sail on WSL2
+#### Запуск сервера розробки в Sail на WSL2
 
-When running the Vite development server within [Laravel Sail](/docs/{{version}}/sail) on Windows Subsystem for Linux 2 (WSL2), you should add the following configuration to your `vite.config.js` file to ensure the browser can communicate with the development server:
+Запускаючи сервер розробки Vite у [Laravel Sail](/docs/{{version}}/sail) на Windows Subsystem for Linux 2 (WSL2), додайте до файлу `vite.config.js` таку конфігурацію, щоб браузер міг спілкуватися із сервером розробки:
 
 ```js
 // ...
@@ -185,12 +188,12 @@ export default defineConfig({
 });
 ```
 
-If your file changes are not being reflected in the browser while the development server is running, you may also need to configure Vite's [server.watch.usePolling option](https://vitejs.dev/config/server-options.html#server-watch).
+Якщо зміни у ваших файлах не відображаються в браузері під час роботи сервера розробки, вам також може знадобитися налаштувати [опцію server.watch.usePolling](https://vitejs.dev/config/server-options.html#server-watch) у Vite.
 
 <a name="loading-your-scripts-and-styles"></a>
-### Loading Your Scripts and Styles
+### Завантаження скриптів і стилів
 
-With your Vite entry points configured, you may now reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
+Налаштувавши точки входу Vite, ви можете посилатися на них у директиві Blade `@vite()`, яку додаєте до `<head>` кореневого шаблону вашого застосунку:
 
 ```blade
 <!DOCTYPE html>
@@ -201,7 +204,7 @@ With your Vite entry points configured, you may now reference them in a `@vite()
 </head>
 ```
 
-If you're importing your CSS via JavaScript, you only need to include the JavaScript entry point:
+Якщо ви імпортуєте CSS через JavaScript, вам потрібно вказати лише точку входу JavaScript:
 
 ```blade
 <!DOCTYPE html>
@@ -212,9 +215,9 @@ If you're importing your CSS via JavaScript, you only need to include the JavaSc
 </head>
 ```
 
-The `@vite` directive will automatically detect the Vite development server and inject the Vite client to enable Hot Module Replacement. In build mode, the directive will load your compiled and versioned assets, including any imported CSS.
+Директива `@vite` автоматично виявить сервер розробки Vite і вставить клієнт Vite, щоб увімкнути гарячу заміну модулів. У режимі збірки директива завантажить ваші скомпільовані версіоновані ресурси, зокрема будь-який імпортований CSS.
 
-If needed, you may also specify the build path of your compiled assets when invoking the `@vite` directive:
+За потреби ви також можете вказати шлях збірки ваших скомпільованих ресурсів під час виклику директиви `@vite`:
 
 ```blade
 <!doctype html>
@@ -226,9 +229,9 @@ If needed, you may also specify the build path of your compiled assets when invo
 ```
 
 <a name="inline-assets"></a>
-#### Inline Assets
+#### Вбудовані ресурси
 
-Sometimes it may be necessary to include the raw content of assets rather than linking to the versioned URL of the asset. For example, you may need to include asset content directly into your page when passing HTML content to a PDF generator. You may output the content of Vite assets using the `content` method provided by the `Vite` facade:
+Іноді може знадобитися включити сирий вміст ресурсів замість посилання на їхню версіоновану адресу. Наприклад, вам може знадобитися вставити вміст ресурсу просто в сторінку, передаючи HTML генератору PDF. Вивести вміст ресурсів Vite можна методом `content` фасаду `Vite`:
 
 ```blade
 @use('Illuminate\Support\Facades\Vite')
@@ -247,11 +250,11 @@ Sometimes it may be necessary to include the raw content of assets rather than l
 ```
 
 <a name="running-vite"></a>
-## Running Vite
+## Запуск Vite
 
-There are two ways you can run Vite. You may run the development server via the `dev` command, which is useful while developing locally. The development server will automatically detect changes to your files and instantly reflect them in any open browser windows.
+Запустити Vite можна двома способами. Ви можете запустити сервер розробки командою `dev` - це корисно під час локальної розробки. Сервер автоматично виявлятиме зміни у ваших файлах і миттєво відображатиме їх у відкритих вікнах браузера.
 
-Or, running the `build` command will version and bundle your application's assets and get them ready for you to deploy to production:
+Або ж команда `build` версіонує й запакує ресурси вашого застосунку, підготувавши їх до розгортання в продакшені:
 
 ```shell
 # Run the Vite development server...
@@ -261,15 +264,15 @@ npm run dev
 npm run build
 ```
 
-If you are running the development server in [Sail](/docs/{{version}}/sail) on WSL2, you may need some [additional configuration](#configuring-hmr-in-sail-on-wsl2) options.
+Якщо ви запускаєте сервер розробки в [Sail](/docs/{{version}}/sail) на WSL2, вам можуть знадобитися [додаткові опції конфігурації](#configuring-hmr-in-sail-on-wsl2).
 
 <a name="working-with-scripts"></a>
-## Working With JavaScript
+## Робота з JavaScript
 
 <a name="aliases"></a>
-### Aliases
+### Псевдоніми
 
-By default, The Laravel plugin provides a common alias to help you hit the ground running and conveniently import your application's assets:
+За замовчуванням плагін Laravel надає загальний псевдонім, щоб ви могли одразу братися до справи й зручно імпортувати ресурси свого застосунку:
 
 ```js
 {
@@ -277,7 +280,7 @@ By default, The Laravel plugin provides a common alias to help you hit the groun
 }
 ```
 
-You may overwrite the `'@'` alias by adding your own to the `vite.config.js` configuration file:
+Ви можете перевизначити псевдонім `'@'`, додавши власний до конфігураційного файлу `vite.config.js`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -298,13 +301,13 @@ export default defineConfig({
 <a name="vue"></a>
 ### Vue
 
-If you would like to build your frontend using the [Vue](https://vuejs.org/) framework, then you will also need to install the `@vitejs/plugin-vue` plugin:
+Якщо ви хочете створювати фронтенд за допомогою фреймворку [Vue](https://vuejs.org/), вам також потрібно встановити плагін `@vitejs/plugin-vue`:
 
 ```shell
 npm install --save-dev @vitejs/plugin-vue
 ```
 
-You may then include the plugin in your `vite.config.js` configuration file. There are a few additional options you will need when using the Vue plugin with Laravel:
+Далі ви можете додати плагін до конфігураційного файлу `vite.config.js`. Використовуючи плагін Vue з Laravel, вам знадобиться кілька додаткових опцій:
 
 ```js
 import { defineConfig } from 'vite';
@@ -337,18 +340,18 @@ export default defineConfig({
 ```
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration. These starter kits offer the fastest way to get started with Laravel, Vue, and Vite.
+> [Стартові набори](/docs/{{version}}/starter-kits) Laravel уже містять правильну конфігурацію Laravel, Vue і Vite. Вони є найшвидшим способом почати роботу з Laravel, Vue і Vite.
 
 <a name="react"></a>
 ### React
 
-If you would like to build your frontend using the [React](https://reactjs.org/) framework, then you will also need to install the `@vitejs/plugin-react` plugin:
+Якщо ви хочете створювати фронтенд за допомогою фреймворку [React](https://reactjs.org/), вам також потрібно встановити плагін `@vitejs/plugin-react`:
 
 ```shell
 npm install --save-dev @vitejs/plugin-react
 ```
 
-You may then include the plugin in your `vite.config.js` configuration file:
+Далі ви можете додати плагін до конфігураційного файлу `vite.config.js`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -363,30 +366,30 @@ export default defineConfig({
 });
 ```
 
-You will need to ensure that any files containing JSX have a `.jsx` or `.tsx` extension, remembering to update your entry point, if required, as [shown above](#configuring-vite).
+Переконайтеся, що всі файли з JSX мають розширення `.jsx` чи `.tsx`, і за потреби не забудьте оновити свою точку входу, [як показано вище](#configuring-vite).
 
-You will also need to include the additional `@viteReactRefresh` Blade directive alongside your existing `@vite` directive.
+Вам також потрібно буде додати додаткову директиву Blade `@viteReactRefresh` поряд із наявною директивою `@vite`.
 
 ```blade
 @viteReactRefresh
 @vite('resources/js/app.jsx')
 ```
 
-The `@viteReactRefresh` directive must be called before the `@vite` directive.
+Директиву `@viteReactRefresh` слід викликати перед директивою `@vite`.
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration. These starter kits offer the fastest way to get started with Laravel, React, and Vite.
+> [Стартові набори](/docs/{{version}}/starter-kits) Laravel уже містять правильну конфігурацію Laravel, React і Vite. Вони є найшвидшим способом почати роботу з Laravel, React і Vite.
 
 <a name="svelte"></a>
 ### Svelte
 
-If you would like to build your frontend using the [Svelte](https://svelte.dev/) framework, then you will also need to install the `@sveltejs/vite-plugin-svelte` plugin:
+Якщо ви хочете створювати фронтенд за допомогою фреймворку [Svelte](https://svelte.dev/), вам також потрібно встановити плагін `@sveltejs/vite-plugin-svelte`:
 
 ```shell
 npm install --save-dev @sveltejs/vite-plugin-svelte
 ```
 
-You may then include the plugin in your `vite.config.js` configuration file.
+Далі ви можете додати плагін до конфігураційного файлу `vite.config.js`.
 
 ```js
 import { svelte } from '@sveltejs/vite-plugin-svelte';
@@ -406,12 +409,12 @@ export default defineConfig({
 ```
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Svelte, and Vite configuration. These starter kits offer the fastest way to get started with Laravel, Svelte, and Vite.
+> [Стартові набори](/docs/{{version}}/starter-kits) Laravel уже містять правильну конфігурацію Laravel, Svelte і Vite. Вони є найшвидшим способом почати роботу з Laravel, Svelte і Vite.
 
 <a name="inertia"></a>
 ### Inertia
 
-The Laravel Vite plugin provides a convenient `resolvePageComponent` function to help you resolve your Inertia page components. Below is an example of the helper in use with Vue 3; however, you may also utilize the function in other frameworks such as React or Svelte:
+Плагін Laravel Vite надає зручну функцію `resolvePageComponent`, яка допомагає розв'язувати компоненти сторінок Inertia. Нижче наведено приклад використання цього хелпера з Vue 3; утім, ви можете застосовувати цю функцію і в інших фреймворках - як-от React чи Svelte:
 
 ```js
 import { createApp, h } from 'vue';
@@ -428,19 +431,19 @@ createInertiaApp({
 });
 ```
 
-If you are using Vite's code splitting feature with Inertia, we recommend configuring [asset prefetching](#asset-prefetching).
+Якщо ви використовуєте можливість розділення коду Vite разом з Inertia, радимо налаштувати [попереднє завантаження ресурсів](#asset-prefetching).
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. These starter kits offer the fastest way to get started with Laravel, Inertia, and Vite.
+> [Стартові набори](/docs/{{version}}/starter-kits) Laravel уже містять правильну конфігурацію Laravel, Inertia і Vite. Вони є найшвидшим способом почати роботу з Laravel, Inertia і Vite.
 
 <a name="url-processing"></a>
-### URL Processing
+### Обробка URL
 
-When using Vite and referencing assets in your application's HTML, CSS, or JS, there are a couple of caveats to consider. First, if you reference assets with an absolute path, Vite will not include the asset in the build; therefore, you should ensure that the asset is available in your public directory. You should avoid using absolute paths when using a [dedicated CSS entrypoint](#configuring-vite) because, during development, browsers will try to load these paths from the Vite development server, where the CSS is hosted, rather than from your public directory.
+Використовуючи Vite й посилаючись на ресурси в HTML, CSS чи JS вашого застосунку, варто врахувати кілька застережень. По-перше, якщо ви посилаєтеся на ресурс за абсолютним шляхом, Vite не включить його до збірки; тому переконайтеся, що ресурс доступний у вашому каталозі `public`. Уникайте абсолютних шляхів, коли використовуєте [окрему точку входу CSS](#configuring-vite), адже під час розробки браузери намагатимуться завантажити ці шляхи із сервера розробки Vite, де розміщено CSS, а не з вашого каталогу `public`.
 
-When referencing relative asset paths, you should remember that the paths are relative to the file where they are referenced. Any assets referenced via a relative path will be re-written, versioned, and bundled by Vite.
+Посилаючись на відносні шляхи ресурсів, пам'ятайте, що вони відносні до файлу, у якому їх зазначено. Будь-які ресурси, на які посилаються за відносним шляхом, буде переписано, версіоновано та запаковано Vite.
 
-Consider the following project structure:
+Розгляньмо таку структуру проєкту:
 
 ```text
 public/
@@ -453,7 +456,7 @@ resources/
     abigail.png
 ```
 
-The following example demonstrates how Vite will treat relative and absolute URLs:
+Наступний приклад демонструє, як Vite поводитиметься з відносними та абсолютними URL:
 
 ```html
 <!-- This asset is not handled by Vite and will not be included in the build -->
@@ -464,25 +467,25 @@ The following example demonstrates how Vite will treat relative and absolute URL
 ```
 
 <a name="working-with-stylesheets"></a>
-## Working With Stylesheets
+## Робота зі стилями
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
+> [Стартові набори](/docs/{{version}}/starter-kits) Laravel уже містять правильну конфігурацію Tailwind і Vite. Або, якщо ви хочете використовувати Tailwind із Laravel без наших стартових наборів, перегляньте [посібник Tailwind зі встановлення для Laravel](https://tailwindcss.com/docs/guides/laravel).
 
-All Laravel applications already include Tailwind and a properly configured `vite.config.js` file. So, you only need to start the Vite development server or run the `dev` Composer command, which will start both the Laravel and Vite development servers:
+Усі застосунки Laravel уже містять Tailwind і правильно налаштований файл `vite.config.js`. Тож вам залишається лише запустити сервер розробки Vite або виконати команду Composer `dev`, яка запустить і сервер Laravel, і сервер Vite:
 
 ```shell
 composer run dev
 ```
 
-Your application's CSS may be placed within the `resources/css/app.css` file.
+CSS вашого застосунку можна розмістити у файлі `resources/css/app.css`.
 
 <a name="working-with-fonts"></a>
-## Working With Fonts
+## Робота зі шрифтами
 
-The Laravel Vite plugin can serve optimized, self-hosted fonts for your application. When fonts are configured, the plugin resolves the requested font files, emits them as Vite assets, generates font CSS, and writes a font manifest that may be consumed by Blade's [`@fonts` directive](/docs/{{version}}/blade#fonts).
+Плагін Laravel Vite може віддавати оптимізовані шрифти з вашого власного хостингу. Коли шрифти налаштовано, плагін розв'язує запитані файли шрифтів, віддає їх як ресурси Vite, генерує CSS шрифтів і записує маніфест, який може споживати [директива `@fonts`](/docs/{{version}}/blade#fonts) у Blade.
 
-To configure fonts, import one or more provider helpers from `laravel-vite-plugin/fonts` and add them to the Laravel plugin's `fonts` option:
+Щоб налаштувати шрифти, імпортуйте один чи кілька хелперів провайдерів із `laravel-vite-plugin/fonts` і додайте їх до опції `fonts` плагіна Laravel:
 
 ```js
 import { defineConfig } from 'vite';
@@ -512,12 +515,12 @@ export default defineConfig({
 });
 ```
 
-In this example, the `Inter` font will be available through the `sans` alias. The plugin will generate a `--font-sans` CSS variable and a `.font-sans` utility class that applies the generated font stack.
+У цьому прикладі шрифт `Inter` буде доступний через псевдонім `sans`. Плагін згенерує CSS-змінну `--font-sans` і клас-утиліту `.font-sans`, що застосовує згенерований набір шрифтів.
 
 <a name="font-providers"></a>
-### Font Providers
+### Провайдери шрифтів
 
-The Laravel Vite plugin includes provider helpers for Google Fonts, Bunny Fonts, Fontsource, and local fonts:
+Плагін Laravel Vite містить хелпери провайдерів для Google Fonts, Bunny Fonts, Fontsource та локальних шрифтів:
 
 ```js
 import { defineConfig } from 'vite';
@@ -542,12 +545,12 @@ export default defineConfig({
 });
 ```
 
-The `fontsource` provider reads fonts from an installed Fontsource package. By default, the package name is derived from the font family, such as `@fontsource/jetbrains-mono`. If your application uses a different package name, you may specify it using the `package` option.
+Провайдер `fontsource` читає шрифти зі встановленого пакета Fontsource. За замовчуванням ім'я пакета виводиться з родини шрифтів - наприклад, `@fontsource/jetbrains-mono`. Якщо ваш застосунок використовує інше ім'я пакета, вкажіть його опцією `package`.
 
 <a name="local-fonts"></a>
-### Local Fonts
+### Локальні шрифти
 
-When using local fonts, the `src` option may point to a single font file, a directory, or a glob pattern. The plugin will discover supported font files and infer their weight and style from their filenames:
+Використовуючи локальні шрифти, опція `src` може вказувати на один файл шрифту, каталог або шаблон glob. Плагін знайде підтримувані файли шрифтів і визначить їхню товщину та стиль з імен файлів:
 
 ```js
 local('Brand Sans', {
@@ -556,7 +559,7 @@ local('Brand Sans', {
 })
 ```
 
-If you need full control over the available variants, you may define them explicitly using the `variants` option:
+Якщо вам потрібен повний контроль над доступними варіантами, визначте їх явно опцією `variants`:
 
 ```js
 local('Brand Sans', {
@@ -570,45 +573,45 @@ local('Brand Sans', {
 ```
 
 <a name="font-options"></a>
-### Font Options
+### Опції шрифтів
 
-Depending on the provider, font definitions may accept several options that allow you to customize the generated font CSS:
+Залежно від провайдера, визначення шрифтів можуть приймати кілька опцій, що дозволяють налаштувати згенерований CSS:
 
 <div class="content-list" markdown="1">
 
-- `alias` defines the name used by Blade's `@fonts` directive and defaults to a slug of the font family.
-- `variable` defines the generated CSS variable and defaults to `--font-{alias}`.
-- `weights` defines the remote or Fontsource font weights that should be resolved and defaults to `[400]`.
-- `styles` defines the remote or Fontsource font styles that should be resolved and defaults to `['normal']`.
-- `subsets` defines the remote or Fontsource font subsets that should be resolved and defaults to `['latin']`.
-- `display` defines the `font-display` value and defaults to `swap`.
-- `preload` controls which WOFF2 font variants should be preloaded. This option may be `true`, `false`, or an array of `{ weight, style }` selectors.
-- `fallbacks` defines additional fallback fonts that should be appended to the generated font stack.
-- `optimizedFallbacks` attempts to generate metric-adjusted fallback font faces using the optional `fontaine` package and defaults to `true`.
+- `alias` визначає ім'я, яке використовує директива `@fonts` у Blade; за замовчуванням це slug родини шрифтів.
+- `variable` визначає згенеровану CSS-змінну; за замовчуванням `--font-{alias}`.
+- `weights` визначає віддалені товщини шрифтів чи товщини Fontsource, які слід розв'язати; за замовчуванням `[400]`.
+- `styles` визначає віддалені стилі шрифтів чи стилі Fontsource, які слід розв'язати; за замовчуванням `['normal']`.
+- `subsets` визначає віддалені підмножини шрифтів чи підмножини Fontsource, які слід розв'язати; за замовчуванням `['latin']`.
+- `display` визначає значення `font-display`; за замовчуванням `swap`.
+- `preload` керує тим, які варіанти WOFF2 слід завантажувати наперед. Ця опція може бути `true`, `false` або масивом селекторів `{ weight, style }`.
+- `fallbacks` визначає додаткові резервні шрифти, які слід додати до згенерованого набору.
+- `optimizedFallbacks` намагається згенерувати резервні шрифти з підлаштованими метриками за допомогою необов'язкового пакета `fontaine`; за замовчуванням `true`.
 
 </div>
 
-Optimized fallbacks require the `fontaine` package, which is not installed by default. If you want Laravel to generate metric-adjusted fallback font faces, you should install `fontaine` as a development dependency:
+Оптимізовані резервні шрифти потребують пакета `fontaine`, який не встановлюється за замовчуванням. Якщо ви хочете, щоб Laravel генерував резервні шрифти з підлаштованими метриками, встановіть `fontaine` як залежність для розробки:
 
 ```shell
 npm install --save-dev fontaine
 ```
 
-If `fontaine` is not installed or cannot read a font file, Laravel will skip the optimized fallback for that font and continue using any fonts configured via the `fallbacks` option.
+Якщо `fontaine` не встановлено або він не може прочитати файл шрифту, Laravel пропустить оптимізований резервний шрифт для цього шрифту й далі використовуватиме шрифти, налаштовані опцією `fallbacks`.
 
-Local fonts are resolved from the `src` or `variants` options described above instead of using `weights`, `styles`, and `subsets`.
+Локальні шрифти розв'язуються з описаних вище опцій `src` чи `variants`, а не через `weights`, `styles` і `subsets`.
 
 <a name="working-with-blade-and-routes"></a>
-## Working With Blade and Routes
+## Робота з Blade і маршрутами
 
 <a name="blade-processing-static-assets"></a>
-### Processing Static Assets With Vite
+### Обробка статичних ресурсів через Vite
 
-When referencing assets in your JavaScript or CSS, Vite automatically processes and versions them. In addition, when building Blade-based applications, Vite can also process and version static assets that you reference solely in Blade templates.
+Коли ви посилаєтеся на ресурси у своєму JavaScript чи CSS, Vite автоматично обробляє й версіонує їх. Крім того, створюючи застосунки на Blade, Vite може обробляти й версіонувати статичні ресурси, на які ви посилаєтеся лише в шаблонах Blade.
 
-However, to accomplish this, you need to make Vite aware of your assets by specifying them in the plugin's `assets` option. This option is intended for static files that you want to reference directly with `Vite::asset`. If you want Laravel to generate font CSS and preload links, use the [`fonts` option](#working-with-fonts) instead.
+Однак для цього потрібно повідомити Vite про ваші ресурси, вказавши їх в опції `assets` плагіна. Ця опція призначена для статичних файлів, на які ви хочете посилатися безпосередньо через `Vite::asset`. Якщо ви хочете, щоб Laravel генерував CSS шрифтів і посилання попереднього завантаження, скористайтеся натомість [опцією `fonts`](#working-with-fonts).
 
-For example, if you want to process and version all images stored in `resources/images` and all fonts stored in `resources/fonts`, you should add the following to your Vite configuration:
+Наприклад, якщо ви хочете обробити й версіонувати всі зображення в `resources/images` та всі шрифти в `resources/fonts`, додайте до конфігурації Vite таке:
 
 ```js
 laravel({
@@ -617,19 +620,19 @@ laravel({
 })
 ```
 
-These assets will now be processed by Vite when running `npm run build`. You can then reference these assets in Blade templates using the `Vite::asset` method, which will return the versioned URL for a given asset:
+Тепер ці ресурси оброблятиме Vite під час виконання `npm run build`. Далі ви можете посилатися на них у шаблонах Blade методом `Vite::asset`, який поверне версіоновану адресу ресурсу:
 
 ```blade
 <img src="{{ Vite::asset('resources/images/logo.png') }}">
 ```
 
 > [!NOTE]
-> Prior to version 3 of the Laravel Vite plugin, static assets had to be imported in your application's entry point using `import.meta.glob`. The `assets` option was introduced due to changes in Vite 8.
+> До версії 3 плагіна Laravel Vite статичні ресурси доводилося імпортувати в точці входу застосунку через `import.meta.glob`. Опцію `assets` запроваджено через зміни у Vite 8.
 
 <a name="blade-refreshing-on-save"></a>
-### Refreshing on Save
+### Оновлення під час збереження
 
-When your application is built using traditional server-side rendering with Blade, Vite can improve your development workflow by automatically refreshing the browser when you make changes to view files in your application. To get started, you can simply specify the `refresh` option as `true`.
+Коли ваш застосунок побудовано на традиційному серверному рендерингу з Blade, Vite може покращити ваш робочий процес, автоматично оновлюючи браузер, коли ви змінюєте файли представлень. Щоб почати, просто вкажіть опцію `refresh` зі значенням `true`.
 
 ```js
 import { defineConfig } from 'vite';
@@ -645,7 +648,7 @@ export default defineConfig({
 });
 ```
 
-When the `refresh` option is `true`, saving files in the following directories will trigger the browser to perform a full page refresh while you are running `npm run dev`:
+Коли опція `refresh` має значення `true`, збереження файлів у таких каталогах змусить браузер повністю оновити сторінку, поки виконується `npm run dev`:
 
 - `app/Livewire/**`
 - `app/View/Components/**`
@@ -654,9 +657,9 @@ When the `refresh` option is `true`, saving files in the following directories w
 - `resources/views/**`
 - `routes/**`
 
-Watching the `routes/**` directory is useful if you are utilizing [Ziggy](https://github.com/tighten/ziggy) to generate route links within your application's frontend.
+Стеження за каталогом `routes/**` корисне, якщо ви використовуєте [Ziggy](https://github.com/tighten/ziggy) для генерації посилань на маршрути у фронтенді вашого застосунку.
 
-If these default paths do not suit your needs, you can specify your own list of paths to watch:
+Якщо типові шляхи вам не підходять, ви можете вказати власний список шляхів для стеження:
 
 ```js
 import { defineConfig } from 'vite';
@@ -672,7 +675,7 @@ export default defineConfig({
 });
 ```
 
-Under the hood, the Laravel Vite plugin uses the [vite-plugin-full-reload](https://github.com/ElMassimo/vite-plugin-full-reload) package, which offers some advanced configuration options to fine-tune this feature's behavior. If you need this level of customization, you may provide a `config` definition:
+Під капотом плагін Laravel Vite використовує пакет [vite-plugin-full-reload](https://github.com/ElMassimo/vite-plugin-full-reload), який пропонує розширені опції конфігурації для тонкого налаштування цієї можливості. Якщо вам потрібен такий рівень контролю, передайте визначення `config`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -692,9 +695,9 @@ export default defineConfig({
 ```
 
 <a name="blade-aliases"></a>
-### Aliases
+### Псевдоніми
 
-It is common in JavaScript applications to [create aliases](#aliases) to regularly referenced directories. But, you may also create aliases to use in Blade by using the `macro` method on the `Illuminate\Support\Facades\Vite` class. Typically, "macros" should be defined within the `boot` method of a [service provider](/docs/{{version}}/providers):
+У JavaScript-застосунках поширено [створювати псевдоніми](#aliases) для каталогів, на які часто посилаються. Але ви також можете створювати псевдоніми для використання в Blade методом `macro` класу `Illuminate\Support\Facades\Vite`. Зазвичай «макроси» слід визначати в методі `boot` [сервіс-провайдера](/docs/{{version}}/providers):
 
 ```php
 /**
@@ -706,18 +709,18 @@ public function boot(): void
 }
 ```
 
-Once a macro has been defined, it can be invoked within your templates. For example, we can use the `image` macro defined above to reference an asset located at `resources/images/logo.png`:
+Щойно макрос визначено, його можна викликати у ваших шаблонах. Наприклад, ми можемо скористатися визначеним вище макросом `image`, щоб послатися на ресурс `resources/images/logo.png`:
 
 ```blade
 <img src="{{ Vite::image('logo.png') }}" alt="Laravel Logo">
 ```
 
 <a name="asset-prefetching"></a>
-## Asset Prefetching
+## Попереднє завантаження ресурсів
 
-When building an SPA using Vite's code splitting feature, required assets are fetched on each page navigation. This behavior can lead to delayed UI rendering. If this is a problem for your frontend framework of choice, Laravel offers the ability to eagerly prefetch your application's JavaScript and CSS assets on initial page load.
+Створюючи SPA з можливістю розділення коду Vite, потрібні ресурси завантажуються під час кожного переходу між сторінками. Це може призводити до затримок у рендерингу інтерфейсу. Якщо для обраного вами фронтенд-фреймворку це проблема, Laravel дозволяє завчасно завантажувати JavaScript- і CSS-ресурси застосунку під час першого завантаження сторінки.
 
-You can instruct Laravel to eagerly prefetch your assets by invoking the `Vite::prefetch` method in the `boot` method of a [service provider](/docs/{{version}}/providers):
+Вказати Laravel завчасно завантажувати ресурси можна викликом методу `Vite::prefetch` у методі `boot` [сервіс-провайдера](/docs/{{version}}/providers):
 
 ```php
 <?php
@@ -747,7 +750,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-In the example above, assets will be prefetched with a maximum of `3` concurrent downloads on each page load. You can modify the concurrency to suit your application's needs or specify no concurrency limit if the application should download all assets at once:
+У прикладі вище ресурси завантажуватимуться завчасно щонайбільше в `3` паралельні потоки під час кожного завантаження сторінки. Ви можете змінити паралельність під потреби свого застосунку або не вказувати обмеження взагалі, якщо застосунок має завантажувати всі ресурси одразу:
 
 ```php
 /**
@@ -759,7 +762,7 @@ public function boot(): void
 }
 ```
 
-By default, prefetching will begin when the [page _load_ event](https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event) fires. If you would like to customize when prefetching begins, you may specify an event that Vite will listen for:
+За замовчуванням попереднє завантаження почнеться, коли спрацює [подія _load_ сторінки](https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event). Якщо ви хочете налаштувати момент початку, вкажіть подію, яку слухатиме Vite:
 
 ```php
 /**
@@ -771,7 +774,7 @@ public function boot(): void
 }
 ```
 
-Given the code above, prefetching will now begin when you manually dispatch the `vite:prefetch` event on the `window` object. For example, you could have prefetching begin three seconds after the page loads:
+З наведеним вище кодом попереднє завантаження починатиметься, коли ви вручну надішлете подію `vite:prefetch` на об'єкті `window`. Наприклад, ви можете почати завантаження через три секунди після завантаження сторінки:
 
 ```html
 <script>
@@ -782,43 +785,43 @@ Given the code above, prefetching will now begin when you manually dispatch the 
 ```
 
 <a name="custom-base-urls"></a>
-## Custom Base URLs
+## Власні базові URL
 
-If your Vite compiled assets are deployed to a domain separate from your application, such as via a CDN, you must specify the `ASSET_URL` environment variable within your application's `.env` file:
+Якщо ваші скомпільовані Vite ресурси розгорнуто на домені, відмінному від застосунку - наприклад, через CDN, - вам потрібно вказати змінну середовища `ASSET_URL` у файлі `.env` вашого застосунку:
 
 ```env
 ASSET_URL=https://cdn.example.com
 ```
 
-After configuring the asset URL, all re-written URLs to your assets will be prefixed with the configured value:
+Після налаштування адреси ресурсів усі переписані URL до ваших ресурсів матимуть цей префікс:
 
 ```text
 https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 
-Remember that [absolute URLs are not re-written by Vite](#url-processing), so they will not be prefixed.
+Пам'ятайте, що [абсолютні URL не переписуються Vite](#url-processing), тож префікса вони не отримають.
 
 <a name="environment-variables"></a>
-## Environment Variables
+## Змінні середовища
 
-You may inject environment variables into your JavaScript by prefixing them with `VITE_` in your application's `.env` file:
+Ви можете впроваджувати змінні середовища у свій JavaScript, додавши до них префікс `VITE_` у файлі `.env` вашого застосунку:
 
 ```env
 VITE_SENTRY_DSN_PUBLIC=http://example.com
 ```
 
-You may access injected environment variables via the `import.meta.env` object:
+Звертатися до впроваджених змінних середовища можна через об'єкт `import.meta.env`:
 
 ```js
 import.meta.env.VITE_SENTRY_DSN_PUBLIC
 ```
 
 <a name="disabling-vite-in-tests"></a>
-## Disabling Vite in Tests
+## Вимкнення Vite у тестах
 
-Laravel's Vite integration will attempt to resolve your assets while running your tests, which requires you to either run the Vite development server or build your assets.
+Інтеграція Vite в Laravel намагатиметься розв'язати ваші ресурси під час виконання тестів, а це вимагає або запущеного сервера розробки Vite, або зібраних ресурсів.
 
-If you would prefer to mock Vite during testing, you may call the `withoutVite` method, which is available for any tests that extend Laravel's `TestCase` class:
+Якщо ви віддаєте перевагу мокуванню Vite під час тестування, викличте метод `withoutVite`, доступний у будь-яких тестах, що успадковують клас `TestCase` від Laravel:
 
 ```php tab=Pest
 test('without vite example', function () {
@@ -842,7 +845,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-If you would like to disable Vite for all tests, you may call the `withoutVite` method from the `setUp` method on your base `TestCase` class:
+Якщо ви хочете вимкнути Vite для всіх тестів, викличте метод `withoutVite` у методі `setUp` вашого базового класу `TestCase`:
 
 ```php
 <?php
@@ -863,9 +866,9 @@ abstract class TestCase extends BaseTestCase
 ```
 
 <a name="ssr"></a>
-## Server-Side Rendering (SSR)
+## Рендеринг на боці сервера (SSR)
 
-The Laravel Vite plugin makes it painless to set up server-side rendering with Vite. To get started, create an SSR entry point at `resources/js/ssr.js` and specify the entry point by passing a configuration option to the Laravel plugin:
+Плагін Laravel Vite робить налаштування серверного рендерингу з Vite безболісним. Щоб почати, створіть точку входу SSR у `resources/js/ssr.js` і вкажіть її, передавши опцію конфігурації плагіну Laravel:
 
 ```js
 import { defineConfig } from 'vite';
@@ -881,7 +884,7 @@ export default defineConfig({
 });
 ```
 
-To ensure you don't forget to rebuild the SSR entry point, we recommend augmenting the "build" script in your application's `package.json` to create your SSR build:
+Щоб не забути перезібрати точку входу SSR, радимо доповнити скрипт «build» у файлі `package.json` вашого застосунку:
 
 ```json
 "scripts": {
@@ -891,29 +894,29 @@ To ensure you don't forget to rebuild the SSR entry point, we recommend augmenti
 }
 ```
 
-Then, to build and start the SSR server, you may run the following commands:
+Далі, щоб зібрати й запустити SSR-сервер, виконайте такі команди:
 
 ```shell
 npm run build
 node bootstrap/ssr/ssr.js
 ```
 
-If you are using [SSR with Inertia](https://inertiajs.com/server-side-rendering), you may instead use the `inertia:start-ssr` Artisan command to start the SSR server:
+Якщо ви використовуєте [SSR з Inertia](https://inertiajs.com/server-side-rendering), ви можете натомість запустити SSR-сервер командою Artisan `inertia:start-ssr`:
 
 ```shell
 php artisan inertia:start-ssr
 ```
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. These starter kits offer the fastest way to get started with Laravel, Inertia SSR, and Vite.
+> [Стартові набори](/docs/{{version}}/starter-kits) Laravel уже містять правильну конфігурацію Laravel, Inertia SSR і Vite. Вони є найшвидшим способом почати роботу з Laravel, Inertia SSR і Vite.
 
 <a name="script-and-style-attributes"></a>
-## Script and Style Tag Attributes
+## Атрибути тегів script і style
 
 <a name="content-security-policy-csp-nonce"></a>
-### Content Security Policy (CSP) Nonce
+### Nonce для політики безпеки вмісту (CSP)
 
-If you wish to include a [nonce attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) on your script and style tags as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may generate or specify a nonce using the `useCspNonce` method within a custom [middleware](/docs/{{version}}/middleware):
+Якщо ви хочете додати [атрибут nonce](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) до своїх тегів script і style у межах [політики безпеки вмісту](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), ви можете згенерувати чи вказати nonce методом `useCspNonce` у власному [`middleware`](/docs/{{version}}/middleware):
 
 ```php
 <?php
@@ -943,30 +946,30 @@ class AddContentSecurityPolicyHeaders
 }
 ```
 
-After invoking the `useCspNonce` method, Laravel will automatically include the `nonce` attributes on all generated script and style tags.
+Після виклику методу `useCspNonce` Laravel автоматично додаватиме атрибути `nonce` до всіх згенерованих тегів script і style.
 
-If you need to specify the nonce elsewhere, including the [Ziggy `@route` directive](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) included with Laravel's [starter kits](/docs/{{version}}/starter-kits), you may retrieve it using the `cspNonce` method:
+Якщо вам потрібно вказати nonce деінде - зокрема в [директиві Ziggy `@route`](https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy), що входить до [стартових наборів](/docs/{{version}}/starter-kits) Laravel, - ви можете отримати його методом `cspNonce`:
 
 ```blade
 @routes(nonce: Vite::cspNonce())
 ```
 
-If you already have a nonce that you would like to instruct Laravel to use, you may pass the nonce to the `useCspNonce` method:
+Якщо ви вже маєте nonce, який хочете передати Laravel, передайте його методу `useCspNonce`:
 
 ```php
 Vite::useCspNonce($nonce);
 ```
 
 <a name="subresource-integrity-sri"></a>
-### Subresource Integrity (SRI)
+### Цілісність підресурсів (SRI)
 
-If your Vite manifest includes `integrity` hashes for your assets, Laravel will automatically add the `integrity` attribute on any script and style tags it generates in order to enforce [Subresource Integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). By default, Vite does not include the `integrity` hash in its manifest, but you may enable it by installing the [vite-plugin-manifest-sri](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPM plugin:
+Якщо ваш маніфест Vite містить хеші `integrity` для ресурсів, Laravel автоматично додасть атрибут `integrity` до всіх згенерованих тегів script і style, щоб забезпечити [цілісність підресурсів](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). За замовчуванням Vite не додає хеш `integrity` до свого маніфесту, але ви можете увімкнути це, встановивши NPM-плагін [vite-plugin-manifest-sri](https://www.npmjs.com/package/vite-plugin-manifest-sri):
 
 ```shell
 npm install --save-dev vite-plugin-manifest-sri
 ```
 
-You may then enable this plugin in your `vite.config.js` file:
+Далі ви можете увімкнути цей плагін у файлі `vite.config.js`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -983,7 +986,7 @@ export default defineConfig({
 });
 ```
 
-If required, you may also customize the manifest key where the integrity hash can be found:
+За потреби ви також можете налаштувати ключ маніфесту, за яким знаходиться хеш цілісності:
 
 ```php
 use Illuminate\Support\Facades\Vite;
@@ -991,16 +994,16 @@ use Illuminate\Support\Facades\Vite;
 Vite::useIntegrityKey('custom-integrity-key');
 ```
 
-If you would like to disable this auto-detection completely, you may pass `false` to the `useIntegrityKey` method:
+Якщо ви хочете цілком вимкнути це автоматичне визначення, передайте `false` методу `useIntegrityKey`:
 
 ```php
 Vite::useIntegrityKey(false);
 ```
 
 <a name="arbitrary-attributes"></a>
-### Arbitrary Attributes
+### Довільні атрибути
 
-If you need to include additional attributes on your script and style tags, such as the [data-turbo-track](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change) attribute, you may specify them via the `useScriptTagAttributes` and `useStyleTagAttributes` methods. Typically, this methods should be invoked from a [service provider](/docs/{{version}}/providers):
+Якщо вам потрібно додати до тегів script і style додаткові атрибути - як-от [data-turbo-track](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change), - ви можете вказати їх методами `useScriptTagAttributes` і `useStyleTagAttributes`. Зазвичай ці методи слід викликати із [сервіс-провайдера](/docs/{{version}}/providers):
 
 ```php
 use Illuminate\Support\Facades\Vite;
@@ -1016,7 +1019,7 @@ Vite::useStyleTagAttributes([
 ]);
 ```
 
-If you need to conditionally add attributes, you may pass a callback that will receive the asset source path, its URL, its manifest chunk, and the entire manifest:
+Якщо вам потрібно додавати атрибути умовно, передайте колбек, який отримає шлях до джерела ресурсу, його URL, його фрагмент маніфесту та весь маніфест:
 
 ```php
 use Illuminate\Support\Facades\Vite;
@@ -1031,12 +1034,12 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 ```
 
 > [!WARNING]
-> The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running.
+> Аргументи `$chunk` і `$manifest` будуть `null`, поки працює сервер розробки Vite.
 
 <a name="advanced-customization"></a>
-## Advanced Customization
+## Розширене налаштування
 
-Out of the box, Laravel's Vite plugin uses sensible conventions that should work for the majority of applications; however, sometimes you may need to customize Vite's behavior. To enable additional customization options, we offer the following methods and options which can be used in place of the `@vite` Blade directive:
+Одразу після встановлення плагін Vite від Laravel використовує розумні домовленості, які підійдуть більшості застосунків; утім, іноді вам може знадобитися налаштувати поведінку Vite. Щоб увімкнути додаткові можливості налаштування, ми пропонуємо такі методи й опції, які можна використати замість директиви Blade `@vite`:
 
 ```blade
 <!doctype html>
@@ -1055,7 +1058,7 @@ Out of the box, Laravel's Vite plugin uses sensible conventions that should work
 </head>
 ```
 
-Within the `vite.config.js` file, you should then specify the same configuration:
+Далі у файлі `vite.config.js` вам слід указати ту саму конфігурацію:
 
 ```js
 import { defineConfig } from 'vite';
@@ -1076,24 +1079,24 @@ export default defineConfig({
 ```
 
 <a name="cors"></a>
-### Dev Server Cross-Origin Resource Sharing (CORS)
+### CORS сервера розробки
 
-If you are experiencing Cross-Origin Resource Sharing (CORS) issues in the browser while fetching assets from the Vite dev server, you may need to grant your custom origin access to the dev server. Vite combined with the Laravel plugin allows the following origins without any additional configuration:
+Якщо ви натрапляєте на проблеми зі спільним використанням ресурсів між джерелами (CORS) у браузері під час отримання ресурсів із сервера розробки Vite, вам може знадобитися надати вашому власному джерелу доступ до сервера розробки. Vite у поєднанні з плагіном Laravel дозволяє такі джерела без додаткової конфігурації:
 
 - `::1`
 - `127.0.0.1`
 - `localhost`
 - `*.test`
 - `*.localhost`
-- `APP_URL` in the project's `.env`
+- `APP_URL` у файлі `.env` проєкту
 
-The easiest way to allow a custom origin for your project is to ensure that your application's `APP_URL` environment variable matches the origin you are visiting in your browser. For example, if you visiting `https://my-app.laravel`, you should update your `.env` to match:
+Найпростіший спосіб дозволити власне джерело для вашого проєкту - переконатися, що змінна середовища `APP_URL` збігається з джерелом, яке ви відкриваєте в браузері. Наприклад, якщо ви відвідуєте `https://my-app.laravel`, оновіть свій `.env` відповідно:
 
 ```env
 APP_URL=https://my-app.laravel
 ```
 
-If you need more fine-grained control over the origins, such as supporting multiple origins, you should utilize [Vite's comprehensive and flexible built-in CORS server configuration](https://vite.dev/config/server-options.html#server-cors). For example, you may specify multiple origins in the `server.cors.origin` configuration option in the project's `vite.config.js` file:
+Якщо вам потрібен тонший контроль над джерелами - наприклад, підтримка кількох джерел, - скористайтеся [вичерпною та гнучкою вбудованою конфігурацією CORS-сервера Vite](https://vite.dev/config/server-options.html#server-cors). Наприклад, ви можете вказати кілька джерел в опції `server.cors.origin` у файлі `vite.config.js` вашого проєкту:
 
 ```js
 import { defineConfig } from 'vite';
@@ -1117,7 +1120,7 @@ export default defineConfig({
 });
 ```
 
-You may also include regex patterns, which can be helpful if you would like to allow all origins for a given top-level domain, such as `*.laravel`:
+Ви також можете використовувати регулярні вирази - це стане в пригоді, якщо ви хочете дозволити всі джерела для певного домену верхнього рівня, як-от `*.laravel`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -1142,19 +1145,19 @@ export default defineConfig({
 ```
 
 <a name="correcting-dev-server-urls"></a>
-### Correcting Dev Server URLs
+### Виправлення URL сервера розробки
 
-Some plugins within the Vite ecosystem assume that URLs which begin with a forward-slash will always point to the Vite dev server. However, due to the nature of the Laravel integration, this is not the case.
+Деякі плагіни в екосистемі Vite припускають, що URL, які починаються з прямої скісної риски, завжди вказують на сервер розробки Vite. Однак через природу інтеграції з Laravel це не так.
 
-For example, the `vite-imagetools` plugin outputs URLs like the following while Vite is serving your assets:
+Наприклад, плагін `vite-imagetools` виводить такі URL, поки Vite віддає ваші ресурси:
 
 ```html
 <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">
 ```
 
-The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behavior, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option.
+Плагін `vite-imagetools` очікує, що вихідний URL перехопить Vite, і тоді плагін зможе обробити всі URL, що починаються з `/@imagetools`. Якщо ви використовуєте плагіни, які очікують такої поведінки, вам доведеться виправляти URL вручну. Це можна зробити у файлі `vite.config.js` за допомогою опції `transformOnServe`.
 
-In this particular example, we will prepend the dev server URL to all occurrences of `/@imagetools` within the generated code:
+У цьому конкретному прикладі ми додамо URL сервера розробки до всіх входжень `/@imagetools` у згенерованому коді:
 
 ```js
 import { defineConfig } from 'vite';
@@ -1172,7 +1175,7 @@ export default defineConfig({
 });
 ```
 
-Now, while Vite is serving Assets, it will output URLs that point to the Vite dev server:
+Тепер, поки Vite віддає ресурси, він виводитиме URL, що вказують на сервер розробки Vite:
 
 ```html
 - <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! remove] -->
