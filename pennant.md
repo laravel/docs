@@ -1,75 +1,78 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Pennant
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Defining Features](#defining-features)
-    - [Class Based Features](#class-based-features)
-- [Checking Features](#checking-features)
-    - [Conditional Execution](#conditional-execution)
-    - [The `HasFeatures` Trait](#the-has-features-trait)
-    - [Blade Directive](#blade-directive)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+- [Конфігурація](#configuration)
+- [Визначення можливостей](#defining-features)
+    - [Можливості на основі класів](#class-based-features)
+- [Перевірка можливостей](#checking-features)
+    - [Умовне виконання](#conditional-execution)
+    - [Трейт `HasFeatures`](#the-has-features-trait)
+    - [Blade-директива](#blade-directive)
     - [Middleware](#middleware)
-    - [Intercepting Feature Checks](#intercepting-feature-checks)
-    - [In-Memory Cache](#in-memory-cache)
-- [Scope](#scope)
-    - [Specifying the Scope](#specifying-the-scope)
-    - [Default Scope](#default-scope)
-    - [Nullable Scope](#nullable-scope)
-    - [Identifying Scope](#identifying-scope)
-    - [Serializing Scope](#serializing-scope)
-- [Rich Feature Values](#rich-feature-values)
-- [Retrieving Multiple Features](#retrieving-multiple-features)
-- [Eager Loading](#eager-loading)
-- [Updating Values](#updating-values)
-    - [Bulk Updates](#bulk-updates)
-    - [Purging Features](#purging-features)
-- [Testing](#testing)
-- [Adding Custom Pennant Drivers](#adding-custom-pennant-drivers)
-    - [Implementing the Driver](#implementing-the-driver)
-    - [Registering the Driver](#registering-the-driver)
-    - [Defining Features Externally](#defining-features-externally)
-- [Events](#events)
+    - [Перехоплення перевірок можливостей](#intercepting-feature-checks)
+    - [Кеш у пам'яті](#in-memory-cache)
+- [Скоп](#scope)
+    - [Визначення скопу](#specifying-the-scope)
+    - [Скоп за замовчуванням](#default-scope)
+    - [Скоп, що допускає null](#nullable-scope)
+    - [Ідентифікація скопу](#identifying-scope)
+    - [Серіалізація скопу](#serializing-scope)
+- [Багатші значення можливостей](#rich-feature-values)
+- [Отримання кількох можливостей](#retrieving-multiple-features)
+- [Жадібне завантаження](#eager-loading)
+- [Оновлення значень](#updating-values)
+    - [Масові оновлення](#bulk-updates)
+    - [Очищення можливостей](#purging-features)
+- [Тестування](#testing)
+- [Додавання власних драйверів Pennant](#adding-custom-pennant-drivers)
+    - [Реалізація драйвера](#implementing-the-driver)
+    - [Реєстрація драйвера](#registering-the-driver)
+    - [Визначення можливостей ззовні](#defining-features-externally)
+- [Події](#events)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Laravel Pennant](https://github.com/laravel/pennant) is a simple and light-weight feature flag package - without the cruft. Feature flags enable you to incrementally roll out new application features with confidence, A/B test new interface designs, complement a trunk-based development strategy, and much more.
+[Laravel Pennant](https://github.com/laravel/pennant) - це простий і легкий пакет для feature-прапорців, без зайвого. Feature-прапорці дозволяють упевнено викочувати нові можливості застосунку поступово, проводити A/B-тестування нових дизайнів інтерфейсу, доповнювати стратегію trunk-based development тощо.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-First, install Pennant into your project using the Composer package manager:
+Спершу встановіть Pennant у свій проєкт за допомогою менеджера пакетів Composer:
 
 ```shell
 composer require laravel/pennant
 ```
 
-Next, you should publish the Pennant configuration and migration files using the `vendor:publish` Artisan command:
+Далі вам слід опублікувати конфігураційний файл і файли міграцій Pennant артизан-командою `vendor:publish`:
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Pennant\PennantServiceProvider"
 ```
 
-Finally, you should run your application's database migrations. This will create a `features` table that Pennant uses to power its `database` driver:
+Насамкінець виконайте міграції бази даних вашого застосунку. Це створить таблицю `features`, яку Pennant використовує для роботи свого драйвера `database`:
 
 ```shell
 php artisan migrate
 ```
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
-After publishing Pennant's assets, its configuration file will be located at `config/pennant.php`. This configuration file allows you to specify the default storage mechanism that will be used by Pennant to store resolved feature flag values.
+Після публікації ассетів Pennant його конфігураційний файл буде розташовано в `config/pennant.php`. Цей конфігураційний файл дозволяє вказати механізм зберігання за замовчуванням, який Pennant використовуватиме для зберігання обчислених значень feature-прапорців.
 
-Pennant includes support for storing resolved feature flag values in an in-memory array via the `array` driver. Or, Pennant can store resolved feature flag values persistently in a relational database via the `database` driver, which is the default storage mechanism used by Pennant.
+Pennant підтримує зберігання обчислених значень feature-прапорців у масиві в пам'яті через драйвер `array`. Або ж Pennant може зберігати обчислені значення feature-прапорців постійно в реляційній базі даних через драйвер `database` - механізм зберігання, який Pennant використовує за замовчуванням.
 
 <a name="defining-features"></a>
-## Defining Features
+## Визначення можливостей
 
-To define a feature, you may use the `define` method offered by the `Feature` facade. You will need to provide a name for the feature, as well as a closure that will be invoked to resolve the feature's initial value.
+Щоб визначити можливість, скористайтеся методом `define`, який надає фасад `Feature`. Вам потрібно буде вказати ім'я можливості, а також замикання, яке буде викликано для обчислення початкового значення можливості.
 
-Typically, features are defined in a service provider using the `Feature` facade. The closure will receive the "scope" for the feature check. Most commonly, the scope is the currently authenticated user. In this example, we will define a feature for incrementally rolling out a new API to our application's users:
+Зазвичай можливості визначаються в сервіс-провайдері за допомогою фасада `Feature`. Замикання отримає «скоп» для перевірки можливості. Найчастіше скоп - це поточний автентифікований користувач. У цьому прикладі ми визначимо можливість для поступового викочування нового API для користувачів нашого застосунку:
 
 ```php
 <?php
@@ -97,28 +100,28 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-As you can see, we have the following rules for our feature:
+Як бачите, для нашої можливості маємо такі правила:
 
-- All internal team members should be using the new API.
-- Any high traffic customers should not be using the new API.
-- Otherwise, the feature should be randomly assigned to users with a 1 in 100 chance of being active.
+- Усі члени внутрішньої команди мають користуватися новим API.
+- Клієнти з високим трафіком не мають користуватися новим API.
+- В інших випадках можливість має призначатися користувачам випадково з імовірністю активації 1 до 100.
 
-The first time the `new-api` feature is checked for a given user, the result of the closure will be stored by the storage driver. The next time the feature is checked against the same user, the value will be retrieved from storage and the closure will not be invoked.
+Коли можливість `new-api` перевіряється для певного користувача вперше, результат замикання буде збережено драйвером сховища. Наступного разу, коли можливість перевірятиметься для того самого користувача, значення буде взято зі сховища, а замикання не викликатиметься.
 
-For convenience, if a feature definition only returns a lottery, you may omit the closure completely:
+Для зручності, якщо визначення можливості повертає лише лотерею, ви можете взагалі опустити замикання:
 
     Feature::define('site-redesign', Lottery::odds(1, 1000));
 
 <a name="class-based-features"></a>
-### Class Based Features
+### Можливості на основі класів
 
-Pennant also allows you to define class-based features. Unlike closure-based feature definitions, there is no need to register a class-based feature in a service provider. To create a class-based feature, you may invoke the `pennant:feature` Artisan command. By default, the feature class will be placed in your application's `app/Features` directory:
+Pennant також дозволяє визначати можливості на основі класів. На відміну від визначень можливостей на основі замикань, реєструвати можливість на основі класу в сервіс-провайдері не потрібно. Щоб створити можливість на основі класу, скористайтеся артизан-командою `pennant:feature`. За замовчуванням клас можливості буде розміщено в каталозі `app/Features` вашого застосунку:
 
 ```shell
 php artisan pennant:feature NewApi
 ```
 
-When writing a feature class, you only need to define a `resolve` method, which will be invoked to resolve the feature's initial value for a given scope. Again, the scope will typically be the currently authenticated user:
+Пишучи клас можливості, вам потрібно визначити лише метод `resolve`, який буде викликано для обчислення початкового значення можливості для заданого скопу. Знову ж таки, скопом зазвичай буде поточний автентифікований користувач:
 
 ```php
 <?php
@@ -144,7 +147,7 @@ class NewApi
 }
 ```
 
-If you would like to manually resolve an instance of a class-based feature, you may invoke the `instance` method on the `Feature` facade:
+Якщо ви хочете вручну отримати екземпляр можливості на основі класу, викличте метод `instance` на фасаді `Feature`:
 
 ```php
 use Illuminate\Support\Facades\Feature;
@@ -153,11 +156,11 @@ $instance = Feature::instance(NewApi::class);
 ```
 
 > [!NOTE]
-> Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
+> Класи можливостей створюються через [контейнер](/docs/{{version}}/container), тож за потреби ви можете впроваджувати залежності до конструктора класу можливості.
 
-#### Customizing the Stored Feature Name
+#### Зміна збереженого імені можливості
 
-By default, Pennant will store the feature class's fully qualified class name. If you would like to decouple the stored feature name from the application's internal structure, you may add the `Name` attribute on the feature class. The value of this attribute will be stored in place of the class name:
+За замовчуванням Pennant зберігатиме повністю кваліфіковане ім'я класу можливості. Якщо ви хочете відв'язати збережене ім'я можливості від внутрішньої структури застосунку, додайте до класу можливості атрибут `Name`. Значення цього атрибута буде збережено замість імені класу:
 
 ```php
 <?php
@@ -174,9 +177,9 @@ class NewApi
 ```
 
 <a name="checking-features"></a>
-## Checking Features
+## Перевірка можливостей
 
-To determine if a feature is active, you may use the `active` method on the `Feature` facade. By default, features are checked against the currently authenticated user:
+Щоб визначити, чи можливість активна, скористайтеся методом `active` на фасаді `Feature`. За замовчуванням можливості перевіряються для поточного автентифікованого користувача:
 
 ```php
 <?php
@@ -203,7 +206,7 @@ class PodcastController
 }
 ```
 
-Although features are checked against the currently authenticated user by default, you may easily check the feature against another user or [scope](#scope). To accomplish this, use the `for` method offered by the `Feature` facade:
+Хоча за замовчуванням можливості перевіряються для поточного автентифікованого користувача, ви легко можете перевірити можливість для іншого користувача чи [скопу](#scope). Для цього скористайтеся методом `for`, який надає фасад `Feature`:
 
 ```php
 return Feature::for($user)->active('new-api')
@@ -211,7 +214,7 @@ return Feature::for($user)->active('new-api')
     : $this->resolveLegacyApiResponse($request);
 ```
 
-Pennant also offers some additional convenience methods that may prove useful when determining if a feature is active or not:
+Pennant також пропонує кілька додаткових зручних методів, які можуть стати в пригоді, коли ви визначаєте, активна можливість чи ні:
 
 ```php
 // Determine if all of the given features are active...
@@ -231,12 +234,12 @@ Feature::someAreInactive(['new-api', 'site-redesign']);
 ```
 
 > [!NOTE]
-> When using Pennant outside of an HTTP context, such as in an Artisan command or a queued job, you should typically [explicitly specify the feature's scope](#specifying-the-scope). Alternatively, you may define a [default scope](#default-scope) that accounts for both authenticated HTTP contexts and unauthenticated contexts.
+> Використовуючи Pennant поза HTTP-контекстом, наприклад в артизан-команді чи завданні з черги, вам зазвичай слід [явно вказувати скоп можливості](#specifying-the-scope). Як альтернативу ви можете визначити [скоп за замовчуванням](#default-scope), який враховує як автентифіковані HTTP-контексти, так і неавтентифіковані.
 
 <a name="checking-class-based-features"></a>
-#### Checking Class Based Features
+#### Перевірка можливостей на основі класів
 
-For class-based features, you should provide the class name when checking the feature:
+Для можливостей на основі класів під час перевірки можливості слід передавати ім'я класу:
 
 ```php
 <?php
@@ -265,9 +268,9 @@ class PodcastController
 ```
 
 <a name="conditional-execution"></a>
-### Conditional Execution
+### Умовне виконання
 
-The `when` method may be used to fluently execute a given closure if a feature is active. Additionally, a second closure may be provided and will be executed if the feature is inactive:
+Метод `when` можна використати, щоб плавно виконати задане замикання, якщо можливість активна. Крім того, можна передати друге замикання, яке буде виконано, якщо можливість неактивна:
 
 ```php
 <?php
@@ -296,7 +299,7 @@ class PodcastController
 }
 ```
 
-The `unless` method serves as the inverse of the `when` method, executing the first closure if the feature is inactive:
+Метод `unless` є протилежністю методу `when` і виконує перше замикання, якщо можливість неактивна:
 
 ```php
 return Feature::unless(NewApi::class,
@@ -306,9 +309,9 @@ return Feature::unless(NewApi::class,
 ```
 
 <a name="the-has-features-trait"></a>
-### The `HasFeatures` Trait
+### Трейт `HasFeatures`
 
-Pennant's `HasFeatures` trait may be added to your application's `User` model (or any other model that has features) to provide a fluent, convenient way to check features directly from the model:
+Трейт `HasFeatures` з Pennant можна додати до моделі `User` вашого застосунку (чи до будь-якої іншої моделі, що має можливості), щоб отримати зручний і плавний спосіб перевіряти можливості безпосередньо з моделі:
 
 ```php
 <?php
@@ -326,7 +329,7 @@ class User extends Authenticatable
 }
 ```
 
-Once the trait has been added to your model, you may easily check features by invoking the `features` method:
+Щойно трейт буде додано до вашої моделі, ви зможете легко перевіряти можливості, викликаючи метод `features`:
 
 ```php
 if ($user->features()->active('new-api')) {
@@ -334,7 +337,7 @@ if ($user->features()->active('new-api')) {
 }
 ```
 
-Of course, the `features` method provides access to many other convenient methods for interacting with features:
+Звісно, метод `features` дає доступ до багатьох інших зручних методів для роботи з можливостями:
 
 ```php
 // Values...
@@ -363,9 +366,9 @@ $user->features()->unless('new-api',
 ```
 
 <a name="blade-directive"></a>
-### Blade Directive
+### Blade-директива
 
-To make checking features in Blade a seamless experience, Pennant offers the `@feature` and `@featureany` directive:
+Щоб перевірка можливостей у Blade була безшовною, Pennant пропонує директиви `@feature` і `@featureany`:
 
 ```blade
 @feature('site-redesign')
@@ -382,7 +385,7 @@ To make checking features in Blade a seamless experience, Pennant offers the `@f
 <a name="middleware"></a>
 ### Middleware
 
-Pennant also includes a [middleware](/docs/{{version}}/middleware) that may be used to verify the currently authenticated user has access to a feature before a route is even invoked. You may assign the middleware to a route and specify the features that are required to access the route. If any of the specified features are inactive for the currently authenticated user, a `400 Bad Request` HTTP response will be returned by the route. Multiple features may be passed to the static `using` method.
+Pennant також містить [middleware](/docs/{{version}}/middleware), який можна використати, щоб перевірити, чи має поточний автентифікований користувач доступ до можливості, ще до того, як маршрут буде викликано. Ви можете призначити цей `middleware` маршруту й указати можливості, потрібні для доступу до нього. Якщо будь-яка з указаних можливостей неактивна для поточного автентифікованого користувача, маршрут поверне HTTP-відповідь `400 Bad Request`. До статичного методу `using` можна передати кілька можливостей.
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -394,9 +397,9 @@ Route::get('/api/servers', function () {
 ```
 
 <a name="customizing-the-response"></a>
-#### Customizing the Response
+#### Зміна відповіді
 
-If you would like to customize the response that is returned by the middleware when one of the listed features is inactive, you may use the `whenInactive` method provided by the `EnsureFeaturesAreActive` middleware. Typically, this method should be invoked within the `boot` method of one of your application's service providers:
+Якщо ви хочете змінити відповідь, яку повертає `middleware`, коли одна з перелічених можливостей неактивна, скористайтеся методом `whenInactive`, який надає `middleware` `EnsureFeaturesAreActive`. Зазвичай цей метод слід викликати в методі `boot` одного із сервіс-провайдерів вашого застосунку:
 
 ```php
 use Illuminate\Http\Request;
@@ -419,11 +422,11 @@ public function boot(): void
 ```
 
 <a name="intercepting-feature-checks"></a>
-### Intercepting Feature Checks
+### Перехоплення перевірок можливостей
 
-Sometimes it can be useful to perform some in-memory checks before retrieving the stored value of a given feature. Imagine you are developing a new API behind a feature flag and want the ability to disable the new API without losing any of the resolved feature values in storage. If you notice a bug in the new API, you could easily disable it for everyone except internal team members, fix the bug, and then re-enable the new API for the users that previously had access to the feature.
+Іноді буває корисно виконати певні перевірки в пам'яті, перш ніж діставати збережене значення можливості. Уявіть, що ви розробляєте новий API за feature-прапорцем і хочете мати змогу вимкнути новий API, не втративши жодного з обчислених значень можливості у сховищі. Якщо ви помітите баг у новому API, ви зможете легко вимкнути його для всіх, окрім членів внутрішньої команди, виправити баг, а потім знову увімкнути новий API для користувачів, які раніше мали доступ до можливості.
 
-You can achieve this with a [class-based feature's](#class-based-features) `before` method. When present, the `before` method is always run in-memory before retrieving the value from storage. If a non-`null` value is returned from the method, it will be used in place of the feature's stored value for the duration of the request:
+Досягти цього можна методом `before` у [можливості на основі класу](#class-based-features). Якщо метод `before` присутній, він завжди виконується в пам'яті перед отриманням значення зі сховища. Якщо метод поверне значення, відмінне від `null`, воно буде використане замість збереженого значення можливості на час цього запиту:
 
 ```php
 <?php
@@ -460,7 +463,7 @@ class NewApi
 }
 ```
 
-You could also use this feature to schedule the global rollout of a feature that was previously behind a feature flag:
+Ви також можете скористатися цією можливістю, щоб запланувати глобальне викочування можливості, яка раніше була за feature-прапорцем:
 
 ```php
 <?php
@@ -491,23 +494,23 @@ class NewApi
 ```
 
 <a name="in-memory-cache"></a>
-### In-Memory Cache
+### Кеш у пам'яті
 
-When checking a feature, Pennant will create an in-memory cache of the result. If you are using the `database` driver, this means that re-checking the same feature flag within a single request will not trigger additional database queries. This also ensures that the feature has a consistent result for the duration of the request.
+Перевіряючи можливість, Pennant створить кеш результату в пам'яті. Якщо ви використовуєте драйвер `database`, це означає, що повторна перевірка того самого feature-прапорця в межах одного запиту не спричинить додаткових запитів до бази даних. Це також гарантує, що можливість матиме однаковий результат протягом усього запиту.
 
-If you need to manually flush the in-memory cache, you may use the `flushCache` method offered by the `Feature` facade:
+Якщо вам потрібно вручну скинути кеш у пам'яті, скористайтеся методом `flushCache`, який надає фасад `Feature`:
 
 ```php
 Feature::flushCache();
 ```
 
 <a name="scope"></a>
-## Scope
+## Скоп
 
 <a name="specifying-the-scope"></a>
-### Specifying the Scope
+### Визначення скопу
 
-As discussed, features are typically checked against the currently authenticated user. However, this may not always suit your needs. Therefore, it is possible to specify the scope you would like to check a given feature against via the `Feature` facade's `for` method:
+Як ми вже обговорювали, можливості зазвичай перевіряються для поточного автентифікованого користувача. Однак це не завжди відповідає вашим потребам. Тому скоп, для якого ви хочете перевірити певну можливість, можна вказати методом `for` фасада `Feature`:
 
 ```php
 return Feature::for($user)->active('new-api')
@@ -515,7 +518,7 @@ return Feature::for($user)->active('new-api')
     : $this->resolveLegacyApiResponse($request);
 ```
 
-Of course, feature scopes are not limited to "users". Imagine you have built a new billing experience that you are rolling out to entire teams rather than individual users. Perhaps you would like the oldest teams to have a slower rollout than the newer teams. Your feature resolution closure might look something like the following:
+Звісно, скопи можливостей не обмежуються «користувачами». Уявіть, що ви створили новий досвід білінгу, який викочуєте цілим командам, а не окремим користувачам. Можливо, ви хочете, щоб найстаріші команди отримували його повільніше, ніж новіші. Ваше замикання для обчислення можливості могло б виглядати приблизно так:
 
 ```php
 use App\Models\Team;
@@ -536,7 +539,7 @@ Feature::define('billing-v2', function (Team $team) {
 });
 ```
 
-You will notice that the closure we have defined is not expecting a `User`, but is instead expecting a `Team` model. To determine if this feature is active for a user's team, you should pass the team to the `for` method offered by the `Feature` facade:
+Ви помітите, що визначене нами замикання очікує не `User`, а модель `Team`. Щоб визначити, чи активна ця можливість для команди користувача, передайте команду до методу `for`, який надає фасад `Feature`:
 
 ```php
 if (Feature::for($user->team)->active('billing-v2')) {
@@ -547,9 +550,9 @@ if (Feature::for($user->team)->active('billing-v2')) {
 ```
 
 <a name="default-scope"></a>
-### Default Scope
+### Скоп за замовчуванням
 
-It is also possible to customize the default scope Pennant uses to check features. For example, maybe all of your features are checked against the currently authenticated user's team instead of the user. Instead of having to call `Feature::for($user->team)` every time you check a feature, you may instead specify the team as the default scope. Typically, this should be done in one of your application's service providers:
+Ви також можете змінити скоп за замовчуванням, який Pennant використовує для перевірки можливостей. Наприклад, можливо, усі ваші можливості перевіряються для команди поточного автентифікованого користувача, а не для самого користувача. Замість того щоб щоразу під час перевірки можливості викликати `Feature::for($user->team)`, ви можете вказати команду як скоп за замовчуванням. Зазвичай це слід робити в одному із сервіс-провайдерів вашого застосунку:
 
 ```php
 <?php
@@ -574,7 +577,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-If no scope is explicitly provided via the `for` method, the feature check will now use the currently authenticated user's team as the default scope:
+Якщо скоп не передано явно через метод `for`, перевірка можливості тепер використовуватиме команду поточного автентифікованого користувача як скоп за замовчуванням:
 
 ```php
 Feature::active('billing-v2');
@@ -585,13 +588,13 @@ Feature::for($user->team)->active('billing-v2');
 ```
 
 <a name="nullable-scope"></a>
-### Nullable Scope
+### Скоп, що допускає null
 
-If the scope you provide when checking a feature is `null` and the feature's definition does not support `null` via a nullable type or by including `null` in a union type, Pennant will automatically return `false` as the feature's result value.
+Якщо скоп, який ви передаєте під час перевірки можливості, дорівнює `null`, а визначення можливості не підтримує `null` через тип, що допускає null, чи через включення `null` до об'єднаного типу, Pennant автоматично поверне `false` як результат можливості.
 
-So, if the scope you are passing to a feature is potentially `null` and you want the feature's value resolver to be invoked, you should account for that in your feature's definition. A `null` scope may occur if you check a feature within an Artisan command, queued job, or unauthenticated route. Since there is usually not an authenticated user in these contexts, the default scope will be `null`.
+Тож, якщо скоп, який ви передаєте до можливості, потенційно може бути `null`, і ви хочете, щоб резолвер значення можливості все ж викликався, врахуйте це у визначенні своєї можливості. Скоп `null` може виникнути, якщо ви перевіряєте можливість в артизан-команді, завданні з черги чи на неавтентифікованому маршруті. Оскільки в цих контекстах автентифікованого користувача зазвичай немає, скопом за замовчуванням буде `null`.
 
-If you do not always [explicitly specify your feature scope](#specifying-the-scope) then you should ensure the scope's type is "nullable" and handle the `null` scope value within your feature definition logic:
+Якщо ви не завжди [явно вказуєте скоп можливості](#specifying-the-scope), вам слід переконатися, що тип скопу «допускає null», і обробити значення скопу `null` у логіці визначення вашої можливості:
 
 ```php
 use App\Models\User;
@@ -608,13 +611,13 @@ Feature::define('new-api', fn (User|null $user) => match (true) {// [tl! add]
 ```
 
 <a name="identifying-scope"></a>
-### Identifying Scope
+### Ідентифікація скопу
 
-Pennant's built-in `array` and `database` storage drivers know how to properly store scope identifiers for all PHP data types as well as Eloquent models. However, if your application utilizes a third-party Pennant driver, that driver may not know how to properly store an identifier for an Eloquent model or other custom types in your application.
+Вбудовані драйвери сховища `array` і `database` у Pennant знають, як правильно зберігати ідентифікатори скопу для всіх типів даних PHP, а також для Eloquent-моделей. Однак, якщо ваш застосунок використовує сторонній драйвер Pennant, той драйвер може не знати, як правильно зберегти ідентифікатор Eloquent-моделі чи інших власних типів у вашому застосунку.
 
-In light of this, Pennant allows you to format scope values for storage by implementing the `FeatureScopeable` contract on the objects in your application that are used as Pennant scopes.
+З огляду на це Pennant дозволяє форматувати значення скопу для зберігання, реалізувавши контракт `FeatureScopeable` на об'єктах вашого застосунку, які використовуються як скопи Pennant.
 
-For example, imagine you are using two different feature drivers in a single application: the built-in `database` driver and a third-party "Flag Rocket" driver. The "Flag Rocket" driver does not know how to properly store an Eloquent model. Instead, it requires a `FlagRocketUser` instance. By implementing the `toFeatureIdentifier` defined by the `FeatureScopeable` contract, we can customize the storable scope value provided to each driver used by our application:
+Наприклад, уявіть, що ви використовуєте два різні драйвери можливостей в одному застосунку: вбудований драйвер `database` і сторонній драйвер «Flag Rocket». Драйвер «Flag Rocket» не знає, як правильно зберегти Eloquent-модель. Натомість йому потрібен екземпляр `FlagRocketUser`. Реалізувавши метод `toFeatureIdentifier`, визначений контрактом `FeatureScopeable`, ми можемо налаштувати придатне до зберігання значення скопу, яке передається кожному драйверу, що використовує наш застосунок:
 
 ```php
 <?php
@@ -641,11 +644,11 @@ class User extends Model implements FeatureScopeable
 ```
 
 <a name="serializing-scope"></a>
-### Serializing Scope
+### Серіалізація скопу
 
-By default, Pennant will use a fully qualified class name when storing a feature associated with an Eloquent model. If you are already using an [Eloquent morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types), you may choose to have Pennant also use the morph map to decouple the stored feature from your application structure.
+За замовчуванням Pennant використовуватиме повністю кваліфіковане ім'я класу, зберігаючи можливість, пов'язану з Eloquent-моделлю. Якщо ви вже використовуєте [morph-мапу Eloquent](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types), ви можете зробити так, щоб Pennant теж використовував morph-мапу і відв'язав збережену можливість від структури вашого застосунку.
 
-To achieve this, after defining your Eloquent morph map in a service provider, you may invoke the `Feature` facade's `useMorphMap` method:
+Щоб досягти цього, після визначення morph-мапи Eloquent у сервіс-провайдері викличте метод `useMorphMap` фасада `Feature`:
 
 ```php
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -660,11 +663,11 @@ Feature::useMorphMap();
 ```
 
 <a name="rich-feature-values"></a>
-## Rich Feature Values
+## Багатші значення можливостей
 
-Until now, we have primarily shown features as being in a binary state, meaning they are either "active" or "inactive", but Pennant also allows you to store rich values as well.
+Досі ми переважно показували можливості в бінарному стані, тобто вони або «активні», або «неактивні», але Pennant також дозволяє зберігати багатші значення.
 
-For example, imagine you are testing three new colors for the "Buy now" button of your application. Instead of returning `true` or `false` from the feature definition, you may instead return a string:
+Наприклад, уявіть, що ви тестуєте три нові кольори для кнопки «Buy now» у своєму застосунку. Замість того щоб повертати з визначення можливості `true` чи `false`, ви можете повернути рядок:
 
 ```php
 use Illuminate\Support\Arr;
@@ -677,13 +680,13 @@ Feature::define('purchase-button', fn (User $user) => Arr::random([
 ]));
 ```
 
-You may retrieve the value of the `purchase-button` feature using the `value` method:
+Отримати значення можливості `purchase-button` можна методом `value`:
 
 ```php
 $color = Feature::value('purchase-button');
 ```
 
-Pennant's included Blade directive also makes it easy to conditionally render content based on the current value of the feature:
+Blade-директива, що входить до Pennant, також дозволяє легко умовно рендерити вміст залежно від поточного значення можливості:
 
 ```blade
 @feature('purchase-button', 'blue-sapphire')
@@ -696,9 +699,9 @@ Pennant's included Blade directive also makes it easy to conditionally render co
 ```
 
 > [!NOTE]
-> When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
+> Використовуючи багатші значення, важливо знати, що можливість вважається «активною», коли вона має будь-яке значення, відмінне від `false`.
 
-When calling the [conditional `when`](#conditional-execution) method, the feature's rich value will be provided to the first closure:
+Під час виклику [умовного методу `when`](#conditional-execution) багатше значення можливості буде передано до першого замикання:
 
 ```php
 Feature::when('purchase-button',
@@ -707,7 +710,7 @@ Feature::when('purchase-button',
 );
 ```
 
-Likewise, when calling the conditional `unless` method, the feature's rich value will be provided to the optional second closure:
+Так само, під час виклику умовного методу `unless` багатше значення можливості буде передано до необов'язкового другого замикання:
 
 ```php
 Feature::unless('purchase-button',
@@ -717,9 +720,9 @@ Feature::unless('purchase-button',
 ```
 
 <a name="retrieving-multiple-features"></a>
-## Retrieving Multiple Features
+## Отримання кількох можливостей
 
-The `values` method allows the retrieval of multiple features for a given scope:
+Метод `values` дозволяє отримати кілька можливостей для заданого скопу:
 
 ```php
 Feature::values(['billing-v2', 'purchase-button']);
@@ -730,7 +733,7 @@ Feature::values(['billing-v2', 'purchase-button']);
 // ]
 ```
 
-Or, you may use the `all` method to retrieve the values of all defined features for a given scope:
+Або ж ви можете скористатися методом `all`, щоб отримати значення всіх визначених можливостей для заданого скопу:
 
 ```php
 Feature::all();
@@ -742,9 +745,9 @@ Feature::all();
 // ]
 ```
 
-However, class-based features are dynamically registered and are not known by Pennant until they are explicitly checked. This means your application's class-based features may not appear in the results returned by the `all` method if they have not already been checked during the current request.
+Однак можливості на основі класів реєструються динамічно і невідомі Pennant, доки їх явно не перевірять. Це означає, що можливості на основі класів вашого застосунку можуть не з'явитися в результатах методу `all`, якщо їх ще не перевіряли протягом поточного запиту.
 
-If you would like to ensure that feature classes are always included when using the `all` method, you may use Pennant's feature discovery capabilities. To get started, invoke the `discover` method in one of your application's service providers:
+Якщо ви хочете, щоб класи можливостей завжди потрапляли до результатів методу `all`, скористайтеся можливостями виявлення в Pennant. Для початку викличте метод `discover` в одному із сервіс-провайдерів вашого застосунку:
 
 ```php
 <?php
@@ -768,7 +771,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-The `discover` method will register all of the feature classes in your application's `app/Features` directory. The `all` method will now include these classes in its results, regardless of whether they have been checked during the current request:
+Метод `discover` зареєструє всі класи можливостей у каталозі `app/Features` вашого застосунку. Тепер метод `all` включатиме ці класи до своїх результатів незалежно від того, чи перевірялися вони протягом поточного запиту:
 
 ```php
 Feature::all();
@@ -782,11 +785,11 @@ Feature::all();
 ```
 
 <a name="eager-loading"></a>
-## Eager Loading
+## Жадібне завантаження
 
-Although Pennant keeps an in-memory cache of all resolved features for a single request, it is still possible to encounter performance issues. To alleviate this, Pennant offers the ability to eager load feature values.
+Хоча Pennant тримає в пам'яті кеш усіх обчислених можливостей для одного запиту, проблеми з продуктивністю все одно можливі. Щоб полегшити це, Pennant дає змогу жадібно завантажувати значення можливостей.
 
-To illustrate this, imagine that we are checking if a feature is active within a loop:
+Щоб проілюструвати це, уявіть, що ми перевіряємо, чи активна можливість, у циклі:
 
 ```php
 use Laravel\Pennant\Feature;
@@ -798,7 +801,7 @@ foreach ($users as $user) {
 }
 ```
 
-Assuming we are using the database driver, this code will execute a database query for every user in the loop - executing potentially hundreds of queries. However, using Pennant's `load` method, we can remove this potential performance bottleneck by eager loading the feature values for a collection of users or scopes:
+Якщо припустити, що ми використовуємо драйвер database, цей код виконає запит до бази даних для кожного користувача в циклі - потенційно сотні запитів. Однак за допомогою методу `load` у Pennant ми можемо усунути це потенційне вузьке місце продуктивності, жадібно завантаживши значення можливостей для колекції користувачів чи скопів:
 
 ```php
 Feature::for($users)->load(['notifications-beta']);
@@ -810,7 +813,7 @@ foreach ($users as $user) {
 }
 ```
 
-To load feature values only when they have not already been loaded, you may use the `loadMissing` method:
+Щоб завантажити значення можливостей лише тоді, коли їх ще не завантажено, скористайтеся методом `loadMissing`:
 
 ```php
 Feature::for($users)->loadMissing([
@@ -820,18 +823,18 @@ Feature::for($users)->loadMissing([
 ]);
 ```
 
-You may load all defined features using the `loadAll` method:
+Завантажити всі визначені можливості можна методом `loadAll`:
 
 ```php
 Feature::for($users)->loadAll();
 ```
 
 <a name="updating-values"></a>
-## Updating Values
+## Оновлення значень
 
-When a feature's value is resolved for the first time, the underlying driver will store the result in storage. This is often necessary to ensure a consistent experience for your users across requests. However, at times, you may want to manually update the feature's stored value.
+Коли значення можливості обчислюється вперше, драйвер, що лежить в основі, збереже результат у сховищі. Часто це потрібно, щоб забезпечити узгоджений досвід для ваших користувачів між запитами. Однак іноді ви можете захотіти вручну оновити збережене значення можливості.
 
-To accomplish this, you may use the `activate` and `deactivate` methods to toggle a feature "on" or "off":
+Для цього скористайтеся методами `activate` і `deactivate`, щоб перемкнути можливість «увімкнено» чи «вимкнено»:
 
 ```php
 use Laravel\Pennant\Feature;
@@ -843,24 +846,24 @@ Feature::activate('new-api');
 Feature::for($user->team)->deactivate('billing-v2');
 ```
 
-It is also possible to manually set a rich value for a feature by providing a second argument to the `activate` method:
+Також можна вручну встановити багатше значення для можливості, передавши другий аргумент до методу `activate`:
 
 ```php
 Feature::activate('purchase-button', 'seafoam-green');
 ```
 
-To instruct Pennant to forget the stored value for a feature, you may use the `forget` method. When the feature is checked again, Pennant will resolve the feature's value from its feature definition:
+Щоб указати Pennant забути збережене значення можливості, скористайтеся методом `forget`. Коли можливість буде перевірено знову, Pennant обчислить її значення з визначення можливості:
 
 ```php
 Feature::forget('purchase-button');
 ```
 
 <a name="bulk-updates"></a>
-### Bulk Updates
+### Масові оновлення
 
-To update stored feature values in bulk, you may use the `activateForEveryone` and `deactivateForEveryone` methods.
+Щоб оновити збережені значення можливостей масово, скористайтеся методами `activateForEveryone` і `deactivateForEveryone`.
 
-For example, imagine you are now confident in the `new-api` feature's stability and have landed on the best `'purchase-button'` color for your checkout flow - you can update the stored value for all users accordingly:
+Наприклад, уявіть, що ви тепер упевнені в стабільності можливості `new-api` і визначилися з найкращим кольором `'purchase-button'` для свого процесу оформлення замовлення - ви можете відповідно оновити збережене значення для всіх користувачів:
 
 ```php
 use Laravel\Pennant\Feature;
@@ -870,21 +873,21 @@ Feature::activateForEveryone('new-api');
 Feature::activateForEveryone('purchase-button', 'seafoam-green');
 ```
 
-Alternatively, you may deactivate the feature for all users:
+Як альтернативу ви можете вимкнути можливість для всіх користувачів:
 
 ```php
 Feature::deactivateForEveryone('new-api');
 ```
 
 > [!NOTE]
-> This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application.
+> Це оновить лише обчислені значення можливостей, збережені драйвером сховища Pennant. Вам також потрібно буде оновити визначення можливості у своєму застосунку.
 
 <a name="purging-features"></a>
-### Purging Features
+### Очищення можливостей
 
-Sometimes, it can be useful to purge an entire feature from storage. This is typically necessary if you have removed the feature from your application or you have made adjustments to the feature's definition that you would like to rollout to all users.
+Іноді буває корисно повністю прибрати можливість зі сховища. Зазвичай це потрібно, якщо ви прибрали можливість зі свого застосунку або внесли у визначення можливості зміни, які хочете викотити для всіх користувачів.
 
-You may remove all stored values for a feature using the `purge` method:
+Прибрати всі збережені значення можливості можна методом `purge`:
 
 ```php
 // Purging a single feature...
@@ -894,13 +897,13 @@ Feature::purge('new-api');
 Feature::purge(['new-api', 'purchase-button']);
 ```
 
-If you would like to purge _all_ features from storage, you may invoke the `purge` method without any arguments:
+Якщо ви хочете прибрати зі сховища _всі_ можливості, викличте метод `purge` без аргументів:
 
 ```php
 Feature::purge();
 ```
 
-As it can be useful to purge features as part of your application's deployment pipeline, Pennant includes a `pennant:purge` Artisan command which will purge the provided features from storage:
+Оскільки очищення можливостей може бути корисним як частина вашого конвеєра розгортання, Pennant містить артизан-команду `pennant:purge`, яка прибере зі сховища вказані можливості:
 
 ```shell
 php artisan pennant:purge new-api
@@ -908,22 +911,22 @@ php artisan pennant:purge new-api
 php artisan pennant:purge new-api purchase-button
 ```
 
-It is also possible to purge all features _except_ those in a given feature list. For example, imagine you wanted to purge all features but keep the values for the "new-api" and "purchase-button" features in storage. To accomplish this, you can pass those feature names to the `--except` option:
+Також можна прибрати всі можливості, _окрім_ тих, що є в заданому списку. Наприклад, уявіть, що ви хотіли прибрати всі можливості, але залишити у сховищі значення можливостей «new-api» і «purchase-button». Щоб зробити це, передайте ці імена можливостей до опції `--except`:
 
 ```shell
 php artisan pennant:purge --except=new-api --except=purchase-button
 ```
 
-For convenience, the `pennant:purge` command also supports an `--except-registered` flag. This flag indicates that all features except those explicitly registered in a service provider should be purged:
+Для зручності команда `pennant:purge` також підтримує прапорець `--except-registered`. Цей прапорець означає, що слід прибрати всі можливості, окрім тих, що явно зареєстровані в сервіс-провайдері:
 
 ```shell
 php artisan pennant:purge --except-registered
 ```
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
-When testing code that interacts with feature flags, the easiest way to control the feature flag's returned value in your tests is to simply re-define the feature. For example, imagine you have the following feature defined in one of your application's service provider:
+Тестуючи код, який взаємодіє з feature-прапорцями, найпростіший спосіб керувати значенням, яке повертає feature-прапорець у ваших тестах, - просто перевизначити можливість. Наприклад, уявіть, що у вас в одному із сервіс-провайдерів застосунку визначено таку можливість:
 
 ```php
 use Illuminate\Support\Arr;
@@ -936,7 +939,7 @@ Feature::define('purchase-button', fn () => Arr::random([
 ]));
 ```
 
-To modify the feature's returned value in your tests, you may re-define the feature at the beginning of the test. The following test will always pass, even though the `Arr::random()` implementation is still present in the service provider:
+Щоб змінити значення, яке повертає можливість, у ваших тестах, перевизначте можливість на початку тесту. Наведений нижче тест завжди проходитиме, навіть попри те, що реалізація `Arr::random()` усе ще присутня в сервіс-провайдері:
 
 ```php tab=Pest
 use Laravel\Pennant\Feature;
@@ -959,7 +962,7 @@ public function test_it_can_control_feature_values()
 }
 ```
 
-The same approach may be used for class-based features:
+Той самий підхід можна застосувати до можливостей на основі класів:
 
 ```php tab=Pest
 use Laravel\Pennant\Feature;
@@ -983,12 +986,12 @@ public function test_it_can_control_feature_values()
 }
 ```
 
-If your feature is returning a `Lottery` instance, there are a handful of useful [testing helpers available](/docs/{{version}}/helpers#testing-lotteries).
+Якщо ваша можливість повертає екземпляр `Lottery`, є кілька корисних [хелперів для тестування](/docs/{{version}}/helpers#testing-lotteries).
 
 <a name="store-configuration"></a>
-#### Store Configuration
+#### Конфігурація сховища
 
-You may configure the store that Pennant will use during testing by defining the `PENNANT_STORE` environment variable in your application's `phpunit.xml` file:
+Ви можете налаштувати сховище, яке Pennant використовуватиме під час тестування, визначивши змінну оточення `PENNANT_STORE` у файлі `phpunit.xml` вашого застосунку:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1002,12 +1005,12 @@ You may configure the store that Pennant will use during testing by defining the
 ```
 
 <a name="adding-custom-pennant-drivers"></a>
-## Adding Custom Pennant Drivers
+## Додавання власних драйверів Pennant
 
 <a name="implementing-the-driver"></a>
-#### Implementing the Driver
+#### Реалізація драйвера
 
-If none of Pennant's existing storage drivers fit your application's needs, you may write your own storage driver. Your custom driver should implement the `Laravel\Pennant\Contracts\Driver` interface:
+Якщо жоден з наявних драйверів сховища Pennant не задовольняє потреби вашого застосунку, ви можете написати власний драйвер сховища. Ваш власний драйвер має реалізовувати інтерфейс `Laravel\Pennant\Contracts\Driver`:
 
 ```php
 <?php
@@ -1029,15 +1032,15 @@ class RedisFeatureDriver implements Driver
 }
 ```
 
-Now, we just need to implement each of these methods using a Redis connection. For an example of how to implement each of these methods, take a look at the `Laravel\Pennant\Drivers\DatabaseDriver` in the [Pennant source code](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)
+Тепер нам залишається лише реалізувати кожен із цих методів через підключення Redis. Приклад того, як реалізувати кожен із цих методів, дивіться в `Laravel\Pennant\Drivers\DatabaseDriver` у [вихідному коді Pennant](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)
 
 > [!NOTE]
-> Laravel does not ship with a directory to contain your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `RedisFeatureDriver`.
+> Laravel не постачається з каталогом для ваших розширень. Ви можете розміщувати їх де завгодно. У цьому прикладі ми створили каталог `Extensions`, щоб розмістити в ньому `RedisFeatureDriver`.
 
 <a name="registering-the-driver"></a>
-#### Registering the Driver
+#### Реєстрація драйвера
 
-Once your driver has been implemented, you are ready to register it with Laravel. To add additional drivers to Pennant, you may use the `extend` method provided by the `Feature` facade. You should call the `extend` method from the `boot` method of one of your application's [service provider](/docs/{{version}}/providers):
+Щойно ваш драйвер буде реалізовано, можна зареєструвати його в Laravel. Щоб додати до Pennant додаткові драйвери, скористайтеся методом `extend`, який надає фасад `Feature`. Викликати метод `extend` слід у методі `boot` одного із [сервіс-провайдерів](/docs/{{version}}/providers) вашого застосунку:
 
 ```php
 <?php
@@ -1071,7 +1074,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-Once the driver has been registered, you may use the `redis` driver in your application's `config/pennant.php` configuration file:
+Щойно драйвер буде зареєстровано, ви можете використовувати драйвер `redis` у конфігураційному файлі `config/pennant.php` вашого застосунку:
 
 ```php
 'stores' => [
@@ -1087,9 +1090,9 @@ Once the driver has been registered, you may use the `redis` driver in your appl
 ```
 
 <a name="defining-features-externally"></a>
-### Defining Features Externally
+### Визначення можливостей ззовні
 
-If your driver is a wrapper around a third-party feature flag platform, you will likely define features on the platform rather than using Pennant's `Feature::define` method. If that is the case, your custom driver should also implement the `Laravel\Pennant\Contracts\DefinesFeaturesExternally` interface:
+Якщо ваш драйвер є обгорткою навколо сторонньої платформи feature-прапорців, ви, найімовірніше, визначатимете можливості на самій платформі, а не методом `Feature::define` у Pennant. У такому разі ваш власний драйвер має також реалізовувати інтерфейс `Laravel\Pennant\Contracts\DefinesFeaturesExternally`:
 
 ```php
 <?php
@@ -1110,24 +1113,24 @@ class FeatureFlagServiceDriver implements Driver, DefinesFeaturesExternally
 }
 ```
 
-The `definedFeaturesForScope` method should return a list of feature names defined for the provided scope.
+Метод `definedFeaturesForScope` має повертати список імен можливостей, визначених для наданого скопу.
 
 <a name="events"></a>
-## Events
+## Події
 
-Pennant dispatches a variety of events that can be useful when tracking feature flags throughout your application.
+Pennant диспетчеризує різноманітні події, які можуть стати в пригоді для відстеження feature-прапорців у вашому застосунку.
 
 ### `Laravel\Pennant\Events\FeatureRetrieved`
 
-This event is dispatched whenever a [feature is checked](#checking-features). This event may be useful for creating and tracking metrics against a feature flag's usage throughout your application.
+Ця подія диспетчеризується щоразу, коли [перевіряється можливість](#checking-features). Вона може бути корисною для створення й відстеження метрик використання feature-прапорця у вашому застосунку.
 
 ### `Laravel\Pennant\Events\FeatureResolved`
 
-This event is dispatched the first time a feature's value is resolved for a specific scope.
+Ця подія диспетчеризується, коли значення можливості обчислюється для конкретного скопу вперше.
 
 ### `Laravel\Pennant\Events\UnknownFeatureResolved`
 
-This event is dispatched the first time an unknown feature is resolved for a specific scope. Listening to this event may be useful if you have intended to remove a feature flag but have accidentally left stray references to it throughout your application:
+Ця подія диспетчеризується, коли невідома можливість обчислюється для конкретного скопу вперше. Слухати цю подію може бути корисно, якщо ви мали намір прибрати feature-прапорець, але випадково залишили розкидані посилання на нього у своєму застосунку:
 
 ```php
 <?php
@@ -1155,13 +1158,13 @@ class AppServiceProvider extends ServiceProvider
 
 ### `Laravel\Pennant\Events\DynamicallyRegisteringFeatureClass`
 
-This event is dispatched when a [class-based feature](#class-based-features) is dynamically checked for the first time during a request.
+Ця подія диспетчеризується, коли [можливість на основі класу](#class-based-features) динамічно перевіряється вперше протягом запиту.
 
 ### `Laravel\Pennant\Events\UnexpectedNullScopeEncountered`
 
-This event is dispatched when a `null` scope is passed to a feature definition that [doesn't support null](#nullable-scope).
+Ця подія диспетчеризується, коли скоп `null` передається до визначення можливості, яке [не підтримує null](#nullable-scope).
 
-This situation is handled gracefully and the feature will return `false`. However, if you would like to opt out of this feature's default graceful behavior, you may register a listener for this event in the `boot` method of your application's `AppServiceProvider`:
+Ця ситуація обробляється коректно, і можливість поверне `false`. Однак, якщо ви хочете відмовитися від цієї коректної поведінки за замовчуванням, зареєструйте слухача для цієї події в методі `boot` `AppServiceProvider` вашого застосунку:
 
 ```php
 use Illuminate\Support\Facades\Log;
@@ -1178,20 +1181,20 @@ public function boot(): void
 
 ### `Laravel\Pennant\Events\FeatureUpdated`
 
-This event is dispatched when updating a feature for a scope, usually by calling `activate` or `deactivate`.
+Ця подія диспетчеризується під час оновлення можливості для скопу, зазвичай через виклик `activate` чи `deactivate`.
 
 ### `Laravel\Pennant\Events\FeatureUpdatedForAllScopes`
 
-This event is dispatched when updating a feature for all scopes, usually by calling `activateForEveryone` or `deactivateForEveryone`.
+Ця подія диспетчеризується під час оновлення можливості для всіх скопів, зазвичай через виклик `activateForEveryone` чи `deactivateForEveryone`.
 
 ### `Laravel\Pennant\Events\FeatureDeleted`
 
-This event is dispatched when deleting a feature for a scope, usually by calling `forget`.
+Ця подія диспетчеризується під час видалення можливості для скопу, зазвичай через виклик `forget`.
 
 ### `Laravel\Pennant\Events\FeaturesPurged`
 
-This event is dispatched when purging specific features.
+Ця подія диспетчеризується під час очищення конкретних можливостей.
 
 ### `Laravel\Pennant\Events\AllFeaturesPurged`
 
-This event is dispatched when purging all features.
+Ця подія диспетчеризується під час очищення всіх можливостей.
