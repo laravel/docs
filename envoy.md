@@ -1,51 +1,54 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Envoy
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Writing Tasks](#writing-tasks)
-    - [Defining Tasks](#defining-tasks)
-    - [Multiple Servers](#multiple-servers)
-    - [Setup](#setup)
-    - [Variables](#variables)
-    - [Stories](#stories)
-    - [Hooks](#completion-hooks)
-- [Running Tasks](#running-tasks)
-    - [Confirming Task Execution](#confirming-task-execution)
-- [Notifications](#notifications)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+- [Написання завдань](#writing-tasks)
+    - [Визначення завдань](#defining-tasks)
+    - [Кілька серверів](#multiple-servers)
+    - [Підготовка](#setup)
+    - [Змінні](#variables)
+    - [Сценарії](#stories)
+    - [Хуки](#completion-hooks)
+- [Запуск завдань](#running-tasks)
+    - [Підтвердження виконання завдання](#confirming-task-execution)
+- [Сповіщення](#notifications)
     - [Slack](#slack)
     - [Discord](#discord)
     - [Telegram](#telegram)
     - [Microsoft Teams](#microsoft-teams)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Laravel Envoy](https://github.com/laravel/envoy) is a tool for executing common tasks you run on your remote servers. Using [Blade](/docs/{{version}}/blade) style syntax, you can easily set up tasks for deployment, Artisan commands, and more. Currently, Envoy only supports the Mac and Linux operating systems. However, Windows support is achievable using [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+[Laravel Envoy](https://github.com/laravel/envoy) - інструмент для виконання типових завдань на ваших віддалених серверах. Через синтаксис у стилі [Blade](/docs/{{version}}/blade) ви можете легко описати завдання для розгортання, артизан-команди тощо. Наразі Envoy підтримує лише macOS і Linux. Проте підтримки Windows можна досягти через [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-First, install Envoy into your project using the Composer package manager:
+Спершу встановіть Envoy у свій проєкт через менеджер пакетів Composer:
 
 ```shell
 composer require laravel/envoy --dev
 ```
 
-Once Envoy has been installed, the Envoy binary will be available in your application's `vendor/bin` directory:
+Коли Envoy встановлено, його бінарник буде доступний у каталозі `vendor/bin` вашого застосунку:
 
 ```shell
 php vendor/bin/envoy
 ```
 
 <a name="writing-tasks"></a>
-## Writing Tasks
+## Написання завдань
 
 <a name="defining-tasks"></a>
-### Defining Tasks
+### Визначення завдань
 
-Tasks are the basic building block of Envoy. Tasks define the shell commands that should execute on your remote servers when the task is invoked. For example, you might define a task that executes the `php artisan queue:restart` command on all of your application's queue worker servers.
+Завдання - базовий будівельний блок Envoy. Завдання описують команди оболонки, які мають виконатися на ваших віддалених серверах при виклику завдання. Наприклад, ви можете описати завдання, що виконує команду `php artisan queue:restart` на всіх серверах-воркерах черг вашого застосунку.
 
-All of your Envoy tasks should be defined in an `Envoy.blade.php` file at the root of your application. Here's an example to get you started:
+Усі ваші завдання Envoy слід описувати у файлі `Envoy.blade.php` у корені застосунку. Ось приклад для початку:
 
 ```blade
 @servers(['web' => ['user@192.168.1.1'], 'workers' => ['user@192.168.1.2']])
@@ -56,30 +59,30 @@ All of your Envoy tasks should be defined in an `Envoy.blade.php` file at the ro
 @endtask
 ```
 
-As you can see, an array of `@servers` is defined at the top of the file, allowing you to reference these servers via the `on` option of your task declarations. The `@servers` declaration should always be placed on a single line. Within your `@task` declarations, you should place the shell commands that should execute on your servers when the task is invoked.
+Як бачите, на початку файлу описано масив `@servers` - завдяки цьому ви можете посилатися на ці сервери через опцію `on` у оголошеннях завдань. Оголошення `@servers` завжди має бути в одному рядку. Усередині оголошень `@task` розміщуйте команди оболонки, які мають виконатися на ваших серверах при виклику завдання.
 
 <a name="local-tasks"></a>
-#### Local Tasks
+#### Локальні завдання
 
-You can force a script to run on your local computer by specifying the server's IP address as `127.0.0.1`:
+Ви можете змусити скрипт виконуватися на вашому комп'ютері, вказавши IP-адресу сервера `127.0.0.1`:
 
 ```blade
 @servers(['localhost' => '127.0.0.1'])
 ```
 
 <a name="importing-envoy-tasks"></a>
-#### Importing Envoy Tasks
+#### Імпорт завдань Envoy
 
-Using the `@import` directive, you may import other Envoy files so their stories and tasks are added to yours. After the files have been imported, you may execute the tasks they contain as if they were defined in your own Envoy file:
+За допомогою директиви `@import` ви можете імпортувати інші файли Envoy, щоб їхні сценарії та завдання додалися до ваших. Після імпорту ви можете виконувати їхні завдання так, ніби вони описані у вашому власному файлі Envoy:
 
 ```blade
 @import('vendor/package/Envoy.blade.php')
 ```
 
 <a name="multiple-servers"></a>
-### Multiple Servers
+### Кілька серверів
 
-Envoy allows you to easily run a task across multiple servers. First, add additional servers to your `@servers` declaration. Each server should be assigned a unique name. Once you have defined your additional servers you may list each of the servers in the task's `on` array:
+Envoy дозволяє легко запустити завдання на кількох серверах. Спершу додайте додаткові сервери до оголошення `@servers`. Кожному серверу слід дати унікальне ім'я. Коли додаткові сервери описано, ви можете перелічити кожен із них у масиві `on` завдання:
 
 ```blade
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
@@ -92,9 +95,9 @@ Envoy allows you to easily run a task across multiple servers. First, add additi
 ```
 
 <a name="parallel-execution"></a>
-#### Parallel Execution
+#### Паралельне виконання
 
-By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the `parallel` option to your task declaration:
+За замовчуванням завдання виконуються на кожному сервері послідовно. Іншими словами, завдання завершиться на першому сервері, перш ніж почне виконуватися на другому. Якщо ви хочете запустити завдання на кількох серверах паралельно, додайте до його оголошення опцію `parallel`:
 
 ```blade
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
@@ -107,9 +110,9 @@ By default, tasks will be executed on each server serially. In other words, a ta
 ```
 
 <a name="setup"></a>
-### Setup
+### Підготовка
 
-Sometimes, you may need to execute arbitrary PHP code before running your Envoy tasks. You may use the `@setup` directive to define a block of PHP code that should execute before your tasks:
+Іноді вам може знадобитися виконати довільний PHP-код перед запуском завдань Envoy. Скористайтеся директивою `@setup`, щоб описати блок PHP-коду, який має виконатися перед вашими завданнями:
 
 ```php
 @setup
@@ -117,7 +120,7 @@ Sometimes, you may need to execute arbitrary PHP code before running your Envoy 
 @endsetup
 ```
 
-If you need to require other PHP files before your task is executed, you may use the `@include` directive at the top of your `Envoy.blade.php` file:
+Якщо перед виконанням завдання вам треба підключити інші файли PHP, скористайтеся директивою `@include` на початку вашого файлу `Envoy.blade.php`:
 
 ```blade
 @include('vendor/autoload.php')
@@ -128,15 +131,15 @@ If you need to require other PHP files before your task is executed, you may use
 ```
 
 <a name="variables"></a>
-### Variables
+### Змінні
 
-If needed, you may pass arguments to Envoy tasks by specifying them on the command line when invoking Envoy:
+За потреби ви можете передавати завданням Envoy аргументи, вказавши їх у командному рядку під час виклику:
 
 ```shell
 php vendor/bin/envoy run deploy --branch=master
 ```
 
-You may access the options within your tasks using Blade's "echo" syntax. You may also define Blade `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
+Звертатися до опцій у своїх завданнях можна через синтаксис «echo» у Blade. Ви також можете описувати всередині завдань конструкції `if` і цикли Blade. Наприклад, перевірмо наявність змінної `$branch` перед виконанням команди `git pull`:
 
 ```blade
 @servers(['web' => ['user@192.168.1.1']])
@@ -153,9 +156,9 @@ You may access the options within your tasks using Blade's "echo" syntax. You ma
 ```
 
 <a name="stories"></a>
-### Stories
+### Сценарії
 
-Stories group a set of tasks under a single, convenient name. For instance, a `deploy` story may run the `update-code` and `install-dependencies` tasks by listing the task names within its definition:
+Сценарії групують набір завдань під одним зручним іменем. Наприклад, сценарій `deploy` може запускати завдання `update-code` та `install-dependencies`, перелічені в його визначенні:
 
 ```blade
 @servers(['web' => ['user@192.168.1.1']])
@@ -176,23 +179,23 @@ Stories group a set of tasks under a single, convenient name. For instance, a `d
 @endtask
 ```
 
-Once the story has been written, you may invoke it in the same way you would invoke a task:
+Коли сценарій написано, ви можете викликати його так само, як і завдання:
 
 ```shell
 php vendor/bin/envoy run deploy
 ```
 
 <a name="completion-hooks"></a>
-### Hooks
+### Хуки
 
-When tasks and stories run, a number of hooks are executed. The hook types supported by Envoy are `@before`, `@after`, `@error`, `@success`, and `@finished`. All of the code in these hooks is interpreted as PHP and executed locally, not on the remote servers that your tasks interact with.
+Під час виконання завдань і сценаріїв запускається низка хуків. Envoy підтримує такі типи хуків: `@before`, `@after`, `@error`, `@success` та `@finished`. Увесь код у цих хуках інтерпретується як PHP і виконується локально, а не на віддалених серверах, з якими працюють ваші завдання.
 
-You may define as many of each of these hooks as you like. They will be executed in the order that they appear in your Envoy script.
+Ви можете описати скільки завгодно хуків кожного типу. Вони виконуватимуться в тому порядку, у якому йдуть у вашому скрипті Envoy.
 
 <a name="hook-before"></a>
 #### `@before`
 
-Before each task execution, all of the `@before` hooks registered in your Envoy script will execute. The `@before` hooks receive the name of the task that will be executed:
+Перед виконанням кожного завдання виконаються всі хуки `@before`, зареєстровані у вашому скрипті Envoy. Хуки `@before` отримують ім'я завдання, яке буде виконано:
 
 ```blade
 @before
@@ -205,7 +208,7 @@ Before each task execution, all of the `@before` hooks registered in your Envoy 
 <a name="completion-after"></a>
 #### `@after`
 
-After each task execution, all of the `@after` hooks registered in your Envoy script will execute. The `@after` hooks receive the name of the task that was executed:
+Після виконання кожного завдання виконаються всі хуки `@after`, зареєстровані у вашому скрипті Envoy. Хуки `@after` отримують ім'я виконаного завдання:
 
 ```blade
 @after
@@ -218,7 +221,7 @@ After each task execution, all of the `@after` hooks registered in your Envoy sc
 <a name="completion-error"></a>
 #### `@error`
 
-After every task failure (exits with a status code greater than `0`), all of the `@error` hooks registered in your Envoy script will execute. The `@error` hooks receive the name of the task that was executed:
+Після кожного провалу завдання (вихід із кодом статусу більшим за `0`) виконаються всі хуки `@error`, зареєстровані у вашому скрипті Envoy. Хуки `@error` отримують ім'я виконаного завдання:
 
 ```blade
 @error
@@ -231,7 +234,7 @@ After every task failure (exits with a status code greater than `0`), all of the
 <a name="completion-success"></a>
 #### `@success`
 
-If all tasks have executed without errors, all of the `@success` hooks registered in your Envoy script will execute:
+Якщо всі завдання виконалися без помилок, виконаються всі хуки `@success`, зареєстровані у вашому скрипті Envoy:
 
 ```blade
 @success
@@ -242,7 +245,7 @@ If all tasks have executed without errors, all of the `@success` hooks registere
 <a name="completion-finished"></a>
 #### `@finished`
 
-After all tasks have been executed (regardless of exit status), all of the `@finished` hooks will be executed. The `@finished` hooks receive the status code of the completed task, which may be `null` or an `integer` greater than or equal to `0`:
+Після виконання всіх завдань (незалежно від статусу виходу) виконаються всі хуки `@finished`. Хуки `@finished` отримують код статусу завершеного завдання, який може бути `null` або цілим числом (`integer`), більшим за `0` чи рівним йому:
 
 ```blade
 @finished
@@ -253,18 +256,18 @@ After all tasks have been executed (regardless of exit status), all of the `@fin
 ```
 
 <a name="running-tasks"></a>
-## Running Tasks
+## Запуск завдань
 
-To run a task or story that is defined in your application's `Envoy.blade.php` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will execute the task and display the output from your remote servers as the task is running:
+Щоб запустити завдання чи сценарій, описаний у файлі `Envoy.blade.php` вашого застосунку, виконайте команду Envoy `run`, передавши ім'я потрібного завдання чи сценарію. Envoy виконає завдання й показуватиме вивід із ваших віддалених серверів у процесі:
 
 ```shell
 php vendor/bin/envoy run deploy
 ```
 
 <a name="confirming-task-execution"></a>
-### Confirming Task Execution
+### Підтвердження виконання завдання
 
-If you would like to be prompted for confirmation before running a given task on your servers, you should add the `confirm` directive to your task declaration. This option is particularly useful for destructive operations:
+Якщо ви хочете отримувати запит на підтвердження перед запуском певного завдання на серверах, додайте до його оголошення директиву `confirm`. Ця опція особливо корисна для руйнівних операцій:
 
 ```blade
 @task('deploy', ['on' => 'web', 'confirm' => true])
@@ -275,14 +278,14 @@ If you would like to be prompted for confirmation before running a given task on
 ```
 
 <a name="notifications"></a>
-## Notifications
+## Сповіщення
 
 <a name="slack"></a>
 ### Slack
 
-Envoy supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL and a channel / user name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel.
+Envoy підтримує надсилання сповіщень у [Slack](https://slack.com) після виконання кожного завдання. Директива `@slack` приймає URL хука Slack та ім'я каналу / користувача. Отримати URL вебхука можна, створивши інтеграцію «Incoming WebHooks» у панелі керування Slack.
 
-You should pass the entire webhook URL as the first argument given to the `@slack` directive. The second argument given to the `@slack` directive should be a channel name (`#channel`) or a user name (`@user`):
+Передайте повний URL вебхука першим аргументом директиви `@slack`. Другим аргументом має бути ім'я каналу (`#channel`) чи ім'я користувача (`@user`):
 
 ```blade
 @finished
@@ -290,7 +293,7 @@ You should pass the entire webhook URL as the first argument given to the `@slac
 @endfinished
 ```
 
-By default, Envoy notifications will send a message to the notification channel describing the task that was executed. However, you may overwrite this message with your own custom message by passing a third argument to the `@slack` directive:
+За замовчуванням сповіщення Envoy надсилатимуть у канал повідомлення з описом виконаного завдання. Проте ви можете перезаписати це повідомлення власним, передавши директиві `@slack` третій аргумент:
 
 ```blade
 @finished
@@ -301,7 +304,7 @@ By default, Envoy notifications will send a message to the notification channel 
 <a name="discord"></a>
 ### Discord
 
-Envoy also supports sending notifications to [Discord](https://discord.com) after each task is executed. The `@discord` directive accepts a Discord hook URL and a message. You may retrieve your webhook URL by creating a "Webhook" in your Server Settings and choosing which channel the webhook should post to. You should pass the entire Webhook URL into the `@discord` directive:
+Envoy також підтримує надсилання сповіщень у [Discord](https://discord.com) після виконання кожного завдання. Директива `@discord` приймає URL хука Discord і повідомлення. Отримати URL вебхука можна, створивши «Webhook» у налаштуваннях сервера й обравши канал, до якого він публікуватиме. Передайте повний URL вебхука до директиви `@discord`:
 
 ```blade
 @finished
@@ -312,7 +315,7 @@ Envoy also supports sending notifications to [Discord](https://discord.com) afte
 <a name="telegram"></a>
 ### Telegram
 
-Envoy also supports sending notifications to [Telegram](https://telegram.org) after each task is executed. The `@telegram` directive accepts a Telegram Bot ID and a Chat ID. You may retrieve your Bot ID by creating a new bot using [BotFather](https://t.me/botfather). You can retrieve a valid Chat ID using [@username_to_id_bot](https://t.me/username_to_id_bot). You should pass the entire Bot ID and Chat ID into the `@telegram` directive:
+Envoy також підтримує надсилання сповіщень у [Telegram](https://telegram.org) після виконання кожного завдання. Директива `@telegram` приймає ID бота Telegram і ID чату. Отримати ID бота можна, створивши нового бота через [BotFather](https://t.me/botfather). Отримати дійсний ID чату можна через [@username_to_id_bot](https://t.me/username_to_id_bot). Передайте повні ID бота та ID чату до директиви `@telegram`:
 
 ```blade
 @finished
@@ -323,7 +326,7 @@ Envoy also supports sending notifications to [Telegram](https://telegram.org) af
 <a name="microsoft-teams"></a>
 ### Microsoft Teams
 
-Envoy also supports sending notifications to [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) after each task is executed. The `@microsoftTeams` directive accepts a Teams Webhook (required), a message, theme color (success, info, warning, error), and an array of options. You may retrieve your Teams Webhook by creating a new [incoming webhook](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). The Teams API has many other attributes to customize your message box like title, summary, and sections. You can find more information on the [Microsoft Teams documentation](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message). You should pass the entire Webhook URL into the `@microsoftTeams` directive:
+Envoy також підтримує надсилання сповіщень у [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) після виконання кожного завдання. Директива `@microsoftTeams` приймає вебхук Teams (обов'язково), повідомлення, колір теми (success, info, warning, error) і масив опцій. Отримати вебхук Teams можна, створивши новий [вхідний вебхук](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). API Teams має багато інших атрибутів для налаштування вашого блоку повідомлення - як-от заголовок, підсумок і секції. Докладніше читайте в [документації Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message). Передайте повний URL вебхука до директиви `@microsoftTeams`:
 
 ```blade
 @finished
