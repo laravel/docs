@@ -1,84 +1,87 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel AI SDK
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [Configuration](#configuration)
-    - [Custom Base URLs](#custom-base-urls)
-    - [OpenAI-Compatible Providers](#openai-compatible-providers)
-    - [Provider Support](#provider-support)
-- [Agents](#agents)
-    - [Prompting](#prompting)
-    - [Conversation Context](#conversation-context)
-    - [Structured Output](#structured-output)
-    - [Attachments](#attachments)
-    - [Streaming](#streaming)
-    - [Broadcasting](#broadcasting)
-    - [Queueing](#queueing)
-    - [Tools](#tools)
-    - [File Storage Tools](#file-storage-tools)
-    - [MCP Tools](#mcp-tools)
-    - [Provider Tools](#provider-tools)
-    - [Sub-Agents](#sub-agents)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+    - [Конфігурація](#configuration)
+    - [Власні базові URL](#custom-base-urls)
+    - [Провайдери, сумісні з OpenAI](#openai-compatible-providers)
+    - [Підтримка провайдерів](#provider-support)
+- [Агенти](#agents)
+    - [Промптинг](#prompting)
+    - [Контекст розмови](#conversation-context)
+    - [Структурований вивід](#structured-output)
+    - [Вкладення](#attachments)
+    - [Стримінг](#streaming)
+    - [Бродкастинг](#broadcasting)
+    - [Черги](#queueing)
+    - [Інструменти](#tools)
+    - [Інструменти файлового сховища](#file-storage-tools)
+    - [MCP-інструменти](#mcp-tools)
+    - [Інструменти провайдера](#provider-tools)
+    - [Субагенти](#sub-agents)
     - [Middleware](#middleware)
-    - [Anonymous Agents](#anonymous-agents)
-    - [Agent Configuration](#agent-configuration)
-    - [Provider Options](#provider-options)
-- [Human Tool Approval](#human-tool-approval)
-    - [Complete Approval Flow](#complete-approval-flow)
-- [Images](#images)
-- [Audio (TTS)](#audio)
-- [Transcription (STT)](#transcription)
-- [Text Summarization](#text-summarization)
-- [Embeddings](#embeddings)
-    - [Multimodal Embeddings](#multimodal-embeddings)
-    - [Querying Embeddings](#querying-embeddings)
-    - [Caching Embeddings](#caching-embeddings)
-- [Reranking](#reranking)
-- [Files](#files)
-- [Vector Stores](#vector-stores)
-    - [Adding Files to Stores](#adding-files-to-stores)
-- [Failover](#failover)
-- [Testing](#testing)
-    - [Agents](#testing-agents)
-    - [Images](#testing-images)
-    - [Audio](#testing-audio)
-    - [Transcriptions](#testing-transcriptions)
-    - [Embeddings](#testing-embeddings)
-    - [Reranking](#testing-reranking)
-    - [Files](#testing-files)
-    - [Vector Stores](#testing-vector-stores)
-- [Events](#events)
+    - [Анонімні агенти](#anonymous-agents)
+    - [Конфігурація агента](#agent-configuration)
+    - [Опції провайдера](#provider-options)
+- [Схвалення інструментів людиною](#human-tool-approval)
+    - [Повний потік схвалення](#complete-approval-flow)
+- [Зображення](#images)
+- [Аудіо (TTS)](#audio)
+- [Транскрибування (STT)](#transcription)
+- [Стислий переказ тексту](#text-summarization)
+- [Ембединги](#embeddings)
+    - [Мультимодальні ембединги](#multimodal-embeddings)
+    - [Запити до ембедингів](#querying-embeddings)
+    - [Кешування ембедингів](#caching-embeddings)
+- [Переранжування](#reranking)
+- [Файли](#files)
+- [Векторні сховища](#vector-stores)
+    - [Додавання файлів до сховищ](#adding-files-to-stores)
+- [Резервні провайдери](#failover)
+- [Тестування](#testing)
+    - [Агенти](#testing-agents)
+    - [Зображення](#testing-images)
+    - [Аудіо](#testing-audio)
+    - [Транскрибування](#testing-transcriptions)
+    - [Ембединги](#testing-embeddings)
+    - [Переранжування](#testing-reranking)
+    - [Файли](#testing-files)
+    - [Векторні сховища](#testing-vector-stores)
+- [Події](#events)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-The [Laravel AI SDK](https://github.com/laravel/ai) provides a unified, expressive API for interacting with AI providers such as OpenAI, Anthropic, Gemini, and more. With the AI SDK, you can build intelligent agents with tools and structured output, generate images, synthesize and transcribe audio, create vector embeddings, and much more — all using a consistent, Laravel-friendly interface.
+[Laravel AI SDK](https://github.com/laravel/ai) дає уніфікований, виразний API для взаємодії з AI-провайдерами, як-от OpenAI, Anthropic, Gemini тощо. За допомогою AI SDK ви можете створювати розумних агентів з інструментами та структурованим виводом, генерувати зображення, синтезувати й транскрибувати аудіо, створювати векторні ембединги та багато іншого - і все це через узгоджений, дружній до Laravel інтерфейс.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-You can install the Laravel AI SDK via Composer:
+Встановити Laravel AI SDK можна через Composer:
 
 ```shell
 composer require laravel/ai
 ```
 
-Next, you should publish the AI SDK configuration and migration files using the `vendor:publish` Artisan command:
+Далі вам слід опублікувати конфігураційний файл і файли міграцій AI SDK артизан-командою `vendor:publish`:
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Ai\AiServiceProvider"
 ```
 
-Finally, you should run your application's database migrations. This will create a `agent_conversations` and `agent_conversation_messages` table that the AI SDK uses to power its conversation storage:
+Насамкінець виконайте міграції бази даних вашого застосунку. Це створить таблиці `agent_conversations` і `agent_conversation_messages`, які AI SDK використовує для зберігання розмов:
 
 ```shell
 php artisan migrate
 ```
 
 <a name="configuration"></a>
-### Configuration
+### Конфігурація
 
-You may define your AI provider credentials in your application's `config/ai.php` configuration file or as environment variables in your application's `.env` file:
+Ви можете визначити облікові дані своїх AI-провайдерів у конфігураційному файлі `config/ai.php` вашого застосунку або як змінні оточення у файлі `.env`:
 
 ```ini
 ANTHROPIC_API_KEY=
@@ -99,14 +102,14 @@ VOYAGEAI_API_KEY=
 XAI_API_KEY=
 ```
 
-The default models used for text, images, audio, transcription, and embeddings may also be configured in your application's `config/ai.php` configuration file.
+Моделі за замовчуванням для тексту, зображень, аудіо, транскрибування та ембедингів також можна налаштувати в конфігураційному файлі `config/ai.php` вашого застосунку.
 
 <a name="custom-base-urls"></a>
-### Custom Base URLs
+### Власні базові URL
 
-By default, the Laravel AI SDK connects directly to each provider's public API endpoint. However, you may need to route requests through a different endpoint - for example, when using a proxy service to centralize API key management, implement rate limiting, or route traffic through a corporate gateway.
+За замовчуванням Laravel AI SDK підключається безпосередньо до публічного API-ендпоїнта кожного провайдера. Однак вам може знадобитися спрямувати запити через інший ендпоїнт - наприклад, коли ви користуєтеся проксі-сервісом для централізованого керування API-ключами, реалізуєте обмеження частоти чи спрямовуєте трафік через корпоративний шлюз.
 
-You may configure custom base URLs by adding a `url` parameter to your provider configuration:
+Ви можете налаштувати власні базові URL, додавши параметр `url` до конфігурації свого провайдера:
 
 ```php
 'providers' => [
@@ -124,14 +127,14 @@ You may configure custom base URLs by adding a `url` parameter to your provider 
 ],
 ```
 
-This is useful when routing requests through a proxy service (such as LiteLLM or Azure OpenAI Gateway) or using alternative endpoints.
+Це корисно, коли ви спрямовуєте запити через проксі-сервіс (як-от LiteLLM чи Azure OpenAI Gateway) або використовуєте альтернативні ендпоїнти.
 
-Custom base URLs are supported for the following providers: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI, and OpenRouter.
+Власні базові URL підтримуються для таких провайдерів: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI та OpenRouter.
 
 <a name="openai-compatible-providers"></a>
-### OpenAI-Compatible Providers
+### Провайдери, сумісні з OpenAI
 
-If you are using an OpenAI-compatible API, such as LM Studio, vLLM, Together, Fireworks, or a local gateway, you may configure an `openai-compatible` provider. The `url` option is required, while the `key` option is optional and will be sent as a bearer token when present:
+Якщо ви користуєтеся API, сумісним з OpenAI, як-от LM Studio, vLLM, Together, Fireworks чи локальним шлюзом, ви можете налаштувати провайдер `openai-compatible`. Опція `url` обов'язкова, а опція `key` необов'язкова і, якщо присутня, надсилатиметься як bearer-токен:
 
 ```php
 'providers' => [
@@ -143,13 +146,13 @@ If you are using an OpenAI-compatible API, such as LM Studio, vLLM, Together, Fi
 ],
 ```
 
-Once configured, you may use the named provider like any other provider:
+Щойно провайдер налаштовано, ви можете використовувати його за іменем, як і будь-який інший:
 
 ```php
 agent()->prompt('What is Laravel?', provider: 'local', model: 'local-model');
 ```
 
-You may also configure a default text model for the provider so that you do not need to pass a model explicitly:
+Ви також можете налаштувати для провайдера текстову модель за замовчуванням, щоб не передавати модель явно:
 
 ```php
 'local' => [
@@ -164,12 +167,12 @@ You may also configure a default text model for the provider so that you do not 
 ],
 ```
 
-OpenAI-compatible providers support text generation, streaming, tools, structured output, and image attachments. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
+Провайдери, сумісні з OpenAI, підтримують генерацію тексту, стримінг, інструменти, структурований вивід і вкладення зображень. Якщо ваш ендпоїнт потребує додаткових полів у тілі запиту, передайте їх через [опції провайдера](#provider-options).
 
 <a name="provider-support"></a>
-### Provider Support
+### Підтримка провайдерів
 
-The AI SDK supports a variety of providers across its features. The following table summarizes which providers are available for each feature:
+AI SDK підтримує різні провайдери для своїх можливостей. Наведена нижче таблиця підсумовує, які провайдери доступні для кожної можливості:
 
 <div class="overflow-auto">
 
@@ -185,7 +188,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 
 </div>
 
-The `Laravel\Ai\Enums\Lab` enum may be used to reference providers throughout your code instead of using plain strings:
+Enum `Laravel\Ai\Enums\Lab` можна використовувати для посилання на провайдерів у вашому коді замість звичайних рядків:
 
 ```php
 use Laravel\Ai\Enums\Lab;
@@ -198,11 +201,11 @@ Lab::Gemini;
 ```
 
 <a name="agents"></a>
-## Agents
+## Агенти
 
-Agents are the fundamental building block for interacting with AI providers in the Laravel AI SDK. Each agent is a dedicated PHP class that encapsulates the instructions, conversation context, tools, and output schema needed to interact with a large language model. Think of an agent as a specialized assistant — a sales coach, a document analyzer, a support bot — that you configure once and prompt as needed throughout your application.
+Агенти - це фундаментальний будівельний блок для взаємодії з AI-провайдерами в Laravel AI SDK. Кожен агент - це окремий PHP-клас, що інкапсулює інструкції, контекст розмови, інструменти й схему виводу, потрібні для взаємодії з великою мовною моделлю. Уявіть агента як спеціалізованого асистента - тренера з продажів, аналізатора документів, бота підтримки, - якого ви налаштовуєте один раз і промптите за потреби у своєму застосунку.
 
-You can create an agent via the `make:agent` Artisan command:
+Створити агента можна артизан-командою `make:agent`:
 
 ```shell
 php artisan make:agent SalesCoach
@@ -210,7 +213,7 @@ php artisan make:agent SalesCoach
 php artisan make:agent SalesCoach --structured
 ```
 
-Within the generated agent class, you can define the system prompt / instructions, message context, available tools, and output schema (if applicable):
+У згенерованому класі агента ви можете визначити системний промпт / інструкції, контекст повідомлень, доступні інструменти й схему виводу (якщо потрібно):
 
 ```php
 <?php
@@ -284,9 +287,9 @@ class SalesCoach implements Agent, Conversational, HasTools, HasStructuredOutput
 ```
 
 <a name="prompting"></a>
-### Prompting
+### Промптинг
 
-To prompt an agent, first create an instance using the `make` method or standard instantiation, then call `prompt`:
+Щоб надіслати промпт агенту, спершу створіть екземпляр методом `make` чи звичайним інстанціюванням, а потім викличте `prompt`:
 
 ```php
 $response = (new SalesCoach)
@@ -295,13 +298,13 @@ $response = (new SalesCoach)
 return (string) $response;
 ```
 
-The `make` method resolves your agent from the container, allowing automatic dependency injection. You may also pass arguments to the agent's constructor:
+Метод `make` створює вашого агента через контейнер, що дозволяє автоматичне впровадження залежностей. Ви також можете передати аргументи до конструктора агента:
 
 ```php
 $agent = SalesCoach::make(user: $user);
 ```
 
-By passing additional arguments to the `prompt` method, you may override the default provider, model, or HTTP timeout when prompting:
+Передавши до методу `prompt` додаткові аргументи, ви можете перевизначити провайдера, модель чи HTTP-тайм-аут за замовчуванням під час промптингу:
 
 ```php
 $response = (new SalesCoach)->prompt(
@@ -313,9 +316,9 @@ $response = (new SalesCoach)->prompt(
 ```
 
 <a name="conversation-context"></a>
-### Conversation Context
+### Контекст розмови
 
-If your agent implements the `Conversational` interface, you may use the `messages` method to return the previous conversation context, if applicable:
+Якщо ваш агент реалізує інтерфейс `Conversational`, ви можете скористатися методом `messages`, щоб повернути попередній контекст розмови, якщо він є:
 
 ```php
 use App\Models\History;
@@ -338,11 +341,11 @@ public function messages(): iterable
 ```
 
 <a name="remembering-conversations"></a>
-#### Remembering Conversations
+#### Запам'ятовування розмов
 
-> **Warning:** Before using the `RemembersConversations` trait, you should publish and run the AI SDK migrations using the `vendor:publish` Artisan command. These migrations will create the necessary database tables to store conversations.
+> **Warning:** Перш ніж користуватися трейтом `RemembersConversations`, вам слід опублікувати й виконати міграції AI SDK артизан-командою `vendor:publish`. Ці міграції створять потрібні таблиці бази даних для зберігання розмов.
 
-If you would like Laravel to automatically store and retrieve conversation history for your agent, you may use the `RemembersConversations` trait. This trait provides a simple way to persist conversation messages to the database without manually implementing the `Conversational` interface:
+Якщо ви хочете, щоб Laravel автоматично зберігав і завантажував історію розмов вашого агента, скористайтеся трейтом `RemembersConversations`. Цей трейт дає простий спосіб зберігати повідомлення розмови в базі даних без ручної реалізації інтерфейсу `Conversational`:
 
 ```php
 <?php
@@ -368,9 +371,9 @@ class SalesCoach implements Agent, Conversational
 }
 ```
 
-When using the `RemembersConversations` trait, do not manually define a `messages` method in your agent class. If a `messages` method is present, it will take precedence over the trait's implementation and conversation history will not be loaded from the database.
+Використовуючи трейт `RemembersConversations`, не визначайте метод `messages` у класі агента вручну. Якщо метод `messages` присутній, він матиме перевагу над реалізацією трейта, і історія розмови не завантажуватиметься з бази даних.
 
-To start a new conversation for a user, call the `forUser` method before prompting:
+Щоб розпочати нову розмову для користувача, викличте метод `forUser` перед промптингом:
 
 ```php
 $response = (new SalesCoach)->forUser($user)->prompt('Hello!');
@@ -378,7 +381,7 @@ $response = (new SalesCoach)->forUser($user)->prompt('Hello!');
 $conversationId = $response->conversationId;
 ```
 
-The conversation ID is returned on the response and can be stored for future reference. If you would like to retrieve all of a user's conversations using Eloquent, you may add the `HasConversations` trait to your user model:
+ID розмови повертається у відповіді, і його можна зберегти для подальшого використання. Якщо ви хочете отримувати всі розмови користувача через Eloquent, додайте трейт `HasConversations` до своєї моделі користувача:
 
 ```php
 <?php
@@ -394,7 +397,7 @@ class User extends Authenticatable
 }
 ```
 
-Once the trait has been added to your model, you may retrieve and query the user's conversations via the `conversations` relationship:
+Щойно трейт додано до вашої моделі, ви можете отримувати розмови користувача й робити до них запити через зв'язок `conversations`:
 
 ```php
 $conversations = $user->conversations()
@@ -402,7 +405,7 @@ $conversations = $user->conversations()
     ->paginate(20);
 ```
 
-To continue an existing conversation, use the `continue` method:
+Щоб продовжити наявну розмову, скористайтеся методом `continue`:
 
 ```php
 $response = (new SalesCoach)
@@ -410,12 +413,12 @@ $response = (new SalesCoach)
     ->prompt('Tell me more about that.');
 ```
 
-When using the `RemembersConversations` trait, previous messages are automatically loaded and included in the conversation context when prompting. New messages (both user and assistant) are automatically stored after each interaction.
+Використовуючи трейт `RemembersConversations`, попередні повідомлення автоматично завантажуються й додаються до контексту розмови під час промптингу. Нові повідомлення (як користувача, так і асистента) автоматично зберігаються після кожної взаємодії.
 
 <a name="conversation-participants"></a>
-#### Conversation Participants
+#### Учасники розмови
 
-Although users are the most common conversation participants, conversations may belong to any Eloquent model. Use the `forParticipant` method to start a conversation for another type of model:
+Хоча користувачі - найпоширеніші учасники розмов, розмови можуть належати будь-якій Eloquent-моделі. Скористайтеся методом `forParticipant`, щоб розпочати розмову для іншого типу моделі:
 
 ```php
 $response = (new SalesCoach)
@@ -423,9 +426,9 @@ $response = (new SalesCoach)
     ->prompt('Review our latest sales results.');
 ```
 
-The participant's morph class and primary key are stored with the conversation. Therefore, models of different types that have the same primary key, such as `User` ID `1` and `Team` ID `1`, have separate conversation histories. The `forUser` method is an alias for `forParticipant`.
+Morph-клас і первинний ключ учасника зберігаються разом з розмовою. Тому моделі різних типів з однаковим первинним ключем, як-от `User` з ID `1` і `Team` з ID `1`, мають окремі історії розмов. Метод `forUser` є аліасом до `forParticipant`.
 
-You may continue the participant's most recent conversation using the `continueLastConversation` method:
+Ви можете продовжити найновішу розмову учасника методом `continueLastConversation`:
 
 ```php
 $response = (new SalesCoach)
@@ -433,7 +436,7 @@ $response = (new SalesCoach)
     ->prompt('Tell me more about that.');
 ```
 
-When continuing a specific conversation, pass the participant to the `continue` method:
+Продовжуючи конкретну розмову, передайте учасника до методу `continue`:
 
 ```php
 $response = (new SalesCoach)
@@ -441,7 +444,7 @@ $response = (new SalesCoach)
     ->prompt('Tell me more about that.');
 ```
 
-The `HasConversations` trait may be added to any Eloquent model that participates in conversations. The resulting `conversations` relationship is a polymorphic relationship scoped to that model's type and primary key. You may also access the participant that owns a conversation through its inverse relationship:
+Трейт `HasConversations` можна додати до будь-якої Eloquent-моделі, що бере участь у розмовах. Отриманий зв'язок `conversations` є поліморфним зв'язком, обмеженим типом і первинним ключем цієї моделі. Ви також можете звернутися до учасника, якому належить розмова, через зворотний зв'язок:
 
 ```php
 $conversations = $team->conversations;
@@ -449,15 +452,15 @@ $conversations = $team->conversations;
 $participant = $conversation->participant;
 ```
 
-If your application uses multiple participant model types, you should consider defining an [Eloquent morph map](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types) so that stored participant types are not coupled to your model class names.
+Якщо ваш застосунок використовує кілька типів моделей-учасників, вам варто визначити [morph-мапу Eloquent](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types), щоб збережені типи учасників не були прив'язані до імен ваших класів моделей.
 
 > [!WARNING]
-> The `continue` method does not verify that the given participant owns the conversation. Your application should authorize access to the conversation before continuing it.
+> Метод `continue` не перевіряє, чи заданий учасник володіє розмовою. Ваш застосунок має авторизувати доступ до розмови, перш ніж продовжувати її.
 
 <a name="structured-output"></a>
-### Structured Output
+### Структурований вивід
 
-If you would like your agent to return structured output, implement the `HasStructuredOutput` interface, which requires that your agent define a `schema` method:
+Якщо ви хочете, щоб ваш агент повертав структурований вивід, реалізуйте інтерфейс `HasStructuredOutput`, який вимагає, щоб агент визначив метод `schema`:
 
 ```php
 <?php
@@ -487,7 +490,7 @@ class SalesCoach implements Agent, HasStructuredOutput
 }
 ```
 
-When prompting an agent that returns structured output, you can access the returned `StructuredAgentResponse` like an array:
+Промптуючи агента, який повертає структурований вивід, ви можете звертатися до отриманого `StructuredAgentResponse` як до масиву:
 
 ```php
 $response = (new SalesCoach)->prompt('Analyze this sales transcript...');
@@ -496,9 +499,9 @@ return $response['score'];
 ```
 
 <a name="structured-output-nested-objects"></a>
-#### Nested Objects
+#### Вкладені об'єкти
 
-To define nested structured output, use the `object` method with a closure:
+Щоб визначити вкладений структурований вивід, скористайтеся методом `object` із замиканням:
 
 ```php
 <?php
@@ -533,9 +536,9 @@ class SalesCoach implements Agent, HasStructuredOutput
 ```
 
 <a name="structured-output-arrays-of-objects"></a>
-#### Arrays of Objects
+#### Масиви об'єктів
 
-If your agent should return a list of structured items, combine the `array` and `object` methods:
+Якщо ваш агент має повертати список структурованих елементів, поєднайте методи `array` та `object`:
 
 ```php
 public function schema(JsonSchema $schema): array
@@ -553,7 +556,7 @@ public function schema(JsonSchema $schema): array
 }
 ```
 
-If a value may match one of several schemas, use the `anyOf` method:
+Якщо значення може відповідати одній з кількох схем, скористайтеся методом `anyOf`:
 
 ```php
 public function schema(JsonSchema $schema): array
@@ -574,9 +577,9 @@ public function schema(JsonSchema $schema): array
 ```
 
 <a name="attachments"></a>
-### Attachments
+### Вкладення
 
-When prompting, you may also pass attachments with the prompt to allow the model to inspect images and documents:
+Промптуючи, ви також можете передати разом з промптом вкладення, щоб модель могла оглянути зображення й документи:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -592,7 +595,7 @@ $response = (new SalesCoach)->prompt(
 );
 ```
 
-Likewise, the `Laravel\Ai\Files\Image` class may be used to attach images to a prompt:
+Так само клас `Laravel\Ai\Files\Image` можна використати, щоб прикріпити зображення до промпта:
 
 ```php
 use App\Ai\Agents\ImageAnalyzer;
@@ -609,9 +612,9 @@ $response = (new ImageAnalyzer)->prompt(
 ```
 
 <a name="streaming"></a>
-### Streaming
+### Стримінг
 
-You may stream an agent's response by invoking the `stream` method. The returned `StreamableAgentResponse` may be returned from a route to automatically send a streaming response (SSE) to the client:
+Ви можете стримити відповідь агента, викликавши метод `stream`. Повернутий `StreamableAgentResponse` можна повернути з маршруту, щоб автоматично надіслати клієнту потокову відповідь (SSE):
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -621,7 +624,7 @@ Route::get('/coach', function () {
 });
 ```
 
-The `then` method may be used to provide a closure that will be invoked when the entire response has been streamed to the client:
+Метод `then` можна використати, щоб передати замикання, яке буде викликано, коли всю відповідь буде передано клієнту:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -636,7 +639,7 @@ Route::get('/coach', function () {
 });
 ```
 
-Alternatively, you may iterate through the streamed events manually:
+Як альтернативу ви можете вручну проходити по потокових подіях:
 
 ```php
 $stream = (new SalesCoach)->stream('Analyze this sales transcript...');
@@ -647,9 +650,9 @@ foreach ($stream as $event) {
 ```
 
 <a name="streaming-using-the-vercel-ai-sdk-protocol"></a>
-#### Streaming Using the Vercel AI SDK Protocol
+#### Стримінг за протоколом Vercel AI SDK
 
-You may stream the events using the [Vercel AI SDK stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol) by invoking the `usingVercelDataProtocol` method on the streamable response:
+Ви можете стримити події за [протоколом стримінгу Vercel AI SDK](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol), викликавши метод `usingVercelDataProtocol` на потоковій відповіді:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -662,9 +665,9 @@ Route::get('/coach', function () {
 ```
 
 <a name="broadcasting"></a>
-### Broadcasting
+### Бродкастинг
 
-You may broadcast streamed events in a few different ways. First, you can simply invoke the `broadcast` or `broadcastNow` method on a streamed event:
+Ви можете бродкастити потокові події кількома способами. По-перше, ви можете просто викликати метод `broadcast` чи `broadcastNow` на потоковій події:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -677,7 +680,7 @@ foreach ($stream as $event) {
 }
 ```
 
-Or, you can invoke an agent's `broadcastOnQueue` method to queue the agent operation and broadcast the streamed events as they are available:
+Або ж ви можете викликати метод `broadcastOnQueue` агента, щоб поставити операцію агента в чергу й бродкастити потокові події, щойно вони стають доступними:
 
 ```php
 (new SalesCoach)->broadcastOnQueue(
@@ -687,9 +690,9 @@ Or, you can invoke an agent's `broadcastOnQueue` method to queue the agent opera
 ```
 
 <a name="skipping-oversized-events"></a>
-#### Skipping Oversized Events
+#### Пропуск завеликих подій
 
-Some broadcasting platforms limit WebSocket messages to around 10KB. Data-heavy stream events, like large tool results, can exceed this limit and cause broadcasting to fail. You may exclude specific event types from broadcasting using the `WithoutBroadcasting` attribute:
+Деякі платформи бродкастингу обмежують WebSocket-повідомлення приблизно 10 КБ. Насичені даними потокові події, як-от великі результати інструментів, можуть перевищити це обмеження і зламати бродкастинг. Ви можете виключити конкретні типи подій з бродкастингу атрибутом `WithoutBroadcasting`:
 
 ```php
 <?php
@@ -712,12 +715,12 @@ class SearchAgent implements Agent, HasTools
 }
 ```
 
-The excluded events are never broadcast, but they are still persisted to the `agent_conversation_messages` table, so your frontend can load the full tool data after the stream completes. This works for both queued (`broadcastOnQueue`) and synchronous (`broadcast` / `broadcastNow`) broadcasting.
+Виключені події ніколи не бродкастяться, але їх усе одно зберігають у таблиці `agent_conversation_messages`, тож ваш фронтенд може завантажити повні дані інструментів після завершення потоку. Це працює як для бродкастингу через чергу (`broadcastOnQueue`), так і для синхронного (`broadcast` / `broadcastNow`).
 
 <a name="queueing"></a>
-### Queueing
+### Черги
 
-Using an agent's `queue` method, you may prompt the agent, but allow it to process the response in the background, keeping your application feeling fast and responsive. The `then` and `catch` methods may be used to register closures that will be invoked when a response is available or if an exception occurs:
+За допомогою методу `queue` агента ви можете надіслати йому промпт, але дозволити обробити відповідь у фоні, завдяки чому ваш застосунок залишатиметься швидким і чуйним. Методи `then` і `catch` можна використати, щоб зареєструвати замикання, які буде викликано, коли відповідь стане доступною або якщо станеться виняток:
 
 ```php
 use Illuminate\Http\Request;
@@ -739,15 +742,15 @@ Route::post('/coach', function (Request $request) {
 ```
 
 <a name="tools"></a>
-### Tools
+### Інструменти
 
-Tools may be used to give agents additional functionality that they can utilize while responding to prompts. Tools can be created using the `make:tool` Artisan command:
+Інструменти можна використати, щоб дати агентам додаткову функціональність, якою вони можуть скористатися, відповідаючи на промпти. Створити інструменти можна артизан-командою `make:tool`:
 
 ```shell
 php artisan make:tool RandomNumberGenerator
 ```
 
-The generated tool will be placed in your application's `app/Ai/Tools` directory. Each tool contains a `handle` method that will be invoked by the agent when it needs to utilize the tool:
+Згенерований інструмент буде розміщено в каталозі `app/Ai/Tools` вашого застосунку. Кожен інструмент містить метод `handle`, який агент викличе, коли йому знадобиться скористатися інструментом:
 
 ```php
 <?php
@@ -790,7 +793,7 @@ class RandomNumberGenerator implements Tool
 }
 ```
 
-Once you have defined your tool, you may return it from the `tools` method of any of your agents:
+Щойно ви визначили свій інструмент, ви можете повернути його з методу `tools` будь-якого зі своїх агентів:
 
 ```php
 use App\Ai\Tools\RandomNumberGenerator;
@@ -809,11 +812,11 @@ public function tools(): iterable
 ```
 
 <a name="similarity-search"></a>
-#### Similarity Search
+#### Пошук за схожістю
 
-The `SimilaritySearch` tool allows agents to search for documents similar to a given query using vector embeddings stored in your database. This is useful for retrieval-augmented generation (RAG) when you want to give agents access to search your application's data.
+Інструмент `SimilaritySearch` дозволяє агентам шукати документи, схожі на заданий запит, використовуючи векторні ембединги, збережені у вашій базі даних. Це корисно для retrieval-augmented generation (RAG), коли ви хочете дати агентам доступ до пошуку в даних вашого застосунку.
 
-The simplest way to create a similarity search tool is using the `usingModel` method with an Eloquent model that has vector embeddings:
+Найпростіший спосіб створити інструмент пошуку за схожістю - метод `usingModel` з Eloquent-моделлю, яка має векторні ембединги:
 
 ```php
 use App\Models\Document;
@@ -827,9 +830,9 @@ public function tools(): iterable
 }
 ```
 
-The first argument is the Eloquent model class, and the second argument is the column containing the vector embeddings.
+Перший аргумент - клас Eloquent-моделі, а другий - колонка, що містить векторні ембединги.
 
-You may also provide a minimum similarity threshold between `0.0` and `1.0` and a closure to customize the query:
+Ви також можете передати мінімальний поріг схожості між `0.0` і `1.0` та замикання для налаштування запиту:
 
 ```php
 SimilaritySearch::usingModel(
@@ -841,7 +844,7 @@ SimilaritySearch::usingModel(
 ),
 ```
 
-For more control, you may create a similarity search tool with a custom closure that returns the search results:
+Для більшого контролю ви можете створити інструмент пошуку за схожістю з власним замиканням, яке повертає результати пошуку:
 
 ```php
 use App\Models\Document;
@@ -861,7 +864,7 @@ public function tools(): iterable
 }
 ```
 
-You may customize the tool's description using the `withDescription` method:
+Ви можете змінити опис інструмента методом `withDescription`:
 
 ```php
 SimilaritySearch::usingModel(Document::class, 'embedding')
@@ -869,9 +872,9 @@ SimilaritySearch::usingModel(Document::class, 'embedding')
 ```
 
 <a name="file-storage-tools"></a>
-### File Storage Tools
+### Інструменти файлового сховища
 
-The `FileStorage` tool factory allows you to give agents access to a Laravel [filesystem disk](/docs/{{version}}/filesystem). The `all` method returns tools that allow the agent to list, read, inspect, generate URLs for, write, delete, and copy files on the given disk:
+Фабрика інструментів `FileStorage` дозволяє дати агентам доступ до [диска файлової системи](/docs/{{version}}/filesystem) Laravel. Метод `all` повертає інструменти, які дозволяють агенту перелічувати, читати, оглядати, генерувати URL, записувати, видаляти й копіювати файли на заданому диску:
 
 ```php
 use Laravel\Ai\Tools\FileStorage;
@@ -882,13 +885,13 @@ public function tools(): iterable
 }
 ```
 
-If your agent should only be able to inspect files, use the `readOnly` method:
+Якщо ваш агент має мати змогу лише оглядати файли, скористайтеся методом `readOnly`:
 
 ```php
 return FileStorage::readOnly('local');
 ```
 
-These methods return an `Illuminate\Support\Collection`, allowing you to further filter the tools that are provided to the agent:
+Ці методи повертають `Illuminate\Support\Collection`, що дозволяє додатково відфільтрувати інструменти, які надаються агенту:
 
 ```php
 use Laravel\Ai\Tools\Filesystem\DeleteFile;
@@ -898,14 +901,14 @@ return FileStorage::all('s3')
 ```
 
 <a name="mcp-tools"></a>
-### MCP Tools
+### MCP-інструменти
 
-If your application uses [Laravel MCP](/docs/{{version}}/mcp), you may give your agents tools exposed by [Model Context Protocol](https://modelcontextprotocol.io) servers. Using the [Laravel MCP client](/docs/{{version}}/mcp#client), you may connect to a remote or local MCP server and pass its tools directly to your agent.
+Якщо ваш застосунок використовує [Laravel MCP](/docs/{{version}}/mcp), ви можете дати своїм агентам інструменти, які надають сервери [Model Context Protocol](https://modelcontextprotocol.io). За допомогою [клієнта Laravel MCP](/docs/{{version}}/mcp#client) ви можете підключитися до віддаленого чи локального MCP-сервера й передати його інструменти безпосередньо своєму агенту.
 
 > [!NOTE]
-> MCP tools require the [Laravel MCP](/docs/{{version}}/mcp) package to be installed in your application.
+> MCP-інструменти потребують, щоб у вашому застосунку було встановлено пакет [Laravel MCP](/docs/{{version}}/mcp).
 
-Because an MCP client's `tools` method returns a collection, spread it into your agent's `tools` array using the `...` operator:
+Оскільки метод `tools` MCP-клієнта повертає колекцію, розгорніть її в масив `tools` вашого агента оператором `...`:
 
 ```php
 use App\Ai\Tools\RandomNumberGenerator;
@@ -928,7 +931,7 @@ public function tools(): iterable
 }
 ```
 
-The AI SDK automatically wraps each MCP tool so the agent can call it like any other tool. You may also use a [named MCP client](/docs/{{version}}/mcp#named-clients):
+AI SDK автоматично загортає кожен MCP-інструмент, щоб агент міг викликати його як будь-який інший. Ви також можете скористатися [іменованим MCP-клієнтом](/docs/{{version}}/mcp#named-clients):
 
 ```php
 use Laravel\Mcp\Facades\Mcp;
@@ -941,7 +944,7 @@ public function tools(): iterable
 }
 ```
 
-Or connect to a [local MCP server](/docs/{{version}}/mcp#client-connecting):
+Або підключитися до [локального MCP-сервера](/docs/{{version}}/mcp#client-connecting):
 
 ```php
 use Laravel\Mcp\Client;
@@ -954,21 +957,21 @@ public function tools(): iterable
 }
 ```
 
-For more information on creating and authenticating MCP clients, including bearer tokens and OAuth, consult the [MCP client documentation](/docs/{{version}}/mcp#client).
+Докладніше про створення й автентифікацію MCP-клієнтів, включно з bearer-токенами й OAuth, дивіться в [документації MCP-клієнта](/docs/{{version}}/mcp#client).
 
 <a name="provider-tools"></a>
-### Provider Tools
+### Інструменти провайдера
 
-Provider tools are special tools implemented natively by AI providers, offering capabilities like web searching, URL fetching, and file searching. Unlike regular tools, provider tools are executed by the provider itself rather than your application.
+Інструменти провайдера - це особливі інструменти, реалізовані нативно самими AI-провайдерами, які пропонують можливості на кшталт вебпошуку, завантаження URL і пошуку файлів. На відміну від звичайних інструментів, інструменти провайдера виконує сам провайдер, а не ваш застосунок.
 
-Provider tools can be returned by your agent's `tools` method.
+Інструменти провайдера можна повертати з методу `tools` вашого агента.
 
 <a name="web-search"></a>
-#### Web Search
+#### Вебпошук
 
-The `WebSearch` provider tool allows agents to search the web for real-time information. This is useful for answering questions about current events, recent data, or topics that may have changed since the model's training cutoff.
+Інструмент провайдера `WebSearch` дозволяє агентам шукати в мережі інформацію в реальному часі. Це корисно для відповідей на питання про поточні події, свіжі дані чи теми, які могли змінитися після дати відсічення тренувальних даних моделі.
 
-**Supported providers:** Anthropic, OpenAI, Gemini, OpenRouter
+**Підтримувані провайдери:** Anthropic, OpenAI, Gemini, OpenRouter
 
 ```php
 use Laravel\Ai\Providers\Tools\WebSearch;
@@ -981,13 +984,13 @@ public function tools(): iterable
 }
 ```
 
-You may configure the web search tool to limit the number of searches or restrict results to specific domains:
+Ви можете налаштувати інструмент вебпошуку, щоб обмежити кількість пошуків чи звузити результати до конкретних доменів:
 
 ```php
 (new WebSearch)->max(5)->allow(['laravel.com', 'php.net']),
 ```
 
-To refine search results based on user location, use the `location` method:
+Щоб уточнити результати пошуку за місцем розташування користувача, скористайтеся методом `location`:
 
 ```php
 (new WebSearch)->location(
@@ -998,11 +1001,11 @@ To refine search results based on user location, use the `location` method:
 ```
 
 <a name="web-fetch"></a>
-#### Web Fetch
+#### Завантаження вебсторінок
 
-The `WebFetch` provider tool allows agents to fetch and read the contents of web pages. This is useful when you need the agent to analyze specific URLs or retrieve detailed information from known web pages.
+Інструмент провайдера `WebFetch` дозволяє агентам завантажувати й читати вміст вебсторінок. Це корисно, коли вам потрібно, щоб агент проаналізував конкретні URL чи отримав докладну інформацію з відомих вебсторінок.
 
-**Supported providers:** Anthropic, Gemini
+**Підтримувані провайдери:** Anthropic, Gemini
 
 ```php
 use Laravel\Ai\Providers\Tools\WebFetch;
@@ -1015,18 +1018,18 @@ public function tools(): iterable
 }
 ```
 
-You may configure the web fetch tool to limit the number of fetches or restrict to specific domains:
+Ви можете налаштувати інструмент завантаження вебсторінок, щоб обмежити кількість завантажень чи звузити його до конкретних доменів:
 
 ```php
 (new WebFetch)->max(3)->allow(['docs.laravel.com']),
 ```
 
 <a name="file-search"></a>
-#### File Search
+#### Пошук файлів
 
-The `FileSearch` provider tool allows agents to search through [files](#files) stored in [vector stores](#vector-stores). This enables retrieval-augmented generation (RAG) by allowing the agent to search your uploaded documents for relevant information.
+Інструмент провайдера `FileSearch` дозволяє агентам шукати серед [файлів](#files), збережених у [векторних сховищах](#vector-stores). Це уможливлює retrieval-augmented generation (RAG), дозволяючи агенту шукати релевантну інформацію у ваших завантажених документах.
 
-**Supported providers:** OpenAI, Gemini
+**Підтримувані провайдери:** OpenAI, Gemini
 
 ```php
 use Laravel\Ai\Providers\Tools\FileSearch;
@@ -1039,13 +1042,13 @@ public function tools(): iterable
 }
 ```
 
-You may provide multiple vector store IDs to search across multiple stores:
+Ви можете передати кілька ID векторних сховищ, щоб шукати в кількох сховищах:
 
 ```php
 new FileSearch(stores: ['store_1', 'store_2']);
 ```
 
-If your files have [metadata](#adding-files-to-stores), you may filter the search results by providing a `where` argument. For simple equality filters, pass an array:
+Якщо ваші файли мають [метадані](#adding-files-to-stores), ви можете відфільтрувати результати пошуку, передавши аргумент `where`. Для простих фільтрів на рівність передайте масив:
 
 ```php
 new FileSearch(stores: ['store_id'], where: [
@@ -1054,7 +1057,7 @@ new FileSearch(stores: ['store_id'], where: [
 ]);
 ```
 
-For more complex filters, you may pass a closure that receives a `FileSearchQuery` instance:
+Для складніших фільтрів ви можете передати замикання, яке отримує екземпляр `FileSearchQuery`:
 
 ```php
 use Laravel\Ai\Providers\Tools\FileSearchQuery;
@@ -1067,11 +1070,11 @@ new FileSearch(stores: ['store_id'], where: fn (FileSearchQuery $query) =>
 ```
 
 <a name="sub-agents"></a>
-### Sub-Agents
+### Субагенти
 
-Agents may also be returned from another agent's `tools` method. When an agent is returned as a tool, the parent agent may delegate a specific task to the sub-agent and use the sub-agent's response while answering the original prompt. This is useful when a general-purpose agent needs access to specialized agents with their own instructions, tools, model configuration, or provider preferences.
+Агентів також можна повертати з методу `tools` іншого агента. Коли агента повернуто як інструмент, батьківський агент може делегувати субагенту конкретне завдання й використати його відповідь, відповідаючи на початковий промпт. Це корисно, коли агенту загального призначення потрібен доступ до спеціалізованих агентів з власними інструкціями, інструментами, конфігурацією моделі чи вподобаннями щодо провайдера.
 
-For example, a customer support agent could delegate refund eligibility questions to a dedicated refunds agent:
+Наприклад, агент підтримки клієнтів міг би делегувати питання про право на повернення коштів окремому агенту з повернень:
 
 ```php
 <?php
@@ -1108,7 +1111,7 @@ class CustomerSupportAgent implements Agent, HasTools
 }
 ```
 
-To customize how the sub-agent is exposed to the parent agent, implement the `CanActAsTool` interface on the sub-agent and define a tool-facing name and description:
+Щоб налаштувати, як субагент подається батьківському агенту, реалізуйте на субагенті інтерфейс `CanActAsTool` і визначте ім'я та опис для інструмента:
 
 ```php
 <?php
@@ -1166,18 +1169,18 @@ class RefundsAgent implements Agent, CanActAsTool, HasTools
 }
 ```
 
-If a sub-agent does not implement `CanActAsTool`, Laravel will use the agent's class basename as the tool name and a generic description that asks the parent agent to pass a clear, self-contained task description. Each sub-agent invocation runs in isolation and does not receive the parent agent's conversation history.
+Якщо субагент не реалізує `CanActAsTool`, Laravel використає базове ім'я класу агента як ім'я інструмента й загальний опис, який просить батьківського агента передати чіткий, самодостатній опис завдання. Кожен виклик субагента виконується ізольовано й не отримує історії розмови батьківського агента.
 
 <a name="middleware"></a>
 ### Middleware
 
-Agents support middleware, allowing you to intercept and modify prompts before they are sent to the provider. Middleware can be created using the `make:agent-middleware` Artisan command:
+Агенти підтримують `middleware`, що дозволяє перехоплювати й змінювати промпти, перш ніж їх буде надіслано провайдеру. Створити `middleware` можна артизан-командою `make:agent-middleware`:
 
 ```shell
 php artisan make:agent-middleware LogPrompts
 ```
 
-The generated middleware will be placed in your application's `app/Ai/Middleware` directory. To add middleware to an agent, implement the `HasMiddleware` interface and define a `middleware` method that returns an array of middleware classes:
+Згенерований `middleware` буде розміщено в каталозі `app/Ai/Middleware` вашого застосунку. Щоб додати `middleware` до агента, реалізуйте інтерфейс `HasMiddleware` і визначте метод `middleware`, який повертає масив класів `middleware`:
 
 ```php
 <?php
@@ -1207,7 +1210,7 @@ class SalesCoach implements Agent, HasMiddleware
 }
 ```
 
-Each middleware class should define a `handle` method that receives the `AgentPrompt` and a `Closure` to pass the prompt to the next middleware:
+Кожен клас `middleware` має визначати метод `handle`, який отримує `AgentPrompt` і `Closure` для передавання промпта наступному `middleware`:
 
 ```php
 <?php
@@ -1231,7 +1234,7 @@ class LogPrompts
 }
 ```
 
-You may use the `then` method on the response to execute code after the agent has finished processing. This works for both synchronous and streaming responses:
+Ви можете скористатися методом `then` на відповіді, щоб виконати код після того, як агент завершить обробку. Це працює як для синхронних, так і для потокових відповідей:
 
 ```php
 public function handle(AgentPrompt $prompt, Closure $next)
@@ -1243,9 +1246,9 @@ public function handle(AgentPrompt $prompt, Closure $next)
 ```
 
 <a name="anonymous-agents"></a>
-### Anonymous Agents
+### Анонімні агенти
 
-Sometimes you may want to quickly interact with a model without creating a dedicated agent class. You can create an ad-hoc, anonymous agent using the `agent` function:
+Іноді вам може знадобитися швидко звернутися до моделі, не створюючи окремого класу агента. Ви можете створити спонтанного, анонімного агента функцією `agent`:
 
 ```php
 use function Laravel\Ai\{agent};
@@ -1257,7 +1260,7 @@ $response = agent(
 )->prompt('Tell me about Laravel')
 ```
 
-Anonymous agents may also produce structured output:
+Анонімні агенти також можуть давати структурований вивід:
 
 ```php
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -1272,19 +1275,19 @@ $response = agent(
 ```
 
 <a name="agent-configuration"></a>
-### Agent Configuration
+### Конфігурація агента
 
-You may configure text generation options for an agent using PHP attributes. The following attributes are available:
+Ви можете налаштувати опції генерації тексту для агента за допомогою PHP-атрибутів. Доступні такі атрибути:
 
-- `MaxSteps`: The maximum number of steps the agent may take when using tools.
-- `MaxTokens`: The maximum number of tokens the model may generate.
-- `Model`: The model the agent should use.
-- `Provider`: The AI provider (or providers for failover) to use for the agent.
-- `Temperature`: The sampling temperature to use for generation (0.0 to 1.0).
-- `Timeout`: The HTTP timeout in seconds for agent requests (default: 60).
-- `TopP`: The nucleus sampling probability to use for generation (0.0 to 1.0).
-- `UseCheapestModel`: Use the provider's cheapest text model for cost optimization.
-- `UseSmartestModel`: Use the provider's most capable text model for complex tasks.
+- `MaxSteps`: максимальна кількість кроків, які агент може зробити, користуючись інструментами.
+- `MaxTokens`: максимальна кількість токенів, які модель може згенерувати.
+- `Model`: модель, яку має використовувати агент.
+- `Provider`: AI-провайдер (чи провайдери для резервування), який слід використовувати для агента.
+- `Temperature`: температура семплювання для генерації (від 0.0 до 1.0).
+- `Timeout`: HTTP-тайм-аут у секундах для запитів агента (за замовчуванням: 60).
+- `TopP`: імовірність nucleus-семплювання для генерації (від 0.0 до 1.0).
+- `UseCheapestModel`: використовувати найдешевшу текстову модель провайдера для оптимізації витрат.
+- `UseSmartestModel`: використовувати найпотужнішу текстову модель провайдера для складних завдань.
 
 ```php
 <?php
@@ -1317,7 +1320,7 @@ class SalesCoach implements Agent
 }
 ```
 
-The `UseCheapestModel` and `UseSmartestModel` attributes allow you to automatically select the most cost-effective or most capable model for a given provider without specifying a model name. This is useful when you want to optimize for cost or capability across different providers:
+Атрибути `UseCheapestModel` і `UseSmartestModel` дозволяють автоматично обрати найвигіднішу за ціною чи найпотужнішу модель для заданого провайдера, не вказуючи імені моделі. Це корисно, коли ви хочете оптимізувати витрати чи можливості для різних провайдерів:
 
 ```php
 use Laravel\Ai\Attributes\UseCheapestModel;
@@ -1343,12 +1346,12 @@ class ComplexReasoner implements Agent
 ```
 
 > [!NOTE]
-> The underlying model selected by `UseCheapestModel` and `UseSmartestModel` may change between releases of the Laravel AI SDK as providers release new models. Switching models can introduce behavioral changes, deprecated parameters, and significant cost differences. If you need a stable, predictable model and pricing, specify the model explicitly using the `Model` attribute.
+> Модель, яку обирають `UseCheapestModel` і `UseSmartestModel`, може змінюватися між випусками Laravel AI SDK, оскільки провайдери випускають нові моделі. Зміна моделі може призвести до змін у поведінці, застарілих параметрів і суттєвої різниці у вартості. Якщо вам потрібна стабільна, передбачувана модель і ціна, вкажіть модель явно атрибутом `Model`.
 
 <a name="provider-options"></a>
-### Provider Options
+### Опції провайдера
 
-If your agent needs to pass provider-specific options (such as OpenAI reasoning effort or penalty settings), implement the `HasProviderOptions` contract and define a `providerOptions` method:
+Якщо вашому агенту потрібно передати специфічні для провайдера опції (як-от reasoning effort в OpenAI чи налаштування штрафів), реалізуйте контракт `HasProviderOptions` і визначте метод `providerOptions`:
 
 ```php
 <?php
@@ -1387,17 +1390,17 @@ class SalesCoach implements Agent, HasProviderOptions
 }
 ```
 
-The `providerOptions` method receives the provider currently being used (`Lab` enum or string), allowing you to return different options per provider. This is especially useful when using [failover](#failover), since each fallback provider can receive its own configuration.
+Метод `providerOptions` отримує провайдера, який використовується зараз (enum `Lab` чи рядок), що дозволяє повертати різні опції для різних провайдерів. Це особливо корисно під час використання [резервування](#failover), оскільки кожен резервний провайдер може отримати власну конфігурацію.
 
-The Anthropic example above also enables [prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) via `cache_control`.
+Наведений вище приклад з Anthropic також вмикає [кешування промптів](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) через `cache_control`.
 
 <a name="human-tool-approval"></a>
-## Human Tool Approval
+## Схвалення інструментів людиною
 
 > [!WARNING]
-> Tool approval requires a `Conversational` agent whose conversation history is persisted so the paused call can be resumed. The `RemembersConversations` trait provides the necessary persistence.
+> Схвалення інструментів потребує агента `Conversational`, історія розмови якого зберігається, щоб призупинений виклик можна було відновити. Трейт `RemembersConversations` забезпечує потрібне збереження.
 
-Tools that perform sensitive or irreversible actions may require human approval before they are executed. To make a tool approvable, implement the `Approvable` contract and use the `InteractsWithApprovals` trait. Approvable tools require approval by default:
+Інструменти, що виконують чутливі чи незворотні дії, можуть потребувати схвалення людиною перед виконанням. Щоб зробити інструмент таким, що потребує схвалення, реалізуйте контракт `Approvable` і використайте трейт `InteractsWithApprovals`. Такі інструменти за замовчуванням потребують схвалення:
 
 ```php
 <?php
@@ -1446,7 +1449,7 @@ class DeleteFile implements Approvable, Tool
 }
 ```
 
-To determine whether approval is needed based on the tool call's arguments, define a `needsApproval` method on the tool. This method may return a boolean or an `Approval` instance that includes a reason for the approval request:
+Щоб визначити, чи потрібне схвалення, на основі аргументів виклику інструмента, визначте на інструменті метод `needsApproval`. Цей метод може повернути булеве значення чи екземпляр `Approval`, який містить причину запиту на схвалення:
 
 ```php
 use Laravel\Ai\Approvals\Approval;
@@ -1462,7 +1465,7 @@ protected function needsApproval(Request $request): Approval|bool
 }
 ```
 
-You may override a tool's approval requirement when returning it from an agent's `tools` method:
+Ви можете перевизначити вимогу схвалення для інструмента, повертаючи його з методу `tools` агента:
 
 ```php
 public function tools(): iterable
@@ -1474,7 +1477,7 @@ public function tools(): iterable
 }
 ```
 
-When an approvable tool is called, the agent pauses before executing it. You may inspect the response's pending approvals, which contain each tool call's ID, tool name, arguments, and approval reason:
+Коли викликано інструмент, що потребує схвалення, агент призупиняється перед його виконанням. Ви можете оглянути очікувані схвалення у відповіді - вони містять ID кожного виклику інструмента, ім'я інструмента, аргументи й причину схвалення:
 
 ```php
 $response = (new FileAssistant)
@@ -1491,7 +1494,7 @@ if ($response->hasPendingApprovals()) {
 }
 ```
 
-To resume the agent, continue the conversation and provide a `Decisions` instance containing a decision for each pending tool call. Decisions may approve the call, reject it, or edit its arguments before execution:
+Щоб відновити роботу агента, продовжте розмову й передайте екземпляр `Decisions`, що містить рішення для кожного очікуваного виклику інструмента. Рішення можуть схвалити виклик, відхилити його чи змінити його аргументи перед виконанням:
 
 ```php
 use Laravel\Ai\Approvals\Decision;
@@ -1505,7 +1508,7 @@ $response = (new FileAssistant)
     ]));
 ```
 
-The boolean values `true` and `false` may be used as shorthand for approval and rejection. Every pending tool call must receive a decision. Unknown, missing, or previously resolved tool call IDs will cause an `ApprovalMismatchException` to be thrown. You may provide a default for calls without an explicit decision using the `approveRemaining` or `rejectRemaining` methods:
+Булеві значення `true` і `false` можна використовувати як скорочення для схвалення й відхилення. Кожен очікуваний виклик інструмента має отримати рішення. Невідомі, відсутні чи вже розв'язані ID викликів інструментів спричинять виняток `ApprovalMismatchException`. Ви можете задати значення за замовчуванням для викликів без явного рішення методами `approveRemaining` чи `rejectRemaining`:
 
 ```php
 $decisions = Decisions::from([
@@ -1517,20 +1520,20 @@ $response = (new FileAssistant)
     ->prompt($decisions);
 ```
 
-A rejection with a result, such as `Decision::reject('Not approved.')`, is returned to the model so it may continue responding. A rejection without a result stops the generation loop after recording the rejection.
+Відхилення з результатом, як-от `Decision::reject('Not approved.')`, повертається моделі, щоб вона могла продовжити відповідь. Відхилення без результату зупиняє цикл генерації після запису відхилення.
 
-Tool approval is supported by the `prompt`, `stream`, `queue`, `broadcast`, `broadcastNow`, and `broadcastOnQueue` methods.
+Схвалення інструментів підтримують методи `prompt`, `stream`, `queue`, `broadcast`, `broadcastNow` і `broadcastOnQueue`.
 
-During streaming and broadcasting, a pause is represented by a `tool_approval_request` event. When using the [Vercel AI SDK stream protocol](#streaming-using-the-vercel-ai-sdk-protocol), approval requests and results are emitted using the protocol's native tool approval parts.
+Під час стримінгу й бродкастингу призупинення представлене подією `tool_approval_request`. Використовуючи [протокол стримінгу Vercel AI SDK](#streaming-using-the-vercel-ai-sdk-protocol), запити на схвалення й результати випромінюються через нативні частини схвалення інструментів цього протоколу.
 
-For queued agents, the resulting response is passed to the `then` callback, and Laravel also dispatches a `ToolApprovalRequested` event.
+Для агентів у черзі отримана відповідь передається до колбека `then`, а Laravel також диспетчеризує подію `ToolApprovalRequested`.
 
-Laravel stores the result of an approved tool before asking the model to continue. If generation then fails, the approval has already been resolved. Continue the conversation with a normal text prompt instead of submitting the same approval decisions again.
+Laravel зберігає результат схваленого інструмента, перш ніж попросити модель продовжити. Якщо генерація потім зазнає невдачі, схвалення вже розв'язане. Продовжте розмову звичайним текстовим промптом, а не надсилайте ті самі рішення про схвалення ще раз.
 
 <a name="complete-approval-flow"></a>
-### Complete Approval Flow
+### Повний потік схвалення
 
-The following routes demonstrate a complete approval flow. The `GET` route returns the chat screen, while the `POST` route accepts either a new text prompt or approval decisions from the chat screen. This example assumes the application's `User` model uses the `HasConversations` trait:
+Наведені нижче маршрути демонструють повний потік схвалення. Маршрут `GET` повертає екран чату, а маршрут `POST` приймає або новий текстовий промпт, або рішення про схвалення з екрана чату. Цей приклад припускає, що модель `User` застосунку використовує трейт `HasConversations`:
 
 ```php
 use App\Ai\Agents\FileAssistant;
@@ -1582,7 +1585,7 @@ Route::post('/chat/{conversation}', function (Request $request, Conversation $co
 })->middleware('auth');
 ```
 
-When the response status is `awaiting_approval`, the chat screen should render the pending approvals and submit the user's choices to the same endpoint using the tool call ID as each decision's key:
+Коли статус відповіді - `awaiting_approval`, екран чату має відрендерити очікувані схвалення й надіслати вибір користувача на той самий ендпоїнт, використовуючи ID виклику інструмента як ключ кожного рішення:
 
 ```json
 {
@@ -1598,7 +1601,7 @@ When the response status is `awaiting_approval`, the chat screen should render t
 }
 ```
 
-For a normal chat message, the screen may instead submit a `message` value:
+Для звичайного повідомлення чату екран може натомість надіслати значення `message`:
 
 ```json
 {
@@ -1607,9 +1610,9 @@ For a normal chat message, the screen may instead submit a `message` value:
 ```
 
 <a name="images"></a>
-## Images
+## Зображення
 
-The `Laravel\Ai\Image` class may be used to generate images using the `openai`, `gemini`, or `xai` providers:
+Клас `Laravel\Ai\Image` можна використати для генерації зображень через провайдерів `openai`, `gemini` чи `xai`:
 
 ```php
 use Laravel\Ai\Image;
@@ -1619,7 +1622,7 @@ $image = Image::of('A donut sitting on the kitchen counter')->generate();
 $rawContent = (string) $image;
 ```
 
-The `square`, `portrait`, and `landscape` methods may be used to control the aspect ratio of the image, while the `quality` method may be used to guide the model on final image quality (`high`, `medium`, `low`). The `timeout` method may be used to specify the HTTP timeout in seconds:
+Методи `square`, `portrait` і `landscape` можна використати, щоб керувати співвідношенням сторін зображення, а метод `quality` - щоб підказати моделі бажану якість готового зображення (`high`, `medium`, `low`). Метод `timeout` можна використати, щоб задати HTTP-тайм-аут у секундах:
 
 ```php
 use Laravel\Ai\Image;
@@ -1631,7 +1634,7 @@ $image = Image::of('A donut sitting on the kitchen counter')
     ->generate();
 ```
 
-You may attach reference images using the `attachments` method:
+Ви можете прикріпити референсні зображення методом `attachments`:
 
 ```php
 use Laravel\Ai\Files;
@@ -1648,7 +1651,7 @@ $image = Image::of('Update this photo of me to be in the style of an impressioni
     ->generate();
 ```
 
-Generated images may be easily stored on the default disk configured in your application's `config/filesystems.php` configuration file:
+Згенеровані зображення легко зберегти на диску за замовчуванням, налаштованому в конфігураційному файлі `config/filesystems.php` вашого застосунку:
 
 ```php
 $image = Image::of('A donut sitting on the kitchen counter');
@@ -1659,7 +1662,7 @@ $path = $image->storePublicly();
 $path = $image->storePubliclyAs('image.jpg');
 ```
 
-Image generation may also be queued:
+Генерацію зображень також можна поставити в чергу:
 
 ```php
 use Laravel\Ai\Image;
@@ -1676,9 +1679,9 @@ Image::of('A donut sitting on the kitchen counter')
 ```
 
 <a name="audio"></a>
-## Audio
+## Аудіо
 
-The `Laravel\Ai\Audio` class may be used to generate audio from the given text:
+Клас `Laravel\Ai\Audio` можна використати для генерації аудіо із заданого тексту:
 
 ```php
 use Laravel\Ai\Audio;
@@ -1688,7 +1691,7 @@ $audio = Audio::of('I love coding with Laravel.')->generate();
 $rawContent = (string) $audio;
 ```
 
-You may also generate audio from a string using the `toAudio` method available via Laravel's `Stringable` class:
+Ви також можете згенерувати аудіо з рядка методом `toAudio`, доступним через клас `Stringable` у Laravel:
 
 ```php
 use Illuminate\Support\Str;
@@ -1696,7 +1699,7 @@ use Illuminate\Support\Str;
 $audio = Str::of('I love coding with Laravel.')->toAudio();
 ```
 
-The `male`, `female`, and `voice` methods may be used to determine the voice of the generated audio:
+Методи `male`, `female` і `voice` можна використати, щоб визначити голос згенерованого аудіо:
 
 ```php
 $audio = Audio::of('I love coding with Laravel.')
@@ -1708,7 +1711,7 @@ $audio = Audio::of('I love coding with Laravel.')
     ->generate();
 ```
 
-Similarly, the `instructions` method may be used to dynamically coach the model on how the generated audio should sound:
+Так само метод `instructions` можна використати, щоб динамічно підказати моделі, як має звучати згенероване аудіо:
 
 ```php
 $audio = Audio::of('I love coding with Laravel.')
@@ -1717,7 +1720,7 @@ $audio = Audio::of('I love coding with Laravel.')
     ->generate();
 ```
 
-Generated audio may be easily stored on the default disk configured in your application's `config/filesystems.php` configuration file:
+Згенероване аудіо легко зберегти на диску за замовчуванням, налаштованому в конфігураційному файлі `config/filesystems.php` вашого застосунку:
 
 ```php
 $audio = Audio::of('I love coding with Laravel.')->generate();
@@ -1728,7 +1731,7 @@ $path = $audio->storePublicly();
 $path = $audio->storePubliclyAs('audio.mp3');
 ```
 
-Audio generation may also be queued:
+Генерацію аудіо також можна поставити в чергу:
 
 ```php
 use Laravel\Ai\Audio;
@@ -1744,9 +1747,9 @@ Audio::of('I love coding with Laravel.')
 ```
 
 <a name="transcription"></a>
-## Transcriptions
+## Транскрибування
 
-The `Laravel\Ai\Transcription` class may be used to generate a transcript of the given audio:
+Клас `Laravel\Ai\Transcription` можна використати, щоб згенерувати транскрипт заданого аудіо:
 
 ```php
 use Laravel\Ai\Transcription;
@@ -1758,7 +1761,7 @@ $transcript = Transcription::fromUpload($request->file('audio'))->generate();
 return (string) $transcript;
 ```
 
-The `diarize` method may be used to indicate you would like the response to include the diarized transcript in addition to the raw text transcript, allowing you to access the segmented transcript by speaker:
+Метод `diarize` можна використати, щоб указати, що ви хочете отримати у відповіді діаризований транскрипт на додачу до сирого текстового, - це дасть доступ до транскрипту, сегментованого за мовцями:
 
 ```php
 $transcript = Transcription::fromStorage('audio.mp3')
@@ -1766,7 +1769,7 @@ $transcript = Transcription::fromStorage('audio.mp3')
     ->generate();
 ```
 
-Transcription generation may also be queued:
+Генерацію транскриптів також можна поставити в чергу:
 
 ```php
 use Laravel\Ai\Transcription;
@@ -1780,9 +1783,9 @@ Transcription::fromStorage('audio.mp3')
 ```
 
 <a name="text-summarization"></a>
-## Text Summarization
+## Стислий переказ тексту
 
-You may summarize text using the `summarize` method available via Laravel's `Stringable` class. By default, the summary will contain no more than three sentences and will be generated using the configured provider's cheapest text model:
+Ви можете стисло переказати текст методом `summarize`, доступним через клас `Stringable` у Laravel. За замовчуванням переказ міститиме не більше трьох речень і буде згенерований найдешевшою текстовою моделлю налаштованого провайдера:
 
 ```php
 use Illuminate\Support\Str;
@@ -1790,7 +1793,7 @@ use Illuminate\Support\Str;
 $summary = Str::of($article)->summarize();
 ```
 
-You may specify the maximum number of sentences, provider, model, and timeout used to generate the summary. The `Str` class also offers a static version of the method:
+Ви можете вказати максимальну кількість речень, провайдера, модель і тайм-аут, які використовуються для генерації переказу. Клас `Str` також пропонує статичну версію методу:
 
 ```php
 use Laravel\Ai\Enums\Lab;
@@ -1806,9 +1809,9 @@ $summary = Str::summarize($article, sentences: 4);
 ```
 
 <a name="embeddings"></a>
-## Embeddings
+## Ембединги
 
-You may easily generate vector embeddings for any given string using the new `toEmbeddings` method available via Laravel's `Stringable` class:
+Ви можете легко згенерувати векторні ембединги для будь-якого рядка новим методом `toEmbeddings`, доступним через клас `Stringable` у Laravel:
 
 ```php
 use Illuminate\Support\Str;
@@ -1816,7 +1819,7 @@ use Illuminate\Support\Str;
 $embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings();
 ```
 
-Alternatively, you may use the `Embeddings` class to generate embeddings for multiple inputs at once:
+Як альтернативу ви можете скористатися класом `Embeddings`, щоб згенерувати ембединги для кількох вхідних значень одразу:
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -1829,7 +1832,7 @@ $response = Embeddings::for([
 $response->embeddings; // [[0.123, 0.456, ...], [0.789, 0.012, ...]]
 ```
 
-You may specify the dimensions and provider for the embeddings:
+Ви можете вказати розмірність і провайдера для ембедингів:
 
 ```php
 $response = Embeddings::for(['Napa Valley has great wine.'])
@@ -1838,9 +1841,9 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
 ```
 
 <a name="multimodal-embeddings"></a>
-### Multimodal Embeddings
+### Мультимодальні ембединги
 
-In addition to strings, the `Embeddings::for` method accepts image, audio, document, and video inputs, allowing you to generate embeddings for non-text content. Gemini supports image, audio, document, and video embeddings, while VoyageAI supports image and video embeddings:
+Окрім рядків, метод `Embeddings::for` приймає зображення, аудіо, документи й відео, що дозволяє генерувати ембединги для нетекстового вмісту. Gemini підтримує ембединги зображень, аудіо, документів і відео, а VoyageAI - ембединги зображень і відео:
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -1855,7 +1858,7 @@ $response = Embeddings::for([
 ])->generate(Lab::Gemini);
 ```
 
-Multimodal inputs use the same [file classes used for attachments](#attachments). These files may be created from a local path, a filesystem disk, a remote URL, or Base64-encoded content. Images, documents, and videos may also be created from uploaded files, while documents may be created from raw string content:
+Мультимодальні вхідні дані використовують ті самі [класи файлів, що й вкладення](#attachments). Ці файли можна створити з локального шляху, диска файлової системи, віддаленого URL чи вмісту в кодуванні Base64. Зображення, документи й відео також можна створити із завантажених файлів, а документи - із сирого рядкового вмісту:
 
 ```php
 use Laravel\Ai\Files\Audio;
@@ -1881,12 +1884,12 @@ Document::fromUpload($request->file('report'));
 ```
 
 > [!NOTE]
-> VoyageAI does not allow remote URL media and Base64-encoded media to be mixed in a single request. Local, stored, and uploaded files are sent as Base64-encoded content, and text inputs may be combined with either media source. Consult your provider's documentation to determine which multimodal models and inputs are available.
+> VoyageAI не дозволяє змішувати медіа за віддаленим URL і медіа в кодуванні Base64 в одному запиті. Локальні, збережені й завантажені файли надсилаються як вміст у кодуванні Base64, а текстові вхідні дані можна поєднувати з будь-яким із цих джерел медіа. Зверніться до документації свого провайдера, щоб дізнатися, які мультимодальні моделі й вхідні дані доступні.
 
 <a name="querying-embeddings"></a>
-### Querying Embeddings
+### Запити до ембедингів
 
-Once you have generated embeddings, you will typically store them in a `vector` column in your database for later querying. Laravel provides native support for vector columns on PostgreSQL via the `pgvector` extension. To get started, define a `vector` column in your migration, specifying the number of dimensions:
+Щойно ви згенерували ембединги, ви зазвичай зберігатимете їх у колонці `vector` своєї бази даних для подальших запитів. Laravel нативно підтримує векторні колонки в PostgreSQL через розширення `pgvector`. Для початку визначте колонку `vector` у своїй міграції, указавши кількість вимірів:
 
 ```php
 Schema::ensureVectorExtensionExists();
@@ -1900,13 +1903,13 @@ Schema::create('documents', function (Blueprint $table) {
 });
 ```
 
-You may also add a vector index to speed up similarity searches. When calling `index` on a vector column, Laravel will automatically create an HNSW index with cosine distance:
+Ви також можете додати векторний індекс, щоб пришвидшити пошук за схожістю. Викликаючи `index` на векторній колонці, Laravel автоматично створить HNSW-індекс з косинусною відстанню:
 
 ```php
 $table->vector('embedding', dimensions: 1536)->index();
 ```
 
-On your Eloquent model, you should cast the vector column to an `array`:
+У своїй Eloquent-моделі вам слід привести векторну колонку до `array`:
 
 ```php
 protected function casts(): array
@@ -1917,7 +1920,7 @@ protected function casts(): array
 }
 ```
 
-To query for similar records, use the `whereVectorSimilarTo` method. This method filters results by a minimum cosine similarity (between `0.0` and `1.0`, where `1.0` is identical) and orders the results by similarity:
+Щоб шукати схожі записи, скористайтеся методом `whereVectorSimilarTo`. Цей метод фільтрує результати за мінімальною косинусною схожістю (між `0.0` і `1.0`, де `1.0` - ідентичність) і впорядковує результати за схожістю:
 
 ```php
 use App\Models\Document;
@@ -1928,7 +1931,7 @@ $documents = Document::query()
     ->get();
 ```
 
-The `$queryEmbedding` may be an array of floats or a plain string. When a string is given, Laravel will automatically generate embeddings for it:
+`$queryEmbedding` може бути масивом чисел з рухомою комою або звичайним рядком. Коли передано рядок, Laravel автоматично згенерує для нього ембединги:
 
 ```php
 $documents = Document::query()
@@ -1937,7 +1940,7 @@ $documents = Document::query()
     ->get();
 ```
 
-If you need more control, you may use the lower-level `whereVectorDistanceLessThan`, `selectVectorDistance`, and `orderByVectorDistance` methods independently:
+Якщо вам потрібно більше контролю, ви можете окремо скористатися нижчорівневими методами `whereVectorDistanceLessThan`, `selectVectorDistance` та `orderByVectorDistance`:
 
 ```php
 $documents = Document::query()
@@ -1949,15 +1952,15 @@ $documents = Document::query()
     ->get();
 ```
 
-If you would like to give an agent the ability to perform similarity searches as a tool, check out the [Similarity Search](#similarity-search) tool documentation.
+Якщо ви хочете дати агенту можливість виконувати пошук за схожістю як інструмент, погляньте на документацію інструмента [Пошук за схожістю](#similarity-search).
 
 > [!NOTE]
-> Vector queries are currently only supported on PostgreSQL connections using the `pgvector` extension.
+> Векторні запити наразі підтримуються лише на підключеннях PostgreSQL з розширенням `pgvector`.
 
 <a name="caching-embeddings"></a>
-### Caching Embeddings
+### Кешування ембедингів
 
-Embedding generation can be cached to avoid redundant API calls for identical inputs. To enable caching, set the `ai.caching.embeddings.cache` configuration option to `true`:
+Генерацію ембедингів можна кешувати, щоб уникнути зайвих API-викликів для однакових вхідних даних. Щоб увімкнути кешування, встановіть параметр конфігурації `ai.caching.embeddings.cache` у `true`:
 
 ```php
 'caching' => [
@@ -1969,9 +1972,9 @@ Embedding generation can be cached to avoid redundant API calls for identical in
 ],
 ```
 
-When caching is enabled, embeddings are cached for 30 days. The cache key is based on the provider, model, dimensions, and input content, ensuring that identical requests return cached results while different configurations generate fresh embeddings.
+Коли кешування увімкнено, ембединги кешуються на 30 днів. Ключ кешу базується на провайдері, моделі, розмірності та вхідному вмісті, що гарантує повернення закешованих результатів для однакових запитів і генерацію свіжих ембедингів для інших конфігурацій.
 
-You may also enable caching for a specific request using the `cache` method, even when global caching is disabled:
+Ви також можете увімкнути кешування для конкретного запиту методом `cache`, навіть коли глобальне кешування вимкнено:
 
 ```php
 $response = Embeddings::for(['Napa Valley has great wine.'])
@@ -1979,7 +1982,7 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
     ->generate();
 ```
 
-You may specify a custom cache duration in seconds:
+Ви можете вказати власну тривалість кешування в секундах:
 
 ```php
 $response = Embeddings::for(['Napa Valley has great wine.'])
@@ -1987,7 +1990,7 @@ $response = Embeddings::for(['Napa Valley has great wine.'])
     ->generate();
 ```
 
-The `toEmbeddings` Stringable method also accepts a `cache` argument:
+Метод `toEmbeddings` у Stringable також приймає аргумент `cache`:
 
 ```php
 // Cache with default duration...
@@ -1998,11 +2001,11 @@ $embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings(cache: 3600);
 ```
 
 <a name="reranking"></a>
-## Reranking
+## Переранжування
 
-Reranking allows you to reorder a list of documents based on their relevance to a given query. This is useful for improving search results by using semantic understanding:
+Переранжування дозволяє переупорядкувати список документів за їхньою релевантністю до заданого запиту. Це корисно для покращення результатів пошуку завдяки семантичному розумінню:
 
-The `Laravel\Ai\Reranking` class may be used to rerank documents:
+Клас `Laravel\Ai\Reranking` можна використати для переранжування документів:
 
 ```php
 use Laravel\Ai\Reranking;
@@ -2019,7 +2022,7 @@ $response->first()->score;    // 0.95
 $response->first()->index;    // 1 (original position)
 ```
 
-The `limit` method may be used to restrict the number of results returned:
+Метод `limit` можна використати, щоб обмежити кількість повернутих результатів:
 
 ```php
 $response = Reranking::of($documents)
@@ -2028,9 +2031,9 @@ $response = Reranking::of($documents)
 ```
 
 <a name="reranking-collections"></a>
-### Reranking Collections
+### Переранжування колекцій
 
-For convenience, Laravel collections may be reranked using the `rerank` macro. The first argument specifies which field(s) to use for reranking, and the second argument is the query:
+Для зручності колекції Laravel можна переранжувати макросом `rerank`. Перший аргумент указує, яке поле (чи поля) використовувати для переранжування, а другий - запит:
 
 ```php
 // Rerank by a single field...
@@ -2047,7 +2050,7 @@ $reranked = $posts->rerank(
 );
 ```
 
-You may also limit the number of results and specify a provider:
+Ви також можете обмежити кількість результатів і вказати провайдера:
 
 ```php
 $reranked = $posts->rerank(
@@ -2059,9 +2062,9 @@ $reranked = $posts->rerank(
 ```
 
 <a name="files"></a>
-## Files
+## Файли
 
-The `Laravel\Ai\Files` class or the individual file classes may be used to store files with your AI provider for later use in conversations. This is useful for large documents or files you want to reference multiple times without re-uploading:
+Клас `Laravel\Ai\Files` чи окремі класи файлів можна використати, щоб зберігати файли у вашого AI-провайдера для подальшого використання в розмовах. Це корисно для великих документів чи файлів, на які ви хочете посилатися багато разів, не завантажуючи їх щоразу заново:
 
 ```php
 use Laravel\Ai\Files\Document;
@@ -2082,7 +2085,7 @@ $response = Image::fromUrl('https://example.com/photo.jpg')->put();
 return $response->id;
 ```
 
-You may also store raw content or uploaded files:
+Ви також можете зберігати сирий вміст чи завантажені файли:
 
 ```php
 use Laravel\Ai\Files;
@@ -2095,7 +2098,7 @@ $stored = Document::fromString('Hello, World!', 'text/plain')->put();
 $stored = Document::fromUpload($request->file('document'))->put();
 ```
 
-Once a file has been stored, you may reference the file when generating text via agents instead of re-uploading the file:
+Щойно файл збережено, ви можете посилатися на нього під час генерації тексту через агентів, замість завантажувати його заново:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -2109,7 +2112,7 @@ $response = (new SalesCoach)->prompt(
 );
 ```
 
-To retrieve a previously stored file, use the `get` method on a file instance:
+Щоб отримати раніше збережений файл, скористайтеся методом `get` на екземплярі файлу:
 
 ```php
 use Laravel\Ai\Files\Document;
@@ -2120,13 +2123,13 @@ $file->id;
 $file->mimeType();
 ```
 
-To delete a file from the provider, use the `delete` method:
+Щоб видалити файл у провайдера, скористайтеся методом `delete`:
 
 ```php
 Document::fromId('file-id')->delete();
 ```
 
-By default, the `Files` class uses the default AI provider configured in your application's `config/ai.php` configuration file. For most operations, you may specify a different provider using the `provider` argument:
+За замовчуванням клас `Files` використовує AI-провайдера за замовчуванням, налаштованого в конфігураційному файлі `config/ai.php` вашого застосунку. Для більшості операцій ви можете вказати іншого провайдера аргументом `provider`:
 
 ```php
 $response = Document::fromPath(
@@ -2134,7 +2137,7 @@ $response = Document::fromPath(
 )->put(provider: Lab::Anthropic);
 ```
 
-You may pass provider-specific upload options using the `withProviderOptions` method. For example, you may set OpenAI's file `purpose`:
+Ви можете передати специфічні для провайдера опції завантаження методом `withProviderOptions`. Наприклад, ви можете задати `purpose` файлу в OpenAI:
 
 ```php
 use Laravel\Ai\Files\Document;
@@ -2144,7 +2147,7 @@ $response = Document::fromPath('/home/laravel/knowledge.txt')
     ->put();
 ```
 
-To scope options per provider, pass a closure that receives the current provider:
+Щоб обмежити опції окремим провайдером, передайте замикання, яке отримує поточного провайдера:
 
 ```php
 use Laravel\Ai\Enums\Lab;
@@ -2159,9 +2162,9 @@ $response = Document::fromPath('/home/laravel/training.jsonl')
 ```
 
 <a name="using-stored-files-in-conversations"></a>
-### Using Stored Files in Conversations
+### Використання збережених файлів у розмовах
 
-Once a file has been stored with a provider, you may reference it in agent conversations using the `fromId` method on the `Document` or `Image` classes:
+Щойно файл збережено у провайдера, ви можете посилатися на нього в розмовах агента методом `fromId` на класах `Document` чи `Image`:
 
 ```php
 use App\Ai\Agents\DocumentAnalyzer;
@@ -2178,7 +2181,7 @@ $response = (new DocumentAnalyzer)->prompt(
 );
 ```
 
-Similarly, stored images may be referenced using the `Image` class:
+Так само на збережені зображення можна посилатися через клас `Image`:
 
 ```php
 use Laravel\Ai\Files;
@@ -2195,9 +2198,9 @@ $response = (new ImageAnalyzer)->prompt(
 ```
 
 <a name="vector-stores"></a>
-## Vector Stores
+## Векторні сховища
 
-Vector stores allow you to create searchable collections of files that can be used for retrieval-augmented generation (RAG). The `Laravel\Ai\Stores` class provides methods for creating, retrieving, and deleting vector stores:
+Векторні сховища дозволяють створювати придатні для пошуку колекції файлів, які можна використовувати для retrieval-augmented generation (RAG). Клас `Laravel\Ai\Stores` надає методи для створення, отримання й видалення векторних сховищ:
 
 ```php
 use Laravel\Ai\Stores;
@@ -2215,7 +2218,7 @@ $store = Stores::create(
 return $store->id;
 ```
 
-To retrieve an existing vector store by its ID, use the `get` method:
+Щоб отримати наявне векторне сховище за його ID, скористайтеся методом `get`:
 
 ```php
 use Laravel\Ai\Stores;
@@ -2228,7 +2231,7 @@ $store->fileCounts;
 $store->ready;
 ```
 
-To delete a vector store, use the `delete` method on the `Stores` class or the store instance:
+Щоб видалити векторне сховище, скористайтеся методом `delete` на класі `Stores` чи на екземплярі сховища:
 
 ```php
 use Laravel\Ai\Stores;
@@ -2243,9 +2246,9 @@ $store->delete();
 ```
 
 <a name="adding-files-to-stores"></a>
-### Adding Files to Stores
+### Додавання файлів до сховищ
 
-Once you have a vector store, you may add [files](#files) to it using the `add` method. Files added to a store are automatically indexed for semantic searching using the [file search provider tool](#file-search):
+Щойно у вас є векторне сховище, ви можете додавати до нього [файли](#files) методом `add`. Файли, додані до сховища, автоматично індексуються для семантичного пошуку через [інструмент провайдера для пошуку файлів](#file-search):
 
 ```php
 use Laravel\Ai\Files\Document;
@@ -2266,9 +2269,9 @@ $document->id;
 $document->fileId;
 ```
 
-> **Note:** Typically, when adding previously stored files to vector stores, the returned document ID will match the file's previously assigned ID; however, some vector storage providers may return a new, different "document ID". Therefore, it's recommended that you always store both IDs in your database for future reference.
+> **Note:** Зазвичай, коли ви додаєте до векторних сховищ раніше збережені файли, повернутий ID документа збігатиметься з раніше призначеним ID файлу; однак деякі провайдери векторних сховищ можуть повернути новий, інший «ID документа». Тому рекомендується завжди зберігати обидва ID у своїй базі даних для подальшого використання.
 
-You may attach metadata to files when adding them to a store. This metadata can later be used to filter search results when using the [file search provider tool](#file-search):
+Ви можете прикріпити до файлів метадані, додаючи їх до сховища. Ці метадані згодом можна використати для фільтрації результатів пошуку через [інструмент провайдера для пошуку файлів](#file-search):
 
 ```php
 $store->add(Document::fromPath('/path/to/document.pdf'), metadata: [
@@ -2278,22 +2281,22 @@ $store->add(Document::fromPath('/path/to/document.pdf'), metadata: [
 ]);
 ```
 
-To remove a file from a store, use the `remove` method:
+Щоб прибрати файл зі сховища, скористайтеся методом `remove`:
 
 ```php
 $store->remove('file_id');
 ```
 
-Removing a file from a vector store does not remove it from the provider's [file storage](#files). To remove a file from the vector store and delete it permanently from file storage, use the `deleteFile` argument:
+Прибирання файлу з векторного сховища не видаляє його з [файлового сховища](#files) провайдера. Щоб прибрати файл з векторного сховища й остаточно видалити його з файлового сховища, скористайтеся аргументом `deleteFile`:
 
 ```php
 $store->remove('file_abc123', deleteFile: true);
 ```
 
 <a name="failover"></a>
-## Failover
+## Резервні провайдери
 
-When prompting or generating other media, you may provide an array of providers / models to automatically failover to a backup provider / model if a service interruption or rate limit is encountered on the primary provider:
+Промптуючи чи генеруючи інші медіа, ви можете передати масив провайдерів / моделей, щоб автоматично перемкнутися на резервного провайдера / модель, якщо на основному станеться збій сервісу чи спрацює обмеження частоти:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -2309,9 +2312,9 @@ $image = Image::of('A donut sitting on the kitchen counter')
     ->generate(provider: [Lab::Gemini, Lab::xAI]);
 ```
 
-Failover only occurs when a `FailoverableException` is thrown — such as a rate limit (`RateLimitedException`), an overloaded or unavailable provider (`ProviderOverloadedException`), or insufficient credits (`InsufficientCreditsException`). Ordinary errors, like a validation or bad request error, will not trigger failover.
+Перемикання на резерв відбувається лише тоді, коли видано `FailoverableException` - як-от обмеження частоти (`RateLimitedException`), перевантажений чи недоступний провайдер (`ProviderOverloadedException`) або нестача кредитів (`InsufficientCreditsException`). Звичайні помилки, як-от помилка валідації чи хибний запит, перемикання на резерв не спричинять.
 
-When you pass a plain list of providers, such as `[Lab::OpenAI, Lab::Anthropic]`, each provider uses its default model. To specify a particular model for each provider in the failover chain, pass an associative array keyed by the provider, using the `Lab` enum's `value` as the key (enum cases cannot be used directly as PHP array keys):
+Коли ви передаєте простий список провайдерів, як-от `[Lab::OpenAI, Lab::Anthropic]`, кожен провайдер використовує свою модель за замовчуванням. Щоб указати конкретну модель для кожного провайдера в ланцюжку резервування, передайте асоціативний масив з ключами за провайдерами, використовуючи `value` з enum `Lab` як ключ (випадки enum не можна використовувати напряму як ключі масивів PHP):
 
 ```php
 use Laravel\Ai\Enums\Lab;
@@ -2326,12 +2329,12 @@ $response = (new SalesCoach)->prompt(
 ```
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
 <a name="testing-agents"></a>
-### Agents
+### Агенти
 
-To fake an agent's responses during tests, call the `fake` method on the agent class. You may optionally provide an array of responses or a closure:
+Щоб підробити відповіді агента під час тестів, викличте метод `fake` на класі агента. За бажанням ви можете передати масив відповідей чи замикання:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -2352,7 +2355,7 @@ SalesCoach::fake(function (AgentPrompt $prompt) {
 });
 ```
 
-When faking an agent that returns structured output, you may provide arrays as responses. The agent will return a structured response containing the given data:
+Підробляючи агента, який повертає структурований вивід, ви можете передавати масиви як відповіді. Агент поверне структуровану відповідь із заданими даними:
 
 ```php
 SalesCoach::fake([
@@ -2360,7 +2363,7 @@ SalesCoach::fake([
 ]);
 ```
 
-You may also fake a response that is awaiting tool approval:
+Ви також можете підробити відповідь, яка очікує на схвалення інструмента:
 
 ```php
 use Laravel\Ai\Approvals\PendingApproval;
@@ -2382,9 +2385,9 @@ $response = (new FileAssistant)->prompt('Delete the invoice.');
 $response->hasPendingApprovals(); // true
 ```
 
-> **Note:** When `Agent::fake()` is invoked on an agent that returns structured output and fake output was not explicitly provided, Laravel will automatically generate fake data that matches your agent's defined output schema.
+> **Note:** Коли `Agent::fake()` викликано на агенті, який повертає структурований вивід, а підроблений вивід не було задано явно, Laravel автоматично згенерує підроблені дані, що відповідають визначеній схемі виводу вашого агента.
 
-After prompting the agent, you may make assertions about the prompts that were received:
+Після промптингу агента ви можете робити твердження щодо отриманих промптів:
 
 ```php
 use Laravel\Ai\Prompts\AgentPrompt;
@@ -2400,7 +2403,7 @@ SalesCoach::assertNotPrompted('Missing prompt');
 SalesCoach::assertNeverPrompted();
 ```
 
-When asserting an approval continuation, you may inspect the prompt's approval decisions:
+Стверджуючи щодо продовження після схвалення, ви можете оглянути рішення про схвалення в промпті:
 
 ```php
 use Laravel\Ai\Approvals\Decisions;
@@ -2418,7 +2421,7 @@ FileAssistant::assertPrompted(function (AgentPrompt $prompt) {
 });
 ```
 
-For queued agent invocations, use the queued assertion methods:
+Для викликів агентів через чергу скористайтеся методами тверджень для черги:
 
 ```php
 use Laravel\Ai\QueuedAgentPrompt;
@@ -2434,16 +2437,16 @@ SalesCoach::assertNotQueued('Missing prompt');
 SalesCoach::assertNeverQueued();
 ```
 
-To ensure all agent invocations have a corresponding fake response, you may use `preventStrayPrompts`. If an agent is invoked without a defined fake response, an exception will be thrown:
+Щоб пересвідчитися, що всі виклики агента мають відповідну підроблену відповідь, скористайтеся `preventStrayPrompts`. Якщо агента буде викликано без визначеної підробленої відповіді, буде видано виняток:
 
 ```php
 SalesCoach::fake()->preventStrayPrompts();
 ```
 
 <a name="testing-images"></a>
-### Images
+### Зображення
 
-Image generations may be faked by invoking the `fake` method on the `Image` class. Once image has been faked, various assertions may be performed against the recorded image generation prompts:
+Генерацію зображень можна підробити, викликавши метод `fake` на класі `Image`. Щойно зображення підроблено, можна виконувати різні твердження щодо записаних промптів генерації зображень:
 
 ```php
 use Laravel\Ai\Image;
@@ -2465,7 +2468,7 @@ Image::fake(function (ImagePrompt $prompt) {
 });
 ```
 
-After generating images, you may make assertions about the prompts that were received:
+Після генерації зображень ви можете робити твердження щодо отриманих промптів:
 
 ```php
 Image::assertGenerated(function (ImagePrompt $prompt) {
@@ -2477,7 +2480,7 @@ Image::assertNotGenerated('Missing prompt');
 Image::assertNothingGenerated();
 ```
 
-For queued image generations, use the queued assertion methods:
+Для генерації зображень через чергу скористайтеся методами тверджень для черги:
 
 ```php
 Image::assertQueued(
@@ -2489,16 +2492,16 @@ Image::assertNotQueued('Missing prompt');
 Image::assertNothingQueued();
 ```
 
-To ensure all image generations have a corresponding fake response, you may use `preventStrayImages`. If an image is generated without a defined fake response, an exception will be thrown:
+Щоб пересвідчитися, що всі генерації зображень мають відповідну підроблену відповідь, скористайтеся `preventStrayImages`. Якщо зображення буде згенеровано без визначеної підробленої відповіді, буде видано виняток:
 
 ```php
 Image::fake()->preventStrayImages();
 ```
 
 <a name="testing-audio"></a>
-### Audio
+### Аудіо
 
-Audio generations may be faked by invoking the `fake` method on the `Audio` class. Once audio has been faked, various assertions may be performed against the recorded audio generation prompts:
+Генерацію аудіо можна підробити, викликавши метод `fake` на класі `Audio`. Щойно аудіо підроблено, можна виконувати різні твердження щодо записаних промптів генерації аудіо:
 
 ```php
 use Laravel\Ai\Audio;
@@ -2520,7 +2523,7 @@ Audio::fake(function (AudioPrompt $prompt) {
 });
 ```
 
-After generating audio, you may make assertions about the prompts that were received:
+Після генерації аудіо ви можете робити твердження щодо отриманих промптів:
 
 ```php
 Audio::assertGenerated(function (AudioPrompt $prompt) {
@@ -2532,7 +2535,7 @@ Audio::assertNotGenerated('Missing prompt');
 Audio::assertNothingGenerated();
 ```
 
-For queued audio generations, use the queued assertion methods:
+Для генерації аудіо через чергу скористайтеся методами тверджень для черги:
 
 ```php
 Audio::assertQueued(
@@ -2544,16 +2547,16 @@ Audio::assertNotQueued('Missing prompt');
 Audio::assertNothingQueued();
 ```
 
-To ensure all audio generations have a corresponding fake response, you may use `preventStrayAudio`. If audio is generated without a defined fake response, an exception will be thrown:
+Щоб пересвідчитися, що всі генерації аудіо мають відповідну підроблену відповідь, скористайтеся `preventStrayAudio`. Якщо аудіо буде згенеровано без визначеної підробленої відповіді, буде видано виняток:
 
 ```php
 Audio::fake()->preventStrayAudio();
 ```
 
 <a name="testing-transcriptions"></a>
-### Transcriptions
+### Транскрибування
 
-Transcription generations may be faked by invoking the `fake` method on the `Transcription` class. Once transcription has been faked, various assertions may be performed against the recorded transcription generation prompts:
+Генерацію транскриптів можна підробити, викликавши метод `fake` на класі `Transcription`. Щойно транскрибування підроблено, можна виконувати різні твердження щодо записаних промптів генерації транскриптів:
 
 ```php
 use Laravel\Ai\Transcription;
@@ -2575,7 +2578,7 @@ Transcription::fake(function (TranscriptionPrompt $prompt) {
 });
 ```
 
-After generating transcriptions, you may make assertions about the prompts that were received:
+Після генерації транскриптів ви можете робити твердження щодо отриманих промптів:
 
 ```php
 Transcription::assertGenerated(function (TranscriptionPrompt $prompt) {
@@ -2589,7 +2592,7 @@ Transcription::assertNotGenerated(
 Transcription::assertNothingGenerated();
 ```
 
-For queued transcription generations, use the queued assertion methods:
+Для генерації транскриптів через чергу скористайтеся методами тверджень для черги:
 
 ```php
 Transcription::assertQueued(
@@ -2603,16 +2606,16 @@ Transcription::assertNotQueued(
 Transcription::assertNothingQueued();
 ```
 
-To ensure all transcription generations have a corresponding fake response, you may use `preventStrayTranscriptions`. If a transcription is generated without a defined fake response, an exception will be thrown:
+Щоб пересвідчитися, що всі генерації транскриптів мають відповідну підроблену відповідь, скористайтеся `preventStrayTranscriptions`. Якщо транскрипт буде згенеровано без визначеної підробленої відповіді, буде видано виняток:
 
 ```php
 Transcription::fake()->preventStrayTranscriptions();
 ```
 
 <a name="testing-embeddings"></a>
-### Embeddings
+### Ембединги
 
-Embeddings generations may be faked by invoking the `fake` method on the `Embeddings` class. Once embeddings has been faked, various assertions may be performed against the recorded embeddings generation prompts:
+Генерацію ембедингів можна підробити, викликавши метод `fake` на класі `Embeddings`. Щойно ембединги підроблено, можна виконувати різні твердження щодо записаних промптів генерації ембедингів:
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -2637,7 +2640,7 @@ Embeddings::fake(function (EmbeddingsPrompt $prompt) {
 });
 ```
 
-After generating embeddings, you may make assertions about the prompts that were received:
+Після генерації ембедингів ви можете робити твердження щодо отриманих промптів:
 
 ```php
 Embeddings::assertGenerated(function (EmbeddingsPrompt $prompt) {
@@ -2651,7 +2654,7 @@ Embeddings::assertNotGenerated(
 Embeddings::assertNothingGenerated();
 ```
 
-For queued embeddings generations, use the queued assertion methods:
+Для генерації ембедингів через чергу скористайтеся методами тверджень для черги:
 
 ```php
 Embeddings::assertQueued(
@@ -2665,16 +2668,16 @@ Embeddings::assertNotQueued(
 Embeddings::assertNothingQueued();
 ```
 
-To ensure all embeddings generations have a corresponding fake response, you may use `preventStrayEmbeddings`. If embeddings are generated without a defined fake response, an exception will be thrown:
+Щоб пересвідчитися, що всі генерації ембедингів мають відповідну підроблену відповідь, скористайтеся `preventStrayEmbeddings`. Якщо ембединги буде згенеровано без визначеної підробленої відповіді, буде видано виняток:
 
 ```php
 Embeddings::fake()->preventStrayEmbeddings();
 ```
 
 <a name="testing-reranking"></a>
-### Reranking
+### Переранжування
 
-Reranking operations may be faked by invoking the `fake` method on the `Reranking` class:
+Операції переранжування можна підробити, викликавши метод `fake` на класі `Reranking`:
 
 ```php
 use Laravel\Ai\Reranking;
@@ -2693,7 +2696,7 @@ Reranking::fake([
 ]);
 ```
 
-After reranking, you may make assertions about the operations that were performed:
+Після переранжування ви можете робити твердження щодо виконаних операцій:
 
 ```php
 Reranking::assertReranked(function (RerankingPrompt $prompt) {
@@ -2708,9 +2711,9 @@ Reranking::assertNothingReranked();
 ```
 
 <a name="testing-files"></a>
-### Files
+### Файли
 
-File operations may be faked by invoking the `fake` method on the `Files` class:
+Файлові операції можна підробити, викликавши метод `fake` на класі `Files`:
 
 ```php
 use Laravel\Ai\Files;
@@ -2718,7 +2721,7 @@ use Laravel\Ai\Files;
 Files::fake();
 ```
 
-Once file operations have been faked, you may make assertions about the uploads and deletions that occurred:
+Щойно файлові операції підроблено, ви можете робити твердження щодо завантажень і видалень, які сталися:
 
 ```php
 use Laravel\Ai\Contracts\Files\StorableFile;
@@ -2742,7 +2745,7 @@ Files::assertNotStored(fn (StorableFile $file) =>
 Files::assertNothingStored();
 ```
 
-For asserting against file deletions, you may pass a file ID:
+Щоб стверджувати щодо видалення файлів, ви можете передати ID файлу:
 
 ```php
 Files::assertDeleted('file-id');
@@ -2751,9 +2754,9 @@ Files::assertNothingDeleted();
 ```
 
 <a name="testing-vector-stores"></a>
-### Vector Stores
+### Векторні сховища
 
-Vector store operations may be faked by invoking the `fake` method on the `Stores` class. Faking stores will also fake [file operations](#files) automatically:
+Операції з векторними сховищами можна підробити, викликавши метод `fake` на класі `Stores`. Підробка сховищ також автоматично підробить [файлові операції](#files):
 
 ```php
 use Laravel\Ai\Stores;
@@ -2761,7 +2764,7 @@ use Laravel\Ai\Stores;
 Stores::fake();
 ```
 
-Once store operations have been faked, you may make assertions about the stores that were created or deleted:
+Щойно операції зі сховищами підроблено, ви можете робити твердження щодо створених чи видалених сховищ:
 
 ```php
 use Laravel\Ai\Stores;
@@ -2781,7 +2784,7 @@ Stores::assertNotCreated('Other Store');
 Stores::assertNothingCreated();
 ```
 
-For asserting against store deletions, you may provide the store ID:
+Щоб стверджувати щодо видалення сховищ, ви можете передати ID сховища:
 
 ```php
 Stores::assertDeleted('store_id');
@@ -2789,7 +2792,7 @@ Stores::assertNotDeleted('other_store_id');
 Stores::assertNothingDeleted();
 ```
 
-To assert files were added or removed from a store, use the assertion methods on a given `Store` instance:
+Щоб ствердити, що файли було додано до сховища чи прибрано з нього, скористайтеся методами тверджень на відповідному екземплярі `Store`:
 
 ```php
 Stores::fake();
@@ -2808,7 +2811,7 @@ $store->assertNotAdded('other_file_id');
 $store->assertNotRemoved('other_file_id');
 ```
 
-If a file is stored in the provider's [file storage](#files) and added to a vector store in the same request, you may not know the file's provider ID. In this case, you can pass a closure to the `assertAdded` method to assert against the content of the added file:
+Якщо файл зберігається у [файловому сховищі](#files) провайдера й додається до векторного сховища в межах одного запиту, ви можете не знати ID файлу у провайдера. У цьому разі ви можете передати до методу `assertAdded` замикання, щоб стверджувати щодо вмісту доданого файлу:
 
 ```php
 use Laravel\Ai\Contracts\Files\StorableFile;
@@ -2821,9 +2824,9 @@ $store->assertAdded(fn (StorableFile $file) => $file->content() === 'Hello, Worl
 ```
 
 <a name="events"></a>
-## Events
+## Події
 
-The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), including:
+Laravel AI SDK диспетчеризує різноманітні [події](/docs/{{version}}/events), зокрема:
 
 - `AddingFileToStore`
 - `AgentPrompted`
@@ -2853,4 +2856,4 @@ The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), i
 - `ToolInvoked`
 - `TranscriptionGenerated`
 
-You can listen to any of these events to log or store AI SDK usage information.
+Ви можете слухати будь-яку з цих подій, щоб логувати чи зберігати інформацію про використання AI SDK.
