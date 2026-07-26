@@ -1,59 +1,63 @@
-# Database: Query Builder
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 
-- [Introduction](#introduction)
-- [Running Database Queries](#running-database-queries)
-    - [Chunking Results](#chunking-results)
-    - [Streaming Results Lazily](#streaming-results-lazily)
-    - [Aggregates](#aggregates)
-- [Select Statements](#select-statements)
-- [Raw Expressions](#raw-expressions)
-- [Joins](#joins)
-- [Unions](#unions)
-- [Basic Where Clauses](#basic-where-clauses)
-    - [Where Clauses](#where-clauses)
-    - [Or Where Clauses](#or-where-clauses)
-    - [Where Not Clauses](#where-not-clauses)
-    - [Where Any / All / None Clauses](#where-any-all-none-clauses)
-    - [JSON Where Clauses](#json-where-clauses)
-    - [Additional Where Clauses](#additional-where-clauses)
-    - [Logical Grouping](#logical-grouping)
-- [Advanced Where Clauses](#advanced-where-clauses)
-    - [Where Exists Clauses](#where-exists-clauses)
-    - [Subquery Where Clauses](#subquery-where-clauses)
-    - [Full Text Where Clauses](#full-text-where-clauses)
-    - [Vector Similarity Clauses](#vector-similarity-clauses)
-- [Ordering, Grouping, Limit and Offset](#ordering-grouping-limit-and-offset)
-    - [Ordering](#ordering)
-    - [Grouping](#grouping)
-    - [Limit and Offset](#limit-and-offset)
-- [Conditional Clauses](#conditional-clauses)
-- [Insert Statements](#insert-statements)
-    - [Upserts](#upserts)
-- [Update Statements](#update-statements)
-    - [Updating JSON Columns](#updating-json-columns)
-    - [Increment and Decrement](#increment-and-decrement)
-- [Delete Statements](#delete-statements)
-- [Pessimistic Locking](#pessimistic-locking)
-- [Reusable Query Components](#reusable-query-components)
-- [Debugging](#debugging)
+# База даних: конструктор запитів
+
+- [Вступ](#introduction)
+- [Виконання запитів до бази даних](#running-database-queries)
+    - [Обробка результатів частинами](#chunking-results)
+    - [Ліниве потокове читання результатів](#streaming-results-lazily)
+    - [Агрегати](#aggregates)
+- [Запити SELECT](#select-statements)
+- [Сирі вирази](#raw-expressions)
+- [Джойни](#joins)
+- [Об'єднання запитів](#unions)
+- [Базові умови WHERE](#basic-where-clauses)
+    - [Умови WHERE](#where-clauses)
+    - [Умови OR WHERE](#or-where-clauses)
+    - [Умови WHERE NOT](#where-not-clauses)
+    - [Умови Any / All / None](#where-any-all-none-clauses)
+    - [Умови WHERE для JSON](#json-where-clauses)
+    - [Додаткові умови WHERE](#additional-where-clauses)
+    - [Логічне групування](#logical-grouping)
+- [Складніші умови WHERE](#advanced-where-clauses)
+    - [Умови WHERE EXISTS](#where-exists-clauses)
+    - [Умови WHERE з підзапитом](#subquery-where-clauses)
+    - [Умови повнотекстового пошуку](#full-text-where-clauses)
+    - [Умови векторної схожості](#vector-similarity-clauses)
+- [Сортування, групування, limit та offset](#ordering-grouping-limit-and-offset)
+    - [Сортування](#ordering)
+    - [Групування](#grouping)
+    - [Limit та offset](#limit-and-offset)
+- [Умовні вирази](#conditional-clauses)
+- [Запити INSERT](#insert-statements)
+    - [Upsert](#upserts)
+- [Запити UPDATE](#update-statements)
+    - [Оновлення стовпців JSON](#updating-json-columns)
+    - [Збільшення та зменшення](#increment-and-decrement)
+- [Запити DELETE](#delete-statements)
+- [Песимістичне блокування](#pessimistic-locking)
+- [Повторно використовувані компоненти запитів](#reusable-query-components)
+- [Налагодження](#debugging)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel's database query builder provides a convenient, fluent interface to creating and running database queries. It can be used to perform most database operations in your application and works perfectly with all of Laravel's supported database systems.
+Конструктор запитів Laravel дає зручний, плавний інтерфейс для створення й виконання запитів до бази даних. Ним можна виконати більшість операцій з базою у вашому застосунку, і він бездоганно працює з усіма підтримуваними Laravel системами баз даних.
 
-The Laravel query builder uses PDO parameter binding to protect your application against SQL injection attacks. There is no need to clean or sanitize strings passed to the query builder as query bindings.
+Конструктор запитів Laravel використовує прив'язку параметрів PDO, щоб захистити ваш застосунок від атак SQL-ін'єкцією. Немає потреби чистити чи екранувати рядки, які ви передаєте конструктору як прив'язки.
 
 > [!WARNING]
-> PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
+> PDO не підтримує прив'язку назв стовпців. Тому ніколи не дозволяйте користувацькому вводу визначати назви стовпців у ваших запитах, зокрема стовпці для «order by».
 
 <a name="running-database-queries"></a>
-## Running Database Queries
+## Виконання запитів до бази даних
 
 <a name="retrieving-all-rows-from-a-table"></a>
-#### Retrieving All Rows From a Table
+#### Отримання всіх рядків таблиці
 
-You may use the `table` method provided by the `DB` facade to begin a query. The `table` method returns a fluent query builder instance for the given table, allowing you to chain more constraints onto the query and then finally retrieve the results of the query using the `get` method:
+Щоб почати запит, скористайтеся методом `table` фасаду `DB`. Метод `table` повертає плавний екземпляр конструктора запитів для вказаної таблиці, тож ви можете додавати до запиту обмеження ланцюжком, а вкінці отримати результати методом `get`:
 
 ```php
 <?php
@@ -77,7 +81,7 @@ class UserController extends Controller
 }
 ```
 
-The `get` method returns an `Illuminate\Support\Collection` instance containing the results of the query where each result is an instance of the PHP `stdClass` object. You may access each column's value by accessing the column as a property of the object:
+Метод `get` повертає екземпляр `Illuminate\Support\Collection` з результатами запиту, де кожен результат - це екземпляр PHP-об'єкта `stdClass`. Значення кожного стовпця доступне як властивість об'єкта:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -90,12 +94,12 @@ foreach ($users as $user) {
 ```
 
 > [!NOTE]
-> Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel collections, check out the [collection documentation](/docs/{{version}}/collections).
+> Колекції Laravel мають цілу низку надзвичайно потужних методів для перетворення та згортання даних. Детальніше про них читайте в [документації з колекцій](/docs/{{version}}/collections).
 
 <a name="retrieving-a-single-row-column-from-a-table"></a>
-#### Retrieving a Single Row / Column From a Table
+#### Отримання одного рядка чи стовпця з таблиці
 
-If you just need to retrieve a single row from a database table, you may use the `DB` facade's `first` method. This method will return a single `stdClass` object:
+Якщо вам потрібен лише один рядок із таблиці, скористайтеся методом `first` фасаду `DB`. Він повертає один об'єкт `stdClass`:
 
 ```php
 $user = DB::table('users')->where('name', 'John')->first();
@@ -103,28 +107,28 @@ $user = DB::table('users')->where('name', 'John')->first();
 return $user->email;
 ```
 
-If you would like to retrieve a single row from a database table, but throw an `Illuminate\Database\RecordNotFoundException` if no matching row is found, you may use the `firstOrFail` method. If the `RecordNotFoundException` is not caught, a 404 HTTP response is automatically sent back to the client:
+Якщо ви хочете отримати один рядок, але викинути `Illuminate\Database\RecordNotFoundException`, коли відповідного рядка немає, скористайтеся методом `firstOrFail`. Якщо `RecordNotFoundException` не перехоплено, клієнту автоматично надсилається HTTP-відповідь 404:
 
 ```php
 $user = DB::table('users')->where('name', 'John')->firstOrFail();
 ```
 
-If you don't need an entire row, you may extract a single value from a record using the `value` method. This method will return the value of the column directly:
+Якщо вам не потрібен цілий рядок, ви можете дістати одне значення із запису методом `value`. Він повертає значення стовпця напряму:
 
 ```php
 $email = DB::table('users')->where('name', 'John')->value('email');
 ```
 
-To retrieve a single row by its `id` column value, use the `find` method:
+Щоб отримати один рядок за значенням стовпця `id`, скористайтеся методом `find`:
 
 ```php
 $user = DB::table('users')->find(3);
 ```
 
 <a name="retrieving-a-list-of-column-values"></a>
-#### Retrieving a List of Column Values
+#### Отримання списку значень стовпця
 
-If you would like to retrieve an `Illuminate\Support\Collection` instance containing the values of a single column, you may use the `pluck` method. In this example, we'll retrieve a collection of user titles:
+Якщо ви хочете отримати екземпляр `Illuminate\Support\Collection` зі значеннями одного стовпця, скористайтеся методом `pluck`. У цьому прикладі ми отримаємо колекцію посад користувачів:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -136,7 +140,7 @@ foreach ($titles as $title) {
 }
 ```
 
-You may specify the column that the resulting collection should use as its keys by providing a second argument to the `pluck` method:
+Другим аргументом методу `pluck` можна вказати стовпець, значення якого стануть ключами колекції:
 
 ```php
 $titles = DB::table('users')->pluck('title', 'name');
@@ -147,9 +151,9 @@ foreach ($titles as $name => $title) {
 ```
 
 <a name="chunking-results"></a>
-### Chunking Results
+### Обробка результатів частинами
 
-If you need to work with thousands of database records, consider using the `chunk` method provided by the `DB` facade. This method retrieves a small chunk of results at a time and feeds each chunk into a closure for processing. For example, let's retrieve the entire `users` table in chunks of 100 records at a time:
+Якщо вам потрібно опрацювати тисячі записів, розгляньте метод `chunk` фасаду `DB`. Він дістає з бази невелику частину результатів за раз і передає кожну частину в замикання для обробки. Наприклад, пройдімо всю таблицю `users` частинами по 100 записів:
 
 ```php
 use Illuminate\Support\Collection;
@@ -162,7 +166,7 @@ DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
 });
 ```
 
-You may stop further chunks from being processed by returning `false` from the closure:
+Щоб зупинити обробку наступних частин, поверніть із замикання `false`:
 
 ```php
 DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
@@ -172,7 +176,7 @@ DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
 });
 ```
 
-If you are updating database records while chunking results, your chunk results could change in unexpected ways. If you plan to update the retrieved records while chunking, it is always best to use the `chunkById` method instead. This method will automatically paginate the results based on the record's primary key:
+Якщо під час обробки частинами ви оновлюєте записи, результати можуть змінитися неочікуваним чином. Коли ви плануєте оновлювати отримані записи, завжди краще скористатися методом `chunkById`. Він автоматично розбиває результати на сторінки за первинним ключем запису:
 
 ```php
 DB::table('users')->where('active', false)
@@ -185,7 +189,7 @@ DB::table('users')->where('active', false)
     });
 ```
 
-Since the `chunkById` and `lazyById` methods add their own "where" conditions to the query being executed, you should typically [logically group](#logical-grouping) your own conditions within a closure:
+Оскільки методи `chunkById` і `lazyById` додають до запиту власні умови «where», свої умови варто [логічно згрупувати](#logical-grouping) в замиканні:
 
 ```php
 DB::table('users')->where(function ($query) {
@@ -200,12 +204,12 @@ DB::table('users')->where(function ($query) {
 ```
 
 > [!WARNING]
-> When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
+> Коли ви оновлюєте або видаляєте записи всередині колбека, будь-які зміни первинного чи зовнішніх ключів можуть вплинути на запит, що дістає частини. Через це частина записів може не потрапити до результатів.
 
 <a name="streaming-results-lazily"></a>
-### Streaming Results Lazily
+### Ліниве потокове читання результатів
 
-The `lazy` method works similarly to [the chunk method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [LazyCollection](/docs/{{version}}/collections#lazy-collections), which lets you interact with the results as a single stream:
+Метод `lazy` працює схоже на [метод chunk](#chunking-results) - він теж виконує запит частинами. Але замість того щоб передавати кожну частину в колбек, метод `lazy()` повертає [LazyCollection](/docs/{{version}}/collections#lazy-collections), і ви працюєте з результатами як з єдиним потоком:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -215,7 +219,7 @@ DB::table('users')->orderBy('id')->lazy()->each(function (object $user) {
 });
 ```
 
-Once again, if you plan to update the retrieved records while iterating over them, it is best to use the `lazyById` or `lazyByIdDesc` methods instead. These methods will automatically paginate the results based on the record's primary key:
+І знову ж таки: якщо ви плануєте оновлювати отримані записи під час обходу, краще скористатися методами `lazyById` або `lazyByIdDesc`. Вони автоматично розбивають результати на сторінки за первинним ключем запису:
 
 ```php
 DB::table('users')->where('active', false)
@@ -227,12 +231,12 @@ DB::table('users')->where('active', false)
 ```
 
 > [!WARNING]
-> When updating or deleting records while iterating over them, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the results.
+> Коли ви оновлюєте або видаляєте записи під час обходу, будь-які зміни первинного чи зовнішніх ключів можуть вплинути на запит, що дістає частини. Через це частина записів може не потрапити до результатів.
 
 <a name="aggregates"></a>
-### Aggregates
+### Агрегати
 
-The query builder also provides a variety of methods for retrieving aggregate values like `count`, `max`, `min`, `avg`, and `sum`. You may call any of these methods after constructing your query:
+Конструктор запитів має також низку методів для отримання агрегатних значень: `count`, `max`, `min`, `avg` і `sum`. Викликати будь-який із них можна після того, як ви побудували запит:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -242,7 +246,7 @@ $users = DB::table('users')->count();
 $price = DB::table('orders')->max('price');
 ```
 
-Of course, you may combine these methods with other clauses to fine-tune how your aggregate value is calculated:
+Звісно, ці методи можна поєднувати з іншими умовами, щоб точніше визначити, як обчислюється агрегат:
 
 ```php
 $price = DB::table('orders')
@@ -251,9 +255,9 @@ $price = DB::table('orders')
 ```
 
 <a name="determining-if-records-exist"></a>
-#### Determining if Records Exist
+#### Перевірка існування записів
 
-Instead of using the `count` method to determine if any records exist that match your query's constraints, you may use the `exists` and `doesntExist` methods:
+Замість методу `count` для перевірки, чи є записи, що відповідають обмеженням запиту, скористайтеся методами `exists` і `doesntExist`:
 
 ```php
 if (DB::table('orders')->where('finalized', 1)->exists()) {
@@ -266,12 +270,12 @@ if (DB::table('orders')->where('finalized', 1)->doesntExist()) {
 ```
 
 <a name="select-statements"></a>
-## Select Statements
+## Запити SELECT
 
 <a name="specifying-a-select-clause"></a>
-#### Specifying a Select Clause
+#### Задання виразу SELECT
 
-You may not always want to select all columns from a database table. Using the `select` method, you can specify a custom "select" clause for the query:
+Не завжди потрібно вибирати з таблиці всі стовпці. Методом `select` ви можете задати для запиту власний вираз «select»:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -281,13 +285,13 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `distinct` method allows you to force the query to return distinct results:
+Метод `distinct` змушує запит повертати лише унікальні результати:
 
 ```php
 $users = DB::table('users')->distinct()->get();
 ```
 
-If you already have a query builder instance and you wish to add a column to its existing select clause, you may use the `addSelect` method:
+Якщо у вас уже є екземпляр конструктора запитів і ви хочете додати стовпець до наявного виразу select, скористайтеся методом `addSelect`:
 
 ```php
 $query = DB::table('users')->select('name');
@@ -296,9 +300,9 @@ $users = $query->addSelect('age')->get();
 ```
 
 <a name="raw-expressions"></a>
-## Raw Expressions
+## Сирі вирази
 
-Sometimes you may need to insert an arbitrary string into a query. To create a raw string expression, you may use the `raw` method provided by the `DB` facade:
+Іноді вам потрібно вставити в запит довільний рядок. Щоб створити сирий рядковий вираз, скористайтеся методом `raw` фасаду `DB`:
 
 ```php
 $users = DB::table('users')
@@ -309,17 +313,17 @@ $users = DB::table('users')
 ```
 
 > [!WARNING]
-> Raw statements will be injected into the query as strings, so you should be extremely careful to avoid creating SQL injection vulnerabilities.
+> Сирі вирази підставляються в запит як рядки, тому будьте надзвичайно уважні, щоб не створити вразливість до SQL-ін'єкції.
 
 <a name="raw-methods"></a>
-### Raw Methods
+### Сирі методи
 
-Instead of using the `DB::raw` method, you may also use the following methods to insert a raw expression into various parts of your query. **Remember, Laravel cannot guarantee that any query using raw expressions is protected against SQL injection vulnerabilities.**
+Замість методу `DB::raw` ви можете скористатися наведеними нижче методами, щоб вставити сирий вираз у різні частини запиту. **Пам'ятайте: Laravel не може гарантувати, що запит із сирими виразами захищений від SQL-ін'єкцій.**
 
 <a name="selectraw"></a>
 #### `selectRaw`
 
-The `selectRaw` method can be used in place of `addSelect(DB::raw(/* ... */))`. This method accepts an optional array of bindings as its second argument:
+Метод `selectRaw` можна використати замість `addSelect(DB::raw(/* ... */))`. Другим аргументом він приймає необов'язковий масив прив'язок:
 
 ```php
 $orders = DB::table('orders')
@@ -330,7 +334,7 @@ $orders = DB::table('orders')
 <a name="whereraw-orwhereraw"></a>
 #### `whereRaw / orWhereRaw`
 
-The `whereRaw` and `orWhereRaw` methods can be used to inject a raw "where" clause into your query. These methods accept an optional array of bindings as their second argument:
+Методи `whereRaw` і `orWhereRaw` вставляють у ваш запит сирий вираз «where». Другим аргументом вони приймають необов'язковий масив прив'язок:
 
 ```php
 $orders = DB::table('orders')
@@ -341,7 +345,7 @@ $orders = DB::table('orders')
 <a name="havingraw-orhavingraw"></a>
 #### `havingRaw / orHavingRaw`
 
-The `havingRaw` and `orHavingRaw` methods may be used to provide a raw string as the value of the "having" clause. These methods accept an optional array of bindings as their second argument:
+Методи `havingRaw` і `orHavingRaw` задають сирий рядок як значення виразу «having». Другим аргументом вони приймають необов'язковий масив прив'язок:
 
 ```php
 $orders = DB::table('orders')
@@ -354,7 +358,7 @@ $orders = DB::table('orders')
 <a name="orderbyraw"></a>
 #### `orderByRaw`
 
-The `orderByRaw` method may be used to provide a raw string as the value of the "order by" clause:
+Метод `orderByRaw` задає сирий рядок як значення виразу «order by»:
 
 ```php
 $orders = DB::table('orders')
@@ -365,7 +369,7 @@ $orders = DB::table('orders')
 <a name="groupbyraw"></a>
 ### `groupByRaw`
 
-The `groupByRaw` method may be used to provide a raw string as the value of the `group by` clause:
+Метод `groupByRaw` задає сирий рядок як значення виразу `group by`:
 
 ```php
 $orders = DB::table('orders')
@@ -375,12 +379,12 @@ $orders = DB::table('orders')
 ```
 
 <a name="joins"></a>
-## Joins
+## Джойни
 
 <a name="inner-join-clause"></a>
-#### Inner Join Clause
+#### Вираз INNER JOIN
 
-The query builder may also be used to add join clauses to your queries. To perform a basic "inner join", you may use the `join` method on a query builder instance. The first argument passed to the `join` method is the name of the table you need to join to, while the remaining arguments specify the column constraints for the join. You may even join multiple tables in a single query:
+Конструктором запитів можна додавати до запитів і джойни. Щоб виконати базовий «inner join», скористайтеся методом `join` на екземплярі конструктора. Перший аргумент методу `join` - назва таблиці, яку потрібно приєднати, а решта аргументів задають умови для стовпців. Ви можете приєднати навіть кілька таблиць в одному запиті:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -393,9 +397,9 @@ $users = DB::table('users')
 ```
 
 <a name="left-join-right-join-clause"></a>
-#### Left Join / Right Join Clause
+#### Вирази LEFT JOIN / RIGHT JOIN
 
-If you would like to perform a "left join" or "right join" instead of an "inner join", use the `leftJoin` or `rightJoin` methods. These methods have the same signature as the `join` method:
+Якщо замість «inner join» вам потрібен «left join» чи «right join», скористайтеся методами `leftJoin` або `rightJoin`. Вони мають ту саму сигнатуру, що й метод `join`:
 
 ```php
 $users = DB::table('users')
@@ -408,9 +412,9 @@ $users = DB::table('users')
 ```
 
 <a name="cross-join-clause"></a>
-#### Cross Join Clause
+#### Вираз CROSS JOIN
 
-You may use the `crossJoin` method to perform a "cross join". Cross joins generate a cartesian product between the first table and the joined table:
+Щоб виконати «cross join», скористайтеся методом `crossJoin`. Cross join утворює декартовий добуток першої таблиці та приєднаної:
 
 ```php
 $sizes = DB::table('sizes')
@@ -419,9 +423,9 @@ $sizes = DB::table('sizes')
 ```
 
 <a name="advanced-join-clauses"></a>
-#### Advanced Join Clauses
+#### Складніші вирази джойнів
 
-You may also specify more advanced join clauses. To get started, pass a closure as the second argument to the `join` method. The closure will receive a `Illuminate\Database\Query\JoinClause` instance which allows you to specify constraints on the "join" clause:
+Ви можете задавати й складніші умови джойну. Для цього передайте замикання другим аргументом методу `join`. Замикання отримає екземпляр `Illuminate\Database\Query\JoinClause`, у якому ви задаєте обмеження виразу «join»:
 
 ```php
 DB::table('users')
@@ -431,7 +435,7 @@ DB::table('users')
     ->get();
 ```
 
-If you would like to use a "where" clause on your joins, you may use the `where` and `orWhere` methods provided by the `JoinClause` instance. Instead of comparing two columns, these methods will compare the column against a value:
+Якщо в джойні вам потрібен вираз «where», скористайтеся методами `where` і `orWhere` екземпляра `JoinClause`. Замість порівняння двох стовпців вони порівнюють стовпець зі значенням:
 
 ```php
 DB::table('users')
@@ -443,9 +447,9 @@ DB::table('users')
 ```
 
 <a name="subquery-joins"></a>
-#### Subquery Joins
+#### Джойни з підзапитом
 
-You may use the `joinSub`, `leftJoinSub`, and `rightJoinSub` methods to join a query to a subquery. Each of these methods receives three arguments: the subquery, its table alias, and a closure that defines the related columns. In this example, we will retrieve a collection of users where each user record also contains the `created_at` timestamp of the user's most recently published blog post:
+Методами `joinSub`, `leftJoinSub` і `rightJoinSub` ви можете приєднати до запиту підзапит. Кожен із них приймає три аргументи: підзапит, його псевдонім таблиці та замикання, що визначає пов'язані стовпці. У цьому прикладі ми отримаємо колекцію користувачів, де кожен запис також містить час `created_at` останнього опублікованого поста цього користувача:
 
 ```php
 $latestPosts = DB::table('posts')
@@ -460,14 +464,14 @@ $users = DB::table('users')
 ```
 
 <a name="lateral-joins"></a>
-#### Lateral Joins
+#### Латеральні джойни
 
 > [!WARNING]
-> Lateral joins are currently supported by PostgreSQL, MySQL >= 8.0.14, and SQL Server.
+> Латеральні джойни наразі підтримують PostgreSQL, MySQL >= 8.0.14 і SQL Server.
 
-You may use the `joinLateral` and `leftJoinLateral` methods to perform a "lateral join" with a subquery. Each of these methods receives two arguments: the subquery and its table alias. The join condition(s) should be specified within the `where` clause of the given subquery. Lateral joins are evaluated for each row and can reference columns outside the subquery.
+Методами `joinLateral` і `leftJoinLateral` можна виконати «lateral join» із підзапитом. Кожен із них приймає два аргументи: підзапит і його псевдонім таблиці. Умови джойну слід задати у виразі `where` самого підзапиту. Латеральні джойни обчислюються для кожного рядка й можуть посилатися на стовпці за межами підзапиту.
 
-In this example, we will retrieve a collection of users as well as the user's three most recent blog posts. Each user can produce up to three rows in the result set: one for each of their most recent blog posts. The join condition is specified with a `whereColumn` clause within the subquery, referencing the current user row:
+У цьому прикладі ми отримаємо колекцію користувачів разом із трьома їхніми останніми постами. Кожен користувач може дати до трьох рядків у результаті - по одному на кожен останній пост. Умову джойну задано виразом `whereColumn` усередині підзапиту, який посилається на поточний рядок користувача:
 
 ```php
 $latestPosts = DB::table('posts')
@@ -482,9 +486,9 @@ $users = DB::table('users')
 ```
 
 <a name="unions"></a>
-## Unions
+## Об'єднання запитів
 
-The query builder also provides a convenient method to "union" two or more queries together. For example, you may create an initial query and use the `union` method to union it with more queries:
+Конструктор запитів має також зручний метод для об'єднання («union») двох чи більше запитів. Наприклад, ви можете створити початковий запит і методом `union` об'єднати його з іншими:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -498,17 +502,17 @@ $users = DB::table('users')
     ->get();
 ```
 
-In addition to the `union` method, the query builder provides a `unionAll` method. Queries that are combined using the `unionAll` method will not have their duplicate results removed. The `unionAll` method has the same method signature as the `union` method.
+Крім методу `union`, конструктор запитів має метод `unionAll`. Запити, об'єднані через `unionAll`, не втрачають дублікати результатів. Сигнатура `unionAll` така сама, як у `union`.
 
 <a name="basic-where-clauses"></a>
-## Basic Where Clauses
+## Базові умови WHERE
 
 <a name="where-clauses"></a>
-### Where Clauses
+### Умови WHERE
 
-You may use the query builder's `where` method to add "where" clauses to the query. The most basic call to the `where` method requires three arguments. The first argument is the name of the column. The second argument is an operator, which can be any of the database's supported operators. The third argument is the value to compare against the column's value.
+Щоб додати до запиту умови «where», скористайтеся методом `where` конструктора запитів. Найпростіший виклик `where` вимагає трьох аргументів. Перший - назва стовпця. Другий - оператор, будь-який із підтримуваних вашою базою даних. Третій - значення, з яким порівнюється значення стовпця.
 
-For example, the following query retrieves users where the value of the `votes` column is equal to `100` and the value of the `age` column is greater than `35`:
+Наприклад, цей запит дістає користувачів, у яких значення стовпця `votes` дорівнює `100`, а значення стовпця `age` більше за `35`:
 
 ```php
 $users = DB::table('users')
@@ -517,13 +521,13 @@ $users = DB::table('users')
     ->get();
 ```
 
-For convenience, if you want to verify that a column is `=` to a given value, you may pass the value as the second argument to the `where` method. Laravel will assume you would like to use the `=` operator:
+Для зручності, якщо ви перевіряєте стовпець на рівність `=` заданому значенню, передайте це значення другим аргументом методу `where`. Laravel вважатиме, що ви хочете оператор `=`:
 
 ```php
 $users = DB::table('users')->where('votes', 100)->get();
 ```
 
-You may also provide an associative array to the `where` method to quickly query against multiple columns:
+Ви також можете передати методу `where` асоціативний масив, щоб швидко зробити запит за кількома стовпцями:
 
 ```php
 $users = DB::table('users')->where([
@@ -532,7 +536,7 @@ $users = DB::table('users')->where([
 ])->get();
 ```
 
-As previously mentioned, you may use any operator that is supported by your database system:
+Як уже згадувалося, ви можете використовувати будь-який оператор, що його підтримує ваша система баз даних:
 
 ```php
 $users = DB::table('users')
@@ -548,7 +552,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may also pass an array of conditions to the `where` function. Each element of the array should be an array containing the three arguments typically passed to the `where` method:
+Функції `where` можна також передати масив умов. Кожен елемент масиву має бути масивом із трьох аргументів, які зазвичай передають методу `where`:
 
 ```php
 $users = DB::table('users')->where([
@@ -558,15 +562,15 @@ $users = DB::table('users')->where([
 ```
 
 > [!WARNING]
-> PDO does not support binding column names. Therefore, you should never allow user input to dictate the column names referenced by your queries, including "order by" columns.
+> PDO не підтримує прив'язку назв стовпців. Тому ніколи не дозволяйте користувацькому вводу визначати назви стовпців у ваших запитах, зокрема стовпці для «order by».
 
 > [!WARNING]
-> MySQL and MariaDB automatically typecast strings to integers in string-number comparisons. In this process, non-numeric strings are converted to `0`, which can lead to unexpected results. For example, if your table has a `secret` column with a value of `aaa` and you run `User::where('secret', 0)`, that row will be returned. To avoid this, ensure all values are typecast to their appropriate types before using them in queries.
+> MySQL і MariaDB автоматично приводять рядки до цілих чисел, коли порівнюють рядок із числом. При цьому нечислові рядки перетворюються на `0`, що може дати неочікуваний результат. Наприклад, якщо у вашій таблиці є стовпець `secret` зі значенням `aaa` і ви виконаєте `User::where('secret', 0)`, цей рядок буде повернуто. Щоб такого не сталося, приводьте всі значення до належних типів, перш ніж використовувати їх у запитах.
 
 <a name="or-where-clauses"></a>
-### Or Where Clauses
+### Умови OR WHERE
 
-When chaining together calls to the query builder's `where` method, the "where" clauses will be joined together using the `and` operator. However, you may use the `orWhere` method to join a clause to the query using the `or` operator. The `orWhere` method accepts the same arguments as the `where` method:
+Коли ви ланцюжком викликаєте метод `where`, умови «where» з'єднуються оператором `and`. Втім, методом `orWhere` ви можете приєднати умову оператором `or`. Метод `orWhere` приймає ті самі аргументи, що й `where`:
 
 ```php
 $users = DB::table('users')
@@ -575,7 +579,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-If you need to group an "or" condition within parentheses, you may pass a closure as the first argument to the `orWhere` method:
+Якщо вам потрібно згрупувати умову «or» у дужках, передайте замикання першим аргументом методу `orWhere`:
 
 ```php
 use Illuminate\Database\Query\Builder; 
@@ -589,19 +593,19 @@ $users = DB::table('users')
     ->get();
 ```
 
-The example above will produce the following SQL:
+Наведений вище приклад дасть такий SQL:
 
 ```sql
 select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ```
 
 > [!WARNING]
-> You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+> Завжди групуйте виклики `orWhere`, щоб уникнути неочікуваної поведінки, коли застосовуються глобальні скопи.
 
 <a name="where-not-clauses"></a>
-### Where Not Clauses
+### Умови WHERE NOT
 
-The `whereNot` and `orWhereNot` methods may be used to negate a given group of query constraints. For example, the following query excludes products that are on clearance or which have a price that is less than ten:
+Методами `whereNot` і `orWhereNot` можна заперечити задану групу обмежень запиту. Наприклад, цей запит виключає товари, які продаються за акцією або дешевші за десять:
 
 ```php
 $products = DB::table('products')
@@ -613,9 +617,9 @@ $products = DB::table('products')
 ```
 
 <a name="where-any-all-none-clauses"></a>
-### Where Any / All / None Clauses
+### Умови Any / All / None
 
-Sometimes you may need to apply the same query constraints to multiple columns. For example, you may want to retrieve all records where any columns in a given list are `LIKE` a given value. You may accomplish this using the `whereAny` method:
+Іноді вам потрібно застосувати ті самі обмеження до кількох стовпців. Наприклад, ви хочете дістати всі записи, у яких будь-який зі стовпців зі списку `LIKE` задане значення. Це робить метод `whereAny`:
 
 ```php
 $users = DB::table('users')
@@ -628,7 +632,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The query above will result in the following SQL:
+Наведений вище запит дасть такий SQL:
 
 ```sql
 SELECT *
@@ -640,7 +644,7 @@ WHERE active = true AND (
 )
 ```
 
-Similarly, the `whereAll` method may be used to retrieve records where all of the given columns match a given constraint:
+Аналогічно, метод `whereAll` дістає записи, у яких усі задані стовпці відповідають обмеженню:
 
 ```php
 $posts = DB::table('posts')
@@ -652,7 +656,7 @@ $posts = DB::table('posts')
     ->get();
 ```
 
-The query above will result in the following SQL:
+Наведений вище запит дасть такий SQL:
 
 ```sql
 SELECT *
@@ -663,7 +667,7 @@ WHERE published = true AND (
 )
 ```
 
-The `whereNone` method may be used to retrieve records where none of the given columns match a given constraint:
+Метод `whereNone` дістає записи, у яких жоден із заданих стовпців не відповідає обмеженню:
 
 ```php
 $albums = DB::table('albums')
@@ -676,7 +680,7 @@ $albums = DB::table('albums')
     ->get();
 ```
 
-The query above will result in the following SQL:
+Наведений вище запит дасть такий SQL:
 
 ```sql
 SELECT *
@@ -689,9 +693,9 @@ WHERE published = true AND NOT (
 ```
 
 <a name="json-where-clauses"></a>
-### JSON Where Clauses
+### Умови WHERE для JSON
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MariaDB 10.3+, MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+. To query a JSON column, use the `->` operator:
+Laravel підтримує запити до стовпців типу JSON у базах даних, які мають підтримку таких стовпців. Наразі це MariaDB 10.3+, MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+ і SQLite 3.39.0+. Щоб звернутися до стовпця JSON, скористайтеся оператором `->`:
 
 ```php
 $users = DB::table('users')
@@ -703,7 +707,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may use the `whereJsonContains` and `whereJsonDoesntContain` methods to query JSON arrays:
+Щоб робити запити до масивів JSON, скористайтеся методами `whereJsonContains` і `whereJsonDoesntContain`:
 
 ```php
 $users = DB::table('users')
@@ -715,7 +719,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` and `whereJsonDoesntContain` methods:
+Якщо ваш застосунок працює з MariaDB, MySQL або PostgreSQL, методам `whereJsonContains` і `whereJsonDoesntContain` можна передати масив значень:
 
 ```php
 $users = DB::table('users')
@@ -727,7 +731,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-In addition, you may use the `whereJsonContainsKey` or `whereJsonDoesntContainKey` methods to retrieve the results that include or do not include a JSON key:
+Крім того, методами `whereJsonContainsKey` і `whereJsonDoesntContainKey` ви можете дістати результати, які містять або не містять певний ключ JSON:
 
 ```php
 $users = DB::table('users')
@@ -739,7 +743,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-Finally, you may use `whereJsonLength` method to query JSON arrays by their length:
+Нарешті, методом `whereJsonLength` можна робити запити до масивів JSON за їхньою довжиною:
 
 ```php
 $users = DB::table('users')
@@ -752,11 +756,11 @@ $users = DB::table('users')
 ```
 
 <a name="additional-where-clauses"></a>
-### Additional Where Clauses
+### Додаткові умови WHERE
 
 **whereLike / orWhereLike / whereNotLike / orWhereNotLike**
 
-The `whereLike` method allows you to add "LIKE" clauses to your query for pattern matching. These methods provide a database-agnostic way of performing string matching queries, with the ability to toggle case-sensitivity. By default, string matching is case-insensitive:
+Метод `whereLike` додає до запиту умови «LIKE» для пошуку за шаблоном. Ці методи дають незалежний від бази даних спосіб порівнювати рядки з можливістю керувати чутливістю до регістру. За замовчуванням порівняння рядків не чутливе до регістру:
 
 ```php
 $users = DB::table('users')
@@ -764,7 +768,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You can enable a case-sensitive search via the `caseSensitive` argument:
+Увімкнути чутливий до регістру пошук можна аргументом `caseSensitive`:
 
 ```php
 $users = DB::table('users')
@@ -772,7 +776,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `orWhereLike` method allows you to add an "or" clause with a LIKE condition:
+Метод `orWhereLike` додає умову «or» з умовою LIKE:
 
 ```php
 $users = DB::table('users')
@@ -781,7 +785,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `whereNotLike` method allows you to add "NOT LIKE" clauses to your query:
+Метод `whereNotLike` додає до запиту умови «NOT LIKE»:
 
 ```php
 $users = DB::table('users')
@@ -789,7 +793,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-Similarly, you can use `orWhereNotLike` to add an "or" clause with a NOT LIKE condition:
+Аналогічно, `orWhereNotLike` додає умову «or» з умовою NOT LIKE:
 
 ```php
 $users = DB::table('users')
@@ -799,11 +803,11 @@ $users = DB::table('users')
 ```
 
 > [!WARNING]
-> The `whereLike` case-sensitive search option is currently not supported on SQL Server.
+> Опція чутливого до регістру пошуку в `whereLike` наразі не підтримується на SQL Server.
 
 **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
-The `whereIn` method verifies that a given column's value is contained within the given array:
+Метод `whereIn` перевіряє, що значення заданого стовпця міститься в заданому масиві:
 
 ```php
 $users = DB::table('users')
@@ -811,7 +815,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `whereNotIn` method verifies that the given column's value is not contained in the given array:
+Метод `whereNotIn` перевіряє, що значення заданого стовпця не міститься в заданому масиві:
 
 ```php
 $users = DB::table('users')
@@ -819,7 +823,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may also provide a query object as the `whereIn` method's second argument:
+Другим аргументом методу `whereIn` можна також передати об'єкт запиту:
 
 ```php
 $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
@@ -829,7 +833,7 @@ $comments = DB::table('comments')
     ->get();
 ```
 
-The example above will produce the following SQL:
+Наведений вище приклад дасть такий SQL:
 
 ```sql
 select * from comments where user_id in (
@@ -840,11 +844,11 @@ select * from comments where user_id in (
 ```
 
 > [!WARNING]
-> If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
+> Якщо ви додаєте до запиту великий масив цілочисельних прив'язок, методи `whereIntegerInRaw` або `whereIntegerNotInRaw` допоможуть значно зменшити споживання пам'яті.
 
 **whereBetween / orWhereBetween**
 
-The `whereBetween` method verifies that a column's value is between two values:
+Метод `whereBetween` перевіряє, що значення стовпця лежить між двома значеннями:
 
 ```php
 $users = DB::table('users')
@@ -854,7 +858,7 @@ $users = DB::table('users')
 
 **whereNotBetween / orWhereNotBetween**
 
-The `whereNotBetween` method verifies that a column's value lies outside of two values:
+Метод `whereNotBetween` перевіряє, що значення стовпця лежить за межами двох значень:
 
 ```php
 $users = DB::table('users')
@@ -864,7 +868,7 @@ $users = DB::table('users')
 
 **whereBetweenColumns / whereNotBetweenColumns / orWhereBetweenColumns / orWhereNotBetweenColumns**
 
-The `whereBetweenColumns` method verifies that a column's value is between the two values of two columns in the same table row:
+Метод `whereBetweenColumns` перевіряє, що значення стовпця лежить між значеннями двох стовпців того самого рядка таблиці:
 
 ```php
 $patients = DB::table('patients')
@@ -872,7 +876,7 @@ $patients = DB::table('patients')
     ->get();
 ```
 
-The `whereNotBetweenColumns` method verifies that a column's value lies outside the two values of two columns in the same table row:
+Метод `whereNotBetweenColumns` перевіряє, що значення стовпця лежить за межами значень двох стовпців того самого рядка таблиці:
 
 ```php
 $patients = DB::table('patients')
@@ -882,7 +886,7 @@ $patients = DB::table('patients')
 
 **whereValueBetween / whereValueNotBetween / orWhereValueBetween / orWhereValueNotBetween**
 
-The `whereValueBetween` method verifies that a given value is between the values of two columns of the same type in the same table row:
+Метод `whereValueBetween` перевіряє, що задане значення лежить між значеннями двох стовпців того самого типу в тому самому рядку таблиці:
 
 ```php
 $products = DB::table('products')
@@ -890,7 +894,7 @@ $products = DB::table('products')
     ->get();
 ```
 
-The `whereValueNotBetween` method verifies that a value lies outside the values of two columns in the same table row:
+Метод `whereValueNotBetween` перевіряє, що значення лежить за межами значень двох стовпців того самого рядка таблиці:
 
 ```php
 $products = DB::table('products')
@@ -900,7 +904,7 @@ $products = DB::table('products')
 
 **whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
-The `whereNull` method verifies that the value of the given column is `NULL`:
+Метод `whereNull` перевіряє, що значення заданого стовпця дорівнює `NULL`:
 
 ```php
 $users = DB::table('users')
@@ -908,7 +912,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `whereNotNull` method verifies that the column's value is not `NULL`:
+Метод `whereNotNull` перевіряє, що значення стовпця не дорівнює `NULL`:
 
 ```php
 $users = DB::table('users')
@@ -918,7 +922,7 @@ $users = DB::table('users')
 
 **whereNullSafeEquals / orWhereNullSafeEquals**
 
-The `whereNullSafeEquals` and `orWhereNullSafeEquals` methods may be used to compare a column's value against a given value while treating two `NULL` values as equal:
+Методами `whereNullSafeEquals` і `orWhereNullSafeEquals` можна порівняти значення стовпця із заданим значенням, вважаючи два значення `NULL` рівними:
 
 ```php
 $lastLoginIp = $request->input('last_login_ip');
@@ -930,7 +934,7 @@ $users = DB::table('users')
 
 **whereDate / whereMonth / whereDay / whereYear / whereTime**
 
-The `whereDate` method may be used to compare a column's value against a date:
+Метод `whereDate` порівнює значення стовпця з датою:
 
 ```php
 $users = DB::table('users')
@@ -938,7 +942,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `whereMonth` method may be used to compare a column's value against a specific month:
+Метод `whereMonth` порівнює значення стовпця з конкретним місяцем:
 
 ```php
 $users = DB::table('users')
@@ -946,7 +950,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `whereDay` method may be used to compare a column's value against a specific day of the month:
+Метод `whereDay` порівнює значення стовпця з конкретним днем місяця:
 
 ```php
 $users = DB::table('users')
@@ -954,7 +958,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `whereYear` method may be used to compare a column's value against a specific year:
+Метод `whereYear` порівнює значення стовпця з конкретним роком:
 
 ```php
 $users = DB::table('users')
@@ -962,7 +966,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `whereTime` method may be used to compare a column's value against a specific time:
+Метод `whereTime` порівнює значення стовпця з конкретним часом:
 
 ```php
 $users = DB::table('users')
@@ -972,7 +976,7 @@ $users = DB::table('users')
 
 **wherePast / whereFuture / whereToday / whereBeforeToday / whereAfterToday**
 
-The `wherePast` and `whereFuture` methods may be used to determine if a column's value is in the past or future:
+Методами `wherePast` і `whereFuture` можна визначити, чи значення стовпця в минулому або майбутньому:
 
 ```php
 $invoices = DB::table('invoices')
@@ -984,7 +988,7 @@ $invoices = DB::table('invoices')
     ->get();
 ```
 
-The `whereNowOrPast` and `whereNowOrFuture` methods may be used to determine if a column's value is in the past or future, inclusive of the current date and time:
+Методами `whereNowOrPast` і `whereNowOrFuture` можна визначити, чи значення стовпця в минулому або майбутньому, включно з поточними датою та часом:
 
 ```php
 $invoices = DB::table('invoices')
@@ -996,7 +1000,7 @@ $invoices = DB::table('invoices')
     ->get();
 ```
 
-The `whereToday`, `whereBeforeToday`, and `whereAfterToday` methods may be used to determine if a column's value is today, before today, or after today, respectively:
+Методами `whereToday`, `whereBeforeToday` і `whereAfterToday` можна визначити, чи значення стовпця припадає на сьогодні, до сьогодні або після сьогодні відповідно:
 
 ```php
 $invoices = DB::table('invoices')
@@ -1012,7 +1016,7 @@ $invoices = DB::table('invoices')
     ->get();
 ```
 
-Similarly, the `whereTodayOrBefore` and `whereTodayOrAfter` methods may be used to determine if a column's value is before today or after today, inclusive of today's date:
+Аналогічно, методами `whereTodayOrBefore` і `whereTodayOrAfter` можна визначити, чи значення стовпця припадає на час до сьогодні або після сьогодні, включно з сьогоднішньою датою:
 
 ```php
 $invoices = DB::table('invoices')
@@ -1026,7 +1030,7 @@ $invoices = DB::table('invoices')
 
 **whereColumn / orWhereColumn**
 
-The `whereColumn` method may be used to verify that two columns are equal:
+Методом `whereColumn` можна перевірити, що два стовпці рівні:
 
 ```php
 $users = DB::table('users')
@@ -1034,7 +1038,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may also pass a comparison operator to the `whereColumn` method:
+Методу `whereColumn` можна також передати оператор порівняння:
 
 ```php
 $users = DB::table('users')
@@ -1042,7 +1046,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may also pass an array of column comparisons to the `whereColumn` method. These conditions will be joined using the `and` operator:
+Методу `whereColumn` можна передати й масив порівнянь стовпців. Ці умови з'єднаються оператором `and`:
 
 ```php
 $users = DB::table('users')
@@ -1053,9 +1057,9 @@ $users = DB::table('users')
 ```
 
 <a name="logical-grouping"></a>
-### Logical Grouping
+### Логічне групування
 
-Sometimes you may need to group several "where" clauses within parentheses in order to achieve your query's desired logical grouping. In fact, you should generally always group calls to the `orWhere` method in parentheses in order to avoid unexpected query behavior. To accomplish this, you may pass a closure to the `where` method:
+Іноді вам потрібно згрупувати кілька умов «where» у дужках, щоб досягти потрібної логіки запиту. Власне, виклики методу `orWhere` варто завжди брати в дужки, щоб запит не поводився неочікувано. Для цього передайте методу `where` замикання:
 
 ```php
 $users = DB::table('users')
@@ -1067,22 +1071,22 @@ $users = DB::table('users')
     ->get();
 ```
 
-As you can see, passing a closure into the `where` method instructs the query builder to begin a constraint group. The closure will receive a query builder instance which you can use to set the constraints that should be contained within the parenthesis group. The example above will produce the following SQL:
+Як бачите, передане в метод `where` замикання наказує конструктору запитів почати групу обмежень. Замикання отримає екземпляр конструктора, у якому ви задаєте обмеження, що мають опинитися в дужках. Наведений вище приклад дасть такий SQL:
 
 ```sql
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
 
 > [!WARNING]
-> You should always group `orWhere` calls in order to avoid unexpected behavior when global scopes are applied.
+> Завжди групуйте виклики `orWhere`, щоб уникнути неочікуваної поведінки, коли застосовуються глобальні скопи.
 
 <a name="advanced-where-clauses"></a>
-## Advanced Where Clauses
+## Складніші умови WHERE
 
 <a name="where-exists-clauses"></a>
-### Where Exists Clauses
+### Умови WHERE EXISTS
 
-The `whereExists` method allows you to write "where exists" SQL clauses. The `whereExists` method accepts a closure which will receive a query builder instance, allowing you to define the query that should be placed inside of the "exists" clause:
+Метод `whereExists` дозволяє писати SQL-вирази «where exists». Він приймає замикання, яке отримає екземпляр конструктора запитів, - у ньому ви описуєте запит, що має опинитися всередині виразу «exists»:
 
 ```php
 $users = DB::table('users')
@@ -1094,7 +1098,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-Alternatively, you may provide a query object to the `whereExists` method instead of a closure:
+Замість замикання методу `whereExists` можна передати об'єкт запиту:
 
 ```php
 $orders = DB::table('orders')
@@ -1106,7 +1110,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-Both of the examples above will produce the following SQL:
+Обидва наведені вище приклади дадуть такий SQL:
 
 ```sql
 select * from users
@@ -1118,9 +1122,9 @@ where exists (
 ```
 
 <a name="subquery-where-clauses"></a>
-### Subquery Where Clauses
+### Умови WHERE з підзапитом
 
-Sometimes you may need to construct a "where" clause that compares the results of a subquery to a given value. You may accomplish this by passing a closure and a value to the `where` method. For example, the following query will retrieve all users who have a recent "membership" of a given type;
+Іноді вам потрібно побудувати умову «where», яка порівнює результат підзапиту із заданим значенням. Для цього передайте методу `where` замикання і значення. Наприклад, цей запит дістане всіх користувачів, які мають нещодавнє «membership» заданого типу;
 
 ```php
 use App\Models\User;
@@ -1135,7 +1139,7 @@ $users = User::where(function (Builder $query) {
 }, 'Pro')->get();
 ```
 
-Or, you may need to construct a "where" clause that compares a column to the results of a subquery. You may accomplish this by passing a column, operator, and closure to the `where` method. For example, the following query will retrieve all income records where the amount is less than average;
+Або вам може знадобитися умова «where», яка порівнює стовпець із результатом підзапиту. Для цього передайте методу `where` стовпець, оператор і замикання. Наприклад, цей запит дістане всі записи про дохід, де сума менша за середню;
 
 ```php
 use App\Models\Income;
@@ -1147,12 +1151,12 @@ $incomes = Income::where('amount', '<', function (Builder $query) {
 ```
 
 <a name="full-text-where-clauses"></a>
-### Full Text Where Clauses
+### Умови повнотекстового пошуку
 
 > [!WARNING]
-> Full text where clauses are currently supported by MariaDB, MySQL, and PostgreSQL.
+> Умови повнотекстового пошуку наразі підтримують MariaDB, MySQL і PostgreSQL.
 
-The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/docs/{{version}}/migrations#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MariaDB or MySQL:
+Методами `whereFullText` і `orWhereFullText` можна додати до запиту повнотекстові умови «where» для стовпців, що мають [повнотекстові індекси](/docs/{{version}}/migrations#available-index-types). Laravel перетворить їх на відповідний SQL для вашої системи баз даних. Наприклад, для застосунків на MariaDB чи MySQL буде згенеровано вираз `MATCH AGAINST`:
 
 ```php
 $users = DB::table('users')
@@ -1161,12 +1165,12 @@ $users = DB::table('users')
 ```
 
 <a name="vector-similarity-clauses"></a>
-### Vector Similarity Clauses
+### Умови векторної схожості
 
 > [!NOTE]
-> Vector similarity clauses are currently only supported on PostgreSQL connections using the `pgvector` extension. For information on defining vector columns and indexes, consult the [migration documentation](/docs/{{version}}/migrations#available-column-types).
+> Умови векторної схожості наразі підтримуються лише на підключеннях PostgreSQL із розширенням `pgvector`. Про те, як описувати векторні стовпці та індекси, читайте в [документації з міграцій](/docs/{{version}}/migrations#available-column-types).
 
-The `whereVectorSimilarTo` method filters results by cosine similarity to a given vector and orders the results by relevance. The `minSimilarity` threshold should be a value between `0.0` and `1.0`, where `1.0` is identical:
+Метод `whereVectorSimilarTo` фільтрує результати за косинусною схожістю до заданого вектора й сортує їх за релевантністю. Поріг `minSimilarity` має бути значенням між `0.0` і `1.0`, де `1.0` - повна ідентичність:
 
 ```php
 $documents = DB::table('documents')
@@ -1175,7 +1179,7 @@ $documents = DB::table('documents')
     ->get();
 ```
 
-When a plain string is given as the vector argument, Laravel will automatically generate embeddings for it using the [Laravel AI SDK](/docs/{{version}}/ai-sdk#embeddings):
+Якщо як вектор передано звичайний рядок, Laravel автоматично згенерує для нього ембединги за допомогою [Laravel AI SDK](/docs/{{version}}/ai-sdk#embeddings):
 
 ```php
 $documents = DB::table('documents')
@@ -1184,7 +1188,7 @@ $documents = DB::table('documents')
     ->get();
 ```
 
-By default, `whereVectorSimilarTo` also orders results by distance (most similar first). You may disable this ordering by passing `false` as the `order` argument:
+За замовчуванням `whereVectorSimilarTo` також сортує результати за відстанню (найсхожіші спершу). Вимкнути це сортування можна, передавши `false` в аргументі `order`:
 
 ```php
 $documents = DB::table('documents')
@@ -1194,7 +1198,7 @@ $documents = DB::table('documents')
     ->get();
 ```
 
-If you need more control, you may use the `selectVectorDistance`, `whereVectorDistanceLessThan`, and `orderByVectorDistance` methods independently:
+Якщо вам потрібно більше контролю, скористайтеся методами `selectVectorDistance`, `whereVectorDistanceLessThan` і `orderByVectorDistance` окремо:
 
 ```php
 $documents = DB::table('documents')
@@ -1206,22 +1210,22 @@ $documents = DB::table('documents')
     ->get();
 ```
 
-When utilizing PostgreSQL, the `pgvector` extension must be loaded before `vector` columns can be created:
+На PostgreSQL розширення `pgvector` має бути завантажене, перш ніж можна створювати стовпці `vector`:
 
 ```php
 Schema::ensureVectorExtensionExists();
 ```
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordering, Grouping, Limit and Offset
+## Сортування, групування, limit та offset
 
 <a name="ordering"></a>
-### Ordering
+### Сортування
 
 <a name="orderby"></a>
-#### The `orderBy` Method
+#### Метод `orderBy`
 
-The `orderBy` method allows you to sort the results of the query by a given column. The first argument accepted by the `orderBy` method should be the column you wish to sort by, while the second argument determines the direction of the sort and may be either `asc` or `desc`:
+Метод `orderBy` сортує результати запиту за заданим стовпцем. Перший аргумент - стовпець, за яким сортувати, а другий визначає напрямок сортування: `asc` або `desc`:
 
 ```php
 $users = DB::table('users')
@@ -1229,7 +1233,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-To sort by multiple columns, you may simply invoke `orderBy` as many times as necessary:
+Щоб сортувати за кількома стовпцями, просто викличте `orderBy` стільки разів, скільки потрібно:
 
 ```php
 $users = DB::table('users')
@@ -1238,7 +1242,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-The sort direction is optional, and is ascending by default. If you want to sort in descending order, you can specify the second parameter for the `orderBy` method, or just use `orderByDesc`:
+Напрямок сортування необов'язковий, за замовчуванням - за зростанням. Щоб сортувати за спаданням, задайте другий параметр методу `orderBy` або просто скористайтеся `orderByDesc`:
 
 ```php
 $users = DB::table('users')
@@ -1246,7 +1250,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-Finally, using the `->` operator, the results can be sorted by a value within a JSON column:
+Нарешті, за допомогою оператора `->` результати можна сортувати за значенням усередині стовпця JSON:
 
 ```php
 $corporations = DB::table('corporations')
@@ -1256,9 +1260,9 @@ $corporations = DB::table('corporations')
 ```
 
 <a name="latest-oldest"></a>
-#### The `latest` and `oldest` Methods
+#### Методи `latest` і `oldest`
 
-The `latest` and `oldest` methods allow you to easily order results by date. By default, the result will be ordered by the table's `created_at` column. Or, you may pass the column name that you wish to sort by:
+Методи `latest` і `oldest` дозволяють легко сортувати результати за датою. За замовчуванням результати сортуються за стовпцем `created_at` таблиці. Або ви можете передати назву стовпця, за яким хочете сортувати:
 
 ```php
 $user = DB::table('users')
@@ -1267,9 +1271,9 @@ $user = DB::table('users')
 ```
 
 <a name="random-ordering"></a>
-#### Random Ordering
+#### Випадкове сортування
 
-The `inRandomOrder` method may be used to sort the query results randomly. For example, you may use this method to fetch a random user:
+Метод `inRandomOrder` сортує результати запиту випадковим чином. Наприклад, так можна дістати випадкового користувача:
 
 ```php
 $randomUser = DB::table('users')
@@ -1278,9 +1282,9 @@ $randomUser = DB::table('users')
 ```
 
 <a name="removing-existing-orderings"></a>
-#### Removing Existing Orderings
+#### Скидання наявного сортування
 
-The `reorder` method removes all of the "order by" clauses that have previously been applied to the query:
+Метод `reorder` прибирає всі вирази «order by», які раніше застосували до запиту:
 
 ```php
 $query = DB::table('users')->orderBy('name');
@@ -1288,7 +1292,7 @@ $query = DB::table('users')->orderBy('name');
 $unorderedUsers = $query->reorder()->get();
 ```
 
-You may pass a column and direction when calling the `reorder` method in order to remove all existing "order by" clauses and apply an entirely new order to the query:
+Викликаючи `reorder`, ви можете передати стовпець і напрямок, щоб прибрати всі наявні вирази «order by» й задати запиту цілком нове сортування:
 
 ```php
 $query = DB::table('users')->orderBy('name');
@@ -1296,7 +1300,7 @@ $query = DB::table('users')->orderBy('name');
 $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
 ```
 
-For convenience, you may use the `reorderDesc` method to reorder the query results in descending order:
+Для зручності є метод `reorderDesc`, який перевпорядковує результати за спаданням:
 
 ```php
 $query = DB::table('users')->orderBy('name');
@@ -1305,12 +1309,12 @@ $usersOrderedByEmail = $query->reorderDesc('email')->get();
 ```
 
 <a name="grouping"></a>
-### Grouping
+### Групування
 
 <a name="groupby-having"></a>
-#### The `groupBy` and `having` Methods
+#### Методи `groupBy` і `having`
 
-As you might expect, the `groupBy` and `having` methods may be used to group the query results. The `having` method's signature is similar to that of the `where` method:
+Як і слід очікувати, методи `groupBy` і `having` групують результати запиту. Сигнатура методу `having` схожа на сигнатуру `where`:
 
 ```php
 $users = DB::table('users')
@@ -1319,7 +1323,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-You can use the `havingBetween` method to filter the results within a given range:
+Методом `havingBetween` можна відфільтрувати результати в заданому діапазоні:
 
 ```php
 $report = DB::table('orders')
@@ -1329,7 +1333,7 @@ $report = DB::table('orders')
     ->get();
 ```
 
-You may pass multiple arguments to the `groupBy` method to group by multiple columns:
+Щоб групувати за кількома стовпцями, передайте методу `groupBy` кілька аргументів:
 
 ```php
 $users = DB::table('users')
@@ -1338,12 +1342,12 @@ $users = DB::table('users')
     ->get();
 ```
 
-To build more advanced `having` statements, see the [havingRaw](#raw-methods) method.
+Щоб будувати складніші вирази `having`, дивіться метод [havingRaw](#raw-methods).
 
 <a name="limit-and-offset"></a>
-### Limit and Offset
+### Limit та offset
 
-You may use the `limit` and `offset` methods to limit the number of results returned from the query or to skip a given number of results in the query:
+Методами `limit` і `offset` можна обмежити кількість результатів запиту або пропустити задану кількість результатів:
 
 ```php
 $users = DB::table('users')
@@ -1353,9 +1357,9 @@ $users = DB::table('users')
 ```
 
 <a name="conditional-clauses"></a>
-## Conditional Clauses
+## Умовні вирази
 
-Sometimes you may want certain query clauses to apply to a query based on another condition. For instance, you may only want to apply a `where` statement if a given input value is present on the incoming HTTP request. You may accomplish this using the `when` method:
+Іноді вам потрібно, щоб певні умови застосовувалися до запиту залежно від іншої умови. Наприклад, ви хочете додати вираз `where`, лише якщо у вхідному HTTP-запиті є певне значення. Це робить метод `when`:
 
 ```php
 $role = $request->input('role');
@@ -1367,9 +1371,9 @@ $users = DB::table('users')
     ->get();
 ```
 
-The `when` method only executes the given closure when the first argument is `true`. If the first argument is `false`, the closure will not be executed. So, in the example above, the closure given to the `when` method will only be invoked if the `role` field is present on the incoming request and evaluates to `true`.
+Метод `when` виконує задане замикання лише тоді, коли перший аргумент - `true`. Якщо перший аргумент `false`, замикання не виконається. Тож у прикладі вище замикання буде викликано лише за умови, що поле `role` є у вхідному запиті й дає `true`.
 
-You may pass another closure as the third argument to the `when` method. This closure will only execute if the first argument evaluates as `false`. To illustrate how this feature may be used, we will use it to configure the default ordering of a query:
+Третім аргументом методу `when` можна передати ще одне замикання. Воно виконається лише тоді, коли перший аргумент дає `false`. Щоб показати, як це працює, налаштуємо сортування запиту за замовчуванням:
 
 ```php
 $sortByVotes = $request->boolean('sort_by_votes');
@@ -1384,9 +1388,9 @@ $users = DB::table('users')
 ```
 
 <a name="insert-statements"></a>
-## Insert Statements
+## Запити INSERT
 
-The query builder also provides an `insert` method that may be used to insert records into the database table. The `insert` method accepts an array of column names and values:
+Конструктор запитів має також метод `insert` для вставки записів у таблицю. Метод `insert` приймає масив назв стовпців і значень:
 
 ```php
 DB::table('users')->insert([
@@ -1395,7 +1399,7 @@ DB::table('users')->insert([
 ]);
 ```
 
-You may insert several records at once by passing an array of arrays. Each array represents a record that should be inserted into the table:
+Ви можете вставити кілька записів одразу, передавши масив масивів. Кожен масив - це запис, який слід вставити в таблицю:
 
 ```php
 DB::table('users')->insert([
@@ -1404,7 +1408,7 @@ DB::table('users')->insert([
 ]);
 ```
 
-The `insertOrIgnore` method will ignore errors while inserting records into the database. When using this method, you should be aware that duplicate record errors will be ignored and other types of errors may also be ignored depending on the database engine. For example, `insertOrIgnore` will [bypass MySQL's strict mode](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):
+Метод `insertOrIgnore` ігнорує помилки під час вставки записів. Використовуючи його, зважте: ігноруються не лише помилки дублювання записів - залежно від рушія бази даних можуть ігноруватися й інші типи помилок. Наприклад, `insertOrIgnore` [обходить strict mode у MySQL](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):
 
 ```php
 DB::table('users')->insertOrIgnore([
@@ -1413,7 +1417,7 @@ DB::table('users')->insertOrIgnore([
 ]);
 ```
 
-The `insertUsing` method will insert new records into the table while using a subquery to determine the data that should be inserted:
+Метод `insertUsing` вставляє в таблицю нові записи, визначаючи дані для вставки підзапитом:
 
 ```php
 DB::table('pruned_users')->insertUsing([
@@ -1424,9 +1428,9 @@ DB::table('pruned_users')->insertUsing([
 ```
 
 <a name="auto-incrementing-ids"></a>
-#### Auto-Incrementing IDs
+#### Автоінкрементні ID
 
-If the table has an auto-incrementing id, use the `insertGetId` method to insert a record and then retrieve the ID:
+Якщо таблиця має автоінкрементний id, скористайтеся методом `insertGetId`, щоб вставити запис і одразу отримати його ID:
 
 ```php
 $id = DB::table('users')->insertGetId(
@@ -1435,12 +1439,12 @@ $id = DB::table('users')->insertGetId(
 ```
 
 > [!WARNING]
-> When using PostgreSQL the `insertGetId` method expects the auto-incrementing column to be named `id`. If you would like to retrieve the ID from a different "sequence", you may pass the column name as the second parameter to the `insertGetId` method.
+> На PostgreSQL метод `insertGetId` очікує, що автоінкрементний стовпець називається `id`. Якщо ви хочете отримати ID з іншої «послідовності», передайте назву стовпця другим параметром методу `insertGetId`.
 
 <a name="upserts"></a>
-### Upserts
+### Upsert
 
-The `upsert` method will insert records that do not exist and update the records that already exist with new values that you may specify. The method's first argument consists of the values to insert or update, while the second argument lists the column(s) that uniquely identify records within the associated table. The method's third and final argument is an array of columns that should be updated if a matching record already exists in the database:
+Метод `upsert` вставляє записи, яких немає, і оновлює наявні заданими вами новими значеннями. Перший аргумент методу - значення для вставки чи оновлення, другий - стовпці, які унікально ідентифікують записи у відповідній таблиці. Третій і останній аргумент - масив стовпців, які слід оновити, якщо відповідний запис у базі вже є:
 
 ```php
 DB::table('flights')->upsert(
@@ -1453,15 +1457,15 @@ DB::table('flights')->upsert(
 );
 ```
 
-In the example above, Laravel will attempt to insert two records. If a record already exists with the same `departure` and `destination` column values, Laravel will update that record's `price` column.
+У прикладі вище Laravel спробує вставити два записи. Якщо запис із такими самими значеннями стовпців `departure` і `destination` уже існує, Laravel оновить його стовпець `price`.
 
 > [!WARNING]
-> All databases except SQL Server require the columns in the second argument of the `upsert` method to have a "primary" or "unique" index. In addition, the MariaDB and MySQL database drivers ignore the second argument of the `upsert` method and always use the "primary" and "unique" indexes of the table to detect existing records.
+> Усі бази даних, окрім SQL Server, вимагають, щоб стовпці з другого аргументу методу `upsert` мали індекс «primary» або «unique». Крім того, драйвери MariaDB і MySQL ігнорують другий аргумент `upsert` і завжди використовують індекси «primary» та «unique» таблиці, щоб виявити наявні записи.
 
 <a name="update-statements"></a>
-## Update Statements
+## Запити UPDATE
 
-In addition to inserting records into the database, the query builder can also update existing records using the `update` method. The `update` method, like the `insert` method, accepts an array of column and value pairs indicating the columns to be updated. The `update` method returns the number of affected rows. You may constrain the `update` query using `where` clauses:
+Крім вставки записів, конструктор запитів може оновлювати наявні - методом `update`. Як і `insert`, метод `update` приймає масив пар «стовпець - значення», які вказують, що саме оновити. Метод `update` повертає кількість зачеплених рядків. Обмежити запит `update` можна виразами `where`:
 
 ```php
 $affected = DB::table('users')
@@ -1470,11 +1474,11 @@ $affected = DB::table('users')
 ```
 
 <a name="update-or-insert"></a>
-#### Update or Insert
+#### Оновити або вставити
 
-Sometimes you may want to update an existing record in the database or create it if no matching record exists. In this scenario, the `updateOrInsert` method may be used. The `updateOrInsert` method accepts two arguments: an array of conditions by which to find the record, and an array of column and value pairs indicating the columns to be updated.
+Іноді вам потрібно оновити наявний запис у базі даних або створити його, якщо відповідного немає. У такому разі скористайтеся методом `updateOrInsert`. Він приймає два аргументи: масив умов, за якими шукати запис, і масив пар «стовпець - значення», які вказують, що оновити.
 
-The `updateOrInsert` method will attempt to locate a matching database record using the first argument's column and value pairs. If the record exists, it will be updated with the values in the second argument. If the record cannot be found, a new record will be inserted with the merged attributes of both arguments:
+Метод `updateOrInsert` спробує знайти відповідний запис за парами «стовпець - значення» з першого аргументу. Якщо запис існує, його буде оновлено значеннями з другого аргументу. Якщо запису немає, буде вставлено новий зі об'єднаними атрибутами обох аргументів:
 
 ```php
 DB::table('users')
@@ -1484,7 +1488,7 @@ DB::table('users')
     );
 ```
 
-You may provide a closure to the `updateOrInsert` method to customize the attributes that are updated or inserted into the database based on the existence of a matching record:
+Методу `updateOrInsert` можна передати замикання, щоб задати атрибути для оновлення чи вставки залежно від того, чи знайдено відповідний запис:
 
 ```php
 DB::table('users')->updateOrInsert(
@@ -1501,9 +1505,9 @@ DB::table('users')->updateOrInsert(
 ```
 
 <a name="updating-json-columns"></a>
-### Updating JSON Columns
+### Оновлення стовпців JSON
 
-When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MariaDB 10.3+, MySQL 5.7+, and PostgreSQL 9.5+:
+Оновлюючи стовпець JSON, використовуйте синтаксис `->`, щоб оновити потрібний ключ в об'єкті JSON. Ця операція підтримується на MariaDB 10.3+, MySQL 5.7+ і PostgreSQL 9.5+:
 
 ```php
 $affected = DB::table('users')
@@ -1512,9 +1516,9 @@ $affected = DB::table('users')
 ```
 
 <a name="increment-and-decrement"></a>
-### Increment and Decrement
+### Збільшення та зменшення
 
-The query builder also provides convenient methods for incrementing or decrementing the value of a given column. Both of these methods accept at least one argument: the column to modify. A second argument may be provided to specify the amount by which the column should be incremented or decremented:
+Конструктор запитів має також зручні методи для збільшення та зменшення значення заданого стовпця. Обидва приймають щонайменше один аргумент - стовпець, який змінюємо. Другим аргументом можна задати величину, на яку слід збільшити чи зменшити значення:
 
 ```php
 DB::table('users')->increment('votes');
@@ -1526,13 +1530,13 @@ DB::table('users')->decrement('votes');
 DB::table('users')->decrement('votes', 5);
 ```
 
-If needed, you may also specify additional columns to update during the increment or decrement operation:
+За потреби ви можете вказати й додаткові стовпці, які слід оновити під час збільшення чи зменшення:
 
 ```php
 DB::table('users')->increment('votes', 1, ['name' => 'John']);
 ```
 
-In addition, you may increment or decrement multiple columns at once using the `incrementEach` and `decrementEach` methods:
+Крім того, методами `incrementEach` і `decrementEach` можна збільшити або зменшити кілька стовпців одразу:
 
 ```php
 DB::table('users')->incrementEach([
@@ -1542,9 +1546,9 @@ DB::table('users')->incrementEach([
 ```
 
 <a name="delete-statements"></a>
-## Delete Statements
+## Запити DELETE
 
-The query builder's `delete` method may be used to delete records from the table. The `delete` method returns the number of affected rows. You may constrain `delete` statements by adding "where" clauses before calling the `delete` method:
+Методом `delete` конструктора запитів можна видаляти записи з таблиці. Метод `delete` повертає кількість зачеплених рядків. Обмежити запит `delete` можна, додавши умови «where» перед викликом `delete`:
 
 ```php
 $deleted = DB::table('users')->delete();
@@ -1553,9 +1557,9 @@ $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 ```
 
 <a name="pessimistic-locking"></a>
-## Pessimistic Locking
+## Песимістичне блокування
 
-The query builder also includes a few functions to help you achieve "pessimistic locking" when executing your `select` statements. To execute a statement with a "shared lock", you may call the `sharedLock` method. A shared lock prevents the selected rows from being modified until your transaction is committed:
+Конструктор запитів має також кілька функцій, які допомагають реалізувати «песимістичне блокування» під час виконання запитів `select`. Щоб виконати запит зі «спільним блокуванням» (shared lock), викличте метод `sharedLock`. Спільне блокування не дає змінювати вибрані рядки, поки ваша транзакція не завершиться комітом:
 
 ```php
 DB::table('users')
@@ -1564,7 +1568,7 @@ DB::table('users')
     ->get();
 ```
 
-Alternatively, you may use the `lockForUpdate` method. A "for update" lock prevents the selected records from being modified or from being selected with another shared lock:
+Або ви можете скористатися методом `lockForUpdate`. Блокування «for update» не дає змінювати вибрані записи й вибирати їх з іншим спільним блокуванням:
 
 ```php
 DB::table('users')
@@ -1573,7 +1577,7 @@ DB::table('users')
     ->get();
 ```
 
-While not obligatory, it is recommended to wrap pessimistic locks within a [transaction](/docs/{{version}}/database#database-transactions). This ensures that the data retrieved remains unaltered in the database until the entire operation completes. In case of a failure, the transaction will roll back any changes and release the locks automatically:
+Це не обов'язково, але песимістичні блокування радимо обгортати в [транзакцію](/docs/{{version}}/database#database-transactions). Так отримані дані лишаються незмінними в базі, поки вся операція не завершиться. У разі збою транзакція відкотить усі зміни й автоматично звільнить блокування:
 
 ```php
 DB::transaction(function () {
@@ -1604,9 +1608,9 @@ DB::transaction(function () {
 ```
 
 <a name="reusable-query-components"></a>
-## Reusable Query Components
+## Повторно використовувані компоненти запитів
 
-If you have repeated query logic throughout your application, you may extract the logic into reusable objects using the query builder's `tap` and `pipe` methods. Imagine you have these two different queries in your application:
+Якщо у вашому застосунку повторюється однакова логіка запитів, ви можете винести її в повторно використовувані об'єкти за допомогою методів `tap` і `pipe` конструктора запитів. Уявіть, що у вас є два такі різні запити:
 
 ```php
 use Illuminate\Database\Query\Builder;
@@ -1634,7 +1638,7 @@ DB::table('flights')
     ->get();
 ```
 
-You may like to extract the destination filtering that is common between the queries into a reusable object:
+Спільну для обох запитів фільтрацію за призначенням варто винести в повторно використовуваний об'єкт:
 
 ```php
 <?php
@@ -1660,7 +1664,7 @@ class DestinationFilter
 }
 ```
 
-Then, you can use the query builder's `tap` method to apply the object's logic to the query:
+Далі ви можете застосувати логіку об'єкта до запиту методом `tap` конструктора запитів:
 
 ```php
 use App\Scopes\DestinationFilter;
@@ -1688,11 +1692,11 @@ DB::table('flights')
 ```
 
 <a name="query-pipes"></a>
-#### Query Pipes
+#### Пайпи запитів
 
-The `tap` method will always return the query builder. If you would like to extract an object that executes the query and returns another value, you may use the `pipe` method instead.
+Метод `tap` завжди повертає конструктор запитів. Якщо ви хочете винести об'єкт, який виконує запит і повертає інше значення, скористайтеся методом `pipe`.
 
-Consider the following query object that contains shared [pagination](/docs/{{version}}/pagination) logic used throughout an application. Unlike the `DestinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
+Розгляньмо об'єкт запиту зі спільною логікою [пагінації](/docs/{{version}}/pagination), яка використовується в усьому застосунку. На відміну від `DestinationFilter`, що додає до запиту умови, об'єкт `Paginate` виконує запит і повертає екземпляр пагінатора:
 
 ```php
 <?php
@@ -1720,7 +1724,7 @@ class Paginate
 }
 ```
 
-Using the query builder's `pipe` method, we can leverage this object to apply our shared pagination logic:
+За допомогою методу `pipe` конструктора запитів ми можемо застосувати цей об'єкт зі спільною логікою пагінації:
 
 ```php
 $flights = DB::table('flights')
@@ -1729,9 +1733,9 @@ $flights = DB::table('flights')
 ```
 
 <a name="debugging"></a>
-## Debugging
+## Налагодження
 
-You may use the `dd` and `dump` methods while building a query to dump the current query bindings and SQL. The `dd` method will display the debug information and then stop executing the request. The `dump` method will display the debug information but allow the request to continue executing:
+Під час побудови запиту ви можете скористатися методами `dd` і `dump`, щоб вивести поточні прив'язки та SQL. Метод `dd` покаже інформацію для налагодження й зупинить виконання запиту. Метод `dump` покаже цю інформацію, але дозволить запиту виконуватися далі:
 
 ```php
 DB::table('users')->where('votes', '>', 100)->dd();
@@ -1739,7 +1743,7 @@ DB::table('users')->where('votes', '>', 100)->dd();
 DB::table('users')->where('votes', '>', 100)->dump();
 ```
 
-The `dumpRawSql` and `ddRawSql` methods may be invoked on a query to dump the query's SQL with all parameter bindings properly substituted:
+Методи `dumpRawSql` і `ddRawSql` виводять SQL запиту з усіма належно підставленими прив'язками параметрів:
 
 ```php
 DB::table('users')->where('votes', '>', 100)->dumpRawSql();
