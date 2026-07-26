@@ -1,50 +1,53 @@
-# Resetting Passwords
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Скидання паролів
 
-- [Introduction](#introduction)
-    - [Configuration](#configuration)
-    - [Driver Prerequisites](#driver-prerequisites)
-    - [Model Preparation](#model-preparation)
-    - [Configuring Trusted Hosts](#configuring-trusted-hosts)
-- [Routing](#routing)
-    - [Requesting the Password Reset Link](#requesting-the-password-reset-link)
-    - [Resetting the Password](#resetting-the-password)
-- [Deleting Expired Tokens](#deleting-expired-tokens)
-- [Customization](#password-customization)
+- [Вступ](#introduction)
+    - [Конфігурація](#configuration)
+    - [Передумови для драйверів](#driver-prerequisites)
+    - [Підготовка моделі](#model-preparation)
+    - [Налаштування довірених хостів](#configuring-trusted-hosts)
+- [Маршрутизація](#routing)
+    - [Запит посилання для скидання пароля](#requesting-the-password-reset-link)
+    - [Скидання пароля](#resetting-the-password)
+- [Видалення прострочених токенів](#deleting-expired-tokens)
+- [Налаштування](#password-customization)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this by hand for every application you create, Laravel provides convenient services for sending password reset links and secure resetting passwords.
+Більшість вебзастосунків дають користувачам змогу скинути забутий пароль. Замість того щоб змушувати вас реалізовувати це вручну в кожному новому застосунку, Laravel надає зручні сервіси для надсилання посилань на скидання пароля та безпечного скидання паролів.
 
 > [!NOTE]
-> Want to get started fast? Install a Laravel [application starter kit](/docs/{{version}}/starter-kits) in a fresh Laravel application. Laravel's starter kits will take care of scaffolding your entire authentication system, including resetting forgotten passwords.
+> Хочете швидко почати? Встановіть [стартовий набір застосунку](/docs/{{version}}/starter-kits) Laravel у свіжий застосунок Laravel. Стартові набори Laravel створять усю вашу систему автентифікації, зокрема й скидання забутих паролів.
 
 <a name="configuration"></a>
-### Configuration
+### Конфігурація
 
-Your application's password reset configuration file is stored at `config/auth.php`. Be sure to review the options available to you in this file. By default, Laravel is configured to use the `database` password reset driver.
+Конфігураційний файл скидання паролів вашого застосунку розташований у `config/auth.php`. Обов'язково перегляньте доступні в ньому опції. За замовчуванням Laravel налаштований на драйвер скидання паролів `database`.
 
-The password reset `driver` configuration option defines where password reset data will be stored. Laravel includes two drivers:
+Опція конфігурації `driver` для скидання паролів визначає, де зберігатимуться дані скидання. Laravel містить два драйвери:
 
 <div class="content-list" markdown="1">
 
-- `database` - password reset data is stored in a relational database.
-- `cache` - password reset data is stored in one of your cache-based stores.
+- `database` - дані скидання пароля зберігаються в реляційній базі даних.
+- `cache` - дані скидання пароля зберігаються в одному з ваших сховищ кешу.
 
 </div>
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### Передумови для драйверів
 
 <a name="database"></a>
-#### Database
+#### База даних
 
-When using the default `database` driver, a table must be created to store your application's password reset tokens. Typically, this is included in Laravel's default `0001_01_01_000000_create_users_table.php` database migration.
+Коли ви користуєтеся драйвером `database` за замовчуванням, потрібно створити таблицю для зберігання токенів скидання паролів вашого застосунку. Зазвичай вона вже є в стандартній міграції Laravel `0001_01_01_000000_create_users_table.php`.
 
 <a name="cache"></a>
-#### Cache
+#### Кеш
 
-There is also a cache driver available for handling password resets, which does not require a dedicated database table. Entries are keyed by the user's email address, so ensure you are not using email addresses as a cache key elsewhere in your application:
+Для обробки скидання паролів доступний також драйвер кешу, який не потребує окремої таблиці в базі даних. Записи мають ключем адресу електронної пошти користувача, тож переконайтеся, що ви не використовуєте адреси електронної пошти як ключі кешу деінде у вашому застосунку:
 
 ```php
 'passwords' => [
@@ -58,36 +61,36 @@ There is also a cache driver available for handling password resets, which does 
 ],
 ```
 
-To prevent a call to `artisan cache:clear` from flushing your password reset data, you can optionally specify a separate cache store with the `store` configuration key. The value should correspond to a store configured in your `config/cache.php` configuration value.
+Щоб виклик `artisan cache:clear` не змив ваші дані скидання паролів, ви можете за бажанням вказати окреме сховище кешу ключем конфігурації `store`. Значення має відповідати сховищу, налаштованому у вашому конфігураційному файлі `config/cache.php`.
 
 <a name="model-preparation"></a>
-### Model Preparation
+### Підготовка моделі
 
-Before using the password reset features of Laravel, your application's `App\Models\User` model must use the `Illuminate\Notifications\Notifiable` trait. Typically, this trait is already included on the default `App\Models\User` model that is created with new Laravel applications.
+Перш ніж користуватися можливостями скидання паролів у Laravel, модель `App\Models\User` вашого застосунку має використовувати трейт `Illuminate\Notifications\Notifiable`. Зазвичай цей трейт уже підключено до стандартної моделі `App\Models\User`, яка створюється в нових застосунках Laravel.
 
-Next, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. The `App\Models\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
+Далі переконайтеся, що ваша модель `App\Models\User` реалізує контракт `Illuminate\Contracts\Auth\CanResetPassword`. Модель `App\Models\User`, що входить до фреймворку, вже реалізує цей інтерфейс і використовує трейт `Illuminate\Auth\Passwords\CanResetPassword`, який містить потрібні для цього методи.
 
 <a name="configuring-trusted-hosts"></a>
-### Configuring Trusted Hosts
+### Налаштування довірених хостів
 
-By default, Laravel will respond to all requests it receives regardless of the content of the HTTP request's `Host` header. In addition, the `Host` header's value will be used when generating absolute URLs to your application during a web request.
+За замовчуванням Laravel відповідає на всі отримані запити незалежно від вмісту заголовка `Host` HTTP-запиту. До того ж значення заголовка `Host` використовується для генерування абсолютних URL до вашого застосунку під час вебзапиту.
 
-Typically, you should configure your web server, such as Nginx or Apache, to only send requests to your application that match a given hostname. However, if you do not have the ability to customize your web server directly and need to instruct Laravel to only respond to certain hostnames, you may do so by using the `trustHosts` middleware method in your application's `bootstrap/app.php` file. This is particularly important when your application offers password reset functionality.
+Зазвичай ваш вебсервер (наприклад, Nginx чи Apache) варто налаштувати так, щоб він надсилав до застосунку лише запити, які відповідають заданому імені хоста. Проте якщо ви не можете налаштувати вебсервер напряму й вам потрібно вказати Laravel відповідати лише певним іменам хостів, скористайтеся методом `middleware` `trustHosts` у файлі `bootstrap/app.php` вашого застосунку. Це особливо важливо, коли ваш застосунок пропонує скидання паролів.
 
-To learn more about this middleware method, please consult the [TrustHosts middleware documentation](/docs/{{version}}/requests#configuring-trusted-hosts).
+Щоб дізнатися більше про цей метод, зверніться до [документації про `middleware` TrustHosts](/docs/{{version}}/requests#configuring-trusted-hosts).
 
 <a name="routing"></a>
-## Routing
+## Маршрутизація
 
-To properly implement support for allowing users to reset their passwords, we will need to define several routes. First, we will need a pair of routes to handle allowing the user to request a password reset link via their email address. Second, we will need a pair of routes to handle actually resetting the password once the user visits the password reset link that is emailed to them and completes the password reset form.
+Щоб належно реалізувати підтримку скидання паролів користувачами, нам знадобиться визначити кілька маршрутів. Спершу потрібна пара маршрутів, які дозволять користувачеві запросити посилання на скидання пароля за адресою електронної пошти. Далі потрібна пара маршрутів, які власне скидатимуть пароль, коли користувач перейде за надісланим йому посиланням і заповнить форму скидання.
 
 <a name="requesting-the-password-reset-link"></a>
-### Requesting the Password Reset Link
+### Запит посилання для скидання пароля
 
 <a name="the-password-reset-link-request-form"></a>
-#### The Password Reset Link Request Form
+#### Форма запиту посилання на скидання пароля
 
-First, we will define the routes that are needed to request password reset links. To get started, we will define a route that returns a view with the password reset link request form:
+Спершу визначимо маршрути, потрібні для запиту посилань на скидання пароля. Для початку визначимо маршрут, який повертає представлення з формою запиту посилання:
 
 ```php
 Route::get('/forgot-password', function () {
@@ -95,12 +98,12 @@ Route::get('/forgot-password', function () {
 })->middleware('guest')->name('password.request');
 ```
 
-The view that is returned by this route should have a form containing an `email` field, which will allow the user to request a password reset link for a given email address.
+Представлення, яке повертає цей маршрут, має містити форму з полем `email` - воно дозволить користувачеві запросити посилання на скидання пароля для заданої адреси електронної пошти.
 
 <a name="password-reset-link-handling-the-form-submission"></a>
-#### Handling the Form Submission
+#### Обробка надсилання форми
 
-Next, we will define a route that handles the form submission request from the "forgot password" view. This route will be responsible for validating the email address and sending the password reset request to the corresponding user:
+Далі визначимо маршрут, який оброблятиме надсилання форми з представлення «забув пароль». Цей маршрут відповідатиме за валідацію адреси електронної пошти та надсилання запиту на скидання пароля відповідному користувачеві:
 
 ```php
 use Illuminate\Http\Request;
@@ -119,25 +122,25 @@ Route::post('/forgot-password', function (Request $request) {
 })->middleware('guest')->name('password.email');
 ```
 
-Before moving on, let's examine this route in more detail. First, the request's `email` attribute is validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to send a password reset link to the user. The password broker will take care of retrieving the user by the given field (in this case, the email address) and sending the user a password reset link via Laravel's built-in [notification system](/docs/{{version}}/notifications).
+Перш ніж рухатися далі, розгляньмо цей маршрут докладніше. Спершу валідується атрибут запиту `email`. Далі ми скористаємося вбудованим у Laravel «брокером паролів» (через фасад `Password`), щоб надіслати користувачеві посилання на скидання пароля. Брокер паролів подбає про пошук користувача за заданим полем (у цьому випадку - за адресою електронної пошти) і надішле йому посилання через вбудовану [систему сповіщень](/docs/{{version}}/notifications) Laravel.
 
-The `sendResetLink` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file.
-
-> [!NOTE]
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
-
-You may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `sendResetLink` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
+Метод `sendResetLink` повертає слаг «статусу». Цей статус можна перекласти за допомогою хелперів [локалізації](/docs/{{version}}/localization) Laravel, щоб показати користувачеві зрозуміле повідомлення про стан його запиту. Переклад статусу скидання пароля визначається мовним файлом `lang/{lang}/passwords.php` вашого застосунку. Запис для кожного можливого значення слага статусу міститься у мовному файлі `passwords`.
 
 > [!NOTE]
-> When manually implementing password resets, you are required to define the contents of the views and routes yourself. If you would like scaffolding that includes all necessary authentication and verification logic, check out the [Laravel application starter kits](/docs/{{version}}/starter-kits).
+> За замовчуванням каркас застосунку Laravel не містить каталогу `lang`. Якщо ви хочете налаштувати мовні файли Laravel, опублікуйте їх артизан-командою `lang:publish`.
+
+Ви можете замислитися, звідки Laravel знає, як дістати запис користувача з бази даних вашого застосунку при виклику методу `sendResetLink` фасада `Password`. Брокер паролів Laravel використовує «провайдери користувачів» вашої системи автентифікації, щоб отримувати записи з бази даних. Провайдер користувачів, який використовує брокер паролів, налаштовується в масиві конфігурації `passwords` вашого файлу `config/auth.php`. Щоб дізнатися більше про написання власних провайдерів користувачів, зверніться до [документації з автентифікації](/docs/{{version}}/authentication#adding-custom-user-providers).
+
+> [!NOTE]
+> Реалізуючи скидання паролів вручну, ви маєте самі визначити вміст представлень і маршрутів. Якщо вам потрібен готовий каркас з усією логікою автентифікації та підтвердження, погляньте на [стартові набори застосунку Laravel](/docs/{{version}}/starter-kits).
 
 <a name="resetting-the-password"></a>
-### Resetting the Password
+### Скидання пароля
 
 <a name="the-password-reset-form"></a>
-#### The Password Reset Form
+#### Форма скидання пароля
 
-Next, we will define the routes necessary to actually reset the password once the user clicks on the password reset link that has been emailed to them and provides a new password. First, let's define the route that will display the reset password form that is displayed when the user clicks the reset password link. This route will receive a `token` parameter that we will use later to verify the password reset request:
+Далі визначимо маршрути, потрібні для власне скидання пароля після того, як користувач перейде за надісланим йому посиланням і введе новий пароль. Спершу визначмо маршрут, який показуватиме форму скидання пароля при переході за посиланням. Цей маршрут отримає параметр `token`, який ми пізніше використаємо для перевірки запиту на скидання:
 
 ```php
 Route::get('/reset-password/{token}', function (string $token) {
@@ -145,12 +148,12 @@ Route::get('/reset-password/{token}', function (string $token) {
 })->middleware('guest')->name('password.reset');
 ```
 
-The view that is returned by this route should display a form containing an `email` field, a `password` field, a `password_confirmation` field, and a hidden `token` field, which should contain the value of the secret `$token` received by our route.
+Представлення, яке повертає цей маршрут, має показувати форму з полями `email`, `password`, `password_confirmation` і прихованим полем `token`, що містить значення секретного `$token`, отриманого нашим маршрутом.
 
 <a name="password-reset-handling-the-form-submission"></a>
-#### Handling the Form Submission
+#### Обробка надсилання форми
 
-Of course, we need to define a route to actually handle the password reset form submission. This route will be responsible for validating the incoming request and updating the user's password in the database:
+Звісно, нам треба визначити маршрут, який власне оброблятиме надсилання форми скидання пароля. Цей маршрут відповідатиме за валідацію вхідного запиту та оновлення пароля користувача в базі даних:
 
 ```php
 use App\Models\User;
@@ -186,24 +189,24 @@ Route::post('/reset-password', function (Request $request) {
 })->middleware('guest')->name('password.update');
 ```
 
-Before moving on, let's examine this route in more detail. First, the request's `token`, `email`, and `password` attributes are validated. Next, we will use Laravel's built-in "password broker" (via the `Password` facade) to validate the password reset request credentials.
+Перш ніж рухатися далі, розгляньмо цей маршрут докладніше. Спершу валідуються атрибути запиту `token`, `email` і `password`. Далі ми скористаємося вбудованим у Laravel «брокером паролів» (через фасад `Password`), щоб перевірити облікові дані запиту на скидання пароля.
 
-If the token, email address, and password given to the password broker are valid, the closure passed to the `reset` method will be invoked. Within this closure, which receives the user instance and the plain-text password provided to the password reset form, we may update the user's password in the database.
+Якщо переданий брокеру паролів токен, адреса електронної пошти та пароль дійсні, буде викликано замикання, передане методу `reset`. Усередині цього замикання, яке отримує екземпляр користувача та введений у форму пароль відкритим текстом, ми можемо оновити пароль користувача в базі даних.
 
-The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file. If your application does not contain a `lang` directory, you may create it using the `lang:publish` Artisan command.
+Метод `reset` повертає слаг «статусу». Цей статус можна перекласти за допомогою хелперів [локалізації](/docs/{{version}}/localization) Laravel, щоб показати користувачеві зрозуміле повідомлення про стан його запиту. Переклад статусу скидання пароля визначається мовним файлом `lang/{lang}/passwords.php` вашого застосунку. Запис для кожного можливого значення слага статусу міститься у мовному файлі `passwords`. Якщо у вашому застосунку немає каталогу `lang`, створіть його артизан-командою `lang:publish`.
 
-Before moving on, you may be wondering how Laravel knows how to retrieve the user record from your application's database when calling the `Password` facade's `reset` method. The Laravel password broker utilizes your authentication system's "user providers" to retrieve database records. The user provider used by the password broker is configured within the `passwords` configuration array of your `config/auth.php` configuration file. To learn more about writing custom user providers, consult the [authentication documentation](/docs/{{version}}/authentication#adding-custom-user-providers).
+Перш ніж рухатися далі, ви можете замислитися, звідки Laravel знає, як дістати запис користувача з бази даних вашого застосунку при виклику методу `reset` фасада `Password`. Брокер паролів Laravel використовує «провайдери користувачів» вашої системи автентифікації, щоб отримувати записи з бази даних. Провайдер користувачів, який використовує брокер паролів, налаштовується в масиві конфігурації `passwords` вашого файлу `config/auth.php`. Щоб дізнатися більше про написання власних провайдерів користувачів, зверніться до [документації з автентифікації](/docs/{{version}}/authentication#adding-custom-user-providers).
 
 <a name="deleting-expired-tokens"></a>
-## Deleting Expired Tokens
+## Видалення прострочених токенів
 
-If you are using the `database` driver, password reset tokens that have expired will still be present within your database. However, you may easily delete these records using the `auth:clear-resets` Artisan command:
+Якщо ви користуєтеся драйвером `database`, прострочені токени скидання паролів усе одно залишатимуться у вашій базі даних. Проте ви можете легко видалити ці записи артизан-командою `auth:clear-resets`:
 
 ```shell
 php artisan auth:clear-resets
 ```
 
-If you would like to automate this process, consider adding the command to your application's [scheduler](/docs/{{version}}/scheduling):
+Якщо ви хочете автоматизувати цей процес, подумайте про додавання команди до [планувальника](/docs/{{version}}/scheduling) вашого застосунку:
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -212,12 +215,12 @@ Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 ```
 
 <a name="password-customization"></a>
-## Customization
+## Налаштування
 
 <a name="reset-link-customization"></a>
-#### Reset Link Customization
+#### Налаштування посилання на скидання
 
-You may customize the password reset link URL using the `createUrlUsing` method provided by the `ResetPassword` notification class. This method accepts a closure which receives the user instance that is receiving the notification as well as the password reset link token. Typically, you should call this method from the `boot` method of your application's `AppServiceProvider`:
+Ви можете налаштувати URL посилання на скидання пароля методом `createUrlUsing`, який надає клас сповіщення `ResetPassword`. Цей метод приймає замикання, що отримує екземпляр користувача - отримувача сповіщення - і токен посилання на скидання пароля. Зазвичай цей метод викликають у методі `boot` вашого `AppServiceProvider`:
 
 ```php
 use App\Models\User;
@@ -235,9 +238,9 @@ public function boot(): void
 ```
 
 <a name="reset-email-customization"></a>
-#### Reset Email Customization
+#### Налаштування листа про скидання
 
-You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `App\Models\User` model. Within this method, you may send the notification using any [notification class](/docs/{{version}}/notifications) of your own creation. The password reset `$token` is the first argument received by the method. You may use this `$token` to build the password reset URL of your choice and send your notification to the user:
+Ви можете легко змінити клас сповіщення, яким користувачеві надсилається посилання на скидання пароля. Для початку перевизначте метод `sendPasswordResetNotification` на вашій моделі `App\Models\User`. Усередині цього методу ви можете надіслати сповіщення будь-яким [класом сповіщення](/docs/{{version}}/notifications) власного авторства. Токен скидання пароля `$token` - перший аргумент, який отримує метод. Ви можете скористатися цим `$token`, щоб побудувати потрібний вам URL скидання пароля й надіслати користувачеві сповіщення:
 
 ```php
 use App\Notifications\ResetPasswordNotification;

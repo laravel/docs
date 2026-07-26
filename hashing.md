@@ -1,38 +1,41 @@
-# Hashing
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Хешування
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
-    - [Hashing Passwords](#hashing-passwords)
-    - [Verifying That a Password Matches a Hash](#verifying-that-a-password-matches-a-hash)
-    - [Determining if a Password Needs to be Rehashed](#determining-if-a-password-needs-to-be-rehashed)
-- [Hash Algorithm Verification](#hash-algorithm-verification)
+- [Вступ](#introduction)
+- [Конфігурація](#configuration)
+- [Базове використання](#basic-usage)
+    - [Хешування паролів](#hashing-passwords)
+    - [Перевірка відповідності пароля хешу](#verifying-that-a-password-matches-a-hash)
+    - [Визначення потреби в перехешуванні пароля](#determining-if-a-password-needs-to-be-rehashed)
+- [Перевірка алгоритму хешування](#hash-algorithm-verification)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt and Argon2 hashing for storing user passwords. If you are using one of the [Laravel application starter kits](/docs/{{version}}/starter-kits), Bcrypt will be used for registration and authentication by default.
+[Фасад](/docs/{{version}}/facades) `Hash` у Laravel надає безпечне хешування Bcrypt та Argon2 для зберігання паролів користувачів. Якщо ви користуєтеся одним зі [стартових наборів застосунку Laravel](/docs/{{version}}/starter-kits), для реєстрації та автентифікації за замовчуванням використовуватиметься Bcrypt.
 
-Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases. When hashing passwords, slow is good. The longer an algorithm takes to hash a password, the longer it takes malicious users to generate "rainbow tables" of all possible string hash values that may be used in brute force attacks against applications.
+Bcrypt - чудовий вибір для хешування паролів, бо його «фактор складності» (work factor) можна регулювати: час генерування хешу можна збільшувати в міру зростання потужності обладнання. Коли йдеться про хешування паролів, повільно - це добре. Що довше алгоритм хешує пароль, то більше часу потрібно зловмисникам, щоб згенерувати «райдужні таблиці» з усіма можливими хешами рядків, які використовують в атаках перебором на застосунки.
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
-By default, Laravel uses the `bcrypt` hashing driver when hashing data. However, several other hashing drivers are supported, including [argon](https://en.wikipedia.org/wiki/Argon2) and [argon2id](https://en.wikipedia.org/wiki/Argon2).
+За замовчуванням Laravel хешує дані драйвером `bcrypt`. Проте підтримуються й інші драйвери хешування, зокрема [argon](https://en.wikipedia.org/wiki/Argon2) та [argon2id](https://en.wikipedia.org/wiki/Argon2).
 
-You may specify your application's hashing driver using the `HASH_DRIVER` environment variable. But, if you want to customize all of Laravel's hashing driver options, you should publish the complete `hashing` configuration file using the `config:publish` Artisan command:
+Драйвер хешування вашого застосунку можна вказати через змінну оточення `HASH_DRIVER`. Але якщо ви хочете налаштувати всі опції драйверів хешування Laravel, опублікуйте повний конфігураційний файл `hashing` артизан-командою `config:publish`:
 
 ```shell
 php artisan config:publish hashing
 ```
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Базове використання
 
 <a name="hashing-passwords"></a>
-### Hashing Passwords
+### Хешування паролів
 
-You may hash a password by calling the `make` method on the `Hash` facade:
+Захешувати пароль можна викликом методу `make` на фасаді `Hash`:
 
 ```php
 <?php
@@ -62,9 +65,9 @@ class PasswordController extends Controller
 ```
 
 <a name="adjusting-the-bcrypt-work-factor"></a>
-#### Adjusting The Bcrypt Work Factor
+#### Налаштування фактора складності Bcrypt
 
-If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default work factor managed by Laravel is acceptable for most applications:
+Якщо ви користуєтеся алгоритмом Bcrypt, метод `make` дозволяє керувати фактором складності алгоритму через опцію `rounds`; проте значення за замовчуванням, яке підтримує Laravel, прийнятне для більшості застосунків:
 
 ```php
 $hashed = Hash::make('password', [
@@ -73,9 +76,9 @@ $hashed = Hash::make('password', [
 ```
 
 <a name="adjusting-the-argon2-work-factor"></a>
-#### Adjusting The Argon2 Work Factor
+#### Налаштування фактора складності Argon2
 
-If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the default values managed by Laravel are acceptable for most applications:
+Якщо ви користуєтеся алгоритмом Argon2, метод `make` дозволяє керувати фактором складності алгоритму через опції `memory`, `time` та `threads`; проте значення за замовчуванням, які підтримує Laravel, прийнятні для більшості застосунків:
 
 ```php
 $hashed = Hash::make('password', [
@@ -86,12 +89,12 @@ $hashed = Hash::make('password', [
 ```
 
 > [!NOTE]
-> For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php).
+> Докладніше про ці опції читайте в [офіційній документації PHP щодо хешування Argon](https://secure.php.net/manual/en/function.password-hash.php).
 
 <a name="verifying-that-a-password-matches-a-hash"></a>
-### Verifying That a Password Matches a Hash
+### Перевірка відповідності пароля хешу
 
-The `check` method provided by the `Hash` facade allows you to verify that a given plain-text string corresponds to a given hash:
+Метод `check`, який надає фасад `Hash`, дозволяє перевірити, чи відповідає заданий рядок відкритим текстом заданому хешу:
 
 ```php
 if (Hash::check('plain-text', $hashedPassword)) {
@@ -100,9 +103,9 @@ if (Hash::check('plain-text', $hashedPassword)) {
 ```
 
 <a name="determining-if-a-password-needs-to-be-rehashed"></a>
-### Determining if a Password Needs to be Rehashed
+### Визначення потреби в перехешуванні пароля
 
-The `needsRehash` method provided by the `Hash` facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:
+Метод `needsRehash`, який надає фасад `Hash`, дозволяє визначити, чи змінився фактор складності хешувальника відтоді, як пароль було захешовано. Деякі застосунки виконують цю перевірку під час автентифікації:
 
 ```php
 if (Hash::needsRehash($hashed)) {
@@ -111,11 +114,11 @@ if (Hash::needsRehash($hashed)) {
 ```
 
 <a name="hash-algorithm-verification"></a>
-## Hash Algorithm Verification
+## Перевірка алгоритму хешування
 
-To prevent hash algorithm manipulation, Laravel's `Hash::check` method will first verify the given hash was generated using the application's selected hashing algorithm. If the algorithms are different, a `RuntimeException` exception will be thrown.
+Щоб запобігти маніпуляціям з алгоритмом хешування, метод `Hash::check` у Laravel спершу перевіряє, чи було заданий хеш згенеровано обраним у застосунку алгоритмом хешування. Якщо алгоритми різні, буде кинуто виняток `RuntimeException`.
 
-This is the expected behavior for most applications, where the hashing algorithm is not expected to change and different algorithms can be an indication of a malicious attack. However, if you need to support multiple hashing algorithms within your application, such as when migrating from one algorithm to another, you can disable hash algorithm verification by setting the `HASH_VERIFY` environment variable to `false`:
+Саме такої поведінки очікують у більшості застосунків, де алгоритм хешування не має змінюватися, а інший алгоритм може свідчити про атаку зловмисника. Проте якщо вашому застосунку потрібно підтримувати кілька алгоритмів хешування - наприклад, під час переходу з одного алгоритму на інший, - ви можете вимкнути перевірку алгоритму, встановивши змінну оточення `HASH_VERIFY` у значення `false`:
 
 ```ini
 HASH_VERIFY=false
