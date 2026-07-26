@@ -1,7 +1,6 @@
 ---
 git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
 ---
-
 # Рядки
 
 - [Вступ](#introduction)
@@ -14,6 +13,19 @@ Laravel має цілу низку функцій для роботи з ряд�
 
 <a name="available-methods"></a>
 ## Доступні методи
+
+<style>
+    .collection-method-list > p {
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
+    }
+
+    .collection-method-list a {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
 
 <a name="strings-method-list"></a>
 ### Рядки

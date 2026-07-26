@@ -1,7 +1,6 @@
 ---
 git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
 ---
-
 # База даних: міграції
 
 - [Вступ](#introduction)
@@ -429,6 +428,27 @@ Schema::table('users', function (Blueprint $table) {
 ### Доступні типи стовпців
 
 Blueprint конструктора схеми має цілу низку методів, що відповідають різним типам стовпців, які ви можете додати до таблиць. Усі доступні методи перелічено в таблиці нижче:
+
+<style>
+    .collection-method-list > p {
+        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
+    }
+
+    .collection-method-list a {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .collection-method code {
+        font-size: 14px;
+    }
+
+    .collection-method:not(.first-collection-method) {
+        margin-top: 50px;
+    }
+</style>
 
 <a name="booleans-method-list"></a>
 #### Логічні типи
