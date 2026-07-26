@@ -1,48 +1,51 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Reverb
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Configuration](#configuration)
-    - [Application Credentials](#application-credentials)
-    - [Allowed Origins](#allowed-origins)
-    - [Additional Applications](#additional-applications)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+- [Конфігурація](#configuration)
+    - [Облікові дані застосунку](#application-credentials)
+    - [Дозволені джерела](#allowed-origins)
+    - [Додаткові застосунки](#additional-applications)
     - [SSL](#ssl)
-- [Running the Server](#running-server)
-    - [Debugging](#debugging)
-    - [Restarting](#restarting)
-- [Monitoring](#monitoring)
-- [Running Reverb in Production](#production)
-    - [Open Files](#open-files)
-    - [Event Loop](#event-loop)
-    - [Web Server](#web-server)
-    - [Ports](#ports)
-    - [Process Management](#process-management)
-    - [Scaling](#scaling)
-- [Events](#events)
+- [Запуск сервера](#running-server)
+    - [Налагодження](#debugging)
+    - [Перезапуск](#restarting)
+- [Моніторинг](#monitoring)
+- [Reverb у продакшені](#production)
+    - [Відкриті файли](#open-files)
+    - [Цикл подій](#event-loop)
+    - [Вебсервер](#web-server)
+    - [Порти](#ports)
+    - [Керування процесами](#process-management)
+    - [Масштабування](#scaling)
+- [Події](#events)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Laravel Reverb](https://github.com/laravel/reverb) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel's existing suite of [event broadcasting tools](/docs/{{version}}/broadcasting).
+[Laravel Reverb](https://github.com/laravel/reverb) приносить блискавично швидку та масштабовану real-time комунікацію через WebSocket безпосередньо до вашого Laravel-застосунку і безшовно інтегрується з наявним набором [інструментів бродкастингу подій](/docs/{{version}}/broadcasting) Laravel.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-You may install Reverb using the `install:broadcasting` Artisan command:
+Встановити Reverb можна артизан-командою `install:broadcasting`:
 
 ```shell
 php artisan install:broadcasting
 ```
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
-Behind the scenes, the `install:broadcasting` Artisan command will run the `reverb:install` command, which will install Reverb with a sensible set of default configuration options. If you would like to make any configuration changes, you may do so by updating Reverb's environment variables or by updating the `config/reverb.php` configuration file.
+Під капотом артизан-команда `install:broadcasting` запустить команду `reverb:install`, яка встановить Reverb з розумним набором параметрів конфігурації за замовчуванням. Якщо ви захочете щось змінити в конфігурації, зробіть це через змінні оточення Reverb або через конфігураційний файл `config/reverb.php`.
 
 <a name="application-credentials"></a>
-### Application Credentials
+### Облікові дані застосунку
 
-In order to establish a connection to Reverb, a set of Reverb "application" credentials must be exchanged between the client and server. These credentials are configured on the server and are used to verify the request from the client. You may define these credentials using the following environment variables:
+Щоб установити з'єднання з Reverb, клієнт і сервер мають обмінятися набором облікових даних «застосунку» Reverb. Ці облікові дані налаштовуються на сервері й використовуються для перевірки запиту від клієнта. Визначити їх можна за допомогою таких змінних оточення:
 
 ```ini
 REVERB_APP_ID=my-app-id
@@ -51,9 +54,9 @@ REVERB_APP_SECRET=my-app-secret
 ```
 
 <a name="allowed-origins"></a>
-### Allowed Origins
+### Дозволені джерела
 
-You may also define the origins from which client requests may originate by updating the value of the `allowed_origins` configuration value within the `apps` section of the `config/reverb.php` configuration file. Any requests from an origin not listed in your allowed origins will be rejected. You may allow all origins using `*`:
+Ви також можете визначити джерела, з яких можуть надходити клієнтські запити, змінивши значення `allowed_origins` у секції `apps` конфігураційного файлу `config/reverb.php`. Будь-які запити з джерела, якого немає у списку дозволених, будуть відхилені. Дозволити всі джерела можна за допомогою `*`:
 
 ```php
 'apps' => [
@@ -66,11 +69,11 @@ You may also define the origins from which client requests may originate by upda
 ```
 
 <a name="additional-applications"></a>
-### Additional Applications
+### Додаткові застосунки
 
-Typically, Reverb provides a WebSocket server for the application in which it is installed. However, it is possible to serve more than one application using a single Reverb installation.
+Зазвичай Reverb надає WebSocket-сервер для того застосунку, у якому його встановлено. Однак одна інсталяція Reverb може обслуговувати більше ніж один застосунок.
 
-For example, you may wish to maintain a single Laravel application which, via Reverb, provides WebSocket connectivity for multiple applications. This can be achieved by defining multiple `apps` in your application's `config/reverb.php` configuration file:
+Наприклад, ви можете захотіти підтримувати один Laravel-застосунок, який через Reverb забезпечує WebSocket-з'єднання для кількох застосунків. Цього можна досягти, визначивши кілька `apps` у конфігураційному файлі `config/reverb.php` вашого застосунку:
 
 ```php
 'apps' => [
@@ -88,17 +91,17 @@ For example, you may wish to maintain a single Laravel application which, via Re
 <a name="ssl"></a>
 ### SSL
 
-In most cases, secure WebSocket connections are handled by the upstream web server (Nginx, etc.) before the request is proxied to your Reverb server.
+У більшості випадків захищені WebSocket-з'єднання обробляє вищестоящий вебсервер (Nginx тощо), перш ніж запит буде пропрокси́йовано до вашого сервера Reverb.
 
-However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd's](https://herd.laravel.com) secure site feature or you are using [Laravel Valet](/docs/{{version}}/valet) and have run the [secure command](/docs/{{version}}/valet#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
+Однак іноді буває корисно, наприклад під час локальної розробки, щоб сервер Reverb обробляв захищені з'єднання напряму. Якщо ви користуєтеся можливістю захищених сайтів [Laravel Herd](https://herd.laravel.com) або використовуєте [Laravel Valet](/docs/{{version}}/valet) і виконали [команду secure](/docs/{{version}}/valet#securing-sites) для свого застосунку, ви можете скористатися згенерованим Herd / Valet сертифікатом для вашого сайту, щоб захистити з'єднання Reverb. Для цього встановіть змінну оточення `REVERB_HOST` на ім'я хоста вашого сайту або явно передайте опцію hostname під час запуску сервера Reverb:
 
 ```shell
 php artisan reverb:start --host="0.0.0.0" --port=8080 --hostname="laravel.test"
 ```
 
-Since Herd and Valet domains resolve to `localhost`, running the command above will result in your Reverb server being accessible via the secure WebSocket protocol (`wss`) at `wss://laravel.test:8080`.
+Оскільки домени Herd і Valet резолвляться в `localhost`, після виконання наведеної вище команди ваш сервер Reverb буде доступний через захищений протокол WebSocket (`wss`) за адресою `wss://laravel.test:8080`.
 
-You may also manually choose a certificate by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
+Ви також можете вибрати сертифікат вручну, визначивши опції `tls` у конфігураційному файлі `config/reverb.php` вашого застосунку. У масиві опцій `tls` можна вказати будь-яку з опцій, які підтримують [SSL-контексти PHP](https://www.php.net/manual/en/context.ssl.php):
 
 ```php
 'options' => [
@@ -109,25 +112,25 @@ You may also manually choose a certificate by defining `tls` options in your app
 ```
 
 <a name="running-server"></a>
-## Running the Server
+## Запуск сервера
 
-The Reverb server can be started using the `reverb:start` Artisan command:
+Сервер Reverb запускається артизан-командою `reverb:start`:
 
 ```shell
 php artisan reverb:start
 ```
 
-By default, the Reverb server will be started at `0.0.0.0:8080`, making it accessible from all network interfaces.
+За замовчуванням сервер Reverb запускається на `0.0.0.0:8080`, тобто доступний з усіх мережевих інтерфейсів.
 
-If you need to specify a custom host or port, you may do so via the `--host` and `--port` options when starting the server:
+Якщо вам потрібно вказати власний хост чи порт, зробіть це за допомогою опцій `--host` і `--port` під час запуску сервера:
 
 ```shell
 php artisan reverb:start --host=127.0.0.1 --port=9000
 ```
 
-Alternatively, you may define `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables in your application's `.env` configuration file.
+Або ж ви можете визначити змінні оточення `REVERB_SERVER_HOST` і `REVERB_SERVER_PORT` у конфігураційному файлі `.env` вашого застосунку.
 
-The `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables should not be confused with `REVERB_HOST` and `REVERB_PORT`. The former specify the host and port on which to run the Reverb server itself, while the latter pair instruct Laravel where to send broadcast messages. For example, in a production environment, you may route requests from your public Reverb hostname on port `443` to a Reverb server operating on `0.0.0.0:8080`. In this scenario, your environment variables would be defined as follows:
+Змінні оточення `REVERB_SERVER_HOST` і `REVERB_SERVER_PORT` не слід плутати з `REVERB_HOST` і `REVERB_PORT`. Перші вказують хост і порт, на яких запускається сам сервер Reverb, а друга пара повідомляє Laravel, куди надсилати бродкаст-повідомлення. Наприклад, у продакшен-середовищі ви можете спрямовувати запити з публічного імені хоста Reverb на порту `443` до сервера Reverb, що працює на `0.0.0.0:8080`. У такому сценарії ваші змінні оточення були б визначені так:
 
 ```ini
 REVERB_SERVER_HOST=0.0.0.0
@@ -138,31 +141,31 @@ REVERB_PORT=443
 ```
 
 <a name="debugging"></a>
-### Debugging
+### Налагодження
 
-To improve performance, Reverb does not output any debug information by default. If you would like to see the stream of data passing through your Reverb server, you may provide the `--debug` option to the `reverb:start` command:
+Задля продуктивності Reverb за замовчуванням не виводить жодної налагоджувальної інформації. Якщо ви хочете бачити потік даних, що проходить через ваш сервер Reverb, додайте до команди `reverb:start` опцію `--debug`:
 
 ```shell
 php artisan reverb:start --debug
 ```
 
 <a name="restarting"></a>
-### Restarting
+### Перезапуск
 
-Since Reverb is a long-running process, changes to your code will not be reflected without restarting the server via the `reverb:restart` Artisan command.
+Оскільки Reverb - це довготривалий процес, зміни у вашому коді не застосуються, доки ви не перезапустите сервер артизан-командою `reverb:restart`.
 
-The `reverb:restart` command ensures all connections are gracefully terminated before stopping the server. If you are running Reverb with a process manager such as Supervisor, the server will be automatically restarted by the process manager after all connections have been terminated:
+Команда `reverb:restart` гарантує, що всі з'єднання будуть коректно завершені, перш ніж сервер зупиниться. Якщо ви запускаєте Reverb під менеджером процесів на кшталт Supervisor, після завершення всіх з'єднань менеджер процесів автоматично перезапустить сервер:
 
 ```shell
 php artisan reverb:restart
 ```
 
 <a name="monitoring"></a>
-## Monitoring
+## Моніторинг
 
-Reverb may be monitored via an integration with [Laravel Pulse](/docs/{{version}}/pulse). By enabling Reverb's Pulse integration, you may track the number of connections and messages being handled by your server.
+За Reverb можна стежити через інтеграцію з [Laravel Pulse](/docs/{{version}}/pulse). Увімкнувши інтеграцію Reverb з Pulse, ви зможете відстежувати кількість з'єднань і повідомлень, які обробляє ваш сервер.
 
-To enable the integration, you should first ensure you have [installed Pulse](/docs/{{version}}/pulse#installation). Then, add any of Reverb's recorders to your application's `config/pulse.php` configuration file:
+Щоб увімкнути інтеграцію, спершу переконайтеся, що ви [встановили Pulse](/docs/{{version}}/pulse#installation). Далі додайте будь-які з рекордерів Reverb до конфігураційного файлу `config/pulse.php` вашого застосунку:
 
 ```php
 use Laravel\Reverb\Pulse\Recorders\ReverbConnections;
@@ -181,7 +184,7 @@ use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
 ],
 ```
 
-Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/{{version}}/pulse#dashboard-customization):
+Далі додайте картки Pulse для кожного рекордера до вашої [панелі Pulse](/docs/{{version}}/pulse#dashboard-customization):
 
 ```blade
 <x-pulse>
@@ -191,31 +194,31 @@ Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/{{ve
 </x-pulse>
 ```
 
-Connection activity is recorded by polling for new updates on a periodic basis. To ensure this information is rendered correctly on the Pulse dashboard, you must run the `pulse:check` daemon on your Reverb server. If you are running Reverb in a [horizontally scaled](#scaling) configuration, you should only run this daemon on one of your servers.
+Активність з'єднань записується шляхом періодичного опитування нових оновлень. Щоб ця інформація коректно відображалася на панелі Pulse, ви маєте запустити демон `pulse:check` на вашому сервері Reverb. Якщо ви запускаєте Reverb у [горизонтально масштабованій](#scaling) конфігурації, цей демон слід запускати лише на одному з ваших серверів.
 
 <a name="production"></a>
-## Running Reverb in Production
+## Reverb у продакшені
 
-Due to the long-running nature of WebSocket servers, you may need to make some optimizations to your server and hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available on your server.
+Через довготривалу природу WebSocket-серверів вам, можливо, доведеться дещо оптимізувати ваш сервер і хостинг-середовище, щоб ваш сервер Reverb міг ефективно обробляти оптимальну кількість з'єднань для доступних на сервері ресурсів.
 
 > [!NOTE]
-> [Laravel Cloud](https://cloud.laravel.com) offers fully managed WebSocket infrastructure powered by Laravel Reverb clusters, allowing you to scale and ship Reverb enabled applications without managing infrastructure.
+> [Laravel Cloud](https://cloud.laravel.com) пропонує повністю керовану WebSocket-інфраструктуру на базі кластерів Laravel Reverb, що дозволяє масштабувати й випускати застосунки з Reverb, не керуючи інфраструктурою.
 
 <a name="open-files"></a>
-### Open Files
+### Відкриті файли
 
-Each WebSocket connection is held in memory until either the client or server disconnects. In Unix and Unix-like environments, each connection is represented by a file. However, there are often limits on the number of allowed open files at both the operating system and application level.
+Кожне WebSocket-з'єднання тримається в пам'яті, доки не від'єднається клієнт або сервер. У Unix і Unix-подібних середовищах кожне з'єднання представлене файлом. Однак часто існують обмеження на кількість дозволених відкритих файлів як на рівні операційної системи, так і на рівні застосунку.
 
 <a name="operating-system"></a>
-#### Operating System
+#### Операційна система
 
-On a Unix based operating system, you may determine the allowed number of open files using the `ulimit` command:
+В операційній системі на базі Unix дозволену кількість відкритих файлів можна дізнатися командою `ulimit`:
 
 ```shell
 ulimit -n
 ```
 
-This command will display the open file limits allowed for different users. You may update these values by editing the `/etc/security/limits.conf` file. For example, updating the maximum number of open files to 10,000 for the `forge` user would look like the following:
+Ця команда покаже обмеження на відкриті файли для різних користувачів. Змінити ці значення можна, відредагувавши файл `/etc/security/limits.conf`. Наприклад, збільшення максимальної кількості відкритих файлів до 10 000 для користувача `forge` виглядало б так:
 
 ```ini
 # /etc/security/limits.conf
@@ -224,20 +227,20 @@ forge        hard  nofile  10000
 ```
 
 <a name="event-loop"></a>
-### Event Loop
+### Цикл подій
 
-Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connections on the server. By default, this event loop is powered by `stream_select`, which doesn't require any additional extensions. However, `stream_select` is typically limited to 1,024 open files. As such, if you plan to handle more than 1,000 concurrent connections, you will need to use an alternative event loop not bound to the same restrictions.
+Під капотом Reverb використовує цикл подій ReactPHP для керування WebSocket-з'єднаннями на сервері. За замовчуванням цей цикл подій працює на `stream_select`, який не потребує жодних додаткових розширень. Однак `stream_select` зазвичай обмежений 1 024 відкритими файлами. Тому, якщо ви плануєте обробляти понад 1 000 одночасних з'єднань, вам знадобиться альтернативний цикл подій, не обмежений тими самими рамками.
 
-Reverb will automatically switch to an `ext-uv` powered loop when available. This PHP extension is available for install via PECL:
+Reverb автоматично перемкнеться на цикл на базі `ext-uv`, коли той доступний. Це розширення PHP можна встановити через PECL:
 
 ```shell
 pecl install uv
 ```
 
 <a name="web-server"></a>
-### Web Server
+### Вебсервер
 
-In most cases, Reverb runs on a non web-facing port on your server. So, in order to route traffic to Reverb, you should configure a reverse proxy. Assuming Reverb is running on host `0.0.0.0` and port `8080` and your server utilizes the Nginx web server, a reverse proxy can be defined for your Reverb server using the following Nginx site configuration:
+У більшості випадків Reverb працює на порту вашого сервера, не зверненому до вебу. Тож, щоб спрямувати трафік до Reverb, вам слід налаштувати зворотний проксі. Припускаючи, що Reverb працює на хості `0.0.0.0` і порту `8080`, а ваш сервер використовує вебсервер Nginx, зворотний проксі для вашого сервера Reverb можна визначити такою конфігурацією сайту Nginx:
 
 ```nginx
 server {
@@ -261,9 +264,9 @@ server {
 ```
 
 > [!WARNING]
-> Reverb listens for WebSocket connections at `/app` and handles API requests at `/apps`. You should ensure the web server handling Reverb requests can serve both of these URIs. If you are using [Laravel Forge](https://forge.laravel.com) to manage your servers, your Reverb server will be correctly configured by default.
+> Reverb слухає WebSocket-з'єднання на `/app` і обробляє API-запити на `/apps`. Переконайтеся, що вебсервер, який обробляє запити до Reverb, може обслуговувати обидва ці URI. Якщо ви користуєтеся [Laravel Forge](https://forge.laravel.com) для керування серверами, ваш сервер Reverb буде правильно налаштований за замовчуванням.
 
-Typically, web servers are configured to limit the number of allowed connections in order to prevent overloading the server. To increase the number of allowed connections on an Nginx web server to 10,000, the `worker_rlimit_nofile` and `worker_connections` values of the `nginx.conf` file should be updated:
+Зазвичай вебсервери налаштовані обмежувати кількість дозволених з'єднань, щоб запобігти перевантаженню сервера. Щоб збільшити кількість дозволених з'єднань на вебсервері Nginx до 10 000, слід оновити значення `worker_rlimit_nofile` і `worker_connections` у файлі `nginx.conf`:
 
 ```nginx
 user forge;
@@ -278,24 +281,24 @@ events {
 }
 ```
 
-The configuration above will allow up to 10,000 Nginx workers per process to be spawned. In addition, this configuration sets Nginx's open file limit to 10,000.
+Наведена вище конфігурація дозволить породжувати до 10 000 воркерів Nginx на процес. Крім того, вона встановлює обмеження Nginx на відкриті файли в 10 000.
 
 <a name="ports"></a>
-### Ports
+### Порти
 
-Unix-based operating systems typically limit the number of ports which can be opened on the server. You may see the current allowed range via the following command:
+Операційні системи на базі Unix зазвичай обмежують кількість портів, які можна відкрити на сервері. Побачити поточний дозволений діапазон можна такою командою:
 
 ```shell
 cat /proc/sys/net/ipv4/ip_local_port_range
 # 32768	60999
 ```
 
-The output above shows the server can handle a maximum of 28,231 (60,999 - 32,768) connections since each connection requires a free port. Although we recommend [horizontal scaling](#scaling) to increase the number of allowed connections, you may increase the number of available open ports by updating the allowed port range in your server's `/etc/sysctl.conf` configuration file.
+Наведений вище вивід показує, що сервер може обробити максимум 28 231 (60 999 - 32 768) з'єднань, оскільки кожне з'єднання потребує вільного порту. Хоча для збільшення кількості дозволених з'єднань ми рекомендуємо [горизонтальне масштабування](#scaling), ви можете збільшити кількість доступних відкритих портів, змінивши дозволений діапазон портів у конфігураційному файлі `/etc/sysctl.conf` вашого сервера.
 
 <a name="process-management"></a>
-### Process Management
+### Керування процесами
 
-In most cases, you should use a process manager such as Supervisor to ensure the Reverb server is continually running. If you are using Supervisor to run Reverb, you should update the `minfds` setting of your server's `supervisor.conf` file to ensure Supervisor is able to open the files required to handle connections to your Reverb server:
+У більшості випадків вам слід використовувати менеджер процесів на кшталт Supervisor, щоб сервер Reverb працював безперервно. Якщо ви запускаєте Reverb через Supervisor, оновіть налаштування `minfds` у файлі `supervisor.conf` вашого сервера, щоб Supervisor міг відкрити файли, потрібні для обробки з'єднань із вашим сервером Reverb:
 
 ```ini
 [supervisord]
@@ -304,43 +307,43 @@ minfds=10000
 ```
 
 <a name="scaling"></a>
-### Scaling
+### Масштабування
 
-If you need to handle more connections than a single server will allow, you may scale your Reverb server horizontally. Utilizing the publish / subscribe capabilities of Redis, Reverb is able to manage connections across multiple servers. When a message is received by one of your application's Reverb servers, the server will use Redis to publish the incoming message to all other servers.
+Якщо вам потрібно обробляти більше з'єднань, ніж дозволяє один сервер, ви можете масштабувати сервер Reverb горизонтально. Використовуючи можливості publish / subscribe Redis, Reverb може керувати з'єднаннями на кількох серверах. Коли один із серверів Reverb вашого застосунку отримує повідомлення, він через Redis опублікує вхідне повідомлення для всіх інших серверів.
 
-To enable horizontal scaling, you should set the `REVERB_SCALING_ENABLED` environment variable to `true` in your application's `.env` configuration file:
+Щоб увімкнути горизонтальне масштабування, встановіть змінну оточення `REVERB_SCALING_ENABLED` у `true` в конфігураційному файлі `.env` вашого застосунку:
 
 ```env
 REVERB_SCALING_ENABLED=true
 ```
 
-Next, you should have a dedicated, central Redis server to which all of the Reverb servers will communicate. Reverb will use the [default Redis connection configured for your application](/docs/{{version}}/redis#configuration) to publish messages to all of your Reverb servers.
+Далі вам потрібен виділений, центральний сервер Redis, з яким взаємодіятимуть усі сервери Reverb. Reverb використовуватиме [підключення Redis, налаштоване для вашого застосунку за замовчуванням](/docs/{{version}}/redis#configuration), щоб публікувати повідомлення для всіх ваших серверів Reverb.
 
-Once you have enabled Reverb's scaling option and configured a Redis server, you may simply invoke the `reverb:start` command on multiple servers that are able to communicate with your Redis server. These Reverb servers should be placed behind a load balancer that distributes incoming requests evenly among the servers.
+Щойно ви увімкнете опцію масштабування Reverb і налаштуєте сервер Redis, вам достатньо виконати команду `reverb:start` на кількох серверах, здатних взаємодіяти з вашим сервером Redis. Ці сервери Reverb слід розмістити за балансувальником навантаження, який рівномірно розподіляє вхідні запити між серверами.
 
 <a name="events"></a>
-## Events
+## Події
 
-Reverb dispatches internal events during the lifecycle of a connection and message handling. You may [listen for these events](/docs/{{version}}/events) to perform actions when connections are managed or messages are exchanged.
+Reverb диспетчеризує внутрішні події протягом життєвого циклу з'єднання та обробки повідомлень. Ви можете [слухати ці події](/docs/{{version}}/events), щоб виконувати дії, коли керується з'єднаннями чи обмінюється повідомленнями.
 
-The following events are dispatched by Reverb:
+Reverb диспетчеризує такі події:
 
 #### `Laravel\Reverb\Events\ChannelCreated`
 
-Dispatched when a channel is created. This typically occurs when the first connection subscribes to a specific channel. The event receives the `Laravel\Reverb\Protocols\Pusher\Channel` instance.
+Диспетчеризується, коли створюється канал. Зазвичай це відбувається, коли перше з'єднання підписується на конкретний канал. Подія отримує екземпляр `Laravel\Reverb\Protocols\Pusher\Channel`.
 
 #### `Laravel\Reverb\Events\ChannelRemoved`
 
-Dispatched when a channel is removed. This typically occurs when the last connection unsubscribes from a channel. The event receives the `Laravel\Reverb\Protocols\Pusher\Channel` instance.
+Диспетчеризується, коли канал видаляється. Зазвичай це відбувається, коли останнє з'єднання відписується від каналу. Подія отримує екземпляр `Laravel\Reverb\Protocols\Pusher\Channel`.
 
 #### `Laravel\Reverb\Events\ConnectionPruned`
 
-Dispatched when a stale connection is pruned by the server. The event receives the `Laravel\Reverb\Contracts\Connection` instance.
+Диспетчеризується, коли сервер прибирає застаріле з'єднання. Подія отримує екземпляр `Laravel\Reverb\Contracts\Connection`.
 
 #### `Laravel\Reverb\Events\MessageReceived`
 
-Dispatched when a message is received from a client connection. The event receives the `Laravel\Reverb\Contracts\Connection` instance and the raw string `$message`.
+Диспетчеризується, коли отримано повідомлення від клієнтського з'єднання. Подія отримує екземпляр `Laravel\Reverb\Contracts\Connection` і сирий рядок `$message`.
 
 #### `Laravel\Reverb\Events\MessageSent`
 
-Dispatched when a message is sent to a client connection. The event receives the `Laravel\Reverb\Contracts\Connection` instance and the raw string `$message`.
+Диспетчеризується, коли повідомлення надіслано до клієнтського з'єднання. Подія отримує екземпляр `Laravel\Reverb\Contracts\Connection` і сирий рядок `$message`.
