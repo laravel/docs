@@ -1,58 +1,61 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Boost
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [Set Up Your Agents](#set-up-your-agents)
-    - [Keeping Boost Resources Updated](#keeping-boost-resources-updated)
-- [MCP Server](#mcp-server)
-    - [Available MCP Tools](#available-mcp-tools)
-    - [Manually Registering the MCP Server](#manually-registering-the-mcp-server)
-- [AI Guidelines](#ai-guidelines)
-    - [Available AI Guidelines](#available-ai-guidelines)
-    - [Adding Custom AI Guidelines](#adding-custom-ai-guidelines)
-    - [Overriding Boost AI Guidelines](#overriding-boost-ai-guidelines)
-    - [Third-Party Package AI Guidelines](#third-party-package-ai-guidelines)
-- [Agent Skills](#agent-skills)
-    - [Available Skills](#available-skills)
-    - [Custom Skills](#custom-skills)
-    - [Overriding Skills](#overriding-skills)
-    - [Third-Party Package Skills](#third-party-package-skills)
-- [Guidelines vs. Skills](#guidelines-vs-skills)
-- [Documentation API](#documentation-api)
-- [Extending Boost](#extending-boost)
-    - [Adding Support for Other IDEs / AI Agents](#adding-support-for-other-ides-ai-agents)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+    - [Налаштування агентів](#set-up-your-agents)
+    - [Оновлення ресурсів Boost](#keeping-boost-resources-updated)
+- [MCP-сервер](#mcp-server)
+    - [Доступні інструменти MCP](#available-mcp-tools)
+    - [Ручна реєстрація MCP-сервера](#manually-registering-the-mcp-server)
+- [Настанови для AI](#ai-guidelines)
+    - [Доступні настанови для AI](#available-ai-guidelines)
+    - [Додавання власних настанов для AI](#adding-custom-ai-guidelines)
+    - [Перевизначення настанов Boost](#overriding-boost-ai-guidelines)
+    - [Настанови для AI у сторонніх пакетах](#third-party-package-ai-guidelines)
+- [Навички агентів](#agent-skills)
+    - [Доступні навички](#available-skills)
+    - [Власні навички](#custom-skills)
+    - [Перевизначення навичок](#overriding-skills)
+    - [Навички у сторонніх пакетах](#third-party-package-skills)
+- [Настанови проти навичок](#guidelines-vs-skills)
+- [API документації](#documentation-api)
+- [Розширення Boost](#extending-boost)
+    - [Додавання підтримки інших IDE та AI-агентів](#adding-support-for-other-ides-ai-agents)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel Boost accelerates AI-assisted development by providing the essential guidelines and agent skills that help AI agents write high-quality Laravel applications that adhere to Laravel best practices.
+Laravel Boost пришвидшує розробку з допомогою AI, надаючи ключові настанови й навички агентів, які допомагають AI-агентам писати якісні застосунки Laravel відповідно до найкращих практик фреймворку.
 
-Boost also provides a powerful Laravel ecosystem documentation API that combines a built-in MCP tool with an extensive knowledge base containing over 17,000 pieces of Laravel-specific information, all enhanced by semantic search capabilities using embeddings for precise, context-aware results. Boost instructs AI agents like Claude Code and Cursor to use this API to learn about the latest Laravel features and best practices.
+Boost також надає потужний API документації екосистеми Laravel, що поєднує вбудований інструмент MCP із великою базою знань, яка містить понад 17 000 фрагментів інформації про Laravel, - усе це підсилено семантичним пошуком на ембедингах для точних результатів з урахуванням контексту. Boost вказує AI-агентам на кшталт Claude Code і Cursor користуватися цим API, щоб дізнаватися про найновіші можливості й найкращі практики Laravel.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-Laravel Boost can be installed via Composer:
+Laravel Boost можна встановити через Composer:
 
 ```shell
 composer require laravel/boost --dev
 ```
 
-Next, install the MCP server and coding guidelines:
+Далі встановіть MCP-сервер і настанови щодо написання коду:
 
 ```shell
 php artisan boost:install
 ```
 
-The `boost:install` command will generate the relevant agent guideline and skill files for the coding agents you selected during the installation process.
+Команда `boost:install` згенерує відповідні файли настанов і навичок для тих агентів, яких ви обрали під час встановлення.
 
-Once Laravel Boost has been installed, you're ready to start coding with Cursor, Claude Code, or your AI agent of choice.
+Коли Laravel Boost встановлено, ви готові писати код у Cursor, Claude Code чи будь-якому іншому AI-агенті на ваш вибір.
 
 > [!NOTE]
-> Feel free to add the generated MCP configuration file (`.mcp.json`), guideline files (`CLAUDE.md`, `AGENTS.md`, `junie/`, etc.), and the `boost.json` configuration file to your application's `.gitignore`, as these files are automatically regenerated when running `boost:install` and `boost:update`.
+> Сміливо додавайте згенерований конфігураційний файл MCP (`.mcp.json`), файли настанов (`CLAUDE.md`, `AGENTS.md`, `junie/` тощо) та конфігураційний файл `boost.json` до `.gitignore` вашого застосунку - ці файли автоматично перегенеровуються під час виконання `boost:install` і `boost:update`.
 
 <a name="set-up-your-agents"></a>
-### Set Up Your Agents
+### Налаштування агентів
 
 ```text tab=Cursor
 1. Open the command palette (`Cmd+Shift+P` or `Ctrl+Shift+P`)
@@ -93,15 +96,15 @@ gemini mcp add -s project -t stdio laravel-boost php artisan boost:mcp
 ```
 
 <a name="keeping-boost-resources-updated"></a>
-### Keeping Boost Resources Updated
+### Оновлення ресурсів Boost
 
-You may want to periodically update your local Boost resources (AI guidelines and skills) to ensure they reflect the latest versions of the Laravel ecosystem packages you have installed. To do so, you can use the `boost:update` Artisan command.
+Вам, можливо, варто час від часу оновлювати локальні ресурси Boost (настанови для AI та навички), щоб вони відповідали найновішим версіям встановлених у вас пакетів екосистеми Laravel. Для цього скористайтеся артизан-командою `boost:update`.
 
 ```shell
 php artisan boost:update
 ```
 
-You may also automate this process by adding it to your Composer "post-update-cmd" scripts:
+Ви також можете автоматизувати цей процес, додавши команду до скриптів Composer «post-update-cmd»:
 
 ```json
 {
@@ -113,47 +116,47 @@ You may also automate this process by adding it to your Composer "post-update-cm
 }
 ```
 
-By default, the `boost:update` command will only update the existing Boost resources already published within your application. If you would like Boost to scan your application for any newly installed packages and offer to publish their corresponding guidelines and skills, you may use the `--discover` option:
+За замовчуванням команда `boost:update` оновлюватиме лише ті ресурси Boost, які вже опубліковано у вашому застосунку. Якщо ви хочете, щоб Boost просканував ваш застосунок на нововстановлені пакети й запропонував опублікувати відповідні настанови й навички, скористайтеся опцією `--discover`:
 
 ```shell
 php artisan boost:update --discover
 ```
 
 <a name="mcp-server"></a>
-## MCP Server
+## MCP-сервер
 
-Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools for AI agents to interact with your Laravel application. These tools give agents the ability to inspect your application's structure, query the database, execute code, and more.
+Laravel Boost надає MCP-сервер (Model Context Protocol), який відкриває AI-агентам інструменти для взаємодії з вашим застосунком Laravel. Ці інструменти дають агентам змогу оглядати структуру застосунку, робити запити до бази даних, виконувати код тощо.
 
 <a name="available-mcp-tools"></a>
-### Available MCP Tools
+### Доступні інструменти MCP
 
 <div class="overflow-auto">
 
-| Name                 | Notes                                                                                                       |
+| Ім'я                 | Примітки                                                                                                    |
 | -------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Application Info     | Read PHP & Laravel versions, database engine, list of ecosystem packages with versions, and Eloquent models |
-| Browser Logs         | Read logs and errors from the browser                                                                       |
-| Database Connections | Inspect available database connections, including the default connection                                    |
-| Database Query       | Execute a query against the database                                                                        |
-| Database Schema      | Read the database schema                                                                                    |
-| Get Absolute URL     | Convert relative path URIs to absolute so agents generate valid URLs                                        |
-| Last Error           | Read the last error from the application's log files                                                        |
-| Read Log Entries     | Read the last N log entries                                                                                 |
-| Search Docs          | Query the Laravel hosted documentation API service to retrieve documentation based on installed packages    |
+| Application Info     | Читає версії PHP і Laravel, рушій бази даних, список пакетів екосистеми з версіями та моделі Eloquent       |
+| Browser Logs         | Читає логи та помилки з браузера                                                                            |
+| Database Connections | Оглядає доступні підключення до бази даних, зокрема стандартне                                              |
+| Database Query       | Виконує запит до бази даних                                                                                 |
+| Database Schema      | Читає схему бази даних                                                                                      |
+| Get Absolute URL     | Перетворює відносні URI на абсолютні, щоб агенти генерували коректні URL                                    |
+| Last Error           | Читає останню помилку з файлів логу застосунку                                                              |
+| Read Log Entries     | Читає останні N записів логу                                                                                |
+| Search Docs          | Робить запит до хостованого сервісу API документації Laravel, щоб отримати документацію за встановленими пакетами |
 
 </div>
 
 <a name="manually-registering-the-mcp-server"></a>
-### Manually Registering the MCP Server
+### Ручна реєстрація MCP-сервера
 
-Sometimes you may need to manually register the Laravel Boost MCP server with your editor of choice. You should register the MCP server using the following details:
+Іноді вам може знадобитися зареєструвати MCP-сервер Laravel Boost у вашому редакторі вручну. Реєструйте MCP-сервер із такими даними:
 
 <table>
 <tr><td><strong>Command</strong></td><td><code>php</code></td></tr>
 <tr><td><strong>Args</strong></td><td><code>artisan boost:mcp</code></td></tr>
 </table>
 
-JSON example:
+Приклад JSON:
 
 ```json
 {
@@ -167,18 +170,18 @@ JSON example:
 ```
 
 <a name="ai-guidelines"></a>
-## AI Guidelines
+## Настанови для AI
 
-AI guidelines are composable instruction files that are loaded upfront to provide AI agents with essential context about Laravel ecosystem packages. These guidelines contain core conventions, best practices, and framework-specific patterns that help agents generate consistent, high-quality code.
+Настанови для AI - це складані файли інструкцій, які завантажуються наперед, щоб дати AI-агентам ключовий контекст про пакети екосистеми Laravel. Ці настанови містять основні угоди, найкращі практики та специфічні для фреймворку патерни, які допомагають агентам генерувати послідовний і якісний код.
 
 <a name="available-ai-guidelines"></a>
-### Available AI Guidelines
+### Доступні настанови для AI
 
-Laravel Boost includes AI guidelines for the following packages and frameworks. The `core` guidelines provide generic, generalized advice to the AI for the given package that is applicable across all versions.
+Laravel Boost містить настанови для AI для таких пакетів і фреймворків. Настанови `core` дають загальні поради AI щодо відповідного пакета, застосовні до всіх версій.
 
 <div class="overflow-auto">
 
-| Package           | Versions Supported     |
+| Пакет             | Підтримувані версії    |
 | ----------------- | ---------------------- |
 | Core & Boost      | core                   |
 | Laravel Framework | core, 10.x, 11.x, 12.x, 13.x |
@@ -203,26 +206,26 @@ Laravel Boost includes AI guidelines for the following packages and frameworks. 
 
 </div>
 
-> **Note:** To keep your AI guidelines up-to-date, see the [Keeping Boost Resources Updated](#keeping-boost-resources-updated) section.
+> **Примітка:** щоб тримати настанови для AI актуальними, дивіться розділ [Оновлення ресурсів Boost](#keeping-boost-resources-updated).
 
 <a name="adding-custom-ai-guidelines"></a>
-### Adding Custom AI Guidelines
+### Додавання власних настанов для AI
 
-To augment Laravel Boost with your own custom AI guidelines, add `.blade.php` or `.md` files to your application's `.ai/guidelines/*` directory. These files will automatically be included with Laravel Boost's guidelines when you run `boost:install`.
+Щоб доповнити Laravel Boost власними настановами для AI, додайте файли `.blade.php` чи `.md` до каталогу `.ai/guidelines/*` вашого застосунку. Ці файли автоматично потраплять до настанов Laravel Boost, коли ви виконаєте `boost:install`.
 
 <a name="overriding-boost-ai-guidelines"></a>
-### Overriding Boost AI Guidelines
+### Перевизначення настанов Boost
 
-You can override Boost's built-in AI guidelines by creating your own custom guidelines with matching file paths. When you create a custom guideline that matches an existing Boost guideline path, Boost will use your custom version instead of the built-in one.
+Ви можете перевизначити вбудовані настанови Boost для AI, створивши власні настанови з такими самими шляхами до файлів. Коли ви створюєте власну настанову, шлях якої збігається зі шляхом наявної настанови Boost, Boost використає вашу версію замість вбудованої.
 
-For example, to override Boost's "Inertia React v2 Form Guidance" guidelines, create a file at `.ai/guidelines/inertia-react/2/forms.blade.php`. When you run `boost:install`, Boost will include your custom guideline instead of the default one.
+Наприклад, щоб перевизначити настанови Boost «Inertia React v2 Form Guidance», створіть файл `.ai/guidelines/inertia-react/2/forms.blade.php`. Коли ви виконаєте `boost:install`, Boost включить вашу настанову замість стандартної.
 
 <a name="third-party-package-ai-guidelines"></a>
-### Third-Party Package AI Guidelines
+### Настанови для AI у сторонніх пакетах
 
-If you maintain a third-party package and would like Boost to include AI guidelines for it, you can do so by adding a `resources/boost/guidelines/core.blade.php` file to your package. When users of your package run `php artisan boost:install`, Boost will automatically load your guidelines.
+Якщо ви підтримуєте сторонній пакет і хочете, щоб Boost включав настанови для AI щодо нього, додайте до пакета файл `resources/boost/guidelines/core.blade.php`. Коли користувачі вашого пакета виконають `php artisan boost:install`, Boost автоматично завантажить ваші настанови.
 
-AI guidelines should provide a short overview of what your package does, outline any required file structure or conventions, and explain how to create or use its main features (with example commands or code snippets). Keep them concise, actionable, and focused on best practices so AI can generate correct code for your users. Here is an example:
+Настанови для AI мають коротко описувати, що робить ваш пакет, окреслювати потрібну структуру файлів чи угоди й пояснювати, як створювати чи використовувати його основні можливості (з прикладами команд або фрагментами коду). Тримайте їх стислими, дієвими й зосередженими на найкращих практиках, щоб AI міг генерувати правильний код для ваших користувачів. Ось приклад:
 
 ```php
 ## Package Name
@@ -242,18 +245,18 @@ $result = PackageName::featureTwo($param1, $param2);
 ```
 
 <a name="agent-skills"></a>
-## Agent Skills
+## Навички агентів
 
-[Agent Skills](https://agentskills.io/home) are lightweight, targeted knowledge modules that agents can activate on-demand when working on specific domains. Unlike guidelines, which are loaded upfront, skills allow detailed patterns and best practices to be loaded only when relevant, reducing context bloat and improving the relevance of AI-generated code.
+[Навички агентів](https://agentskills.io/home) - це легкі цільові модулі знань, які агенти можуть активувати на вимогу, працюючи в конкретних доменах. На відміну від настанов, які завантажуються наперед, навички дозволяють підтягувати детальні патерни й найкращі практики лише тоді, коли вони доречні, - це зменшує роздування контексту й підвищує релевантність згенерованого AI коду.
 
-When you run `boost:install` and select skills as a feature, skills are automatically installed based on the packages detected in your `composer.json`. For example, if your project includes `livewire/livewire`, the `livewire-development` skill will be installed automatically.
+Коли ви виконуєте `boost:install` і обираєте навички як можливість, вони встановлюються автоматично - за пакетами, виявленими у вашому `composer.json`. Наприклад, якщо ваш проєкт містить `livewire/livewire`, навичку `livewire-development` буде встановлено автоматично.
 
 <a name="available-skills"></a>
-### Available Skills
+### Доступні навички
 
 <div class="overflow-auto">
 
-| Skill                      | Package        |
+| Навичка                    | Пакет          |
 | -------------------------- | -------------- |
 | fluxui-development         | Flux UI        |
 | folio-routing              | Folio          |
@@ -270,34 +273,34 @@ When you run `boost:install` and select skills as a feature, skills are automati
 
 </div>
 
-> **Note:** To keep your skills up-to-date, see the [Keeping Boost Resources Updated](#keeping-boost-resources-updated) section.
+> **Примітка:** щоб тримати навички актуальними, дивіться розділ [Оновлення ресурсів Boost](#keeping-boost-resources-updated).
 
 <a name="custom-skills"></a>
-### Custom Skills
+### Власні навички
 
-To create your own custom skills, add a `SKILL.md` file to your application's `.ai/skills/{skill-name}/` directory. When you run `boost:update`, your custom skills will be installed alongside Boost's built-in skills.
+Щоб створити власні навички, додайте файл `SKILL.md` до каталогу `.ai/skills/{skill-name}/` вашого застосунку. Коли ви виконаєте `boost:update`, ваші навички буде встановлено разом із вбудованими навичками Boost.
 
-For example, to create a custom skill for your application's domain logic:
+Наприклад, щоб створити власну навичку для доменної логіки вашого застосунку:
 
 ```
 .ai/skills/creating-invoices/SKILL.md
 ```
 
 <a name="overriding-skills"></a>
-### Overriding Skills
+### Перевизначення навичок
 
-You can override Boost's built-in skills by creating your own custom skills with matching names. When you create a custom skill that matches an existing Boost skill name, Boost will use your custom version instead of the built-in one.
+Ви можете перевизначити вбудовані навички Boost, створивши власні навички з такими самими іменами. Коли ви створюєте власну навичку, ім'я якої збігається з іменем наявної навички Boost, Boost використає вашу версію замість вбудованої.
 
-For example, to override Boost's `livewire-development` skill, create a file at `.ai/skills/livewire-development/SKILL.md`. When you run `boost:update`, Boost will include your custom skill instead of the default one.
+Наприклад, щоб перевизначити навичку Boost `livewire-development`, створіть файл `.ai/skills/livewire-development/SKILL.md`. Коли ви виконаєте `boost:update`, Boost включить вашу навичку замість стандартної.
 
 <a name="third-party-package-skills"></a>
-### Third-Party Package Skills
+### Навички у сторонніх пакетах
 
-If you maintain a third-party package and would like Boost to include skills for it, you can do so by adding a `resources/boost/skills/{skill-name}/SKILL.md` file to your package. When users of your package run `php artisan boost:install`, Boost will automatically install your skills based on user preference.
+Якщо ви підтримуєте сторонній пакет і хочете, щоб Boost включав навички щодо нього, додайте до пакета файл `resources/boost/skills/{skill-name}/SKILL.md`. Коли користувачі вашого пакета виконають `php artisan boost:install`, Boost автоматично встановить ваші навички відповідно до їхніх уподобань.
 
-Boost Skills support the [Agent Skills format](https://agentskills.io/what-are-skills) and should be structured as a folder containing a `SKILL.md` file with YAML frontmatter and Markdown instructions. The `SKILL.md` file must include required frontmatter (`name` and `description`) and can optionally include scripts, templates, and reference materials.
+Навички Boost підтримують [формат Agent Skills](https://agentskills.io/what-are-skills) і мають бути оформлені як каталог із файлом `SKILL.md`, що містить YAML-хедер та інструкції в Markdown. Файл `SKILL.md` має містити обов'язковий хедер (`name` та `description`), а також може за бажання містити скрипти, шаблони й довідкові матеріали.
 
-Skills should outline any required file structure or conventions, and explain how to create or use its main features (with example commands or code snippets). Keep them concise, actionable, and focused on best practices so AI can generate correct code for your users:
+Навички мають окреслювати потрібну структуру файлів чи угоди й пояснювати, як створювати чи використовувати основні можливості (з прикладами команд або фрагментами коду). Тримайте їх стислими, дієвими й зосередженими на найкращих практиках, щоб AI міг генерувати правильний код для ваших користувачів:
 
 ```markdown
 ---
@@ -319,34 +322,34 @@ $result = PackageName::featureTwo($param1, $param2);
 ```
 
 <a name="guidelines-vs-skills"></a>
-## Guidelines vs. Skills
+## Настанови проти навичок
 
-Laravel Boost provides two distinct ways to give AI agents context about your application: **guidelines** and **skills**.
+Laravel Boost надає два різні способи дати AI-агентам контекст про ваш застосунок: **настанови** та **навички**.
 
-**Guidelines** are loaded upfront when the AI agent starts, providing essential context about Laravel conventions and best practices that apply broadly across your codebase.
+**Настанови** завантажуються наперед при старті AI-агента й дають ключовий контекст про угоди та найкращі практики Laravel, які широко застосовні у всій вашій кодовій базі.
 
-**Skills** are activated on-demand when working on specific tasks, containing detailed patterns for particular domains (like Livewire components or Pest tests). Loading skills only when relevant reduces context bloat and improves code quality.
+**Навички** активуються на вимогу під час роботи над конкретними завданнями й містять детальні патерни для окремих доменів (як-от компоненти Livewire чи тести Pest). Завантаження навичок лише за потреби зменшує роздування контексту й підвищує якість коду.
 
 <div class="overflow-auto">
 
-| Aspect      | Guidelines                        | Skills                           |
-| ----------- | --------------------------------- | -------------------------------- |
-| **Loaded**  | Upfront, always present           | On-demand, when relevant         |
-| **Scope**   | Broad, foundational               | Focused, task-specific           |
-| **Purpose** | Core conventions & best practices | Detailed implementation patterns |
+| Аспект          | Настанови                          | Навички                          |
+| --------------- | ---------------------------------- | -------------------------------- |
+| **Завантаження**| Наперед, присутні завжди           | На вимогу, коли доречні          |
+| **Обсяг**       | Широкий, фундаментальний           | Вузький, під конкретне завдання  |
+| **Призначення** | Основні угоди й найкращі практики  | Детальні патерни реалізації      |
 
 </div>
 
 <a name="documentation-api"></a>
-## Documentation API
+## API документації
 
-Laravel Boost includes a Documentation API that provides AI agents with access to an extensive knowledge base containing over 17,000 pieces of Laravel-specific information. The API uses semantic search with embeddings to deliver precise, context-aware results.
+Laravel Boost містить API документації, який дає AI-агентам доступ до великої бази знань із понад 17 000 фрагментів інформації про Laravel. Цей API використовує семантичний пошук на ембедингах, щоб видавати точні результати з урахуванням контексту.
 
-The `Search Docs` MCP tool allows agents to query the Laravel hosted documentation API service to retrieve documentation based on your installed packages. Boost's AI guidelines and skills will automatically instruct your coding agent to use this API.
+Інструмент MCP `Search Docs` дозволяє агентам робити запити до хостованого сервісу API документації Laravel і отримувати документацію за встановленими у вас пакетами. Настанови й навички Boost автоматично вкажуть вашому агенту користуватися цим API.
 
 <div class="overflow-auto">
 
-| Package           | Versions Supported |
+| Пакет             | Підтримувані версії |
 | ----------------- | ------------------ |
 | Laravel Framework | 10.x, 11.x, 12.x, 13.x |
 | Filament          | 2.x, 3.x, 4.x, 5.x |
@@ -360,21 +363,21 @@ The `Search Docs` MCP tool allows agents to query the Laravel hosted documentati
 </div>
 
 <a name="extending-boost"></a>
-## Extending Boost
+## Розширення Boost
 
-Boost works with many popular IDEs and AI agents out of the box. If your coding tool isn't supported yet, you can create your own agent and integrate it with Boost.
+Boost працює з багатьма популярними IDE та AI-агентами одразу з коробки. Якщо ваш інструмент ще не підтримується, ви можете створити власного агента й інтегрувати його з Boost.
 
 <a name="adding-support-for-other-ides-ai-agents"></a>
-### Adding Support for Other IDEs / AI Agents
+### Додавання підтримки інших IDE та AI-агентів
 
-To add support for a new IDE or AI agent, create a class that extends `Laravel\Boost\Install\Agents\Agent` and implement one or more of the following contracts depending on what you need:
+Щоб додати підтримку нової IDE чи AI-агента, створіть клас, який успадковує `Laravel\Boost\Install\Agents\Agent`, і реалізуйте один чи кілька таких контрактів - залежно від ваших потреб:
 
-- `Laravel\Boost\Contracts\SupportsGuidelines` - Adds support for AI guidelines.
-- `Laravel\Boost\Contracts\SupportsMcp` - Adds support for MCP.
-- `Laravel\Boost\Contracts\SupportsSkills` - Adds support for Agent Skills.
+- `Laravel\Boost\Contracts\SupportsGuidelines` - додає підтримку настанов для AI.
+- `Laravel\Boost\Contracts\SupportsMcp` - додає підтримку MCP.
+- `Laravel\Boost\Contracts\SupportsSkills` - додає підтримку навичок агентів.
 
 <a name="writing-the-agent"></a>
-#### Writing the Agent
+#### Написання агента
 
 ```php
 <?php
@@ -394,12 +397,12 @@ class CustomAgent extends Agent implements SupportsGuidelines, SupportsMcp, Supp
 }
 ```
 
-For an example implementation, see [ClaudeCode.php](https://github.com/laravel/boost/blob/main/src/Install/Agents/ClaudeCode.php).
+Приклад реалізації дивіться в [ClaudeCode.php](https://github.com/laravel/boost/blob/main/src/Install/Agents/ClaudeCode.php).
 
 <a name="registering-the-agent"></a>
-#### Registering the Agent
+#### Реєстрація агента
 
-Register your custom agent in the `boot` method of your application's `App\Providers\AppServiceProvider`:
+Зареєструйте свого агента в методі `boot` класу `App\Providers\AppServiceProvider` вашого застосунку:
 
 ```php
 use Laravel\Boost\Boost;
@@ -410,4 +413,4 @@ public function boot(): void
 }
 ```
 
-Once registered, your agent will be available for selection when running `php artisan boost:install`.
+Коли агента зареєстровано, він буде доступний для вибору під час виконання `php artisan boost:install`.
