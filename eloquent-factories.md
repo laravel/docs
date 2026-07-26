@@ -1,28 +1,31 @@
-# Eloquent: Factories
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Eloquent: фабрики
 
-- [Introduction](#introduction)
-- [Defining Model Factories](#defining-model-factories)
-    - [Generating Factories](#generating-factories)
-    - [Factory States](#factory-states)
-    - [Factory Callbacks](#factory-callbacks)
-- [Creating Models Using Factories](#creating-models-using-factories)
-    - [Instantiating Models](#instantiating-models)
-    - [Persisting Models](#persisting-models)
-    - [Sequences](#sequences)
-- [Factory Relationships](#factory-relationships)
-    - [Has Many Relationships](#has-many-relationships)
-    - [Belongs To Relationships](#belongs-to-relationships)
-    - [Many to Many Relationships](#many-to-many-relationships)
-    - [Polymorphic Relationships](#polymorphic-relationships)
-    - [Defining Relationships Within Factories](#defining-relationships-within-factories)
-    - [Recycling an Existing Model for Relationships](#recycling-an-existing-model-for-relationships)
+- [Вступ](#introduction)
+- [Опис фабрик моделей](#defining-model-factories)
+    - [Створення фабрик](#generating-factories)
+    - [Стани фабрик](#factory-states)
+    - [Колбеки фабрик](#factory-callbacks)
+- [Створення моделей через фабрики](#creating-models-using-factories)
+    - [Створення екземплярів моделей](#instantiating-models)
+    - [Збереження моделей](#persisting-models)
+    - [Послідовності](#sequences)
+- [Зв'язки у фабриках](#factory-relationships)
+    - [Зв'язки «має багато»](#has-many-relationships)
+    - [Зв'язки «належить до»](#belongs-to-relationships)
+    - [Зв'язки «багато до багатьох»](#many-to-many-relationships)
+    - [Поліморфні зв'язки](#polymorphic-relationships)
+    - [Опис зв'язків усередині фабрик](#defining-relationships-within-factories)
+    - [Повторне використання наявної моделі у зв'язках](#recycling-an-existing-model-for-relationships)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-When testing your application or seeding your database, you may need to insert a few records into your database. Instead of manually specifying the value of each column, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using model factories.
+Тестуючи застосунок чи наповнюючи базу даних, вам може знадобитися вставити в неї кілька записів. Замість того щоб вручну задавати значення кожного стовпця, Laravel дозволяє описати набір атрибутів за замовчуванням для кожної з ваших [моделей Eloquent](/docs/{{version}}/eloquent) - за допомогою фабрик моделей.
 
-To see an example of how to write a factory, take a look at the `database/factories/UserFactory.php` file in your application. This factory is included with all new Laravel applications and contains the following factory definition:
+Щоб побачити приклад фабрики, погляньте на файл `database/factories/UserFactory.php` у вашому застосунку. Ця фабрика є в усіх нових застосунках Laravel і містить такий опис:
 
 ```php
 namespace Database\Factories;
@@ -69,33 +72,33 @@ class UserFactory extends Factory
 }
 ```
 
-As you can see, in their most basic form, factories are classes that extend Laravel's base factory class and define a `definition` method. The `definition` method returns the default set of attribute values that should be applied when creating a model using the factory.
+Як бачите, у найпростішому вигляді фабрики - це класи, що розширюють базовий клас фабрики Laravel і описують метод `definition`. Метод `definition` повертає набір значень атрибутів за замовчуванням, які слід застосувати при створенні моделі через фабрику.
 
-Via the `fake` helper, factories have access to the [Faker](https://github.com/FakerPHP/Faker) PHP library, which allows you to conveniently generate various kinds of random data for testing and seeding.
+Через хелпер `fake` фабрики мають доступ до PHP-бібліотеки [Faker](https://github.com/FakerPHP/Faker), яка дозволяє зручно генерувати різноманітні випадкові дані для тестування та наповнення бази.
 
 > [!NOTE]
-> You can change your application's Faker locale by updating the `faker_locale` option in your `config/app.php` configuration file.
+> Ви можете змінити локаль Faker для свого застосунку, оновивши опцію `faker_locale` у файлі конфігурації `config/app.php`.
 
 <a name="defining-model-factories"></a>
-## Defining Model Factories
+## Опис фабрик моделей
 
 <a name="generating-factories"></a>
-### Generating Factories
+### Створення фабрик
 
-To create a factory, execute the `make:factory` [Artisan command](/docs/{{version}}/artisan):
+Щоб створити фабрику, виконайте [artisan-команду](/docs/{{version}}/artisan) `make:factory`:
 
 ```shell
 php artisan make:factory PostFactory
 ```
 
-The new factory class will be placed in your `database/factories` directory.
+Новий клас фабрики потрапить до каталогу `database/factories`.
 
 <a name="factory-and-model-discovery-conventions"></a>
-#### Model and Factory Discovery Conventions
+#### Конвенції пошуку моделей і фабрик
 
-Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait in order to instantiate a factory instance for that model.
+Коли ви описали фабрики, ви можете скористатися статичним методом `factory`, який моделі отримують від трейта `Illuminate\Database\Eloquent\Factories\HasFactory`, щоб створити екземпляр фабрики для цієї моделі.
 
-The `HasFactory` trait's `factory` method will use conventions to determine the proper factory for the model the trait is assigned to. Specifically, the method will look for a factory in the `Database\Factories` namespace that has a class name matching the model name and is suffixed with `Factory`. If these conventions do not apply to your particular application or factory, you may add the `UseFactory` attribute to the model to manually specify the model's factory:
+Метод `factory` трейта `HasFactory` визначає потрібну фабрику за конвенціями. А саме: метод шукає в просторі імен `Database\Factories` фабрику, назва класу якої збігається з назвою моделі та має суфікс `Factory`. Якщо ці конвенції не підходять вашому застосунку чи фабриці, додайте до моделі атрибут `UseFactory`, щоб вказати фабрику вручну:
 
 ```php
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
@@ -108,7 +111,7 @@ class Flight extends Model
 }
 ```
 
-Alternatively, you may overwrite the `newFactory` method on your model to return an instance of the model's corresponding factory directly:
+Або ж ви можете перевизначити в моделі метод `newFactory`, щоб він одразу повертав екземпляр відповідної фабрики:
 
 ```php
 use Database\Factories\Administration\FlightFactory;
@@ -122,7 +125,7 @@ protected static function newFactory()
 }
 ```
 
-Then, use the `UseModel` attribute on the corresponding factory to specify the model:
+Далі скористайтеся на відповідній фабриці атрибутом `UseModel`, щоб указати модель:
 
 ```php
 use App\Administration\Flight;
@@ -137,11 +140,11 @@ class FlightFactory extends Factory
 ```
 
 <a name="factory-states"></a>
-### Factory States
+### Стани фабрик
 
-State manipulation methods allow you to define discrete modifications that can be applied to your model factories in any combination. For example, your `Database\Factories\UserFactory` factory might contain a `suspended` state method that modifies one of its default attribute values.
+Методи маніпуляції станом дозволяють описати окремі зміни, які можна застосовувати до фабрик моделей у будь-яких поєднаннях. Наприклад, ваша фабрика `Database\Factories\UserFactory` може мати метод стану `suspended`, що змінює одне зі значень атрибутів за замовчуванням.
 
-State transformation methods typically call the `state` method provided by Laravel's base factory class. The `state` method accepts a closure which will receive the array of raw attributes defined for the factory and should return an array of attributes to modify:
+Методи перетворення стану зазвичай викликають метод `state` базового класу фабрики Laravel. Метод `state` приймає замикання, яке отримає масив сирих атрибутів, описаних для фабрики, і має повернути масив атрибутів для зміни:
 
 ```php
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -160,9 +163,9 @@ public function suspended(): Factory
 ```
 
 <a name="trashed-state"></a>
-#### "Trashed" State
+#### Стан «у кошику»
 
-If your Eloquent model can be [soft deleted](/docs/{{version}}/eloquent#soft-deleting), you may invoke the built-in `trashed` state method to indicate that the created model should already be "soft deleted". You do not need to manually define the `trashed` state as it is automatically available to all factories:
+Якщо вашу модель Eloquent можна [м'яко видаляти](/docs/{{version}}/eloquent#soft-deleting), ви можете викликати вбудований метод стану `trashed`, щоб указати: створена модель має бути вже «м'яко видаленою». Описувати стан `trashed` вручну не потрібно - він автоматично доступний усім фабрикам:
 
 ```php
 use App\Models\User;
@@ -171,9 +174,9 @@ $user = User::factory()->trashed()->create();
 ```
 
 <a name="factory-callbacks"></a>
-### Factory Callbacks
+### Колбеки фабрик
 
-Factory callbacks are registered using the `afterMaking` and `afterCreating` methods and allow you to perform additional tasks after making or creating a model. You should register these callbacks by defining a `configure` method on your factory class. This method will be automatically called by Laravel when the factory is instantiated:
+Колбеки фабрик реєструються методами `afterMaking` та `afterCreating` і дозволяють виконати додаткові завдання після створення моделі. Реєструйте ці колбеки в методі `configure` вашого класу фабрики. Laravel викличе цей метод автоматично при створенні екземпляра фабрики:
 
 ```php
 namespace Database\Factories;
@@ -199,7 +202,7 @@ class UserFactory extends Factory
 }
 ```
 
-You may also register factory callbacks within state methods to perform additional tasks that are specific to a given state:
+Ви можете також реєструвати колбеки фабрик у методах станів, щоб виконувати додаткові завдання, специфічні для конкретного стану:
 
 ```php
 use App\Models\User;
@@ -223,12 +226,12 @@ public function suspended(): Factory
 ```
 
 <a name="creating-models-using-factories"></a>
-## Creating Models Using Factories
+## Створення моделей через фабрики
 
 <a name="instantiating-models"></a>
-### Instantiating Models
+### Створення екземплярів моделей
 
-Once you have defined your factories, you may use the static `factory` method provided to your models by the `Illuminate\Database\Eloquent\Factories\HasFactory` trait in order to instantiate a factory instance for that model. Let's take a look at a few examples of creating models. First, we'll use the `make` method to create models without persisting them to the database:
+Коли ви описали фабрики, ви можете скористатися статичним методом `factory`, який моделі отримують від трейта `Illuminate\Database\Eloquent\Factories\HasFactory`, щоб створити екземпляр фабрики для цієї моделі. Погляньмо на кілька прикладів створення моделей. Спершу скористаємося методом `make`, щоб створити моделі, не зберігаючи їх у базі даних:
 
 ```php
 use App\Models\User;
@@ -236,25 +239,25 @@ use App\Models\User;
 $user = User::factory()->make();
 ```
 
-You may create a collection of many models using the `count` method:
+Створити колекцію з багатьох моделей можна методом `count`:
 
 ```php
 $users = User::factory()->count(3)->make();
 ```
 
 <a name="applying-states"></a>
-#### Applying States
+#### Застосування станів
 
-You may also apply any of your [states](#factory-states) to the models. If you would like to apply multiple state transformations to the models, you may simply call the state transformation methods directly:
+Ви можете також застосувати до моделей будь-які зі своїх [станів](#factory-states). Якщо ви хочете застосувати кілька перетворень стану, просто викличте методи перетворення один за одним:
 
 ```php
 $users = User::factory()->count(5)->suspended()->make();
 ```
 
 <a name="overriding-attributes"></a>
-#### Overriding Attributes
+#### Перевизначення атрибутів
 
-If you would like to override some of the default values of your models, you may pass an array of values to the `make` method. Only the specified attributes will be replaced while the rest of the attributes remain set to their default values as specified by the factory:
+Якщо ви хочете перевизначити деякі значення моделей за замовчуванням, передайте методу `make` масив значень. Буде замінено лише вказані атрибути, а решта лишиться зі значеннями за замовчуванням, які задає фабрика:
 
 ```php
 $user = User::factory()->make([
@@ -262,7 +265,7 @@ $user = User::factory()->make([
 ]);
 ```
 
-Alternatively, the `state` method may be called directly on the factory instance to perform an inline state transformation:
+Або ж метод `state` можна викликати прямо на екземплярі фабрики, щоб виконати інлайнове перетворення стану:
 
 ```php
 $user = User::factory()->state([
@@ -271,12 +274,12 @@ $user = User::factory()->state([
 ```
 
 > [!NOTE]
-> [Mass assignment protection](/docs/{{version}}/eloquent#mass-assignment) is automatically disabled when creating models using factories.
+> [Захист від масового призначення](/docs/{{version}}/eloquent#mass-assignment) автоматично вимикається, коли моделі створюються через фабрики.
 
 <a name="persisting-models"></a>
-### Persisting Models
+### Збереження моделей
 
-The `create` method instantiates model instances and persists them to the database using Eloquent's `save` method:
+Метод `create` створює екземпляри моделей і зберігає їх у базі даних методом `save` Eloquent:
 
 ```php
 use App\Models\User;
@@ -288,7 +291,7 @@ $user = User::factory()->create();
 $users = User::factory()->count(3)->create();
 ```
 
-You may override the factory's default model attributes by passing an array of attributes to the `create` method:
+Ви можете перевизначити атрибути моделі за замовчуванням, передавши методу `create` масив атрибутів:
 
 ```php
 $user = User::factory()->create([
@@ -297,9 +300,9 @@ $user = User::factory()->create([
 ```
 
 <a name="sequences"></a>
-### Sequences
+### Послідовності
 
-Sometimes you may wish to alternate the value of a given model attribute for each created model. You may accomplish this by defining a state transformation as a sequence. For example, you may wish to alternate the value of an `admin` column between `Y` and `N` for each created user:
+Іноді вам потрібно чергувати значення певного атрибута для кожної створеної моделі. Це робиться описом перетворення стану як послідовності. Наприклад, ви можете чергувати значення стовпця `admin` між `Y` і `N` для кожного створеного користувача:
 
 ```php
 use App\Models\User;
@@ -314,9 +317,9 @@ $users = User::factory()
     ->create();
 ```
 
-In this example, five users will be created with an `admin` value of `Y` and five users will be created with an `admin` value of `N`.
+У цьому прикладі буде створено п'ятьох користувачів зі значенням `admin`, що дорівнює `Y`, і п'ятьох зі значенням `N`.
 
-If necessary, you may include a closure as a sequence value. The closure will be invoked each time the sequence needs a new value:
+За потреби ви можете передати як значення послідовності замикання. Його буде викликано щоразу, коли послідовності потрібне нове значення:
 
 ```php
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -329,7 +332,7 @@ $users = User::factory()
     ->create();
 ```
 
-Within a sequence closure, you may access the `$index` property on the sequence instance that is injected into the closure. The `$index` property contains the number of iterations through the sequence that have occurred thus far:
+Усередині замикання послідовності ви маєте доступ до властивості `$index` екземпляра послідовності, який передається в замикання. Властивість `$index` містить кількість ітерацій послідовності, що вже відбулися:
 
 ```php
 $users = User::factory()
@@ -340,7 +343,7 @@ $users = User::factory()
     ->create();
 ```
 
-For convenience, sequences may also be applied using the `sequence` method, which simply invokes the `state` method internally. The `sequence` method accepts a closure or arrays of sequenced attributes:
+Для зручності послідовності можна застосовувати й методом `sequence`, який усередині просто викликає метод `state`. Метод `sequence` приймає замикання або масиви послідовних атрибутів:
 
 ```php
 $users = User::factory()
@@ -353,12 +356,12 @@ $users = User::factory()
 ```
 
 <a name="factory-relationships"></a>
-## Factory Relationships
+## Зв'язки у фабриках
 
 <a name="has-many-relationships"></a>
-### Has Many Relationships
+### Зв'язки «має багато»
 
-Next, let's explore building Eloquent model relationships using Laravel's fluent factory methods. First, let's assume our application has an `App\Models\User` model and an `App\Models\Post` model. Also, let's assume that the `User` model defines a `hasMany` relationship with `Post`. We can create a user that has three posts using the `has` method provided by the Laravel's factories. The `has` method accepts a factory instance:
+Далі розгляньмо побудову зв'язків моделей Eloquent за допомогою плавних методів фабрик Laravel. Спершу припустімо, що наш застосунок має моделі `App\Models\User` та `App\Models\Post`. Припустімо також, що модель `User` описує зв'язок `hasMany` з `Post`. Ми можемо створити користувача з трьома постами методом `has`, який дають фабрики Laravel. Метод `has` приймає екземпляр фабрики:
 
 ```php
 use App\Models\Post;
@@ -369,7 +372,7 @@ $user = User::factory()
     ->create();
 ```
 
-By convention, when passing a `Post` model to the `has` method, Laravel will assume that the `User` model must have a `posts` method that defines the relationship. If necessary, you may explicitly specify the name of the relationship that you would like to manipulate:
+За конвенцією, коли ви передаєте методу `has` модель `Post`, Laravel вважатиме, що модель `User` має метод `posts`, який описує цей зв'язок. За потреби ви можете явно вказати назву зв'язку, з яким хочете працювати:
 
 ```php
 $user = User::factory()
@@ -377,7 +380,7 @@ $user = User::factory()
     ->create();
 ```
 
-Of course, you may perform state manipulations on the related models. In addition, you may pass a closure-based state transformation if your state change requires access to the parent model:
+Звісно, ви можете виконувати маніпуляції станом і над пов'язаними моделями. Крім того, ви можете передати перетворення стану у вигляді замикання, якщо зміна стану потребує доступу до батьківської моделі:
 
 ```php
 $user = User::factory()
@@ -392,9 +395,9 @@ $user = User::factory()
 ```
 
 <a name="has-many-relationships-using-magic-methods"></a>
-#### Using Magic Methods
+#### Використання магічних методів
 
-For convenience, you may use Laravel's magic factory relationship methods to build relationships. For example, the following example will use convention to determine that the related models should be created via a `posts` relationship method on the `User` model:
+Для зручності ви можете будувати зв'язки магічними методами фабрик Laravel. Наприклад, у наведеному нижче прикладі за конвенцією буде визначено, що пов'язані моделі слід створити через метод зв'язку `posts` моделі `User`:
 
 ```php
 $user = User::factory()
@@ -402,7 +405,7 @@ $user = User::factory()
     ->create();
 ```
 
-When using magic methods to create factory relationships, you may pass an array of attributes to override on the related models:
+Створюючи зв'язки фабрик магічними методами, ви можете передати масив атрибутів, які слід перевизначити в пов'язаних моделях:
 
 ```php
 $user = User::factory()
@@ -412,7 +415,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may also pass multiple attribute arrays to create related models with per-model state. Laravel will apply each array in sequence:
+Ви можете також передати кілька масивів атрибутів, щоб створити пов'язані моделі з різним станом для кожної. Laravel застосує кожен масив по черзі:
 
 ```php
 $user = User::factory()
@@ -424,7 +427,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may provide a closure-based state transformation if your state change requires access to the parent model:
+Ви можете передати перетворення стану у вигляді замикання, якщо зміна стану потребує доступу до батьківської моделі:
 
 ```php
 $user = User::factory()
@@ -435,9 +438,9 @@ $user = User::factory()
 ```
 
 <a name="belongs-to-relationships"></a>
-### Belongs To Relationships
+### Зв'язки «належить до»
 
-Now that we have explored how to build "has many" relationships using factories, let's explore the inverse of the relationship. The `for` method may be used to define the parent model that factory created models belong to. For example, we can create three `App\Models\Post` model instances that belong to a single user:
+Тепер, коли ми розібралися, як будувати зв'язки «має багато» через фабрики, розгляньмо обернений зв'язок. Методом `for` можна вказати батьківську модель, якій належать створені фабрикою моделі. Наприклад, ми можемо створити три екземпляри моделі `App\Models\Post`, що належать одному користувачеві:
 
 ```php
 use App\Models\Post;
@@ -451,7 +454,7 @@ $posts = Post::factory()
     ->create();
 ```
 
-If you already have a parent model instance that should be associated with the models you are creating, you may pass the model instance to the `for` method:
+Якщо у вас уже є екземпляр батьківської моделі, з яким слід пов'язати створювані моделі, передайте його методу `for`:
 
 ```php
 $user = User::factory()->create();
@@ -463,9 +466,9 @@ $posts = Post::factory()
 ```
 
 <a name="belongs-to-relationships-using-magic-methods"></a>
-#### Using Magic Methods
+#### Використання магічних методів
 
-For convenience, you may use Laravel's magic factory relationship methods to define "belongs to" relationships. For example, the following example will use convention to determine that the three posts should belong to the `user` relationship on the `Post` model:
+Для зручності ви можете описувати зв'язки «належить до» магічними методами фабрик Laravel. Наприклад, у наведеному нижче прикладі за конвенцією буде визначено, що три пости мають належати зв'язку `user` моделі `Post`:
 
 ```php
 $posts = Post::factory()
@@ -477,9 +480,9 @@ $posts = Post::factory()
 ```
 
 <a name="many-to-many-relationships"></a>
-### Many to Many Relationships
+### Зв'язки «багато до багатьох»
 
-Like [has many relationships](#has-many-relationships), "many to many" relationships may be created using the `has` method:
+Як і [зв'язки «має багато»](#has-many-relationships), зв'язки «багато до багатьох» можна створювати методом `has`:
 
 ```php
 use App\Models\Role;
@@ -491,9 +494,9 @@ $user = User::factory()
 ```
 
 <a name="pivot-table-attributes"></a>
-#### Pivot Table Attributes
+#### Атрибути проміжної таблиці
 
-If you need to define attributes that should be set on the pivot / intermediate table linking the models, you may use the `hasAttached` method. This method accepts an array of pivot table attribute names and values as its second argument:
+Якщо вам потрібно задати атрибути проміжної (pivot) таблиці, що зв'язує моделі, скористайтеся методом `hasAttached`. Другим аргументом він приймає масив назв і значень атрибутів проміжної таблиці:
 
 ```php
 use App\Models\Role;
@@ -507,7 +510,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may provide a closure-based state transformation if your state change requires access to the related model:
+Ви можете передати перетворення стану у вигляді замикання, якщо зміна стану потребує доступу до пов'язаної моделі:
 
 ```php
 $user = User::factory()
@@ -522,7 +525,7 @@ $user = User::factory()
     ->create();
 ```
 
-You may also pass an array of pivot arrays to provide unique pivot data for each related model:
+Ви можете також передати масив масивів проміжних даних, щоб задати унікальні дані для кожної пов'язаної моделі:
 
 ```php
 $user = User::factory()
@@ -536,7 +539,7 @@ $user = User::factory()
     ->create();
 ```
 
-If you already have model instances that you would like to be attached to the models you are creating, you may pass the model instances to the `hasAttached` method. In this example, the same three roles will be attached to all three users:
+Якщо у вас уже є екземпляри моделей, які ви хочете приєднати до створюваних, передайте їх методу `hasAttached`. У цьому прикладі ті самі три ролі буде приєднано до всіх трьох користувачів:
 
 ```php
 $roles = Role::factory()->count(3)->create();
@@ -548,9 +551,9 @@ $users = User::factory()
 ```
 
 <a name="many-to-many-relationships-using-magic-methods"></a>
-#### Using Magic Methods
+#### Використання магічних методів
 
-For convenience, you may use Laravel's magic factory relationship methods to define many to many relationships. For example, the following example will use convention to determine that the related models should be created via a `roles` relationship method on the `User` model:
+Для зручності ви можете описувати зв'язки «багато до багатьох» магічними методами фабрик Laravel. Наприклад, у наведеному нижче прикладі за конвенцією буде визначено, що пов'язані моделі слід створити через метод зв'язку `roles` моделі `User`:
 
 ```php
 $user = User::factory()
@@ -561,9 +564,9 @@ $user = User::factory()
 ```
 
 <a name="polymorphic-relationships"></a>
-### Polymorphic Relationships
+### Поліморфні зв'язки
 
-[Polymorphic relationships](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) may also be created using factories. Polymorphic "morph many" relationships are created in the same way as typical "has many" relationships. For example, if an `App\Models\Post` model has a `morphMany` relationship with an `App\Models\Comment` model:
+[Поліморфні зв'язки](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) теж можна створювати через фабрики. Поліморфні зв'язки «morph many» створюються так само, як звичайні зв'язки «має багато». Наприклад, якщо модель `App\Models\Post` має зв'язок `morphMany` з моделлю `App\Models\Comment`:
 
 ```php
 use App\Models\Post;
@@ -572,9 +575,9 @@ $post = Post::factory()->hasComments(3)->create();
 ```
 
 <a name="morph-to-relationships"></a>
-#### Morph To Relationships
+#### Зв'язки Morph To
 
-Magic methods may not be used to create `morphTo` relationships. Instead, the `for` method must be used directly and the name of the relationship must be explicitly provided. For example, imagine that the `Comment` model has a `commentable` method that defines a `morphTo` relationship. In this situation, we may create three comments that belong to a single post by using the `for` method directly:
+Магічними методами не можна створювати зв'язки `morphTo`. Натомість слід напряму скористатися методом `for` і явно вказати назву зв'язку. Наприклад, уявіть, що модель `Comment` має метод `commentable`, який описує зв'язок `morphTo`. У такому разі ми можемо створити три коментарі, що належать одному посту, скориставшись методом `for` напряму:
 
 ```php
 $comments = Comment::factory()->count(3)->for(
@@ -583,9 +586,9 @@ $comments = Comment::factory()->count(3)->for(
 ```
 
 <a name="polymorphic-many-to-many-relationships"></a>
-#### Polymorphic Many to Many Relationships
+#### Поліморфні зв'язки «багато до багатьох»
 
-Polymorphic "many to many" (`morphToMany` / `morphedByMany`) relationships may be created just like non-polymorphic "many to many" relationships:
+Поліморфні зв'язки «багато до багатьох» (`morphToMany` / `morphedByMany`) створюються так само, як неполіморфні зв'язки «багато до багатьох»:
 
 ```php
 use App\Models\Tag;
@@ -599,7 +602,7 @@ $video = Video::factory()
     ->create();
 ```
 
-Of course, the magic `has` method may also be used to create polymorphic "many to many" relationships:
+Звісно, магічний метод `has` теж можна використовувати для створення поліморфних зв'язків «багато до багатьох»:
 
 ```php
 $video = Video::factory()
@@ -608,9 +611,9 @@ $video = Video::factory()
 ```
 
 <a name="defining-relationships-within-factories"></a>
-### Defining Relationships Within Factories
+### Опис зв'язків усередині фабрик
 
-To define a relationship within your model factory, you will typically assign a new factory instance to the foreign key of the relationship. This is normally done for the "inverse" relationships such as `belongsTo` and `morphTo` relationships. For example, if you would like to create a new user when creating a post, you may do the following:
+Щоб описати зв'язок усередині фабрики моделі, ви зазвичай присвоюєте новий екземпляр фабрики зовнішньому ключу цього зв'язку. Так роблять для «обернених» зв'язків - як-от `belongsTo` та `morphTo`. Наприклад, якщо ви хочете створювати нового користувача разом зі створенням поста, зробіть так:
 
 ```php
 use App\Models\User;
@@ -630,7 +633,7 @@ public function definition(): array
 }
 ```
 
-If the relationship's columns depend on the factory that defines it you may assign a closure to an attribute. The closure will receive the factory's evaluated attribute array:
+Якщо стовпці зв'язку залежать від фабрики, що його описує, ви можете присвоїти атрибуту замикання. Замикання отримає масив обчислених атрибутів фабрики:
 
 ```php
 /**
@@ -652,11 +655,11 @@ public function definition(): array
 ```
 
 <a name="recycling-an-existing-model-for-relationships"></a>
-### Recycling an Existing Model for Relationships
+### Повторне використання наявної моделі у зв'язках
 
-If you have models that share a common relationship with another model, you may use the `recycle` method to ensure a single instance of the related model is recycled for all of the relationships created by the factory.
+Якщо у вас є моделі, що мають спільний зв'язок з іншою моделлю, скористайтеся методом `recycle`, щоб для всіх зв'язків, створених фабрикою, використовувався один екземпляр пов'язаної моделі.
 
-For example, imagine you have `Airline`, `Flight`, and `Ticket` models, where the ticket belongs to an airline and a flight, and the flight also belongs to an airline. When creating tickets, you will probably want the same airline for both the ticket and the flight, so you may pass an airline instance to the `recycle` method:
+Наприклад, уявіть, що ви маєте моделі `Airline`, `Flight` і `Ticket`, де квиток належить авіакомпанії та рейсу, а рейс теж належить авіакомпанії. Створюючи квитки, ви, найімовірніше, захочете, щоб і квиток, і рейс мали ту саму авіакомпанію, - тож передайте екземпляр авіакомпанії методу `recycle`:
 
 ```php
 Ticket::factory()
@@ -664,9 +667,9 @@ Ticket::factory()
     ->create();
 ```
 
-You may find the `recycle` method particularly useful if you have models belonging to a common user or team.
+Метод `recycle` стане особливо в пригоді, якщо ваші моделі належать спільному користувачеві чи команді.
 
-The `recycle` method also accepts a collection of existing models. When a collection is provided to the `recycle` method, a random model from the collection will be chosen when the factory needs a model of that type:
+Метод `recycle` приймає також колекцію наявних моделей. Коли ви передаєте методу `recycle` колекцію, фабрика обиратиме з неї випадкову модель щоразу, коли їй знадобиться модель цього типу:
 
 ```php
 Ticket::factory()
