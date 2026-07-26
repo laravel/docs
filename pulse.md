@@ -1,79 +1,82 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Pulse
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [Configuration](#configuration)
-- [Dashboard](#dashboard)
-    - [Authorization](#dashboard-authorization)
-    - [Customization](#dashboard-customization)
-    - [Resolving Users](#dashboard-resolving-users)
-    - [Cards](#dashboard-cards)
-- [Capturing Entries](#capturing-entries)
-    - [Recorders](#recorders)
-    - [Filtering](#filtering)
-- [Performance](#performance)
-    - [Using a Different Database](#using-a-different-database)
-    - [Redis Ingest](#ingest)
-    - [Sampling](#sampling)
-    - [Trimming](#trimming)
-    - [Handling Pulse Exceptions](#pulse-exceptions)
-- [Custom Cards](#custom-cards)
-    - [Card Components](#custom-card-components)
-    - [Styling](#custom-card-styling)
-    - [Data Capture and Aggregation](#custom-card-data)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+    - [Конфігурація](#configuration)
+- [Панель](#dashboard)
+    - [Авторизація](#dashboard-authorization)
+    - [Налаштування](#dashboard-customization)
+    - [Отримання користувачів](#dashboard-resolving-users)
+    - [Картки](#dashboard-cards)
+- [Захоплення записів](#capturing-entries)
+    - [Рекордери](#recorders)
+    - [Фільтрація](#filtering)
+- [Продуктивність](#performance)
+    - [Використання іншої бази даних](#using-a-different-database)
+    - [Приймання через Redis](#ingest)
+    - [Семплювання](#sampling)
+    - [Обрізання](#trimming)
+    - [Обробка винятків Pulse](#pulse-exceptions)
+- [Власні картки](#custom-cards)
+    - [Компоненти карток](#custom-card-components)
+    - [Стилізація](#custom-card-styling)
+    - [Захоплення й агрегація даних](#custom-card-data)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Laravel Pulse](https://github.com/laravel/pulse) delivers at-a-glance insights into your application's performance and usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
+[Laravel Pulse](https://github.com/laravel/pulse) дає змогу одним поглядом оцінити продуктивність і використання вашого застосунку. З Pulse ви можете відстежувати вузькі місця на кшталт повільних завдань і ендпоїнтів, знаходити найактивніших користувачів тощо.
 
-For in-depth debugging of individual events, check out [Laravel Telescope](/docs/{{version}}/telescope).
+Для докладного налагодження окремих подій погляньте на [Laravel Telescope](/docs/{{version}}/telescope).
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
 > [!WARNING]
-> Pulse's first-party storage implementation currently requires a MySQL, MariaDB, or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL, MariaDB, or PostgreSQL database for your Pulse data.
+> Власна реалізація сховища Pulse наразі потребує бази даних MySQL, MariaDB чи PostgreSQL. Якщо ви використовуєте інший рушій бази даних, вам знадобиться окрема база MySQL, MariaDB чи PostgreSQL для даних Pulse.
 
-You may install Pulse using the Composer package manager:
+Встановити Pulse можна через менеджер пакетів Composer:
 
 ```shell
 composer require laravel/pulse
 ```
 
-Next, you should publish the Pulse configuration and migration files using the `vendor:publish` Artisan command:
+Далі вам слід опублікувати конфігураційний файл і файли міграцій Pulse артизан-командою `vendor:publish`:
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"
 ```
 
-Finally, you should run the `migrate` command in order to create the tables needed to store Pulse's data:
+Насамкінець виконайте команду `migrate`, щоб створити таблиці, потрібні для зберігання даних Pulse:
 
 ```shell
 php artisan migrate
 ```
 
-Once Pulse's database migrations have been run, you may access the Pulse dashboard via the `/pulse` route.
+Щойно міграції бази даних Pulse буде виконано, ви зможете відкрити панель Pulse за маршрутом `/pulse`.
 
 > [!NOTE]
-> If you do not want to store Pulse data in your application's primary database, you may [specify a dedicated database connection](#using-a-different-database).
+> Якщо ви не хочете зберігати дані Pulse в основній базі даних вашого застосунку, ви можете [вказати виділене підключення до бази даних](#using-a-different-database).
 
 <a name="configuration"></a>
-### Configuration
+### Конфігурація
 
-Many of Pulse's configuration options can be controlled using environment variables. To see the available options, register new recorders, or configure advanced options, you may publish the `config/pulse.php` configuration file:
+Багатьма параметрами конфігурації Pulse можна керувати через змінні оточення. Щоб побачити доступні параметри, зареєструвати нові рекордери чи налаштувати розширені опції, ви можете опублікувати конфігураційний файл `config/pulse.php`:
 
 ```shell
 php artisan vendor:publish --tag=pulse-config
 ```
 
 <a name="dashboard"></a>
-## Dashboard
+## Панель
 
 <a name="dashboard-authorization"></a>
-### Authorization
+### Авторизація
 
-The Pulse dashboard may be accessed via the `/pulse` route. By default, you will only be able to access this dashboard in the `local` environment, so you will need to configure authorization for your production environments by customizing the `'viewPulse'` authorization gate. You can accomplish this within your application's `app/Providers/AppServiceProvider.php` file:
+Панель Pulse доступна за маршрутом `/pulse`. За замовчуванням ви зможете відкрити цю панель лише в середовищі `local`, тож для продакшен-середовищ вам потрібно буде налаштувати авторизацію, змінивши гейт авторизації `'viewPulse'`. Зробити це можна у файлі `app/Providers/AppServiceProvider.php` вашого застосунку:
 
 ```php
 use App\Models\User;
@@ -93,17 +96,17 @@ public function boot(): void
 ```
 
 <a name="dashboard-customization"></a>
-### Customization
+### Налаштування
 
-The Pulse dashboard cards and layout may be configured by publishing the dashboard view. The dashboard view will be published to `resources/views/vendor/pulse/dashboard.blade.php`:
+Картки та компонування панелі Pulse можна налаштувати, опублікувавши представлення панелі. Представлення панелі буде опубліковано в `resources/views/vendor/pulse/dashboard.blade.php`:
 
 ```shell
 php artisan vendor:publish --tag=pulse-dashboard
 ```
 
-The dashboard is powered by [Livewire](https://livewire.laravel.com/), and allows you to customize the cards and layout without needing to rebuild any JavaScript assets.
+Панель працює на [Livewire](https://livewire.laravel.com/) і дозволяє налаштовувати картки та компонування без потреби перезбирати JavaScript-ассети.
 
-Within this file, the `<x-pulse>` component is responsible for rendering the dashboard and provides a grid layout for the cards. If you would like the dashboard to span the full width of the screen, you may provide the `full-width` prop to the component:
+У цьому файлі за рендеринг панелі відповідає компонент `<x-pulse>`, який надає сітку для карток. Якщо ви хочете, щоб панель займала всю ширину екрана, передайте компоненту проп `full-width`:
 
 ```blade
 <x-pulse full-width>
@@ -111,7 +114,7 @@ Within this file, the `<x-pulse>` component is responsible for rendering the das
 </x-pulse>
 ```
 
-By default, the `<x-pulse>` component will create a 12 column grid, but you may customize this using the `cols` prop:
+За замовчуванням компонент `<x-pulse>` створить сітку з 12 колонок, але ви можете змінити це пропом `cols`:
 
 ```blade
 <x-pulse cols="16">
@@ -119,26 +122,26 @@ By default, the `<x-pulse>` component will create a 12 column grid, but you may 
 </x-pulse>
 ```
 
-Each card accepts a `cols` and `rows` prop to control the space and positioning:
+Кожна картка приймає пропи `cols` і `rows` для керування простором і розташуванням:
 
 ```blade
 <livewire:pulse.usage cols="4" rows="2" />
 ```
 
-Most cards also accept an `expand` prop to show the full card instead of scrolling:
+Більшість карток також приймають проп `expand`, щоб показати картку повністю замість прокручування:
 
 ```blade
 <livewire:pulse.slow-queries expand />
 ```
 
 <a name="dashboard-resolving-users"></a>
-### Resolving Users
+### Отримання користувачів
 
-For cards that display information about your users, such as the Application Usage card, Pulse will only record the user's ID. When rendering the dashboard, Pulse will resolve the `name` and `email` fields from your default `Authenticatable` model and display avatars using the Gravatar web service.
+Для карток, які показують інформацію про ваших користувачів, як-от картка Application Usage, Pulse записуватиме лише ID користувача. Під час рендерингу панелі Pulse візьме поля `name` і `email` з вашої моделі `Authenticatable` за замовчуванням і показуватиме аватари через вебсервіс Gravatar.
 
-You may customize the fields and avatar by invoking the `Pulse::user` method within your application's `App\Providers\AppServiceProvider` class.
+Ви можете змінити ці поля й аватар, викликавши метод `Pulse::user` у класі `App\Providers\AppServiceProvider` вашого застосунку.
 
-The `user` method accepts a closure which will receive the `Authenticatable` model to be displayed and should return an array containing `name`, `extra`, and `avatar` information for the user:
+Метод `user` приймає замикання, яке отримає модель `Authenticatable` для показу і має повернути масив з інформацією `name`, `extra` та `avatar` для користувача:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -159,28 +162,28 @@ public function boot(): void
 ```
 
 > [!NOTE]
-> You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/docs/{{version}}/container#binding-a-singleton).
+> Ви можете повністю змінити те, як захоплюється й отримується автентифікований користувач, реалізувавши контракт `Laravel\Pulse\Contracts\ResolvesUsers` і прив'язавши його в [сервіс-контейнері](/docs/{{version}}/container#binding-a-singleton) Laravel.
 
 <a name="dashboard-cards"></a>
-### Cards
+### Картки
 
 <a name="servers-card"></a>
-#### Servers
+#### Сервери
 
-The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [servers recorder](#servers-recorder) for more information on system resource reporting.
+Картка `<livewire:pulse.servers />` показує використання системних ресурсів для всіх серверів, на яких запущено команду `pulse:check`. Докладніше про звітування про системні ресурси дивіться в документації щодо [рекордера серверів](#servers-recorder).
 
-If you replace a server in your infrastructure, you may wish to stop displaying the inactive server in the Pulse dashboard after a given duration. You may accomplish this using the `ignore-after` prop, which accepts the number of seconds after which inactive servers should be removed from the Pulse dashboard. Alternatively, you may provide a relative time formatted string, such as `1 hour` or `3 days and 1 hour`:
+Якщо ви заміните сервер у своїй інфраструктурі, ви можете захотіти, щоб неактивний сервер перестав показуватися на панелі Pulse через певний час. Зробити це можна пропом `ignore-after`, який приймає кількість секунд, після яких неактивні сервери слід прибрати з панелі Pulse. Як альтернативу ви можете передати рядок з відносним часом, наприклад `1 hour` чи `3 days and 1 hour`:
 
 ```blade
 <livewire:pulse.servers ignore-after="3 hours" />
 ```
 
 <a name="application-usage-card"></a>
-#### Application Usage
+#### Використання застосунку
 
-The `<livewire:pulse.usage />` card displays the top 10 users making requests to your application, dispatching jobs, and experiencing slow requests.
+Картка `<livewire:pulse.usage />` показує топ-10 користувачів, які роблять запити до вашого застосунку, диспетчеризують завдання та стикаються з повільними запитами.
 
-If you wish to view all usage metrics on screen at the same time, you may include the card multiple times and specify the `type` attribute:
+Якщо ви хочете бачити всі метрики використання на екрані одночасно, ви можете додати картку кілька разів і вказати атрибут `type`:
 
 ```blade
 <livewire:pulse.usage type="requests" />
@@ -188,94 +191,94 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 <livewire:pulse.usage type="jobs" />
 ```
 
-To learn how to customize how Pulse retrieves and displays user information, consult our documentation on [resolving users](#dashboard-resolving-users).
+Щоб дізнатися, як налаштувати спосіб, у який Pulse отримує та показує інформацію про користувачів, зверніться до нашої документації щодо [отримання користувачів](#dashboard-resolving-users).
 
 > [!NOTE]
-> If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
+> Якщо ваш застосунок отримує багато запитів чи диспетчеризує багато завдань, ви можете захотіти увімкнути [семплювання](#sampling). Докладніше дивіться в документації [рекордера запитів користувачів](#user-requests-recorder), [рекордера завдань користувачів](#user-jobs-recorder) і [рекордера повільних завдань](#slow-jobs-recorder).
 
 <a name="exceptions-card"></a>
-#### Exceptions
+#### Винятки
 
-The `<livewire:pulse.exceptions />` card shows the frequency and recency of exceptions occurring in your application. By default, exceptions are grouped based on the exception class and location where it occurred. See the [exceptions recorder](#exceptions-recorder) documentation for more information.
+Картка `<livewire:pulse.exceptions />` показує частоту та свіжість винятків, що трапляються у вашому застосунку. За замовчуванням винятки групуються за класом винятку й місцем, де він стався. Докладніше дивіться в документації [рекордера винятків](#exceptions-recorder).
 
 <a name="queues-card"></a>
-#### Queues
+#### Черги
 
-The `<livewire:pulse.queues />` card shows the throughput of the queues in your application, including the number of jobs queued, processing, processed, released, and failed. See the [queues recorder](#queues-recorder) documentation for more information.
+Картка `<livewire:pulse.queues />` показує пропускну здатність черг у вашому застосунку, включно з кількістю завдань у черзі, в обробці, оброблених, повернутих і невдалих. Докладніше дивіться в документації [рекордера черг](#queues-recorder).
 
 <a name="slow-requests-card"></a>
-#### Slow Requests
+#### Повільні запити
 
-The `<livewire:pulse.slow-requests />` card shows incoming requests to your application that exceed the configured threshold, which is 1,000ms by default. See the [slow requests recorder](#slow-requests-recorder) documentation for more information.
+Картка `<livewire:pulse.slow-requests />` показує вхідні запити до вашого застосунку, які перевищують налаштований поріг, що за замовчуванням становить 1 000 мс. Докладніше дивіться в документації [рекордера повільних запитів](#slow-requests-recorder).
 
 <a name="slow-jobs-card"></a>
-#### Slow Jobs
+#### Повільні завдання
 
-The `<livewire:pulse.slow-jobs />` card shows the queued jobs in your application that exceed the configured threshold, which is 1,000ms by default. See the [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
+Картка `<livewire:pulse.slow-jobs />` показує завдання з черги у вашому застосунку, які перевищують налаштований поріг, що за замовчуванням становить 1 000 мс. Докладніше дивіться в документації [рекордера повільних завдань](#slow-jobs-recorder).
 
 <a name="slow-queries-card"></a>
-#### Slow Queries
+#### Повільні запити до бази
 
-The `<livewire:pulse.slow-queries />` card shows the database queries in your application that exceed the configured threshold, which is 1,000ms by default.
+Картка `<livewire:pulse.slow-queries />` показує запити до бази даних у вашому застосунку, які перевищують налаштований поріг, що за замовчуванням становить 1 000 мс.
 
-By default, slow queries are grouped based on the SQL query (without bindings) and the location where it occurred, but you may choose to not capture the location if you wish to group solely on the SQL query.
+За замовчуванням повільні запити до бази групуються за SQL-запитом (без прив'язок) і місцем, де вони сталися, але ви можете не захоплювати місце, якщо хочете групувати лише за SQL-запитом.
 
-If you encounter rendering performance issues due to extremely large SQL queries receiving syntax highlighting, you may disable highlighting by adding the `without-highlighting` prop:
+Якщо ви стикаєтеся з проблемами продуктивності рендерингу через підсвічування синтаксису надзвичайно великих SQL-запитів, ви можете вимкнути підсвічування, додавши проп `without-highlighting`:
 
 ```blade
 <livewire:pulse.slow-queries without-highlighting />
 ```
 
-See the [slow queries recorder](#slow-queries-recorder) documentation for more information.
+Докладніше дивіться в документації [рекордера повільних запитів до бази](#slow-queries-recorder).
 
 <a name="slow-outgoing-requests-card"></a>
-#### Slow Outgoing Requests
+#### Повільні вихідні запити
 
-The `<livewire:pulse.slow-outgoing-requests />` card shows outgoing requests made using Laravel's [HTTP client](/docs/{{version}}/http-client) that exceed the configured threshold, which is 1,000ms by default.
+Картка `<livewire:pulse.slow-outgoing-requests />` показує вихідні запити, зроблені через [HTTP-клієнт](/docs/{{version}}/http-client) Laravel, які перевищують налаштований поріг, що за замовчуванням становить 1 000 мс.
 
-By default, entries will be grouped by the full URL. However, you may wish to normalize or group similar outgoing requests using regular expressions. See the [slow outgoing requests recorder](#slow-outgoing-requests-recorder) documentation for more information.
+За замовчуванням записи групуються за повним URL. Однак ви можете захотіти нормалізувати чи згрупувати схожі вихідні запити за допомогою регулярних виразів. Докладніше дивіться в документації [рекордера повільних вихідних запитів](#slow-outgoing-requests-recorder).
 
 <a name="cache-card"></a>
-#### Cache
+#### Кеш
 
-The `<livewire:pulse.cache />` card shows the cache hit and miss statistics for your application, both globally and for individual keys.
+Картка `<livewire:pulse.cache />` показує статистику влучань і промахів кешу для вашого застосунку - як загалом, так і за окремими ключами.
 
-By default, entries will be grouped by key. However, you may wish to normalize or group similar keys using regular expressions. See the [cache interactions recorder](#cache-interactions-recorder) documentation for more information.
+За замовчуванням записи групуються за ключем. Однак ви можете захотіти нормалізувати чи згрупувати схожі ключі за допомогою регулярних виразів. Докладніше дивіться в документації [рекордера взаємодій з кешем](#cache-interactions-recorder).
 
 <a name="capturing-entries"></a>
-## Capturing Entries
+## Захоплення записів
 
-Most Pulse recorders will automatically capture entries based on framework events dispatched by Laravel. However, the [servers recorder](#servers-recorder) and some third-party cards must poll for information regularly. To use these cards, you must run the `pulse:check` daemon on all of your individual application servers:
+Більшість рекордерів Pulse автоматично захоплюють записи на основі подій фреймворку, які диспетчеризує Laravel. Однак [рекордер серверів](#servers-recorder) і деякі сторонні картки мають регулярно опитувати інформацію. Щоб користуватися цими картками, вам потрібно запустити демон `pulse:check` на всіх ваших окремих серверах застосунку:
 
 ```php
 php artisan pulse:check
 ```
 
 > [!NOTE]
-> To keep the `pulse:check` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the command does not stop running.
+> Щоб процес `pulse:check` постійно працював у фоні, вам слід використовувати монітор процесів на кшталт Supervisor, аби команда не припиняла роботу.
 
-As the `pulse:check` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
+Оскільки команда `pulse:check` - це довготривалий процес, вона не побачить змін у вашій кодовій базі без перезапуску. Вам слід коректно перезапускати команду, викликаючи команду `pulse:restart` під час розгортання вашого застосунку:
 
 ```shell
 php artisan pulse:restart
 ```
 
 > [!NOTE]
-> Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
+> Pulse використовує [кеш](/docs/{{version}}/cache) для зберігання сигналів перезапуску, тож перед використанням цієї можливості переконайтеся, що драйвер кешу правильно налаштований для вашого застосунку.
 
 <a name="recorders"></a>
-### Recorders
+### Рекордери
 
-Recorders are responsible for capturing entries from your application to be recorded in the Pulse database. Recorders are registered and configured in the `recorders` section of the [Pulse configuration file](#configuration).
+Рекордери відповідають за захоплення записів з вашого застосунку для збереження в базі даних Pulse. Рекордери реєструються й налаштовуються в секції `recorders` [конфігураційного файлу Pulse](#configuration).
 
 <a name="cache-interactions-recorder"></a>
-#### Cache Interactions
+#### Взаємодії з кешем
 
-The `CacheInteractions` recorder captures information about the [cache](/docs/{{version}}/cache) hits and misses occurring in your application for display on the [Cache](#cache-card) card.
+Рекордер `CacheInteractions` захоплює інформацію про влучання та промахи [кешу](/docs/{{version}}/cache) у вашому застосунку для показу на картці [Кеш](#cache-card).
 
-You may optionally adjust the [sample rate](#sampling) and ignored key patterns.
+За бажанням ви можете скоригувати [частоту семплювання](#sampling) та шаблони ігнорованих ключів.
 
-You may also configure key grouping so that similar keys are grouped as a single entry. For example, you may wish to remove unique IDs from keys caching the same type of information. Groups are configured using a regular expression to "find and replace" parts of the key. An example is included in the configuration file:
+Ви також можете налаштувати групування ключів, щоб схожі ключі групувалися в один запис. Наприклад, ви можете захотіти прибрати унікальні ID з ключів, що кешують той самий тип інформації. Групи налаштовуються регулярним виразом, який «знаходить і замінює» частини ключа. Приклад є в конфігураційному файлі:
 
 ```php
 Recorders\CacheInteractions::class => [
@@ -286,30 +289,30 @@ Recorders\CacheInteractions::class => [
 ],
 ```
 
-The first pattern that matches will be used. If no patterns match, then the key will be captured as-is.
+Використано буде перший шаблон, який збігся. Якщо жоден шаблон не збігається, ключ буде захоплено як є.
 
 <a name="exceptions-recorder"></a>
-#### Exceptions
+#### Винятки
 
-The `Exceptions` recorder captures information about reportable exceptions occurring in your application for display on the [Exceptions](#exceptions-card) card.
+Рекордер `Exceptions` захоплює інформацію про придатні до звітування винятки, що трапляються у вашому застосунку, для показу на картці [Винятки](#exceptions-card).
 
-You may optionally adjust the [sample rate](#sampling) and ignored exception patterns. You may also configure whether to capture the location that the exception originated from. The captured location will be displayed on the Pulse dashboard which can help to track down the exception origin; however, if the same exception occurs in multiple locations then it will appear multiple times for each unique location.
+За бажанням ви можете скоригувати [частоту семплювання](#sampling) та шаблони ігнорованих винятків. Ви також можете налаштувати, чи захоплювати місце, звідки походить виняток. Захоплене місце буде показано на панелі Pulse, що може допомогти відстежити походження винятку; однак, якщо той самий виняток трапляється в кількох місцях, він з'явиться кілька разів - по одному для кожного унікального місця.
 
 <a name="queues-recorder"></a>
-#### Queues
+#### Черги
 
-The `Queues` recorder captures information about your application's queues for display on the [Queues](#queues-card).
+Рекордер `Queues` захоплює інформацію про черги вашого застосунку для показу на картці [Черги](#queues-card).
 
-You may optionally adjust the [sample rate](#sampling) and ignored jobs patterns.
+За бажанням ви можете скоригувати [частоту семплювання](#sampling) та шаблони ігнорованих завдань.
 
 <a name="slow-jobs-recorder"></a>
-#### Slow Jobs
+#### Повільні завдання
 
-The `SlowJobs` recorder captures information about slow jobs occurring in your application for display on the [Slow Jobs](#slow-jobs-recorder) card.
+Рекордер `SlowJobs` захоплює інформацію про повільні завдання у вашому застосунку для показу на картці [Повільні завдання](#slow-jobs-recorder).
 
-You may optionally adjust the slow job threshold, [sample rate](#sampling), and ignored job patterns.
+За бажанням ви можете скоригувати поріг повільного завдання, [частоту семплювання](#sampling) та шаблони ігнорованих завдань.
 
-You may have some jobs that you expect to take longer than others. In those cases, you may configure per-job thresholds:
+Деякі завдання можуть виконуватися довше за інші - і це очікувано. У таких випадках ви можете налаштувати пороги для окремих завдань:
 
 ```php
 Recorders\SlowJobs::class => [
@@ -321,16 +324,16 @@ Recorders\SlowJobs::class => [
 ],
 ```
 
-If no regular expression patterns match the job's classname, then the `'default'` value will be used.
+Якщо жоден шаблон регулярного виразу не збігається з іменем класу завдання, буде використано значення `'default'`.
 
 <a name="slow-outgoing-requests-recorder"></a>
-#### Slow Outgoing Requests
+#### Повільні вихідні запити
 
-The `SlowOutgoingRequests` recorder captures information about outgoing HTTP requests made using Laravel's [HTTP client](/docs/{{version}}/http-client) that exceed the configured threshold for display on the [Slow Outgoing Requests](#slow-outgoing-requests-card) card.
+Рекордер `SlowOutgoingRequests` захоплює інформацію про вихідні HTTP-запити, зроблені через [HTTP-клієнт](/docs/{{version}}/http-client) Laravel, які перевищують налаштований поріг, для показу на картці [Повільні вихідні запити](#slow-outgoing-requests-card).
 
-You may optionally adjust the slow outgoing request threshold, [sample rate](#sampling), and ignored URL patterns.
+За бажанням ви можете скоригувати поріг повільного вихідного запиту, [частоту семплювання](#sampling) та шаблони ігнорованих URL.
 
-You may have some outgoing requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+Деякі вихідні запити можуть виконуватися довше за інші - і це очікувано. У таких випадках ви можете налаштувати пороги для окремих запитів:
 
 ```php
 Recorders\SlowOutgoingRequests::class => [
@@ -342,9 +345,9 @@ Recorders\SlowOutgoingRequests::class => [
 ],
 ```
 
-If no regular expression patterns match the request's URL, then the `'default'` value will be used.
+Якщо жоден шаблон регулярного виразу не збігається з URL запиту, буде використано значення `'default'`.
 
-You may also configure URL grouping so that similar URLs are grouped as a single entry. For example, you may wish to remove unique IDs from URL paths or group by domain only. Groups are configured using a regular expression to "find and replace" parts of the URL. Some examples are included in the configuration file:
+Ви також можете налаштувати групування URL, щоб схожі URL групувалися в один запис. Наприклад, ви можете захотіти прибрати унікальні ID зі шляхів URL або групувати лише за доменом. Групи налаштовуються регулярним виразом, який «знаходить і замінює» частини URL. Кілька прикладів є в конфігураційному файлі:
 
 ```php
 Recorders\SlowOutgoingRequests::class => [
@@ -357,16 +360,16 @@ Recorders\SlowOutgoingRequests::class => [
 ],
 ```
 
-The first pattern that matches will be used. If no patterns match, then the URL will be captured as-is.
+Використано буде перший шаблон, який збігся. Якщо жоден шаблон не збігається, URL буде захоплено як є.
 
 <a name="slow-queries-recorder"></a>
-#### Slow Queries
+#### Повільні запити до бази
 
-The `SlowQueries` recorder captures any database queries in your application that exceed the configured threshold for display on the [Slow Queries](#slow-queries-card) card.
+Рекордер `SlowQueries` захоплює будь-які запити до бази даних у вашому застосунку, які перевищують налаштований поріг, для показу на картці [Повільні запити до бази](#slow-queries-card).
 
-You may optionally adjust the slow query threshold, [sample rate](#sampling), and ignored query patterns. You may also configure whether to capture the query location. The captured location will be displayed on the Pulse dashboard which can help to track down the query origin; however, if the same query is made in multiple locations then it will appear multiple times for each unique location.
+За бажанням ви можете скоригувати поріг повільного запиту до бази, [частоту семплювання](#sampling) та шаблони ігнорованих запитів. Ви також можете налаштувати, чи захоплювати місце запиту. Захоплене місце буде показано на панелі Pulse, що може допомогти відстежити походження запиту; однак, якщо той самий запит робиться в кількох місцях, він з'явиться кілька разів - по одному для кожного унікального місця.
 
-You may have some queries that you expect to take longer than others. In those cases, you may configure per-query thresholds:
+Деякі запити до бази можуть виконуватися довше за інші - і це очікувано. У таких випадках ви можете налаштувати пороги для окремих запитів:
 
 ```php
 Recorders\SlowQueries::class => [
@@ -378,16 +381,16 @@ Recorders\SlowQueries::class => [
 ],
 ```
 
-If no regular expression patterns match the query's SQL, then the `'default'` value will be used.
+Якщо жоден шаблон регулярного виразу не збігається з SQL запиту, буде використано значення `'default'`.
 
 <a name="slow-requests-recorder"></a>
-#### Slow Requests
+#### Повільні запити
 
-The `Requests` recorder captures information about requests made to your application for display on the [Slow Requests](#slow-requests-card) and [Application Usage](#application-usage-card) cards.
+Рекордер `Requests` захоплює інформацію про запити до вашого застосунку для показу на картках [Повільні запити](#slow-requests-card) і [Використання застосунку](#application-usage-card).
 
-You may optionally adjust the slow route threshold, [sample rate](#sampling), and ignored paths.
+За бажанням ви можете скоригувати поріг повільного маршруту, [частоту семплювання](#sampling) та ігноровані шляхи.
 
-You may have some requests that you expect to take longer than others. In those cases, you may configure per-request thresholds:
+Деякі запити можуть виконуватися довше за інші - і це очікувано. У таких випадках ви можете налаштувати пороги для окремих запитів:
 
 ```php
 Recorders\SlowRequests::class => [
@@ -399,39 +402,39 @@ Recorders\SlowRequests::class => [
 ],
 ```
 
-If no regular expression patterns match the request's URL, then the `'default'` value will be used.
+Якщо жоден шаблон регулярного виразу не збігається з URL запиту, буде використано значення `'default'`.
 
 <a name="servers-recorder"></a>
-#### Servers
+#### Сервери
 
-The `Servers` recorder captures CPU, memory, and storage usage of the servers that power your application for display on the [Servers](#servers-card) card. This recorder requires the [pulse:check command](#capturing-entries) to be running on each of the servers you wish to monitor.
+Рекордер `Servers` захоплює використання процесора, пам'яті та сховища серверами, на яких працює ваш застосунок, для показу на картці [Сервери](#servers-card). Цей рекордер потребує, щоб [команда pulse:check](#capturing-entries) працювала на кожному сервері, за яким ви хочете стежити.
 
-Each reporting server must have a unique name. By default, Pulse will use the value returned by PHP's `gethostname` function. If you wish to customize this, you may set the `PULSE_SERVER_NAME` environment variable:
+Кожен сервер, що звітує, повинен мати унікальне ім'я. За замовчуванням Pulse використовуватиме значення, яке повертає функція PHP `gethostname`. Якщо ви хочете змінити це, встановіть змінну оточення `PULSE_SERVER_NAME`:
 
 ```env
 PULSE_SERVER_NAME=load-balancer
 ```
 
-The Pulse configuration file also allows you to customize the directories that are monitored.
+Конфігураційний файл Pulse також дозволяє налаштувати каталоги, за якими ведеться спостереження.
 
 <a name="user-jobs-recorder"></a>
-#### User Jobs
+#### Завдання користувачів
 
-The `UserJobs` recorder captures information about the users dispatching jobs in your application for display on the [Application Usage](#application-usage-card) card.
+Рекордер `UserJobs` захоплює інформацію про користувачів, які диспетчеризують завдання у вашому застосунку, для показу на картці [Використання застосунку](#application-usage-card).
 
-You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
+За бажанням ви можете скоригувати [частоту семплювання](#sampling) та шаблони ігнорованих завдань.
 
 <a name="user-requests-recorder"></a>
-#### User Requests
+#### Запити користувачів
 
-The `UserRequests` recorder captures information about the users making requests to your application for display on the [Application Usage](#application-usage-card) card.
+Рекордер `UserRequests` захоплює інформацію про користувачів, які роблять запити до вашого застосунку, для показу на картці [Використання застосунку](#application-usage-card).
 
-You may optionally adjust the [sample rate](#sampling) and ignored URL patterns.
+За бажанням ви можете скоригувати [частоту семплювання](#sampling) та шаблони ігнорованих URL.
 
 <a name="filtering"></a>
-### Filtering
+### Фільтрація
 
-As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. But, sometimes it may be useful to filter out records based on other factors, such as the currently authenticated user. To filter out these records, you may pass a closure to Pulse's `filter` method. Typically, the `filter` method should be invoked within the `boot` method of your application's `AppServiceProvider`:
+Як ми вже бачили, багато [рекордерів](#recorders) дають змогу через конфігурацію «ігнорувати» вхідні записи на основі їхнього значення, наприклад URL запиту. Але іноді буває корисно відфільтрувати записи за іншими чинниками, скажімо за поточним автентифікованим користувачем. Щоб відфільтрувати такі записи, передайте замикання до методу `filter` в Pulse. Зазвичай метод `filter` слід викликати в методі `boot` `AppServiceProvider` вашого застосунку:
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -453,80 +456,80 @@ public function boot(): void
 ```
 
 <a name="performance"></a>
-## Performance
+## Продуктивність
 
-Pulse has been designed to drop into an existing application without requiring any additional infrastructure. However, for high-traffic applications, there are several ways of removing any impact Pulse may have on your application's performance.
+Pulse спроєктований так, щоб вбудовуватися в наявний застосунок без потреби в додатковій інфраструктурі. Однак для високонавантажених застосунків є кілька способів усунути будь-який вплив, який Pulse може мати на продуктивність вашого застосунку.
 
 <a name="using-a-different-database"></a>
-### Using a Different Database
+### Використання іншої бази даних
 
-For high-traffic applications, you may prefer to use a dedicated database connection for Pulse to avoid impacting your application database.
+Для високонавантажених застосунків ви можете віддати перевагу виділеному підключенню до бази даних для Pulse, щоб не впливати на базу даних вашого застосунку.
 
-You may customize the [database connection](/docs/{{version}}/database#configuration) used by Pulse by setting the `PULSE_DB_CONNECTION` environment variable.
+Ви можете змінити [підключення до бази даних](/docs/{{version}}/database#configuration), яке використовує Pulse, встановивши змінну оточення `PULSE_DB_CONNECTION`.
 
 ```env
 PULSE_DB_CONNECTION=pulse
 ```
 
 <a name="ingest"></a>
-### Redis Ingest
+### Приймання через Redis
 
 > [!WARNING]
-> The Redis Ingest requires Redis 6.2 or greater and `phpredis` or `predis` as the application's configured Redis client driver.
+> Приймання через Redis потребує Redis 6.2 чи новішої версії та `phpredis` або `predis` як налаштованого клієнтського драйвера Redis у застосунку.
 
-By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
+За замовчуванням Pulse зберігатиме записи безпосередньо до [налаштованого підключення до бази даних](#using-a-different-database) після того, як HTTP-відповідь буде надіслано клієнту або завдання буде оброблено; однак ви можете скористатися драйвером приймання через Redis, щоб натомість надсилати записи до Redis-стріму. Це вмикається налаштуванням змінної оточення `PULSE_INGEST_DRIVER`:
 
 ```ini
 PULSE_INGEST_DRIVER=redis
 ```
 
-Pulse will use your default [Redis connection](/docs/{{version}}/redis#configuration) by default, but you may customize this via the `PULSE_REDIS_CONNECTION` environment variable:
+За замовчуванням Pulse використовуватиме ваше [підключення Redis](/docs/{{version}}/redis#configuration) за замовчуванням, але ви можете змінити це через змінну оточення `PULSE_REDIS_CONNECTION`:
 
 ```ini
 PULSE_REDIS_CONNECTION=pulse
 ```
 
 > [!WARNING]
-> When using the Redis ingest driver, your Pulse installation should always use a different Redis connection than your Redis powered queue, if applicable.
+> Використовуючи драйвер приймання через Redis, ваша інсталяція Pulse завжди має використовувати інше підключення Redis, ніж ваша черга на Redis, якщо така є.
 
-When using the Redis ingest, you will need to run the `pulse:work` command to monitor the stream and move entries from Redis into Pulse's database tables.
+Використовуючи приймання через Redis, вам потрібно буде запустити команду `pulse:work`, щоб стежити за стрімом і переносити записи з Redis до таблиць бази даних Pulse.
 
 ```php
 php artisan pulse:work
 ```
 
 > [!NOTE]
-> To keep the `pulse:work` process running permanently in the background, you should use a process monitor such as Supervisor to ensure that the Pulse worker does not stop running.
+> Щоб процес `pulse:work` постійно працював у фоні, вам слід використовувати монітор процесів на кшталт Supervisor, аби воркер Pulse не припиняв роботу.
 
-As the `pulse:work` command is a long-lived process, it will not see changes to your codebase without being restarted. You should gracefully restart the command by calling the `pulse:restart` command during your application's deployment process:
+Оскільки команда `pulse:work` - це довготривалий процес, вона не побачить змін у вашій кодовій базі без перезапуску. Вам слід коректно перезапускати команду, викликаючи команду `pulse:restart` під час розгортання вашого застосунку:
 
 ```shell
 php artisan pulse:restart
 ```
 
 > [!NOTE]
-> Pulse uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
+> Pulse використовує [кеш](/docs/{{version}}/cache) для зберігання сигналів перезапуску, тож перед використанням цієї можливості переконайтеся, що драйвер кешу правильно налаштований для вашого застосунку.
 
 <a name="sampling"></a>
-### Sampling
+### Семплювання
 
-By default, Pulse will capture every relevant event that occurs in your application. For high-traffic applications, this can result in needing to aggregate millions of database rows in the dashboard, especially for longer time periods.
+За замовчуванням Pulse захоплюватиме кожну релевантну подію, що відбувається у вашому застосунку. Для високонавантажених застосунків це може призвести до потреби агрегувати мільйони рядків бази даних на панелі, особливо для довших періодів часу.
 
-You may instead choose to enable "sampling" on certain Pulse data recorders. For example, setting the sample rate to `0.1` on the [User Requests](#user-requests-recorder) recorder will mean that you only record approximately 10% of the requests to your application. In the dashboard, the values will be scaled up and prefixed with a `~` to indicate that they are an approximation.
+Натомість ви можете увімкнути «семплювання» для певних рекордерів даних Pulse. Наприклад, встановлення частоти семплювання `0.1` для рекордера [Запити користувачів](#user-requests-recorder) означатиме, що ви записуєте лише приблизно 10% запитів до вашого застосунку. На панелі значення буде масштабовано вгору й додано префікс `~`, щоб позначити, що це наближення.
 
-In general, the more entries you have for a particular metric, the lower you can safely set the sample rate without sacrificing too much accuracy.
+Загалом, чим більше записів ви маєте для конкретної метрики, тим нижче ви можете безпечно встановити частоту семплювання, не жертвуючи занадто великою точністю.
 
 <a name="trimming"></a>
-### Trimming
+### Обрізання
 
-Pulse will automatically trim its stored entries once they are outside of the dashboard window. Trimming occurs when ingesting data using a lottery system which may be customized in the Pulse [configuration file](#configuration).
+Pulse автоматично обрізатиме збережені записи, щойно вони вийдуть за межі вікна панелі. Обрізання відбувається під час приймання даних за лотерейною системою, яку можна налаштувати в [конфігураційному файлі](#configuration) Pulse.
 
 <a name="pulse-exceptions"></a>
-### Handling Pulse Exceptions
+### Обробка винятків Pulse
 
-If an exception occurs while capturing Pulse data, such as being unable to connect to the storage database, Pulse will silently fail to avoid impacting your application.
+Якщо під час захоплення даних Pulse станеться виняток, наприклад не вдасться підключитися до бази даних сховища, Pulse мовчки завершиться невдачею, щоб не вплинути на ваш застосунок.
 
-If you wish to customize how these exceptions are handled, you may provide a closure to the `handleExceptionsUsing` method:
+Якщо ви хочете змінити спосіб обробки цих винятків, передайте замикання до методу `handleExceptionsUsing`:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -541,14 +544,14 @@ Pulse::handleExceptionsUsing(function ($e) {
 ```
 
 <a name="custom-cards"></a>
-## Custom Cards
+## Власні картки
 
-Pulse allows you to build custom cards to display data relevant to your application's specific needs. Pulse uses [Livewire](https://livewire.laravel.com), so you may want to [review its documentation](https://livewire.laravel.com/docs) before building your first custom card.
+Pulse дозволяє створювати власні картки, щоб показувати дані, релевантні для конкретних потреб вашого застосунку. Pulse використовує [Livewire](https://livewire.laravel.com), тож перед створенням своєї першої власної картки вам, можливо, варто [переглянути його документацію](https://livewire.laravel.com/docs).
 
 <a name="custom-card-components"></a>
-### Card Components
+### Компоненти карток
 
-Creating a custom card in Laravel Pulse starts with extending the base `Card` Livewire component and defining a corresponding view:
+Створення власної картки в Laravel Pulse починається з розширення базового Livewire-компонента `Card` і визначення відповідного представлення:
 
 ```php
 namespace App\Livewire\Pulse;
@@ -566,9 +569,9 @@ class TopSellers extends Card
 }
 ```
 
-When using Livewire's [lazy loading](https://livewire.laravel.com/docs/lazy) feature, The `Card` component will automatically provide a placeholder that respects the `cols` and `rows` attributes passed to your component.
+Коли ви користуєтеся можливістю [лінивого завантаження](https://livewire.laravel.com/docs/lazy) Livewire, компонент `Card` автоматично надасть заглушку, яка враховує атрибути `cols` і `rows`, передані вашому компоненту.
 
-When writing your Pulse card's corresponding view, you may leverage Pulse's Blade components for a consistent look and feel:
+Пишучи відповідне представлення для вашої картки Pulse, ви можете скористатися Blade-компонентами Pulse задля узгодженого вигляду:
 
 ```blade
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class" wire:poll.5s="">
@@ -584,9 +587,9 @@ When writing your Pulse card's corresponding view, you may leverage Pulse's Blad
 </x-pulse::card>
 ```
 
-The `$cols`, `$rows`, `$class`, and `$expand` variables should be passed to their respective Blade components so the card layout may be customized from the dashboard view. You may also wish to include the `wire:poll.5s=""` attribute in your view to have the card automatically update.
+Змінні `$cols`, `$rows`, `$class` і `$expand` слід передати до відповідних Blade-компонентів, щоб компонування картки можна було налаштувати з представлення панелі. Ви також можете додати до свого представлення атрибут `wire:poll.5s=""`, щоб картка оновлювалася автоматично.
 
-Once you have defined your Livewire component and template, the card may be included in your [dashboard view](#dashboard-customization):
+Щойно ви визначите свій Livewire-компонент і шаблон, картку можна додати до вашого [представлення панелі](#dashboard-customization):
 
 ```blade
 <x-pulse>
@@ -597,17 +600,17 @@ Once you have defined your Livewire component and template, the card may be incl
 ```
 
 > [!NOTE]
-> If your card is included in a package, you will need to register the component with Livewire using the `Livewire::component` method.
+> Якщо ваша картка входить до складу пакета, вам потрібно буде зареєструвати компонент у Livewire методом `Livewire::component`.
 
 <a name="custom-card-styling"></a>
-### Styling
+### Стилізація
 
-If your card requires additional styling beyond the classes and components included with Pulse, there are a few options for including custom CSS for your cards.
+Якщо вашій картці потрібна додаткова стилізація понад класи й компоненти, що входять до Pulse, є кілька варіантів підключення власного CSS для ваших карток.
 
 <a name="custom-card-styling-vite"></a>
-#### Laravel Vite Integration
+#### Інтеграція з Laravel Vite
 
-If your custom card lives within your application's code base and you are using Laravel's [Vite integration](/docs/{{version}}/vite), you may update your `vite.config.js` file to include a dedicated CSS entry point for your card:
+Якщо ваша власна картка живе в кодовій базі вашого застосунку і ви користуєтеся [інтеграцією з Vite](/docs/{{version}}/vite) у Laravel, ви можете оновити свій файл `vite.config.js`, додавши окрему точку входу CSS для вашої картки:
 
 ```js
 laravel({
@@ -618,7 +621,7 @@ laravel({
 }),
 ```
 
-You may then use the `@vite` Blade directive in your [dashboard view](#dashboard-customization), specifying the CSS entrypoint for your card:
+Далі ви можете скористатися Blade-директивою `@vite` у своєму [представленні панелі](#dashboard-customization), вказавши точку входу CSS для вашої картки:
 
 ```blade
 <x-pulse>
@@ -629,9 +632,9 @@ You may then use the `@vite` Blade directive in your [dashboard view](#dashboard
 ```
 
 <a name="custom-card-styling-css"></a>
-#### CSS Files
+#### CSS-файли
 
-For other use cases, including Pulse cards contained within a package, you may instruct Pulse to load additional stylesheets by defining a `css` method on your Livewire component that returns the file path to your CSS file:
+Для інших випадків, зокрема для карток Pulse у складі пакета, ви можете вказати Pulse завантажити додаткові таблиці стилів, визначивши на своєму Livewire-компоненті метод `css`, який повертає шлях до вашого CSS-файлу:
 
 ```php
 class TopSellers extends Card
@@ -645,12 +648,12 @@ class TopSellers extends Card
 }
 ```
 
-When this card is included on the dashboard, Pulse will automatically include the contents of this file within a `<style>` tag so it does not need to be published to the `public` directory.
+Коли цю картку буде додано на панель, Pulse автоматично вставить вміст цього файлу в тег `<style>`, тож його не потрібно публікувати в каталог `public`.
 
 <a name="custom-card-styling-tailwind"></a>
 #### Tailwind CSS
 
-When using Tailwind CSS, you should create a dedicated CSS entrypoint. The following example excludes Tailwind's [Preflight](https://tailwindcss.com/docs/preflight) base styles which are already included by Pulse, and scopes Tailwind using a CSS selector to avoid conflicts with Pulse's Tailwind classes:
+Використовуючи Tailwind CSS, вам слід створити окрему точку входу CSS. Наведений нижче приклад виключає базові стилі [Preflight](https://tailwindcss.com/docs/preflight) з Tailwind, які Pulse уже містить, і обмежує Tailwind CSS-селектором, щоб уникнути конфліктів із класами Tailwind у Pulse:
 
 ```css
 @import "tailwindcss/theme.css";
@@ -667,7 +670,7 @@ When using Tailwind CSS, you should create a dedicated CSS entrypoint. The follo
 }
 ```
 
-You will also need to include an `id` or `class` attribute in your card's view that matches the CSS selector in your entrypoint:
+Вам також потрібно буде додати до представлення вашої картки атрибут `id` чи `class`, який збігається з CSS-селектором у вашій точці входу:
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
@@ -676,14 +679,14 @@ You will also need to include an `id` or `class` attribute in your card's view t
 ```
 
 <a name="custom-card-data"></a>
-### Data Capture and Aggregation
+### Захоплення й агрегація даних
 
-Custom cards may fetch and display data from anywhere; however, you may wish to leverage Pulse's powerful and efficient data recording and aggregation system.
+Власні картки можуть отримувати та показувати дані звідки завгодно; однак ви можете захотіти скористатися потужною та ефективною системою запису й агрегації даних у Pulse.
 
 <a name="custom-card-data-capture"></a>
-#### Capturing Entries
+#### Захоплення записів
 
-Pulse allows you to record "entries" using the `Pulse::record` method:
+Pulse дозволяє записувати «записи» методом `Pulse::record`:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -693,9 +696,9 @@ Pulse::record('user_sale', $user->id, $sale->amount)
     ->count();
 ```
 
-The first argument provided to the `record` method is the `type` for the entry you are recording, while the second argument is the `key` that determines how the aggregated data should be grouped. For most aggregation methods you will also need to specify a `value` to be aggregated. In the example above, the value being aggregated is `$sale->amount`. You may then invoke one or more aggregation methods (such as `sum`) so that Pulse may capture pre-aggregated values into "buckets" for efficient retrieval later.
+Перший аргумент, переданий методу `record`, - це `type` запису, який ви записуєте, а другий - `key`, що визначає, як слід групувати агреговані дані. Для більшості методів агрегації вам також потрібно буде вказати `value` для агрегації. У наведеному вище прикладі значення, яке агрегується, - це `$sale->amount`. Далі ви можете викликати один чи кілька методів агрегації (як-от `sum`), щоб Pulse захоплював попередньо агреговані значення у «бакети» для ефективного отримання згодом.
 
-The available aggregation methods are:
+Доступні методи агрегації:
 
 * `avg`
 * `count`
@@ -704,12 +707,12 @@ The available aggregation methods are:
 * `sum`
 
 > [!NOTE]
-> When building a card package that captures the currently authenticated user ID, you should use the `Pulse::resolveAuthenticatedUserId()` method, which respects any [user resolver customizations](#dashboard-resolving-users) made to the application.
+> Створюючи пакет із карткою, який захоплює ID поточного автентифікованого користувача, вам слід використовувати метод `Pulse::resolveAuthenticatedUserId()`, який враховує будь-які [налаштування резолвера користувачів](#dashboard-resolving-users), зроблені в застосунку.
 
 <a name="custom-card-data-retrieval"></a>
-#### Retrieving Aggregate Data
+#### Отримання агрегованих даних
 
-When extending Pulse's `Card` Livewire component, you may use the `aggregate` method to retrieve aggregated data for the period being viewed in the dashboard:
+Розширюючи Livewire-компонент `Card` з Pulse, ви можете скористатися методом `aggregate`, щоб отримати агреговані дані за період, який переглядається на панелі:
 
 ```php
 class TopSellers extends Card
@@ -723,7 +726,7 @@ class TopSellers extends Card
 }
 ```
 
-The `aggregate` method returns a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
+Метод `aggregate` повертає колекцію PHP-об'єктів `stdClass`. Кожен об'єкт міститиме захоплену раніше властивість `key` разом із ключами для кожного із запитаних агрегатів:
 
 ```blade
 @foreach ($topSellers as $seller)
@@ -733,18 +736,18 @@ The `aggregate` method returns a collection of PHP `stdClass` objects. Each obje
 @endforeach
 ```
 
-Pulse will primarily retrieve data from the pre-aggregated buckets; therefore, the specified aggregates must have been captured up-front using the `Pulse::record` method. The oldest bucket will typically fall partially outside the period, so Pulse will aggregate the oldest entries to fill the gap and give an accurate value for the entire period, without needing to aggregate the entire period on each poll request.
+Pulse отримуватиме дані переважно з попередньо агрегованих бакетів; тому вказані агрегати мають бути захоплені заздалегідь методом `Pulse::record`. Найстаріший бакет зазвичай частково виходитиме за межі періоду, тож Pulse агрегує найстаріші записи, щоб заповнити прогалину й дати точне значення за весь період, не агрегуючи весь період на кожен запит опитування.
 
-You may also retrieve a total value for a given type by using the `aggregateTotal` method. For example, the following method would retrieve the total of all user sales instead of grouping them by user.
+Ви також можете отримати загальне значення для певного типу методом `aggregateTotal`. Наприклад, наведений нижче метод отримав би суму всіх продажів користувачів, не групуючи їх за користувачем.
 
 ```php
 $total = $this->aggregateTotal('user_sale', 'sum');
 ```
 
 <a name="custom-card-displaying-users"></a>
-#### Displaying Users
+#### Показ користувачів
 
-When working with aggregates that record a user ID as the key, you may resolve the keys to user records using the `Pulse::resolveUsers` method:
+Працюючи з агрегатами, які записують ID користувача як ключ, ви можете перетворити ці ключі на записи користувачів методом `Pulse::resolveUsers`:
 
 ```php
 $aggregates = $this->aggregate('user_sale', ['sum', 'count']);
@@ -760,18 +763,18 @@ return view('livewire.pulse.top-sellers', [
 ]);
 ```
 
-The `find` method returns an object containing `name`, `extra`, and `avatar` keys, which you may optionally pass directly to the `<x-pulse::user-card>` Blade component:
+Метод `find` повертає об'єкт із ключами `name`, `extra` та `avatar`, який ви за бажанням можете передати напряму до Blade-компонента `<x-pulse::user-card>`:
 
 ```blade
 <x-pulse::user-card :user="{{ $seller->user }}" :stats="{{ $seller->sum }}" />
 ```
 
 <a name="custom-recorders"></a>
-#### Custom Recorders
+#### Власні рекордери
 
-Package authors may wish to provide recorder classes to allow users to configure the capturing of data.
+Автори пакетів можуть захотіти надати класи рекордерів, щоб користувачі могли налаштовувати захоплення даних.
 
-Recorders are registered in the `recorders` section of the application's `config/pulse.php` configuration file:
+Рекордери реєструються в секції `recorders` конфігураційного файлу `config/pulse.php` застосунку:
 
 ```php
 [
@@ -786,7 +789,7 @@ Recorders are registered in the `recorders` section of the application's `config
 ]
 ```
 
-Recorders may listen to events by specifying a `$listen` property. Pulse will automatically register the listeners and call the recorders `record` method:
+Рекордери можуть слухати події, якщо вказати властивість `$listen`. Pulse автоматично зареєструє слухачів і викличе метод `record` рекордера:
 
 ```php
 <?php
