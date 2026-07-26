@@ -16,7 +16,7 @@ git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
     - [Запам'ятовування користувачів](#remembering-users)
     - [Інші методи автентифікації](#other-authentication-methods)
 - [HTTP Basic Authentication](#http-basic-authentication)
-    - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
+    - [HTTP Basic Authentication без збереження стану](#stateless-http-basic-authentication)
 - [Вихід із системи](#logging-out)
     - [Скасування сесій на інших пристроях](#invalidating-sessions-on-other-devices)
 - [Підтвердження пароля](#password-confirmation)
@@ -444,7 +444,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 ```
 
 <a name="stateless-http-basic-authentication"></a>
-### Stateless HTTP Basic Authentication
+### HTTP Basic Authentication без збереження стану
 
 Ви також можете користуватися HTTP Basic Authentication, не встановлюючи cookie з ідентифікатором користувача в сесії. Це передусім корисно, якщо ви обрали HTTP-автентифікацію для запитів до API вашого застосунку. Щоб цього досягти, [визначте `middleware`](/docs/{{version}}/middleware), яке викликає метод `onceBasic`. Якщо метод `onceBasic` не повертає відповіді, запит можна пропустити далі в застосунок:
 
