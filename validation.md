@@ -1030,7 +1030,6 @@ The credit card number field is required when payment type is credit card.
 
 Нижче наведено список усіх доступних правил валідації та їхнє призначення:
 
-
 <style>
     .collection-method-list > p {
         columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
