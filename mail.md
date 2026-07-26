@@ -1,71 +1,74 @@
-# Mail
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Пошта
 
-- [Introduction](#introduction)
-    - [Configuration](#configuration)
-    - [Driver Prerequisites](#driver-prerequisites)
-    - [Failover Configuration](#failover-configuration)
-    - [Round Robin Configuration](#round-robin-configuration)
-- [Generating Mailables](#generating-mailables)
-- [Writing Mailables](#writing-mailables)
-    - [Configuring the Sender](#configuring-the-sender)
-    - [Configuring the View](#configuring-the-view)
-    - [View Data](#view-data)
-    - [Attachments](#attachments)
-    - [Inline Attachments](#inline-attachments)
-    - [Attachable Objects](#attachable-objects)
-    - [Headers](#headers)
-    - [Tags and Metadata](#tags-and-metadata)
-    - [Customizing the Symfony Message](#customizing-the-symfony-message)
-- [Markdown Mailables](#markdown-mailables)
-    - [Generating Markdown Mailables](#generating-markdown-mailables)
-    - [Writing Markdown Messages](#writing-markdown-messages)
-    - [Customizing the Components](#customizing-the-components)
-- [Sending Mail](#sending-mail)
-    - [Queueing Mail](#queueing-mail)
-- [Rendering Mailables](#rendering-mailables)
-    - [Previewing Mailables in the Browser](#previewing-mailables-in-the-browser)
-- [Localizing Mailables](#localizing-mailables)
-- [Testing](#testing-mailables)
-    - [Testing Mailable Content](#testing-mailable-content)
-    - [Testing Mailable Sending](#testing-mailable-sending)
-- [Mail and Local Development](#mail-and-local-development)
-- [Events](#events)
-- [Custom Transports](#custom-transports)
-    - [Additional Symfony Transports](#additional-symfony-transports)
+- [Вступ](#introduction)
+    - [Конфігурація](#configuration)
+    - [Передумови драйверів](#driver-prerequisites)
+    - [Конфігурація failover](#failover-configuration)
+    - [Конфігурація round robin](#round-robin-configuration)
+- [Генерація mailable-класів](#generating-mailables)
+- [Написання mailable-класів](#writing-mailables)
+    - [Налаштування відправника](#configuring-the-sender)
+    - [Налаштування представлення](#configuring-the-view)
+    - [Дані представлення](#view-data)
+    - [Вкладення](#attachments)
+    - [Вбудовані вкладення](#inline-attachments)
+    - [Об'єкти, придатні для вкладення](#attachable-objects)
+    - [Заголовки](#headers)
+    - [Теги й метадані](#tags-and-metadata)
+    - [Налаштування повідомлення Symfony](#customizing-the-symfony-message)
+- [Markdown-листи](#markdown-mailables)
+    - [Генерація Markdown-листів](#generating-markdown-mailables)
+    - [Написання Markdown-повідомлень](#writing-markdown-messages)
+    - [Налаштування компонентів](#customizing-the-components)
+- [Надсилання пошти](#sending-mail)
+    - [Пошта в черзі](#queueing-mail)
+- [Рендеринг mailable-класів](#rendering-mailables)
+    - [Попередній перегляд листів у браузері](#previewing-mailables-in-the-browser)
+- [Локалізація листів](#localizing-mailables)
+- [Тестування](#testing-mailables)
+    - [Тестування вмісту листа](#testing-mailable-content)
+    - [Тестування надсилання листа](#testing-mailable-sending)
+- [Пошта й локальна розробка](#mail-and-local-development)
+- [Події](#events)
+- [Власні транспорти](#custom-transports)
+    - [Додаткові транспорти Symfony](#additional-symfony-transports)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Sending email doesn't have to be complicated. Laravel provides a clean, simple email API powered by the popular [Symfony Mailer](https://symfony.com/doc/current/mailer.html) component. Laravel and Symfony Mailer provide drivers for sending email via SMTP, Cloudflare, Mailgun, Postmark, Resend, Amazon SES, and `sendmail`, allowing you to quickly get started sending mail through a local or cloud-based service of your choice.
+Надсилання пошти не мусить бути складним. Laravel надає чистий і простий API для електронної пошти, побудований на популярному компоненті [Symfony Mailer](https://symfony.com/doc/current/mailer.html). Laravel і Symfony Mailer надають драйвери для надсилання пошти через SMTP, Cloudflare, Mailgun, Postmark, Resend, Amazon SES та `sendmail`, тож ви можете швидко почати надсилати пошту через локальний чи хмарний сервіс на свій вибір.
 
 <a name="configuration"></a>
-### Configuration
+### Конфігурація
 
-Laravel's email services may be configured via your application's `config/mail.php` configuration file. Each mailer configured within this file may have its own unique configuration and even its own unique "transport", allowing your application to use different email services to send certain email messages. For example, your application might use Postmark to send transactional emails while using Amazon SES to send bulk emails.
+Поштові сервіси Laravel налаштовуються у файлі `config/mail.php` вашого застосунку. Кожен налаштований у цьому файлі мейлер може мати власну унікальну конфігурацію й навіть власний унікальний «транспорт», що дозволяє застосунку надсилати різні повідомлення через різні поштові сервіси. Наприклад, ваш застосунок може надсилати транзакційні листи через Postmark, а масові розсилки - через Amazon SES.
 
-Within your `mail` configuration file, you will find a `mailers` configuration array. This array contains a sample configuration entry for each of the major mail drivers / transports supported by Laravel, while the `default` configuration value determines which mailer will be used by default when your application needs to send an email message.
+У файлі конфігурації `mail` ви знайдете масив конфігурації `mailers`. Цей масив містить зразок конфігурації для кожного з основних поштових драйверів / транспортів, які підтримує Laravel, а значення конфігурації `default` визначає, який мейлер використовуватиметься за замовчуванням, коли вашому застосунку треба надіслати листа.
 
 <a name="driver-prerequisites"></a>
-### Driver / Transport Prerequisites
+### Передумови драйверів / транспортів
 
-The API based drivers such as Mailgun, Postmark, and Resend are often simpler and faster than sending mail via SMTP servers. Whenever possible, we recommend that you use one of these drivers.
+Драйвери на основі API - Mailgun, Postmark і Resend - часто простіші та швидші за надсилання пошти через SMTP-сервери. Коли це можливо, ми радимо користуватися одним із них.
 
 <a name="cloudflare-driver"></a>
-#### Cloudflare Driver
+#### Драйвер Cloudflare
 
-To use the Cloudflare driver, install Symfony's HTTP Client via Composer:
+Щоб скористатися драйвером Cloudflare, встановіть HTTP-клієнт Symfony через Composer:
 
 ```shell
 composer require symfony/http-client
 ```
 
-Next, you will need to make two changes in your application's `config/mail.php` configuration file. First, set your default mailer to `cloudflare`:
+Далі вам потрібно внести дві зміни у файл конфігурації `config/mail.php` вашого застосунку. Спершу задайте мейлером за замовчуванням `cloudflare`:
 
 ```php
 'default' => env('MAIL_MAILER', 'cloudflare'),
 ```
 
-Second, add the following configuration array to your array of `mailers`:
+По-друге, додайте такий масив конфігурації до вашого масиву `mailers`:
 
 ```php
 'cloudflare' => [
@@ -73,7 +76,7 @@ Second, add the following configuration array to your array of `mailers`:
 ],
 ```
 
-After configuring your application's default mailer, add the following options to your `config/services.php` configuration file:
+Налаштувавши мейлер за замовчуванням, додайте такі опції до файлу конфігурації `config/services.php`:
 
 ```php
 'cloudflare' => [
@@ -83,21 +86,21 @@ After configuring your application's default mailer, add the following options t
 ```
 
 <a name="mailgun-driver"></a>
-#### Mailgun Driver
+#### Драйвер Mailgun
 
-To use the Mailgun driver, install Symfony's Mailgun Mailer transport via Composer:
+Щоб скористатися драйвером Mailgun, встановіть транспорт Mailgun Mailer від Symfony через Composer:
 
 ```shell
 composer require symfony/mailgun-mailer symfony/http-client
 ```
 
-Next, you will need to make two changes in your application's `config/mail.php` configuration file. First, set your default mailer to `mailgun`:
+Далі вам потрібно внести дві зміни у файл конфігурації `config/mail.php` вашого застосунку. Спершу задайте мейлером за замовчуванням `mailgun`:
 
 ```php
 'default' => env('MAIL_MAILER', 'mailgun'),
 ```
 
-Second, add the following configuration array to your array of `mailers`:
+По-друге, додайте такий масив конфігурації до вашого масиву `mailers`:
 
 ```php
 'mailgun' => [
@@ -108,7 +111,7 @@ Second, add the following configuration array to your array of `mailers`:
 ],
 ```
 
-After configuring your application's default mailer, add the following options to your `config/services.php` configuration file:
+Налаштувавши мейлер за замовчуванням, додайте такі опції до файлу конфігурації `config/services.php`:
 
 ```php
 'mailgun' => [
@@ -119,7 +122,7 @@ After configuring your application's default mailer, add the following options t
 ],
 ```
 
-If you are not using the United States [Mailgun region](https://documentation.mailgun.com/docs/mailgun/api-reference/api-overview#mailgun-regions), you may define your region's endpoint in the `services` configuration file:
+Якщо ви не користуєтеся [регіоном Mailgun](https://documentation.mailgun.com/docs/mailgun/api-reference/api-overview#mailgun-regions) для США, вкажіть точку свого регіону у файлі конфігурації `services`:
 
 ```php
 'mailgun' => [
@@ -131,15 +134,15 @@ If you are not using the United States [Mailgun region](https://documentation.ma
 ```
 
 <a name="postmark-driver"></a>
-#### Postmark Driver
+#### Драйвер Postmark
 
-To use the [Postmark](https://postmarkapp.com/) driver, install Symfony's Postmark Mailer transport via Composer:
+Щоб скористатися драйвером [Postmark](https://postmarkapp.com/), встановіть транспорт Postmark Mailer від Symfony через Composer:
 
 ```shell
 composer require symfony/postmark-mailer symfony/http-client
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `postmark`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
+Далі задайте опції `default` у файлі `config/mail.php` вашого застосунку значення `postmark`. Налаштувавши мейлер за замовчуванням, переконайтеся, що файл конфігурації `config/services.php` містить такі опції:
 
 ```php
 'postmark' => [
@@ -147,7 +150,7 @@ Next, set the `default` option in your application's `config/mail.php` configura
 ],
 ```
 
-If you would like to specify the Postmark message stream that should be used by a given mailer, you may add the `message_stream_id` configuration option to the mailer's configuration array. This configuration array can be found in your application's `config/mail.php` configuration file:
+Якщо ви хочете вказати потік повідомлень Postmark, який має використовувати конкретний мейлер, додайте до його масиву конфігурації опцію `message_stream_id`. Цей масив конфігурації лежить у файлі `config/mail.php` вашого застосунку:
 
 ```php
 'postmark' => [
@@ -159,18 +162,18 @@ If you would like to specify the Postmark message stream that should be used by 
 ],
 ```
 
-This way you are also able to set up multiple Postmark mailers with different message streams.
+Так ви можете налаштувати й кілька мейлерів Postmark з різними потоками повідомлень.
 
 <a name="resend-driver"></a>
-#### Resend Driver
+#### Драйвер Resend
 
-To use the [Resend](https://resend.com/) driver, install Resend's PHP SDK via Composer:
+Щоб скористатися драйвером [Resend](https://resend.com/), встановіть PHP SDK від Resend через Composer:
 
 ```shell
 composer require resend/resend-php
 ```
 
-Next, set the `default` option in your application's `config/mail.php` configuration file to `resend`. After configuring your application's default mailer, ensure that your `config/services.php` configuration file contains the following options:
+Далі задайте опції `default` у файлі `config/mail.php` вашого застосунку значення `resend`. Налаштувавши мейлер за замовчуванням, переконайтеся, що файл конфігурації `config/services.php` містить такі опції:
 
 ```php
 'resend' => [
@@ -179,15 +182,15 @@ Next, set the `default` option in your application's `config/mail.php` configura
 ```
 
 <a name="ses-driver"></a>
-#### SES Driver
+#### Драйвер SES
 
-To use the Amazon SES driver you must first install the Amazon AWS SDK for PHP. You may install this library via the Composer package manager:
+Щоб скористатися драйвером Amazon SES, спершу встановіть Amazon AWS SDK для PHP. Цю бібліотеку можна встановити через менеджер пакетів Composer:
 
 ```shell
 composer require aws/aws-sdk-php
 ```
 
-Next, set the `default` option in your `config/mail.php` configuration file to `ses` and verify that your `config/services.php` configuration file contains the following options:
+Далі задайте опції `default` у файлі `config/mail.php` значення `ses` і переконайтеся, що файл конфігурації `config/services.php` містить такі опції:
 
 ```php
 'ses' => [
@@ -197,7 +200,7 @@ Next, set the `default` option in your `config/mail.php` configuration file to `
 ],
 ```
 
-To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) via a session token, you may add a `token` key to your application's SES configuration:
+Щоб скористатися [тимчасовими обліковими даними](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html) AWS через токен сесії, додайте ключ `token` до конфігурації SES вашого застосунку:
 
 ```php
 'ses' => [
@@ -208,7 +211,7 @@ To utilize AWS [temporary credentials](https://docs.aws.amazon.com/IAM/latest/Us
 ],
 ```
 
-To interact with SES's [subscription management features](https://docs.aws.amazon.com/ses/latest/dg/sending-email-subscription-management.html), you may return the `X-Ses-List-Management-Options` header in the array returned by the [headers](#headers) method of a mail message:
+Щоб працювати з [можливостями керування підписками](https://docs.aws.amazon.com/ses/latest/dg/sending-email-subscription-management.html) SES, поверніть заголовок `X-Ses-List-Management-Options` у масиві, який повертає метод [headers](#headers) поштового повідомлення:
 
 ```php
 /**
@@ -224,7 +227,7 @@ public function headers(): Headers
 }
 ```
 
-If you would like to define [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail) that Laravel should pass to the AWS SDK's `SendEmail` method when sending an email, you may define an `options` array within your `ses` configuration:
+Якщо ви хочете описати [додаткові опції](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-sesv2-2019-09-27.html#sendemail), які Laravel має передавати методу `SendEmail` з AWS SDK під час надсилання листа, опишіть масив `options` у своїй конфігурації `ses`:
 
 ```php
 'ses' => [
@@ -241,11 +244,11 @@ If you would like to define [additional options](https://docs.aws.amazon.com/aws
 ```
 
 <a name="failover-configuration"></a>
-### Failover Configuration
+### Конфігурація failover
 
-Sometimes, an external service you have configured to send your application's mail may be down. In these cases, it can be useful to define one or more backup mail delivery configurations that will be used in case your primary delivery driver is down.
+Інколи зовнішній сервіс, який ви налаштували для надсилання пошти, може бути недоступним. У таких випадках корисно описати одну чи кілька резервних конфігурацій доставки, які використовуватимуться, якщо основний драйвер лежить.
 
-To accomplish this, you should define a mailer within your application's `mail` configuration file that uses the `failover` transport. The configuration array for your application's `failover` mailer should contain an array of `mailers` that reference the order in which configured mailers should be chosen for delivery:
+Для цього опишіть у файлі конфігурації `mail` мейлер, який використовує транспорт `failover`. Масив конфігурації мейлера `failover` має містити масив `mailers` із порядком, у якому слід обирати налаштовані мейлери для доставки:
 
 ```php
 'mailers' => [
@@ -263,16 +266,16 @@ To accomplish this, you should define a mailer within your application's `mail` 
 ],
 ```
 
-Once you have configured a mailer that uses the `failover` transport, you will need to set the failover mailer as your default mailer in your application's `.env` file to make use of the failover functionality:
+Щойно ви налаштували мейлер із транспортом `failover`, вам потрібно зробити його мейлером за замовчуванням у файлі `.env` вашого застосунку, щоб скористатися цією можливістю:
 
 ```ini
 MAIL_MAILER=failover
 ```
 
 <a name="round-robin-configuration"></a>
-### Round Robin Configuration
+### Конфігурація round robin
 
-The `roundrobin` transport allows you to distribute your mailing workload across multiple mailers. To get started, define a mailer within your application's `mail` configuration file that uses the `roundrobin` transport. The configuration array for your application's `roundrobin` mailer should contain an array of `mailers` that reference which configured mailers should be used for delivery:
+Транспорт `roundrobin` дозволяє розподілити навантаження з надсилання пошти між кількома мейлерами. Для початку опишіть у файлі конфігурації `mail` мейлер, який використовує транспорт `roundrobin`. Масив конфігурації мейлера `roundrobin` має містити масив `mailers` із переліком налаштованих мейлерів, які слід використовувати для доставки:
 
 ```php
 'mailers' => [
@@ -289,37 +292,37 @@ The `roundrobin` transport allows you to distribute your mailing workload across
 ],
 ```
 
-Once your round robin mailer has been defined, you should set this mailer as the default mailer used by your application by specifying its name as the value of the `default` configuration key within your application's `mail` configuration file:
+Щойно ваш мейлер round robin описано, зробіть його мейлером за замовчуванням, вказавши його ім'я значенням ключа конфігурації `default` у файлі `mail` вашого застосунку:
 
 ```php
 'default' => env('MAIL_MAILER', 'roundrobin'),
 ```
 
-The round robin transport selects a random mailer from the list of configured mailers and then switches to the next available mailer for each subsequent email. In contrast to `failover` transport, which helps to achieve *[high availability](https://en.wikipedia.org/wiki/High_availability)*, the `roundrobin` transport provides *[load balancing](https://en.wikipedia.org/wiki/Load_balancing_(computing))*.
+Транспорт round robin обирає випадковий мейлер зі списку налаштованих, а для кожного наступного листа перемикається на наступний доступний. На відміну від транспорту `failover`, який допомагає досягти *[високої доступності](https://en.wikipedia.org/wiki/High_availability)*, транспорт `roundrobin` забезпечує *[балансування навантаження](https://en.wikipedia.org/wiki/Load_balancing_(computing))*.
 
 <a name="generating-mailables"></a>
-## Generating Mailables
+## Генерація mailable-класів
 
-When building Laravel applications, each type of email sent by your application is represented as a "mailable" class. These classes are stored in the `app/Mail` directory. Don't worry if you don't see this directory in your application, since it will be generated for you when you create your first mailable class using the `make:mail` Artisan command:
+Створюючи застосунки Laravel, кожен тип листа, який надсилає ваш застосунок, представляють класом «mailable». Ці класи зберігаються в каталозі `app/Mail`. Не переймайтеся, якщо цього каталогу у вашому застосунку немає: його буде згенеровано, коли ви створите свій перший mailable-клас командою Artisan `make:mail`:
 
 ```shell
 php artisan make:mail OrderShipped
 ```
 
 <a name="writing-mailables"></a>
-## Writing Mailables
+## Написання mailable-класів
 
-Once you have generated a mailable class, open it up so we can explore its contents. Mailable class configuration is done in several methods, including the `envelope`, `content`, and `attachments` methods.
+Щойно ви згенерували mailable-клас, відкрийте його, щоб дослідити вміст. Конфігурація mailable-класу відбувається в кількох методах: `envelope`, `content` та `attachments`.
 
-The `envelope` method returns an `Illuminate\Mail\Mailables\Envelope` object that defines the subject and, sometimes, the recipients of the message. The `content` method returns an `Illuminate\Mail\Mailables\Content` object that defines the [Blade template](/docs/{{version}}/blade) that will be used to generate the message content.
+Метод `envelope` повертає об'єкт `Illuminate\Mail\Mailables\Envelope`, який описує тему і, часом, отримувачів повідомлення. Метод `content` повертає об'єкт `Illuminate\Mail\Mailables\Content`, який описує [шаблон Blade](/docs/{{version}}/blade), що згенерує вміст повідомлення.
 
 <a name="configuring-the-sender"></a>
-### Configuring the Sender
+### Налаштування відправника
 
 <a name="using-the-envelope"></a>
-#### Using the Envelope
+#### Через конверт
 
-First, let's explore configuring the sender of the email. Or, in other words, who the email is going to be "from". There are two ways to configure the sender. First, you may specify the "from" address on your message's envelope:
+Спершу розгляньмо налаштування відправника листа. Іншими словами, від кого лист. Налаштувати відправника можна двома способами. По-перше, ви можете вказати адресу «from» у конверті повідомлення:
 
 ```php
 use Illuminate\Mail\Mailables\Address;
@@ -337,7 +340,7 @@ public function envelope(): Envelope
 }
 ```
 
-If you would like, you may also specify a `replyTo` address:
+За бажанням ви можете вказати й адресу `replyTo`:
 
 ```php
 return new Envelope(
@@ -350,9 +353,9 @@ return new Envelope(
 ```
 
 <a name="using-a-global-from-address"></a>
-#### Using a Global `from` Address
+#### Глобальна адреса `from`
 
-However, if your application uses the same "from" address for all of its emails, it can become cumbersome to add it to each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
+Проте, якщо ваш застосунок використовує ту саму адресу «from» для всіх листів, додавати її до кожного згенерованого mailable-класу стає обтяжливо. Натомість ви можете вказати глобальну адресу «from» у файлі конфігурації `config/mail.php`. Ця адреса використовуватиметься, якщо в mailable-класі не вказано іншої адреси «from»:
 
 ```php
 'from' => [
@@ -361,7 +364,7 @@ However, if your application uses the same "from" address for all of its emails,
 ],
 ```
 
-In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
+Крім того, ви можете описати глобальну адресу «reply_to» у файлі конфігурації `config/mail.php`:
 
 ```php
 'reply_to' => [
@@ -371,9 +374,9 @@ In addition, you may define a global "reply_to" address within your `config/mail
 ```
 
 <a name="configuring-the-view"></a>
-### Configuring the View
+### Налаштування представлення
 
-Within a mailable class's `content` method, you may define the `view`, or which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/docs/{{version}}/blade) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
+У методі `content` mailable-класу ви можете описати `view`, тобто шаблон, який слід використати для рендерингу вмісту листа. Оскільки кожен лист зазвичай рендерить свій вміст [шаблоном Blade](/docs/{{version}}/blade), під час створення HTML вашого листа вам доступні вся потуга й зручність шаблонізатора Blade:
 
 ```php
 /**
@@ -388,12 +391,12 @@ public function content(): Content
 ```
 
 > [!NOTE]
-> You may wish to create a `resources/views/mail` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.
+> Вам може захотітися створити каталог `resources/views/mail`, щоб зібрати там усі шаблони листів; утім, ви вільні класти їх будь-де в каталозі `resources/views`.
 
 <a name="plain-text-emails"></a>
-#### Plain Text Emails
+#### Листи у простому тексті
 
-If you would like to define a plain-text version of your email, you may specify the plain-text template when creating the message's `Content` definition. Like the `view` parameter, the `text` parameter should be a template name which will be used to render the contents of the email. You are free to define both an HTML and plain-text version of your message:
+Якщо ви хочете описати текстову версію свого листа, вкажіть текстовий шаблон під час створення опису `Content`. Як і параметр `view`, параметр `text` має бути назвою шаблону, який відрендерить вміст листа. Ви вільні описати і HTML-, і текстову версію свого повідомлення:
 
 ```php
 /**
@@ -408,7 +411,7 @@ public function content(): Content
 }
 ```
 
-For clarity, the `html` parameter may be used as an alias of the `view` parameter:
+Задля ясності параметр `html` можна використовувати як аліас параметра `view`:
 
 ```php
 return new Content(
@@ -418,12 +421,12 @@ return new Content(
 ```
 
 <a name="view-data"></a>
-### View Data
+### Дані представлення
 
 <a name="via-public-properties"></a>
-#### Via Public Properties
+#### Через публічні властивості
 
-Typically, you will want to pass some data to your view that you can utilize when rendering the email's HTML. There are two ways you may make data available to your view. First, any public property defined on your mailable class will automatically be made available to the view. So, for example, you may pass data into your mailable class's constructor and set that data to public properties defined on the class:
+Зазвичай вам захочеться передати до представлення дані, які можна використати під час рендерингу HTML листа. Зробити дані доступними для представлення можна двома способами. По-перше, будь-яка публічна властивість, описана у вашому mailable-класі, автоматично стане доступною представленню. Тож ви можете передати дані в конструктор mailable-класу й записати їх у публічні властивості класу:
 
 ```php
 <?php
@@ -459,7 +462,7 @@ class OrderShipped extends Mailable
 }
 ```
 
-Once the data has been set to a public property, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
+Щойно дані записано в публічну властивість, вони автоматично стануть доступні у вашому представленні, тож ви можете звертатися до них як до будь-яких інших даних у шаблонах Blade:
 
 ```blade
 <div>
@@ -468,9 +471,9 @@ Once the data has been set to a public property, it will automatically be availa
 ```
 
 <a name="via-the-with-parameter"></a>
-#### Via the `with` Parameter:
+#### Через параметр `with`:
 
-If you would like to customize the format of your email's data before it is sent to the template, you may manually pass your data to the view via the `Content` definition's `with` parameter. Typically, you will still pass data via the mailable class's constructor; however, you should set this data to `protected` or `private` properties so the data is not automatically made available to the template:
+Якщо ви хочете змінити формат даних листа перед тим, як вони потраплять до шаблону, ви можете передати дані до представлення вручну через параметр `with` опису `Content`. Зазвичай ви все одно передаєте дані в конструктор mailable-класу; проте записуйте їх у властивості `protected` чи `private`, щоб дані не потрапляли до шаблону автоматично:
 
 ```php
 <?php
@@ -510,7 +513,7 @@ class OrderShipped extends Mailable
 }
 ```
 
-Once the data has been passed via the `with` parameter, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
+Щойно дані передано через параметр `with`, вони автоматично стануть доступні у вашому представленні, тож ви можете звертатися до них як до будь-яких інших даних у шаблонах Blade:
 
 ```blade
 <div>
@@ -519,9 +522,9 @@ Once the data has been passed via the `with` parameter, it will automatically be
 ```
 
 <a name="attachments"></a>
-### Attachments
+### Вкладення
 
-To add attachments to an email, you will add attachments to the array returned by the message's `attachments` method. First, you may add an attachment by providing a file path to the `fromPath` method provided by the `Attachment` class:
+Щоб додати вкладення до листа, додайте їх до масиву, який повертає метод `attachments` повідомлення. По-перше, ви можете додати вкладення, передавши шлях до файлу методу `fromPath` класу `Attachment`:
 
 ```php
 use Illuminate\Mail\Mailables\Attachment;
@@ -539,7 +542,7 @@ public function attachments(): array
 }
 ```
 
-When attaching files to a message, you may also specify the display name and / or MIME type for the attachment using the `as` and `withMime` methods:
+Вкладаючи файли до повідомлення, ви можете вказати відображувану назву та / або MIME-тип вкладення методами `as` і `withMime`:
 
 ```php
 /**
@@ -558,9 +561,9 @@ public function attachments(): array
 ```
 
 <a name="attaching-files-from-disk"></a>
-#### Attaching Files From Disk
+#### Вкладення файлів з диска
 
-If you have stored a file on one of your [filesystem disks](/docs/{{version}}/filesystem), you may attach it to the email using the `fromStorage` attachment method:
+Якщо ви зберегли файл на одному з [дисків файлової системи](/docs/{{version}}/filesystem), вкласти його до листа можна методом `fromStorage`:
 
 ```php
 /**
@@ -576,7 +579,7 @@ public function attachments(): array
 }
 ```
 
-Of course, you may also specify the attachment's name and MIME type:
+Звісно, ви також можете вказати назву та MIME-тип вкладення:
 
 ```php
 /**
@@ -594,7 +597,7 @@ public function attachments(): array
 }
 ```
 
-The `fromStorageDisk` method may be used if you need to specify a storage disk other than your default disk:
+Метод `fromStorageDisk` дозволяє вказати диск, відмінний від диска за замовчуванням:
 
 ```php
 /**
@@ -613,9 +616,9 @@ public function attachments(): array
 ```
 
 <a name="raw-data-attachments"></a>
-#### Raw Data Attachments
+#### Вкладення сирих даних
 
-The `fromData` attachment method may be used to attach a raw string of bytes as an attachment. For example, you might use this method if you have generated a PDF in memory and want to attach it to the email without writing it to disk. The `fromData` method accepts a closure which resolves the raw data bytes as well as the name that the attachment should be assigned:
+Метод `fromData` дозволяє вкласти сирий рядок байтів як вкладення. Наприклад, ви можете скористатися цим методом, якщо згенерували PDF у пам'яті й хочете вкласти його до листа, не записуючи на диск. Метод `fromData` приймає замикання, яке повертає сирі байти даних, і назву, яку слід призначити вкладенню:
 
 ```php
 /**
@@ -633,9 +636,9 @@ public function attachments(): array
 ```
 
 <a name="inline-attachments"></a>
-### Inline Attachments
+### Вбудовані вкладення
 
-Embedding inline images into your emails is typically cumbersome; however, Laravel provides a convenient way to attach images to your emails. To embed an inline image, use the `embed` method on the `$message` variable within your email template. Laravel automatically makes the `$message` variable available to all of your email templates, so you don't need to worry about passing it in manually:
+Вбудовувати зображення в листи зазвичай марудно; проте Laravel надає зручний спосіб вкладати зображення до ваших листів. Щоб вбудувати зображення, скористайтеся методом `embed` змінної `$message` у шаблоні листа. Laravel автоматично робить змінну `$message` доступною в усіх ваших шаблонах листів, тож передавати її вручну не потрібно:
 
 ```blade
 <body>
@@ -646,12 +649,12 @@ Embedding inline images into your emails is typically cumbersome; however, Larav
 ```
 
 > [!WARNING]
-> The `$message` variable is not available in plain-text message templates since plain-text messages do not utilize inline attachments.
+> Змінна `$message` недоступна в шаблонах повідомлень у простому тексті, адже такі повідомлення не використовують вбудованих вкладень.
 
 <a name="embedding-raw-data-attachments"></a>
-#### Embedding Raw Data Attachments
+#### Вбудовування вкладень із сирих даних
 
-If you already have a raw image data string you wish to embed into an email template, you may call the `embedData` method on the `$message` variable. When calling the `embedData` method, you will need to provide a filename that should be assigned to the embedded image:
+Якщо ви вже маєте рядок сирих даних зображення, який хочете вбудувати в шаблон листа, викличте метод `embedData` змінної `$message`. Викликаючи метод `embedData`, вам потрібно передати ім'я файлу, яке слід призначити вбудованому зображенню:
 
 ```blade
 <body>
@@ -662,11 +665,11 @@ If you already have a raw image data string you wish to embed into an email temp
 ```
 
 <a name="attachable-objects"></a>
-### Attachable Objects
+### Об'єкти, придатні для вкладення
 
-While attaching files to messages via simple string paths is often sufficient, in many cases the attachable entities within your application are represented by classes. For example, if your application is attaching a photo to a message, your application may also have a `Photo` model that represents that photo. When that is the case, wouldn't it be convenient to simply pass the `Photo` model to the `attach` method? Attachable objects allow you to do just that.
+Хоч вкладати файли до повідомлень простими рядковими шляхами часто й достатньо, у багатьох випадках сутності, які ви вкладаєте, представлені у вашому застосунку класами. Наприклад, якщо ваш застосунок вкладає до повідомлення фото, у ньому може бути й модель `Photo`, яка це фото представляє. Хіба не було б зручно просто передати модель `Photo` методу `attach`? Об'єкти, придатні для вкладення, дозволяють саме це.
 
-To get started, implement the `Illuminate\Contracts\Mail\Attachable` interface on the object that will be attachable to messages. This interface dictates that your class defines a `toMailAttachment` method that returns an `Illuminate\Mail\Attachment` instance:
+Для початку реалізуйте інтерфейс `Illuminate\Contracts\Mail\Attachable` в об'єкті, який можна буде вкладати до повідомлень. Цей інтерфейс вимагає, щоб ваш клас описав метод `toMailAttachment`, який повертає екземпляр `Illuminate\Mail\Attachment`:
 
 ```php
 <?php
@@ -689,7 +692,7 @@ class Photo extends Model implements Attachable
 }
 ```
 
-Once you have defined your attachable object, you may return an instance of that object from the `attachments` method when building an email message:
+Щойно ви описали свій об'єкт для вкладення, ви можете повертати його екземпляр із методу `attachments` під час побудови листа:
 
 ```php
 /**
@@ -703,7 +706,7 @@ public function attachments(): array
 }
 ```
 
-Of course, attachment data may be stored on a remote file storage service such as Amazon S3. So, Laravel also allows you to generate attachment instances from data that is stored on one of your application's [filesystem disks](/docs/{{version}}/filesystem):
+Звісно, дані вкладення можуть зберігатися у віддаленому файловому сховищі на кшталт Amazon S3. Тож Laravel також дозволяє генерувати екземпляри вкладень із даних, збережених на одному з [дисків файлової системи](/docs/{{version}}/filesystem) вашого застосунку:
 
 ```php
 // Create an attachment from a file on your default disk...
@@ -713,13 +716,13 @@ return Attachment::fromStorage($this->path);
 return Attachment::fromStorageDisk('backblaze', $this->path);
 ```
 
-In addition, you may create attachment instances via data that you have in memory. To accomplish this, provide a closure to the `fromData` method. The closure should return the raw data that represents the attachment:
+Крім того, ви можете створювати екземпляри вкладень із даних, які маєте в пам'яті. Для цього передайте замикання методу `fromData`. Замикання має повернути сирі дані, які представляють вкладення:
 
 ```php
 return Attachment::fromData(fn () => $this->content, 'Photo Name');
 ```
 
-Laravel also provides additional methods that you may use to customize your attachments. For example, you may use the `as` and `withMime` methods to customize the file's name and MIME type:
+Laravel також надає додаткові методи для налаштування ваших вкладень. Наприклад, методами `as` і `withMime` ви можете змінити ім'я файлу та MIME-тип:
 
 ```php
 return Attachment::fromPath('/path/to/file')
@@ -728,11 +731,11 @@ return Attachment::fromPath('/path/to/file')
 ```
 
 <a name="headers"></a>
-### Headers
+### Заголовки
 
-Sometimes you may need to attach additional headers to the outgoing message. For instance, you may need to set a custom `Message-Id` or other arbitrary text headers.
+Інколи вам може знадобитися додати до вихідного повідомлення додаткові заголовки. Наприклад, вам може знадобитися задати власний `Message-Id` чи інші довільні текстові заголовки.
 
-To accomplish this, define a `headers` method on your mailable. The `headers` method should return an `Illuminate\Mail\Mailables\Headers` instance. This class accepts `messageId`, `references`, and `text` parameters. Of course, you may provide only the parameters you need for your particular message:
+Для цього опишіть у своєму mailable-класі метод `headers`. Метод `headers` має повернути екземпляр `Illuminate\Mail\Mailables\Headers`. Цей клас приймає параметри `messageId`, `references` та `text`. Звісно, ви можете передати лише ті параметри, які потрібні для конкретного повідомлення:
 
 ```php
 use Illuminate\Mail\Mailables\Headers;
@@ -753,9 +756,9 @@ public function headers(): Headers
 ```
 
 <a name="tags-and-metadata"></a>
-### Tags and Metadata
+### Теги й метадані
 
-Some third-party email providers such as Mailgun and Postmark support message "tags" and "metadata", which may be used to group and track emails sent by your application. You may add tags and metadata to an email message via your `Envelope` definition:
+Деякі сторонні поштові провайдери на кшталт Mailgun і Postmark підтримують «теги» й «метадані» повідомлень, які дозволяють групувати та відстежувати листи, надіслані вашим застосунком. Додати теги й метадані до листа можна через опис `Envelope`:
 
 ```php
 use Illuminate\Mail\Mailables\Envelope;
@@ -777,14 +780,14 @@ public function envelope(): Envelope
 }
 ```
 
-If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tags) and [metadata](https://documentation.mailgun.com/docs/mailgun/user-manual/sending-messages/#attaching-metadata-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+Якщо ваш застосунок використовує драйвер Mailgun, докладніше про [теги](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tags) та [метадані](https://documentation.mailgun.com/docs/mailgun/user-manual/sending-messages/#attaching-metadata-to-messages) читайте в документації Mailgun. Так само в документації Postmark можна знайти більше про їхню підтримку [тегів](https://postmarkapp.com/blog/tags-support-for-smtp) і [метаданих](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
 
-If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
+Якщо ваш застосунок надсилає листи через Amazon SES, скористайтеся методом `metadata`, щоб додати до повідомлення [«теги» SES](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html).
 
 <a name="customizing-the-symfony-message"></a>
-### Customizing the Symfony Message
+### Налаштування повідомлення Symfony
 
-Laravel's mail capabilities are powered by Symfony Mailer. Laravel allows you to register custom callbacks that will be invoked with the Symfony Message instance before sending the message. This gives you an opportunity to deeply customize the message before it is sent. To accomplish this, define a `using` parameter on your `Envelope` definition:
+Поштові можливості Laravel побудовані на Symfony Mailer. Laravel дозволяє реєструвати власні колбеки, які буде викликано з екземпляром Symfony Message перед надсиланням повідомлення. Це дає вам змогу глибоко налаштувати повідомлення перед відправкою. Для цього опишіть параметр `using` у своєму описі `Envelope`:
 
 ```php
 use Illuminate\Mail\Mailables\Envelope;
@@ -807,20 +810,20 @@ public function envelope(): Envelope
 ```
 
 <a name="markdown-mailables"></a>
-## Markdown Mailables
+## Markdown-листи
 
-Markdown mailable messages allow you to take advantage of the pre-built templates and components of [mail notifications](/docs/{{version}}/notifications#mail-notifications) in your mailables. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart.
+Markdown-листи дозволяють скористатися готовими шаблонами й компонентами [поштових сповіщень](/docs/{{version}}/notifications#mail-notifications) у ваших mailable-класах. Оскільки повідомлення пишуться в Markdown, Laravel може відрендерити для них гарні адаптивні HTML-шаблони, а заразом автоматично згенерувати текстовий відповідник.
 
 <a name="generating-markdown-mailables"></a>
-### Generating Markdown Mailables
+### Генерація Markdown-листів
 
-To generate a mailable with a corresponding Markdown template, you may use the `--markdown` option of the `make:mail` Artisan command:
+Щоб згенерувати mailable-клас із відповідним Markdown-шаблоном, скористайтеся опцією `--markdown` команди Artisan `make:mail`:
 
 ```shell
 php artisan make:mail OrderShipped --markdown=mail.orders.shipped
 ```
 
-Then, when configuring the mailable `Content` definition within its `content` method, use the `markdown` parameter instead of the `view` parameter:
+Далі, налаштовуючи опис `Content` у методі `content`, використовуйте параметр `markdown` замість `view`:
 
 ```php
 use Illuminate\Mail\Mailables\Content;
@@ -840,9 +843,9 @@ public function content(): Content
 ```
 
 <a name="writing-markdown-messages"></a>
-### Writing Markdown Messages
+### Написання Markdown-повідомлень
 
-Markdown mailables use a combination of Blade components and Markdown syntax which allow you to easily construct mail messages while leveraging Laravel's pre-built email UI components:
+Markdown-листи поєднують компоненти Blade і синтаксис Markdown, що дозволяє легко будувати поштові повідомлення, користуючись готовими UI-компонентами Laravel для листів:
 
 ```blade
 <x-mail::message>
@@ -860,12 +863,12 @@ Thanks,<br>
 ```
 
 > [!NOTE]
-> Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks.
+> Не робіть зайвих відступів, коли пишете Markdown-листи. За стандартами Markdown парсери рендерять вміст із відступами як блоки коду.
 
 <a name="button-component"></a>
-#### Button Component
+#### Компонент button
 
-The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
+Компонент button рендерить відцентроване посилання-кнопку. Компонент приймає два аргументи: `url` та необов'язковий `color`. Підтримувані кольори - `primary`, `success` та `error`. Ви можете додати до повідомлення скільки завгодно компонентів button:
 
 ```blade
 <x-mail::button :url="$url" color="success">
@@ -874,9 +877,9 @@ View Order
 ```
 
 <a name="panel-component"></a>
-#### Panel Component
+#### Компонент panel
 
-The panel component renders the given block of text in a panel that has a slightly different background color than the rest of the message. This allows you to draw attention to a given block of text:
+Компонент panel рендерить заданий блок тексту в панелі, колір тла якої трохи відрізняється від решти повідомлення. Це дозволяє привернути увагу до певного блоку тексту:
 
 ```blade
 <x-mail::panel>
@@ -885,9 +888,9 @@ This is the panel content.
 ```
 
 <a name="table-component"></a>
-#### Table Component
+#### Компонент table
 
-The table component allows you to transform a Markdown table into an HTML table. The component accepts the Markdown table as its content. Table column alignment is supported using the default Markdown table alignment syntax:
+Компонент table дозволяє перетворити таблицю Markdown на HTML-таблицю. Компонент приймає таблицю Markdown як свій вміст. Вирівнювання стовпців підтримується стандартним синтаксисом вирівнювання таблиць Markdown:
 
 ```blade
 <x-mail::table>
@@ -899,29 +902,29 @@ The table component allows you to transform a Markdown table into an HTML table.
 ```
 
 <a name="customizing-the-components"></a>
-### Customizing the Components
+### Налаштування компонентів
 
-You may export all of the Markdown mail components to your own application for customization. To export the components, use the `vendor:publish` Artisan command to publish the `laravel-mail` asset tag:
+Ви можете експортувати всі поштові компоненти Markdown до власного застосунку, щоб їх налаштувати. Щоб експортувати компоненти, опублікуйте тег ресурсів `laravel-mail` командою Artisan `vendor:publish`:
 
 ```shell
 php artisan vendor:publish --tag=laravel-mail
 ```
 
-This command will publish the Markdown mail components to the `resources/views/vendor/mail` directory. The `mail` directory will contain an `html` and a `text` directory, each containing their respective representations of every available component. You are free to customize these components however you like.
+Ця команда опублікує поштові компоненти Markdown до каталогу `resources/views/vendor/mail`. Каталог `mail` міститиме каталоги `html` і `text`, у кожному з яких лежатиме відповідне представлення кожного доступного компонента. Ви вільні налаштовувати ці компоненти як заманеться.
 
 <a name="customizing-the-css"></a>
-#### Customizing the CSS
+#### Налаштування CSS
 
-After exporting the components, the `resources/views/vendor/mail/html/themes` directory will contain a `default.css` file. You may customize the CSS in this file and your styles will automatically be converted to inline CSS styles within the HTML representations of your Markdown mail messages.
+Після експорту компонентів каталог `resources/views/vendor/mail/html/themes` міститиме файл `default.css`. Ви можете змінити CSS у цьому файлі, і ваші стилі автоматично буде перетворено на вбудований CSS у HTML-представленнях ваших Markdown-листів.
 
-If you would like to build an entirely new theme for Laravel's Markdown components, you may place a CSS file within the `html/themes` directory. After naming and saving your CSS file, update the `theme` option of your application's `config/mail.php` configuration file to match the name of your new theme.
+Якщо ви хочете створити цілком нову тему для компонентів Markdown у Laravel, покладіть CSS-файл у каталог `html/themes`. Назвавши й зберігши свій CSS-файл, оновіть опцію `theme` у файлі конфігурації `config/mail.php` вашого застосунку відповідно до назви нової теми.
 
-To customize the theme for an individual mailable, you may set the `$theme` property of the mailable class to the name of the theme that should be used when sending that mailable.
+Щоб змінити тему для окремого mailable-класу, задайте властивості `$theme` цього класу назву теми, яку слід використати під час надсилання.
 
 <a name="sending-mail"></a>
-## Sending Mail
+## Надсилання пошти
 
-To send a message, use the `to` method on the `Mail` [facade](/docs/{{version}}/facades). The `to` method accepts an email address, a user instance, or a collection of users. If you pass an object or collection of objects, the mailer will automatically use their `email` and `name` properties when determining the email's recipients, so make sure these attributes are available on your objects. Once you have specified your recipients, you may pass an instance of your mailable class to the `send` method:
+Щоб надіслати повідомлення, скористайтеся методом `to` [фасаду](/docs/{{version}}/facades) `Mail`. Метод `to` приймає адресу електронної пошти, екземпляр користувача або колекцію користувачів. Якщо ви передаєте об'єкт чи колекцію об'єктів, мейлер автоматично використає їхні властивості `email` і `name` для визначення отримувачів листа, тож переконайтеся, що ці атрибути є у ваших об'єктах. Щойно ви вказали отримувачів, передайте екземпляр свого mailable-класу методу `send`:
 
 ```php
 <?php
@@ -952,7 +955,7 @@ class OrderShipmentController extends Controller
 }
 ```
 
-You are not limited to just specifying the "to" recipients when sending a message. You are free to set "to", "cc", and "bcc" recipients by chaining their respective methods together:
+Надсилаючи повідомлення, ви не обмежені лише отримувачами «to». Ви вільні задати отримувачів «to», «cc» та «bcc», поєднавши відповідні методи ланцюжком:
 
 ```php
 Mail::to($request->user())
@@ -962,9 +965,9 @@ Mail::to($request->user())
 ```
 
 <a name="looping-over-recipients"></a>
-#### Looping Over Recipients
+#### Цикл по отримувачах
 
-Occasionally, you may need to send a mailable to a list of recipients by iterating over an array of recipients / email addresses. However, since the `to` method appends email addresses to the mailable's list of recipients, each iteration through the loop will send another email to every previous recipient. Therefore, you should always re-create the mailable instance for each recipient:
+Інколи вам може знадобитися надіслати лист списку отримувачів, проходячи масив отримувачів / адрес. Проте, оскільки метод `to` додає адреси до списку отримувачів листа, кожна ітерація циклу надсилатиме ще один лист усім попереднім отримувачам. Тому завжди створюйте екземпляр листа заново для кожного отримувача:
 
 ```php
 foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {
@@ -973,9 +976,9 @@ foreach (['taylor@example.com', 'dries@example.com'] as $recipient) {
 ```
 
 <a name="sending-mail-via-a-specific-mailer"></a>
-#### Sending Mail via a Specific Mailer
+#### Надсилання через конкретний мейлер
 
-By default, Laravel will send email using the mailer configured as the `default` mailer in your application's `mail` configuration file. However, you may use the `mailer` method to send a message using a specific mailer configuration:
+За замовчуванням Laravel надсилає пошту через мейлер, налаштований як `default` у файлі конфігурації `mail` вашого застосунку. Проте ви можете скористатися методом `mailer`, щоб надіслати повідомлення через конкретну конфігурацію мейлера:
 
 ```php
 Mail::mailer('postmark')
@@ -984,12 +987,12 @@ Mail::mailer('postmark')
 ```
 
 <a name="queueing-mail"></a>
-### Queueing Mail
+### Пошта в черзі
 
 <a name="queueing-a-mail-message"></a>
-#### Queueing a Mail Message
+#### Постановка листа в чергу
 
-Since sending email messages can negatively impact the response time of your application, many developers choose to queue email messages for background sending. Laravel makes this easy using its built-in [unified queue API](/docs/{{version}}/queues). To queue a mail message, use the `queue` method on the `Mail` facade after specifying the message's recipients:
+Оскільки надсилання листів може негативно вплинути на час відповіді вашого застосунку, багато розробників ставлять листи в чергу на фонове надсилання. Laravel спрощує це завдяки вбудованому [єдиному API черг](/docs/{{version}}/queues). Щоб поставити лист у чергу, скористайтеся методом `queue` фасаду `Mail` після вказання отримувачів:
 
 ```php
 Mail::to($request->user())
@@ -998,12 +1001,12 @@ Mail::to($request->user())
     ->queue(new OrderShipped($order));
 ```
 
-This method will automatically take care of pushing a job onto the queue so the message is sent in the background. You will need to [configure your queues](/docs/{{version}}/queues) before using this feature.
+Цей метод автоматично подбає про те, щоб покласти завдання в чергу й надіслати повідомлення у фоні. Перш ніж користуватися цією можливістю, вам потрібно [налаштувати черги](/docs/{{version}}/queues).
 
 <a name="delayed-message-queueing"></a>
-#### Delayed Message Queueing
+#### Відкладена постановка листа в чергу
 
-If you wish to delay the delivery of a queued email message, you may use the `later` method. As its first argument, the `later` method accepts a `DateTime` instance indicating when the message should be sent:
+Якщо ви хочете відкласти доставку листа з черги, скористайтеся методом `later`. Першим аргументом метод `later` приймає екземпляр `DateTime`, який вказує, коли слід надіслати повідомлення:
 
 ```php
 Mail::to($request->user())
@@ -1013,9 +1016,9 @@ Mail::to($request->user())
 ```
 
 <a name="pushing-to-specific-queues"></a>
-#### Pushing to Specific Queues
+#### Відправка в конкретні черги
 
-Since all mailable classes generated using the `make:mail` command make use of the `Illuminate\Bus\Queueable` trait, you may call the `onQueue` and `onConnection` methods on any mailable class instance, allowing you to specify the connection and queue name for the message:
+Оскільки всі mailable-класи, згенеровані командою `make:mail`, використовують трейт `Illuminate\Bus\Queueable`, ви можете викликати методи `onQueue` та `onConnection` на будь-якому екземплярі mailable-класу, щоб вказати підключення та ім'я черги для повідомлення:
 
 ```php
 $message = (new OrderShipped($order))
@@ -1028,7 +1031,7 @@ Mail::to($request->user())
     ->queue($message);
 ```
 
-Alternatively, you may specify the connection and queue using the `Connection` and `Queue` attributes on the mailable class:
+Як варіант, ви можете вказати підключення й чергу атрибутами `Connection` та `Queue` у mailable-класі:
 
 ```php
 use Illuminate\Queue\Attributes\Connection;
@@ -1043,9 +1046,9 @@ class OrderShipped extends Mailable
 ```
 
 <a name="queueing-by-default"></a>
-#### Queueing by Default
+#### Постановка в чергу за замовчуванням
 
-If you have mailable classes that you want to always be queued, you may implement the `ShouldQueue` contract on the class. Now, even if you call the `send` method when mailing, the mailable will still be queued since it implements the contract:
+Якщо у вас є mailable-класи, які ви хочете завжди ставити в чергу, реалізуйте в них контракт `ShouldQueue`. Тепер, навіть якщо ви викличете метод `send`, лист усе одно потрапить у чергу, адже клас реалізує цей контракт:
 
 ```php
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -1057,11 +1060,11 @@ class OrderShipped extends Mailable implements ShouldQueue
 ```
 
 <a name="queued-mailables-and-database-transactions"></a>
-#### Queued Mailables and Database Transactions
+#### Листи в черзі та транзакції бази даних
 
-When queued mailables are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your mailable depends on these models, unexpected errors can occur when the job that sends the queued mailable is processed.
+Коли листи в черзі диспетчеризуються всередині транзакцій бази даних, черга може обробити їх ще до того, як транзакцію буде зафіксовано. Коли таке трапляється, будь-які зміни, які ви внесли до моделей чи записів у базі під час транзакції, ще можуть не бути в базі. Ба більше, будь-які моделі чи записи, створені всередині транзакції, можуть у базі не існувати. Якщо ваш лист залежить від цих моделей, під час обробки завдання, яке його надсилає, можуть виникнути несподівані помилки.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued mailable should be dispatched after all open database transactions have been committed by calling the `afterCommit` method when sending the mail message:
+Якщо опція конфігурації `after_commit` вашого підключення черги має значення `false`, ви все одно можете вказати, що конкретний лист у черзі слід диспетчеризувати після фіксації всіх відкритих транзакцій, - викличте метод `afterCommit` під час надсилання повідомлення:
 
 ```php
 Mail::to($request->user())->send(
@@ -1069,7 +1072,7 @@ Mail::to($request->user())->send(
 );
 ```
 
-Alternatively, you may call the `afterCommit` method from your mailable's constructor:
+Як варіант, ви можете викликати метод `afterCommit` у конструкторі свого mailable-класу:
 
 ```php
 <?php
@@ -1096,12 +1099,12 @@ class OrderShipped extends Mailable implements ShouldQueue
 ```
 
 > [!NOTE]
-> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).
+> Щоб дізнатися більше про обхід цих проблем, перегляньте документацію про [завдання в черзі та транзакції бази даних](/docs/{{version}}/queues#jobs-and-database-transactions).
 
 <a name="queued-email-failures"></a>
-#### Queued Email Failures
+#### Невдачі листів у черзі
 
-When a queued email fails, the `failed` method on the queued mailable class will be invoked if it has been defined. The `Throwable` instance that caused the queued email to fail will be passed to the `failed` method:
+Коли лист у черзі зазнає невдачі, у mailable-класі буде викликано метод `failed`, якщо його описано. До методу `failed` буде передано екземпляр `Throwable`, який спричинив невдачу:
 
 ```php
 <?php
@@ -1128,9 +1131,9 @@ class OrderDelayed extends Mailable implements ShouldQueue
 ```
 
 <a name="rendering-mailables"></a>
-## Rendering Mailables
+## Рендеринг mailable-класів
 
-Sometimes you may wish to capture the HTML content of a mailable without sending it. To accomplish this, you may call the `render` method of the mailable. This method will return the evaluated HTML content of the mailable as a string:
+Інколи вам може захотітися отримати HTML-вміст листа, не надсилаючи його. Для цього викличте метод `render` на mailable-класі. Цей метод поверне обчислений HTML-вміст листа рядком:
 
 ```php
 use App\Mail\InvoicePaid;
@@ -1142,9 +1145,9 @@ return (new InvoicePaid($invoice))->render();
 ```
 
 <a name="previewing-mailables-in-the-browser"></a>
-### Previewing Mailables in the Browser
+### Попередній перегляд листів у браузері
 
-When designing a mailable's template, it is convenient to quickly preview the rendered mailable in your browser like a typical Blade template. For this reason, Laravel allows you to return any mailable directly from a route closure or controller. When a mailable is returned, it will be rendered and displayed in the browser, allowing you to quickly preview its design without needing to send it to an actual email address:
+Розробляючи шаблон листа, зручно швидко переглядати відрендерений лист у браузері, як звичайний шаблон Blade. Тому Laravel дозволяє повертати будь-який mailable-клас напряму із замикання маршруту чи контролера. Коли повернуто mailable-клас, його буде відрендерено й показано в браузері, тож ви зможете швидко переглянути дизайн, не надсилаючи листа на справжню адресу:
 
 ```php
 Route::get('/mailable', function () {
@@ -1155,11 +1158,11 @@ Route::get('/mailable', function () {
 ```
 
 <a name="localizing-mailables"></a>
-## Localizing Mailables
+## Локалізація листів
 
-Laravel allows you to send mailables in a locale other than the request's current locale, and will even remember this locale if the mail is queued.
+Laravel дозволяє надсилати листи в локалі, відмінній від поточної локалі запиту, і навіть запам'ятає цю локаль, якщо лист поставлено в чергу.
 
-To accomplish this, the `Mail` facade offers a `locale` method to set the desired language. The application will change into this locale when the mailable's template is being evaluated and then revert back to the previous locale when evaluation is complete:
+Для цього фасад `Mail` пропонує метод `locale`, щоб задати потрібну мову. Застосунок перейде в цю локаль під час обчислення шаблону листа, а після завершення повернеться до попередньої:
 
 ```php
 Mail::to($request->user())->locale('es')->send(
@@ -1168,9 +1171,9 @@ Mail::to($request->user())->locale('es')->send(
 ```
 
 <a name="user-preferred-locales"></a>
-#### User Preferred Locales
+#### Бажані локалі користувачів
 
-Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:
+Інколи застосунки зберігають бажану локаль кожного користувача. Реалізувавши в одній чи кількох своїх моделях контракт `HasLocalePreference`, ви можете сказати Laravel використовувати цю збережену локаль під час надсилання пошти:
 
 ```php
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -1187,19 +1190,19 @@ class User extends Model implements HasLocalePreference
 }
 ```
 
-Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:
+Щойно ви реалізували цей інтерфейс, Laravel автоматично використовуватиме бажану локаль, надсилаючи моделі листи та сповіщення. Тому викликати метод `locale` при використанні цього інтерфейсу не потрібно:
 
 ```php
 Mail::to($request->user())->send(new OrderShipped($order));
 ```
 
 <a name="testing-mailables"></a>
-## Testing
+## Тестування
 
 <a name="testing-mailable-content"></a>
-### Testing Mailable Content
+### Тестування вмісту листа
 
-Laravel provides a variety of methods for inspecting your mailable's structure. In addition, Laravel provides several convenient methods for testing that your mailable contains the content that you expect:
+Laravel надає низку методів для огляду структури вашого листа. Крім того, Laravel надає кілька зручних методів, щоб перевірити, що ваш лист містить очікуваний вміст:
 
 ```php tab=Pest
 use App\Mail\InvoicePaid;
@@ -1270,14 +1273,14 @@ public function test_mailable_content(): void
 }
 ```
 
-As you might expect, the "HTML" assertions assert that the HTML version of your mailable contains a given string, while the "text" assertions assert that the plain-text version of your mailable contains a given string.
+Як ви й очікуєте, перевірки «HTML» стверджують, що HTML-версія вашого листа містить заданий рядок, а перевірки «text» - що заданий рядок містить текстова версія.
 
 <a name="testing-mailable-sending"></a>
-### Testing Mailable Sending
+### Тестування надсилання листа
 
-We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. Typically, the content of mailables is not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable.
+Радимо тестувати вміст ваших листів окремо від тестів, які перевіряють, що конкретний лист було «надіслано» конкретному користувачеві. Зазвичай вміст листів не стосується коду, який ви тестуєте, і достатньо просто перевірити, що Laravel отримав вказівку надіслати заданий лист.
 
-You may use the `Mail` facade's `fake` method to prevent mail from being sent. After calling the `Mail` facade's `fake` method, you may then assert that mailables were instructed to be sent to users and even inspect the data the mailables received:
+Метод `fake` фасаду `Mail` дозволяє завадити надсиланню пошти. Після виклику методу `fake` фасаду `Mail` ви можете перевіряти, що листи мали бути надіслані користувачам, і навіть оглядати дані, які вони отримали:
 
 ```php tab=Pest
 <?php
@@ -1360,7 +1363,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
+Якщо ви ставите листи в чергу на фонову доставку, користуйтеся методом `assertQueued` замість `assertSent`:
 
 ```php
 Mail::assertQueued(OrderShipped::class);
@@ -1369,13 +1372,13 @@ Mail::assertNothingQueued();
 Mail::assertQueuedCount(3);
 ```
 
-You can also assert the total number of mailables that have been sent or queued using the `assertOutgoingCount` method:
+Ви також можете перевірити загальну кількість надісланих або поставлених у чергу листів методом `assertOutgoingCount`:
 
 ```php
 Mail::assertOutgoingCount(3);
 ```
 
-You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
+Ви можете передати замикання методам `assertSent`, `assertNotSent`, `assertQueued` чи `assertNotQueued`, щоб перевірити, що було надіслано лист, який проходить заданий тест. Якщо надіслано щонайменше один лист, який проходить цей тест, перевірка буде успішною:
 
 ```php
 Mail::assertSent(function (OrderShipped $mail) use ($order) {
@@ -1383,7 +1386,7 @@ Mail::assertSent(function (OrderShipped $mail) use ($order) {
 });
 ```
 
-When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:
+Коли ви викликаєте методи перевірок фасаду `Mail`, екземпляр листа, який приймає передане замикання, надає корисні методи для його огляду:
 
 ```php
 Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) {
@@ -1398,7 +1401,7 @@ Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) 
 });
 ```
 
-The mailable instance also includes several helpful methods for examining the attachments on a mailable:
+Екземпляр листа також містить кілька корисних методів для огляду вкладень:
 
 ```php
 use Illuminate\Mail\Mailables\Attachment;
@@ -1424,7 +1427,7 @@ Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($pdfDat
 });
 ```
 
-You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
+Ви могли помітити, що є два методи для перевірки, що пошту не надіслано: `assertNotSent` та `assertNotQueued`. Інколи вам може захотітися перевірити, що пошту не було ані надіслано, **ані** поставлено в чергу. Для цього скористайтеся методами `assertNothingOutgoing` та `assertNotOutgoing`:
 
 ```php
 Mail::assertNothingOutgoing();
@@ -1435,26 +1438,26 @@ Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
 ```
 
 <a name="mail-and-local-development"></a>
-## Mail and Local Development
+## Пошта й локальна розробка
 
-When developing an application that sends email, you probably don't want to actually send emails to live email addresses. Laravel provides several ways to "disable" the actual sending of emails during local development.
+Розробляючи застосунок, який надсилає пошту, ви, найімовірніше, не хочете справді надсилати листи на живі адреси. Laravel надає кілька способів «вимкнути» реальне надсилання листів під час локальної розробки.
 
 <a name="log-driver"></a>
-#### Log Driver
+#### Драйвер log
 
-Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. Typically, this driver would only be used during local development. For more information on configuring your application per environment, check out the [configuration documentation](/docs/{{version}}/configuration#environment-configuration).
+Замість надсилати листи, поштовий драйвер `log` записуватиме всі повідомлення до ваших файлів логу для огляду. Зазвичай цей драйвер використовують лише під час локальної розробки. Докладніше про налаштування застосунку залежно від середовища читайте в [документації з конфігурації](/docs/{{version}}/configuration#environment-configuration).
 
 <a name="mailtrap"></a>
 #### HELO / Mailtrap / Mailpit
 
-Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
+Як варіант, ви можете скористатися сервісом на кшталт [HELO](https://usehelo.com) чи [Mailtrap](https://mailtrap.io) і драйвером `smtp`, щоб надсилати листи до «фіктивної» поштової скриньки, де ви зможете переглянути їх у справжньому поштовому клієнті. Перевага цього підходу в тому, що ви можете справді оглянути фінальні листи в переглядачі повідомлень Mailtrap.
 
-If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`.
+Якщо ви користуєтеся [Laravel Sail](/docs/{{version}}/sail), переглядати повідомлення можна через [Mailpit](https://github.com/axllent/mailpit). Коли Sail запущено, інтерфейс Mailpit доступний за адресою: `http://localhost:8025`.
 
 <a name="using-a-global-to-address"></a>
-#### Using a Global `to` Address
+#### Глобальна адреса `to`
 
-Finally, you may specify a global "to" address by invoking the `alwaysTo` method offered by the `Mail` facade. Typically, this method should be called from the `boot` method of one of your application's service providers:
+Нарешті, ви можете вказати глобальну адресу «to», викликавши метод `alwaysTo` фасаду `Mail`. Зазвичай цей метод викликають у методі `boot` одного із сервіс-провайдерів вашого застосунку:
 
 ```php
 use Illuminate\Support\Facades\Mail;
@@ -1470,12 +1473,12 @@ public function boot(): void
 }
 ```
 
-When using the `alwaysTo` method, any additional "cc" or "bcc" addresses on mail messages will be removed.
+Коли ви користуєтеся методом `alwaysTo`, будь-які додаткові адреси «cc» чи «bcc» у листах буде вилучено.
 
 <a name="events"></a>
-## Events
+## Події
 
-Laravel dispatches two events while sending mail messages. The `MessageSending` event is dispatched prior to a message being sent, while the `MessageSent` event is dispatched after a message has been sent. Remember, these events are dispatched when the mail is being *sent*, not when it is queued. You may create [event listeners](/docs/{{version}}/events) for these events within your application:
+Надсилаючи листи, Laravel диспетчеризує дві події. Подія `MessageSending` диспетчеризується перед надсиланням повідомлення, а подія `MessageSent` - після. Пам'ятайте: ці події диспетчеризуються, коли пошту *надсилають*, а не коли її ставлять у чергу. Ви можете створити [слухачів подій](/docs/{{version}}/events) для цих подій у своєму застосунку:
 
 ```php
 use Illuminate\Mail\Events\MessageSending;
@@ -1494,9 +1497,9 @@ class LogMessage
 ```
 
 <a name="custom-transports"></a>
-## Custom Transports
+## Власні транспорти
 
-Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that extends the `Symfony\Component\Mailer\Transport\AbstractTransport` class. Then, implement the `doSend` and `__toString` methods on your transport:
+Laravel містить різноманітні поштові транспорти; проте вам може захотітися написати власний, щоб доставляти пошту через сервіси, які Laravel не підтримує «з коробки». Для початку опишіть клас, який розширює `Symfony\Component\Mailer\Transport\AbstractTransport`. Далі реалізуйте у своєму транспорті методи `doSend` та `__toString`:
 
 ```php
 <?php
@@ -1547,7 +1550,7 @@ class MailchimpTransport extends AbstractTransport
 }
 ```
 
-Once you've defined your custom transport, you may register it via the `extend` method provided by the `Mail` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`. A `$config` argument will be passed to the closure provided to the `extend` method. This argument will contain the configuration array defined for the mailer in the application's `config/mail.php` configuration file:
+Щойно ви описали власний транспорт, зареєструйте його методом `extend` фасаду `Mail`. Зазвичай це роблять у методі `boot` вашого `AppServiceProvider`. До замикання, переданого методу `extend`, буде передано аргумент `$config`. Він міститиме масив конфігурації, описаний для мейлера у файлі `config/mail.php` вашого застосунку:
 
 ```php
 use App\Mail\MailchimpTransport;
@@ -1569,7 +1572,7 @@ public function boot(): void
 }
 ```
 
-Once your custom transport has been defined and registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:
+Щойно ваш власний транспорт описано й зареєстровано, ви можете створити у файлі `config/mail.php` опис мейлера, який використовує новий транспорт:
 
 ```php
 'mailchimp' => [
@@ -1580,15 +1583,15 @@ Once your custom transport has been defined and registered, you may create a mai
 ```
 
 <a name="additional-symfony-transports"></a>
-### Additional Symfony Transports
+### Додаткові транспорти Symfony
 
-Laravel includes support for some existing Symfony maintained mail transports like Mailgun and Postmark. However, you may wish to extend Laravel with support for additional Symfony maintained transports. You can do so by requiring the necessary Symfony mailer via Composer and registering the transport with Laravel. For example, you may install and register the "Brevo" (formerly "Sendinblue") Symfony mailer:
+Laravel підтримує деякі наявні поштові транспорти, які підтримує Symfony, - як-от Mailgun і Postmark. Проте вам може захотітися розширити Laravel підтримкою інших транспортів від Symfony. Це робиться підключенням потрібного мейлера Symfony через Composer і реєстрацією транспорту в Laravel. Наприклад, ви можете встановити й зареєструвати мейлер Symfony «Brevo» (раніше «Sendinblue»):
 
 ```shell
 composer require symfony/brevo-mailer symfony/http-client
 ```
 
-Once the Brevo mailer package has been installed, you may add an entry for your Brevo API credentials to your application's `services` configuration file:
+Щойно пакет мейлера Brevo встановлено, додайте запис із обліковими даними API Brevo до файлу конфігурації `services` вашого застосунку:
 
 ```php
 'brevo' => [
@@ -1596,7 +1599,7 @@ Once the Brevo mailer package has been installed, you may add an entry for your 
 ],
 ```
 
-Next, you may use the `Mail` facade's `extend` method to register the transport with Laravel. Typically, this should be done within the `boot` method of a service provider:
+Далі скористайтеся методом `extend` фасаду `Mail`, щоб зареєструвати транспорт у Laravel. Зазвичай це роблять у методі `boot` сервіс-провайдера:
 
 ```php
 use Illuminate\Support\Facades\Mail;
@@ -1620,7 +1623,7 @@ public function boot(): void
 }
 ```
 
-Once your transport has been registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:
+Щойно ваш транспорт зареєстровано, ви можете створити у файлі `config/mail.php` опис мейлера, який використовує новий транспорт:
 
 ```php
 'brevo' => [
