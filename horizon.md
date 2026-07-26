@@ -1,69 +1,72 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Horizon
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [Configuration](#configuration)
-    - [Dashboard Authorization](#dashboard-authorization)
-    - [Max Job Attempts](#max-job-attempts)
-    - [Job Timeout](#job-timeout)
-    - [Job Backoff](#job-backoff)
-    - [Other Worker Options](#other-worker-options)
-    - [Silenced Jobs](#silenced-jobs)
-- [Balancing Strategies](#balancing-strategies)
-    - [Auto Balancing](#auto-balancing)
-    - [Simple Balancing](#simple-balancing)
-    - [No Balancing](#no-balancing)
-- [Upgrading Horizon](#upgrading-horizon)
-- [Running Horizon](#running-horizon)
-    - [Deploying Horizon](#deploying-horizon)
-- [Tags](#tags)
-- [Notifications](#notifications)
-- [Metrics](#metrics)
-- [Deleting Failed Jobs](#deleting-failed-jobs)
-- [Clearing Jobs From Queues](#clearing-jobs-from-queues)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+    - [Конфігурація](#configuration)
+    - [Авторизація панелі](#dashboard-authorization)
+    - [Максимум спроб для завдання](#max-job-attempts)
+    - [Тайм-аут завдання](#job-timeout)
+    - [Затримка перед повтором](#job-backoff)
+    - [Інші опції воркерів](#other-worker-options)
+    - [Приглушені завдання](#silenced-jobs)
+- [Стратегії балансування](#balancing-strategies)
+    - [Автоматичне балансування](#auto-balancing)
+    - [Просте балансування](#simple-balancing)
+    - [Без балансування](#no-balancing)
+- [Оновлення Horizon](#upgrading-horizon)
+- [Запуск Horizon](#running-horizon)
+    - [Розгортання Horizon](#deploying-horizon)
+- [Теги](#tags)
+- [Сповіщення](#notifications)
+- [Метрики](#metrics)
+- [Видалення провалених завдань](#deleting-failed-jobs)
+- [Очищення завдань із черг](#clearing-jobs-from-queues)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
 > [!NOTE]
-> Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/{{version}}/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
+> Перш ніж заглиблюватися в Laravel Horizon, ознайомтеся з базовими [сервісами черг](/docs/{{version}}/queues) у Laravel. Horizon доповнює черги Laravel додатковими можливостями, які можуть заплутати, якщо ви ще не знайомі з основами черг у Laravel.
 
-[Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](/docs/{{version}}/queues). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
+[Laravel Horizon](https://github.com/laravel/horizon) надає гарну панель керування та конфігурацію в коді для ваших [черг на Redis](/docs/{{version}}/queues) у Laravel. Horizon дозволяє легко стежити за ключовими метриками системи черг - як-от пропускна здатність, час виконання та провали завдань.
 
-When using Horizon, all of your queue worker configuration is stored in a single, simple configuration file. By defining your application's worker configuration in a version controlled file, you may easily scale or modify your application's queue workers when deploying your application.
+Коли ви користуєтеся Horizon, уся конфігурація воркерів черг зберігається в одному простому конфігураційному файлі. Описавши конфігурацію воркерів у файлі під контролем версій, ви можете легко масштабувати чи змінювати воркери черг вашого застосунку під час розгортання.
 
 <img src="https://laravel.com/img/docs/horizon-example.png">
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
 > [!WARNING]
-> Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file. Horizon is not compatible with Redis Cluster at this time.
+> Laravel Horizon вимагає, щоб ваші черги працювали на [Redis](https://redis.io). Тому переконайтеся, що підключення черги у вашому конфігураційному файлі `config/queue.php` має значення `redis`. Наразі Horizon не сумісний із Redis Cluster.
 
-You may install Horizon into your project using the Composer package manager:
+Ви можете встановити Horizon у свій проєкт через менеджер пакетів Composer:
 
 ```shell
 composer require laravel/horizon
 ```
 
-After installing Horizon, publish its assets using the `horizon:install` Artisan command:
+Після встановлення Horizon опублікуйте його ресурси артизан-командою `horizon:install`:
 
 ```shell
 php artisan horizon:install
 ```
 
 <a name="configuration"></a>
-### Configuration
+### Конфігурація
 
-After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure the queue worker options for your application. Each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
+Після публікації ресурсів Horizon його основний конфігураційний файл буде розташований у `config/horizon.php`. Цей файл дозволяє налаштувати опції воркерів черг вашого застосунку. Кожна опція конфігурації супроводжується описом призначення, тож обов'язково ретельно перегляньте цей файл.
 
 > [!WARNING]
-> Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
+> Horizon використовує всередині підключення Redis на ім'я `horizon`. Це ім'я зарезервоване й не має призначатися іншому підключенню Redis у конфігураційному файлі `database.php` чи як значення опції `use` у файлі `horizon.php`.
 
 <a name="content-security-policy-csp-nonce"></a>
-#### Content Security Policy (CSP) Nonce
+#### Nonce для Content Security Policy (CSP)
 
-If you wish to use a [nonce attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) on the script and style tags used in Horizon views as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may use the `Horizon::cspNonce` method to specify the nonce to use. This method should typically be invoked within middleware so that a new nonce is assigned for each request:
+Якщо ви хочете використовувати [атрибут nonce](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) на тегах script і style у представленнях Horizon у межах вашої [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), скористайтеся методом `Horizon::cspNonce`, щоб указати потрібний nonce. Зазвичай цей метод викликають у `middleware`, щоб для кожного запиту призначався новий nonce:
 
 ```php
 use Closure;
@@ -79,7 +82,7 @@ public function handle(Request $request, Closure $next): Response
 }
 ```
 
-You may add this middleware to the `middleware` option in your application's `config/horizon.php` configuration file:
+Ви можете додати це `middleware` до опції `middleware` у конфігураційному файлі `config/horizon.php` вашого застосунку:
 
 ```php
 'middleware' => [
@@ -89,9 +92,9 @@ You may add this middleware to the `middleware` option in your application's `co
 ```
 
 <a name="environments"></a>
-#### Environments
+#### Середовища
 
-After installation, the primary Horizon configuration option that you should familiarize yourself with is the `environments` configuration option. This configuration option is an array of environments that your application runs on and defines the worker process options for each environment. By default, this entry contains a `production` and `local` environment. However, you are free to add more environments as needed:
+Після встановлення головна опція конфігурації Horizon, з якою вам варто ознайомитися, - `environments`. Ця опція є масивом середовищ, у яких працює ваш застосунок, і визначає опції процесів-воркерів для кожного з них. За замовчуванням цей запис містить середовища `production` і `local`. Проте ви вільні додати за потреби й інші:
 
 ```php
 'environments' => [
@@ -111,7 +114,7 @@ After installation, the primary Horizon configuration option that you should fam
 ],
 ```
 
-You may also define a wildcard environment (`*`) which will be used when no other matching environment is found:
+Ви також можете визначити середовище-джокер (`*`), яке буде використано, коли не знайдено жодного іншого відповідного середовища:
 
 ```php
 'environments' => [
@@ -125,22 +128,22 @@ You may also define a wildcard environment (`*`) which will be used when no othe
 ],
 ```
 
-When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/{{version}}/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
+Коли ви запускаєте Horizon, він використає опції конфігурації процесів-воркерів для того середовища, у якому працює ваш застосунок. Зазвичай середовище визначається значенням [змінної оточення](/docs/{{version}}/configuration#determining-the-current-environment) `APP_ENV`. Наприклад, стандартне середовище Horizon `local` налаштоване запускати три процеси-воркери й автоматично балансувати їхню кількість між чергами. Стандартне середовище `production` налаштоване запускати максимум 10 процесів-воркерів і автоматично балансувати їхню кількість між чергами.
 
 > [!WARNING]
-> You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/{{version}}/configuration#environment-configuration) on which you plan to run Horizon.
+> Переконайтеся, що частина `environments` вашого конфігураційного файлу `horizon` містить запис для кожного [середовища](/docs/{{version}}/configuration#environment-configuration), у якому ви плануєте запускати Horizon.
 
 <a name="supervisors"></a>
-#### Supervisors
+#### Супервізори
 
-As you can see in Horizon's default configuration file, each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
+Як видно зі стандартного конфігураційного файлу Horizon, кожне середовище може містити один чи кілька «супервізорів». За замовчуванням конфігураційний файл описує супервізор як `supervisor-1`; проте ви вільні називати супервізори як завгодно. Кожен супервізор, по суті, відповідає за «нагляд» за групою процесів-воркерів і дбає про балансування воркерів між чергами.
 
-You may add additional supervisors to a given environment if you would like to define a new group of worker processes that should run in that environment. You may choose to do this if you would like to define a different balancing strategy or worker process count for a given queue used by your application.
+Ви можете додати до заданого середовища додаткові супервізори, якщо хочете описати нову групу процесів-воркерів для цього середовища. Це може знадобитися, якщо ви хочете задати іншу стратегію балансування чи кількість процесів-воркерів для певної черги вашого застосунку.
 
 <a name="maintenance-mode"></a>
-#### Maintenance Mode
+#### Режим обслуговування
 
-While your application is in [maintenance mode](/docs/{{version}}/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
+Доки ваш застосунок перебуває в [режимі обслуговування](/docs/{{version}}/configuration#maintenance-mode), Horizon не оброблятиме завдань із черг, якщо в конфігураційному файлі Horizon опція супервізора `force` не має значення `true`:
 
 ```php
 'environments' => [
@@ -154,14 +157,14 @@ While your application is in [maintenance mode](/docs/{{version}}/configuration#
 ```
 
 <a name="default-values"></a>
-#### Default Values
+#### Значення за замовчуванням
 
-Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors.
+У стандартному конфігураційному файлі Horizon ви помітите опцію `defaults`. Ця опція задає значення за замовчуванням для [супервізорів](#supervisors) вашого застосунку. Стандартні значення супервізора буде об'єднано з конфігурацією супервізора для кожного середовища, тож ви зможете уникнути зайвих повторів під час опису супервізорів.
 
 <a name="dashboard-authorization"></a>
-### Dashboard Authorization
+### Авторизація панелі
 
-The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/{{version}}/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
+Панель Horizon доступна за маршрутом `/horizon`. За замовчуванням ви зможете відкрити її лише в середовищі `local`. Проте у вашому файлі `app/Providers/HorizonServiceProvider.php` є визначення [гейта авторизації](/docs/{{version}}/authorization#gates). Цей гейт керує доступом до Horizon у **нелокальних** середовищах. Ви вільні змінювати його як потрібно, щоб обмежити доступ до вашої установки Horizon:
 
 ```php
 /**
@@ -180,17 +183,17 @@ protected function gate(): void
 ```
 
 <a name="alternative-authentication-strategies"></a>
-#### Alternative Authentication Strategies
+#### Альтернативні стратегії автентифікації
 
-Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication.
+Пам'ятайте, що Laravel автоматично впроваджує автентифікованого користувача в замикання гейта. Якщо ваш застосунок захищає Horizon іншим способом - наприклад, обмеженнями за IP, - вашим користувачам Horizon може не знадобитися «входити». Тому вам треба буде змінити сигнатуру замикання вище з `function (User $user)` на `function (User $user = null)`, щоб Laravel не вимагав автентифікації.
 
 <a name="max-job-attempts"></a>
-### Max Job Attempts
+### Максимум спроб для завдання
 
 > [!NOTE]
-> Before refining these options, make sure you are familiar with Laravel's default [queue services](/docs/{{version}}/queues#max-job-attempts-and-timeout) and the concept of 'attempts'.
+> Перш ніж налаштовувати ці опції, переконайтеся, що ви знайомі зі стандартними [сервісами черг](/docs/{{version}}/queues#max-job-attempts-and-timeout) у Laravel і з поняттям «спроб».
 
-You can define the maximum number of attempts a job can consume within a supervisor's configuration:
+Ви можете задати максимальну кількість спроб, які може витратити завдання, у конфігурації супервізора:
 
 ```php
 'environments' => [
@@ -204,18 +207,18 @@ You can define the maximum number of attempts a job can consume within a supervi
 ```
 
 > [!NOTE]
-> This option is similar to the `--tries` option when using the Artisan command to process queues.
+> Ця опція подібна до опції `--tries` під час обробки черг артизан-командою.
 
-Adjusting the `tries` option is essential when using middlewares such as `WithoutOverlapping` or `RateLimited` because they consume attempts. To handle this, adjust the `tries` configuration value either at the supervisor level or by defining the `$tries` property on the job class.
+Налаштування опції `tries` вкрай важливе, коли ви користуєтеся `middleware` на кшталт `WithoutOverlapping` чи `RateLimited`, адже вони витрачають спроби. Щоб це врахувати, підлаштуйте значення `tries` або на рівні супервізора, або через властивість `$tries` у класі завдання.
 
-If you don't set the `tries` option, Horizon defaults to a single attempt, unless the job class defines `$tries`, which takes precedence over the Horizon configuration.
+Якщо ви не задасте опцію `tries`, Horizon за замовчуванням використає одну спробу - хіба що клас завдання визначає `$tries`, що має перевагу над конфігурацією Horizon.
 
-Setting `tries` or `$tries` to 0 allows unlimited attempts, which is ideal when the number of attempts is uncertain. To prevent endless failures, you can limit the number of exceptions allowed by setting the `$maxExceptions` property on the job class.
+Значення `tries` чи `$tries`, встановлене в 0, дозволяє необмежену кількість спроб, що ідеально, коли кількість спроб наперед невідома. Щоб запобігти нескінченним провалам, ви можете обмежити кількість дозволених винятків, задавши властивість `$maxExceptions` у класі завдання.
 
 <a name="job-timeout"></a>
-### Job Timeout
+### Тайм-аут завдання
 
-Similarly, you can set a `timeout` value at the supervisor level, which specifies how many seconds a worker process can run a job before it's forcefully terminated. Once terminated, the job will either be retried or marked as failed, depending on your queue configuration:
+Так само ви можете задати значення `timeout` на рівні супервізора - воно визначає, скільки секунд процес-воркер може виконувати завдання, перш ніж його буде примусово завершено. Після завершення завдання буде або повторено, або позначено як провалене - залежно від конфігурації вашої черги:
 
 ```php
 'environments' => [
@@ -229,12 +232,12 @@ Similarly, you can set a `timeout` value at the supervisor level, which specifie
 ```
 
 > [!WARNING]
-> When using the `auto` balancing strategy, Horizon will consider in-progress workers as "hanging" and force-kill them after the Horizon timeout during scale down. Always ensure the Horizon timeout is greater than any job-level timeout, otherwise jobs may be terminated mid-execution. In addition, the `timeout` value should always be at least a few seconds shorter than the `retry_after` value defined in your `config/queue.php` configuration file. Otherwise, your jobs may be processed twice.
+> Зі стратегією балансування `auto` Horizon вважатиме воркери, що виконують завдання, «завислими» й примусово вб'є їх після тайм-ауту Horizon під час зменшення масштабу. Завжди стежте, щоб тайм-аут Horizon був більшим за будь-який тайм-аут на рівні завдання, інакше завдання можуть бути перервані на середині виконання. Крім того, значення `timeout` завжди має бути щонайменше на кілька секунд меншим за значення `retry_after`, задане у вашому конфігураційному файлі `config/queue.php`. Інакше ваші завдання можуть бути оброблені двічі.
 
 <a name="job-backoff"></a>
-### Job Backoff
+### Затримка перед повтором
 
-You can define the `backoff` value at the supervisor level to specify how long Horizon should wait before retrying a job that encounters an unhandled exception:
+Ви можете задати значення `backoff` на рівні супервізора, щоб указати, як довго Horizon має чекати, перш ніж повторити завдання, яке зіткнулося з необробленим винятком:
 
 ```php
 'environments' => [
@@ -247,7 +250,7 @@ You can define the `backoff` value at the supervisor level to specify how long H
 ],
 ```
 
-You may also configure "exponential" backoffs by using an array for the `backoff` value. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
+Ви також можете налаштувати «експоненційні» затримки, передавши в `backoff` масив. У цьому прикладі затримка перед повтором становитиме 1 секунду для першої спроби, 5 секунд для другої, 10 секунд для третьої й 10 секунд для кожної наступної, якщо спроби ще лишилися:
 
 ```php
 'environments' => [
@@ -261,9 +264,9 @@ You may also configure "exponential" backoffs by using an array for the `backoff
 ```
 
 <a name="other-worker-options"></a>
-### Other Worker Options
+### Інші опції воркерів
 
-In addition to `tries`, `timeout`, and `backoff`, each supervisor accepts several other options that control how its worker processes behave and when they are automatically restarted. Periodically restarting workers is a good practice for long-running processes, as it helps guard against memory leaks:
+Окрім `tries`, `timeout` і `backoff`, кожен супервізор приймає ще кілька опцій, які керують поведінкою його процесів-воркерів і тим, коли їх автоматично перезапускати. Періодичний перезапуск воркерів - хороша практика для довготривалих процесів, адже вона допомагає захиститися від витоків пам'яті:
 
 ```php
 'environments' => [
@@ -283,19 +286,19 @@ In addition to `tries`, `timeout`, and `backoff`, each supervisor accepts severa
 
 <div class="content-list" markdown="1">
 
-- `memory` defines the maximum amount of memory, in megabytes, that a single worker process may consume before it is restarted. By default, this value is `128`.
-- `maxJobs` defines the number of jobs a worker should process before restarting. A value of `0` indicates that workers should not be restarted based on the number of jobs processed. By default, this value is `0`.
-- `maxTime` defines the number of seconds a worker should run before restarting. A value of `0` indicates that workers should not be restarted based on time. By default, this value is `0`.
-- `sleep` defines the number of seconds a worker should wait when no job is available before polling the queue for new jobs again. By default, this value is `3`.
-- `rest` defines the number of seconds to pause between processing each job. By default, this value is `0`.
-- `nice` defines the "niceness" (scheduling priority) of the worker processes. A higher value gives the process a lower priority. By default, this value is `0`.
+- `memory` визначає максимальний обсяг пам'яті в мегабайтах, який може спожити один процес-воркер, перш ніж його буде перезапущено. За замовчуванням це значення - `128`.
+- `maxJobs` визначає кількість завдань, які воркер має обробити перед перезапуском. Значення `0` означає, що воркери не перезапускатимуться за кількістю оброблених завдань. За замовчуванням це значення - `0`.
+- `maxTime` визначає кількість секунд, які воркер має пропрацювати перед перезапуском. Значення `0` означає, що воркери не перезапускатимуться за часом. За замовчуванням це значення - `0`.
+- `sleep` визначає кількість секунд, які воркер має почекати за відсутності завдань, перш ніж знову опитати чергу. За замовчуванням це значення - `3`.
+- `rest` визначає кількість секунд паузи між обробкою кожного завдання. За замовчуванням це значення - `0`.
+- `nice` визначає «люб'язність» (пріоритет планування) процесів-воркерів. Вище значення дає процесу нижчий пріоритет. За замовчуванням це значення - `0`.
 
 </div>
 
 <a name="silenced-jobs"></a>
-### Silenced Jobs
+### Приглушені завдання
 
-Sometimes, you may not be interested in viewing certain jobs dispatched by your application or third-party packages. Instead of these jobs taking up space in your "Completed Jobs" list, you can silence them. To get started, add the job's class name to the `silenced` configuration option in your application's `horizon` configuration file:
+Іноді вам можуть бути нецікаві певні завдання, які відправляє ваш застосунок чи сторонні пакети. Замість того щоб вони займали місце у вашому списку «Completed Jobs», ви можете їх приглушити. Для початку додайте ім'я класу завдання до опції конфігурації `silenced` у файлі `horizon` вашого застосунку:
 
 ```php
 'silenced' => [
@@ -303,7 +306,7 @@ Sometimes, you may not be interested in viewing certain jobs dispatched by your 
 ],
 ```
 
-In addition to silencing individual job classes, Horizon also supports silencing jobs based on [tags](#tags). This can be useful if you want to hide multiple jobs that share a common tag:
+Окрім приглушення окремих класів завдань, Horizon підтримує також приглушення за [тегами](#tags). Це стане в пригоді, якщо ви хочете сховати кілька завдань зі спільним тегом:
 
 ```php
 'silenced_tags' => [
@@ -311,7 +314,7 @@ In addition to silencing individual job classes, Horizon also supports silencing
 ],
 ```
 
-Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Contracts\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:
+Або ж завдання, яке ви хочете приглушити, може реалізувати інтерфейс `Laravel\Horizon\Contracts\Silenced`. Якщо завдання реалізує цей інтерфейс, його буде приглушено автоматично, навіть якщо його немає в масиві конфігурації `silenced`:
 
 ```php
 use Laravel\Horizon\Contracts\Silenced;
@@ -325,25 +328,25 @@ class ProcessPodcast implements ShouldQueue, Silenced
 ```
 
 <a name="balancing-strategies"></a>
-## Balancing Strategies
+## Стратегії балансування
 
-Each supervisor can process one or more queues but unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `auto`, `simple`, and `false`.
+Кожен супервізор може обробляти одну чи кілька черг, але, на відміну від стандартної системи черг Laravel, Horizon дозволяє обрати одну з трьох стратегій балансування воркерів: `auto`, `simple` та `false`.
 
 <a name="auto-balancing"></a>
-### Auto Balancing
+### Автоматичне балансування
 
-The `auto` strategy, which is the default strategy, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `default` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
+Стратегія `auto`, яка є стандартною, підлаштовує кількість процесів-воркерів на чергу відповідно до її поточного навантаження. Наприклад, якщо у вашій черзі `notifications` 1000 завдань в очікуванні, а черга `default` порожня, Horizon виділить більше воркерів на чергу `notifications`, доки та не спорожніє.
 
-When using the `auto` strategy, you may also configure the `minProcesses` and `maxProcesses` configuration options:
+Зі стратегією `auto` ви можете також налаштувати опції конфігурації `minProcesses` та `maxProcesses`:
 
 <div class="content-list" markdown="1">
 
-- `minProcesses` defines the minimum number of worker processes per queue. This value must be greater than or equal to 1.
-- `maxProcesses` defines the maximum total number of worker processes Horizon may scale up to across all queues. This value should typically be greater than the number of queues multiplied by the `minProcesses` value. To prevent the supervisor from spawning any processes, you may set this value to 0.
+- `minProcesses` визначає мінімальну кількість процесів-воркерів на чергу. Це значення має бути більшим за 1 або дорівнювати йому.
+- `maxProcesses` визначає максимальну загальну кількість процесів-воркерів, до якої Horizon може масштабуватися по всіх чергах. Зазвичай це значення має бути більшим за кількість черг, помножену на `minProcesses`. Щоб супервізор не породжував жодних процесів, ви можете задати тут 0.
 
 </div>
 
-For example, you may configure Horizon to maintain at least one process per queue and scale up to a total of 10 worker processes:
+Наприклад, ви можете налаштувати Horizon тримати щонайменше один процес на чергу й масштабуватися до 10 процесів-воркерів загалом:
 
 ```php
 'environments' => [
@@ -362,23 +365,23 @@ For example, you may configure Horizon to maintain at least one process per queu
 ],
 ```
 
-The `autoScalingStrategy` configuration option determines how Horizon will assign more worker processes to queues. You can choose between two strategies:
+Опція конфігурації `autoScalingStrategy` визначає, як Horizon призначатиме чергам більше процесів-воркерів. Ви можете обрати одну з двох стратегій:
 
 <div class="content-list" markdown="1">
 
-- The `time` strategy will assign workers based on the total estimated amount of time it will take to clear the queue.
-- The `size` strategy will assign workers based on the total number of jobs on the queue.
+- Стратегія `time` призначатиме воркерів за загальним оцінюваним часом, потрібним, щоб розібрати чергу.
+- Стратегія `size` призначатиме воркерів за загальною кількістю завдань у черзі.
 
 </div>
 
-The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
+Значення конфігурації `balanceMaxShift` і `balanceCooldown` визначають, як швидко Horizon масштабуватиметься під потребу у воркерах. У прикладі вище щотри секунди створюватиметься чи знищуватиметься максимум один новий процес. Ви вільні підлаштувати ці значення під потреби вашого застосунку.
 
 <a name="auto-queue-priorities"></a>
-#### Queue Priorities and Auto Balancing
+#### Пріоритети черг і автоматичне балансування
 
-When using the `auto` balancing strategy, Horizon does not enforce strict priority between queues. The order of queues in a supervisor's configuration does not affect how worker processes are assigned. Instead, Horizon relies on the selected `autoScalingStrategy` to dynamically allocate worker processes based on queue load.
+Зі стратегією балансування `auto` Horizon не забезпечує суворого пріоритету між чергами. Порядок черг у конфігурації супервізора не впливає на те, як призначаються процеси-воркери. Натомість Horizon спирається на обрану `autoScalingStrategy`, щоб динамічно розподіляти процеси-воркери за навантаженням черг.
 
-For example, in the following configuration, the high queue is not prioritized over the default queue, despite appearing first in the list:
+Наприклад, у наведеній нижче конфігурації черга high не має пріоритету над чергою default, попри те що стоїть у списку першою:
 
 ```php
 'environments' => [
@@ -393,7 +396,7 @@ For example, in the following configuration, the high queue is not prioritized o
 ],
 ```
 
-If you need to enforce a relative priority between queues, you may define multiple supervisors and explicitly allocate processing resources:
+Якщо вам потрібен відносний пріоритет між чергами, ви можете описати кілька супервізорів і явно розподілити обчислювальні ресурси:
 
 ```php
 'environments' => [
@@ -414,15 +417,15 @@ If you need to enforce a relative priority between queues, you may define multip
 ],
 ```
 
-In this example, the default `queue` can scale up to 10 processes, while the `images` queue is limited to one process. This configuration ensures that your queues can scale independently.
+У цьому прикладі черга default може масштабуватися до 10 процесів, тоді як черга `images` обмежена одним процесом. Така конфігурація гарантує, що ваші черги масштабуватимуться незалежно.
 
 > [!NOTE]
-> When dispatching resource-intensive jobs, it's sometimes best to assign them to a dedicated queue with a limited `maxProcesses` value. Otherwise, these jobs could consume excessive CPU resources and overload your system.
+> Відправляючи ресурсомісткі завдання, іноді найкраще призначити їм окрему чергу з обмеженим значенням `maxProcesses`. Інакше ці завдання можуть з'їсти надмірно багато ресурсів CPU й перевантажити вашу систему.
 
 <a name="simple-balancing"></a>
-### Simple Balancing
+### Просте балансування
 
-The `simple` strategy distributes worker processes evenly across the specified queues. With this strategy, Horizon does not automatically scale the number of worker processes. Rather, it uses a fixed number of processes:
+Стратегія `simple` розподіляє процеси-воркери рівномірно між указаними чергами. З цією стратегією Horizon не масштабує кількість процесів-воркерів автоматично, а використовує фіксовану кількість:
 
 ```php
 'environments' => [
@@ -437,9 +440,9 @@ The `simple` strategy distributes worker processes evenly across the specified q
 ],
 ```
 
-In the example above, Horizon will assign 5 processes to each queue, splitting the total of 10 evenly.
+У прикладі вище Horizon призначить кожній черзі по 5 процесів, розділивши загальні 10 порівну.
 
-If you'd like to control the number of worker processes assigned to each queue individually, you can define multiple supervisors:
+Якщо ви хочете керувати кількістю процесів-воркерів для кожної черги окремо, опишіть кілька супервізорів:
 
 ```php
 'environments' => [
@@ -460,12 +463,12 @@ If you'd like to control the number of worker processes assigned to each queue i
 ],
 ```
 
-With this configuration, Horizon will assign 10 processes to the `default` queue and 2 processes to the `notifications` queue.
+За такої конфігурації Horizon призначить 10 процесів черзі `default` і 2 процеси черзі `notifications`.
 
 <a name="no-balancing"></a>
-### No Balancing
+### Без балансування
 
-When the `balance` option is set to `false`, Horizon processes queues strictly in the order they're listed, similar to Laravel's default queue system. However, it will still scale the number of worker processes if jobs begin to accumulate:
+Коли опція `balance` має значення `false`, Horizon обробляє черги строго в тому порядку, у якому їх перелічено, - подібно до стандартної системи черг Laravel. Проте він усе одно масштабуватиме кількість процесів-воркерів, якщо завдання почнуть накопичуватися:
 
 ```php
 'environments' => [
@@ -481,32 +484,32 @@ When the `balance` option is set to `false`, Horizon processes queues strictly i
 ],
 ```
 
-In the example above, jobs in the `default` queue are always prioritized over jobs in the `notifications` queue. For instance, if there are 1,000 jobs in `default` and only 10 in `notifications`, Horizon will fully process all `default` jobs before handling any from `notifications`.
+У прикладі вище завдання з черги `default` завжди матимуть пріоритет над завданнями з черги `notifications`. Наприклад, якщо в `default` 1000 завдань, а в `notifications` лише 10, Horizon повністю обробить усі завдання `default`, перш ніж візьметься за `notifications`.
 
-You can control Horizon's ability to scale worker processes using the `minProcesses` and `maxProcesses` options:
+Ви можете керувати здатністю Horizon масштабувати процеси-воркери через опції `minProcesses` та `maxProcesses`:
 
 <div class="content-list" markdown="1">
 
-- `minProcesses` defines the minimum number of worker processes in total. This value must be greater than or equal to 1.
-- `maxProcesses` defines the maximum total number of worker processes Horizon may scale up to.
+- `minProcesses` визначає мінімальну загальну кількість процесів-воркерів. Це значення має бути більшим за 1 або дорівнювати йому.
+- `maxProcesses` визначає максимальну загальну кількість процесів-воркерів, до якої Horizon може масштабуватися.
 
 </div>
 
 <a name="upgrading-horizon"></a>
-## Upgrading Horizon
+## Оновлення Horizon
 
-When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
+Оновлюючись до нової мажорної версії Horizon, обов'язково уважно перегляньте [посібник з оновлення](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
 <a name="running-horizon"></a>
-## Running Horizon
+## Запуск Horizon
 
-Once you have configured your supervisors and workers in your application's `config/horizon.php` configuration file, you may start Horizon using the `horizon` Artisan command. This single command will start all of the configured worker processes for the current environment:
+Коли ви налаштували супервізори й воркери в конфігураційному файлі `config/horizon.php` вашого застосунку, запустіть Horizon артизан-командою `horizon`. Ця єдина команда запустить усі налаштовані процеси-воркери для поточного середовища:
 
 ```shell
 php artisan horizon
 ```
 
-You may pause the Horizon process and instruct it to continue processing jobs using the `horizon:pause` and `horizon:continue` Artisan commands:
+Ви можете призупинити процес Horizon і знову дозволити йому обробляти завдання артизан-командами `horizon:pause` та `horizon:continue`:
 
 ```shell
 php artisan horizon:pause
@@ -514,7 +517,7 @@ php artisan horizon:pause
 php artisan horizon:continue
 ```
 
-You may also pause and continue specific Horizon [supervisors](#supervisors) using the `horizon:pause-supervisor` and `horizon:continue-supervisor` Artisan commands:
+Ви також можете призупиняти й продовжувати роботу окремих [супервізорів](#supervisors) Horizon артизан-командами `horizon:pause-supervisor` та `horizon:continue-supervisor`:
 
 ```shell
 php artisan horizon:pause-supervisor supervisor-1
@@ -522,46 +525,46 @@ php artisan horizon:pause-supervisor supervisor-1
 php artisan horizon:continue-supervisor supervisor-1
 ```
 
-You may check the current status of the Horizon process using the `horizon:status` Artisan command:
+Перевірити поточний стан процесу Horizon можна артизан-командою `horizon:status`:
 
 ```shell
 php artisan horizon:status
 ```
 
-You may check the current status of a specific Horizon [supervisor](#supervisors) using the `horizon:supervisor-status` Artisan command:
+Перевірити поточний стан окремого [супервізора](#supervisors) Horizon можна артизан-командою `horizon:supervisor-status`:
 
 ```shell
 php artisan horizon:supervisor-status supervisor-1
 ```
 
-You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed will be completed and then Horizon will stop executing:
+Ви можете плавно завершити процес Horizon артизан-командою `horizon:terminate`. Усі завдання, які наразі обробляються, буде завершено, після чого Horizon зупиниться:
 
 ```shell
 php artisan horizon:terminate
 ```
 
 <a name="automatically-restarting-horizon"></a>
-#### Automatically Restarting Horizon
+#### Автоматичний перезапуск Horizon
 
-During local development, you may run the `horizon:listen` command. When using the `horizon:listen` command, you don't have to manually restart Horizon when you want to reload your updated code. Before using this feature, you should ensure that [Node](https://nodejs.org) is installed within your local development environment. In addition, you should install the [Chokidar](https://github.com/paulmillr/chokidar) file-watching library within your project:
+Під час локальної розробки ви можете запускати команду `horizon:listen`. Із командою `horizon:listen` вам не доведеться вручну перезапускати Horizon, щоб підхопити оновлений код. Перш ніж користуватися цією можливістю, переконайтеся, що у вашому локальному середовищі розробки встановлено [Node](https://nodejs.org). Крім того, встановіть у своєму проєкті бібліотеку стеження за файлами [Chokidar](https://github.com/paulmillr/chokidar):
 
 ```shell
 npm install --save-dev chokidar
 ```
 
-Once Chokidar is installed, you may start Horizon using the `horizon:listen` command:
+Коли Chokidar встановлено, ви можете запускати Horizon командою `horizon:listen`:
 
 ```shell
 php artisan horizon:listen
 ```
 
-When running within Docker or Vagrant, you should use the `--poll` option:
+Працюючи в Docker чи Vagrant, скористайтеся опцією `--poll`:
 
 ```shell
 php artisan horizon:listen --poll
 ```
 
-You may configure the directories and files that should be watched using the `watch` configuration option within your application's `config/horizon.php` configuration file:
+Ви можете налаштувати каталоги й файли, за якими слід стежити, через опцію конфігурації `watch` у файлі `config/horizon.php` вашого застосунку:
 
 ```php
 'watch' => [
@@ -578,32 +581,32 @@ You may configure the directories and files that should be watched using the `wa
 ```
 
 <a name="deploying-horizon"></a>
-### Deploying Horizon
+### Розгортання Horizon
 
-When you're ready to deploy Horizon to your application's actual server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it exits unexpectedly. Don't worry, we'll discuss how to install a process monitor below.
+Коли ви готові розгорнути Horizon на справжньому сервері вашого застосунку, налаштуйте монітор процесів, який стежитиме за командою `php artisan horizon` і перезапускатиме її, якщо та несподівано завершиться. Не хвилюйтеся - нижче ми розповімо, як встановити монітор процесів.
 
-During your application's deployment process, you should instruct the Horizon process to terminate so that it will be restarted by your process monitor and receive your code changes:
+Під час розгортання застосунку вам слід дати процесу Horizon команду завершитися, щоб монітор процесів перезапустив його вже з вашими змінами в коді:
 
 ```shell
 php artisan horizon:terminate
 ```
 
 <a name="installing-supervisor"></a>
-#### Installing Supervisor
+#### Встановлення Supervisor
 
-Supervisor is a process monitor for the Linux operating system and will automatically restart your `horizon` process if it stops executing. To install Supervisor on Ubuntu, you may use the following command. If you are not using Ubuntu, you can likely install Supervisor using your operating system's package manager:
+Supervisor - це монітор процесів для Linux, який автоматично перезапустить ваш процес `horizon`, якщо той зупиниться. Щоб встановити Supervisor на Ubuntu, скористайтеся такою командою. Якщо ви не на Ubuntu, ви, найімовірніше, зможете встановити Supervisor через менеджер пакетів вашої операційної системи:
 
 ```shell
 sudo apt-get install supervisor
 ```
 
 > [!NOTE]
-> If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Cloud](https://cloud.laravel.com), which can manage background processes for your Laravel applications.
+> Якщо налаштування Supervisor власноруч видається надто складним, розгляньте [Laravel Cloud](https://cloud.laravel.com), який може керувати фоновими процесами ваших застосунків Laravel.
 
 <a name="supervisor-configuration"></a>
-#### Supervisor Configuration
+#### Конфігурація Supervisor
 
-Supervisor configuration files are typically stored within your server's `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:
+Конфігураційні файли Supervisor зазвичай зберігаються в каталозі `/etc/supervisor/conf.d` вашого сервера. У цьому каталозі ви можете створити будь-яку кількість файлів, які вказують supervisor, як стежити за вашими процесами. Створімо, наприклад, файл `horizon.conf`, який запускає процес `horizon` і стежить за ним:
 
 ```ini
 [program:horizon]
@@ -617,15 +620,15 @@ stdout_logfile=/home/forge/example.com/horizon.log
 stopwaitsecs=3600
 ```
 
-When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
+Описуючи конфігурацію Supervisor, переконайтеся, що значення `stopwaitsecs` більше за кількість секунд, які займає ваше найдовше завдання. Інакше Supervisor може вбити завдання до того, як його буде оброблено.
 
 > [!WARNING]
-> While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information.
+> Хоча наведені вище приклади підходять для серверів на Ubuntu, розташування й розширення конфігураційних файлів Supervisor можуть відрізнятися в інших серверних операційних системах. Докладніше читайте в документації до вашого сервера.
 
 <a name="starting-supervisor"></a>
-#### Starting Supervisor
+#### Запуск Supervisor
 
-Once the configuration file has been created, you may update the Supervisor configuration and start the monitored processes using the following commands:
+Коли конфігураційний файл створено, ви можете оновити конфігурацію Supervisor і запустити процеси під наглядом такими командами:
 
 ```shell
 sudo supervisorctl reread
@@ -636,12 +639,12 @@ sudo supervisorctl start horizon
 ```
 
 > [!NOTE]
-> For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+> Докладніше про роботу з Supervisor читайте в [документації Supervisor](http://supervisord.org/index.html).
 
 <a name="tags"></a>
-## Tags
+## Теги
 
-Horizon allows you to assign "tags" to jobs, including mailables, broadcast events, notifications, and queued event listeners. In fact, Horizon will intelligently and automatically tag most jobs depending on the Eloquent models that are attached to the job. For example, take a look at the following job:
+Horizon дозволяє призначати завданням «теги» - зокрема поштовим класам, подіям бродкастингу, сповіщенням і слухачам подій у черзі. Ба більше, Horizon розумно й автоматично проставляє теги більшості завдань залежно від моделей Eloquent, прикріплених до завдання. Погляньте, наприклад, на таке завдання:
 
 ```php
 <?php
@@ -673,7 +676,7 @@ class RenderVideo implements ShouldQueue
 }
 ```
 
-If this job is queued with an `App\Models\Video` instance that has an `id` attribute of `1`, it will automatically receive the tag `App\Models\Video:1`. This is because Horizon will search the job's properties for any Eloquent models. If Eloquent models are found, Horizon will intelligently tag the job using the model's class name and primary key:
+Якщо це завдання поставлено в чергу з екземпляром `App\Models\Video`, чий атрибут `id` дорівнює `1`, воно автоматично отримає тег `App\Models\Video:1`. Так стається тому, що Horizon шукає у властивостях завдання будь-які моделі Eloquent. Якщо їх знайдено, Horizon розумно проставляє тег за іменем класу моделі та її первинним ключем:
 
 ```php
 use App\Jobs\RenderVideo;
@@ -685,9 +688,9 @@ RenderVideo::dispatch($video);
 ```
 
 <a name="manually-tagging-jobs"></a>
-#### Manually Tagging Jobs
+#### Ручне проставляння тегів завданням
 
-If you would like to manually define the tags for one of your queueable objects, you may define a `tags` method on the class:
+Якщо ви хочете задати теги для одного зі своїх об'єктів у черзі вручну, визначте в його класі метод `tags`:
 
 ```php
 class RenderVideo implements ShouldQueue
@@ -705,9 +708,9 @@ class RenderVideo implements ShouldQueue
 ```
 
 <a name="manually-tagging-event-listeners"></a>
-#### Manually Tagging Event Listeners
+#### Ручне проставляння тегів слухачам подій
 
-When retrieving the tags for a queued event listener, Horizon will automatically pass the event instance to the `tags` method, allowing you to add event data to the tags:
+Отримуючи теги для слухача подій у черзі, Horizon автоматично передасть екземпляр події до методу `tags`, тож ви зможете додати дані події до тегів:
 
 ```php
 class SendRenderNotifications implements ShouldQueue
@@ -725,12 +728,12 @@ class SendRenderNotifications implements ShouldQueue
 ```
 
 <a name="notifications"></a>
-## Notifications
+## Сповіщення
 
 > [!WARNING]
-> When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications).
+> Налаштовуючи Horizon на надсилання сповіщень у Slack чи SMS, перегляньте [передумови для відповідного каналу сповіщень](/docs/{{version}}/notifications).
 
-If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:
+Якщо ви хочете отримувати сповіщення, коли в одній із ваших черг довгий час очікування, скористайтеся методами `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo` та `Horizon::routeSmsNotificationsTo`. Викликати ці методи можна в методі `boot` вашого `App\Providers\HorizonServiceProvider`:
 
 ```php
 /**
@@ -747,9 +750,9 @@ public function boot(): void
 ```
 
 <a name="configuring-notification-wait-time-thresholds"></a>
-#### Configuring Notification Wait Time Thresholds
+#### Налаштування порогів часу очікування для сповіщень
 
-You may configure how many seconds are considered a "long wait" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination. Any undefined connection / queue combinations will default to a long wait threshold of 60 seconds:
+Ви можете налаштувати, скільки секунд вважається «довгим очікуванням», у конфігураційному файлі `config/horizon.php` вашого застосунку. Опція конфігурації `waits` у цьому файлі дозволяє задати поріг довгого очікування для кожної комбінації підключення / черги. Для не описаних комбінацій підключення / черги поріг за замовчуванням становитиме 60 секунд:
 
 ```php
 'waits' => [
@@ -759,12 +762,12 @@ You may configure how many seconds are considered a "long wait" within your appl
 ],
 ```
 
-Setting a queue's threshold to `0` will disable long wait notifications for that queue.
+Поріг черги, встановлений у `0`, вимкне сповіщення про довге очікування для цієї черги.
 
 <a name="metrics"></a>
-## Metrics
+## Метрики
 
-Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes in your application's `routes/console.php` file:
+Horizon містить панель метрик, яка показує інформацію про час очікування й пропускну здатність ваших завдань і черг. Щоб наповнити цю панель, налаштуйте артизан-команду Horizon `snapshot` на запуск щоп'ять хвилин у файлі `routes/console.php` вашого застосунку:
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -772,7 +775,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('horizon:snapshot')->everyFiveMinutes();
 ```
 
-You may configure how many snapshots Horizon retains for its metrics graphs using the `metrics.trim_snapshots` option in your application's `config/horizon.php` configuration file. Because this option limits the number of snapshots rather than their age, the retention period depends on how frequently the `horizon:snapshot` command runs:
+Ви можете налаштувати, скільки знімків Horizon зберігає для своїх графіків метрик, через опцію `metrics.trim_snapshots` у конфігураційному файлі `config/horizon.php` вашого застосунку. Оскільки ця опція обмежує кількість знімків, а не їхній вік, період зберігання залежить від того, як часто виконується команда `horizon:snapshot`:
 
 ```php
 'metrics' => [
@@ -783,37 +786,37 @@ You may configure how many snapshots Horizon retains for its metrics graphs usin
 ],
 ```
 
-If you would like to delete all metric data, you can invoke the `horizon:clear-metrics` Artisan command:
+Якщо ви хочете видалити всі дані метрик, викличте артизан-команду `horizon:clear-metrics`:
 
 ```shell
 php artisan horizon:clear-metrics
 ```
 
 <a name="deleting-failed-jobs"></a>
-## Deleting Failed Jobs
+## Видалення провалених завдань
 
-If you would like to delete a failed job, you may use the `horizon:forget` command. The `horizon:forget` command accepts the ID or UUID of the failed job as its only argument:
+Якщо ви хочете видалити провалене завдання, скористайтеся командою `horizon:forget`. Команда `horizon:forget` приймає єдиним аргументом ID чи UUID проваленого завдання:
 
 ```shell
 php artisan horizon:forget 5
 ```
 
-If you would like to delete all failed jobs, you may provide the `--all` option to the `horizon:forget` command:
+Якщо ви хочете видалити всі провалені завдання, додайте до команди `horizon:forget` опцію `--all`:
 
 ```shell
 php artisan horizon:forget --all
 ```
 
 <a name="clearing-jobs-from-queues"></a>
-## Clearing Jobs From Queues
+## Очищення завдань із черг
 
-If you would like to delete all jobs from your application's default queue, you may do so using the `horizon:clear` Artisan command:
+Якщо ви хочете видалити всі завдання зі стандартної черги вашого застосунку, скористайтеся артизан-командою `horizon:clear`:
 
 ```shell
 php artisan horizon:clear
 ```
 
-You may provide the `queue` option to delete jobs from a specific queue:
+Ви можете додати опцію `queue`, щоб видалити завдання з конкретної черги:
 
 ```shell
 php artisan horizon:clear --queue=emails
