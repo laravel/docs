@@ -1,32 +1,36 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+
 # Redis
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-    - [Clusters](#clusters)
+- [Вступ](#introduction)
+- [Конфігурація](#configuration)
+    - [Кластери](#clusters)
     - [Predis](#predis)
     - [PhpRedis](#phpredis)
-- [Interacting With Redis](#interacting-with-redis)
-    - [Transactions](#transactions)
-    - [Pipelining Commands](#pipelining-commands)
+- [Робота з Redis](#interacting-with-redis)
+    - [Транзакції](#transactions)
+    - [Конвеєр команд](#pipelining-commands)
 - [Pub / Sub](#pubsub)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Redis](https://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](https://redis.io/docs/latest/develop/data-types/strings/), [hashes](https://redis.io/docs/latest/develop/data-types/hashes/), [lists](https://redis.io/docs/latest/develop/data-types/lists/), [sets](https://redis.io/docs/latest/develop/data-types/sets/), and [sorted sets](https://redis.io/docs/latest/develop/data-types/sorted-sets/).
+[Redis](https://redis.io) - це відкрите сховище пар «ключ - значення» з широкими можливостями. Його часто називають сервером структур даних, бо ключі можуть містити [рядки](https://redis.io/docs/latest/develop/data-types/strings/), [хеші](https://redis.io/docs/latest/develop/data-types/hashes/), [списки](https://redis.io/docs/latest/develop/data-types/lists/), [множини](https://redis.io/docs/latest/develop/data-types/sets/) та [відсортовані множини](https://redis.io/docs/latest/develop/data-types/sorted-sets/).
 
-Before using Redis with Laravel, we encourage you to install and use the [PhpRedis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install compared to "user-land" PHP packages but may yield better performance for applications that make heavy use of Redis. If you are using [Laravel Sail](/docs/{{version}}/sail), this extension is already installed in your application's Docker container.
+Перед тим як використовувати Redis із Laravel, радимо встановити PHP-розширення [PhpRedis](https://github.com/phpredis/phpredis) через PECL. Встановити його складніше, ніж PHP-пакети «з користувацького простору», але для застосунків, які активно працюють із Redis, він може дати кращу продуктивність. Якщо ви користуєтеся [Laravel Sail](/docs/{{version}}/sail), це розширення вже встановлене в Docker-контейнері вашого застосунку.
 
-If you are unable to install the PhpRedis extension, you may install the `predis/predis` package via Composer. Predis is a Redis client written entirely in PHP and does not require any additional extensions:
+Якщо встановити розширення PhpRedis не вдається, ви можете встановити через Composer пакет `predis/predis`. Predis - це клієнт Redis, повністю написаний на PHP, і він не потребує додаткових розширень:
 
 ```shell
 composer require predis/predis
 ```
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
-You may configure your application's Redis settings via the `config/database.php` configuration file. Within this file, you will see a `redis` array containing the Redis servers utilized by your application:
+Налаштування Redis для вашого застосунку лежать у файлі `config/database.php`. У ньому ви побачите масив `redis` зі серверами Redis, які використовує ваш застосунок:
 
 ```php
 'redis' => [
@@ -59,7 +63,7 @@ You may configure your application's Redis settings via the `config/database.php
 ],
 ```
 
-Each Redis server defined in your configuration file is required to have a name, host, and a port unless you define a single URL to represent the Redis connection:
+Кожен сервер Redis, описаний у вашому файлі конфігурації, має мати назву, хост і порт - хіба що ви задаєте єдиний URL, який представляє підключення до Redis:
 
 ```php
 'redis' => [
@@ -83,9 +87,9 @@ Each Redis server defined in your configuration file is required to have a name,
 ```
 
 <a name="configuring-the-connection-scheme"></a>
-#### Configuring the Connection Scheme
+#### Налаштування схеми підключення
 
-By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server's configuration array:
+За замовчуванням клієнти Redis підключаються до ваших серверів за схемою `tcp`; втім, ви можете скористатися шифруванням TLS / SSL, задавши опцію `scheme` у масиві конфігурації сервера Redis:
 
 ```php
 'default' => [
@@ -100,9 +104,9 @@ By default, Redis clients will use the `tcp` scheme when connecting to your Redi
 ```
 
 <a name="clusters"></a>
-### Clusters
+### Кластери
 
-If your application is utilizing a cluster of Redis servers, you should define these clusters within a `clusters` key of your Redis configuration. This configuration key does not exist by default so you will need to create it within your application's `config/database.php` configuration file:
+Якщо ваш застосунок працює з кластером серверів Redis, опишіть ці кластери під ключем `clusters` конфігурації Redis. За замовчуванням цього ключа немає, тож вам доведеться створити його у файлі `config/database.php` вашого застосунку:
 
 ```php
 'redis' => [
@@ -131,11 +135,11 @@ If your application is utilizing a cluster of Redis servers, you should define t
 ],
 ```
 
-By default, Laravel will use native Redis clustering since the `options.cluster` configuration value is set to `redis`. Redis clustering is a great default option, as it gracefully handles failover.
+За замовчуванням Laravel використовує нативну кластеризацію Redis, бо значення конфігурації `options.cluster` дорівнює `redis`. Кластеризація Redis - чудовий вибір за замовчуванням, бо вона коректно обробляє перемикання при відмові.
 
-Laravel also supports client-side sharding when using Predis. However, client-side sharding does not handle failover; therefore, it is primarily suited for transient cached data that is available from another primary data store.
+Laravel також підтримує шардинг на боці клієнта під час роботи з Predis. Проте шардинг на боці клієнта не обробляє відмов, тому підходить насамперед для тимчасових кешованих даних, які можна взяти з іншого основного сховища.
 
-If you would like to use client-side sharding instead of native Redis clustering, you may remove the `options.cluster` configuration value within your application's `config/database.php` configuration file:
+Якщо ви хочете використовувати шардинг на боці клієнта замість нативної кластеризації Redis, приберіть значення конфігурації `options.cluster` з файлу `config/database.php` вашого застосунку:
 
 ```php
 'redis' => [
@@ -153,7 +157,7 @@ If you would like to use client-side sharding instead of native Redis clustering
 <a name="predis"></a>
 ### Predis
 
-If you would like your application to interact with Redis via the Predis package, you should ensure the `REDIS_CLIENT` environment variable's value is `predis`:
+Якщо ви хочете, щоб ваш застосунок працював із Redis через пакет Predis, переконайтеся, що змінна оточення `REDIS_CLIENT` має значення `predis`:
 
 ```php
 'redis' => [
@@ -164,7 +168,7 @@ If you would like your application to interact with Redis via the Predis package
 ],
 ```
 
-In addition to the default configuration options, Predis supports additional [connection parameters](https://github.com/nrk/predis/wiki/Connection-Parameters) that may be defined for each of your Redis servers. To utilize these additional configuration options, add them to your Redis server configuration in your application's `config/database.php` configuration file:
+Крім стандартних опцій конфігурації, Predis підтримує додаткові [параметри підключення](https://github.com/nrk/predis/wiki/Connection-Parameters), які можна задати для кожного з ваших серверів Redis. Щоб скористатися ними, додайте їх до конфігурації сервера Redis у файлі `config/database.php` вашого застосунку:
 
 ```php
 'default' => [
@@ -181,7 +185,7 @@ In addition to the default configuration options, Predis supports additional [co
 <a name="phpredis"></a>
 ### PhpRedis
 
-By default, Laravel will use the PhpRedis extension to communicate with Redis. The client that Laravel will use to communicate with Redis is dictated by the value of the `redis.client` configuration option, which typically reflects the value of the `REDIS_CLIENT` environment variable:
+За замовчуванням Laravel спілкується з Redis через розширення PhpRedis. Який саме клієнт використовувати, визначає значення опції конфігурації `redis.client`, що зазвичай відображає значення змінної оточення `REDIS_CLIENT`:
 
 ```php
 'redis' => [
@@ -192,7 +196,7 @@ By default, Laravel will use the PhpRedis extension to communicate with Redis. T
 ],
 ```
 
-In addition to the default configuration options, PhpRedis supports the following additional connection parameters: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base`, `backoff_cap`, `timeout`, and `context`. You may add any of these options to your Redis server configuration in the `config/database.php` configuration file:
+Крім стандартних опцій конфігурації, PhpRedis підтримує такі додаткові параметри підключення: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base`, `backoff_cap`, `timeout` і `context`. Будь-яку з цих опцій можна додати до конфігурації сервера Redis у файлі `config/database.php`:
 
 ```php
 'default' => [
@@ -211,9 +215,9 @@ In addition to the default configuration options, PhpRedis supports the followin
 ```
 
 <a name="retry-and-backoff-configuration"></a>
-#### Retry and Backoff Configuration
+#### Налаштування повторних спроб і затримок
 
-The `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base`, and `backoff_cap` options may be used to configure how the PhpRedis client should attempt to reconnect to a Redis server. The following backoff algorithms are supported: `default`, `decorrelated_jitter`, `equal_jitter`, `exponential`, `uniform`, and `constant`:
+Опціями `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base` і `backoff_cap` можна налаштувати, як клієнт PhpRedis має перепідключатися до сервера Redis. Підтримуються такі алгоритми затримки: `default`, `decorrelated_jitter`, `equal_jitter`, `exponential`, `uniform` і `constant`:
 
 ```php
 'default' => [
@@ -230,7 +234,7 @@ The `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base`, and `b
 ],
 ```
 
-Predis 3.4.0 and later supports built-in retry and backoff configuration via the `Retry` class. You may configure retries using the `max_retries` option and configure the backoff strategy using the `retry` option. The `retry` option should be an array keyed by one of the following strategy classes: `NoBackoff`, `EqualBackoff`, or `ExponentialBackoff`:
+Predis 3.4.0 і новіші підтримують вбудоване налаштування повторних спроб і затримок через клас `Retry`. Кількість спроб задається опцією `max_retries`, а стратегія затримки - опцією `retry`. Опція `retry` має бути масивом, ключами якого є один із таких класів стратегій: `NoBackoff`, `EqualBackoff` або `ExponentialBackoff`:
 
 ```php
 use Predis\Retry\Strategy\ExponentialBackoff;
@@ -249,7 +253,7 @@ use Predis\Retry\Strategy\ExponentialBackoff;
 ],
 ```
 
-When using Predis with a Redis cluster, you may define retry configuration in the `parameters` option of your cluster configuration:
+Коли ви використовуєте Predis із кластером Redis, налаштування повторних спроб можна задати в опції `parameters` конфігурації кластера:
 
 ```php
 use Predis\Retry\Strategy\NoBackoff;
@@ -272,9 +276,9 @@ use Predis\Retry\Strategy\NoBackoff;
 ```
 
 <a name="unix-socket-connections"></a>
-#### Unix Socket Connections
+#### Підключення через Unix-сокет
 
-Redis connections can also be configured to use Unix sockets instead of TCP. This can offer improved performance by eliminating TCP overhead for connections to Redis instances on the same server as your application. To configure Redis to use a Unix socket, set your `REDIS_HOST` environment variable to the path of the Redis socket and the `REDIS_PORT` environment variable to `0`:
+Підключення до Redis можна налаштувати й на Unix-сокети замість TCP. Це може підвищити продуктивність, бо прибирає накладні витрати TCP для підключень до екземплярів Redis на тому самому сервері, де й ваш застосунок. Щоб налаштувати Redis на Unix-сокет, задайте змінній оточення `REDIS_HOST` шлях до сокета Redis, а змінній `REDIS_PORT` - значення `0`:
 
 ```env
 REDIS_HOST=/run/redis/redis.sock
@@ -282,9 +286,9 @@ REDIS_PORT=0
 ```
 
 <a name="phpredis-serialization"></a>
-#### PhpRedis Serialization and Compression
+#### Серіалізація та стиснення в PhpRedis
 
-The PhpRedis extension may also be configured to use a variety of serializers and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
+Розширення PhpRedis можна також налаштувати на різні серіалізатори та алгоритми стиснення. Ці алгоритми задаються в масиві `options` вашої конфігурації Redis:
 
 ```php
 'redis' => [
@@ -302,14 +306,14 @@ The PhpRedis extension may also be configured to use a variety of serializers an
 ],
 ```
 
-Currently supported serializers include: `Redis::SERIALIZER_NONE` (default), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, and `Redis::SERIALIZER_MSGPACK`.
+Наразі підтримуються такі серіалізатори: `Redis::SERIALIZER_NONE` (за замовчуванням), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY` і `Redis::SERIALIZER_MSGPACK`.
 
-Supported compression algorithms include: `Redis::COMPRESSION_NONE` (default), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD`, and `Redis::COMPRESSION_LZ4`.
+Підтримувані алгоритми стиснення: `Redis::COMPRESSION_NONE` (за замовчуванням), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD` і `Redis::COMPRESSION_LZ4`.
 
 <a name="interacting-with-redis"></a>
-## Interacting With Redis
+## Робота з Redis
 
-You may interact with Redis by calling various methods on the `Redis` [facade](/docs/{{version}}/facades). The `Redis` facade supports dynamic methods, meaning you may call any [Redis command](https://redis.io/commands) on the facade and the command will be passed directly to Redis. In this example, we will call the Redis `GET` command by calling the `get` method on the `Redis` facade:
+Працювати з Redis можна, викликаючи різні методи [фасаду](/docs/{{version}}/facades) `Redis`. Фасад `Redis` підтримує динамічні методи: ви можете викликати на ньому будь-яку [команду Redis](https://redis.io/commands), і її буде передано безпосередньо до Redis. У цьому прикладі ми викличемо команду Redis `GET`, звернувшись до методу `get` фасаду `Redis`:
 
 ```php
 <?php
@@ -333,7 +337,7 @@ class UserController extends Controller
 }
 ```
 
-As mentioned above, you may call any of Redis' commands on the `Redis` facade. Laravel uses magic methods to pass the commands to the Redis server. If a Redis command expects arguments, you should pass those to the facade's corresponding method:
+Як згадано вище, на фасаді `Redis` можна викликати будь-яку команду Redis. Laravel використовує магічні методи, щоб передати команди на сервер Redis. Якщо команда Redis очікує аргументи, передайте їх до відповідного методу фасаду:
 
 ```php
 use Illuminate\Support\Facades\Redis;
@@ -343,31 +347,31 @@ Redis::set('name', 'Taylor');
 $values = Redis::lrange('names', 5, 10);
 ```
 
-Alternatively, you may pass commands to the server using the `Redis` facade's `command` method, which accepts the name of the command as its first argument and an array of values as its second argument:
+Або ж ви можете передавати команди на сервер методом `command` фасаду `Redis`: першим аргументом він приймає назву команди, а другим - масив значень:
 
 ```php
 $values = Redis::command('lrange', ['name', 5, 10]);
 ```
 
 <a name="using-multiple-redis-connections"></a>
-#### Using Multiple Redis Connections
+#### Кілька підключень до Redis
 
-Your application's `config/database.php` configuration file allows you to define multiple Redis connections / servers. You may obtain a connection to a specific Redis connection using the `Redis` facade's `connection` method:
+Файл `config/database.php` вашого застосунку дозволяє описати кілька підключень чи серверів Redis. Отримати конкретне підключення можна методом `connection` фасаду `Redis`:
 
 ```php
 $redis = Redis::connection('connection-name');
 ```
 
-To obtain an instance of the default Redis connection, you may call the `connection` method without any additional arguments:
+Щоб отримати екземпляр підключення до Redis за замовчуванням, викличте метод `connection` без додаткових аргументів:
 
 ```php
 $redis = Redis::connection();
 ```
 
 <a name="transactions"></a>
-### Transactions
+### Транзакції
 
-The `Redis` facade's `transaction` method provides a convenient wrapper around Redis' native `MULTI` and `EXEC` commands. The `transaction` method accepts a closure as its only argument. This closure will receive a Redis connection instance and may issue any commands it would like to this instance. All of the Redis commands issued within the closure will be executed in a single, atomic transaction:
+Метод `transaction` фасаду `Redis` дає зручну обгортку над нативними командами Redis `MULTI` та `EXEC`. Метод `transaction` приймає єдиний аргумент - замикання. Воно отримає екземпляр підключення до Redis і може надсилати цьому екземпляру будь-які команди. Усі команди Redis, надіслані в межах замикання, буде виконано як одну атомарну транзакцію:
 
 ```php
 use Redis;
@@ -380,15 +384,15 @@ Facades\Redis::transaction(function (Redis $redis) {
 ```
 
 > [!WARNING]
-> When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
+> Описуючи транзакцію Redis, ви не можете отримувати жодних значень із підключення до Redis. Пам'ятайте: ваша транзакція виконується як одна атомарна операція, а сама операція не виконується, поки все замикання не завершить надсилати команди.
 
-#### Lua Scripts
+#### Скрипти Lua
 
-The `eval` method provides another method of executing multiple Redis commands in a single, atomic operation. However, the `eval` method has the benefit of being able to interact with and inspect Redis key values during that operation. Redis scripts are written in the [Lua programming language](https://www.lua.org).
+Метод `eval` - ще один спосіб виконати кілька команд Redis як одну атомарну операцію. Але `eval` має перевагу: під час цієї операції він може працювати зі значеннями ключів Redis і перевіряти їх. Скрипти Redis пишуть [мовою програмування Lua](https://www.lua.org).
 
-The `eval` method can be a bit scary at first, but we'll explore a basic example to break the ice. The `eval` method expects several arguments. First, you should pass the Lua script (as a string) to the method. Secondly, you should pass the number of keys (as an integer) that the script interacts with. Thirdly, you should pass the names of those keys. Finally, you may pass any other additional arguments that you need to access within your script.
+Спершу метод `eval` може здатися дещо страшним, але розберімо простий приклад, щоб зламати кригу. Метод `eval` очікує кілька аргументів. Першим передайте скрипт Lua (рядком). Другим - кількість ключів (цілим числом), з якими працює скрипт. Третім - назви цих ключів. І нарешті, ви можете передати будь-які інші додаткові аргументи, потрібні вам у скрипті.
 
-In this example, we will increment a counter, inspect its new value, and increment a second counter if the first counter's value is greater than five. Finally, we will return the value of the first counter:
+У цьому прикладі ми збільшимо один лічильник, перевіримо його нове значення й збільшимо другий лічильник, якщо значення першого більше за п'ять. Вкінці повернемо значення першого лічильника:
 
 ```php
 $value = Redis::eval(<<<'LUA'
@@ -403,12 +407,12 @@ LUA, 2, 'first-counter', 'second-counter');
 ```
 
 > [!WARNING]
-> Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
+> Детальніше про скриптинг у Redis читайте в [документації Redis](https://redis.io/commands/eval).
 
 <a name="pipelining-commands"></a>
-### Pipelining Commands
+### Конвеєр команд
 
-Sometimes you may need to execute dozens of Redis commands. Instead of making a network trip to your Redis server for each command, you may use the `pipeline` method. The `pipeline` method accepts one argument: a closure that receives a Redis instance. You may issue all of your commands to this Redis instance and they will all be sent to the Redis server at the same time to reduce network trips to the server. The commands will still be executed in the order they were issued:
+Іноді вам потрібно виконати десятки команд Redis. Замість того щоб для кожної команди йти по мережі до сервера Redis, скористайтеся методом `pipeline`. Він приймає один аргумент - замикання, яке отримає екземпляр Redis. Ви надсилаєте цьому екземпляру всі свої команди, і їх буде відправлено на сервер Redis одночасно, щоб зменшити кількість звернень по мережі. Команди все одно виконаються в тому порядку, у якому ви їх надіслали:
 
 ```php
 use Redis;
@@ -424,9 +428,9 @@ Facades\Redis::pipeline(function (Redis $pipe) {
 <a name="pubsub"></a>
 ## Pub / Sub
 
-Laravel provides a convenient interface to the Redis `publish` and `subscribe` commands. These Redis commands allow you to listen for messages on a given "channel". You may publish messages to the channel from another application, or even using another programming language, allowing easy communication between applications and processes.
+Laravel дає зручний інтерфейс до команд Redis `publish` і `subscribe`. Ці команди дозволяють слухати повідомлення в заданому «каналі». Ви можете публікувати повідомлення в канал з іншого застосунку або навіть іншою мовою програмування, що дозволяє легко налагодити зв'язок між застосунками й процесами.
 
-First, let's set up a channel listener using the `subscribe` method. We'll place this method call within an [Artisan command](/docs/{{version}}/artisan) since calling the `subscribe` method begins a long-running process:
+Спершу налаштуємо слухача каналу методом `subscribe`. Розмістимо цей виклик в [artisan-команді](/docs/{{version}}/artisan), бо метод `subscribe` запускає довготривалий процес:
 
 ```php
 <?php
@@ -464,7 +468,7 @@ class RedisSubscribe extends Command
 }
 ```
 
-Now we may publish messages to the channel using the `publish` method:
+Тепер ми можемо публікувати повідомлення в канал методом `publish`:
 
 ```php
 use Illuminate\Support\Facades\Redis;
@@ -479,9 +483,9 @@ Route::get('/publish', function () {
 ```
 
 <a name="wildcard-subscriptions"></a>
-#### Wildcard Subscriptions
+#### Підписки за шаблоном
 
-Using the `psubscribe` method, you may subscribe to a wildcard channel, which may be useful for catching all messages on all channels. The channel name will be passed as the second argument to the provided closure:
+Методом `psubscribe` ви можете підписатися на канал за шаблоном - це буває корисно, щоб ловити всі повідомлення в усіх каналах. Назву каналу буде передано другим аргументом до вашого замикання:
 
 ```php
 Redis::psubscribe(['*'], function (string $message, string $channel) {
