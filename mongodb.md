@@ -1,56 +1,59 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # MongoDB
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [MongoDB Driver](#mongodb-driver)
-    - [Starting a MongoDB Server](#starting-a-mongodb-server)
-    - [Install the Laravel MongoDB Package](#install-the-laravel-mongodb-package)
-- [Configuration](#configuration)
-- [Features](#features)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+    - [Драйвер MongoDB](#mongodb-driver)
+    - [Запуск сервера MongoDB](#starting-a-mongodb-server)
+    - [Встановлення пакета Laravel MongoDB](#install-the-laravel-mongodb-package)
+- [Конфігурація](#configuration)
+- [Можливості](#features)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[MongoDB](https://www.mongodb.com/resources/products/fundamentals/why-use-mongodb) is one of the most popular NoSQL document-oriented database, used for its high write load (useful for analytics or IoT) and high availability (easy to set replica sets with automatic failover). It can also shard the database easily for horizontal scalability and has a powerful query language for doing aggregation, text search or geospatial queries.
+[MongoDB](https://www.mongodb.com/resources/products/fundamentals/why-use-mongodb) - одна з найпопулярніших документоорієнтованих NoSQL-баз даних, яку обирають за високе навантаження на запис (корисно для аналітики чи IoT) і високу доступність (легко налаштувати набори реплік з автоматичним перемиканням при збої). Вона також легко шардить базу для горизонтального масштабування й має потужну мову запитів для агрегації, текстового пошуку чи геопросторових запитів.
 
-Instead of storing data in tables of rows or columns like SQL databases, each record in a MongoDB database is a document described in BSON, a binary representation of the data. Applications can then retrieve this information in a JSON format. It supports a wide variety of data types, including documents, arrays, embedded documents, and binary data.
+Замість того щоб зберігати дані в таблицях із рядків і стовпців, як SQL-бази, кожен запис у базі MongoDB - це документ, описаний у BSON, двійковому представленні даних. Далі застосунки можуть отримувати цю інформацію у форматі JSON. Підтримується широкий набір типів даних, зокрема документи, масиви, вкладені документи та двійкові дані.
 
-Before using MongoDB with Laravel, we recommend installing and using the `mongodb/laravel-mongodb` package via Composer. The `laravel-mongodb` package is officially maintained by MongoDB, and while MongoDB is natively supported by PHP through the MongoDB driver, the [Laravel MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/) package provides a richer integration with Eloquent and other Laravel features:
+Перш ніж користуватися MongoDB разом із Laravel, ми рекомендуємо встановити пакет `mongodb/laravel-mongodb` через Composer. Пакет `laravel-mongodb` офіційно підтримує MongoDB, і хоча PHP підтримує MongoDB нативно через драйвер MongoDB, пакет [Laravel MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/) дає багатшу інтеграцію з Eloquent та іншими можливостями Laravel:
 
 ```shell
 composer require mongodb/laravel-mongodb
 ```
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
 <a name="mongodb-driver"></a>
-### MongoDB Driver
+### Драйвер MongoDB
 
-To connect to a MongoDB database, the `mongodb` PHP extension is required. If you are developing locally using [Laravel Herd](https://herd.laravel.com) or installed PHP via `php.new`, you already have this extension installed on your system. However, if you need to install the extension manually, you may do so via PECL:
+Щоб підключитися до бази даних MongoDB, потрібне розширення PHP `mongodb`. Якщо ви розробляєте локально через [Laravel Herd](https://herd.laravel.com) або встановили PHP через `php.new`, це розширення вже є у вашій системі. Проте якщо вам треба встановити його вручну, зробіть це через PECL:
 
 ```shell
 pecl install mongodb
 ```
 
-For more information on installing the MongoDB PHP extension, check out the [MongoDB PHP extension installation instructions](https://www.php.net/manual/en/mongodb.installation.php).
+Докладніше про встановлення розширення MongoDB для PHP читайте в [інструкції зі встановлення розширення MongoDB PHP](https://www.php.net/manual/en/mongodb.installation.php).
 
 <a name="starting-a-mongodb-server"></a>
-### Starting a MongoDB Server
+### Запуск сервера MongoDB
 
-The MongoDB Community Server can be used to run MongoDB locally and is available for installation on Windows, macOS, Linux, or as a Docker container. To learn how to install MongoDB, please refer to the [official MongoDB Community installation guide](https://docs.mongodb.com/manual/administration/install-community/).
+MongoDB Community Server дозволяє запустити MongoDB локально й доступний для встановлення на Windows, macOS, Linux або як контейнер Docker. Щоб дізнатися, як встановити MongoDB, зверніться до [офіційного посібника зі встановлення MongoDB Community](https://docs.mongodb.com/manual/administration/install-community/).
 
-The connection string for the MongoDB server can be set in your `.env` file:
+Рядок підключення до сервера MongoDB можна задати у вашому файлі `.env`:
 
 ```ini
 MONGODB_URI="mongodb://localhost:27017"
 MONGODB_DATABASE="laravel_app"
 ```
 
-For hosting MongoDB in the cloud, consider using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-To access a MongoDB Atlas cluster locally from your application, you will need to [add your own IP address in the cluster's network settings](https://www.mongodb.com/docs/atlas/security/add-ip-address-to-list/) to the project's IP Access List.
+Щоб розмістити MongoDB у хмарі, розгляньте [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+Щоб звертатися до кластера MongoDB Atlas локально зі свого застосунку, вам треба [додати власну IP-адресу в мережевих налаштуваннях кластера](https://www.mongodb.com/docs/atlas/security/add-ip-address-to-list/) до списку дозволених IP проєкту.
 
-The connection string for MongoDB Atlas can also be set in your `.env` file:
+Рядок підключення до MongoDB Atlas також можна задати у вашому файлі `.env`:
 
 ```ini
 MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority"
@@ -58,21 +61,21 @@ MONGODB_DATABASE="laravel_app"
 ```
 
 <a name="install-the-laravel-mongodb-package"></a>
-### Install the Laravel MongoDB Package
+### Встановлення пакета Laravel MongoDB
 
-Finally, use Composer to install the Laravel MongoDB package:
+Нарешті, встановіть пакет Laravel MongoDB через Composer:
 
 ```shell
 composer require mongodb/laravel-mongodb
 ```
 
 > [!NOTE]
-> This installation of the package will fail if the `mongodb` PHP extension is not installed. The PHP configuration can differ between the CLI and the web server, so ensure the extension is enabled in both configurations.
+> Встановлення цього пакета зазнає невдачі, якщо розширення PHP `mongodb` не встановлено. Конфігурація PHP може відрізнятися для CLI та вебсервера, тож переконайтеся, що розширення увімкнено в обох.
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
-You may configure your MongoDB connection via your application's `config/database.php` configuration file. Within this file, add a `mongodb` connection that utilizes the `mongodb` driver:
+Налаштувати підключення до MongoDB можна через конфігураційний файл `config/database.php` вашого застосунку. Додайте до нього підключення `mongodb`, що використовує драйвер `mongodb`:
 
 ```php
 'connections' => [
@@ -85,17 +88,17 @@ You may configure your MongoDB connection via your application's `config/databas
 ```
 
 <a name="features"></a>
-## Features
+## Можливості
 
-Once your configuration is complete, you can use the `mongodb` package and database connection in your application to leverage a variety of powerful features:
+Коли конфігурацію завершено, ви можете користуватися пакетом `mongodb` і цим підключенням до бази у своєму застосунку, щоб скористатися низкою потужних можливостей:
 
-- [Using Eloquent](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/eloquent-models/), models can be stored in MongoDB collections. In addition to the standard Eloquent features, the Laravel MongoDB package provides additional features such as embedded relationships. The package also provides direct access to the MongoDB driver, which can be used to execute operations such as raw queries and aggregation pipelines.
-- [Write complex queries](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/query-builder/) using the query builder.
-- [Similarity / vector search](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/fundamentals/vector-search/) using vector embeddings and the `vectorSearch` Eloquent method.
-- The `mongodb` [cache driver](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/) is optimized to use MongoDB features such as TTL indexes to automatically clear expired cache entries.
-- [Dispatch and process queued jobs](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/queues/) with the `mongodb` queue driver.
-- [Storing files in GridFS](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/filesystems/), via the [GridFS Adapter for Flysystem](https://flysystem.thephpleague.com/docs/adapter/gridfs/).
-- [Full-text search](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/scout/) using the `mongodb` Scout engine.
-- Most third party packages using a database connection or Eloquent can be used with MongoDB.
+- [Через Eloquent](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/eloquent-models/) моделі можуть зберігатися в колекціях MongoDB. Окрім стандартних можливостей Eloquent, пакет Laravel MongoDB надає додаткові - як-от вкладені зв'язки. Пакет також дає прямий доступ до драйвера MongoDB, яким можна виконувати сирі запити та конвеєри агрегації.
+- [Пишіть складні запити](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/query-builder/) через конструктор запитів.
+- [Пошук за схожістю / векторний пошук](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/fundamentals/vector-search/) через векторні ембединги та метод Eloquent `vectorSearch`.
+- [Драйвер кешу](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/) `mongodb` оптимізовано під можливості MongoDB - як-от TTL-індекси, що автоматично прибирають прострочені записи кешу.
+- [Відправляйте й обробляйте завдання в черзі](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/queues/) через драйвер черги `mongodb`.
+- [Зберігання файлів у GridFS](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/filesystems/) через [адаптер GridFS для Flysystem](https://flysystem.thephpleague.com/docs/adapter/gridfs/).
+- [Повнотекстовий пошук](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/scout/) через рушій Scout `mongodb`.
+- Більшість сторонніх пакетів, що працюють із підключенням до бази чи Eloquent, можна використовувати з MongoDB.
 
-To continue learning how to use MongoDB and Laravel, refer to MongoDB's [Quick Start guide](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/quick-start/).
+Щоб дізнатися більше про використання MongoDB разом із Laravel, зверніться до [посібника Quick Start](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/quick-start/) від MongoDB.

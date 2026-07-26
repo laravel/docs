@@ -1,23 +1,26 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Mix
 
-- [Introduction](#introduction)
+- [Вступ](#introduction)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
 > [!WARNING]
-> Laravel Mix is a legacy package that is no longer actively maintained. [Vite](/docs/{{version}}/vite) may be used as a modern alternative.
+> Laravel Mix - застарілий пакет, який більше активно не підтримується. Як сучасну альтернативу можна використовувати [Vite](/docs/{{version}}/vite).
 
-[Laravel Mix](https://github.com/laravel-mix/laravel-mix), a package developed by [Laracasts](https://laracasts.com) creator Jeffrey Way, provides a fluent API for defining [webpack](https://webpack.js.org) build steps for your Laravel application using several common CSS and JavaScript pre-processors.
+[Laravel Mix](https://github.com/laravel-mix/laravel-mix) - пакет, розроблений Джеффрі Веєм, творцем [Laracasts](https://laracasts.com), - надає плавний API для опису кроків збірки [webpack](https://webpack.js.org) у вашому застосунку Laravel через кілька поширених препроцесорів CSS і JavaScript.
 
-In other words, Mix makes it a cinch to compile and minify your application's CSS and JavaScript files. Through simple method chaining, you can fluently define your asset pipeline. For example:
+Іншими словами, Mix робить компіляцію та мініфікацію файлів CSS і JavaScript вашого застосунку елементарною справою. Простими ланцюжками методів ви можете плавно описати свій конвеєр ресурсів. Наприклад:
 
 ```js
 mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css');
 ```
 
-If you've ever been confused and overwhelmed about getting started with webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
+Якщо ви колись губилися й почувалися приголомшеними, беручись за webpack і компіляцію ресурсів, Laravel Mix вам сподобається. Проте користуватися ним під час розробки застосунку не обов'язково: ви вільні взяти будь-який інший інструмент для конвеєра ресурсів - або не брати жодного.
 
 > [!NOTE]
-> Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [official Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [Vite migration guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
+> У нових установках Laravel на зміну Laravel Mix прийшов Vite. Документацію щодо Mix шукайте на [офіційному сайті Laravel Mix](https://laravel-mix.com/). Якщо ви хочете перейти на Vite, перегляньте наш [посібник з міграції на Vite](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
