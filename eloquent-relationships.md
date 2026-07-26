@@ -1,80 +1,83 @@
-# Eloquent: Relationships
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Eloquent: зв'язки
 
-- [Introduction](#introduction)
-- [Defining Relationships](#defining-relationships)
-    - [One to One / Has One](#one-to-one)
-    - [One to Many / Has Many](#one-to-many)
-    - [One to Many (Inverse) / Belongs To](#one-to-many-inverse)
+- [Вступ](#introduction)
+- [Визначення зв'язків](#defining-relationships)
+    - [Один до одного / Has One](#one-to-one)
+    - [Один до багатьох / Has Many](#one-to-many)
+    - [Один до багатьох (зворотний) / Belongs To](#one-to-many-inverse)
     - [Has One of Many](#has-one-of-many)
     - [Has One Through](#has-one-through)
     - [Has Many Through](#has-many-through)
-- [Scoped Relationships](#scoped-relationships)
-- [Many to Many Relationships](#many-to-many)
-    - [Retrieving Intermediate Table Columns](#retrieving-intermediate-table-columns)
-    - [Filtering Queries via Intermediate Table Columns](#filtering-queries-via-intermediate-table-columns)
-    - [Ordering Queries via Intermediate Table Columns](#ordering-queries-via-intermediate-table-columns)
-    - [Defining Custom Intermediate Table Models](#defining-custom-intermediate-table-models)
-- [Polymorphic Relationships](#polymorphic-relationships)
-    - [One to One](#one-to-one-polymorphic-relations)
-    - [One to Many](#one-to-many-polymorphic-relations)
-    - [One of Many](#one-of-many-polymorphic-relations)
-    - [Many to Many](#many-to-many-polymorphic-relations)
-    - [Custom Polymorphic Types](#custom-polymorphic-types)
-- [Dynamic Relationships](#dynamic-relationships)
-- [Querying Relations](#querying-relations)
-    - [Relationship Methods vs. Dynamic Properties](#relationship-methods-vs-dynamic-properties)
-    - [Querying Relationship Existence](#querying-relationship-existence)
-    - [Querying Relationship Absence](#querying-relationship-absence)
-    - [Querying Morph To Relationships](#querying-morph-to-relationships)
-- [Aggregating Related Models](#aggregating-related-models)
-    - [Counting Related Models](#counting-related-models)
-    - [Other Aggregate Functions](#other-aggregate-functions)
-    - [Counting Related Models on Morph To Relationships](#counting-related-models-on-morph-to-relationships)
-- [Eager Loading](#eager-loading)
-    - [Constraining Eager Loads](#constraining-eager-loads)
-    - [Lazy Eager Loading](#lazy-eager-loading)
-    - [Automatic Eager Loading](#automatic-eager-loading)
-    - [Preventing Lazy Loading](#preventing-lazy-loading)
-- [Inserting and Updating Related Models](#inserting-and-updating-related-models)
-    - [The `save` Method](#the-save-method)
-    - [The `create` Method](#the-create-method)
-    - [Belongs To Relationships](#updating-belongs-to-relationships)
-    - [Many to Many Relationships](#updating-many-to-many-relationships)
-- [Touching Parent Timestamps](#touching-parent-timestamps)
+- [Зв'язки зі скопами](#scoped-relationships)
+- [Зв'язки «багато до багатьох»](#many-to-many)
+    - [Отримання стовпців проміжної таблиці](#retrieving-intermediate-table-columns)
+    - [Фільтрація запитів за стовпцями проміжної таблиці](#filtering-queries-via-intermediate-table-columns)
+    - [Сортування запитів за стовпцями проміжної таблиці](#ordering-queries-via-intermediate-table-columns)
+    - [Визначення власних моделей проміжної таблиці](#defining-custom-intermediate-table-models)
+- [Поліморфні зв'язки](#polymorphic-relationships)
+    - [Один до одного](#one-to-one-polymorphic-relations)
+    - [Один до багатьох](#one-to-many-polymorphic-relations)
+    - [Один з багатьох](#one-of-many-polymorphic-relations)
+    - [Багато до багатьох](#many-to-many-polymorphic-relations)
+    - [Власні поліморфні типи](#custom-polymorphic-types)
+- [Динамічні зв'язки](#dynamic-relationships)
+- [Запити до зв'язків](#querying-relations)
+    - [Методи зв'язків проти динамічних властивостей](#relationship-methods-vs-dynamic-properties)
+    - [Запити за наявністю зв'язку](#querying-relationship-existence)
+    - [Запити за відсутністю зв'язку](#querying-relationship-absence)
+    - [Запити до зв'язків Morph To](#querying-morph-to-relationships)
+- [Агрегування пов'язаних моделей](#aggregating-related-models)
+    - [Підрахунок пов'язаних моделей](#counting-related-models)
+    - [Інші агрегатні функції](#other-aggregate-functions)
+    - [Підрахунок пов'язаних моделей у зв'язках Morph To](#counting-related-models-on-morph-to-relationships)
+- [Жадібне завантаження](#eager-loading)
+    - [Обмеження жадібного завантаження](#constraining-eager-loads)
+    - [Відкладене жадібне завантаження](#lazy-eager-loading)
+    - [Автоматичне жадібне завантаження](#automatic-eager-loading)
+    - [Заборона лінивого завантаження](#preventing-lazy-loading)
+- [Вставлення й оновлення пов'язаних моделей](#inserting-and-updating-related-models)
+    - [Метод `save`](#the-save-method)
+    - [Метод `create`](#the-create-method)
+    - [Зв'язки Belongs To](#updating-belongs-to-relationships)
+    - [Зв'язки «багато до багатьох»](#updating-many-to-many-relationships)
+- [Оновлення часових міток батьківської моделі](#touching-parent-timestamps)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Database tables are often related to one another. For example, a blog post may have many comments or an order could be related to the user who placed it. Eloquent makes managing and working with these relationships easy, and supports a variety of common relationships:
+Таблиці бази даних часто пов'язані одна з одною. Наприклад, допис у блозі може мати багато коментарів, а замовлення може бути пов'язане з користувачем, який його зробив. Eloquent робить керування такими зв'язками простим і підтримує різні поширені типи зв'язків:
 
 <div class="content-list" markdown="1">
 
-- [One To One](#one-to-one)
-- [One To Many](#one-to-many)
-- [Many To Many](#many-to-many)
+- [Один до одного](#one-to-one)
+- [Один до багатьох](#one-to-many)
+- [Багато до багатьох](#many-to-many)
 - [Has One Through](#has-one-through)
 - [Has Many Through](#has-many-through)
-- [One To One (Polymorphic)](#one-to-one-polymorphic-relations)
-- [One To Many (Polymorphic)](#one-to-many-polymorphic-relations)
-- [Many To Many (Polymorphic)](#many-to-many-polymorphic-relations)
+- [Один до одного (поліморфний)](#one-to-one-polymorphic-relations)
+- [Один до багатьох (поліморфний)](#one-to-many-polymorphic-relations)
+- [Багато до багатьох (поліморфний)](#many-to-many-polymorphic-relations)
 
 </div>
 
 <a name="defining-relationships"></a>
-## Defining Relationships
+## Визначення зв'язків
 
-Eloquent relationships are defined as methods on your Eloquent model classes. Since relationships also serve as powerful [query builders](/docs/{{version}}/queries), defining relationships as methods provides powerful method chaining and querying capabilities. For example, we may chain additional query constraints on this `posts` relationship:
+Зв'язки Eloquent визначаються як методи в класах ваших моделей Eloquent. Оскільки зв'язки водночас є потужними [конструкторами запитів](/docs/{{version}}/queries), визначення їх як методів дає широкі можливості для ланцюжків методів і запитів. Наприклад, ми можемо додати додаткові обмеження до цього зв'язку `posts`:
 
 ```php
 $user->posts()->where('active', 1)->get();
 ```
 
-But, before diving too deep into using relationships, let's learn how to define each type of relationship supported by Eloquent.
+Але перш ніж заглиблюватися у використання зв'язків, розберімося, як визначити кожен тип зв'язку, який підтримує Eloquent.
 
 <a name="one-to-one"></a>
-### One to One / Has One
+### Один до одного / Has One
 
-A one-to-one relationship is a very basic type of database relationship. For example, a `User` model might be associated with one `Phone` model. To define this relationship, we will place a `phone` method on the `User` model. The `phone` method should call the `hasOne` method and return its result. The `hasOne` method is available to your model via the model's `Illuminate\Database\Eloquent\Model` base class:
+Зв'язок «один до одного» - це дуже базовий тип зв'язку в базі даних. Наприклад, модель `User` може бути пов'язана з однією моделлю `Phone`. Щоб визначити цей зв'язок, ми додамо до моделі `User` метод `phone`. Метод `phone` має викликати метод `hasOne` і повернути його результат. Метод `hasOne` доступний вашій моделі через базовий клас моделі `Illuminate\Database\Eloquent\Model`:
 
 ```php
 <?php
@@ -96,28 +99,28 @@ class User extends Model
 }
 ```
 
-The first argument passed to the `hasOne` method is the name of the related model class. Once the relationship is defined, we may retrieve the related record using Eloquent's dynamic properties. Dynamic properties allow you to access relationship methods as if they were properties defined on the model:
+Перший аргумент, який передається методу `hasOne`, - ім'я класу пов'язаної моделі. Коли зв'язок визначено, ми можемо отримати пов'язаний запис через динамічні властивості Eloquent. Динамічні властивості дозволяють звертатися до методів зв'язків так, ніби це властивості, визначені на моделі:
 
 ```php
 $phone = User::find(1)->phone;
 ```
 
-Eloquent determines the foreign key of the relationship based on the parent model name. In this case, the `Phone` model is automatically assumed to have a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
+Eloquent визначає зовнішній ключ зв'язку на основі імені батьківської моделі. У цьому випадку автоматично припускається, що модель `Phone` має зовнішній ключ `user_id`. Якщо ви хочете перевизначити цю угоду, передайте методу `hasOne` другий аргумент:
 
 ```php
 return $this->hasOne(Phone::class, 'foreign_key');
 ```
 
-Additionally, Eloquent assumes that the foreign key should have a value matching the primary key column of the parent. In other words, Eloquent will look for the value of the user's `id` column in the `user_id` column of the `Phone` record. If you would like the relationship to use a primary key value other than `id` or your model's primary key, you may pass a third argument to the `hasOne` method:
+Крім того, Eloquent припускає, що значення зовнішнього ключа має збігатися зі значенням стовпця первинного ключа батьківської моделі. Інакше кажучи, Eloquent шукатиме значення стовпця `id` користувача у стовпці `user_id` запису `Phone`. Якщо ви хочете, щоб зв'язок використовував значення первинного ключа, відмінне від `id` або від первинного ключа вашої моделі, передайте методу `hasOne` третій аргумент:
 
 ```php
 return $this->hasOne(Phone::class, 'foreign_key', 'local_key');
 ```
 
 <a name="one-to-one-defining-the-inverse-of-the-relationship"></a>
-#### Defining the Inverse of the Relationship
+#### Визначення зворотного зв'язку
 
-So, we can access the `Phone` model from our `User` model. Next, let's define a relationship on the `Phone` model that will let us access the user that owns the phone. We can define the inverse of a `hasOne` relationship using the `belongsTo` method:
+Отже, ми можемо звернутися до моделі `Phone` з нашої моделі `User`. Тепер визначмо на моделі `Phone` зв'язок, який дозволить нам отримати користувача - власника телефону. Зворотний до `hasOne` зв'язок визначається методом `belongsTo`:
 
 ```php
 <?php
@@ -139,9 +142,9 @@ class Phone extends Model
 }
 ```
 
-When invoking the `user` method, Eloquent will attempt to find a `User` model that has an `id` which matches the `user_id` column on the `Phone` model.
+Під час виклику методу `user` Eloquent спробує знайти модель `User`, чий `id` збігається зі стовпцем `user_id` моделі `Phone`.
 
-Eloquent determines the foreign key name by examining the name of the relationship method and suffixing the method name with `_id`. So, in this case, Eloquent assumes that the `Phone` model has a `user_id` column. However, if the foreign key on the `Phone` model is not `user_id`, you may pass a custom key name as the second argument to the `belongsTo` method:
+Eloquent визначає ім'я зовнішнього ключа, беручи ім'я методу зв'язку та додаючи до нього суфікс `_id`. Тож у цьому випадку Eloquent припускає, що модель `Phone` має стовпець `user_id`. Проте якщо зовнішній ключ на моделі `Phone` називається не `user_id`, ви можете передати власне ім'я ключа другим аргументом до методу `belongsTo`:
 
 ```php
 /**
@@ -153,7 +156,7 @@ public function user(): BelongsTo
 }
 ```
 
-If the parent model does not use `id` as its primary key, or you wish to find the associated model using a different column, you may pass a third argument to the `belongsTo` method specifying the parent table's custom key:
+Якщо батьківська модель не використовує `id` як первинний ключ або ви хочете знаходити пов'язану модель за іншим стовпцем, передайте методу `belongsTo` третій аргумент із власним ключем батьківської таблиці:
 
 ```php
 /**
@@ -166,9 +169,9 @@ public function user(): BelongsTo
 ```
 
 <a name="one-to-many"></a>
-### One to Many / Has Many
+### Один до багатьох / Has Many
 
-A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a blog post may have an infinite number of comments. Like all other Eloquent relationships, one-to-many relationships are defined by defining a method on your Eloquent model:
+Зв'язок «один до багатьох» використовується, коли одна модель є батьківською для однієї чи кількох дочірніх моделей. Наприклад, допис у блозі може мати нескінченну кількість коментарів. Як і всі інші зв'язки Eloquent, зв'язки «один до багатьох» визначаються методом на вашій моделі Eloquent:
 
 ```php
 <?php
@@ -190,9 +193,9 @@ class Post extends Model
 }
 ```
 
-Remember, Eloquent will automatically determine the proper foreign key column for the `Comment` model. By convention, Eloquent will take the "snake case" name of the parent model and suffix it with `_id`. So, in this example, Eloquent will assume the foreign key column on the `Comment` model is `post_id`.
+Пам'ятайте: Eloquent автоматично визначить потрібний стовпець зовнішнього ключа для моделі `Comment`. За угодою Eloquent візьме ім'я батьківської моделі у «snake case» і додасть суфікс `_id`. Тож у цьому прикладі Eloquent припустить, що стовпець зовнішнього ключа на моделі `Comment` - це `post_id`.
 
-Once the relationship method has been defined, we can access the [collection](/docs/{{version}}/eloquent-collections) of related comments by accessing the `comments` property. Remember, since Eloquent provides "dynamic relationship properties", we can access relationship methods as if they were defined as properties on the model:
+Коли метод зв'язку визначено, ми можемо звернутися до [колекції](/docs/{{version}}/eloquent-collections) пов'язаних коментарів через властивість `comments`. Пам'ятайте: оскільки Eloquent надає «динамічні властивості зв'язків», ми можемо звертатися до методів зв'язків так, ніби це властивості моделі:
 
 ```php
 use App\Models\Post;
@@ -204,7 +207,7 @@ foreach ($comments as $comment) {
 }
 ```
 
-Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `comments` method and continuing to chain conditions onto the query:
+Оскільки всі зв'язки водночас є конструкторами запитів, ви можете додати до запиту зв'язку додаткові обмеження, викликавши метод `comments` і продовживши ланцюжок умов:
 
 ```php
 $comment = Post::find(1)->comments()
@@ -212,7 +215,7 @@ $comment = Post::find(1)->comments()
     ->first();
 ```
 
-Like the `hasOne` method, you may also override the foreign and local keys by passing additional arguments to the `hasMany` method:
+Як і в методі `hasOne`, ви можете перевизначити зовнішній і локальний ключі, передавши додаткові аргументи методу `hasMany`:
 
 ```php
 return $this->hasMany(Comment::class, 'foreign_key');
@@ -221,9 +224,9 @@ return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
 ```
 
 <a name="automatically-hydrating-parent-models-on-children"></a>
-#### Automatically Hydrating Parent Models on Children
+#### Автоматичне заповнення батьківських моделей у дочірніх
 
-Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+Навіть із жадібним завантаженням Eloquent можуть виникати проблеми запитів «N + 1», якщо ви звертаєтеся до батьківської моделі з дочірньої, перебираючи дочірні моделі:
 
 ```php
 $posts = Post::with('comments')->get();
@@ -235,9 +238,9 @@ foreach ($posts as $post) {
 }
 ```
 
-In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+У прикладі вище виникла проблема запитів «N + 1», бо, хоч коментарі й були жадібно завантажені для кожної моделі `Post`, Eloquent не заповнює автоматично батьківський `Post` у кожній дочірній моделі `Comment`.
 
-If you would like Eloquent to automatically hydrate parent models onto their children, you may invoke the `chaperone` method when defining a `hasMany` relationship:
+Якщо ви хочете, щоб Eloquent автоматично заповнював батьківські моделі в дочірніх, викличте метод `chaperone` під час визначення зв'язку `hasMany`:
 
 ```php
 <?php
@@ -259,7 +262,7 @@ class Post extends Model
 }
 ```
 
-Or, if you would like to opt-in to automatic parent hydration at run time, you may invoke the `chaperone` model when eager loading the relationship:
+Або ж, якщо ви хочете вмикати автоматичне заповнення батьківських моделей під час виконання, викличте метод `chaperone` під час жадібного завантаження зв'язку:
 
 ```php
 use App\Models\Post;
@@ -270,9 +273,9 @@ $posts = Post::with([
 ```
 
 <a name="one-to-many-inverse"></a>
-### One to Many (Inverse) / Belongs To
+### Один до багатьох (зворотний) / Belongs To
 
-Now that we can access all of a post's comments, let's define a relationship to allow a comment to access its parent post. To define the inverse of a `hasMany` relationship, define a relationship method on the child model which calls the `belongsTo` method:
+Тепер, коли ми маємо доступ до всіх коментарів допису, визначмо зв'язок, який дозволить коментарю звернутися до свого батьківського допису. Щоб визначити зворотний до `hasMany` зв'язок, оголосіть на дочірній моделі метод зв'язку, який викликає метод `belongsTo`:
 
 ```php
 <?php
@@ -294,7 +297,7 @@ class Comment extends Model
 }
 ```
 
-Once the relationship has been defined, we can retrieve a comment's parent post by accessing the `post` "dynamic relationship property":
+Коли зв'язок визначено, ми можемо отримати батьківський допис коментаря через «динамічну властивість зв'язку» `post`:
 
 ```php
 use App\Models\Comment;
@@ -304,11 +307,11 @@ $comment = Comment::find(1);
 return $comment->post->title;
 ```
 
-In the example above, Eloquent will attempt to find a `Post` model that has an `id` which matches the `post_id` column on the `Comment` model.
+У прикладі вище Eloquent спробує знайти модель `Post`, чий `id` збігається зі стовпцем `post_id` моделі `Comment`.
 
-Eloquent determines the default foreign key name by examining the name of the relationship method and suffixing the method name with a `_` followed by the name of the parent model's primary key column. So, in this example, Eloquent will assume the `Post` model's foreign key on the `comments` table is `post_id`.
+Eloquent визначає ім'я зовнішнього ключа за замовчуванням, беручи ім'я методу зв'язку й додаючи до нього `_`, а далі ім'я стовпця первинного ключа батьківської моделі. Тож у цьому прикладі Eloquent припустить, що зовнішній ключ моделі `Post` у таблиці `comments` - це `post_id`.
 
-However, if the foreign key for your relationship does not follow these conventions, you may pass a custom foreign key name as the second argument to the `belongsTo` method:
+Проте якщо зовнішній ключ вашого зв'язку не дотримується цих угод, ви можете передати власне ім'я зовнішнього ключа другим аргументом до методу `belongsTo`:
 
 ```php
 /**
@@ -320,7 +323,7 @@ public function post(): BelongsTo
 }
 ```
 
-If your parent model does not use `id` as its primary key, or you wish to find the associated model using a different column, you may pass a third argument to the `belongsTo` method specifying your parent table's custom key:
+Якщо ваша батьківська модель не використовує `id` як первинний ключ або ви хочете знаходити пов'язану модель за іншим стовпцем, передайте методу `belongsTo` третій аргумент із власним ключем батьківської таблиці:
 
 ```php
 /**
@@ -333,9 +336,9 @@ public function post(): BelongsTo
 ```
 
 <a name="default-models"></a>
-#### Default Models
+#### Моделі за замовчуванням
 
-The `belongsTo`, `hasOne`, `hasOneThrough`, and `morphOne` relationships allow you to define a default model that will be returned if the given relationship is `null`. This pattern is often referred to as the [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) and can help remove conditional checks in your code. In the following example, the `user` relation will return an empty `App\Models\User` model if no user is attached to the `Post` model:
+Зв'язки `belongsTo`, `hasOne`, `hasOneThrough` і `morphOne` дозволяють визначити модель за замовчуванням, яку буде повернено, якщо зв'язок дорівнює `null`. Цей патерн часто називають [патерном Null Object](https://en.wikipedia.org/wiki/Null_Object_pattern), і він допомагає позбутися умовних перевірок у коді. У наступному прикладі зв'язок `user` поверне порожню модель `App\Models\User`, якщо до моделі `Post` не прикріплено жодного користувача:
 
 ```php
 /**
@@ -347,7 +350,7 @@ public function user(): BelongsTo
 }
 ```
 
-To populate the default model with attributes, you may pass an array or closure to the `withDefault` method:
+Щоб заповнити модель за замовчуванням атрибутами, передайте методу `withDefault` масив або замикання:
 
 ```php
 /**
@@ -372,9 +375,9 @@ public function user(): BelongsTo
 ```
 
 <a name="querying-belongs-to-relationships"></a>
-#### Querying Belongs To Relationships
+#### Запити до зв'язків Belongs To
 
-When querying for the children of a "belongs to" relationship, you may manually build the `where` clause to retrieve the corresponding Eloquent models:
+Роблячи запит до дочірніх записів зв'язку «belongs to», ви можете вручну побудувати умову `where`, щоб отримати відповідні моделі Eloquent:
 
 ```php
 use App\Models\Post;
@@ -382,13 +385,13 @@ use App\Models\Post;
 $posts = Post::where('user_id', $user->id)->get();
 ```
 
-However, you may find it more convenient to use the `whereBelongsTo` method, which will automatically determine the proper relationship and foreign key for the given model:
+Проте зручнішим може виявитися метод `whereBelongsTo`, який автоматично визначить потрібний зв'язок і зовнішній ключ для заданої моделі:
 
 ```php
 $posts = Post::whereBelongsTo($user)->get();
 ```
 
-You may also provide a [collection](/docs/{{version}}/eloquent-collections) instance to the `whereBelongsTo` method. When doing so, Laravel will retrieve models that belong to any of the parent models within the collection:
+Ви також можете передати методу `whereBelongsTo` екземпляр [колекції](/docs/{{version}}/eloquent-collections). У такому разі Laravel поверне моделі, що належать будь-якій із батьківських моделей у колекції:
 
 ```php
 $users = User::where('vip', true)->get();
@@ -396,7 +399,7 @@ $users = User::where('vip', true)->get();
 $posts = Post::whereBelongsTo($users)->get();
 ```
 
-By default, Laravel will determine the relationship associated with the given model based on the class name of the model; however, you may specify the relationship name manually by providing it as the second argument to the `whereBelongsTo` method:
+За замовчуванням Laravel визначає зв'язок, пов'язаний із заданою моделлю, за іменем класу моделі; проте ви можете вказати ім'я зв'язку вручну, передавши його другим аргументом до методу `whereBelongsTo`:
 
 ```php
 $posts = Post::whereBelongsTo($user, 'author')->get();
@@ -405,7 +408,7 @@ $posts = Post::whereBelongsTo($user, 'author')->get();
 <a name="has-one-of-many"></a>
 ### Has One of Many
 
-Sometimes a model may have many related models, yet you want to easily retrieve the "latest" or "oldest" related model of the relationship. For example, a `User` model may be related to many `Order` models, but you want to define a convenient way to interact with the most recent order the user has placed. You may accomplish this using the `hasOne` relationship type combined with the `ofMany` methods:
+Іноді модель має багато пов'язаних моделей, але вам потрібно легко отримати «найновішу» чи «найстарішу» з них. Наприклад, модель `User` може бути пов'язана з багатьма моделями `Order`, але ви хочете мати зручний спосіб працювати з найновішим замовленням користувача. Цього можна досягти зв'язком типу `hasOne` у поєднанні з методами `ofMany`:
 
 ```php
 /**
@@ -417,7 +420,7 @@ public function latestOrder(): HasOne
 }
 ```
 
-Likewise, you may define a method to retrieve the "oldest", or first, related model of a relationship:
+Так само ви можете визначити метод для отримання «найстарішої», тобто першої, пов'язаної моделі:
 
 ```php
 /**
@@ -429,9 +432,9 @@ public function oldestOrder(): HasOne
 }
 ```
 
-By default, the `latestOfMany` and `oldestOfMany` methods will retrieve the latest or oldest related model based on the model's primary key, which must be sortable. However, sometimes you may wish to retrieve a single model from a larger relationship using a different sorting criteria.
+За замовчуванням методи `latestOfMany` та `oldestOfMany` отримують найновішу чи найстарішу пов'язану модель за первинним ключем моделі, який має бути придатним для сортування. Проте іноді потрібно отримати одну модель із більшого зв'язку за іншим критерієм сортування.
 
-For example, using the `ofMany` method, you may retrieve the user's most expensive order. The `ofMany` method accepts the sortable column as its first argument and which aggregate function (`min` or `max`) to apply when querying for the related model:
+Наприклад, за допомогою методу `ofMany` можна отримати найдорожче замовлення користувача. Метод `ofMany` приймає першим аргументом стовпець для сортування, а другим - агрегатну функцію (`min` чи `max`), яку слід застосувати під час запиту пов'язаної моделі:
 
 ```php
 /**
@@ -444,12 +447,12 @@ public function largestOrder(): HasOne
 ```
 
 > [!WARNING]
-> Because PostgreSQL does not support executing the `MAX` function against UUID columns, it is not currently possible to use one-of-many relationships in combination with PostgreSQL UUID columns.
+> Оскільки PostgreSQL не підтримує виконання функції `MAX` над стовпцями UUID, наразі неможливо використовувати зв'язки one-of-many разом зі стовпцями UUID у PostgreSQL.
 
 <a name="converting-many-relationships-to-has-one-relationships"></a>
-#### Converting "Many" Relationships to Has One Relationships
+#### Перетворення зв'язків «Many» на зв'язки Has One
 
-Often, when retrieving a single model using the `latestOfMany`, `oldestOfMany`, or `ofMany` methods, you already have a "has many" relationship defined for the same model. For convenience, Laravel allows you to easily convert this relationship into a "has one" relationship by invoking the `one` method on the relationship:
+Часто, отримуючи одну модель за допомогою методів `latestOfMany`, `oldestOfMany` чи `ofMany`, ви вже маєте визначений зв'язок «has many» для тієї самої моделі. Для зручності Laravel дозволяє легко перетворити цей зв'язок на «has one», викликавши на ньому метод `one`:
 
 ```php
 /**
@@ -469,7 +472,7 @@ public function largestOrder(): HasOne
 }
 ```
 
-You may also use the `one` method to convert `HasManyThrough` relationships to `HasOneThrough` relationships:
+Метод `one` можна також використати, щоб перетворити зв'язки `HasManyThrough` на `HasOneThrough`:
 
 ```php
 public function latestDeployment(): HasOneThrough
@@ -479,11 +482,11 @@ public function latestDeployment(): HasOneThrough
 ```
 
 <a name="advanced-has-one-of-many-relationships"></a>
-#### Advanced Has One of Many Relationships
+#### Складніші зв'язки Has One of Many
 
-It is possible to construct more advanced "has one of many" relationships. For example, a `Product` model may have many associated `Price` models that are retained in the system even after new pricing is published. In addition, new pricing data for the product may be able to be published in advance to take effect at a future date via a `published_at` column.
+Можна будувати й складніші зв'язки «has one of many». Наприклад, модель `Product` може мати багато пов'язаних моделей `Price`, які зберігаються в системі навіть після публікації нових цін. До того ж нові дані про ціни на товар можуть публікуватися заздалегідь і набирати чинності в майбутньому - через стовпець `published_at`.
 
-So, in summary, we need to retrieve the latest published pricing where the published date is not in the future. In addition, if two prices have the same published date, we will prefer the price with the greatest ID. To accomplish this, we must pass an array to the `ofMany` method that contains the sortable columns which determine the latest price. In addition, a closure will be provided as the second argument to the `ofMany` method. This closure will be responsible for adding additional publish date constraints to the relationship query:
+Тож, підсумовуючи, нам потрібно отримати найновішу опубліковану ціну, дата публікації якої не в майбутньому. Крім того, якщо дві ціни мають однакову дату публікації, ми віддамо перевагу ціні з більшим ID. Щоб цього досягти, ми маємо передати методу `ofMany` масив зі стовпцями для сортування, які визначають найновішу ціну. Також другим аргументом методу `ofMany` буде замикання. Воно відповідатиме за додавання до запиту зв'язку додаткових обмежень за датою публікації:
 
 ```php
 /**
@@ -503,9 +506,9 @@ public function currentPricing(): HasOne
 <a name="has-one-through"></a>
 ### Has One Through
 
-The "has-one-through" relationship defines a one-to-one relationship with another model. However, this relationship indicates that the declaring model can be matched with one instance of another model by proceeding _through_ a third model.
+Зв'язок «has-one-through» визначає зв'язок «один до одного» з іншою моделлю. Проте цей зв'язок вказує, що модель, яка його оголошує, може бути зіставлена з одним екземпляром іншої моделі _через_ третю модель.
 
-For example, in a vehicle repair shop application, each `Mechanic` model may be associated with one `Car` model, and each `Car` model may be associated with one `Owner` model. While the mechanic and the owner have no direct relationship within the database, the mechanic can access the owner _through_ the `Car` model. Let's look at the tables necessary to define this relationship:
+Наприклад, у застосунку автомайстерні кожна модель `Mechanic` може бути пов'язана з однією моделлю `Car`, а кожна модель `Car` - з однією моделлю `Owner`. Хоча між механіком і власником немає прямого зв'язку в базі даних, механік може дістатися власника _через_ модель `Car`. Погляньмо на таблиці, потрібні для визначення цього зв'язку:
 
 ```text
 mechanics
@@ -523,7 +526,7 @@ owners
     car_id - integer
 ```
 
-Now that we have examined the table structure for the relationship, let's define the relationship on the `Mechanic` model:
+Тепер, коли ми розглянули структуру таблиць для цього зв'язку, визначмо зв'язок на моделі `Mechanic`:
 
 ```php
 <?php
@@ -545,9 +548,9 @@ class Mechanic extends Model
 }
 ```
 
-The first argument passed to the `hasOneThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+Перший аргумент, переданий методу `hasOneThrough`, - ім'я кінцевої моделі, до якої ми хочемо дістатися, а другий - ім'я проміжної моделі.
 
-Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Mechanic` model has a `cars` relationship and the `Car` model has an `owner` relationship, you may define a "has-one-through" relationship connecting the mechanic and the owner like so:
+Або ж, якщо відповідні зв'язки вже визначені на всіх залучених моделях, ви можете плавно оголосити зв'язок «has-one-through», викликавши метод `through` і передавши імена цих зв'язків. Наприклад, якщо модель `Mechanic` має зв'язок `cars`, а модель `Car` - зв'язок `owner`, ви можете визначити зв'язок «has-one-through» між механіком і власником так:
 
 ```php
 // String based syntax...
@@ -558,9 +561,9 @@ return $this->throughCars()->hasOwner();
 ```
 
 <a name="has-one-through-key-conventions"></a>
-#### Key Conventions
+#### Угоди щодо ключів
 
-Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasOneThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
+Під час виконання запитів зв'язку використовуються типові угоди Eloquent щодо зовнішніх ключів. Якщо ви хочете налаштувати ключі зв'язку, передайте їх третім і четвертим аргументами до методу `hasOneThrough`. Третій аргумент - ім'я зовнішнього ключа на проміжній моделі. Четвертий - ім'я зовнішнього ключа на кінцевій моделі. П'ятий аргумент - локальний ключ, а шостий - локальний ключ проміжної моделі:
 
 ```php
 class Mechanic extends Model
@@ -582,7 +585,7 @@ class Mechanic extends Model
 }
 ```
 
-Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-one-through" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:
+Або ж, як згадувалося раніше, якщо відповідні зв'язки вже визначені на всіх залучених моделях, ви можете плавно оголосити зв'язок «has-one-through», викликавши метод `through` і передавши імена цих зв'язків. Цей підхід має перевагу: він повторно використовує угоди щодо ключів, уже визначені в наявних зв'язках:
 
 ```php
 // String based syntax...
@@ -595,7 +598,7 @@ return $this->throughCars()->hasOwner();
 <a name="has-many-through"></a>
 ### Has Many Through
 
-The "has-many-through" relationship provides a convenient way to access distant relations via an intermediate relation. For example, let's assume we are building a deployment platform like [Laravel Cloud](https://cloud.laravel.com). An `Application` model might access many `Deployment` models through an intermediate `Environment` model. Using this example, you could easily gather all deployments for a given application. Let's look at the tables required to define this relationship:
+Зв'язок «has-many-through» дає зручний спосіб дістатися віддалених зв'язків через проміжний зв'язок. Наприклад, уявімо, що ми будуємо платформу для розгортання на кшталт [Laravel Cloud](https://cloud.laravel.com). Модель `Application` може звертатися до багатьох моделей `Deployment` через проміжну модель `Environment`. Із цим прикладом ви легко зберете всі розгортання для заданого застосунку. Погляньмо на таблиці, потрібні для визначення цього зв'язку:
 
 ```text
 applications
@@ -613,7 +616,7 @@ deployments
     commit_hash - string
 ```
 
-Now that we have examined the table structure for the relationship, let's define the relationship on the `Application` model:
+Тепер, коли ми розглянули структуру таблиць для цього зв'язку, визначмо зв'язок на моделі `Application`:
 
 ```php
 <?php
@@ -635,9 +638,9 @@ class Application extends Model
 }
 ```
 
-The first argument passed to the `hasManyThrough` method is the name of the final model we wish to access, while the second argument is the name of the intermediate model.
+Перший аргумент, переданий методу `hasManyThrough`, - ім'я кінцевої моделі, до якої ми хочемо дістатися, а другий - ім'я проміжної моделі.
 
-Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Application` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a "has-many-through" relationship connecting the application and the deployments like so:
+Або ж, якщо відповідні зв'язки вже визначені на всіх залучених моделях, ви можете плавно оголосити зв'язок «has-many-through», викликавши метод `through` і передавши імена цих зв'язків. Наприклад, якщо модель `Application` має зв'язок `environments`, а модель `Environment` - зв'язок `deployments`, ви можете визначити зв'язок «has-many-through» між застосунком і розгортаннями так:
 
 ```php
 // String based syntax...
@@ -647,12 +650,12 @@ return $this->through('environments')->has('deployments');
 return $this->throughEnvironments()->hasDeployments();
 ```
 
-Though the `Deployment` model's table does not contain a `application_id` column, the `hasManyThrough` relation provides access to an application's deployments via `$application->deployments`. To retrieve these models, Eloquent inspects the `application_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
+Хоча таблиця моделі `Deployment` не містить стовпця `application_id`, зв'язок `hasManyThrough` дає доступ до розгортань застосунку через `$application->deployments`. Щоб отримати ці моделі, Eloquent перевіряє стовпець `application_id` у таблиці проміжної моделі `Environment`. Знайшовши потрібні ID середовищ, він використовує їх для запиту до таблиці моделі `Deployment`.
 
 <a name="has-many-through-key-conventions"></a>
-#### Key Conventions
+#### Угоди щодо ключів
 
-Typical Eloquent foreign key conventions will be used when performing the relationship's queries. If you would like to customize the keys of the relationship, you may pass them as the third and fourth arguments to the `hasManyThrough` method. The third argument is the name of the foreign key on the intermediate model. The fourth argument is the name of the foreign key on the final model. The fifth argument is the local key, while the sixth argument is the local key of the intermediate model:
+Під час виконання запитів зв'язку використовуються типові угоди Eloquent щодо зовнішніх ключів. Якщо ви хочете налаштувати ключі зв'язку, передайте їх третім і четвертим аргументами до методу `hasManyThrough`. Третій аргумент - ім'я зовнішнього ключа на проміжній моделі. Четвертий - ім'я зовнішнього ключа на кінцевій моделі. П'ятий аргумент - локальний ключ, а шостий - локальний ключ проміжної моделі:
 
 ```php
 class Application extends Model
@@ -671,7 +674,7 @@ class Application extends Model
 }
 ```
 
-Or, as discussed earlier, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. This approach offers the advantage of reusing the key conventions already defined on the existing relationships:
+Або ж, як згадувалося раніше, якщо відповідні зв'язки вже визначені на всіх залучених моделях, ви можете плавно оголосити зв'язок «has-many-through», викликавши метод `through` і передавши імена цих зв'язків. Цей підхід має перевагу: він повторно використовує угоди щодо ключів, уже визначені в наявних зв'язках:
 
 ```php
 // String based syntax...
@@ -682,9 +685,9 @@ return $this->throughEnvironments()->hasDeployments();
 ```
 
 <a name="scoped-relationships"></a>
-### Scoped Relationships
+### Зв'язки зі скопами
 
-It's common to add additional methods to models that constrain relationships. For example, you might add a `featuredPosts` method to a `User` model which constrains the broader `posts` relationship with an additional `where` constraint:
+Часто до моделей додають додаткові методи, які обмежують зв'язки. Наприклад, ви можете додати до моделі `User` метод `featuredPosts`, який обмежує ширший зв'язок `posts` додатковою умовою `where`:
 
 ```php
 <?php
@@ -714,7 +717,7 @@ class User extends Model
 }
 ```
 
-However, if you attempt to create a model via the `featuredPosts` method, its `featured` attribute would not be set to `true`. If you would like to create models via relationship methods and also specify attributes that should be added to all models created via that relationship, you may use the `withAttributes` method when building the relationship query:
+Проте якщо ви спробуєте створити модель через метод `featuredPosts`, її атрибут `featured` не набуде значення `true`. Якщо ви хочете створювати моделі через методи зв'язків і водночас задавати атрибути, які слід додавати до всіх створених через цей зв'язок моделей, скористайтеся методом `withAttributes` під час побудови запиту зв'язку:
 
 ```php
 /**
@@ -726,7 +729,7 @@ public function featuredPosts(): HasMany
 }
 ```
 
-The `withAttributes` method will add `where` conditions to the query using the given attributes, and it will also add the given attributes to any models created via the relationship method:
+Метод `withAttributes` додасть до запиту умови `where` із заданими атрибутами, а також додасть ці атрибути до всіх моделей, створених через метод зв'язку:
 
 ```php
 $post = $user->featuredPosts()->create(['title' => 'Featured Post']);
@@ -734,23 +737,23 @@ $post = $user->featuredPosts()->create(['title' => 'Featured Post']);
 $post->featured; // true
 ```
 
-To instruct the `withAttributes` method to not add `where` conditions to the query, you may set the `asConditions` argument to `false`:
+Щоб метод `withAttributes` не додавав умов `where` до запиту, встановіть аргумент `asConditions` у значення `false`:
 
 ```php
 return $this->posts()->withAttributes(['featured' => true], asConditions: false);
 ```
 
 <a name="many-to-many"></a>
-## Many to Many Relationships
+## Зв'язки «багато до багатьох»
 
-Many-to-many relations are slightly more complicated than `hasOne` and `hasMany` relationships. An example of a many-to-many relationship is a user that has many roles and those roles are also shared by other users in the application. For example, a user may be assigned the role of "Author" and "Editor"; however, those roles may also be assigned to other users as well. So, a user has many roles and a role has many users.
+Зв'язки «багато до багатьох» дещо складніші за зв'язки `hasOne` та `hasMany`. Приклад такого зв'язку - користувач, який має багато ролей, причому ці самі ролі мають й інші користувачі застосунку. Наприклад, користувачеві можна призначити ролі «Author» та «Editor»; проте ці ролі можуть бути призначені й іншим користувачам. Отже, користувач має багато ролей, а роль - багато користувачів.
 
 <a name="many-to-many-table-structure"></a>
-#### Table Structure
+#### Структура таблиць
 
-To define this relationship, three database tables are needed: `users`, `roles`, and `role_user`. The `role_user` table is derived from the alphabetical order of the related model names and contains `user_id` and `role_id` columns. This table is used as an intermediate table linking the users and roles.
+Щоб визначити цей зв'язок, потрібні три таблиці бази даних: `users`, `roles` і `role_user`. Ім'я таблиці `role_user` походить від імен пов'язаних моделей в алфавітному порядку, і вона містить стовпці `user_id` та `role_id`. Ця таблиця є проміжною й пов'язує користувачів із ролями.
 
-Remember, since a role can belong to many users, we cannot simply place a `user_id` column on the `roles` table. This would mean that a role could only belong to a single user. In order to provide support for roles being assigned to multiple users, the `role_user` table is needed. We can summarize the relationship's table structure like so:
+Пам'ятайте: оскільки роль може належати багатьом користувачам, ми не можемо просто додати стовпець `user_id` до таблиці `roles`. Це означало б, що роль може належати лише одному користувачеві. Щоб ролі можна було призначати кільком користувачам, і потрібна таблиця `role_user`. Структуру таблиць цього зв'язку можна підсумувати так:
 
 ```text
 users
@@ -767,9 +770,9 @@ role_user
 ```
 
 <a name="many-to-many-model-structure"></a>
-#### Model Structure
+#### Структура моделей
 
-Many-to-many relationships are defined by writing a method that returns the result of the `belongsToMany` method. The `belongsToMany` method is provided by the `Illuminate\Database\Eloquent\Model` base class that is used by all of your application's Eloquent models. For example, let's define a `roles` method on our `User` model. The first argument passed to this method is the name of the related model class:
+Зв'язки «багато до багатьох» визначаються методом, який повертає результат методу `belongsToMany`. Метод `belongsToMany` надає базовий клас `Illuminate\Database\Eloquent\Model`, який використовують усі моделі Eloquent вашого застосунку. Наприклад, визначмо метод `roles` на нашій моделі `User`. Перший аргумент, який передається цьому методу, - ім'я класу пов'язаної моделі:
 
 ```php
 <?php
@@ -791,7 +794,7 @@ class User extends Model
 }
 ```
 
-Once the relationship is defined, you may access the user's roles using the `roles` dynamic relationship property:
+Коли зв'язок визначено, ви можете звертатися до ролей користувача через динамічну властивість зв'язку `roles`:
 
 ```php
 use App\Models\User;
@@ -803,28 +806,28 @@ foreach ($user->roles as $role) {
 }
 ```
 
-Since all relationships also serve as query builders, you may add further constraints to the relationship query by calling the `roles` method and continuing to chain conditions onto the query:
+Оскільки всі зв'язки водночас є конструкторами запитів, ви можете додати до запиту зв'язку додаткові обмеження, викликавши метод `roles` і продовживши ланцюжок умов:
 
 ```php
 $roles = User::find(1)->roles()->orderBy('name')->get();
 ```
 
-To determine the table name of the relationship's intermediate table, Eloquent will join the two related model names in alphabetical order. However, you are free to override this convention. You may do so by passing a second argument to the `belongsToMany` method:
+Щоб визначити ім'я проміжної таблиці зв'язку, Eloquent з'єднає імена двох пов'язаних моделей в алфавітному порядку. Проте ви можете перевизначити цю угоду, передавши другий аргумент до методу `belongsToMany`:
 
 ```php
 return $this->belongsToMany(Role::class, 'role_user');
 ```
 
-In addition to customizing the name of the intermediate table, you may also customize the column names of the keys on the table by passing additional arguments to the `belongsToMany` method. The third argument is the foreign key name of the model on which you are defining the relationship, while the fourth argument is the foreign key name of the model that you are joining to:
+Окрім імені проміжної таблиці, ви можете налаштувати й імена стовпців-ключів у ній, передавши додаткові аргументи до методу `belongsToMany`. Третій аргумент - ім'я зовнішнього ключа моделі, на якій ви визначаєте зв'язок, а четвертий - ім'я зовнішнього ключа моделі, до якої ви приєднуєтеся:
 
 ```php
 return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
 ```
 
 <a name="many-to-many-defining-the-inverse-of-the-relationship"></a>
-#### Defining the Inverse of the Relationship
+#### Визначення зворотного зв'язку
 
-To define the "inverse" of a many-to-many relationship, you should define a method on the related model which also returns the result of the `belongsToMany` method. To complete our user / role example, let's define the `users` method on the `Role` model:
+Щоб визначити «зворотний» бік зв'язку «багато до багатьох», оголосіть на пов'язаній моделі метод, який також повертає результат методу `belongsToMany`. Щоб завершити наш приклад із користувачами й ролями, визначмо метод `users` на моделі `Role`:
 
 ```php
 <?php
@@ -846,12 +849,12 @@ class Role extends Model
 }
 ```
 
-As you can see, the relationship is defined exactly the same as its `User` model counterpart with the exception of referencing the `App\Models\User` model. Since we're reusing the `belongsToMany` method, all of the usual table and key customization options are available when defining the "inverse" of many-to-many relationships.
+Як бачите, зв'язок визначено точно так само, як і його відповідник на моделі `User`, за винятком посилання на модель `App\Models\User`. Оскільки ми повторно використовуємо метод `belongsToMany`, під час визначення «зворотного» боку зв'язків «багато до багатьох» доступні всі звичні опції налаштування таблиці та ключів.
 
 <a name="retrieving-intermediate-table-columns"></a>
-### Retrieving Intermediate Table Columns
+### Отримання стовпців проміжної таблиці
 
-As you have already learned, working with many-to-many relations requires the presence of an intermediate table. Eloquent provides some very helpful ways of interacting with this table. For example, let's assume our `User` model has many `Role` models that it is related to. After accessing this relationship, we may access the intermediate table using the `pivot` attribute on the models:
+Як ви вже дізналися, робота зі зв'язками «багато до багатьох» вимагає наявності проміжної таблиці. Eloquent надає кілька дуже зручних способів взаємодії з нею. Наприклад, припустімо, що наша модель `User` має багато пов'язаних моделей `Role`. Звернувшись до цього зв'язку, ми можемо дістатися проміжної таблиці через атрибут `pivot` на моделях:
 
 ```php
 use App\Models\User;
@@ -863,29 +866,29 @@ foreach ($user->roles as $role) {
 }
 ```
 
-Notice that each `Role` model we retrieve is automatically assigned a `pivot` attribute. This attribute contains a model representing the intermediate table.
+Зверніть увагу: кожній отриманій моделі `Role` автоматично призначається атрибут `pivot`. Цей атрибут містить модель, що представляє проміжну таблицю.
 
-By default, only the model keys will be present on the `pivot` model. If your intermediate table contains extra attributes, you must specify them when defining the relationship:
+За замовчуванням на моделі `pivot` присутні лише ключі моделей. Якщо ваша проміжна таблиця містить додаткові атрибути, їх треба вказати під час визначення зв'язку:
 
 ```php
 return $this->belongsToMany(Role::class)->withPivot('active', 'created_by');
 ```
 
-If you would like your intermediate table to have `created_at` and `updated_at` timestamps that are automatically maintained by Eloquent, call the `withTimestamps` method when defining the relationship:
+Якщо ви хочете, щоб ваша проміжна таблиця мала часові мітки `created_at` та `updated_at`, які Eloquent підтримує автоматично, викличте метод `withTimestamps` під час визначення зв'язку:
 
 ```php
 return $this->belongsToMany(Role::class)->withTimestamps();
 ```
 
 > [!WARNING]
-> Intermediate tables that utilize Eloquent's automatically maintained timestamps are required to have both `created_at` and `updated_at` timestamp columns.
+> Проміжні таблиці, що використовують автоматично підтримувані Eloquent часові мітки, мусять мати обидва стовпці - `created_at` та `updated_at`.
 
 <a name="customizing-the-pivot-attribute-name"></a>
-#### Customizing the `pivot` Attribute Name
+#### Налаштування імені атрибута `pivot`
 
-As noted previously, attributes from the intermediate table may be accessed on models via the `pivot` attribute. However, you are free to customize the name of this attribute to better reflect its purpose within your application.
+Як зазначалося раніше, до атрибутів проміжної таблиці можна звертатися на моделях через атрибут `pivot`. Проте ви вільні змінити ім'я цього атрибута, щоб воно краще відображало його призначення у вашому застосунку.
 
-For example, if your application contains users that may subscribe to podcasts, you likely have a many-to-many relationship between users and podcasts. If this is the case, you may wish to rename your intermediate table attribute to `subscription` instead of `pivot`. This can be done using the `as` method when defining the relationship:
+Наприклад, якщо у вашому застосунку користувачі можуть підписуватися на подкасти, то між користувачами й подкастами, найімовірніше, є зв'язок «багато до багатьох». У такому разі ви можете захотіти перейменувати атрибут проміжної таблиці з `pivot` на `subscription`. Це робиться методом `as` під час визначення зв'язку:
 
 ```php
 return $this->belongsToMany(Podcast::class)
@@ -893,7 +896,7 @@ return $this->belongsToMany(Podcast::class)
     ->withTimestamps();
 ```
 
-Once the custom intermediate table attribute has been specified, you may access the intermediate table data using the customized name:
+Коли власний атрибут проміжної таблиці задано, ви можете звертатися до її даних за новим іменем:
 
 ```php
 $users = User::with('podcasts')->get();
@@ -904,9 +907,9 @@ foreach ($users->flatMap->podcasts as $podcast) {
 ```
 
 <a name="filtering-queries-via-intermediate-table-columns"></a>
-### Filtering Queries via Intermediate Table Columns
+### Фільтрація запитів за стовпцями проміжної таблиці
 
-You can also filter the results returned by `belongsToMany` relationship queries using the `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull`, and `wherePivotNotNull` methods when defining the relationship:
+Ви також можете фільтрувати результати запитів зв'язку `belongsToMany` методами `wherePivot`, `wherePivotIn`, `wherePivotNotIn`, `wherePivotBetween`, `wherePivotNotBetween`, `wherePivotNull` та `wherePivotNotNull` під час визначення зв'язку:
 
 ```php
 return $this->belongsToMany(Role::class)
@@ -935,7 +938,7 @@ return $this->belongsToMany(Podcast::class)
     ->wherePivotNotNull('expired_at');
 ```
 
-The `wherePivot` adds a where clause constraint to the query, but does not add the specified value when creating new models via the defined relationship. If you need to both query and create relationships with a particular pivot value, you may use the `withPivotValue` method:
+Метод `wherePivot` додає до запиту обмеження where, але не додає вказаного значення під час створення нових моделей через визначений зв'язок. Якщо вам потрібно і робити запити, і створювати зв'язки з певним значенням pivot, скористайтеся методом `withPivotValue`:
 
 ```php
 return $this->belongsToMany(Role::class)
@@ -943,9 +946,9 @@ return $this->belongsToMany(Role::class)
 ```
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>
-### Ordering Queries via Intermediate Table Columns
+### Сортування запитів за стовпцями проміжної таблиці
 
-You can order the results returned by `belongsToMany` relationship queries using the `orderByPivot` and `orderByPivotDesc` methods. In the following example, we will retrieve all of the latest badges for the user:
+Ви можете сортувати результати запитів зв'язку `belongsToMany` методами `orderByPivot` та `orderByPivotDesc`. У наступному прикладі ми отримаємо всі найновіші бейджі користувача:
 
 ```php
 return $this->belongsToMany(Badge::class)
@@ -954,11 +957,11 @@ return $this->belongsToMany(Badge::class)
 ```
 
 <a name="defining-custom-intermediate-table-models"></a>
-### Defining Custom Intermediate Table Models
+### Визначення власних моделей проміжної таблиці
 
-If you would like to define a custom model to represent the intermediate table of your many-to-many relationship, you may call the `using` method when defining the relationship. Custom pivot models give you the opportunity to define additional behavior on the pivot model, such as methods and casts.
+Якщо ви хочете визначити власну модель, що представлятиме проміжну таблицю вашого зв'язку «багато до багатьох», викличте метод `using` під час визначення зв'язку. Власні pivot-моделі дають змогу описати додаткову поведінку на pivot-моделі - наприклад, методи та приведення типів.
 
-Custom many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class while custom polymorphic many-to-many pivot models should extend the `Illuminate\Database\Eloquent\Relations\MorphPivot` class. For example, we may define a `Role` model which uses a custom `RoleUser` pivot model:
+Власні pivot-моделі для зв'язків «багато до багатьох» мають успадковувати клас `Illuminate\Database\Eloquent\Relations\Pivot`, а власні pivot-моделі для поліморфних зв'язків «багато до багатьох» - клас `Illuminate\Database\Eloquent\Relations\MorphPivot`. Наприклад, ми можемо визначити модель `Role`, яка використовує власну pivot-модель `RoleUser`:
 
 ```php
 <?php
@@ -980,7 +983,7 @@ class Role extends Model
 }
 ```
 
-When defining the `RoleUser` model, you should extend the `Illuminate\Database\Eloquent\Relations\Pivot` class:
+Визначаючи модель `RoleUser`, ви маєте успадкувати клас `Illuminate\Database\Eloquent\Relations\Pivot`:
 
 ```php
 <?php
@@ -996,12 +999,12 @@ class RoleUser extends Pivot
 ```
 
 > [!WARNING]
-> Pivot models may not use the `SoftDeletes` trait. If you need to soft delete pivot records consider converting your pivot model to an actual Eloquent model.
+> Pivot-моделі не можуть використовувати трейт `SoftDeletes`. Якщо вам потрібне м'яке видалення (soft delete) pivot-записів, подумайте про перетворення pivot-моделі на повноцінну модель Eloquent.
 
 <a name="custom-pivot-models-and-incrementing-ids"></a>
-#### Custom Pivot Models and Incrementing IDs
+#### Власні pivot-моделі та інкрементні ID
 
-If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class uses the `Table` attribute with `incrementing` set to `true`:
+Якщо ви визначили зв'язок «багато до багатьох», що використовує власну pivot-модель, і ця pivot-модель має автоінкрементний первинний ключ, переконайтеся, що ваш клас pivot-моделі використовує атрибут `Table` зі значенням `incrementing`, встановленим у `true`:
 
 ```php
 use Illuminate\Database\Eloquent\Attributes\Table;
@@ -1015,17 +1018,17 @@ class RoleUser extends Pivot
 ```
 
 <a name="polymorphic-relationships"></a>
-## Polymorphic Relationships
+## Поліморфні зв'язки
 
-A polymorphic relationship allows the child model to belong to more than one type of model using a single association. For example, imagine you are building an application that allows users to share blog posts and videos. In such an application, a `Comment` model might belong to both the `Post` and `Video` models.
+Поліморфний зв'язок дозволяє дочірній моделі належати більш ніж одному типу моделей через одну асоціацію. Наприклад, уявіть, що ви будуєте застосунок, у якому користувачі можуть ділитися дописами блогу та відео. У такому застосунку модель `Comment` могла б належати і моделі `Post`, і моделі `Video`.
 
 <a name="one-to-one-polymorphic-relations"></a>
-### One to One (Polymorphic)
+### Один до одного (поліморфний)
 
 <a name="one-to-one-polymorphic-table-structure"></a>
-#### Table Structure
+#### Структура таблиць
 
-A one-to-one polymorphic relation is similar to a typical one-to-one relation; however, the child model can belong to more than one type of model using a single association. For example, a blog `Post` and a `User` may share a polymorphic relation to an `Image` model. Using a one-to-one polymorphic relation allows you to have a single table of unique images that may be associated with posts and users. First, let's examine the table structure:
+Поліморфний зв'язок «один до одного» схожий на звичайний зв'язок «один до одного»; проте дочірня модель може належати більш ніж одному типу моделей через одну асоціацію. Наприклад, `Post` блогу та `User` можуть мати спільний поліморфний зв'язок із моделлю `Image`. Поліморфний зв'язок «один до одного» дозволяє мати одну таблицю унікальних зображень, які можуть бути пов'язані з дописами й користувачами. Спершу розгляньмо структуру таблиць:
 
 ```text
 posts
@@ -1043,12 +1046,12 @@ images
     imageable_id - integer
 ```
 
-Note the `imageable_id` and `imageable_type` columns on the `images` table. The `imageable_id` column will contain the ID value of the post or user, while the `imageable_type` column will contain the class name of the parent model. The `imageable_type` column is used by Eloquent to determine which "type" of parent model to return when accessing the `imageable` relation. In this case, the column would contain either `App\Models\Post` or `App\Models\User`.
+Зверніть увагу на стовпці `imageable_id` та `imageable_type` у таблиці `images`. Стовпець `imageable_id` міститиме значення ID допису чи користувача, а стовпець `imageable_type` - ім'я класу батьківської моделі. Стовпець `imageable_type` Eloquent використовує, щоб визначити, який «тип» батьківської моделі повернути при зверненні до зв'язку `imageable`. У цьому випадку стовпець міститиме або `App\Models\Post`, або `App\Models\User`.
 
 <a name="one-to-one-polymorphic-model-structure"></a>
-#### Model Structure
+#### Структура моделей
 
-Next, let's examine the model definitions needed to build this relationship:
+Далі розгляньмо визначення моделей, потрібні для побудови цього зв'язку:
 
 ```php
 <?php
@@ -1099,9 +1102,9 @@ class User extends Model
 ```
 
 <a name="one-to-one-polymorphic-retrieving-the-relationship"></a>
-#### Retrieving the Relationship
+#### Отримання зв'язку
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to retrieve the image for a post, we can access the `image` dynamic relationship property:
+Коли таблицю бази даних і моделі визначено, ви можете звертатися до зв'язків через свої моделі. Наприклад, щоб отримати зображення допису, звернімося до динамічної властивості зв'язку `image`:
 
 ```php
 use App\Models\Post;
@@ -1111,7 +1114,7 @@ $post = Post::find(1);
 $image = $post->image;
 ```
 
-You may retrieve the parent of the polymorphic model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `imageable` method on the `Image` model. So, we will access that method as a dynamic relationship property:
+Батьківську модель поліморфної моделі можна отримати, звернувшись до імені методу, який викликає `morphTo`. У цьому випадку це метод `imageable` на моделі `Image`. Тож ми звернемося до нього як до динамічної властивості зв'язку:
 
 ```php
 use App\Models\Image;
@@ -1121,12 +1124,12 @@ $image = Image::find(1);
 $imageable = $image->imageable;
 ```
 
-The `imageable` relation on the `Image` model will return either a `Post` or `User` instance, depending on which type of model owns the image.
+Зв'язок `imageable` на моделі `Image` поверне екземпляр або `Post`, або `User` - залежно від того, який тип моделі володіє зображенням.
 
 <a name="morph-one-to-one-key-conventions"></a>
-#### Key Conventions
+#### Угоди щодо ключів
 
-If necessary, you may specify the name of the "id" and "type" columns utilized by your polymorphic child model. If you do so, ensure that you always pass the name of the relationship as the first argument to the `morphTo` method. Typically, this value should match the method name, so you may use PHP's `__FUNCTION__` constant:
+За потреби ви можете вказати імена стовпців «id» та «type», які використовує ваша поліморфна дочірня модель. Якщо ви це робите, завжди передавайте ім'я зв'язку першим аргументом до методу `morphTo`. Зазвичай це значення має збігатися з іменем методу, тож можна скористатися константою PHP `__FUNCTION__`:
 
 ```php
 /**
@@ -1139,12 +1142,12 @@ public function imageable(): MorphTo
 ```
 
 <a name="one-to-many-polymorphic-relations"></a>
-### One to Many (Polymorphic)
+### Один до багатьох (поліморфний)
 
 <a name="one-to-many-polymorphic-table-structure"></a>
-#### Table Structure
+#### Структура таблиць
 
-A one-to-many polymorphic relation is similar to a typical one-to-many relation; however, the child model can belong to more than one type of model using a single association. For example, imagine users of your application can "comment" on posts and videos. Using polymorphic relationships, you may use a single `comments` table to contain comments for both posts and videos. First, let's examine the table structure required to build this relationship:
+Поліморфний зв'язок «один до багатьох» схожий на звичайний зв'язок «один до багатьох»; проте дочірня модель може належати більш ніж одному типу моделей через одну асоціацію. Наприклад, уявіть, що користувачі вашого застосунку можуть «коментувати» дописи та відео. За допомогою поліморфних зв'язків ви можете тримати коментарі до дописів і до відео в одній таблиці `comments`. Спершу розгляньмо структуру таблиць, потрібну для побудови цього зв'язку:
 
 ```text
 posts
@@ -1165,9 +1168,9 @@ comments
 ```
 
 <a name="one-to-many-polymorphic-model-structure"></a>
-#### Model Structure
+#### Структура моделей
 
-Next, let's examine the model definitions needed to build this relationship:
+Далі розгляньмо визначення моделей, потрібні для побудови цього зв'язку:
 
 ```php
 <?php
@@ -1218,9 +1221,9 @@ class Video extends Model
 ```
 
 <a name="one-to-many-polymorphic-retrieving-the-relationship"></a>
-#### Retrieving the Relationship
+#### Отримання зв'язку
 
-Once your database table and models are defined, you may access the relationships via your model's dynamic relationship properties. For example, to access all of the comments for a post, we can use the `comments` dynamic property:
+Коли таблицю бази даних і моделі визначено, ви можете звертатися до зв'язків через динамічні властивості зв'язків ваших моделей. Наприклад, щоб дістатися всіх коментарів допису, скористаймося динамічною властивістю `comments`:
 
 ```php
 use App\Models\Post;
@@ -1232,7 +1235,7 @@ foreach ($post->comments as $comment) {
 }
 ```
 
-You may also retrieve the parent of a polymorphic child model by accessing the name of the method that performs the call to `morphTo`. In this case, that is the `commentable` method on the `Comment` model. So, we will access that method as a dynamic relationship property in order to access the comment's parent model:
+Ви також можете отримати батьківську модель поліморфної дочірньої моделі, звернувшись до імені методу, який викликає `morphTo`. У цьому випадку це метод `commentable` на моделі `Comment`. Тож ми звернемося до нього як до динамічної властивості зв'язку, щоб дістатися батьківської моделі коментаря:
 
 ```php
 use App\Models\Comment;
@@ -1242,12 +1245,12 @@ $comment = Comment::find(1);
 $commentable = $comment->commentable;
 ```
 
-The `commentable` relation on the `Comment` model will return either a `Post` or `Video` instance, depending on which type of model is the comment's parent.
+Зв'язок `commentable` на моделі `Comment` поверне екземпляр або `Post`, або `Video` - залежно від того, який тип моделі є батьківським для коментаря.
 
 <a name="polymorphic-automatically-hydrating-parent-models-on-children"></a>
-#### Automatically Hydrating Parent Models on Children
+#### Автоматичне заповнення батьківських моделей у дочірніх
 
-Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+Навіть із жадібним завантаженням Eloquent можуть виникати проблеми запитів «N + 1», якщо ви звертаєтеся до батьківської моделі з дочірньої, перебираючи дочірні моделі:
 
 ```php
 $posts = Post::with('comments')->get();
@@ -1259,9 +1262,9 @@ foreach ($posts as $post) {
 }
 ```
 
-In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+У прикладі вище виникла проблема запитів «N + 1», бо, хоч коментарі й були жадібно завантажені для кожної моделі `Post`, Eloquent не заповнює автоматично батьківський `Post` у кожній дочірній моделі `Comment`.
 
-If you would like Eloquent to automatically hydrate parent models onto their children, you may invoke the `chaperone` method when defining a `morphMany` relationship:
+Якщо ви хочете, щоб Eloquent автоматично заповнював батьківські моделі в дочірніх, викличте метод `chaperone` під час визначення зв'язку `morphMany`:
 
 ```php
 class Post extends Model
@@ -1276,7 +1279,7 @@ class Post extends Model
 }
 ```
 
-Or, if you would like to opt-in to automatic parent hydration at run time, you may invoke the `chaperone` model when eager loading the relationship:
+Або ж, якщо ви хочете вмикати автоматичне заповнення батьківських моделей під час виконання, викличте метод `chaperone` під час жадібного завантаження зв'язку:
 
 ```php
 use App\Models\Post;
@@ -1287,9 +1290,9 @@ $posts = Post::with([
 ```
 
 <a name="one-of-many-polymorphic-relations"></a>
-### One of Many (Polymorphic)
+### Один з багатьох (поліморфний)
 
-Sometimes a model may have many related models, yet you want to easily retrieve the "latest" or "oldest" related model of the relationship. For example, a `User` model may be related to many `Image` models, but you want to define a convenient way to interact with the most recent image the user has uploaded. You may accomplish this using the `morphOne` relationship type combined with the `ofMany` methods:
+Іноді модель має багато пов'язаних моделей, але вам потрібно легко отримати «найновішу» чи «найстарішу» з них. Наприклад, модель `User` може бути пов'язана з багатьма моделями `Image`, але ви хочете мати зручний спосіб працювати з найновішим зображенням, яке завантажив користувач. Цього можна досягти зв'язком типу `morphOne` у поєднанні з методами `ofMany`:
 
 ```php
 /**
@@ -1301,7 +1304,7 @@ public function latestImage(): MorphOne
 }
 ```
 
-Likewise, you may define a method to retrieve the "oldest", or first, related model of a relationship:
+Так само ви можете визначити метод для отримання «найстарішого», тобто першого, пов'язаного запису:
 
 ```php
 /**
@@ -1313,9 +1316,9 @@ public function oldestImage(): MorphOne
 }
 ```
 
-By default, the `latestOfMany` and `oldestOfMany` methods will retrieve the latest or oldest related model based on the model's primary key, which must be sortable. However, sometimes you may wish to retrieve a single model from a larger relationship using a different sorting criteria.
+За замовчуванням методи `latestOfMany` та `oldestOfMany` отримують найновішу чи найстарішу пов'язану модель за первинним ключем моделі, який має бути придатним для сортування. Проте іноді потрібно отримати одну модель із більшого зв'язку за іншим критерієм сортування.
 
-For example, using the `ofMany` method, you may retrieve the user's most "liked" image. The `ofMany` method accepts the sortable column as its first argument and which aggregate function (`min` or `max`) to apply when querying for the related model:
+Наприклад, за допомогою методу `ofMany` можна отримати зображення користувача з найбільшою кількістю «вподобань». Метод `ofMany` приймає першим аргументом стовпець для сортування, а другим - агрегатну функцію (`min` чи `max`), яку слід застосувати під час запиту пов'язаної моделі:
 
 ```php
 /**
@@ -1328,15 +1331,15 @@ public function bestImage(): MorphOne
 ```
 
 > [!NOTE]
-> It is possible to construct more advanced "one of many" relationships. For more information, please consult the [has one of many documentation](#advanced-has-one-of-many-relationships).
+> Можна будувати й складніші зв'язки «один з багатьох». Докладніше читайте в [документації про has one of many](#advanced-has-one-of-many-relationships).
 
 <a name="many-to-many-polymorphic-relations"></a>
-### Many to Many (Polymorphic)
+### Багато до багатьох (поліморфний)
 
 <a name="many-to-many-polymorphic-table-structure"></a>
-#### Table Structure
+#### Структура таблиць
 
-Many-to-many polymorphic relations are slightly more complicated than "morph one" and "morph many" relationships. For example, a `Post` model and `Video` model could share a polymorphic relation to a `Tag` model. Using a many-to-many polymorphic relation in this situation would allow your application to have a single table of unique tags that may be associated with posts or videos. First, let's examine the table structure required to build this relationship:
+Поліморфні зв'язки «багато до багатьох» дещо складніші за зв'язки «morph one» та «morph many». Наприклад, моделі `Post` та `Video` можуть мати спільний поліморфний зв'язок із моделлю `Tag`. Поліморфний зв'язок «багато до багатьох» у цій ситуації дозволив би вашому застосунку мати одну таблицю унікальних тегів, які можуть бути пов'язані з дописами чи відео. Спершу розгляньмо структуру таблиць, потрібну для побудови цього зв'язку:
 
 ```text
 posts
@@ -1358,14 +1361,14 @@ taggables
 ```
 
 > [!NOTE]
-> Before diving into polymorphic many-to-many relationships, you may benefit from reading the documentation on typical [many-to-many relationships](#many-to-many).
+> Перш ніж заглиблюватися в поліморфні зв'язки «багато до багатьох», вам може бути корисно прочитати документацію про звичайні [зв'язки «багато до багатьох»](#many-to-many).
 
 <a name="many-to-many-polymorphic-model-structure"></a>
-#### Model Structure
+#### Структура моделей
 
-Next, we're ready to define the relationships on the models. The `Post` and `Video` models will both contain a `tags` method that calls the `morphToMany` method provided by the base Eloquent model class.
+Далі ми готові визначити зв'язки на моделях. Моделі `Post` і `Video` матимуть метод `tags`, який викликає метод `morphToMany`, наданий базовим класом моделі Eloquent.
 
-The `morphToMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as "taggable":
+Метод `morphToMany` приймає ім'я пов'язаної моделі, а також «ім'я зв'язку». Зважаючи на ім'я, яке ми дали проміжній таблиці, та ключі, які вона містить, ми називатимемо цей зв'язок «taggable»:
 
 ```php
 <?php
@@ -1388,11 +1391,11 @@ class Post extends Model
 ```
 
 <a name="many-to-many-polymorphic-defining-the-inverse-of-the-relationship"></a>
-#### Defining the Inverse of the Relationship
+#### Визначення зворотного зв'язку
 
-Next, on the `Tag` model, you should define a method for each of its possible parent models. So, in this example, we will define a `posts` method and a `videos` method. Both of these methods should return the result of the `morphedByMany` method.
+Далі на моделі `Tag` слід визначити метод для кожної з її можливих батьківських моделей. Тож у цьому прикладі ми визначимо методи `posts` і `videos`. Обидва мають повертати результат методу `morphedByMany`.
 
-The `morphedByMany` method accepts the name of the related model as well as the "relationship name". Based on the name we assigned to our intermediate table name and the keys it contains, we will refer to the relationship as "taggable":
+Метод `morphedByMany` приймає ім'я пов'язаної моделі, а також «ім'я зв'язку». Зважаючи на ім'я, яке ми дали проміжній таблиці, та ключі, які вона містить, ми називатимемо цей зв'язок «taggable»:
 
 ```php
 <?php
@@ -1423,9 +1426,9 @@ class Tag extends Model
 ```
 
 <a name="many-to-many-polymorphic-retrieving-the-relationship"></a>
-#### Retrieving the Relationship
+#### Отримання зв'язку
 
-Once your database table and models are defined, you may access the relationships via your models. For example, to access all of the tags for a post, you may use the `tags` dynamic relationship property:
+Коли таблицю бази даних і моделі визначено, ви можете звертатися до зв'язків через свої моделі. Наприклад, щоб дістатися всіх тегів допису, скористайтеся динамічною властивістю зв'язку `tags`:
 
 ```php
 use App\Models\Post;
@@ -1437,7 +1440,7 @@ foreach ($post->tags as $tag) {
 }
 ```
 
-You may retrieve the parent of a polymorphic relation from the polymorphic child model by accessing the name of the method that performs the call to `morphedByMany`. In this case, that is the `posts` or `videos` methods on the `Tag` model:
+Батьківську модель поліморфного зв'язку можна отримати з поліморфної дочірньої моделі, звернувшись до імені методу, який викликає `morphedByMany`. У цьому випадку це методи `posts` або `videos` на моделі `Tag`:
 
 ```php
 use App\Models\Tag;
@@ -1454,11 +1457,11 @@ foreach ($tag->videos as $video) {
 ```
 
 <a name="custom-polymorphic-types"></a>
-### Custom Polymorphic Types
+### Власні поліморфні типи
 
-By default, Laravel will use the fully qualified class name to store the "type" of the related model. For instance, given the one-to-many relationship example above where a `Comment` model may belong to a `Post` or a `Video` model, the default `commentable_type` would be either `App\Models\Post` or `App\Models\Video`, respectively. However, you may wish to decouple these values from your application's internal structure.
+За замовчуванням Laravel зберігає «тип» пов'язаної моделі як повне ім'я класу. Наприклад, у наведеному вище прикладі зв'язку «один до багатьох», де модель `Comment` може належати моделі `Post` чи `Video`, значенням `commentable_type` за замовчуванням буде відповідно `App\Models\Post` або `App\Models\Video`. Проте ви можете захотіти відв'язати ці значення від внутрішньої структури вашого застосунку.
 
-For example, instead of using the model names as the "type", we may use simple strings such as `post` and `video`. By doing so, the polymorphic "type" column values in our database will remain valid even if the models are renamed:
+Наприклад, замість імен моделей ми можемо використовувати як «тип» прості рядки на кшталт `post` і `video`. Завдяки цьому значення поліморфного стовпця «type» у базі даних залишатимуться коректними, навіть якщо моделі перейменують:
 
 ```php
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -1469,9 +1472,9 @@ Relation::enforceMorphMap([
 ]);
 ```
 
-You may call the `enforceMorphMap` method in the `boot` method of your `App\Providers\AppServiceProvider` class or create a separate service provider if you wish.
+Викликати метод `enforceMorphMap` можна в методі `boot` вашого класу `App\Providers\AppServiceProvider` або, за бажанням, створити окремий сервіс-провайдер.
 
-You may determine the morph alias of a given model at runtime using the model's `getMorphClass` method. Conversely, you may determine the fully-qualified class name associated with a morph alias using the `Relation::getMorphedModel` method:
+Морф-аліас заданої моделі можна визначити під час виконання методом моделі `getMorphClass`. І навпаки: повне ім'я класу, пов'язане з морф-аліасом, можна визначити методом `Relation::getMorphedModel`:
 
 ```php
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -1482,14 +1485,14 @@ $class = Relation::getMorphedModel($alias);
 ```
 
 > [!WARNING]
-> When adding a "morph map" to your existing application, every morphable `*_type` column value in your database that still contains a fully-qualified class will need to be converted to its "map" name.
+> Коли ви додаєте «морф-мапу» до наявного застосунку, кожне значення морфованого стовпця `*_type` у базі даних, яке ще містить повне ім'я класу, доведеться перетворити на його ім'я з «мапи».
 
 <a name="dynamic-relationships"></a>
-### Dynamic Relationships
+### Динамічні зв'язки
 
-You may use the `resolveRelationUsing` method to define relations between Eloquent models at runtime. While not typically recommended for normal application development, this may occasionally be useful when developing Laravel packages.
+Метод `resolveRelationUsing` дозволяє визначати зв'язки між моделями Eloquent під час виконання. Хоча для звичайної розробки застосунків це зазвичай не рекомендується, іноді це буває корисно при створенні пакетів для Laravel.
 
-The `resolveRelationUsing` method accepts the desired relationship name as its first argument. The second argument passed to the method should be a closure that accepts the model instance and returns a valid Eloquent relationship definition. Typically, you should configure dynamic relationships within the boot method of a [service provider](/docs/{{version}}/providers):
+Метод `resolveRelationUsing` приймає бажане ім'я зв'язку першим аргументом. Другим аргументом має бути замикання, що приймає екземпляр моделі й повертає коректне визначення зв'язку Eloquent. Зазвичай динамічні зв'язки налаштовують у методі boot [сервіс-провайдера](/docs/{{version}}/providers):
 
 ```php
 use App\Models\Order;
@@ -1501,14 +1504,14 @@ Order::resolveRelationUsing('customer', function (Order $orderModel) {
 ```
 
 > [!WARNING]
-> When defining dynamic relationships, always provide explicit key name arguments to the Eloquent relationship methods.
+> Визначаючи динамічні зв'язки, завжди передавайте методам зв'язків Eloquent явні аргументи з іменами ключів.
 
 <a name="querying-relations"></a>
-## Querying Relations
+## Запити до зв'язків
 
-Since all Eloquent relationships are defined via methods, you may call those methods to obtain an instance of the relationship without actually executing a query to load the related models. In addition, all types of Eloquent relationships also serve as [query builders](/docs/{{version}}/queries), allowing you to continue to chain constraints onto the relationship query before finally executing the SQL query against your database.
+Оскільки всі зв'язки Eloquent визначені через методи, ви можете викликати ці методи, щоб отримати екземпляр зв'язку, не виконуючи запиту для завантаження пов'язаних моделей. До того ж усі типи зв'язків Eloquent водночас є [конструкторами запитів](/docs/{{version}}/queries), тож ви можете й далі додавати обмеження до запиту зв'язку, перш ніж остаточно виконати SQL-запит до вашої бази даних.
 
-For example, imagine a blog application in which a `User` model has many associated `Post` models:
+Наприклад, уявіть застосунок блогу, у якому модель `User` має багато пов'язаних моделей `Post`:
 
 ```php
 <?php
@@ -1530,7 +1533,7 @@ class User extends Model
 }
 ```
 
-You may query the `posts` relationship and add additional constraints to the relationship like so:
+Ви можете зробити запит до зв'язку `posts` і додати до нього додаткові обмеження ось так:
 
 ```php
 use App\Models\User;
@@ -1540,12 +1543,12 @@ $user = User::find(1);
 $user->posts()->where('active', 1)->get();
 ```
 
-You are able to use any of the Laravel [query builder's](/docs/{{version}}/queries) methods on the relationship, so be sure to explore the query builder documentation to learn about all of the methods that are available to you.
+На зв'язку можна використовувати будь-які методи [конструктора запитів](/docs/{{version}}/queries) Laravel, тож обов'язково перегляньте його документацію, щоб дізнатися про всі доступні вам методи.
 
 <a name="chaining-orwhere-clauses-after-relationships"></a>
-#### Chaining `orWhere` Clauses After Relationships
+#### Ланцюжки умов `orWhere` після зв'язків
 
-As demonstrated in the example above, you are free to add additional constraints to relationships when querying them. However, use caution when chaining `orWhere` clauses onto a relationship, as the `orWhere` clauses will be logically grouped at the same level as the relationship constraint:
+Як показано в прикладі вище, ви вільні додавати до зв'язків додаткові обмеження під час запиту. Проте будьте обережні, додаючи до зв'язку умови `orWhere` у ланцюжок: логічно вони згрупуються на тому самому рівні, що й обмеження зв'язку:
 
 ```php
 $user->posts()
@@ -1554,7 +1557,7 @@ $user->posts()
     ->get();
 ```
 
-The example above will generate the following SQL. As you can see, the `or` clause instructs the query to return _any_ post with greater than 100 votes. The query is no longer constrained to a specific user:
+Приклад вище згенерує такий SQL. Як бачите, умова `or` вказує запиту повертати _будь-який_ допис із понад 100 голосами. Запит більше не обмежений конкретним користувачем:
 
 ```sql
 select *
@@ -1562,7 +1565,7 @@ from posts
 where user_id = ? and active = 1 or votes >= 100
 ```
 
-In most situations, you should use [logical groups](/docs/{{version}}/queries#logical-grouping) to group the conditional checks between parentheses:
+У більшості випадків варто скористатися [логічними групами](/docs/{{version}}/queries#logical-grouping), щоб згрупувати умовні перевірки в дужках:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1575,7 +1578,7 @@ $user->posts()
     ->get();
 ```
 
-The example above will produce the following SQL. Note that the logical grouping has properly grouped the constraints and the query remains constrained to a specific user:
+Приклад вище дасть такий SQL. Зверніть увагу, що логічне групування правильно згрупувало обмеження, і запит лишається обмеженим конкретним користувачем:
 
 ```sql
 select *
@@ -1584,9 +1587,9 @@ where user_id = ? and (active = 1 or votes >= 100)
 ```
 
 <a name="relationship-methods-vs-dynamic-properties"></a>
-### Relationship Methods vs. Dynamic Properties
+### Методи зв'язків проти динамічних властивостей
 
-If you do not need to add additional constraints to an Eloquent relationship query, you may access the relationship as if it were a property. For example, continuing to use our `User` and `Post` example models, we may access all of a user's posts like so:
+Якщо вам не потрібно додавати до запиту зв'язку Eloquent додаткові обмеження, ви можете звертатися до зв'язку так, ніби це властивість. Наприклад, продовжуючи роботу з моделями `User` і `Post`, ми можемо отримати всі дописи користувача ось так:
 
 ```php
 use App\Models\User;
@@ -1598,12 +1601,12 @@ foreach ($user->posts as $post) {
 }
 ```
 
-Dynamic relationship properties perform "lazy loading", meaning they will only load their relationship data when you actually access them. Because of this, developers often use [eager loading](#eager-loading) to pre-load relationships they know will be accessed after loading the model. Eager loading provides a significant reduction in SQL queries that must be executed to load a model's relations.
+Динамічні властивості зв'язків виконують «ліниве завантаження» (lazy loading): вони завантажують дані зв'язку лише тоді, коли ви до них справді звертаєтеся. Через це розробники часто застосовують [жадібне завантаження](#eager-loading) (eager loading), щоб наперед завантажити зв'язки, до яких вони точно звертатимуться після завантаження моделі. Жадібне завантаження суттєво зменшує кількість SQL-запитів, потрібних для завантаження зв'язків моделі.
 
 <a name="querying-relationship-existence"></a>
-### Querying Relationship Existence
+### Запити за наявністю зв'язку
 
-When retrieving model records, you may wish to limit your results based on the existence of a relationship. For example, imagine you want to retrieve all blog posts that have at least one comment. To do so, you may pass the name of the relationship to the `has` and `orHas` methods:
+Отримуючи записи моделей, ви можете захотіти обмежити результати наявністю зв'язку. Наприклад, уявіть, що вам потрібні всі дописи блогу, які мають щонайменше один коментар. Для цього передайте ім'я зв'язку методам `has` та `orHas`:
 
 ```php
 use App\Models\Post;
@@ -1612,21 +1615,21 @@ use App\Models\Post;
 $posts = Post::has('comments')->get();
 ```
 
-You may also specify an operator and count value to further customize the query:
+Ви також можете вказати оператор і значення кількості, щоб додатково налаштувати запит:
 
 ```php
 // Retrieve all posts that have three or more comments...
 $posts = Post::has('comments', '>=', 3)->get();
 ```
 
-Nested `has` statements may be constructed using "dot" notation. For example, you may retrieve all posts that have at least one comment that has at least one image:
+Вкладені конструкції `has` будуються через «крапкову» нотацію. Наприклад, ви можете отримати всі дописи, які мають щонайменше один коментар, що має щонайменше одне зображення:
 
 ```php
 // Retrieve posts that have at least one comment with images...
 $posts = Post::has('comments.images')->get();
 ```
 
-If you need even more power, you may use the `whereHas` and `orWhereHas` methods to define additional query constraints on your `has` queries, such as inspecting the content of a comment:
+Якщо вам потрібно ще більше можливостей, скористайтеся методами `whereHas` та `orWhereHas`, щоб додати до ваших запитів `has` додаткові обмеження - наприклад, перевірити вміст коментаря:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1643,18 +1646,18 @@ $posts = Post::whereHas('comments', function (Builder $query) {
 ```
 
 > [!WARNING]
-> Eloquent does not currently support querying for relationship existence across databases. The relationships must exist within the same database.
+> Наразі Eloquent не підтримує запити за наявністю зв'язку між різними базами даних. Зв'язки мають існувати в межах однієї бази даних.
 
 <a name="many-to-many-relationship-existence-queries"></a>
-#### Many to Many Relationship Existence Queries
+#### Запити за наявністю зв'язку «багато до багатьох»
 
-The `whereAttachedTo` method may be used to query for models that have a many to many attachment to a model or collection of models:
+Метод `whereAttachedTo` дозволяє шукати моделі, приєднані зв'язком «багато до багатьох» до заданої моделі чи колекції моделей:
 
 ```php
 $users = User::whereAttachedTo($role)->get();
 ```
 
-You may also provide a [collection](/docs/{{version}}/eloquent-collections) instance to the `whereAttachedTo` method. When doing so, Laravel will retrieve models that are attached to any of the models within the collection:
+Ви також можете передати методу `whereAttachedTo` екземпляр [колекції](/docs/{{version}}/eloquent-collections). У такому разі Laravel поверне моделі, приєднані до будь-якої з моделей у колекції:
 
 ```php
 $tags = Tag::whereLike('name', '%laravel%')->get();
@@ -1663,9 +1666,9 @@ $posts = Post::whereAttachedTo($tags)->get();
 ```
 
 <a name="inline-relationship-existence-queries"></a>
-#### Inline Relationship Existence Queries
+#### Вбудовані запити за наявністю зв'язку
 
-If you would like to query for a relationship's existence with a single, simple where condition attached to the relationship query, you may find it more convenient to use the `whereRelation`, `orWhereRelation`, `whereMorphRelation`, and `orWhereMorphRelation` methods. For example, we may query for all posts that have unapproved comments:
+Якщо ви хочете зробити запит за наявністю зв'язку з однією простою умовою where, приєднаною до запиту зв'язку, зручнішими можуть бути методи `whereRelation`, `orWhereRelation`, `whereMorphRelation` та `orWhereMorphRelation`. Наприклад, ми можемо знайти всі дописи, що мають незатверджені коментарі:
 
 ```php
 use App\Models\Post;
@@ -1673,7 +1676,7 @@ use App\Models\Post;
 $posts = Post::whereRelation('comments', 'is_approved', false)->get();
 ```
 
-Of course, like calls to the query builder's `where` method, you may also specify an operator:
+Звісно, як і у викликах методу `where` конструктора запитів, ви можете вказати оператор:
 
 ```php
 $posts = Post::whereRelation(
@@ -1682,9 +1685,9 @@ $posts = Post::whereRelation(
 ```
 
 <a name="querying-relationship-absence"></a>
-### Querying Relationship Absence
+### Запити за відсутністю зв'язку
 
-When retrieving model records, you may wish to limit your results based on the absence of a relationship. For example, imagine you want to retrieve all blog posts that **don't** have any comments. To do so, you may pass the name of the relationship to the `doesntHave` and `orDoesntHave` methods:
+Отримуючи записи моделей, ви можете захотіти обмежити результати відсутністю зв'язку. Наприклад, уявіть, що вам потрібні всі дописи блогу, які **не** мають жодного коментаря. Для цього передайте ім'я зв'язку методам `doesntHave` та `orDoesntHave`:
 
 ```php
 use App\Models\Post;
@@ -1692,7 +1695,7 @@ use App\Models\Post;
 $posts = Post::doesntHave('comments')->get();
 ```
 
-If you need even more power, you may use the `whereDoesntHave` and `orWhereDoesntHave` methods to add additional query constraints to your `doesntHave` queries, such as inspecting the content of a comment:
+Якщо вам потрібно ще більше можливостей, скористайтеся методами `whereDoesntHave` та `orWhereDoesntHave`, щоб додати до ваших запитів `doesntHave` додаткові обмеження - наприклад, перевірити вміст коментаря:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1702,7 +1705,7 @@ $posts = Post::whereDoesntHave('comments', function (Builder $query) {
 })->get();
 ```
 
-You may use "dot" notation to execute a query against a nested relationship. For example, the following query will retrieve all posts that do not have comments as well as posts that have comments where none of the comments are from banned users:
+Ви можете скористатися «крапковою» нотацією, щоб виконати запит до вкладеного зв'язку. Наприклад, наступний запит поверне всі дописи без коментарів, а також дописи з коментарями, жоден із яких не належить заблокованим користувачам:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1713,9 +1716,9 @@ $posts = Post::whereDoesntHave('comments.author', function (Builder $query) {
 ```
 
 <a name="querying-morph-to-relationships"></a>
-### Querying Morph To Relationships
+### Запити до зв'язків Morph To
 
-To query the existence of "morph to" relationships, you may use the `whereHasMorph` and `whereDoesntHaveMorph` methods. These methods accept the name of the relationship as their first argument. Next, the methods accept the names of the related models that you wish to include in the query. Finally, you may provide a closure which customizes the relationship query:
+Щоб зробити запит за наявністю зв'язків «morph to», скористайтеся методами `whereHasMorph` та `whereDoesntHaveMorph`. Ці методи приймають ім'я зв'язку першим аргументом. Далі вони приймають імена пов'язаних моделей, які ви хочете включити до запиту. Нарешті, ви можете передати замикання, що налаштує запит зв'язку:
 
 ```php
 use App\Models\Comment;
@@ -1742,7 +1745,7 @@ $comments = Comment::whereDoesntHaveMorph(
 )->get();
 ```
 
-You may occasionally need to add query constraints based on the "type" of the related polymorphic model. The closure passed to the `whereHasMorph` method may receive a `$type` value as its second argument. This argument allows you to inspect the "type" of the query that is being built:
+Іноді вам може знадобитися додати обмеження запиту залежно від «типу» пов'язаної поліморфної моделі. Замикання, передане методу `whereHasMorph`, може приймати другим аргументом значення `$type`. Цей аргумент дозволяє перевірити «тип» запиту, який будується:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1758,7 +1761,7 @@ $comments = Comment::whereHasMorph(
 )->get();
 ```
 
-Sometimes you may want to query for the children of a "morph to" relationship's parent. You may accomplish this using the `whereMorphedTo` and `whereNotMorphedTo` methods, which will automatically determine the proper morph type mapping for the given model. These methods accept the name of the `morphTo` relationship as their first argument and the related parent model as their second argument:
+Іноді потрібно зробити запит до дочірніх записів батьківської моделі зв'язку «morph to». Цього можна досягти методами `whereMorphedTo` та `whereNotMorphedTo`, які автоматично визначать правильне зіставлення морф-типу для заданої моделі. Ці методи приймають ім'я зв'язку `morphTo` першим аргументом і пов'язану батьківську модель другим:
 
 ```php
 $comments = Comment::whereMorphedTo('commentable', $post)
@@ -1767,9 +1770,9 @@ $comments = Comment::whereMorphedTo('commentable', $post)
 ```
 
 <a name="querying-all-morph-to-related-models"></a>
-#### Querying All Related Models
+#### Запит до всіх пов'язаних моделей
 
-Instead of passing an array of possible polymorphic models, you may provide `*` as a wildcard value. This will instruct Laravel to retrieve all of the possible polymorphic types from the database. Laravel will execute an additional query in order to perform this operation:
+Замість масиву можливих поліморфних моделей ви можете передати `*` як символ підстановки. Це вкаже Laravel отримати з бази даних усі можливі поліморфні типи. Для цієї операції Laravel виконає додатковий запит:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1780,12 +1783,12 @@ $comments = Comment::whereHasMorph('commentable', '*', function (Builder $query)
 ```
 
 <a name="aggregating-related-models"></a>
-## Aggregating Related Models
+## Агрегування пов'язаних моделей
 
 <a name="counting-related-models"></a>
-### Counting Related Models
+### Підрахунок пов'язаних моделей
 
-Sometimes you may want to count the number of related models for a given relationship without actually loading the models. To accomplish this, you may use the `withCount` method. The `withCount` method will place a `{relation}_count` attribute on the resulting models:
+Іноді потрібно порахувати кількість пов'язаних моделей для заданого зв'язку, не завантажуючи самі моделі. Для цього скористайтеся методом `withCount`. Метод `withCount` додасть до отриманих моделей атрибут `{relation}_count`:
 
 ```php
 use App\Models\Post;
@@ -1797,7 +1800,7 @@ foreach ($posts as $post) {
 }
 ```
 
-By passing an array to the `withCount` method, you may add the "counts" for multiple relations as well as add additional constraints to the queries:
+Передавши методу `withCount` масив, ви можете додати «кількості» для кількох зв'язків, а також додаткові обмеження до запитів:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1810,7 +1813,7 @@ echo $posts[0]->votes_count;
 echo $posts[0]->comments_count;
 ```
 
-You may also alias the relationship count result, allowing multiple counts on the same relationship:
+Ви також можете дати результату підрахунку зв'язку аліас, що дозволяє мати кілька підрахунків для того самого зв'язку:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1827,9 +1830,9 @@ echo $posts[0]->pending_comments_count;
 ```
 
 <a name="deferred-count-loading"></a>
-#### Deferred Count Loading
+#### Відкладене завантаження кількості
 
-Using the `loadCount` method, you may load a relationship count after the parent model has already been retrieved:
+За допомогою методу `loadCount` ви можете завантажити кількість для зв'язку вже після того, як батьківську модель отримано:
 
 ```php
 $book = Book::first();
@@ -1837,7 +1840,7 @@ $book = Book::first();
 $book->loadCount('genres');
 ```
 
-If you need to set additional query constraints on the count query, you may pass an array keyed by the relationships you wish to count. The array values should be closures which receive the query builder instance:
+Якщо вам потрібно задати додаткові обмеження для запиту підрахунку, передайте масив із ключами-іменами зв'язків, які ви хочете порахувати. Значеннями масиву мають бути замикання, що приймають екземпляр конструктора запитів:
 
 ```php
 $book->loadCount(['reviews' => function (Builder $query) {
@@ -1846,9 +1849,9 @@ $book->loadCount(['reviews' => function (Builder $query) {
 ```
 
 <a name="relationship-counting-and-custom-select-statements"></a>
-#### Relationship Counting and Custom Select Statements
+#### Підрахунок зв'язків і власні вирази select
 
-If you're combining `withCount` with a `select` statement, ensure that you call `withCount` after the `select` method:
+Якщо ви поєднуєте `withCount` із виразом `select`, обов'язково викликайте `withCount` після методу `select`:
 
 ```php
 $posts = Post::select(['title', 'body'])
@@ -1857,9 +1860,9 @@ $posts = Post::select(['title', 'body'])
 ```
 
 <a name="other-aggregate-functions"></a>
-### Other Aggregate Functions
+### Інші агрегатні функції
 
-In addition to the `withCount` method, Eloquent provides `withMin`, `withMax`, `withAvg`, `withSum`, and `withExists` methods. These methods will place a `{relation}_{function}_{column}` attribute on your resulting models:
+Окрім методу `withCount`, Eloquent надає методи `withMin`, `withMax`, `withAvg`, `withSum` та `withExists`. Вони додадуть до отриманих моделей атрибут `{relation}_{function}_{column}`:
 
 ```php
 use App\Models\Post;
@@ -1871,7 +1874,7 @@ foreach ($posts as $post) {
 }
 ```
 
-If you wish to access the result of the aggregate function using another name, you may specify your own alias:
+Якщо ви хочете звертатися до результату агрегатної функції за іншим іменем, вкажіть власний аліас:
 
 ```php
 $posts = Post::withSum('comments as total_comments', 'votes')->get();
@@ -1881,7 +1884,7 @@ foreach ($posts as $post) {
 }
 ```
 
-Like the `loadCount` method, deferred versions of these methods are also available. These additional aggregate operations may be performed on Eloquent models that have already been retrieved:
+Як і у випадку з методом `loadCount`, для цих методів також доступні відкладені версії. Ці додаткові агрегатні операції можна виконувати на вже отриманих моделях Eloquent:
 
 ```php
 $post = Post::first();
@@ -1889,7 +1892,7 @@ $post = Post::first();
 $post->loadSum('comments', 'votes');
 ```
 
-If you're combining these aggregate methods with a `select` statement, ensure that you call the aggregate methods after the `select` method:
+Якщо ви поєднуєте ці агрегатні методи з виразом `select`, обов'язково викликайте їх після методу `select`:
 
 ```php
 $posts = Post::select(['title', 'body'])
@@ -1898,13 +1901,13 @@ $posts = Post::select(['title', 'body'])
 ```
 
 <a name="counting-related-models-on-morph-to-relationships"></a>
-### Counting Related Models on Morph To Relationships
+### Підрахунок пов'язаних моделей у зв'язках Morph To
 
-If you would like to eager load a "morph to" relationship, as well as related model counts for the various entities that may be returned by that relationship, you may utilize the `with` method in combination with the `morphTo` relationship's `morphWithCount` method.
+Якщо ви хочете жадібно завантажити зв'язок «morph to», а також кількості пов'язаних моделей для різних сутностей, які цей зв'язок може повернути, скористайтеся методом `with` у поєднанні з методом `morphWithCount` зв'язку `morphTo`.
 
-In this example, let's assume that `Photo` and `Post` models may create `ActivityFeed` models. We will assume the `ActivityFeed` model defines a "morph to" relationship named `parentable` that allows us to retrieve the parent `Photo` or `Post` model for a given `ActivityFeed` instance. Additionally, let's assume that `Photo` models "have many" `Tag` models and `Post` models "have many" `Comment` models.
+У цьому прикладі припустімо, що моделі `Photo` та `Post` можуть створювати моделі `ActivityFeed`. Припустімо також, що модель `ActivityFeed` визначає зв'язок «morph to» на ім'я `parentable`, який дозволяє отримати батьківську модель `Photo` чи `Post` для заданого екземпляра `ActivityFeed`. Крім того, припустімо, що моделі `Photo` «мають багато» моделей `Tag`, а моделі `Post` - багато моделей `Comment`.
 
-Now, let's imagine we want to retrieve `ActivityFeed` instances and eager load the `parentable` parent models for each `ActivityFeed` instance. In addition, we want to retrieve the number of tags that are associated with each parent photo and the number of comments that are associated with each parent post:
+Тепер уявімо, що ми хочемо отримати екземпляри `ActivityFeed` і жадібно завантажити батьківські моделі `parentable` для кожного з них. Крім того, ми хочемо отримати кількість тегів, пов'язаних із кожним батьківським фото, і кількість коментарів, пов'язаних із кожним батьківським дописом:
 
 ```php
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -1919,9 +1922,9 @@ $activities = ActivityFeed::with([
 ```
 
 <a name="morph-to-deferred-count-loading"></a>
-#### Deferred Count Loading
+#### Відкладене завантаження кількості
 
-Let's assume we have already retrieved a set of `ActivityFeed` models and now we would like to load the nested relationship counts for the various `parentable` models associated with the activity feeds. You may use the `loadMorphCount` method to accomplish this:
+Припустімо, ми вже отримали набір моделей `ActivityFeed` і тепер хочемо завантажити вкладені кількості зв'язків для різних моделей `parentable`, пов'язаних зі стрічкою активності. Зробити це можна методом `loadMorphCount`:
 
 ```php
 $activities = ActivityFeed::with('parentable')->get();
@@ -1933,9 +1936,9 @@ $activities->loadMorphCount('parentable', [
 ```
 
 <a name="eager-loading"></a>
-## Eager Loading
+## Жадібне завантаження
 
-When accessing Eloquent relationships as properties, the related models are "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" to an `Author` model:
+Коли ви звертаєтеся до зв'язків Eloquent як до властивостей, пов'язані моделі завантажуються «ліниво» (lazy loading). Це означає, що дані зв'язку не завантажуються, доки ви вперше не звернетеся до властивості. Проте Eloquent уміє «жадібно завантажувати» (eager loading) зв'язки вже під час запиту до батьківської моделі. Жадібне завантаження знімає проблему запитів «N + 1». Щоб проілюструвати цю проблему, розгляньмо модель `Book`, яка «належить» моделі `Author`:
 
 ```php
 <?php
@@ -1957,7 +1960,7 @@ class Book extends Model
 }
 ```
 
-Now, let's retrieve all books and their authors:
+А тепер отримаймо всі книжки та їхніх авторів:
 
 ```php
 use App\Models\Book;
@@ -1969,9 +1972,9 @@ foreach ($books as $book) {
 }
 ```
 
-This loop will execute one query to retrieve all of the books within the database table, then another query for each book in order to retrieve the book's author. So, if we have 25 books, the code above would run 26 queries: one for the original book, and 25 additional queries to retrieve the author of each book.
+Цей цикл виконає один запит, щоб отримати всі книжки з таблиці бази даних, а потім ще по одному запиту на кожну книжку, щоб отримати її автора. Тож якщо в нас 25 книжок, наведений код виконає 26 запитів: один по самі книжки і ще 25, щоб отримати автора кожної книжки.
 
-Thankfully, we can use eager loading to reduce this operation to just two queries. When building a query, you may specify which relationships should be eager loaded using the `with` method:
+На щастя, ми можемо скористатися жадібним завантаженням і звести цю операцію лише до двох запитів. Будуючи запит, ви можете вказати, які зв'язки слід завантажити жадібно, за допомогою методу `with`:
 
 ```php
 $books = Book::with('author')->get();
@@ -1981,7 +1984,7 @@ foreach ($books as $book) {
 }
 ```
 
-For this operation, only two queries will be executed - one query to retrieve all of the books and one query to retrieve all of the authors for all of the books:
+Для цієї операції буде виконано лише два запити - один, щоб отримати всі книжки, і один, щоб отримати всіх авторів усіх книжок:
 
 ```sql
 select * from books
@@ -1990,24 +1993,24 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
 ```
 
 <a name="eager-loading-multiple-relationships"></a>
-#### Eager Loading Multiple Relationships
+#### Жадібне завантаження кількох зв'язків
 
-Sometimes you may need to eager load several different relationships. To do so, just pass an array of relationships to the `with` method:
+Іноді потрібно жадібно завантажити кілька різних зв'язків. Для цього просто передайте методу `with` масив зв'язків:
 
 ```php
 $books = Book::with(['author', 'publisher'])->get();
 ```
 
 <a name="nested-eager-loading"></a>
-#### Nested Eager Loading
+#### Вкладене жадібне завантаження
 
-To eager load a relationship's relationships, you may use "dot" syntax. For example, let's eager load all of the book's authors and all of the author's personal contacts:
+Щоб жадібно завантажити зв'язки зв'язку, скористайтеся «крапковим» синтаксисом. Наприклад, завантажмо жадібно всіх авторів книжки та всі особисті контакти автора:
 
 ```php
 $books = Book::with('author.contacts')->get();
 ```
 
-Alternatively, you may specify nested eager loaded relationships by providing a nested array to the `with` method, which can be convenient when eager loading multiple nested relationships:
+Або ж ви можете задати вкладені жадібно завантажувані зв'язки, передавши методу `with` вкладений масив, - це буває зручно при жадібному завантаженні кількох вкладених зв'язків:
 
 ```php
 $books = Book::with([
@@ -2019,9 +2022,9 @@ $books = Book::with([
 ```
 
 <a name="nested-eager-loading-morphto-relationships"></a>
-#### Nested Eager Loading `morphTo` Relationships
+#### Вкладене жадібне завантаження зв'язків `morphTo`
 
-If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `with` method in combination with the `morphTo` relationship's `morphWith` method. To help illustrate this method, let's consider the following model:
+Якщо ви хочете жадібно завантажити зв'язок `morphTo`, а також вкладені зв'язки різних сутностей, які цей зв'язок може повернути, скористайтеся методом `with` у поєднанні з методом `morphWith` зв'язку `morphTo`. Щоб проілюструвати цей метод, розгляньмо таку модель:
 
 ```php
 <?php
@@ -2041,9 +2044,9 @@ class ActivityFeed extends Model
 }
 ```
 
-In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model.
+У цьому прикладі припустімо, що моделі `Event`, `Photo` та `Post` можуть створювати моделі `ActivityFeed`. Крім того, припустімо, що моделі `Event` належать моделі `Calendar`, моделі `Photo` пов'язані з моделями `Tag`, а моделі `Post` належать моделі `Author`.
 
-Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
+З такими визначеннями моделей і зв'язків ми можемо отримати екземпляри моделі `ActivityFeed` і жадібно завантажити всі моделі `parentable` та їхні вкладені зв'язки:
 
 ```php
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -2059,21 +2062,21 @@ $activities = ActivityFeed::query()
 ```
 
 <a name="eager-loading-specific-columns"></a>
-#### Eager Loading Specific Columns
+#### Жадібне завантаження певних стовпців
 
-You may not always need every column from the relationships you are retrieving. For this reason, Eloquent allows you to specify which columns of the relationship you would like to retrieve:
+Не завжди вам потрібні всі стовпці зв'язків, які ви отримуєте. Тому Eloquent дозволяє вказати, які саме стовпці зв'язку ви хочете отримати:
 
 ```php
 $books = Book::with('author:id,name,book_id')->get();
 ```
 
 > [!WARNING]
-> When using this feature, you should always include the `id` column and any relevant foreign key columns in the list of columns you wish to retrieve.
+> Користуючись цією можливістю, завжди включайте до списку потрібних стовпців стовпець `id` та всі відповідні стовпці зовнішніх ключів.
 
 <a name="eager-loading-by-default"></a>
-#### Eager Loading by Default
+#### Жадібне завантаження за замовчуванням
 
-Sometimes you might want to always load some relationships when retrieving a model. To accomplish this, you may define a `$with` property on the model:
+Іноді потрібно завжди завантажувати певні зв'язки під час отримання моделі. Щоб цього досягти, визначте на моделі властивість `$with`:
 
 ```php
 <?php
@@ -2110,22 +2113,22 @@ class Book extends Model
 }
 ```
 
-If you would like to remove an item from the `$with` property for a single query, you may use the `without` method:
+Якщо ви хочете прибрати елемент із властивості `$with` для одного запиту, скористайтеся методом `without`:
 
 ```php
 $books = Book::without('author')->get();
 ```
 
-If you would like to override all items within the `$with` property for a single query, you may use the `withOnly` method:
+Якщо ви хочете перевизначити всі елементи властивості `$with` для одного запиту, скористайтеся методом `withOnly`:
 
 ```php
 $books = Book::withOnly('genre')->get();
 ```
 
 <a name="constraining-eager-loads"></a>
-### Constraining Eager Loads
+### Обмеження жадібного завантаження
 
-Sometimes you may wish to eager load a relationship but also specify additional query conditions for the eager loading query. You can accomplish this by passing an array of relationships to the `with` method where the array key is a relationship name and the array value is a closure that adds additional constraints to the eager loading query:
+Іноді потрібно жадібно завантажити зв'язок, але водночас задати додаткові умови для запиту жадібного завантаження. Цього можна досягти, передавши методу `with` масив зв'язків, де ключ масиву - ім'я зв'язку, а значення - замикання, що додає додаткові обмеження до запиту жадібного завантаження:
 
 ```php
 use App\Models\User;
@@ -2135,7 +2138,7 @@ $users = User::with(['posts' => function ($query) {
 }])->get();
 ```
 
-In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/docs/{{version}}/queries) methods to further customize the eager loading operation:
+У цьому прикладі Eloquent жадібно завантажить лише ті дописи, чий стовпець `title` містить слово `code`. Ви можете викликати й інші методи [конструктора запитів](/docs/{{version}}/queries), щоб додатково налаштувати операцію жадібного завантаження:
 
 ```php
 $users = User::with(['posts' => function ($query) {
@@ -2144,9 +2147,9 @@ $users = User::with(['posts' => function ($query) {
 ```
 
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
-#### Constraining Eager Loading of `morphTo` Relationships
+#### Обмеження жадібного завантаження зв'язків `morphTo`
 
-If you are eager loading a `morphTo` relationship, Eloquent will run multiple queries to fetch each type of related model. You may add additional constraints to each of these queries using the `MorphTo` relation's `constrain` method:
+Якщо ви жадібно завантажуєте зв'язок `morphTo`, Eloquent виконає кілька запитів, щоб отримати кожен тип пов'язаної моделі. Ви можете додати до кожного з цих запитів додаткові обмеження методом `constrain` зв'язку `MorphTo`:
 
 ```php
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -2163,12 +2166,12 @@ $comments = Comment::with(['commentable' => function (MorphTo $morphTo) {
 }])->get();
 ```
 
-In this example, Eloquent will only eager load posts that have not been hidden and videos that have a `type` value of "educational".
+У цьому прикладі Eloquent жадібно завантажить лише неприховані дописи та відео зі значенням `type`, що дорівнює «educational».
 
 <a name="constraining-eager-loads-with-relationship-existence"></a>
-#### Constraining Eager Loads With Relationship Existence
+#### Обмеження жадібного завантаження наявністю зв'язку
 
-You may sometimes find yourself needing to check for the existence of a relationship while simultaneously loading the relationship based on the same conditions. For example, you may wish to only retrieve `User` models that have child `Post` models matching a given query condition while also eager loading the matching posts. You may accomplish this using the `withWhereHas` method:
+Іноді вам може знадобитися перевірити наявність зв'язку й водночас завантажити цей зв'язок за тими самими умовами. Наприклад, ви можете захотіти отримати лише ті моделі `User`, що мають дочірні моделі `Post`, які відповідають заданій умові запиту, і водночас жадібно завантажити ці дописи. Цього можна досягти методом `withWhereHas`:
 
 ```php
 use App\Models\User;
@@ -2179,9 +2182,9 @@ $users = User::withWhereHas('posts', function ($query) {
 ```
 
 <a name="lazy-eager-loading"></a>
-### Lazy Eager Loading
+### Відкладене жадібне завантаження
 
-Sometimes you may need to eager load a relationship after the parent model has already been retrieved. For example, this may be useful if you need to dynamically decide whether to load related models:
+Іноді потрібно жадібно завантажити зв'язок уже після того, як батьківську модель отримано. Наприклад, це може бути корисно, якщо вам треба динамічно вирішувати, чи завантажувати пов'язані моделі:
 
 ```php
 use App\Models\Book;
@@ -2193,7 +2196,7 @@ if ($condition) {
 }
 ```
 
-If you need to set additional query constraints on the eager loading query, you may pass an array keyed by the relationships you wish to load. The array values should be closure instances which receive the query instance:
+Якщо вам потрібно задати додаткові обмеження для запиту жадібного завантаження, передайте масив із ключами-іменами зв'язків, які ви хочете завантажити. Значеннями масиву мають бути екземпляри замикань, що приймають екземпляр запиту:
 
 ```php
 $author->load(['books' => function ($query) {
@@ -2201,18 +2204,18 @@ $author->load(['books' => function ($query) {
 }]);
 ```
 
-To load a relationship only when it has not already been loaded, use the `loadMissing` method:
+Щоб завантажити зв'язок лише тоді, коли його ще не завантажено, скористайтеся методом `loadMissing`:
 
 ```php
 $book->loadMissing('author');
 ```
 
 <a name="nested-lazy-eager-loading-morphto"></a>
-#### Nested Lazy Eager Loading and `morphTo`
+#### Вкладене відкладене жадібне завантаження та `morphTo`
 
-If you would like to eager load a `morphTo` relationship, as well as nested relationships on the various entities that may be returned by that relationship, you may use the `loadMorph` method.
+Якщо ви хочете жадібно завантажити зв'язок `morphTo`, а також вкладені зв'язки різних сутностей, які цей зв'язок може повернути, скористайтеся методом `loadMorph`.
 
-This method accepts the name of the `morphTo` relationship as its first argument, and an array of model / relationship pairs as its second argument. To help illustrate this method, let's consider the following model:
+Цей метод приймає ім'я зв'язку `morphTo` першим аргументом і масив пар модель / зв'язок другим. Щоб проілюструвати цей метод, розгляньмо таку модель:
 
 ```php
 <?php
@@ -2232,9 +2235,9 @@ class ActivityFeed extends Model
 }
 ```
 
-In this example, let's assume `Event`, `Photo`, and `Post` models may create `ActivityFeed` models. Additionally, let's assume that `Event` models belong to a `Calendar` model, `Photo` models are associated with `Tag` models, and `Post` models belong to an `Author` model.
+У цьому прикладі припустімо, що моделі `Event`, `Photo` та `Post` можуть створювати моделі `ActivityFeed`. Крім того, припустімо, що моделі `Event` належать моделі `Calendar`, моделі `Photo` пов'язані з моделями `Tag`, а моделі `Post` належать моделі `Author`.
 
-Using these model definitions and relationships, we may retrieve `ActivityFeed` model instances and eager load all `parentable` models and their respective nested relationships:
+З такими визначеннями моделей і зв'язків ми можемо отримати екземпляри моделі `ActivityFeed` і жадібно завантажити всі моделі `parentable` та їхні вкладені зв'язки:
 
 ```php
 $activities = ActivityFeed::with('parentable')
@@ -2247,12 +2250,12 @@ $activities = ActivityFeed::with('parentable')
 ```
 
 <a name="automatic-eager-loading"></a>
-### Automatic Eager Loading
+### Автоматичне жадібне завантаження
 
 > [!WARNING]
-> This feature is currently in beta in order to gather community feedback. The behavior and functionality of this feature may change even on patch releases.
+> Ця можливість наразі перебуває в бета-версії, щоб зібрати відгуки спільноти. Її поведінка та функціональність можуть змінитися навіть у патч-випусках.
 
-In many cases, Laravel can automatically eager load the relationships you access. To enable automatic eager loading, you should invoke the `Model::automaticallyEagerLoadRelationships` method within the `boot` method of your application's `AppServiceProvider`:
+У багатьох випадках Laravel може автоматично жадібно завантажувати зв'язки, до яких ви звертаєтеся. Щоб увімкнути автоматичне жадібне завантаження, викличте метод `Model::automaticallyEagerLoadRelationships` у методі `boot` вашого `AppServiceProvider`:
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -2266,7 +2269,7 @@ public function boot(): void
 }
 ```
 
-When this feature is enabled, Laravel will attempt to automatically load any relationships you access that have not been previously loaded. For example, consider the following scenario:
+Коли цю можливість увімкнено, Laravel намагатиметься автоматично завантажити будь-які зв'язки, до яких ви звертаєтеся й які ще не було завантажено. Наприклад, розгляньмо такий сценарій:
 
 ```php
 use App\Models\User;
@@ -2282,9 +2285,9 @@ foreach ($users as $user) {
 }
 ```
 
-Typically, the code above would execute a query for each user in order to retrieve their posts, as well as a query for each post to retrieve its comments. However, when the `automaticallyEagerLoadRelationships` feature has been enabled, Laravel will automatically [lazy eager load](#lazy-eager-loading) the posts for all users in the user collection when you attempt to access the posts on any of the retrieved users. Likewise, when you attempt to access the comments for any retrieved post, all comments will be lazy eager loaded for all posts that were originally retrieved.
+Зазвичай наведений код виконав би запит для кожного користувача, щоб отримати його дописи, а також запит для кожного допису, щоб отримати його коментарі. Проте коли можливість `automaticallyEagerLoadRelationships` увімкнено, Laravel автоматично [відкладено жадібно завантажить](#lazy-eager-loading) дописи всіх користувачів колекції, щойно ви спробуєте звернутися до дописів будь-кого з отриманих користувачів. Так само, коли ви спробуєте звернутися до коментарів будь-якого отриманого допису, коментарі буде відкладено жадібно завантажено для всіх спочатку отриманих дописів.
 
-If you do not want to globally enable automatic eager loading, you can still enable this feature for a single Eloquent collection instance by invoking the `withRelationshipAutoloading` method on the collection:
+Якщо ви не хочете вмикати автоматичне жадібне завантаження глобально, ви все одно можете ввімкнути цю можливість для окремого екземпляра колекції Eloquent, викликавши на колекції метод `withRelationshipAutoloading`:
 
 ```php
 $users = User::where('vip', true)->get();
@@ -2293,11 +2296,11 @@ return $users->withRelationshipAutoloading();
 ```
 
 <a name="preventing-lazy-loading"></a>
-### Preventing Lazy Loading
+### Заборона лінивого завантаження
 
-As previously discussed, eager loading relationships can often provide significant performance benefits to your application. Therefore, if you would like, you may instruct Laravel to always prevent the lazy loading of relationships. To accomplish this, you may invoke the `preventLazyLoading` method offered by the base Eloquent model class. Typically, you should call this method within the `boot` method of your application's `AppServiceProvider` class.
+Як уже обговорювалося, жадібне завантаження зв'язків часто дає суттєвий виграш у продуктивності вашого застосунку. Тож, за бажання, ви можете вказати Laravel завжди забороняти ліниве завантаження зв'язків. Для цього викличте метод `preventLazyLoading`, який надає базовий клас моделі Eloquent. Зазвичай цей метод викликають у методі `boot` класу `AppServiceProvider` вашого застосунку.
 
-The `preventLazyLoading` method accepts an optional boolean argument that indicates if lazy loading should be prevented. For example, you may wish to only disable lazy loading in non-production environments so that your production environment will continue to function normally even if a lazy loaded relationship is accidentally present in production code:
+Метод `preventLazyLoading` приймає необов'язковий булевий аргумент, що вказує, чи слід забороняти ліниве завантаження. Наприклад, ви можете захотіти вимкнути ліниве завантаження лише в непродакшн-середовищах, щоб ваше продакшн-середовище й далі працювало нормально, навіть якщо в продакшн-коді випадково опиниться ліниво завантажений зв'язок:
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -2311,9 +2314,9 @@ public function boot(): void
 }
 ```
 
-After preventing lazy loading, Eloquent will throw a `Illuminate\Database\LazyLoadingViolationException` exception when your application attempts to lazy load any Eloquent relationship.
+Після заборони лінивого завантаження Eloquent кидатиме виняток `Illuminate\Database\LazyLoadingViolationException`, коли ваш застосунок спробує ліниво завантажити будь-який зв'язок Eloquent.
 
-You may customize the behavior of lazy loading violations using the `handleLazyLoadingViolationsUsing` method. For example, using this method, you may instruct lazy loading violations to only be logged instead of interrupting the application's execution with exceptions:
+Ви можете налаштувати поведінку при порушеннях лінивого завантаження методом `handleLazyLoadingViolationsUsing`. Наприклад, за допомогою цього методу можна вказати, щоб порушення лише логувалися, а не переривали виконання застосунку винятками:
 
 ```php
 Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {
@@ -2324,12 +2327,12 @@ Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation)
 ```
 
 <a name="inserting-and-updating-related-models"></a>
-## Inserting and Updating Related Models
+## Вставлення й оновлення пов'язаних моделей
 
 <a name="the-save-method"></a>
-### The `save` Method
+### Метод `save`
 
-Eloquent provides convenient methods for adding new models to relationships. For example, perhaps you need to add a new comment to a post. Instead of manually setting the `post_id` attribute on the `Comment` model you may insert the comment using the relationship's `save` method:
+Eloquent надає зручні методи для додавання нових моделей до зв'язків. Наприклад, вам може знадобитися додати новий коментар до допису. Замість того щоб вручну встановлювати атрибут `post_id` на моделі `Comment`, ви можете вставити коментар методом `save` зв'язку:
 
 ```php
 use App\Models\Comment;
@@ -2342,9 +2345,9 @@ $post = Post::find(1);
 $post->comments()->save($comment);
 ```
 
-Note that we did not access the `comments` relationship as a dynamic property. Instead, we called the `comments` method to obtain an instance of the relationship. The `save` method will automatically add the appropriate `post_id` value to the new `Comment` model.
+Зверніть увагу: ми не зверталися до зв'язку `comments` як до динамічної властивості. Натомість ми викликали метод `comments`, щоб отримати екземпляр зв'язку. Метод `save` автоматично додасть новій моделі `Comment` відповідне значення `post_id`.
 
-If you need to save multiple related models, you may use the `saveMany` method:
+Якщо вам потрібно зберегти кілька пов'язаних моделей, скористайтеся методом `saveMany`:
 
 ```php
 $post = Post::find(1);
@@ -2355,7 +2358,7 @@ $post->comments()->saveMany([
 ]);
 ```
 
-The `save` and `saveMany` methods will persist the given model instances, but will not add the newly persisted models to any in-memory relationships that are already loaded onto the parent model. If you plan on accessing the relationship after using the `save` or `saveMany` methods, you may wish to use the `refresh` method to reload the model and its relationships:
+Методи `save` та `saveMany` збережуть передані екземпляри моделей, але не додадуть щойно збережені моделі до вже завантажених у пам'ять зв'язків батьківської моделі. Якщо ви плануєте звертатися до зв'язку після використання `save` чи `saveMany`, вам може знадобитися метод `refresh`, щоб перезавантажити модель та її зв'язки:
 
 ```php
 $post->comments()->save($comment);
@@ -2367,9 +2370,9 @@ $post->comments;
 ```
 
 <a name="the-push-method"></a>
-#### Recursively Saving Models and Relationships
+#### Рекурсивне збереження моделей і зв'язків
 
-If you would like to `save` your model and all of its associated relationships, you may use the `push` method. In this example, the `Post` model will be saved as well as its comments and the comment's authors:
+Якщо ви хочете зберегти (`save`) свою модель разом з усіма пов'язаними з нею зв'язками, скористайтеся методом `push`. У цьому прикладі буде збережено модель `Post`, а також її коментарі й авторів коментарів:
 
 ```php
 $post = Post::find(1);
@@ -2380,16 +2383,16 @@ $post->comments[0]->author->name = 'Author Name';
 $post->push();
 ```
 
-The `pushQuietly` method may be used to save a model and its associated relationships without raising any events:
+Метод `pushQuietly` дозволяє зберегти модель та пов'язані з нею зв'язки, не викликаючи жодних подій:
 
 ```php
 $post->pushQuietly();
 ```
 
 <a name="the-create-method"></a>
-### The `create` Method
+### Метод `create`
 
-In addition to the `save` and `saveMany` methods, you may also use the `create` method, which accepts an array of attributes, creates a model, and inserts it into the database. The difference between `save` and `create` is that `save` accepts a full Eloquent model instance while `create` accepts a plain PHP `array`. The newly created model will be returned by the `create` method:
+Окрім методів `save` та `saveMany`, ви можете скористатися методом `create`, який приймає масив атрибутів, створює модель і вставляє її в базу даних. Різниця між `save` та `create` полягає в тому, що `save` приймає повний екземпляр моделі Eloquent, а `create` - звичайний PHP-`array`. Щойно створену модель буде повернено методом `create`:
 
 ```php
 use App\Models\Post;
@@ -2401,7 +2404,7 @@ $comment = $post->comments()->create([
 ]);
 ```
 
-You may use the `createMany` method to create multiple related models:
+Щоб створити кілька пов'язаних моделей, скористайтеся методом `createMany`:
 
 ```php
 $post = Post::find(1);
@@ -2412,7 +2415,7 @@ $post->comments()->createMany([
 ]);
 ```
 
-The `createQuietly` and `createManyQuietly` methods may be used to create a model(s) without dispatching any events:
+Методи `createQuietly` та `createManyQuietly` дозволяють створити модель (моделі), не відправляючи жодних подій:
 
 ```php
 $user = User::find(1);
@@ -2427,15 +2430,15 @@ $user->posts()->createManyQuietly([
 ]);
 ```
 
-You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/docs/{{version}}/eloquent#upserts).
+Ви також можете скористатися методами `findOrNew`, `firstOrNew`, `firstOrCreate` та `updateOrCreate`, щоб [створювати й оновлювати моделі у зв'язках](/docs/{{version}}/eloquent#upserts).
 
 > [!NOTE]
-> Before using the `create` method, be sure to review the [mass assignment](/docs/{{version}}/eloquent#mass-assignment) documentation.
+> Перш ніж використовувати метод `create`, обов'язково перегляньте документацію про [масове призначення](/docs/{{version}}/eloquent#mass-assignment).
 
 <a name="updating-belongs-to-relationships"></a>
-### Belongs To Relationships
+### Зв'язки Belongs To
 
-If you would like to assign a child model to a new parent model, you may use the `associate` method. In this example, the `User` model defines a `belongsTo` relationship to the `Account` model. This `associate` method will set the foreign key on the child model:
+Якщо ви хочете призначити дочірню модель новій батьківській, скористайтеся методом `associate`. У цьому прикладі модель `User` визначає зв'язок `belongsTo` із моделлю `Account`. Метод `associate` встановить зовнішній ключ на дочірній моделі:
 
 ```php
 use App\Models\Account;
@@ -2447,7 +2450,7 @@ $user->account()->associate($account);
 $user->save();
 ```
 
-To remove a parent model from a child model, you may use the `dissociate` method. This method will set the relationship's foreign key to `null`:
+Щоб прибрати батьківську модель із дочірньої, скористайтеся методом `dissociate`. Цей метод встановить зовнішній ключ зв'язку в `null`:
 
 ```php
 $user->account()->dissociate();
@@ -2456,12 +2459,12 @@ $user->save();
 ```
 
 <a name="updating-many-to-many-relationships"></a>
-### Many to Many Relationships
+### Зв'язки «багато до багатьох»
 
 <a name="attaching-detaching"></a>
-#### Attaching / Detaching
+#### Приєднання / від'єднання
 
-Eloquent also provides methods to make working with many-to-many relationships more convenient. For example, let's imagine a user can have many roles and a role can have many users. You may use the `attach` method to attach a role to a user by inserting a record in the relationship's intermediate table:
+Eloquent також надає методи, які роблять роботу зі зв'язками «багато до багатьох» зручнішою. Наприклад, уявімо, що користувач може мати багато ролей, а роль - багато користувачів. Метод `attach` дозволяє приєднати роль до користувача, вставивши запис у проміжну таблицю зв'язку:
 
 ```php
 use App\Models\User;
@@ -2471,13 +2474,13 @@ $user = User::find(1);
 $user->roles()->attach($roleId);
 ```
 
-When attaching a relationship to a model, you may also pass an array of additional data to be inserted into the intermediate table:
+Приєднуючи зв'язок до моделі, ви також можете передати масив додаткових даних, які слід вставити до проміжної таблиці:
 
 ```php
 $user->roles()->attach($roleId, ['expires' => $expires]);
 ```
 
-Sometimes it may be necessary to remove a role from a user. To remove a many-to-many relationship record, use the `detach` method. The `detach` method will delete the appropriate record out of the intermediate table; however, both models will remain in the database:
+Іноді буває потрібно забрати роль у користувача. Щоб видалити запис зв'язку «багато до багатьох», скористайтеся методом `detach`. Метод `detach` видалить відповідний запис із проміжної таблиці; проте обидві моделі залишаться в базі даних:
 
 ```php
 // Detach a single role from the user...
@@ -2487,7 +2490,7 @@ $user->roles()->detach($roleId);
 $user->roles()->detach();
 ```
 
-For convenience, `attach` and `detach` also accept arrays of IDs as input:
+Для зручності `attach` і `detach` також приймають на вхід масиви ID:
 
 ```php
 $user = User::find(1);
@@ -2501,42 +2504,42 @@ $user->roles()->attach([
 ```
 
 <a name="syncing-associations"></a>
-#### Syncing Associations
+#### Синхронізація асоціацій
 
-You may also use the `sync` method to construct many-to-many associations. The `sync` method accepts an array of IDs to place on the intermediate table. Any IDs that are not in the given array will be removed from the intermediate table. So, after this operation is complete, only the IDs in the given array will exist in the intermediate table:
+Ви також можете скористатися методом `sync`, щоб побудувати асоціації «багато до багатьох». Метод `sync` приймає масив ID, які слід розмістити в проміжній таблиці. Будь-які ID, яких немає в переданому масиві, буде видалено з проміжної таблиці. Тож після завершення цієї операції в проміжній таблиці залишаться лише ID із переданого масиву:
 
 ```php
 $user->roles()->sync([1, 2, 3]);
 ```
 
-You may also pass additional intermediate table values with the IDs:
+Разом з ID ви можете передати й додаткові значення для проміжної таблиці:
 
 ```php
 $user->roles()->sync([1 => ['expires' => true], 2, 3]);
 ```
 
-If you would like to insert the same intermediate table values with each of the synced model IDs, you may use the `syncWithPivotValues` method:
+Якщо ви хочете вставити однакові значення проміжної таблиці для кожного із синхронізованих ID моделей, скористайтеся методом `syncWithPivotValues`:
 
 ```php
 $user->roles()->syncWithPivotValues([1, 2, 3], ['active' => true]);
 ```
 
-If you do not want to detach existing IDs that are missing from the given array, you may use the `syncWithoutDetaching` method:
+Якщо ви не хочете від'єднувати наявні ID, яких немає в переданому масиві, скористайтеся методом `syncWithoutDetaching`:
 
 ```php
 $user->roles()->syncWithoutDetaching([1, 2, 3]);
 ```
 
 <a name="toggling-associations"></a>
-#### Toggling Associations
+#### Перемикання асоціацій
 
-The many-to-many relationship also provides a `toggle` method which "toggles" the attachment status of the given related model IDs. If the given ID is currently attached, it will be detached. Likewise, if it is currently detached, it will be attached:
+Зв'язок «багато до багатьох» також надає метод `toggle`, який «перемикає» статус приєднання для заданих ID пов'язаних моделей. Якщо заданий ID наразі приєднано, його буде від'єднано. І навпаки: якщо його наразі від'єднано, його буде приєднано:
 
 ```php
 $user->roles()->toggle([1, 2, 3]);
 ```
 
-You may also pass additional intermediate table values with the IDs:
+Разом з ID ви можете передати й додаткові значення для проміжної таблиці:
 
 ```php
 $user->roles()->toggle([
@@ -2546,9 +2549,9 @@ $user->roles()->toggle([
 ```
 
 <a name="transactional-pivot-operations"></a>
-#### Transactional Pivot Operations
+#### Транзакційні pivot-операції
 
-Each of the pivot operations discussed above also has an `OrFail` variant (`attachOrFail`, `detachOrFail`, `syncOrFail`, `syncWithoutDetachingOrFail`, and `toggleOrFail`) that wraps the operation within a database transaction, so that all changes are automatically rolled back if an exception is thrown:
+Кожна з розглянутих вище pivot-операцій має також варіант `OrFail` (`attachOrFail`, `detachOrFail`, `syncOrFail`, `syncWithoutDetachingOrFail` та `toggleOrFail`), який загортає операцію в транзакцію бази даних, тож усі зміни автоматично відкочуються, якщо буде кинуто виняток:
 
 ```php
 $user->roles()->attachOrFail([1, 2, 3]);
@@ -2557,9 +2560,9 @@ $user->roles()->syncOrFail([1, 2, 3]);
 ```
 
 <a name="updating-a-record-on-the-intermediate-table"></a>
-#### Updating a Record on the Intermediate Table
+#### Оновлення запису в проміжній таблиці
 
-If you need to update an existing row in your relationship's intermediate table, you may use the `updateExistingPivot` method. This method accepts the intermediate record foreign key and an array of attributes to update:
+Якщо вам потрібно оновити наявний рядок у проміжній таблиці вашого зв'язку, скористайтеся методом `updateExistingPivot`. Цей метод приймає зовнішній ключ проміжного запису та масив атрибутів для оновлення:
 
 ```php
 $user = User::find(1);
@@ -2570,11 +2573,11 @@ $user->roles()->updateExistingPivot($roleId, [
 ```
 
 <a name="touching-parent-timestamps"></a>
-## Touching Parent Timestamps
+## Оновлення часових міток батьківської моделі
 
-When a model defines a `belongsTo` or `belongsToMany` relationship to another model, such as a `Comment` which belongs to a `Post`, it is sometimes helpful to update the parent's timestamp when the child model is updated.
+Коли модель визначає зв'язок `belongsTo` чи `belongsToMany` з іншою моделлю - наприклад, `Comment`, що належить `Post`, - іноді буває корисно оновлювати часову мітку батьківської моделі при оновленні дочірньої.
 
-For example, when a `Comment` model is updated, you may want to automatically "touch" the `updated_at` timestamp of the owning `Post` so that it is set to the current date and time. To accomplish this, you may use the `Touches` attribute on your child model containing the names of the relationships that should have their `updated_at` timestamps updated when the child model is updated:
+Наприклад, коли оновлюється модель `Comment`, ви можете захотіти автоматично «торкнутися» часової мітки `updated_at` допису-власника `Post`, щоб їй було встановлено поточні дату й час. Щоб цього досягти, застосуйте до дочірньої моделі атрибут `Touches` з іменами зв'язків, чиї часові мітки `updated_at` слід оновлювати при оновленні дочірньої моделі:
 
 ```php
 <?php
@@ -2599,4 +2602,4 @@ class Comment extends Model
 ```
 
 > [!WARNING]
-> Parent model timestamps will only be updated if the child model is updated using Eloquent's `save` method.
+> Часові мітки батьківської моделі оновлюватимуться лише тоді, коли дочірню модель оновлено методом `save` Eloquent.
