@@ -221,7 +221,7 @@ Similarly, you can set a `timeout` value at the supervisor level, which specifie
 'environments' => [
     'production' => [
         'supervisor-1' => [
-            // ...¨
+            // ...
             'timeout' => 60,
         ],
     ],
