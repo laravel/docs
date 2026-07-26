@@ -1,22 +1,25 @@
-# Mocking
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Мокування
 
-- [Introduction](#introduction)
-- [Mocking Objects](#mocking-objects)
-- [Mocking Facades](#mocking-facades)
-    - [Facade Spies](#facade-spies)
-- [Interacting With Time](#interacting-with-time)
+- [Вступ](#introduction)
+- [Мокування об'єктів](#mocking-objects)
+- [Мокування фасадів](#mocking-facades)
+    - [Шпигуни фасадів](#facade-spies)
+- [Робота з часом](#interacting-with-time)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-When testing Laravel applications, you may wish to "mock" certain aspects of your application so they are not actually executed during a given test. For example, when testing a controller that dispatches an event, you may wish to mock the event listeners so they are not actually executed during the test. This allows you to only test the controller's HTTP response without worrying about the execution of the event listeners since the event listeners can be tested in their own test case.
+Тестуючи застосунки Laravel, ви можете захотіти «замокати» певні частини вашого застосунку, щоб вони не виконувалися насправді під час конкретного тесту. Наприклад, тестуючи контролер, який відправляє подію, ви можете замокати слухачів події, щоб вони не виконувалися під час тесту. Це дозволяє перевірити лише HTTP-відповідь контролера, не переймаючись виконанням слухачів, адже їх можна протестувати окремим тест-кейсом.
 
-Laravel provides helpful methods for mocking events, jobs, and other facades out of the box. These helpers primarily provide a convenience layer over Mockery so you do not have to manually make complicated Mockery method calls.
+Laravel надає корисні методи для мокування подій, завдань та інших фасадів одразу з коробки. Ці хелпери здебільшого є зручним шаром над Mockery, тож вам не доведеться вручну писати складні виклики його методів.
 
 <a name="mocking-objects"></a>
-## Mocking Objects
+## Мокування об'єктів
 
-When mocking an object that is going to be injected into your application via Laravel's [service container](/docs/{{version}}/container), you will need to bind your mocked instance into the container as an `instance` binding. This will instruct the container to use your mocked instance of the object instead of constructing the object itself:
+Мокуючи об'єкт, який буде впроваджено у ваш застосунок через [сервіс-контейнер](/docs/{{version}}/container) Laravel, вам треба прив'язати замокований екземпляр до контейнера як прив'язку `instance`. Це вкаже контейнеру використовувати ваш замокований екземпляр об'єкта замість того, щоб конструювати об'єкт самому:
 
 ```php tab=Pest
 use App\Service;
@@ -49,7 +52,7 @@ public function test_something_can_be_mocked(): void
 }
 ```
 
-In order to make this more convenient, you may use the `mock` method that is provided by Laravel's base test case class. For example, the following example is equivalent to the example above:
+Щоб зробити це зручніше, скористайтеся методом `mock`, який надає базовий клас тест-кейса Laravel. Наприклад, наступний приклад рівносильний наведеному вище:
 
 ```php
 use App\Service;
@@ -60,7 +63,7 @@ $mock = $this->mock(Service::class, function (MockInterface $mock) {
 });
 ```
 
-You may use the `partialMock` method when you only need to mock a few methods of an object. The methods that are not mocked will be executed normally when called:
+Коли вам треба замокати лише кілька методів об'єкта, скористайтеся методом `partialMock`. Методи, які не замоковані, при виклику виконуватимуться як зазвичай:
 
 ```php
 use App\Service;
@@ -71,7 +74,7 @@ $mock = $this->partialMock(Service::class, function (MockInterface $mock) {
 });
 ```
 
-Similarly, if you want to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on an object, Laravel's base test case class offers a `spy` method as a convenient wrapper around the `Mockery::spy` method. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:
+Так само, якщо ви хочете [шпигувати](http://docs.mockery.io/en/latest/reference/spies.html) за об'єктом, базовий клас тест-кейса Laravel пропонує метод `spy` - зручну обгортку над методом `Mockery::spy`. Шпигуни схожі на моки; проте шпигуни записують усі взаємодії між собою та кодом, який тестується, дозволяючи робити твердження вже після виконання коду:
 
 ```php
 use App\Service;
@@ -84,9 +87,9 @@ $spy->shouldHaveReceived('process');
 ```
 
 <a name="mocking-facades"></a>
-## Mocking Facades
+## Мокування фасадів
 
-Unlike traditional static method calls, [facades](/docs/{{version}}/facades) (including [real-time facades](/docs/{{version}}/facades#real-time-facades)) may be mocked. This provides a great advantage over traditional static methods and grants you the same testability that you would have if you were using traditional dependency injection. When testing, you may often want to mock a call to a Laravel facade that occurs in one of your controllers. For example, consider the following controller action:
+На відміну від традиційних викликів статичних методів, [фасади](/docs/{{version}}/facades) (зокрема й [фасади реального часу](/docs/{{version}}/facades#real-time-facades)) можна мокати. Це велика перевага над традиційними статичними методами, яка дає вам таку саму тестованість, як і при звичайному впровадженні залежностей. Під час тестування вам часто може знадобитися замокати виклик фасада Laravel, що відбувається в одному з ваших контролерів. Розгляньмо, наприклад, таку дію контролера:
 
 ```php
 <?php
@@ -111,7 +114,7 @@ class UserController extends Controller
 }
 ```
 
-We can mock the call to the `Cache` facade by using the `expects` method, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock. Since facades are actually resolved and managed by the Laravel [service container](/docs/{{version}}/container), they have much more testability than a typical static class. For example, let's mock our call to the `Cache` facade's `get` method:
+Ми можемо замокати виклик фасада `Cache` методом `expects`, який поверне екземпляр мока [Mockery](https://github.com/padraic/mockery). Оскільки фасади насправді розв'язуються й керуються [сервіс-контейнером](/docs/{{version}}/container) Laravel, вони куди тестованіші за звичайний статичний клас. Наприклад, замокаймо наш виклик методу `get` фасада `Cache`:
 
 ```php tab=Pest
 <?php
@@ -153,12 +156,12 @@ class UserControllerTest extends TestCase
 ```
 
 > [!WARNING]
-> You should not mock the `Request` facade. Instead, pass the input you desire into the [HTTP testing methods](/docs/{{version}}/http-tests) such as `get` and `post` when running your test. Likewise, instead of mocking the `Config` facade, call the `Config::set` method in your tests.
+> Вам не слід мокати фасад `Request`. Натомість передавайте потрібні дані до [методів тестування HTTP](/docs/{{version}}/http-tests) на кшталт `get` і `post` під час прогону тесту. Так само замість мокування фасада `Config` викликайте у своїх тестах метод `Config::set`.
 
 <a name="facade-spies"></a>
-### Facade Spies
+### Шпигуни фасадів
 
-If you would like to [spy](http://docs.mockery.io/en/latest/reference/spies.html) on a facade, you may call the `spy` method on the corresponding facade. Spies are similar to mocks; however, spies record any interaction between the spy and the code being tested, allowing you to make assertions after the code is executed:
+Якщо ви хочете [шпигувати](http://docs.mockery.io/en/latest/reference/spies.html) за фасадом, викличте на ньому метод `spy`. Шпигуни схожі на моки; проте шпигуни записують усі взаємодії між собою та кодом, який тестується, дозволяючи робити твердження вже після виконання коду:
 
 ```php tab=Pest
 <?php
@@ -192,9 +195,9 @@ public function test_values_are_stored_in_cache(): void
 ```
 
 <a name="interacting-with-time"></a>
-## Interacting With Time
+## Робота з часом
 
-When testing, you may occasionally need to modify the time returned by helpers such as `now` or `Illuminate\Support\Carbon::now()`. Thankfully, Laravel's base feature test class includes helpers that allow you to manipulate the current time:
+Під час тестування вам іноді може знадобитися змінити час, який повертають хелпери на кшталт `now` чи `Illuminate\Support\Carbon::now()`. На щастя, базовий клас функціональних тестів Laravel містить хелпери, що дозволяють маніпулювати поточним часом:
 
 ```php tab=Pest
 test('time can be manipulated', function () {
@@ -241,7 +244,7 @@ public function test_time_can_be_manipulated(): void
 }
 ```
 
-You may also provide a closure to the various time travel methods. The closure will be invoked with time frozen at the specified time. Once the closure has executed, time will resume as normal:
+Ви також можете передати різним методам подорожі в часі замикання. Його буде викликано із часом, замороженим на вказаній позначці. Коли замикання виконається, час піде далі як зазвичай:
 
 ```php
 $this->travel(5)->days(function () {
@@ -253,7 +256,7 @@ $this->travelTo(now()->mins(days: 10), function () {
 });
 ```
 
-The `freezeTime` method may be used to freeze the current time. Similarly, the `freezeSecond` method will freeze the current time but at the start of the current second:
+Метод `freezeTime` дозволяє заморозити поточний час. Так само метод `freezeSecond` заморозить поточний час, але на початку поточної секунди:
 
 ```php
 use Illuminate\Support\Carbon;
@@ -269,7 +272,7 @@ $this->freezeSecond(function (Carbon $time) {
 })
 ```
 
-As you would expect, all of the methods discussed above are primarily useful for testing time sensitive application behavior, such as locking inactive posts on a discussion forum:
+Як і слід очікувати, всі розглянуті вище методи передусім корисні для тестування поведінки застосунку, чутливої до часу, - наприклад, блокування неактивних дописів на форумі:
 
 ```php tab=Pest
 use App\Models\Thread;

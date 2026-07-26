@@ -1,20 +1,23 @@
-# Database Testing
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Тестування бази даних
 
-- [Introduction](#introduction)
-    - [Resetting the Database After Each Test](#resetting-the-database-after-each-test)
-- [Model Factories](#model-factories)
-- [Running Seeders](#running-seeders)
-- [Available Assertions](#available-assertions)
+- [Вступ](#introduction)
+    - [Скидання бази даних після кожного тесту](#resetting-the-database-after-each-test)
+- [Фабрики моделей](#model-factories)
+- [Запуск сідерів](#running-seeders)
+- [Доступні твердження](#available-assertions)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel provides a variety of helpful tools and assertions to make it easier to test your database driven applications. In addition, Laravel model factories and seeders make it painless to create test database records using your application's Eloquent models and relationships. We'll discuss all of these powerful features in the following documentation.
+Laravel надає різні корисні інструменти й твердження, які полегшують тестування застосунків, що працюють із базою даних. До того ж фабрики моделей і сідери Laravel роблять створення тестових записів безболісним - через моделі Eloquent і зв'язки вашого застосунку. Усі ці потужні можливості ми розглянемо далі в цій документації.
 
 <a name="resetting-the-database-after-each-test"></a>
-### Resetting the Database After Each Test
+### Скидання бази даних після кожного тесту
 
-Before proceeding much further, let's discuss how to reset your database after each of your tests so that data from a previous test does not interfere with subsequent tests. Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait will take care of this for you. Simply use the trait on your test class:
+Перш ніж рухатися далі, обговорімо, як скидати вашу базу даних після кожного тесту, щоб дані з попереднього тесту не заважали наступним. Про це подбає трейт `Illuminate\Foundation\Testing\RefreshDatabase`, що входить до Laravel. Просто застосуйте цей трейт до свого тестового класу:
 
 ```php tab=Pest
 <?php
@@ -54,16 +57,16 @@ class ExampleTest extends TestCase
 }
 ```
 
-The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
+Трейт `Illuminate\Foundation\Testing\RefreshDatabase` не мігрує вашу базу даних, якщо схема актуальна. Натомість він лише виконує тест у межах транзакції бази даних. Тому будь-які записи, додані до бази тест-кейсами, які не використовують цей трейт, можуть залишитися в базі.
 
-If you would like to totally reset the database, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` or `Illuminate\Foundation\Testing\DatabaseTruncation` traits instead. However, both of these options are significantly slower than the `RefreshDatabase` trait.
+Якщо ви хочете повністю скинути базу даних, скористайтеся натомість трейтами `Illuminate\Foundation\Testing\DatabaseMigrations` чи `Illuminate\Foundation\Testing\DatabaseTruncation`. Проте обидва ці варіанти значно повільніші за трейт `RefreshDatabase`.
 
 <a name="model-factories"></a>
-## Model Factories
+## Фабрики моделей
 
-When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/docs/{{version}}/eloquent) using [model factories](/docs/{{version}}/eloquent-factories).
+Під час тестування вам може знадобитися вставити в базу кілька записів перед виконанням тесту. Замість того щоб вручну вказувати значення кожного стовпця при створенні цих тестових даних, Laravel дозволяє описати набір атрибутів за замовчуванням для кожної з ваших [моделей Eloquent](/docs/{{version}}/eloquent) через [фабрики моделей](/docs/{{version}}/eloquent-factories).
 
-To learn more about creating and utilizing model factories to create models, please consult the complete [model factory documentation](/docs/{{version}}/eloquent-factories). Once you have defined a model factory, you may utilize the factory within your test to create models:
+Щоб дізнатися більше про створення й використання фабрик моделей, зверніться до повної [документації про фабрики моделей](/docs/{{version}}/eloquent-factories). Коли фабрику моделі визначено, ви можете скористатися нею у своєму тесті, щоб створювати моделі:
 
 ```php tab=Pest
 use App\Models\User;
@@ -87,9 +90,9 @@ public function test_models_can_be_instantiated(): void
 ```
 
 <a name="running-seeders"></a>
-## Running Seeders
+## Запуск сідерів
 
-If you would like to use [database seeders](/docs/{{version}}/seeding) to populate your database during a feature test, you may invoke the `seed` method. By default, the `seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
+Якщо ви хочете скористатися [сідерами бази даних](/docs/{{version}}/seeding), щоб наповнити базу під час функціонального тесту, викличте метод `seed`. За замовчуванням метод `seed` виконає `DatabaseSeeder`, який має запустити всі інші ваші сідери. Або ж ви можете передати методу `seed` ім'я конкретного класу сідера:
 
 ```php tab=Pest
 <?php
@@ -155,7 +158,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-Alternatively, you may instruct Laravel to automatically seed the database before each test that uses the `RefreshDatabase` trait. You may accomplish this by adding the `Seed` attribute to your base test class:
+Або ж ви можете вказати Laravel автоматично наповнювати базу перед кожним тестом, що використовує трейт `RefreshDatabase`. Для цього додайте атрибут `Seed` до вашого базового тестового класу:
 
 ```php
 <?php
@@ -171,7 +174,7 @@ abstract class TestCase extends BaseTestCase
 }
 ```
 
-When the `Seed` attribute is present, the test will run the `Database\Seeders\DatabaseSeeder` class before each test that uses the `RefreshDatabase` trait. However, you may specify a specific seeder that should be executed by using the `Seeder` attribute on your test class:
+Коли присутній атрибут `Seed`, перед кожним тестом, що використовує трейт `RefreshDatabase`, буде запущено клас `Database\Seeders\DatabaseSeeder`. Проте ви можете вказати конкретний сідер, який слід виконати, застосувавши до вашого тестового класу атрибут `Seeder`:
 
 ```php
 <?php
@@ -193,14 +196,14 @@ class OrderTest extends TestCase
 ```
 
 <a name="available-assertions"></a>
-## Available Assertions
+## Доступні твердження
 
-Laravel provides several database assertions for your [Pest](https://pestphp.com) or [PHPUnit](https://phpunit.de) feature tests. We'll discuss each of these assertions below.
+Laravel надає кілька тверджень щодо бази даних для ваших функціональних тестів на [Pest](https://pestphp.com) чи [PHPUnit](https://phpunit.de). Кожне з них ми розглянемо нижче.
 
 <a name="assert-database-count"></a>
 #### assertDatabaseCount
 
-Assert that a table in the database contains the given number of records:
+Перевіряє, що таблиця в базі даних містить задану кількість записів:
 
 ```php
 $this->assertDatabaseCount('users', 5);
@@ -209,7 +212,7 @@ $this->assertDatabaseCount('users', 5);
 <a name="assert-database-empty"></a>
 #### assertDatabaseEmpty
 
-Assert that a table in the database contains no records:
+Перевіряє, що таблиця в базі даних не містить записів:
 
 ```php
 $this->assertDatabaseEmpty('users');
@@ -218,7 +221,7 @@ $this->assertDatabaseEmpty('users');
 <a name="assert-database-has"></a>
 #### assertDatabaseHas
 
-Assert that a table in the database contains records matching the given key / value query constraints:
+Перевіряє, що таблиця в базі даних містить записи, які відповідають заданим умовам запиту ключ / значення:
 
 ```php
 $this->assertDatabaseHas('users', [
@@ -229,7 +232,7 @@ $this->assertDatabaseHas('users', [
 <a name="assert-database-missing"></a>
 #### assertDatabaseMissing
 
-Assert that a table in the database does not contain records matching the given key / value query constraints:
+Перевіряє, що таблиця в базі даних не містить записів, які відповідають заданим умовам запиту ключ / значення:
 
 ```php
 $this->assertDatabaseMissing('users', [
@@ -240,7 +243,7 @@ $this->assertDatabaseMissing('users', [
 <a name="assert-deleted"></a>
 #### assertSoftDeleted
 
-The `assertSoftDeleted` method may be used to assert a given Eloquent model has been "soft deleted":
+Метод `assertSoftDeleted` дозволяє перевірити, що задану модель Eloquent було «м'яко видалено»:
 
 ```php
 $this->assertSoftDeleted($user);
@@ -249,7 +252,7 @@ $this->assertSoftDeleted($user);
 <a name="assert-not-deleted"></a>
 #### assertNotSoftDeleted
 
-The `assertNotSoftDeleted` method may be used to assert a given Eloquent model hasn't been "soft deleted":
+Метод `assertNotSoftDeleted` дозволяє перевірити, що задану модель Eloquent не було «м'яко видалено»:
 
 ```php
 $this->assertNotSoftDeleted($user);
@@ -258,7 +261,7 @@ $this->assertNotSoftDeleted($user);
 <a name="assert-model-exists"></a>
 #### assertModelExists
 
-Assert that a given model or collection of models exist in the database:
+Перевіряє, що задана модель чи колекція моделей існує в базі даних:
 
 ```php
 use App\Models\User;
@@ -271,7 +274,7 @@ $this->assertModelExists($user);
 <a name="assert-model-missing"></a>
 #### assertModelMissing
 
-Assert that a given model or collection of models do not exist in the database:
+Перевіряє, що заданої моделі чи колекції моделей немає в базі даних:
 
 ```php
 use App\Models\User;
@@ -286,7 +289,7 @@ $this->assertModelMissing($user);
 <a name="expects-database-query-count"></a>
 #### expectsDatabaseQueryCount
 
-The `expectsDatabaseQueryCount` method may be invoked at the beginning of your test to specify the total number of database queries that you expect to be run during the test. If the actual number of executed queries does not exactly match this expectation, the test will fail:
+Метод `expectsDatabaseQueryCount` можна викликати на початку тесту, щоб указати загальну кількість запитів до бази даних, яку ви очікуєте під час прогону. Якщо фактична кількість виконаних запитів не збігається точно з очікуваною, тест провалиться:
 
 ```php
 $this->expectsDatabaseQueryCount(5);
