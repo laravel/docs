@@ -1,53 +1,56 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Pint
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Running Pint](#running-pint)
-- [Configuring Pint](#configuring-pint)
-    - [Presets](#presets)
-    - [Rules](#rules)
-    - [Excluding Files / Folders](#excluding-files-or-folders)
-- [Continuous Integration](#continuous-integration)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+- [Запуск Pint](#running-pint)
+- [Налаштування Pint](#configuring-pint)
+    - [Пресети](#presets)
+    - [Правила](#rules)
+    - [Виключення файлів і каталогів](#excluding-files-or-folders)
+- [Неперервна інтеграція](#continuous-integration)
     - [GitHub Actions](#running-tests-on-github-actions)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Laravel Pint](https://github.com/laravel/pint) is an opinionated PHP code style fixer for minimalists. Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) and makes it simple to ensure that your code style stays clean and consistent.
+[Laravel Pint](https://github.com/laravel/pint) - це самобутній інструмент виправлення стилю коду PHP для мінімалістів. Pint побудований на [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) і дозволяє легко тримати стиль вашого коду чистим і послідовним.
 
-Pint is automatically installed with all new Laravel applications so you may start using it immediately. By default, Pint does not require any configuration and will fix code style issues in your code by following the opinionated coding style of Laravel.
+Pint автоматично встановлюється в усі нові застосунки Laravel, тож ви можете користуватися ним одразу. За замовчуванням Pint не потребує жодної конфігурації й виправлятиме проблеми стилю у вашому коді, дотримуючись самобутнього стилю кодування Laravel.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-Pint is included in recent releases of the Laravel framework, so installation is typically unnecessary. However, for older applications, you may install Laravel Pint via Composer:
+Pint входить до останніх випусків фреймворку Laravel, тож встановлювати його зазвичай не потрібно. Проте для старіших застосунків ви можете встановити Laravel Pint через Composer:
 
 ```shell
 composer require laravel/pint --dev
 ```
 
 <a name="running-pint"></a>
-## Running Pint
+## Запуск Pint
 
-You can instruct Pint to fix code style issues by invoking the `pint` binary that is available in your project's `vendor/bin` directory:
+Ви можете доручити Pint виправити проблеми стилю коду, викликавши бінарник `pint`, доступний у каталозі `vendor/bin` вашого проєкту:
 
 ```shell
 ./vendor/bin/pint
 ```
 
-If you would like Pint to run in parallel mode (experimental) for improved performance, you may use the `--parallel` option:
+Якщо ви хочете запустити Pint у паралельному режимі (експериментальному) для кращої продуктивності, скористайтеся опцією `--parallel`:
 
 ```shell
 ./vendor/bin/pint --parallel
 ```
 
-Parallel mode also allows you to specify the maximum number of processes to run via the `--max-processes` option. If this option is not provided, Pint will use every available core on your machine:
+Паралельний режим також дозволяє вказати максимальну кількість процесів через опцію `--max-processes`. Якщо цю опцію не задано, Pint використає всі доступні ядра на вашій машині:
 
 ```shell
 ./vendor/bin/pint --parallel --max-processes=4
 ```
 
-You may also run Pint on specific files or directories:
+Ви також можете запустити Pint на конкретних файлах чи каталогах:
 
 ```shell
 ./vendor/bin/pint app/Models
@@ -55,40 +58,40 @@ You may also run Pint on specific files or directories:
 ./vendor/bin/pint app/Models/User.php
 ```
 
-Pint will display a thorough list of all of the files that it updates. You can view even more detail about Pint's changes by providing the `-v` option when invoking Pint:
+Pint покаже докладний список усіх файлів, які він оновив. Побачити ще більше деталей про зміни Pint можна, додавши до виклику опцію `-v`:
 
 ```shell
 ./vendor/bin/pint -v
 ```
 
-If you would like Pint to simply inspect your code for style errors without actually changing the files, you may use the `--test` option. Pint will return a non-zero exit code if any code style errors are found:
+Якщо ви хочете, щоб Pint просто перевірив ваш код на помилки стилю, не змінюючи файлів, скористайтеся опцією `--test`. Pint поверне ненульовий код виходу, якщо знайде хоч одну помилку стилю:
 
 ```shell
 ./vendor/bin/pint --test
 ```
 
-If you would like Pint to only modify the files that differ from the provided branch according to Git, you may use the `--diff=[branch]` option. This can be effectively used in your CI environment (like GitHub actions) to save time by only inspecting new or modified files:
+Якщо ви хочете, щоб Pint змінював лише файли, які, за даними Git, відрізняються від указаної гілки, скористайтеся опцією `--diff=[branch]`. Це можна ефективно застосувати у вашому CI-середовищі (наприклад, у GitHub actions), щоб заощадити час, перевіряючи лише нові чи змінені файли:
 
 ```shell
 ./vendor/bin/pint --diff=main
 ```
 
-If you would like Pint to only modify the files that have uncommitted changes according to Git, you may use the `--dirty` option:
+Якщо ви хочете, щоб Pint змінював лише файли з незакомміченими змінами за даними Git, скористайтеся опцією `--dirty`:
 
 ```shell
 ./vendor/bin/pint --dirty
 ```
 
-If you would like Pint to fix any files with code style errors but also exit with a non-zero exit code if any errors were fixed, you may use the `--repair` option:
+Якщо ви хочете, щоб Pint виправляв файли з помилками стилю, але водночас завершувався з ненульовим кодом виходу, коли якісь помилки було виправлено, скористайтеся опцією `--repair`:
 
 ```shell
 ./vendor/bin/pint --repair
 ```
 
 <a name="configuring-pint"></a>
-## Configuring Pint
+## Налаштування Pint
 
-As previously mentioned, Pint does not require any configuration. However, if you wish to customize the presets, rules, or inspected folders, you may do so by creating a `pint.json` file in your project's root directory:
+Як згадувалося раніше, Pint не потребує жодної конфігурації. Проте якщо ви хочете налаштувати пресети, правила чи каталоги для перевірки, створіть файл `pint.json` у кореневому каталозі вашого проєкту:
 
 ```json
 {
@@ -96,22 +99,22 @@ As previously mentioned, Pint does not require any configuration. However, if yo
 }
 ```
 
-In addition, if you wish to use a `pint.json` from a specific directory, you may provide the `--config` option when invoking Pint:
+Крім того, якщо ви хочете використати `pint.json` з певного каталогу, додайте до виклику Pint опцію `--config`:
 
 ```shell
 ./vendor/bin/pint --config vendor/my-company/coding-style/pint.json
 ```
 
 <a name="presets"></a>
-### Presets
+### Пресети
 
-Presets define a set of rules that can be used to fix code style issues in your code. By default, Pint uses the `laravel` preset, which fixes issues by following the opinionated coding style of Laravel. However, you may specify a different preset by providing the `--preset` option to Pint:
+Пресети визначають набір правил, за якими виправляються проблеми стилю у вашому коді. За замовчуванням Pint використовує пресет `laravel`, який виправляє проблеми за самобутнім стилем кодування Laravel. Проте ви можете вказати інший пресет, передавши Pint опцію `--preset`:
 
 ```shell
 ./vendor/bin/pint --preset psr12
 ```
 
-If you wish, you may also set the preset in your project's `pint.json` file:
+За бажання ви можете задати пресет і у файлі `pint.json` вашого проєкту:
 
 ```json
 {
@@ -119,14 +122,14 @@ If you wish, you may also set the preset in your project's `pint.json` file:
 }
 ```
 
-Pint's currently supported presets are: `laravel`, `per`, `psr12`, `symfony`, and `empty`.
+Наразі Pint підтримує такі пресети: `laravel`, `per`, `psr12`, `symfony` та `empty`.
 
 <a name="rules"></a>
-### Rules
+### Правила
 
-Rules are style guidelines that Pint will use to fix code style issues in your code. As mentioned above, presets are predefined groups of rules that should be perfect for most PHP projects, so you typically will not need to worry about the individual rules they contain.
+Правила - це настанови щодо стилю, за якими Pint виправлятиме проблеми у вашому коді. Як зазначено вище, пресети - це наперед визначені групи правил, які мають чудово пасувати більшості проєктів на PHP, тож зазвичай вам не доведеться перейматися окремими правилами всередині них.
 
-However, if you wish, you may enable or disable specific rules in your `pint.json` file or use the `empty` preset and define the rules from scratch:
+Проте за бажання ви можете вмикати чи вимикати конкретні правила у своєму файлі `pint.json` або скористатися пресетом `empty` й описати правила з нуля:
 
 ```json
 {
@@ -142,17 +145,17 @@ However, if you wish, you may enable or disable specific rules in your `pint.jso
 }
 ```
 
-Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Therefore, you may use any of its rules to fix code style issues in your project: [PHP CS Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator).
+Pint побудований на [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Тому ви можете скористатися будь-яким з його правил, щоб виправити проблеми стилю у своєму проєкті: [PHP CS Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator).
 
 <a name="custom-rules"></a>
-#### Custom Rules
+#### Власні правила
 
-In addition to PHP CS Fixer rules, Pint provides custom rules prefixed with `Pint/`. These rules are not enabled by default, but you may enable them in your `pint.json` file.
+Окрім правил PHP CS Fixer, Pint надає власні правила з префіксом `Pint/`. За замовчуванням вони вимкнені, але ви можете ввімкнути їх у своєму файлі `pint.json`.
 
 <a name="phpdoc-type-annotations-only"></a>
 ##### `Pint/phpdoc_type_annotations_only`
 
-This rule removes all comments and docblock prose from your code, keeping only lines that contain `@` annotations such as `@param`, `@return`, `@var`, `@phpstan-type`, etc:
+Це правило прибирає з вашого коду всі коментарі та прозу з докблоків, лишаючи тільки рядки з анотаціями `@` - як-от `@param`, `@return`, `@var`, `@phpstan-type` тощо:
 
 ```php
 /**
@@ -163,13 +166,13 @@ This rule removes all comments and docblock prose from your code, keeping only l
 public function posts(): HasMany
 ```
 
-Single-line comments and block comments without `@` annotations are removed entirely. If you would like to keep a specific comment, you may prefix it with `@note`, `@warning`, or `@todo`:
+Однорядкові коментарі та блокові коментарі без анотацій `@` прибираються цілком. Якщо ви хочете зберегти конкретний коментар, додайте до нього префікс `@note`, `@warning` чи `@todo`:
 
 ```php
 // @note This comment will be preserved.
 ```
 
-To enable this rule, add it to your `pint.json` file:
+Щоб увімкнути це правило, додайте його до свого файлу `pint.json`:
 
 ```json
 {
@@ -181,12 +184,12 @@ To enable this rule, add it to your `pint.json` file:
 ```
 
 > [!NOTE]
-> This rule automatically skips files in the `config` directory, as configuration files typically rely on comments for documentation.
+> Це правило автоматично пропускає файли в каталозі `config`, адже конфігураційні файли зазвичай спираються на коментарі як на документацію.
 
 <a name="excluding-files-or-folders"></a>
-### Excluding Files / Folders
+### Виключення файлів і каталогів
 
-By default, Pint will inspect all `.php` files in your project except those in the `vendor` directory. If you wish to exclude more folders, you may do so using the `exclude` configuration option:
+За замовчуванням Pint перевіряє всі файли `.php` у вашому проєкті, окрім тих, що в каталозі `vendor`. Якщо ви хочете виключити більше каталогів, скористайтеся опцією конфігурації `exclude`:
 
 ```json
 {
@@ -196,7 +199,7 @@ By default, Pint will inspect all `.php` files in your project except those in t
 }
 ```
 
-If you wish to exclude all files that contain a given name pattern, you may do so using the `notName` configuration option:
+Якщо ви хочете виключити всі файли, чиї імена відповідають заданому шаблону, скористайтеся опцією конфігурації `notName`:
 
 ```json
 {
@@ -206,7 +209,7 @@ If you wish to exclude all files that contain a given name pattern, you may do s
 }
 ```
 
-If you would like to exclude a file by providing an exact path to the file, you may do so using the `notPath` configuration option:
+Якщо ви хочете виключити файл, указавши точний шлях до нього, скористайтеся опцією конфігурації `notPath`:
 
 ```json
 {
@@ -217,12 +220,12 @@ If you would like to exclude a file by providing an exact path to the file, you 
 ```
 
 <a name="continuous-integration"></a>
-## Continuous Integration
+## Неперервна інтеграція
 
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
-To automate linting your project with Laravel Pint, you can configure [GitHub Actions](https://github.com/features/actions) to run Pint whenever new code is pushed to GitHub. First, be sure to grant "Read and write permissions" to workflows within GitHub at **Settings > Actions > General > Workflow permissions**. Then, create a `.github/workflows/lint.yml` file with the following content:
+Щоб автоматизувати лінтинг вашого проєкту через Laravel Pint, ви можете налаштувати [GitHub Actions](https://github.com/features/actions) запускати Pint щоразу, коли новий код потрапляє на GitHub. Спершу обов'язково надайте робочим процесам дозвіл «Read and write permissions» у GitHub за адресою **Settings > Actions > General > Workflow permissions**. Далі створіть файл `.github/workflows/lint.yml` з таким вмістом:
 
 ```yaml
 name: Fix Code Style

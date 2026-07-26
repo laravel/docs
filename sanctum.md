@@ -1,74 +1,77 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Sanctum
 
-- [Introduction](#introduction)
-    - [How it Works](#how-it-works)
-- [Installation](#installation)
-- [Configuration](#configuration)
-    - [Overriding Default Models](#overriding-default-models)
-- [API Token Authentication](#api-token-authentication)
-    - [Issuing API Tokens](#issuing-api-tokens)
-    - [Token Abilities](#token-abilities)
-    - [Protecting Routes](#protecting-routes)
-    - [Revoking Tokens](#revoking-tokens)
-    - [Token Expiration](#token-expiration)
-- [SPA Authentication](#spa-authentication)
-    - [Configuration](#spa-configuration)
-    - [Authenticating](#spa-authenticating)
-    - [Protecting Routes](#protecting-spa-routes)
-    - [Authorizing Private Broadcast Channels](#authorizing-private-broadcast-channels)
-- [Mobile Application Authentication](#mobile-application-authentication)
-    - [Issuing API Tokens](#issuing-mobile-api-tokens)
-    - [Protecting Routes](#protecting-mobile-api-routes)
-    - [Revoking Tokens](#revoking-mobile-api-tokens)
-- [Testing](#testing)
+- [Вступ](#introduction)
+    - [Як це працює](#how-it-works)
+- [Встановлення](#installation)
+- [Конфігурація](#configuration)
+    - [Перевизначення стандартних моделей](#overriding-default-models)
+- [Автентифікація через API-токени](#api-token-authentication)
+    - [Видача API-токенів](#issuing-api-tokens)
+    - [Можливості токенів](#token-abilities)
+    - [Захист маршрутів](#protecting-routes)
+    - [Відкликання токенів](#revoking-tokens)
+    - [Термін дії токенів](#token-expiration)
+- [Автентифікація SPA](#spa-authentication)
+    - [Конфігурація](#spa-configuration)
+    - [Автентифікація](#spa-authenticating)
+    - [Захист маршрутів](#protecting-spa-routes)
+    - [Авторизація приватних каналів бродкастингу](#authorizing-private-broadcast-channels)
+- [Автентифікація мобільних застосунків](#mobile-application-authentication)
+    - [Видача API-токенів](#issuing-mobile-api-tokens)
+    - [Захист маршрутів](#protecting-mobile-api-routes)
+    - [Відкликання токенів](#revoking-mobile-api-tokens)
+- [Тестування](#testing)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Laravel Sanctum](https://github.com/laravel/sanctum) provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token based APIs. Sanctum allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / scopes which specify which actions the tokens are allowed to perform.
+[Laravel Sanctum](https://github.com/laravel/sanctum) надає легку як пір'їнка систему автентифікації для SPA (односторінкових застосунків), мобільних застосунків і простих API на токенах. Sanctum дозволяє кожному користувачеві вашого застосунку генерувати кілька API-токенів для свого облікового запису. Цим токенам можна надати можливості / скопи, які визначають, які дії дозволено виконувати з токеном.
 
 <a name="how-it-works"></a>
-### How it Works
+### Як це працює
 
-Laravel Sanctum exists to solve two separate problems. Let's discuss each before digging deeper into the library.
+Laravel Sanctum існує, щоб розв'язати дві окремі проблеми. Обговорімо кожну з них, перш ніж заглиблюватися в бібліотеку.
 
 <a name="how-it-works-api-tokens"></a>
-#### API Tokens
+#### API-токени
 
-First, Sanctum is a simple package you may use to issue API tokens to your users without the complication of OAuth. This feature is inspired by GitHub and other applications which issue "personal access tokens". For example, imagine the "account settings" of your application has a screen where a user may generate an API token for their account. You may use Sanctum to generate and manage those tokens. These tokens typically have a very long expiration time (years), but may be manually revoked by the user anytime.
+По-перше, Sanctum - це простий пакет, яким ви можете видавати API-токени своїм користувачам без складнощів OAuth. Ця можливість надихнута GitHub та іншими застосунками, які видають «персональні токени доступу». Уявіть, наприклад, що в «налаштуваннях облікового запису» вашого застосунку є екран, де користувач може згенерувати API-токен. Sanctum дозволяє генерувати такі токени й керувати ними. Зазвичай вони мають дуже довгий термін дії (роки), але користувач може будь-коли відкликати їх вручну.
 
-Laravel Sanctum offers this feature by storing user API tokens in a single database table and authenticating incoming HTTP requests via the `Authorization` header which should contain a valid API token.
+Laravel Sanctum реалізує цю можливість, зберігаючи API-токени користувачів в одній таблиці бази даних і автентифікуючи вхідні HTTP-запити через заголовок `Authorization`, який має містити дійсний API-токен.
 
 <a name="how-it-works-spa-authentication"></a>
-#### SPA Authentication
+#### Автентифікація SPA
 
-Second, Sanctum exists to offer a simple way to authenticate single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository, such as an SPA created using Next.js or Nuxt.
+По-друге, Sanctum пропонує простий спосіб автентифікувати односторінкові застосунки (SPA), яким треба спілкуватися з API на Laravel. Такі SPA можуть жити в тому самому репозиторії, що й ваш застосунок Laravel, або в цілком окремому - наприклад, SPA, створений на Next.js чи Nuxt.
 
-For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. Typically, Sanctum utilizes Laravel's `web` authentication guard to accomplish this. This provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS.
+Для цієї можливості Sanctum не використовує жодних токенів. Натомість Sanctum спирається на вбудовані сервіси сесійної автентифікації Laravel на основі cookie. Зазвичай для цього Sanctum використовує гард автентифікації `web`. Це дає переваги захисту від CSRF, сесійної автентифікації, а також захищає від витоку облікових даних через XSS.
 
-Sanctum will only attempt to authenticate using cookies when the incoming request originates from your own SPA frontend. When Sanctum examines an incoming HTTP request, it will first check for an authentication cookie and, if none is present, Sanctum will then examine the `Authorization` header for a valid API token.
+Sanctum намагатиметься автентифікувати через cookie лише тоді, коли вхідний запит надходить із фронтенду вашого власного SPA. Перевіряючи вхідний HTTP-запит, Sanctum спершу шукає cookie автентифікації, а якщо його немає - перевіряє заголовок `Authorization` на наявність дійсного API-токена.
 
 > [!NOTE]
-> It is perfectly fine to use Sanctum only for API token authentication or only for SPA authentication. Just because you use Sanctum does not mean you are required to use both features it offers.
+> Цілком нормально користуватися Sanctum лише для автентифікації через API-токени або лише для автентифікації SPA. Використання Sanctum не зобов'язує вас застосовувати обидві його можливості.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-You may install Laravel Sanctum via the `install:api` Artisan command:
+Ви можете встановити Laravel Sanctum артизан-командою `install:api`:
 
 ```shell
 php artisan install:api
 ```
 
-Next, if you plan to utilize Sanctum to authenticate an SPA, please refer to the [SPA Authentication](#spa-authentication) section of this documentation.
+Далі, якщо ви плануєте автентифікувати через Sanctum ваш SPA, зверніться до розділу [Автентифікація SPA](#spa-authentication) цієї документації.
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
 <a name="overriding-default-models"></a>
-### Overriding Default Models
+### Перевизначення стандартних моделей
 
-Although not typically required, you are free to extend the `PersonalAccessToken` model used internally by Sanctum:
+Хоча зазвичай це не потрібно, ви вільні розширити модель `PersonalAccessToken`, яку Sanctum використовує всередині:
 
 ```php
 use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
@@ -79,7 +82,7 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
 }
 ```
 
-Then, you may instruct Sanctum to use your custom model via the `usePersonalAccessTokenModel` method provided by Sanctum. Typically, you should call this method in the `boot` method of your application's `AppServiceProvider` file:
+Далі ви можете вказати Sanctum використовувати вашу модель через метод `usePersonalAccessTokenModel`, який надає Sanctum. Зазвичай цей метод викликають у методі `boot` файлу `AppServiceProvider` вашого застосунку:
 
 ```php
 use App\Models\Sanctum\PersonalAccessToken;
@@ -95,17 +98,17 @@ public function boot(): void
 ```
 
 <a name="api-token-authentication"></a>
-## API Token Authentication
+## Автентифікація через API-токени
 
 > [!NOTE]
-> You should not use API tokens to authenticate your own first-party SPA. Instead, use Sanctum's built-in [SPA authentication features](#spa-authentication).
+> Вам не слід автентифікувати власний SPA через API-токени. Натомість скористайтеся вбудованими [можливостями автентифікації SPA](#spa-authentication) у Sanctum.
 
 <a name="issuing-api-tokens"></a>
-### Issuing API Tokens
+### Видача API-токенів
 
-Sanctum allows you to issue API tokens / personal access tokens that may be used to authenticate API requests to your application. When making requests using API tokens, the token should be included in the `Authorization` header as a `Bearer` token.
+Sanctum дозволяє видавати API-токени / персональні токени доступу, якими можна автентифікувати API-запити до вашого застосунку. Роблячи запити з API-токеном, передавайте його в заголовку `Authorization` як токен `Bearer`.
 
-To begin issuing tokens for users, your User model should use the `Laravel\Sanctum\HasApiTokens` trait:
+Щоб почати видавати токени користувачам, ваша модель User має використовувати трейт `Laravel\Sanctum\HasApiTokens`:
 
 ```php
 use Laravel\Sanctum\HasApiTokens;
@@ -116,7 +119,7 @@ class User extends Authenticatable
 }
 ```
 
-To issue a token, you may use the `createToken` method. The `createToken` method returns a `Laravel\Sanctum\NewAccessToken` instance. API tokens are hashed using SHA-256 hashing before being stored in your database, but you may access the plain-text value of the token using the `plainTextToken` property of the `NewAccessToken` instance. You should display this value to the user immediately after the token has been created:
+Щоб видати токен, скористайтеся методом `createToken`. Метод `createToken` повертає екземпляр `Laravel\Sanctum\NewAccessToken`. API-токени хешуються через SHA-256 перед збереженням у вашій базі даних, але ви можете отримати значення токена відкритим текстом через властивість `plainTextToken` екземпляра `NewAccessToken`. Це значення слід показати користувачеві одразу після створення токена:
 
 ```php
 use Illuminate\Http\Request;
@@ -128,7 +131,7 @@ Route::post('/tokens/create', function (Request $request) {
 });
 ```
 
-You may access all of the user's tokens using the `tokens` Eloquent relationship provided by the `HasApiTokens` trait:
+Ви можете дістатися всіх токенів користувача через зв'язок Eloquent `tokens`, який надає трейт `HasApiTokens`:
 
 ```php
 foreach ($user->tokens as $token) {
@@ -137,15 +140,15 @@ foreach ($user->tokens as $token) {
 ```
 
 <a name="token-abilities"></a>
-### Token Abilities
+### Можливості токенів
 
-Sanctum allows you to assign "abilities" to tokens. Abilities serve a similar purpose as OAuth's "scopes". You may pass an array of string abilities as the second argument to the `createToken` method:
+Sanctum дозволяє призначати токенам «можливості» (abilities). Можливості слугують схожій меті, що й «скопи» в OAuth. Ви можете передати масив рядків-можливостей другим аргументом до методу `createToken`:
 
 ```php
 return $user->createToken('token-name', ['server:update'])->plainTextToken;
 ```
 
-When handling an incoming request authenticated by Sanctum, you may determine if the token has a given ability using the `tokenCan` or `tokenCant` methods:
+Обробляючи вхідний запит, автентифікований через Sanctum, ви можете визначити, чи має токен задану можливість, методами `tokenCan` чи `tokenCant`:
 
 ```php
 if ($user->tokenCan('server:update')) {
@@ -158,9 +161,9 @@ if ($user->tokenCant('server:update')) {
 ```
 
 <a name="token-ability-middleware"></a>
-#### Token Ability Middleware
+#### Middleware для можливостей токенів
 
-Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, define the following middleware aliases in your application's `bootstrap/app.php` file:
+Sanctum також містить два `middleware`, якими можна перевірити, що вхідний запит автентифіковано токеном із заданою можливістю. Для початку визначте у файлі `bootstrap/app.php` вашого застосунку такі аліаси `middleware`:
 
 ```php
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
@@ -174,7 +177,7 @@ use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 })
 ```
 
-The `abilities` middleware may be assigned to a route to verify that the incoming request's token has all of the listed abilities:
+`middleware` `abilities` можна призначити маршруту, щоб перевірити, що токен вхідного запиту має **усі** перелічені можливості:
 
 ```php
 Route::get('/orders', function () {
@@ -182,7 +185,7 @@ Route::get('/orders', function () {
 })->middleware(['auth:sanctum', 'abilities:check-status,place-orders']);
 ```
 
-The `ability` middleware may be assigned to a route to verify that the incoming request's token has *at least one* of the listed abilities:
+`middleware` `ability` можна призначити маршруту, щоб перевірити, що токен вхідного запиту має *хоча б одну* з перелічених можливостей:
 
 ```php
 Route::get('/orders', function () {
@@ -191,27 +194,27 @@ Route::get('/orders', function () {
 ```
 
 <a name="first-party-ui-initiated-requests"></a>
-#### First-Party UI Initiated Requests
+#### Запити, ініційовані власним UI
 
-For convenience, the `tokenCan` method will always return `true` if the incoming authenticated request was from your first-party SPA and you are using Sanctum's built-in [SPA authentication](#spa-authentication).
+Для зручності метод `tokenCan` завжди повертатиме `true`, якщо вхідний автентифікований запит надійшов із вашого власного SPA й ви користуєтеся вбудованою [автентифікацією SPA](#spa-authentication) у Sanctum.
 
-However, this does not necessarily mean that your application has to allow the user to perform the action. Typically, your application's [authorization policies](/docs/{{version}}/authorization#creating-policies) will determine if the token has been granted the permission to perform the abilities as well as check that the user instance itself should be allowed to perform the action.
+Проте це не означає, що ваш застосунок зобов'язаний дозволити користувачеві виконати дію. Зазвичай [політики авторизації](/docs/{{version}}/authorization#creating-policies) вашого застосунку визначатимуть і те, чи надано токену дозвіл виконувати ці можливості, і те, чи має право виконати дію сам користувач.
 
-For example, if we imagine an application that manages servers, this might mean checking that the token is authorized to update servers **and** that the server belongs to the user:
+Наприклад, якщо уявити застосунок для керування серверами, це може означати перевірку того, що токену дозволено оновлювати сервери **і** що сервер належить користувачеві:
 
 ```php
 return $request->user()->id === $server->user_id &&
        $request->user()->tokenCan('server:update')
 ```
 
-At first, allowing the `tokenCan` method to be called and always return `true` for first-party UI initiated requests may seem strange; however, it is convenient to be able to always assume an API token is available and can be inspected via the `tokenCan` method. By taking this approach, you may always call the `tokenCan` method within your application's authorization policies without worrying about whether the request was triggered from your application's UI or was initiated by one of your API's third-party consumers.
+Спершу може здатися дивним, що метод `tokenCan` можна викликати й він завжди повертає `true` для запитів, ініційованих власним UI; проте зручно завжди мати змогу припускати, що API-токен доступний і його можна перевірити методом `tokenCan`. Завдяки такому підходу ви можете завжди викликати метод `tokenCan` у політиках авторизації вашого застосунку, не переймаючись тим, чи запит надійшов з UI вашого застосунку, чи його ініціював хтось зі сторонніх споживачів вашого API.
 
 <a name="protecting-routes"></a>
-### Protecting Routes
+### Захист маршрутів
 
-To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your protected routes within your `routes/web.php` and `routes/api.php` route files. This guard will ensure that incoming requests are authenticated as either stateful, cookie authenticated requests or contain a valid API token header if the request is from a third party.
+Щоб захистити маршрути так, аби всі вхідні запити мали бути автентифікованими, додайте гард автентифікації `sanctum` до ваших захищених маршрутів у файлах `routes/web.php` та `routes/api.php`. Цей гард гарантуватиме, що вхідні запити або автентифіковані як stateful-запити через cookie, або містять заголовок із дійсним API-токеном, якщо запит надійшов від третьої сторони.
 
-You may be wondering why we suggest that you authenticate the routes within your application's `routes/web.php` file using the `sanctum` guard. Remember, Sanctum will first attempt to authenticate incoming requests using Laravel's typical session authentication cookie. If that cookie is not present then Sanctum will attempt to authenticate the request using a token in the request's `Authorization` header. In addition, authenticating all requests using Sanctum ensures that we may always call the `tokenCan` method on the currently authenticated user instance:
+Ви можете замислитися, чому ми радимо автентифікувати гардом `sanctum` і маршрути у файлі `routes/web.php`. Пам'ятайте: Sanctum спершу спробує автентифікувати вхідні запити через звичайний сесійний cookie автентифікації Laravel. Якщо цього cookie немає, Sanctum спробує автентифікувати запит токеном із заголовка `Authorization`. До того ж автентифікація всіх запитів через Sanctum гарантує, що ми завжди зможемо викликати метод `tokenCan` на екземплярі поточного автентифікованого користувача:
 
 ```php
 use Illuminate\Http\Request;
@@ -222,9 +225,9 @@ Route::get('/user', function (Request $request) {
 ```
 
 <a name="revoking-tokens"></a>
-### Revoking Tokens
+### Відкликання токенів
 
-You may "revoke" tokens by deleting them from your database using the `tokens` relationship that is provided by the `Laravel\Sanctum\HasApiTokens` trait:
+Ви можете «відкликати» токени, видаливши їх зі своєї бази даних через зв'язок `tokens`, який надає трейт `Laravel\Sanctum\HasApiTokens`:
 
 ```php
 // Revoke all tokens...
@@ -238,15 +241,15 @@ $user->tokens()->where('id', $tokenId)->delete();
 ```
 
 <a name="token-expiration"></a>
-### Token Expiration
+### Термін дії токенів
 
-By default, Sanctum tokens never expire and may only be invalidated by [revoking the token](#revoking-tokens). However, if you would like to configure an expiration time for your application's API tokens, you may do so via the `expiration` configuration option defined in your application's `sanctum` configuration file. This configuration option defines the number of minutes until an issued token will be considered expired:
+За замовчуванням токени Sanctum ніколи не спливають, і їх можна знеструмити лише [відкликанням](#revoking-tokens). Проте якщо ви хочете задати час дії API-токенів вашого застосунку, зробіть це через опцію конфігурації `expiration` у вашому конфігураційному файлі `sanctum`. Ця опція визначає кількість хвилин, після яких виданий токен вважатиметься простроченим:
 
 ```php
 'expiration' => 525600,
 ```
 
-If you would like to specify the expiration time of each token independently, you may do so by providing the expiration time as the third argument to the `createToken` method:
+Якщо ви хочете задати термін дії кожного токена окремо, передайте його третім аргументом до методу `createToken`:
 
 ```php
 return $user->createToken(
@@ -254,7 +257,7 @@ return $user->createToken(
 )->plainTextToken;
 ```
 
-If you have configured a token expiration time for your application, you may also wish to [schedule a task](/docs/{{version}}/scheduling) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled task to delete all expired token database records that have been expired for at least 24 hours:
+Якщо ви налаштували термін дії токенів для свого застосунку, вам, можливо, варто також [запланувати завдання](/docs/{{version}}/scheduling), яке прибиратиме прострочені токени. На щастя, Sanctum містить артизан-команду `sanctum:prune-expired` саме для цього. Наприклад, ви можете налаштувати заплановане завдання, яке видалятиме всі записи токенів, прострочених щонайменше 24 години:
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -263,32 +266,32 @@ Schedule::command('sanctum:prune-expired --hours=24')->daily();
 ```
 
 <a name="spa-authentication"></a>
-## SPA Authentication
+## Автентифікація SPA
 
-Sanctum also exists to provide a simple method of authenticating single page applications (SPAs) that need to communicate with a Laravel powered API. These SPAs might exist in the same repository as your Laravel application or might be an entirely separate repository.
+Sanctum також існує, щоб дати простий спосіб автентифікувати односторінкові застосунки (SPA), яким треба спілкуватися з API на Laravel. Такі SPA можуть жити в тому самому репозиторії, що й ваш застосунок Laravel, або в цілком окремому.
 
-For this feature, Sanctum does not use tokens of any kind. Instead, Sanctum uses Laravel's built-in cookie based session authentication services. This approach to authentication provides the benefits of CSRF protection, session authentication, as well as protects against leakage of the authentication credentials via XSS.
+Для цієї можливості Sanctum не використовує жодних токенів. Натомість Sanctum спирається на вбудовані сервіси сесійної автентифікації Laravel на основі cookie. Такий підхід до автентифікації дає переваги захисту від CSRF, сесійної автентифікації, а також захищає від витоку облікових даних через XSS.
 
 > [!WARNING]
-> In order to authenticate, your SPA and API must share the same top-level domain. However, they may be placed on different subdomains. Additionally, you should ensure that you send the `Accept: application/json` header and either the `Referer` or `Origin` header with your request.
+> Щоб автентифікація працювала, ваш SPA та API мають бути на одному домені верхнього рівня. Проте вони можуть бути на різних піддоменах. Крім того, надсилайте із запитом заголовок `Accept: application/json` і заголовок `Referer` чи `Origin`.
 
 <a name="spa-configuration"></a>
-### Configuration
+### Конфігурація
 
 <a name="configuring-your-first-party-domains"></a>
-#### Configuring Your First-Party Domains
+#### Налаштування власних доменів
 
-First, you should configure which domains your SPA will be making requests from. You may configure these domains using the `stateful` configuration option in your `sanctum` configuration file. This configuration setting determines which domains will maintain "stateful" authentication using Laravel session cookies when making requests to your API.
+Спершу вам треба вказати, з яких доменів ваш SPA робитиме запити. Налаштувати ці домени можна через опцію конфігурації `stateful` у вашому конфігураційному файлі `sanctum`. Ця настройка визначає, які домени підтримуватимуть «stateful»-автентифікацію через сесійні cookie Laravel під час запитів до вашого API.
 
-To assist you in setting up your first-party stateful domains, Sanctum provides two helper functions that you can include in the configuration. First, `Sanctum::currentApplicationUrlWithPort()` will return the current application URL from the `APP_URL` environment variable, and `Sanctum::currentRequestHost()` will inject a placeholder into the stateful domain list which, at runtime, will be replaced by the host from the current request so that all requests with the same domain are considered stateful.
+Щоб допомогти вам налаштувати власні stateful-домени, Sanctum надає дві допоміжні функції, які можна включити до конфігурації. Перша, `Sanctum::currentApplicationUrlWithPort()`, поверне поточний URL застосунку зі змінної оточення `APP_URL`, а `Sanctum::currentRequestHost()` вставить до списку stateful-доменів плейсхолдер, який під час виконання буде замінено на хост із поточного запиту, - тож усі запити з тим самим доменом вважатимуться stateful.
 
 > [!WARNING]
-> If you are accessing your application via a URL that includes a port (`127.0.0.1:8000`), you should ensure that you include the port number with the domain.
+> Якщо ви звертаєтеся до застосунку за URL із портом (`127.0.0.1:8000`), обов'язково вкажіть номер порту разом із доменом.
 
 <a name="sanctum-middleware"></a>
-#### Sanctum Middleware
+#### Middleware Sanctum
 
-Next, you should instruct Laravel that incoming requests from your SPA can authenticate using Laravel's session cookies, while still allowing requests from third parties or mobile applications to authenticate using API tokens. This can be easily accomplished by invoking the `statefulApi` middleware method in your application's `bootstrap/app.php` file:
+Далі вам слід указати Laravel, що вхідні запити з вашого SPA можуть автентифікуватися через сесійні cookie Laravel, водночас дозволивши запитам від третіх сторін чи мобільних застосунків автентифікуватися через API-токени. Легко зробити це можна викликом методу `middleware` `statefulApi` у файлі `bootstrap/app.php` вашого застосунку:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -297,38 +300,38 @@ Next, you should instruct Laravel that incoming requests from your SPA can authe
 ```
 
 <a name="cors-and-cookies"></a>
-#### CORS and Cookies
+#### CORS і cookie
 
-If you are having trouble authenticating with your application from an SPA that executes on a separate subdomain, you have likely misconfigured your CORS (Cross-Origin Resource Sharing) or session cookie settings.
+Якщо у вас виникають проблеми з автентифікацією у вашому застосунку з SPA, що працює на окремому піддомені, ви, найімовірніше, неправильно налаштували CORS (Cross-Origin Resource Sharing) або сесійні cookie.
 
-The `config/cors.php` configuration file is not published by default. If you need to customize Laravel's CORS options, you should publish the complete `cors` configuration file using the `config:publish` Artisan command:
+Конфігураційний файл `config/cors.php` за замовчуванням не публікується. Якщо вам треба налаштувати опції CORS у Laravel, опублікуйте повний конфігураційний файл `cors` артизан-командою `config:publish`:
 
 ```shell
 php artisan config:publish cors
 ```
 
-Next, you should ensure that your application's CORS configuration is returning the `Access-Control-Allow-Credentials` header with a value of `True`. This may be accomplished by setting the `supports_credentials` option within your application's `config/cors.php` configuration file to `true`.
+Далі переконайтеся, що конфігурація CORS вашого застосунку повертає заголовок `Access-Control-Allow-Credentials` зі значенням `True`. Це можна зробити, встановивши опцію `supports_credentials` у вашому файлі `config/cors.php` у значення `true`.
 
-In addition, you should enable the `withCredentials` and `withXSRFToken` options on your application's global `axios` instance. This can be performed in your `resources/js/app.js` file. If you are not using Axios to make HTTP requests from your frontend, you should perform the equivalent configuration on your own HTTP client:
+Крім того, увімкніть опції `withCredentials` та `withXSRFToken` на глобальному екземплярі `axios` вашого застосунку. Зробити це можна у файлі `resources/js/app.js`. Якщо ви не користуєтеся Axios для HTTP-запитів із фронтенду, виконайте рівнозначну конфігурацію у своєму HTTP-клієнті:
 
 ```js
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 ```
 
-Finally, you should ensure your application's session cookie domain configuration supports any subdomain of your root domain. You may accomplish this by prefixing the domain with a leading `.` within your application's `config/session.php` configuration file:
+Нарешті, переконайтеся, що конфігурація домену сесійних cookie вашого застосунку підтримує будь-який піддомен вашого кореневого домену. Для цього додайте до домену провідну крапку `.` у вашому конфігураційному файлі `config/session.php`:
 
 ```php
 'domain' => '.domain.com',
 ```
 
 <a name="spa-authenticating"></a>
-### Authenticating
+### Автентифікація
 
 <a name="csrf-protection"></a>
-#### CSRF Protection
+#### Захист від CSRF
 
-To authenticate your SPA, your SPA's "login" page should first make a request to the `/sanctum/csrf-cookie` endpoint to initialize CSRF protection for the application:
+Щоб автентифікувати ваш SPA, сторінка «входу» вашого SPA має спершу зробити запит до ендпоїнта `/sanctum/csrf-cookie`, щоб ініціалізувати захист від CSRF:
 
 ```js
 axios.get('/sanctum/csrf-cookie').then(response => {
@@ -336,26 +339,26 @@ axios.get('/sanctum/csrf-cookie').then(response => {
 });
 ```
 
-During this request, Laravel will set an `XSRF-TOKEN` cookie containing the current CSRF token. This token should then be URL decoded and passed in an `X-XSRF-TOKEN` header on subsequent requests, which some HTTP client libraries like Axios and the Angular HttpClient will do automatically for you. If your JavaScript HTTP library does not set the value for you, you will need to manually set the `X-XSRF-TOKEN` header to match the URL decoded value of the `XSRF-TOKEN` cookie that is set by this route.
+Під час цього запиту Laravel установить cookie `XSRF-TOKEN` з поточним CSRF-токеном. Далі цей токен слід декодувати з URL і передавати в заголовку `X-XSRF-TOKEN` у наступних запитах - деякі HTTP-клієнти на кшталт Axios чи Angular HttpClient зроблять це за вас автоматично. Якщо ваша JavaScript-бібліотека не встановлює це значення сама, вам доведеться вручну задати заголовок `X-XSRF-TOKEN` так, щоб він відповідав URL-декодованому значенню cookie `XSRF-TOKEN`, встановленого цим маршрутом.
 
 <a name="logging-in"></a>
-#### Logging In
+#### Вхід
 
-Once CSRF protection has been initialized, you should make a `POST` request to your Laravel application's `/login` route. This `/login` route may be [implemented manually](/docs/{{version}}/authentication#authenticating-users) or using a headless authentication package like [Laravel Fortify](/docs/{{version}}/fortify).
+Коли захист від CSRF ініціалізовано, зробіть запит `POST` до маршруту `/login` вашого застосунку Laravel. Цей маршрут `/login` можна [реалізувати вручну](/docs/{{version}}/authentication#authenticating-users) або через headless-пакет автентифікації на кшталт [Laravel Fortify](/docs/{{version}}/fortify).
 
-If the login request is successful, you will be authenticated and subsequent requests to your application's routes will automatically be authenticated via the session cookie that the Laravel application issued to your client. In addition, since your application already made a request to the `/sanctum/csrf-cookie` route, subsequent requests should automatically receive CSRF protection as long as your JavaScript HTTP client sends the value of the `XSRF-TOKEN` cookie in the `X-XSRF-TOKEN` header.
+Якщо запит на вхід успішний, вас буде автентифіковано, і наступні запити до маршрутів вашого застосунку автоматично автентифікуватимуться через сесійний cookie, який застосунок Laravel видав вашому клієнту. До того ж, оскільки ваш застосунок уже звернувся до маршруту `/sanctum/csrf-cookie`, наступні запити мають автоматично отримувати захист від CSRF, доки ваш JavaScript HTTP-клієнт надсилає значення cookie `XSRF-TOKEN` у заголовку `X-XSRF-TOKEN`.
 
-Of course, if your user's session expires due to lack of activity, subsequent requests to the Laravel application may receive a 401 or 419 HTTP error response. In this case, you should redirect the user to your SPA's login page.
+Звісно, якщо сесія користувача спливе через брак активності, наступні запити до застосунку Laravel можуть отримати HTTP-помилку 401 чи 419. У такому разі перенаправте користувача на сторінку входу вашого SPA.
 
-Since this approach to SPA authentication is session based, you may use Laravel's standard authentication services, including ["remember me"](/docs/{{version}}/authentication#remembering-users) functionality.
+Оскільки такий підхід до автентифікації SPA базується на сесіях, ви можете користуватися стандартними сервісами автентифікації Laravel, зокрема функціональністю [«запам'ятати мене»](/docs/{{version}}/authentication#remembering-users).
 
 > [!WARNING]
-> You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/docs/{{version}}/authentication#authenticating-users). Typically, this means using the `web` authentication guard.
+> Ви вільні написати власний ендпоїнт `/login`; проте переконайтеся, що він автентифікує користувача через стандартні [сервіси сесійної автентифікації, які надає Laravel](/docs/{{version}}/authentication#authenticating-users). Зазвичай це означає використання гарда автентифікації `web`.
 
 <a name="protecting-spa-routes"></a>
-### Protecting Routes
+### Захист маршрутів
 
-To protect routes so that all incoming requests must be authenticated, you should attach the `sanctum` authentication guard to your API routes within your `routes/api.php` file. This guard will ensure that incoming requests are authenticated as either stateful authenticated requests from your SPA or contain a valid API token header if the request is from a third party:
+Щоб захистити маршрути так, аби всі вхідні запити мали бути автентифікованими, додайте гард автентифікації `sanctum` до ваших API-маршрутів у файлі `routes/api.php`. Цей гард гарантуватиме, що вхідні запити або автентифіковані як stateful-запити з вашого SPA, або містять заголовок із дійсним API-токеном, якщо запит надійшов від третьої сторони:
 
 ```php
 use Illuminate\Http\Request;
@@ -366,9 +369,9 @@ Route::get('/user', function (Request $request) {
 ```
 
 <a name="authorizing-private-broadcast-channels"></a>
-### Authorizing Private Broadcast Channels
+### Авторизація приватних каналів бродкастингу
 
-If your SPA needs to authenticate with [private / presence broadcast channels](/docs/{{version}}/broadcasting#authorizing-channels), you should remove the `channels` entry from the `withRouting` method contained in your application's `bootstrap/app.php` file. Instead, you should invoke the `withBroadcasting` method so that you may specify the correct middleware for your application's broadcasting routes:
+Якщо вашому SPA треба автентифікуватися в [приватних каналах чи каналах присутності](/docs/{{version}}/broadcasting#authorizing-channels), приберіть запис `channels` з методу `withRouting` у файлі `bootstrap/app.php` вашого застосунку. Натомість викличте метод `withBroadcasting`, щоб указати правильне `middleware` для маршрутів бродкастингу вашого застосунку:
 
 ```php
 return Application::configure(basePath: dirname(__DIR__))
@@ -382,7 +385,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
 ```
 
-Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
+Далі, щоб запити авторизації Pusher були успішними, вам треба передати власний `authorizer` для Pusher під час ініціалізації [Laravel Echo](/docs/{{version}}/broadcasting#client-side-installation). Це дозволить вашому застосунку налаштувати Pusher на використання екземпляра `axios`, [належно налаштованого для міждоменних запитів](#cors-and-cookies):
 
 ```js
 window.Echo = new Echo({
@@ -410,16 +413,16 @@ window.Echo = new Echo({
 ```
 
 <a name="mobile-application-authentication"></a>
-## Mobile Application Authentication
+## Автентифікація мобільних застосунків
 
-You may also use Sanctum tokens to authenticate your mobile application's requests to your API. The process for authenticating mobile application requests is similar to authenticating third-party API requests; however, there are small differences in how you will issue the API tokens.
+Ви також можете автентифікувати токенами Sanctum запити вашого мобільного застосунку до вашого API. Процес автентифікації запитів мобільного застосунку схожий на автентифікацію сторонніх API-запитів; проте є невеликі відмінності в тому, як ви видаватимете API-токени.
 
 <a name="issuing-mobile-api-tokens"></a>
-### Issuing API Tokens
+### Видача API-токенів
 
-To get started, create a route that accepts the user's email / username, password, and device name, then exchanges those credentials for a new Sanctum token. The "device name" given to this endpoint is for informational purposes and may be any value you wish. In general, the device name value should be a name the user would recognize, such as "Nuno's iPhone 17".
+Для початку створіть маршрут, який приймає пошту / ім'я користувача, пароль та ім'я пристрою, а потім обмінює ці облікові дані на новий токен Sanctum. «Ім'я пристрою», передане цьому ендпоїнту, потрібне лише для інформації й може бути будь-яким. Загалом ім'я пристрою має бути таким, яке користувач упізнає, - наприклад, «Nuno's iPhone 17».
 
-Typically, you will make a request to the token endpoint from your mobile application's "login" screen. The endpoint will return the plain-text API token which may then be stored on the mobile device and used to make additional API requests:
+Зазвичай ви робитимете запит до цього ендпоїнта з екрана «входу» вашого мобільного застосунку. Ендпоїнт поверне API-токен відкритим текстом, який потім можна зберегти на мобільному пристрої й використовувати для наступних API-запитів:
 
 ```php
 use App\Models\User;
@@ -446,15 +449,15 @@ Route::post('/sanctum/token', function (Request $request) {
 });
 ```
 
-When the mobile application uses the token to make an API request to your application, it should pass the token in the `Authorization` header as a `Bearer` token.
+Коли мобільний застосунок робить із цим токеном API-запит до вашого застосунку, він має передавати токен у заголовку `Authorization` як токен `Bearer`.
 
 > [!NOTE]
-> When issuing tokens for a mobile application, you are also free to specify [token abilities](#token-abilities).
+> Видаючи токени для мобільного застосунку, ви так само вільні вказати [можливості токенів](#token-abilities).
 
 <a name="protecting-mobile-api-routes"></a>
-### Protecting Routes
+### Захист маршрутів
 
-As previously documented, you may protect routes so that all incoming requests must be authenticated by attaching the `sanctum` authentication guard to the routes:
+Як уже описано раніше, ви можете захистити маршрути так, аби всі вхідні запити мали бути автентифікованими, додавши до них гард автентифікації `sanctum`:
 
 ```php
 Route::get('/user', function (Request $request) {
@@ -463,9 +466,9 @@ Route::get('/user', function (Request $request) {
 ```
 
 <a name="revoking-mobile-api-tokens"></a>
-### Revoking Tokens
+### Відкликання токенів
 
-To allow users to revoke API tokens issued to mobile devices, you may list them by name, along with a "Revoke" button, within an "account settings" portion of your web application's UI. When the user clicks the "Revoke" button, you can delete the token from the database. Remember, you can access a user's API tokens via the `tokens` relationship provided by the `Laravel\Sanctum\HasApiTokens` trait:
+Щоб дозволити користувачам відкликати API-токени, видані мобільним пристроям, ви можете вивести їх за іменами разом із кнопкою «Revoke» у розділі «налаштування облікового запису» інтерфейсу вашого вебзастосунку. Коли користувач натисне «Revoke», ви можете видалити токен із бази даних. Пам'ятайте: до API-токенів користувача можна дістатися через зв'язок `tokens`, який надає трейт `Laravel\Sanctum\HasApiTokens`:
 
 ```php
 // Revoke all tokens...
@@ -476,9 +479,9 @@ $user->tokens()->where('id', $tokenId)->delete();
 ```
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
-While testing, the `Sanctum::actingAs` method may be used to authenticate a user and specify which abilities should be granted to their token:
+Під час тестування метод `Sanctum::actingAs` дозволяє автентифікувати користувача й указати, які можливості слід надати його токену:
 
 ```php tab=Pest
 use App\Models\User;
@@ -513,7 +516,7 @@ public function test_task_list_can_be_retrieved(): void
 }
 ```
 
-If you would like to grant all abilities to the token, you should include `*` in the ability list provided to the `actingAs` method:
+Якщо ви хочете надати токену всі можливості, включіть `*` до списку можливостей, переданого методу `actingAs`:
 
 ```php
 Sanctum::actingAs(

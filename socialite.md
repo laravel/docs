@@ -1,46 +1,49 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Socialite
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Upgrading Socialite](#upgrading-socialite)
-- [Configuration](#configuration)
-- [Authentication](#authentication)
-    - [Routing](#routing)
-    - [Authentication and Storage](#authentication-and-storage)
-    - [Access Scopes](#access-scopes)
-    - [Slack Bot Scopes](#slack-bot-scopes)
-    - [Optional Parameters](#optional-parameters)
-- [Retrieving User Details](#retrieving-user-details)
-- [Testing](#testing)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+- [Оновлення Socialite](#upgrading-socialite)
+- [Конфігурація](#configuration)
+- [Автентифікація](#authentication)
+    - [Маршрутизація](#routing)
+    - [Автентифікація та збереження](#authentication-and-storage)
+    - [Скопи доступу](#access-scopes)
+    - [Скопи ботів Slack](#slack-bot-scopes)
+    - [Необов'язкові параметри](#optional-parameters)
+- [Отримання даних користувача](#retrieving-user-details)
+- [Тестування](#testing)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication via Facebook, X, LinkedIn, Google, GitHub, GitLab, Bitbucket, and Slack.
+Окрім звичайної автентифікації через форму, Laravel надає простий і зручний спосіб автентифікуватися через провайдери OAuth за допомогою [Laravel Socialite](https://github.com/laravel/socialite). Наразі Socialite підтримує автентифікацію через Facebook, X, LinkedIn, Google, GitHub, GitLab, Bitbucket і Slack.
 
 > [!NOTE]
-> Adapters for other platforms are available via the community driven [Socialite Providers](https://socialiteproviders.com/) website.
+> Адаптери для інших платформ доступні на сайті [Socialite Providers](https://socialiteproviders.com/), який розвиває спільнота.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-To get started with Socialite, use the Composer package manager to add the package to your project's dependencies:
+Щоб почати роботу із Socialite, додайте пакет до залежностей вашого проєкту через менеджер пакетів Composer:
 
 ```shell
 composer require laravel/socialite
 ```
 
 <a name="upgrading-socialite"></a>
-## Upgrading Socialite
+## Оновлення Socialite
 
-When upgrading to a new major version of Socialite, it's important that you carefully review [the upgrade guide](https://github.com/laravel/socialite/blob/master/UPGRADE.md).
+Оновлюючись до нової мажорної версії Socialite, обов'язково уважно перегляньте [посібник з оновлення](https://github.com/laravel/socialite/blob/master/UPGRADE.md).
 
 <a name="configuration"></a>
-## Configuration
+## Конфігурація
 
-Before using Socialite, you will need to add credentials for the OAuth providers your application utilizes. Typically, these credentials may be retrieved by creating a "developer application" within the dashboard of the service you will be authenticating with.
+Перш ніж користуватися Socialite, вам треба додати облікові дані для провайдерів OAuth, які використовує ваш застосунок. Зазвичай ці облікові дані можна отримати, створивши «застосунок розробника» в панелі керування сервісу, через який ви автентифікуватиметеся.
 
-These credentials should be placed in your application's `config/services.php` configuration file, and should use the key `facebook`, `x`, `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, `slack`, or `slack-openid`, depending on the providers your application requires:
+Ці облікові дані слід розмістити в конфігураційному файлі `config/services.php` вашого застосунку під ключем `facebook`, `x`, `linkedin-openid`, `google`, `github`, `gitlab`, `bitbucket`, `slack` чи `slack-openid` - залежно від того, які провайдери потрібні вашому застосунку:
 
 ```php
 'github' => [
@@ -51,15 +54,15 @@ These credentials should be placed in your application's `config/services.php` c
 ```
 
 > [!NOTE]
-> If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
+> Якщо опція `redirect` містить відносний шлях, його буде автоматично перетворено на повний URL.
 
 <a name="authentication"></a>
-## Authentication
+## Автентифікація
 
 <a name="routing"></a>
-### Routing
+### Маршрутизація
 
-To authenticate users using an OAuth provider, you will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. The example routes below demonstrate the implementation of both routes:
+Щоб автентифікувати користувачів через провайдер OAuth, вам знадобляться два маршрути: один - для перенаправлення користувача до провайдера, другий - для отримання зворотного виклику від провайдера після автентифікації. Наведені нижче приклади демонструють реалізацію обох маршрутів:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -75,12 +78,12 @@ Route::get('/auth/callback', function () {
 });
 ```
 
-The `redirect` method provided by the `Socialite` facade takes care of redirecting the user to the OAuth provider, while the `user` method will examine the incoming request and retrieve the user's information from the provider after they have approved the authentication request.
+Метод `redirect`, який надає фасад `Socialite`, дбає про перенаправлення користувача до провайдера OAuth, а метод `user` перевіряє вхідний запит і отримує дані користувача від провайдера після того, як той схвалив запит на автентифікацію.
 
 <a name="authentication-and-storage"></a>
-### Authentication and Storage
+### Автентифікація та збереження
 
-Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](/docs/{{version}}/authentication#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:
+Отримавши користувача від провайдера OAuth, ви можете визначити, чи існує він у базі даних вашого застосунку, і [автентифікувати його](/docs/{{version}}/authentication#authenticate-a-user-instance). Якщо користувача у вашій базі немає, зазвичай ви створюєте новий запис, що представлятиме його:
 
 ```php
 use App\Models\User;
@@ -106,12 +109,12 @@ Route::get('/auth/callback', function () {
 ```
 
 > [!NOTE]
-> For more information regarding what user information is available from specific OAuth providers, please consult the documentation on [retrieving user details](#retrieving-user-details).
+> Щоб дізнатися більше про те, які дані користувача доступні від конкретних провайдерів OAuth, зверніться до документації про [отримання даних користувача](#retrieving-user-details).
 
 <a name="access-scopes"></a>
-### Access Scopes
+### Скопи доступу
 
-Before redirecting the user, you may use the `scopes` method to specify the "scopes" that should be included in the authentication request. This method will merge all previously specified scopes with the scopes that you specify:
+Перед перенаправленням користувача ви можете скористатися методом `scopes`, щоб указати «скопи» (scopes), які слід включити до запиту на автентифікацію. Цей метод об'єднає всі раніше вказані скопи з тими, які ви задаєте:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -121,7 +124,7 @@ return Socialite::driver('github')
     ->redirect();
 ```
 
-You can overwrite all existing scopes on the authentication request using the `setScopes` method:
+Ви можете перезаписати всі наявні скопи в запиті на автентифікацію методом `setScopes`:
 
 ```php
 return Socialite::driver('github')
@@ -130,20 +133,20 @@ return Socialite::driver('github')
 ```
 
 <a name="slack-bot-scopes"></a>
-### Slack Bot Scopes
+### Скопи ботів Slack
 
-Slack's API provides [different types of access tokens](https://api.slack.com/authentication/token-types), each with their own set of [permission scopes](https://api.slack.com/scopes). Socialite is compatible with both of the following Slack access tokens types:
+API Slack надає [різні типи токенів доступу](https://api.slack.com/authentication/token-types), кожен зі своїм набором [скопів дозволів](https://api.slack.com/scopes). Socialite сумісний з обома такими типами токенів доступу Slack:
 
 <div class="content-list" markdown="1">
 
-- Bot (prefixed with `xoxb-`)
-- User (prefixed with `xoxp-`)
+- Bot (з префіксом `xoxb-`)
+- User (з префіксом `xoxp-`)
 
 </div>
 
-By default, the `slack` driver will generate a `user` token and invoking the driver's `user` method will return the user's details.
+За замовчуванням драйвер `slack` генеруватиме токен `user`, а виклик методу `user` цього драйвера поверне дані користувача.
 
-Bot tokens are primarily useful if your application will be sending notifications to external Slack workspaces that are owned by your application's users. To generate a bot token, invoke the `asBotUser` method before redirecting the user to Slack for authentication:
+Токени ботів передусім корисні, якщо ваш застосунок надсилатиме сповіщення до зовнішніх робочих просторів Slack, що належать вашим користувачам. Щоб згенерувати токен бота, викличте метод `asBotUser`, перш ніж перенаправляти користувача до Slack для автентифікації:
 
 ```php
 return Socialite::driver('slack')
@@ -152,18 +155,18 @@ return Socialite::driver('slack')
     ->redirect();
 ```
 
-In addition, you must invoke the `asBotUser` method before invoking the `user` method after Slack redirects the user back to your application after authentication:
+Крім того, ви маєте викликати метод `asBotUser` перед викликом методу `user` після того, як Slack поверне користувача до вашого застосунку:
 
 ```php
 $user = Socialite::driver('slack')->asBotUser()->user();
 ```
 
-When generating a bot token, the `user` method will still return a `Laravel\Socialite\Two\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](/docs/{{version}}/notifications#notifying-external-slack-workspaces).
+Під час генерування токена бота метод `user` усе одно поверне екземпляр `Laravel\Socialite\Two\User`; проте заповненою буде лише властивість `token`. Цей токен можна зберегти, щоб [надсилати сповіщення до робочих просторів Slack автентифікованого користувача](/docs/{{version}}/notifications#notifying-external-slack-workspaces).
 
 <a name="optional-parameters"></a>
-### Optional Parameters
+### Необов'язкові параметри
 
-A number of OAuth providers support other optional parameters on the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+Низка провайдерів OAuth підтримує інші необов'язкові параметри в запиті на перенаправлення. Щоб додати такі параметри до запиту, викличте метод `with` з асоціативним масивом:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -174,14 +177,14 @@ return Socialite::driver('google')
 ```
 
 > [!WARNING]
-> When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
+> Користуючись методом `with`, стежте, щоб не передати зарезервованих ключових слів на кшталт `state` чи `response_type`.
 
 <a name="retrieving-user-details"></a>
-## Retrieving User Details
+## Отримання даних користувача
 
-After the user is redirected back to your application's authentication callback route, you may retrieve the user's details using Socialite's `user` method. The user object returned by the `user` method provides a variety of properties and methods you may use to store information about the user in your own database.
+Після того як користувача перенаправлено назад на маршрут зворотного виклику вашого застосунку, ви можете отримати його дані методом `user` у Socialite. Об'єкт користувача, який повертає метод `user`, надає різні властивості й методи, якими ви можете скористатися, щоб зберегти інформацію про користувача у власній базі даних.
 
-Differing properties and methods may be available on this object depending on whether the OAuth provider you are authenticating with supports OAuth 1.0 or OAuth 2.0:
+Набір доступних властивостей і методів цього об'єкта різниться залежно від того, чи підтримує провайдер OAuth, через який ви автентифікуєтеся, OAuth 1.0 чи OAuth 2.0:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -208,9 +211,9 @@ Route::get('/auth/callback', function () {
 ```
 
 <a name="retrieving-user-details-from-a-token-oauth2"></a>
-#### Retrieving User Details From a Token
+#### Отримання даних користувача за токеном
 
-If you already have a valid access token for a user, you can retrieve their user details using Socialite's `userFromToken` method:
+Якщо ви вже маєте дійсний токен доступу користувача, ви можете отримати його дані методом `userFromToken` у Socialite:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -218,12 +221,12 @@ use Laravel\Socialite\Socialite;
 $user = Socialite::driver('github')->userFromToken($token);
 ```
 
-If you are using Facebook Limited Login via an iOS application, Facebook will return an OIDC token instead of an access token. Like an access token, the OIDC token can be provided to the `userFromToken` method in order to retrieve user details.
+Якщо ви користуєтеся Facebook Limited Login через застосунок для iOS, Facebook поверне токен OIDC замість токена доступу. Як і токен доступу, токен OIDC можна передати методу `userFromToken`, щоб отримати дані користувача.
 
 <a name="stateless-authentication"></a>
-#### Stateless Authentication
+#### Автентифікація без збереження стану
 
-The `stateless` method may be used to disable session state verification. This is useful when adding social authentication to a stateless API that does not utilize cookie based sessions:
+Метод `stateless` дозволяє вимкнути перевірку стану сесії. Це стає в пригоді, коли ви додаєте соціальну автентифікацію до stateless-API, який не використовує сесій на основі cookie:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -232,14 +235,14 @@ return Socialite::driver('google')->stateless()->user();
 ```
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
-Laravel Socialite provides a convenient way to test OAuth authentication flows without making actual requests to OAuth providers. The `fake` method allows you to mock the OAuth provider's behavior and define the user data that should be returned.
+Laravel Socialite надає зручний спосіб тестувати потоки автентифікації OAuth, не роблячи справжніх запитів до провайдерів. Метод `fake` дозволяє підробити поведінку провайдера OAuth і задати дані користувача, які має бути повернено.
 
 <a name="faking-the-redirect"></a>
-#### Faking the Redirect
+#### Підроблення перенаправлення
 
-To test that your application correctly redirects users to an OAuth provider, you may invoke the `fake` method before making a request to your redirect route. This will cause Socialite to return a redirect to a fake authorization URL instead of redirecting to the actual OAuth provider:
+Щоб перевірити, що ваш застосунок правильно перенаправляє користувачів до провайдера OAuth, викличте метод `fake` перед запитом до вашого маршруту перенаправлення. Тоді Socialite поверне перенаправлення на фіктивний URL авторизації замість справжнього провайдера OAuth:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -254,9 +257,9 @@ test('user is redirected to github', function () {
 ```
 
 <a name="faking-the-callback"></a>
-#### Faking the Callback
+#### Підроблення зворотного виклику
 
-To test your application's callback route, you may invoke the `fake` method and provide a `User` instance that should be returned when your application requests the user's details from the provider. The `User` instance may be created using the `fake` method:
+Щоб протестувати маршрут зворотного виклику вашого застосунку, викличте метод `fake` і передайте екземпляр `User`, який має бути повернено, коли застосунок запитає в провайдера дані користувача. Екземпляр `User` можна створити методом `fake`:
 
 ```php
 use Laravel\Socialite\Socialite;
@@ -281,7 +284,7 @@ test('user can login with github', function () {
 });
 ```
 
-By default, the `User` instance will include fake OAuth token values. If needed, you may override these values by passing additional attributes to the `fake` method:
+За замовчуванням екземпляр `User` міститиме фіктивні значення токенів OAuth. За потреби ви можете перевизначити ці значення, передавши методу `fake` додаткові атрибути:
 
 ```php
 $fakeUser = User::fake([
@@ -295,4 +298,4 @@ $fakeUser = User::fake([
 ]);
 ```
 
-OAuth 1 users may be faked using the `Laravel\Socialite\One\User` class.
+Користувачів OAuth 1 можна підробити через клас `Laravel\Socialite\One\User`.
