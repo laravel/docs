@@ -1,90 +1,93 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Laravel Dusk
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [Managing ChromeDriver Installations](#managing-chromedriver-installations)
-    - [Using Other Browsers](#using-other-browsers)
-- [Getting Started](#getting-started)
-    - [Generating Tests](#generating-tests)
-    - [Resetting the Database After Each Test](#resetting-the-database-after-each-test)
-    - [Running Tests](#running-tests)
-    - [Environment Handling](#environment-handling)
-- [Browser Basics](#browser-basics)
-    - [Creating Browsers](#creating-browsers)
-    - [Navigation](#navigation)
-    - [Resizing Browser Windows](#resizing-browser-windows)
-    - [Browser Macros](#browser-macros)
-    - [Authentication](#authentication)
-    - [Cookies](#cookies)
-    - [Executing JavaScript](#executing-javascript)
-    - [Taking a Screenshot](#taking-a-screenshot)
-    - [Storing Console Output to Disk](#storing-console-output-to-disk)
-    - [Storing Page Source to Disk](#storing-page-source-to-disk)
-- [Interacting With Elements](#interacting-with-elements)
-    - [Dusk Selectors](#dusk-selectors)
-    - [Text, Values, and Attributes](#text-values-and-attributes)
-    - [Interacting With Forms](#interacting-with-forms)
-    - [Attaching Files](#attaching-files)
-    - [Pressing Buttons](#pressing-buttons)
-    - [Clicking Links](#clicking-links)
-    - [Using the Keyboard](#using-the-keyboard)
-    - [Using the Mouse](#using-the-mouse)
-    - [JavaScript Dialogs](#javascript-dialogs)
-    - [Interacting With Inline Frames](#interacting-with-iframes)
-    - [Scoping Selectors](#scoping-selectors)
-    - [Waiting for Elements](#waiting-for-elements)
-    - [Scrolling an Element Into View](#scrolling-an-element-into-view)
-- [Available Assertions](#available-assertions)
-- [Pages](#pages)
-    - [Generating Pages](#generating-pages)
-    - [Configuring Pages](#configuring-pages)
-    - [Navigating to Pages](#navigating-to-pages)
-    - [Shorthand Selectors](#shorthand-selectors)
-    - [Page Methods](#page-methods)
-- [Components](#components)
-    - [Generating Components](#generating-components)
-    - [Using Components](#using-components)
-- [Continuous Integration](#continuous-integration)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+    - [Керування встановленням ChromeDriver](#managing-chromedriver-installations)
+    - [Використання інших браузерів](#using-other-browsers)
+- [Перші кроки](#getting-started)
+    - [Генерування тестів](#generating-tests)
+    - [Скидання бази даних після кожного тесту](#resetting-the-database-after-each-test)
+    - [Запуск тестів](#running-tests)
+    - [Робота із середовищем](#environment-handling)
+- [Основи роботи з браузером](#browser-basics)
+    - [Створення браузерів](#creating-browsers)
+    - [Навігація](#navigation)
+    - [Зміна розміру вікна браузера](#resizing-browser-windows)
+    - [Макроси браузера](#browser-macros)
+    - [Автентифікація](#authentication)
+    - [Cookie](#cookies)
+    - [Виконання JavaScript](#executing-javascript)
+    - [Знімок екрана](#taking-a-screenshot)
+    - [Збереження виводу консолі на диск](#storing-console-output-to-disk)
+    - [Збереження коду сторінки на диск](#storing-page-source-to-disk)
+- [Взаємодія з елементами](#interacting-with-elements)
+    - [Селектори Dusk](#dusk-selectors)
+    - [Текст, значення та атрибути](#text-values-and-attributes)
+    - [Робота з формами](#interacting-with-forms)
+    - [Прикріплення файлів](#attaching-files)
+    - [Натискання кнопок](#pressing-buttons)
+    - [Клацання по посиланнях](#clicking-links)
+    - [Використання клавіатури](#using-the-keyboard)
+    - [Використання миші](#using-the-mouse)
+    - [Діалоги JavaScript](#javascript-dialogs)
+    - [Робота з вбудованими фреймами](#interacting-with-iframes)
+    - [Обмеження селекторів](#scoping-selectors)
+    - [Очікування елементів](#waiting-for-elements)
+    - [Прокручування до елемента](#scrolling-an-element-into-view)
+- [Доступні твердження](#available-assertions)
+- [Сторінки](#pages)
+    - [Генерування сторінок](#generating-pages)
+    - [Налаштування сторінок](#configuring-pages)
+    - [Перехід до сторінок](#navigating-to-pages)
+    - [Скорочені селектори](#shorthand-selectors)
+    - [Методи сторінок](#page-methods)
+- [Компоненти](#components)
+    - [Генерування компонентів](#generating-components)
+    - [Використання компонентів](#using-components)
+- [Неперервна інтеграція](#continuous-integration)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
     - [GitHub Actions](#running-tests-on-github-actions)
     - [Chipper CI](#running-tests-on-chipper-ci)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
 > [!WARNING]
-> [Pest 4](https://pestphp.com/) now includes automated browser testing which offers significant performance and usability improvements compared to Laravel Dusk. For new projects, we recommend using Pest for browser testing.
+> [Pest 4](https://pestphp.com/) тепер містить автоматизоване тестування у браузері, яке суттєво виграє в продуктивності та зручності порівняно з Laravel Dusk. Для нових проєктів ми рекомендуємо тестувати у браузері саме через Pest.
 
-[Laravel Dusk](https://github.com/laravel/dusk) provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your local computer. Instead, Dusk uses a standalone [ChromeDriver](https://sites.google.com/chromium.org/driver) installation. However, you are free to utilize any other Selenium compatible driver you wish.
+[Laravel Dusk](https://github.com/laravel/dusk) надає виразний і простий у користуванні API для автоматизації браузера й тестування. За замовчуванням Dusk не вимагає встановлювати JDK чи Selenium на ваш комп'ютер. Натомість Dusk використовує окремо встановлений [ChromeDriver](https://sites.google.com/chromium.org/driver). Проте ви вільні скористатися будь-яким іншим сумісним із Selenium драйвером.
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-To get started, you should install [Google Chrome](https://www.google.com/chrome) and add the `laravel/dusk` Composer dependency to your project:
+Для початку встановіть [Google Chrome](https://www.google.com/chrome) і додайте до свого проєкту Composer-залежність `laravel/dusk`:
 
 ```shell
 composer require laravel/dusk --dev
 ```
 
 > [!WARNING]
-> If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
+> Якщо ви реєструєте сервіс-провайдер Dusk вручну, **ніколи** не реєструйте його у продакшн-середовищі: це може призвести до того, що будь-хто зможе автентифікуватися у вашому застосунку.
 
-After installing the Dusk package, execute the `dusk:install` Artisan command. The `dusk:install` command will create a `tests/Browser` directory, an example Dusk test, and install the Chrome Driver binary for your operating system:
+Після встановлення пакета Dusk виконайте артизан-команду `dusk:install`. Команда `dusk:install` створить каталог `tests/Browser`, приклад тесту Dusk і встановить бінарник Chrome Driver для вашої операційної системи:
 
 ```shell
 php artisan dusk:install
 ```
 
-Next, set the `APP_URL` environment variable in your application's `.env` file. This value should match the URL you use to access your application in a browser.
+Далі задайте змінну оточення `APP_URL` у файлі `.env` вашого застосунку. Це значення має збігатися з URL, за яким ви звертаєтеся до застосунку у браузері.
 
 > [!NOTE]
-> If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please also consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
+> Якщо ви користуєтеся [Laravel Sail](/docs/{{version}}/sail) для керування локальним середовищем розробки, зверніться також до документації Sail щодо [налаштування й запуску тестів Dusk](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="managing-chromedriver-installations"></a>
-### Managing ChromeDriver Installations
+### Керування встановленням ChromeDriver
 
-If you would like to install a different version of ChromeDriver than what is installed by Laravel Dusk via the `dusk:install` command, you may use the `dusk:chrome-driver` command:
+Якщо ви хочете встановити версію ChromeDriver, відмінну від тієї, яку встановлює Laravel Dusk командою `dusk:install`, скористайтеся командою `dusk:chrome-driver`:
 
 ```shell
 # Install the latest version of ChromeDriver for your OS...
@@ -101,14 +104,14 @@ php artisan dusk:chrome-driver --detect
 ```
 
 > [!WARNING]
-> Dusk requires the `chromedriver` binaries to be executable. If you're having problems running Dusk, you should ensure the binaries are executable using the following command: `chmod -R 0755 vendor/laravel/dusk/bin/`.
+> Dusk вимагає, щоб бінарники `chromedriver` були виконуваними. Якщо у вас виникають проблеми із запуском Dusk, переконайтеся, що бінарники виконувані, такою командою: `chmod -R 0755 vendor/laravel/dusk/bin/`.
 
 <a name="using-other-browsers"></a>
-### Using Other Browsers
+### Використання інших браузерів
 
-By default, Dusk uses Google Chrome and a standalone [ChromeDriver](https://sites.google.com/chromium.org/driver) installation to run your browser tests. However, you may start your own Selenium server and run your tests against any browser you wish.
+За замовчуванням Dusk запускає ваші браузерні тести в Google Chrome через окремо встановлений [ChromeDriver](https://sites.google.com/chromium.org/driver). Проте ви можете запустити власний сервер Selenium і виконувати тести в будь-якому браузері.
 
-To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk test case for your application. Within this file, you can remove the call to the `startChromeDriver` method. This will stop Dusk from automatically starting the ChromeDriver:
+Для початку відкрийте файл `tests/DuskTestCase.php` - це базовий тест-кейс Dusk для вашого застосунку. У ньому ви можете прибрати виклик методу `startChromeDriver`. Це зупинить автоматичний запуск ChromeDriver у Dusk:
 
 ```php
 /**
@@ -122,7 +125,7 @@ public static function prepare(): void
 }
 ```
 
-Next, you may modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
+Далі ви можете змінити метод `driver`, щоб підключитися до потрібних вам URL і порту. Крім того, ви можете змінити «бажані можливості» (desired capabilities), які передаються до WebDriver:
 
 ```php
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -139,26 +142,26 @@ protected function driver(): RemoteWebDriver
 ```
 
 <a name="getting-started"></a>
-## Getting Started
+## Перші кроки
 
 <a name="generating-tests"></a>
-### Generating Tests
+### Генерування тестів
 
-To generate a Dusk test, use the `dusk:make` Artisan command. The generated test will be placed in the `tests/Browser` directory:
+Щоб згенерувати тест Dusk, скористайтеся артизан-командою `dusk:make`. Згенерований тест потрапить до каталогу `tests/Browser`:
 
 ```shell
 php artisan dusk:make LoginTest
 ```
 
 <a name="resetting-the-database-after-each-test"></a>
-### Resetting the Database After Each Test
+### Скидання бази даних після кожного тесту
 
-Most of the tests you write will interact with pages that retrieve data from your application's database; however, your Dusk tests should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable or available across HTTP requests. Instead, you have two options: the `DatabaseMigrations` trait and the `DatabaseTruncation` trait.
+Більшість ваших тестів працюватимуть зі сторінками, які отримують дані з бази даних застосунку; проте ваші тести Dusk ніколи не повинні використовувати трейт `RefreshDatabase`. Трейт `RefreshDatabase` спирається на транзакції бази даних, які не застосовні й недоступні між HTTP-запитами. Натомість у вас є два варіанти: трейт `DatabaseMigrations` і трейт `DatabaseTruncation`.
 
 <a name="reset-migrations"></a>
-#### Using Database Migrations
+#### Використання міграцій бази даних
 
-The `DatabaseMigrations` trait will run your database migrations before each test. However, dropping and re-creating your database tables for each test is typically slower than truncating the tables:
+Трейт `DatabaseMigrations` запускатиме ваші міграції перед кожним тестом. Проте видалення й повторне створення таблиць для кожного тесту зазвичай повільніше за їх очищення:
 
 ```php tab=Pest
 <?php
@@ -189,12 +192,12 @@ class ExampleTest extends DuskTestCase
 ```
 
 > [!WARNING]
-> SQLite in-memory databases may not be used when executing Dusk tests. Since the browser executes within its own process, it will not be able to access the in-memory databases of other processes.
+> Бази даних SQLite в пам'яті не можна використовувати під час прогону тестів Dusk. Оскільки браузер виконується у власному процесі, він не матиме доступу до баз даних у пам'яті інших процесів.
 
 <a name="reset-truncation"></a>
-#### Using Database Truncation
+#### Використання очищення бази даних
 
-The `DatabaseTruncation` trait will migrate your database on the first test in order to ensure your database tables have been properly created. However, on subsequent tests, the database's tables will simply be truncated - providing a speed boost over re-running all of your database migrations:
+Трейт `DatabaseTruncation` мігрує вашу базу даних на першому тесті, щоб переконатися, що таблиці створено належним чином. Проте в наступних тестах таблиці бази просто очищатимуться - це швидше, ніж щоразу проганяти всі міграції:
 
 ```php tab=Pest
 <?php
@@ -225,10 +228,10 @@ class ExampleTest extends DuskTestCase
 }
 ```
 
-By default, this trait will truncate all tables except the `migrations` table. If you would like to customize the tables that should be truncated, you may define a `$tablesToTruncate` property on your test class:
+За замовчуванням цей трейт очищає всі таблиці, окрім `migrations`. Якщо ви хочете вказати, які саме таблиці слід очищати, визначте у своєму тестовому класі властивість `$tablesToTruncate`:
 
 > [!NOTE]
-> If you are using Pest, you should define properties or methods on the base `DuskTestCase` class or on any class your test file extends.
+> Якщо ви користуєтеся Pest, визначайте властивості чи методи в базовому класі `DuskTestCase` або в будь-якому класі, який успадковує ваш тестовий файл.
 
 ```php
 /**
@@ -239,7 +242,7 @@ By default, this trait will truncate all tables except the `migrations` table. I
 protected $tablesToTruncate = ['users'];
 ```
 
-Alternatively, you may define an `$exceptTables` property on your test class to specify which tables should be excluded from truncation:
+Або ж ви можете визначити у своєму тестовому класі властивість `$exceptTables`, щоб указати, які таблиці слід виключити з очищення:
 
 ```php
 /**
@@ -250,7 +253,7 @@ Alternatively, you may define an `$exceptTables` property on your test class to 
 protected $exceptTables = ['users'];
 ```
 
-To specify the database connections that should have their tables truncated, you may define a `$connectionsToTruncate` property on your test class:
+Щоб указати підключення до баз даних, чиї таблиці слід очищати, визначте у своєму тестовому класі властивість `$connectionsToTruncate`:
 
 ```php
 /**
@@ -261,7 +264,7 @@ To specify the database connections that should have their tables truncated, you
 protected $connectionsToTruncate = ['mysql'];
 ```
 
-If you would like to execute code before or after database truncation is performed, you may define `beforeTruncatingDatabase` or `afterTruncatingDatabase` methods on your test class:
+Якщо ви хочете виконати код до або після очищення бази даних, визначте у своєму тестовому класі методи `beforeTruncatingDatabase` чи `afterTruncatingDatabase`:
 
 ```php
 /**
@@ -282,33 +285,33 @@ protected function afterTruncatingDatabase(): void
 ```
 
 <a name="running-tests"></a>
-### Running Tests
+### Запуск тестів
 
-To run your browser tests, execute the `dusk` Artisan command:
+Щоб запустити ваші браузерні тести, виконайте артизан-команду `dusk`:
 
 ```shell
 php artisan dusk
 ```
 
-If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+Якщо під час останнього запуску команди `dusk` у вас були провалені тести, ви можете заощадити час, спершу перезапустивши саме їх командою `dusk:fails`:
 
 ```shell
 php artisan dusk:fails
 ```
 
-The `dusk` command accepts any argument that is normally accepted by the Pest / PHPUnit test runner, such as allowing you to only run the tests for a given [group](https://docs.phpunit.de/en/10.5/annotations.html#group):
+Команда `dusk` приймає будь-який аргумент, який зазвичай приймає раннер тестів Pest / PHPUnit, - наприклад, щоб запустити лише тести певної [групи](https://docs.phpunit.de/en/10.5/annotations.html#group):
 
 ```shell
 php artisan dusk --group=foo
 ```
 
 > [!NOTE]
-> If you are using [Laravel Sail](/docs/{{version}}/sail) to manage your local development environment, please consult the Sail documentation on [configuring and running Dusk tests](/docs/{{version}}/sail#laravel-dusk).
+> Якщо ви користуєтеся [Laravel Sail](/docs/{{version}}/sail) для керування локальним середовищем розробки, зверніться до документації Sail щодо [налаштування й запуску тестів Dusk](/docs/{{version}}/sail#laravel-dusk).
 
 <a name="manually-starting-chromedriver"></a>
-#### Manually Starting ChromeDriver
+#### Ручний запуск ChromeDriver
 
-By default, Dusk will automatically attempt to start ChromeDriver. If this does not work for your particular system, you may manually start ChromeDriver before running the `dusk` command. If you choose to start ChromeDriver manually, you should comment out the following line of your `tests/DuskTestCase.php` file:
+За замовчуванням Dusk автоматично намагається запустити ChromeDriver. Якщо у вашій системі це не працює, ви можете запустити ChromeDriver вручну перед виконанням команди `dusk`. Якщо ви вирішите запускати ChromeDriver вручну, закоментуйте такий рядок у файлі `tests/DuskTestCase.php`:
 
 ```php
 /**
@@ -322,7 +325,7 @@ public static function prepare(): void
 }
 ```
 
-In addition, if you start ChromeDriver on a port other than 9515, you should modify the `driver` method of the same class to reflect the correct port:
+Крім того, якщо ви запускаєте ChromeDriver на порту, відмінному від 9515, змініть метод `driver` того самого класу, щоб указати правильний порт:
 
 ```php
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -339,19 +342,19 @@ protected function driver(): RemoteWebDriver
 ```
 
 <a name="environment-handling"></a>
-### Environment Handling
+### Робота із середовищем
 
-To force Dusk to use its own environment file when running tests, create a `.env.dusk.{environment}` file in the root of your project. For example, if you will be initiating the `dusk` command from your `local` environment, you should create a `.env.dusk.local` file.
+Щоб змусити Dusk використовувати власний файл оточення під час прогону тестів, створіть у корені проєкту файл `.env.dusk.{environment}`. Наприклад, якщо ви запускатимете команду `dusk` із середовища `local`, створіть файл `.env.dusk.local`.
 
-When running tests, Dusk will back-up your `.env` file and rename your Dusk environment to `.env`. Once the tests have completed, your `.env` file will be restored.
+Під час прогону тестів Dusk створить резервну копію вашого файлу `.env` і перейменує ваше оточення Dusk на `.env`. Коли тести завершаться, ваш файл `.env` буде відновлено.
 
 <a name="browser-basics"></a>
-## Browser Basics
+## Основи роботи з браузером
 
 <a name="creating-browsers"></a>
-### Creating Browsers
+### Створення браузерів
 
-To get started, let's write a test that verifies we can log into our application. After generating a test, we can modify it to navigate to the login page, enter some credentials, and click the "Login" button. To create a browser instance, you may call the `browse` method from within your Dusk test:
+Для початку напишімо тест, який перевіряє, що ми можемо увійти до нашого застосунку. Згенерувавши тест, ми можемо змінити його так, щоб перейти на сторінку входу, ввести облікові дані й натиснути кнопку «Login». Щоб створити екземпляр браузера, викличте метод `browse` усередині вашого тесту Dusk:
 
 ```php tab=Pest
 <?php
@@ -411,12 +414,12 @@ class ExampleTest extends DuskTestCase
 }
 ```
 
-As you can see in the example above, the `browse` method accepts a closure. A browser instance will automatically be passed to this closure by Dusk and is the main object used to interact with and make assertions against your application.
+Як видно з прикладу вище, метод `browse` приймає замикання. Dusk автоматично передасть до нього екземпляр браузера - це головний об'єкт для взаємодії з вашим застосунком і тверджень щодо нього.
 
 <a name="creating-multiple-browsers"></a>
-#### Creating Multiple Browsers
+#### Створення кількох браузерів
 
-Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, simply add more browser arguments to the signature of the closure given to the `browse` method:
+Іноді для належного виконання тесту вам може знадобитися кілька браузерів. Наприклад, вони можуть знадобитися, щоб протестувати екран чату, який працює через вебсокети. Щоб створити кілька браузерів, просто додайте більше аргументів-браузерів до сигнатури замикання, переданого методу `browse`:
 
 ```php
 $this->browse(function (Browser $first, Browser $second) {
@@ -436,21 +439,21 @@ $this->browse(function (Browser $first, Browser $second) {
 ```
 
 <a name="navigation"></a>
-### Navigation
+### Навігація
 
-The `visit` method may be used to navigate to a given URI within your application:
+Метод `visit` дозволяє перейти до заданого URI у вашому застосунку:
 
 ```php
 $browser->visit('/login');
 ```
 
-You may use the `visitRoute` method to navigate to a [named route](/docs/{{version}}/routing#named-routes):
+Метод `visitRoute` дозволяє перейти до [іменованого маршруту](/docs/{{version}}/routing#named-routes):
 
 ```php
 $browser->visitRoute($routeName, $parameters);
 ```
 
-You may navigate "back" and "forward" using the `back` and `forward` methods:
+Ви можете переходити «назад» і «вперед» методами `back` та `forward`:
 
 ```php
 $browser->back();
@@ -458,49 +461,49 @@ $browser->back();
 $browser->forward();
 ```
 
-You may use the `refresh` method to refresh the page:
+Метод `refresh` дозволяє оновити сторінку:
 
 ```php
 $browser->refresh();
 ```
 
 <a name="resizing-browser-windows"></a>
-### Resizing Browser Windows
+### Зміна розміру вікна браузера
 
-You may use the `resize` method to adjust the size of the browser window:
+Метод `resize` дозволяє змінити розмір вікна браузера:
 
 ```php
 $browser->resize(1920, 1080);
 ```
 
-The `maximize` method may be used to maximize the browser window:
+Метод `maximize` дозволяє розгорнути вікно браузера на весь екран:
 
 ```php
 $browser->maximize();
 ```
 
-The `fitContent` method will resize the browser window to match the size of its content:
+Метод `fitContent` змінить розмір вікна браузера так, щоб він відповідав розміру вмісту:
 
 ```php
 $browser->fitContent();
 ```
 
-When a test fails, Dusk will automatically resize the browser to fit the content prior to taking a screenshot. You may disable this feature by calling the `disableFitOnFailure` method within your test:
+Коли тест провалюється, Dusk автоматично змінює розмір браузера під вміст перед знімком екрана. Ви можете вимкнути цю поведінку, викликавши у своєму тесті метод `disableFitOnFailure`:
 
 ```php
 $browser->disableFitOnFailure();
 ```
 
-You may use the `move` method to move the browser window to a different position on your screen:
+Метод `move` дозволяє перемістити вікно браузера в інше місце екрана:
 
 ```php
 $browser->move($x = 100, $y = 100);
 ```
 
 <a name="browser-macros"></a>
-### Browser Macros
+### Макроси браузера
 
-If you would like to define a custom browser method that you can re-use in a variety of your tests, you may use the `macro` method on the `Browser` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
+Якщо ви хочете визначити власний метод браузера, який можна перевикористовувати в різних тестах, скористайтеся методом `macro` класу `Browser`. Зазвичай цей метод викликають у методі `boot` [сервіс-провайдера](/docs/{{version}}/providers):
 
 ```php
 <?php
@@ -526,7 +529,7 @@ class DuskServiceProvider extends ServiceProvider
 }
 ```
 
-The `macro` function accepts a name as its first argument, and a closure as its second. The macro's closure will be executed when calling the macro as a method on a `Browser` instance:
+Функція `macro` приймає першим аргументом ім'я, а другим - замикання. Замикання макроса виконається, коли ви викличете макрос як метод на екземплярі `Browser`:
 
 ```php
 $this->browse(function (Browser $browser) use ($user) {
@@ -537,9 +540,9 @@ $this->browse(function (Browser $browser) use ($user) {
 ```
 
 <a name="authentication"></a>
-### Authentication
+### Автентифікація
 
-Often, you will be testing pages that require authentication. You can use Dusk's `loginAs` method in order to avoid interacting with your application's login screen during every test. The `loginAs` method accepts a primary key associated with your authenticatable model or an authenticatable model instance:
+Часто ви тестуватимете сторінки, які вимагають автентифікації. Щоб не взаємодіяти з екраном входу вашого застосунку в кожному тесті, скористайтеся методом Dusk `loginAs`. Метод `loginAs` приймає первинний ключ вашої моделі, придатної до автентифікації, або сам її екземпляр:
 
 ```php
 use App\Models\User;
@@ -552,12 +555,12 @@ $this->browse(function (Browser $browser) {
 ```
 
 > [!WARNING]
-> After using the `loginAs` method, the user session will be maintained for all tests within the file.
+> Після використання методу `loginAs` сесія користувача зберігатиметься для всіх тестів у межах файлу.
 
 <a name="cookies"></a>
-### Cookies
+### Cookie
 
-You may use the `cookie` method to get or set an encrypted cookie's value. By default, all of the cookies created by Laravel are encrypted:
+Метод `cookie` дозволяє отримати чи задати значення зашифрованого cookie. За замовчуванням усі створені Laravel cookie зашифровані:
 
 ```php
 $browser->cookie('name');
@@ -565,7 +568,7 @@ $browser->cookie('name');
 $browser->cookie('name', 'Taylor');
 ```
 
-You may use the `plainCookie` method to get or set an unencrypted cookie's value:
+Метод `plainCookie` дозволяє отримати чи задати значення незашифрованого cookie:
 
 ```php
 $browser->plainCookie('name');
@@ -573,16 +576,16 @@ $browser->plainCookie('name');
 $browser->plainCookie('name', 'Taylor');
 ```
 
-You may use the `deleteCookie` method to delete the given cookie:
+Метод `deleteCookie` дозволяє видалити заданий cookie:
 
 ```php
 $browser->deleteCookie('name');
 ```
 
 <a name="executing-javascript"></a>
-### Executing JavaScript
+### Виконання JavaScript
 
-You may use the `script` method to execute arbitrary JavaScript statements within the browser:
+Метод `script` дозволяє виконати у браузері довільні інструкції JavaScript:
 
 ```php
 $browser->script('document.documentElement.scrollTop = 0');
@@ -596,51 +599,51 @@ $output = $browser->script('return window.location.pathname');
 ```
 
 <a name="taking-a-screenshot"></a>
-### Taking a Screenshot
+### Знімок екрана
 
-You may use the `screenshot` method to take a screenshot and store it with the given filename. All screenshots will be stored within the `tests/Browser/screenshots` directory:
+Метод `screenshot` дозволяє зробити знімок екрана й зберегти його із заданим іменем файлу. Усі знімки зберігаються в каталозі `tests/Browser/screenshots`:
 
 ```php
 $browser->screenshot('filename');
 ```
 
-The `responsiveScreenshots` method may be used to take a series of screenshots at various breakpoints:
+Метод `responsiveScreenshots` дозволяє зробити серію знімків на різних брейкпоїнтах:
 
 ```php
 $browser->responsiveScreenshots('filename');
 ```
 
-The `screenshotElement` method may be used to take a screenshot of a specific element on the page:
+Метод `screenshotElement` дозволяє зробити знімок конкретного елемента на сторінці:
 
 ```php
 $browser->screenshotElement('#selector', 'filename');
 ```
 
 <a name="storing-console-output-to-disk"></a>
-### Storing Console Output to Disk
+### Збереження виводу консолі на диск
 
-You may use the `storeConsoleLog` method to write the current browser's console output to disk with the given filename. Console output will be stored within the `tests/Browser/console` directory:
+Метод `storeConsoleLog` дозволяє записати вивід консолі поточного браузера на диск під заданим іменем файлу. Вивід консолі зберігається в каталозі `tests/Browser/console`:
 
 ```php
 $browser->storeConsoleLog('filename');
 ```
 
 <a name="storing-page-source-to-disk"></a>
-### Storing Page Source to Disk
+### Збереження коду сторінки на диск
 
-You may use the `storeSource` method to write the current page's source to disk with the given filename. The page source will be stored within the `tests/Browser/source` directory:
+Метод `storeSource` дозволяє записати код поточної сторінки на диск під заданим іменем файлу. Код сторінки зберігається в каталозі `tests/Browser/source`:
 
 ```php
 $browser->storeSource('filename');
 ```
 
 <a name="interacting-with-elements"></a>
-## Interacting With Elements
+## Взаємодія з елементами
 
 <a name="dusk-selectors"></a>
-### Dusk Selectors
+### Селектори Dusk
 
-Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
+Вибір хороших CSS-селекторів для взаємодії з елементами - одна з найскладніших частин написання тестів Dusk. З часом зміни у фронтенді можуть зламати ваші тести через CSS-селектори на кшталт такого:
 
 ```html
 // HTML...
@@ -654,7 +657,7 @@ Choosing good CSS selectors for interacting with elements is one of the hardest 
 $browser->click('.login-page .container div > button');
 ```
 
-Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, when interacting with a Dusk browser, prefix the selector with `@` to manipulate the attached element within your test:
+Селектори Dusk дозволяють зосередитися на написанні ефективних тестів, а не на запам'ятовуванні CSS-селекторів. Щоб визначити селектор, додайте до свого HTML-елемента атрибут `dusk`. Далі, взаємодіючи з браузером Dusk, додайте до селектора префікс `@`, щоб працювати з цим елементом у тесті:
 
 ```html
 // HTML...
@@ -668,7 +671,7 @@ Dusk selectors allow you to focus on writing effective tests rather than remembe
 $browser->click('@login-button');
 ```
 
-If desired, you may customize the HTML attribute that the Dusk selector utilizes via the `selectorHtmlAttribute` method. Typically, this method should be called from the `boot` method of your application's `AppServiceProvider`:
+За бажання ви можете змінити HTML-атрибут, який використовує селектор Dusk, методом `selectorHtmlAttribute`. Зазвичай цей метод викликають у методі `boot` вашого `AppServiceProvider`:
 
 ```php
 use Laravel\Dusk\Dusk;
@@ -677,12 +680,12 @@ Dusk::selectorHtmlAttribute('data-dusk');
 ```
 
 <a name="text-values-and-attributes"></a>
-### Text, Values, and Attributes
+### Текст, значення та атрибути
 
 <a name="retrieving-setting-values"></a>
-#### Retrieving and Setting Values
+#### Отримання та задавання значень
 
-Dusk provides several methods for interacting with the current value, display text, and attributes of elements on the page. For example, to get the "value" of an element that matches a given CSS or Dusk selector, use the `value` method:
+Dusk надає кілька методів для роботи з поточним значенням, видимим текстом та атрибутами елементів на сторінці. Наприклад, щоб отримати «значення» елемента, який відповідає заданому CSS- чи Dusk-селектору, скористайтеся методом `value`:
 
 ```php
 // Retrieve the value...
@@ -692,58 +695,58 @@ $value = $browser->value('selector');
 $browser->value('selector', 'value');
 ```
 
-You may use the `inputValue` method to get the "value" of an input element that has a given field name:
+Метод `inputValue` дозволяє отримати «значення» елемента input із заданим іменем поля:
 
 ```php
 $value = $browser->inputValue('field');
 ```
 
 <a name="retrieving-text"></a>
-#### Retrieving Text
+#### Отримання тексту
 
-The `text` method may be used to retrieve the display text of an element that matches the given selector:
+Метод `text` дозволяє отримати видимий текст елемента, який відповідає заданому селектору:
 
 ```php
 $text = $browser->text('selector');
 ```
 
 <a name="retrieving-attributes"></a>
-#### Retrieving Attributes
+#### Отримання атрибутів
 
-Finally, the `attribute` method may be used to retrieve the value of an attribute of an element matching the given selector:
+Нарешті, метод `attribute` дозволяє отримати значення атрибута елемента, який відповідає заданому селектору:
 
 ```php
 $attribute = $browser->attribute('selector', 'value');
 ```
 
 <a name="interacting-with-forms"></a>
-### Interacting With Forms
+### Робота з формами
 
 <a name="typing-values"></a>
-#### Typing Values
+#### Введення значень
 
-Dusk provides a variety of methods for interacting with forms and input elements. First, let's take a look at an example of typing text into an input field:
+Dusk надає різні методи для роботи з формами й полями введення. Спершу погляньмо на приклад введення тексту в поле:
 
 ```php
 $browser->type('email', 'taylor@laravel.com');
 ```
 
-Note that, although the method accepts one if necessary, we are not required to pass a CSS selector into the `type` method. If a CSS selector is not provided, Dusk will search for an `input` or `textarea` field with the given `name` attribute.
+Зверніть увагу: хоча метод за потреби приймає CSS-селектор, передавати його до методу `type` не обов'язково. Якщо CSS-селектор не задано, Dusk шукатиме поле `input` чи `textarea` із заданим атрибутом `name`.
 
-To append text to a field without clearing its content, you may use the `append` method:
+Щоб додати текст до поля, не очищаючи його вмісту, скористайтеся методом `append`:
 
 ```php
 $browser->type('tags', 'foo')
     ->append('tags', ', bar, baz');
 ```
 
-You may clear the value of an input using the `clear` method:
+Очистити значення поля можна методом `clear`:
 
 ```php
 $browser->clear('email');
 ```
 
-You can instruct Dusk to type slowly using the `typeSlowly` method. By default, Dusk will pause for 100 milliseconds between key presses. To customize the amount of time between key presses, you may pass the appropriate number of milliseconds as the third argument to the method:
+Ви можете вказати Dusk вводити текст повільно методом `typeSlowly`. За замовчуванням Dusk робить паузу 100 мілісекунд між натисканнями клавіш. Щоб змінити цей час, передайте потрібну кількість мілісекунд третім аргументом методу:
 
 ```php
 $browser->typeSlowly('mobile', '+1 (202) 555-5555');
@@ -751,7 +754,7 @@ $browser->typeSlowly('mobile', '+1 (202) 555-5555');
 $browser->typeSlowly('mobile', '+1 (202) 555-5555', 300);
 ```
 
-You may use the `appendSlowly` method to append text slowly:
+Метод `appendSlowly` дозволяє повільно додавати текст:
 
 ```php
 $browser->type('tags', 'foo')
@@ -759,72 +762,72 @@ $browser->type('tags', 'foo')
 ```
 
 <a name="dropdowns"></a>
-#### Dropdowns
+#### Випадні списки
 
-To select a value available on a `select` element, you may use the `select` method. Like the `type` method, the `select` method does not require a full CSS selector. When passing a value to the `select` method, you should pass the underlying option value instead of the display text:
+Щоб обрати значення в елементі `select`, скористайтеся методом `select`. Як і методу `type`, методу `select` не потрібен повний CSS-селектор. Передаючи значення методу `select`, передавайте саме значення опції, а не видимий текст:
 
 ```php
 $browser->select('size', 'Large');
 ```
 
-You may select a random option by omitting the second argument:
+Ви можете обрати випадкову опцію, не передаючи другого аргументу:
 
 ```php
 $browser->select('size');
 ```
 
-By providing an array as the second argument to the `select` method, you can instruct the method to select multiple options:
+Передавши масив другим аргументом до методу `select`, ви можете вказати методу обрати кілька опцій:
 
 ```php
 $browser->select('categories', ['Art', 'Music']);
 ```
 
 <a name="checkboxes"></a>
-#### Checkboxes
+#### Чекбокси
 
-To "check" a checkbox input, you may use the `check` method. Like many other input related methods, a full CSS selector is not required. If a CSS selector match can't be found, Dusk will search for a checkbox with a matching `name` attribute:
+Щоб «поставити галочку» в чекбоксі, скористайтеся методом `check`. Як і багатьом іншим методам для полів введення, повний CSS-селектор тут не потрібен. Якщо збігу за CSS-селектором не знайдено, Dusk шукатиме чекбокс із відповідним атрибутом `name`:
 
 ```php
 $browser->check('terms');
 ```
 
-The `uncheck` method may be used to "uncheck" a checkbox input:
+Метод `uncheck` дозволяє «зняти галочку» з чекбокса:
 
 ```php
 $browser->uncheck('terms');
 ```
 
 <a name="radio-buttons"></a>
-#### Radio Buttons
+#### Радіокнопки
 
-To "select" a `radio` input option, you may use the `radio` method. Like many other input related methods, a full CSS selector is not required. If a CSS selector match can't be found, Dusk will search for a `radio` input with matching `name` and `value` attributes:
+Щоб «обрати» опцію `radio`, скористайтеся методом `radio`. Як і багатьом іншим методам для полів введення, повний CSS-селектор тут не потрібен. Якщо збігу за CSS-селектором не знайдено, Dusk шукатиме поле `radio` з відповідними атрибутами `name` та `value`:
 
 ```php
 $browser->radio('size', 'large');
 ```
 
 <a name="attaching-files"></a>
-### Attaching Files
+### Прикріплення файлів
 
-The `attach` method may be used to attach a file to a `file` input element. Like many other input related methods, a full CSS selector is not required. If a CSS selector match can't be found, Dusk will search for a `file` input with a matching `name` attribute:
+Метод `attach` дозволяє прикріпити файл до елемента `file`. Як і багатьом іншим методам для полів введення, повний CSS-селектор тут не потрібен. Якщо збігу за CSS-селектором не знайдено, Dusk шукатиме поле `file` з відповідним атрибутом `name`:
 
 ```php
 $browser->attach('photo', __DIR__.'/photos/mountains.png');
 ```
 
 > [!WARNING]
-> The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
+> Функція attach вимагає, щоб на вашому сервері було встановлено й увімкнено розширення PHP `Zip`.
 
 <a name="pressing-buttons"></a>
-### Pressing Buttons
+### Натискання кнопок
 
-The `press` method may be used to click a button element on the page. The argument given to the `press` method may be either the display text of the button or a CSS / Dusk selector:
+Метод `press` дозволяє клацнути по кнопці на сторінці. Аргументом методу `press` може бути або видимий текст кнопки, або CSS- чи Dusk-селектор:
 
 ```php
 $browser->press('Login');
 ```
 
-When submitting forms, many applications disable the form's submission button after it is pressed and then re-enable the button when the form submission's HTTP request is complete. To press a button and wait for the button to be re-enabled, you may use the `pressAndWaitFor` method:
+Надсилаючи форми, багато застосунків вимикають кнопку надсилання після натискання й вмикають її знову, коли HTTP-запит завершується. Щоб натиснути кнопку й дочекатися, доки її знову ввімкнуть, скористайтеся методом `pressAndWaitFor`:
 
 ```php
 // Press the button and wait a maximum of 5 seconds for it to be enabled...
@@ -835,15 +838,15 @@ $browser->pressAndWaitFor('Save', 1);
 ```
 
 <a name="clicking-links"></a>
-### Clicking Links
+### Клацання по посиланнях
 
-To click a link, you may use the `clickLink` method on the browser instance. The `clickLink` method will click the link that has the given display text:
+Щоб клацнути по посиланню, скористайтеся методом `clickLink` на екземплярі браузера. Метод `clickLink` клацне по посиланню із заданим видимим текстом:
 
 ```php
 $browser->clickLink($linkText);
 ```
 
-You may use the `seeLink` method to determine if a link with the given display text is visible on the page:
+Метод `seeLink` дозволяє визначити, чи видиме на сторінці посилання із заданим видимим текстом:
 
 ```php
 if ($browser->seeLink($linkText)) {
@@ -852,30 +855,30 @@ if ($browser->seeLink($linkText)) {
 ```
 
 > [!WARNING]
-> These methods interact with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
+> Ці методи працюють через jQuery. Якщо jQuery на сторінці немає, Dusk автоматично впровадить його, щоб він був доступний на час тесту.
 
 <a name="using-the-keyboard"></a>
-### Using the Keyboard
+### Використання клавіатури
 
-The `keys` method allows you to provide more complex input sequences to a given element than normally allowed by the `type` method. For example, you may instruct Dusk to hold modifier keys while entering values. In this example, the `shift` key will be held while `taylor` is entered into the element matching the given selector. After `taylor` is typed, `swift` will be typed without any modifier keys:
+Метод `keys` дозволяє передавати елементу складніші послідовності введення, ніж дозволяє метод `type`. Наприклад, ви можете вказати Dusk утримувати клавіші-модифікатори під час введення значень. У цьому прикладі клавішу `shift` буде утримувано, доки в елемент, що відповідає заданому селектору, вводиться `taylor`. Після `taylor` буде введено `swift` уже без модифікаторів:
 
 ```php
 $browser->keys('selector', ['{shift}', 'taylor'], 'swift');
 ```
 
-Another valuable use case for the `keys` method is sending a "keyboard shortcut" combination to the primary CSS selector for your application:
+Ще один корисний випадок для методу `keys` - надсилання комбінації «гарячих клавіш» до основного CSS-селектора вашого застосунку:
 
 ```php
 $browser->keys('.app', ['{command}', 'j']);
 ```
 
 > [!NOTE]
-> All modifier keys such as `{command}` are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
+> Усі клавіші-модифікатори на кшталт `{command}` беруться у фігурні дужки `{}` і відповідають константам, визначеним у класі `Facebook\WebDriver\WebDriverKeys`, який можна [знайти на GitHub](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php).
 
 <a name="fluent-keyboard-interactions"></a>
-#### Fluent Keyboard Interactions
+#### Плавна робота з клавіатурою
 
-Dusk also provides a `withKeyboard` method, allowing you to fluently perform complex keyboard interactions via the `Laravel\Dusk\Keyboard` class. The `Keyboard` class provides `press`, `release`, `type`, and `pause` methods:
+Dusk також надає метод `withKeyboard`, який дозволяє плавно виконувати складні взаємодії з клавіатурою через клас `Laravel\Dusk\Keyboard`. Клас `Keyboard` надає методи `press`, `release`, `type` та `pause`:
 
 ```php
 use Laravel\Dusk\Keyboard;
@@ -889,9 +892,9 @@ $browser->withKeyboard(function (Keyboard $keyboard) {
 ```
 
 <a name="keyboard-macros"></a>
-#### Keyboard Macros
+#### Макроси клавіатури
 
-If you would like to define custom keyboard interactions that you can easily re-use throughout your test suite, you may use the `macro` method provided by the `Keyboard` class. Typically, you should call this method from a [service provider's](/docs/{{version}}/providers) `boot` method:
+Якщо ви хочете визначити власні взаємодії з клавіатурою, які легко перевикористовувати в усьому наборі тестів, скористайтеся методом `macro`, який надає клас `Keyboard`. Зазвичай цей метод викликають у методі `boot` [сервіс-провайдера](/docs/{{version}}/providers):
 
 ```php
 <?php
@@ -929,7 +932,7 @@ class DuskServiceProvider extends ServiceProvider
 }
 ```
 
-The `macro` function accepts a name as its first argument and a closure as its second. The macro's closure will be executed when calling the macro as a method on a `Keyboard` instance:
+Функція `macro` приймає першим аргументом ім'я, а другим - замикання. Замикання макроса виконається, коли ви викличете макрос як метод на екземплярі `Keyboard`:
 
 ```php
 $browser->click('@textarea')
@@ -939,30 +942,30 @@ $browser->click('@textarea')
 ```
 
 <a name="using-the-mouse"></a>
-### Using the Mouse
+### Використання миші
 
 <a name="clicking-on-elements"></a>
-#### Clicking on Elements
+#### Клацання по елементах
 
-The `click` method may be used to click on an element matching the given CSS or Dusk selector:
+Метод `click` дозволяє клацнути по елементу, який відповідає заданому CSS- чи Dusk-селектору:
 
 ```php
 $browser->click('.selector');
 ```
 
-The `clickAtXPath` method may be used to click on an element matching the given XPath expression:
+Метод `clickAtXPath` дозволяє клацнути по елементу, який відповідає заданому виразу XPath:
 
 ```php
 $browser->clickAtXPath('//div[@class = "selector"]');
 ```
 
-The `clickAtPoint` method may be used to click on the topmost element at a given pair of coordinates relative to the viewable area of the browser:
+Метод `clickAtPoint` дозволяє клацнути по найвищому елементу за заданою парою координат відносно видимої області браузера:
 
 ```php
 $browser->clickAtPoint($x = 0, $y = 0);
 ```
 
-The `doubleClick` method may be used to simulate the double click of a mouse:
+Метод `doubleClick` дозволяє симулювати подвійне клацання мишею:
 
 ```php
 $browser->doubleClick();
@@ -970,7 +973,7 @@ $browser->doubleClick();
 $browser->doubleClick('.selector');
 ```
 
-The `rightClick` method may be used to simulate the right click of a mouse:
+Метод `rightClick` дозволяє симулювати клацання правою кнопкою миші:
 
 ```php
 $browser->rightClick();
@@ -978,7 +981,7 @@ $browser->rightClick();
 $browser->rightClick('.selector');
 ```
 
-The `clickAndHold` method may be used to simulate a mouse button being clicked and held down. A subsequent call to the `releaseMouse` method will undo this behavior and release the mouse button:
+Метод `clickAndHold` дозволяє симулювати натискання й утримування кнопки миші. Наступний виклик методу `releaseMouse` скасує цю поведінку й відпустить кнопку:
 
 ```php
 $browser->clickAndHold('.selector');
@@ -988,7 +991,7 @@ $browser->clickAndHold()
     ->releaseMouse();
 ```
 
-The `controlClick` method may be used to simulate the `ctrl+click` event within the browser:
+Метод `controlClick` дозволяє симулювати у браузері подію `ctrl+click`:
 
 ```php
 $browser->controlClick();
@@ -996,7 +999,7 @@ $browser->controlClick();
 $browser->controlClick('.selector');
 ```
 
-The `clickWhenVisible` or `clickWhenEnabled` method may be used to wait for an element to be ready before clicking it exactly once:
+Методи `clickWhenVisible` чи `clickWhenEnabled` дозволяють дочекатися готовності елемента, перш ніж клацнути по ньому рівно один раз:
 
 ```php
 $browser->clickWhenVisible('@save-button');
@@ -1004,24 +1007,24 @@ $browser->clickWhenEnabled('@submit-button');
 ```
 
 <a name="mouseover"></a>
-#### Mouseover
+#### Наведення миші
 
-The `mouseover` method may be used when you need to move the mouse over an element matching the given CSS or Dusk selector:
+Метод `mouseover` стане в пригоді, коли вам треба навести мишу на елемент, що відповідає заданому CSS- чи Dusk-селектору:
 
 ```php
 $browser->mouseover('.selector');
 ```
 
 <a name="drag-drop"></a>
-#### Drag and Drop
+#### Перетягування
 
-The `drag` method may be used to drag an element matching the given selector to another element:
+Метод `drag` дозволяє перетягнути елемент, що відповідає заданому селектору, до іншого елемента:
 
 ```php
 $browser->drag('.from-selector', '.to-selector');
 ```
 
-Or, you may drag an element in a single direction:
+Або ж ви можете перетягнути елемент в одному напрямку:
 
 ```php
 $browser->dragLeft('.selector', $pixels = 10);
@@ -1030,49 +1033,49 @@ $browser->dragUp('.selector', $pixels = 10);
 $browser->dragDown('.selector', $pixels = 10);
 ```
 
-Finally, you may drag an element by a given offset:
+Нарешті, ви можете перетягнути елемент на заданий зсув:
 
 ```php
 $browser->dragOffset('.selector', $x = 10, $y = 10);
 ```
 
 <a name="javascript-dialogs"></a>
-### JavaScript Dialogs
+### Діалоги JavaScript
 
-Dusk provides various methods to interact with JavaScript Dialogs. For example, you may use the `waitForDialog` method to wait for a JavaScript dialog to appear. This method accepts an optional argument indicating how many seconds to wait for the dialog to appear:
+Dusk надає різні методи для роботи з діалогами JavaScript. Наприклад, метод `waitForDialog` дозволяє дочекатися появи діалогу JavaScript. Цей метод приймає необов'язковий аргумент - скільки секунд чекати на появу діалогу:
 
 ```php
 $browser->waitForDialog($seconds = null);
 ```
 
-The `assertDialogOpened` method may be used to assert that a dialog has been displayed and contains the given message:
+Метод `assertDialogOpened` дозволяє перевірити, що діалог було показано і що він містить задане повідомлення:
 
 ```php
 $browser->assertDialogOpened('Dialog message');
 ```
 
-If the JavaScript dialog contains a prompt, you may use the `typeInDialog` method to type a value into the prompt:
+Якщо діалог JavaScript містить поле введення, ви можете скористатися методом `typeInDialog`, щоб ввести туди значення:
 
 ```php
 $browser->typeInDialog('Hello World');
 ```
 
-To close an open JavaScript dialog by clicking the "OK" button, you may invoke the `acceptDialog` method:
+Щоб закрити відкритий діалог JavaScript натисканням кнопки «OK», викличте метод `acceptDialog`:
 
 ```php
 $browser->acceptDialog();
 ```
 
-To close an open JavaScript dialog by clicking the "Cancel" button, you may invoke the `dismissDialog` method:
+Щоб закрити відкритий діалог JavaScript натисканням кнопки «Cancel», викличте метод `dismissDialog`:
 
 ```php
 $browser->dismissDialog();
 ```
 
 <a name="interacting-with-iframes"></a>
-### Interacting With Inline Frames
+### Робота з вбудованими фреймами
 
-If you need to interact with elements within an iframe, you may use the `withinFrame` method. All element interactions that take place within the closure provided to the `withinFrame` method will be scoped to the context of the specified iframe:
+Якщо вам потрібно взаємодіяти з елементами всередині iframe, скористайтеся методом `withinFrame`. Усі взаємодії з елементами всередині замикання, переданого методу `withinFrame`, будуть обмежені контекстом указаного iframe:
 
 ```php
 $browser->withinFrame('#credit-card-details', function ($browser) {
@@ -1084,9 +1087,9 @@ $browser->withinFrame('#credit-card-details', function ($browser) {
 ```
 
 <a name="scoping-selectors"></a>
-### Scoping Selectors
+### Обмеження селекторів
 
-Sometimes you may wish to perform several operations while scoping all of the operations within a given selector. For example, you may wish to assert that some text exists only within a table and then click a button within that table. You may use the `with` method to accomplish this. All operations performed within the closure given to the `with` method will be scoped to the original selector:
+Іноді вам може знадобитися виконати кілька операцій, обмеживши їх усі заданим селектором. Наприклад, ви можете захотіти перевірити, що певний текст є лише в таблиці, а потім клацнути по кнопці всередині цієї таблиці. Для цього скористайтеся методом `with`. Усі операції всередині замикання, переданого методу `with`, будуть обмежені початковим селектором:
 
 ```php
 $browser->with('.table', function (Browser $table) {
@@ -1095,7 +1098,7 @@ $browser->with('.table', function (Browser $table) {
 });
 ```
 
-You may occasionally need to execute assertions outside of the current scope. You may use the `elsewhere` and `elsewhereWhenAvailable` methods to accomplish this:
+Іноді вам може знадобитися виконати твердження поза межами поточного обмеження. Для цього скористайтеся методами `elsewhere` та `elsewhereWhenAvailable`:
 
 ```php
 $browser->with('.table', function (Browser $table) {
@@ -1114,35 +1117,35 @@ $browser->with('.table', function (Browser $table) {
 ```
 
 <a name="waiting-for-elements"></a>
-### Waiting for Elements
+### Очікування елементів
 
-When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to become visible on the page or even wait until a given JavaScript expression evaluates to `true`.
+Тестуючи застосунки, які активно використовують JavaScript, часто доводиться «чекати» на доступність певних елементів чи даних, перш ніж рухатися далі. Dusk робить це дуже просто. За допомогою різних методів ви можете дочекатися, доки елементи стануть видимими на сторінці, або навіть доки заданий вираз JavaScript не набуде значення `true`.
 
 <a name="waiting"></a>
-#### Waiting
+#### Очікування
 
-If you just need to pause the test for a given number of milliseconds, use the `pause` method:
+Якщо вам просто треба призупинити тест на задану кількість мілісекунд, скористайтеся методом `pause`:
 
 ```php
 $browser->pause(1000);
 ```
 
-If you need to pause the test only if a given condition is `true`, use the `pauseIf` method:
+Якщо тест треба призупинити лише за умови, що задана умова істинна (`true`), скористайтеся методом `pauseIf`:
 
 ```php
 $browser->pauseIf(App::environment('production'), 1000);
 ```
 
-Likewise, if you need to pause the test unless a given condition is `true`, you may use the `pauseUnless` method:
+Так само, якщо тест треба призупинити, доки задана умова не стане істинною (`true`), скористайтеся методом `pauseUnless`:
 
 ```php
 $browser->pauseUnless(App::environment('testing'), 1000);
 ```
 
 <a name="waiting-for-selectors"></a>
-#### Waiting for Selectors
+#### Очікування селекторів
 
-The `waitFor` method may be used to pause the execution of the test until the element matching the given CSS or Dusk selector is displayed on the page. By default, this will pause the test for a maximum of five seconds before throwing an exception. If necessary, you may pass a custom timeout threshold as the second argument to the method:
+Метод `waitFor` дозволяє призупинити виконання тесту, доки на сторінці не з'явиться елемент, що відповідає заданому CSS- чи Dusk-селектору. За замовчуванням тест буде призупинено максимум на п'ять секунд, після чого буде кинуто виняток. За потреби ви можете передати власний поріг очікування другим аргументом методу:
 
 ```php
 // Wait a maximum of five seconds for the selector...
@@ -1152,7 +1155,7 @@ $browser->waitFor('.selector');
 $browser->waitFor('.selector', 1);
 ```
 
-You may also wait until the element matching the given selector contains the given text:
+Ви також можете дочекатися, доки елемент, що відповідає заданому селектору, не міститиме заданий текст:
 
 ```php
 // Wait a maximum of five seconds for the selector to contain the given text...
@@ -1162,7 +1165,7 @@ $browser->waitForTextIn('.selector', 'Hello World');
 $browser->waitForTextIn('.selector', 'Hello World', 1);
 ```
 
-You may also wait until the element matching the given selector is missing from the page:
+Ви також можете дочекатися, доки елемент, що відповідає заданому селектору, зникне зі сторінки:
 
 ```php
 // Wait a maximum of five seconds until the selector is missing...
@@ -1172,7 +1175,7 @@ $browser->waitUntilMissing('.selector');
 $browser->waitUntilMissing('.selector', 1);
 ```
 
-Or, you may wait until the element matching the given selector is enabled or disabled:
+Або ж ви можете дочекатися, доки елемент, що відповідає заданому селектору, стане увімкненим чи вимкненим:
 
 ```php
 // Wait a maximum of five seconds until the selector is enabled...
@@ -1189,9 +1192,9 @@ $browser->waitUntilDisabled('.selector', 1);
 ```
 
 <a name="scoping-selectors-when-available"></a>
-#### Scoping Selectors When Available
+#### Обмеження селекторів за доступністю
 
-Occasionally, you may wish to wait for an element to appear that matches a given selector and then interact with the element. For example, you may wish to wait until a modal window is available and then press the "OK" button within the modal. The `whenAvailable` method may be used to accomplish this. All element operations performed within the given closure will be scoped to the original selector:
+Іноді вам може знадобитися дочекатися появи елемента, що відповідає заданому селектору, а потім із ним попрацювати. Наприклад, дочекатися появи модального вікна й натиснути в ньому кнопку «OK». Для цього скористайтеся методом `whenAvailable`. Усі операції з елементами всередині заданого замикання будуть обмежені початковим селектором:
 
 ```php
 $browser->whenAvailable('.modal', function (Browser $modal) {
@@ -1201,9 +1204,9 @@ $browser->whenAvailable('.modal', function (Browser $modal) {
 ```
 
 <a name="waiting-for-text"></a>
-#### Waiting for Text
+#### Очікування тексту
 
-The `waitForText` method may be used to wait until the given text is displayed on the page:
+Метод `waitForText` дозволяє дочекатися, доки на сторінці не з'явиться заданий текст:
 
 ```php
 // Wait a maximum of five seconds for the text...
@@ -1213,7 +1216,7 @@ $browser->waitForText('Hello World');
 $browser->waitForText('Hello World', 1);
 ```
 
-You may use the `waitUntilMissingText` method to wait until the displayed text has been removed from the page:
+Метод `waitUntilMissingText` дозволяє дочекатися, доки показаний текст не зникне зі сторінки:
 
 ```php
 // Wait a maximum of five seconds for the text to be removed...
@@ -1224,9 +1227,9 @@ $browser->waitUntilMissingText('Hello World', 1);
 ```
 
 <a name="waiting-for-links"></a>
-#### Waiting for Links
+#### Очікування посилань
 
-The `waitForLink` method may be used to wait until the given link text is displayed on the page:
+Метод `waitForLink` дозволяє дочекатися, доки на сторінці не з'явиться заданий текст посилання:
 
 ```php
 // Wait a maximum of five seconds for the link...
@@ -1237,9 +1240,9 @@ $browser->waitForLink('Create', 1);
 ```
 
 <a name="waiting-for-inputs"></a>
-#### Waiting for Inputs
+#### Очікування полів введення
 
-The `waitForInput` method may be used to wait until the given input field is visible on the page:
+Метод `waitForInput` дозволяє дочекатися, доки задане поле введення стане видимим на сторінці:
 
 ```php
 // Wait a maximum of five seconds for the input...
@@ -1250,30 +1253,30 @@ $browser->waitForInput($field, 1);
 ```
 
 <a name="waiting-on-the-page-location"></a>
-#### Waiting on the Page Location
+#### Очікування розташування сторінки
 
-When making a path assertion such as `$browser->assertPathIs('/home')`, the assertion can fail if `window.location.pathname` is being updated asynchronously. You may use the `waitForLocation` method to wait for the location to be a given value:
+Коли ви робите твердження щодо шляху на кшталт `$browser->assertPathIs('/home')`, воно може провалитися, якщо `window.location.pathname` оновлюється асинхронно. Скористайтеся методом `waitForLocation`, щоб дочекатися, доки розташування набуде заданого значення:
 
 ```php
 $browser->waitForLocation('/secret');
 ```
 
-The `waitForLocation` method can also be used to wait for the current window location to be a fully qualified URL:
+Метод `waitForLocation` можна також використати, щоб дочекатися, доки поточне розташування вікна стане повним URL:
 
 ```php
 $browser->waitForLocation('https://example.com/path');
 ```
 
-You may also wait for a [named route's](/docs/{{version}}/routing#named-routes) location:
+Ви також можете дочекатися розташування [іменованого маршруту](/docs/{{version}}/routing#named-routes):
 
 ```php
 $browser->waitForRoute($routeName, $parameters);
 ```
 
 <a name="waiting-for-page-reloads"></a>
-#### Waiting for Page Reloads
+#### Очікування перезавантаження сторінки
 
-If you need to wait for a page to reload after performing an action, use the `waitForReload` method:
+Якщо після виконання дії вам треба дочекатися перезавантаження сторінки, скористайтеся методом `waitForReload`:
 
 ```php
 use Laravel\Dusk\Browser;
@@ -1284,7 +1287,7 @@ $browser->waitForReload(function (Browser $browser) {
 ->assertSee('Success!');
 ```
 
-Since the need to wait for the page to reload typically occurs after clicking a button, you may use the `clickAndWaitForReload` method for convenience:
+Оскільки потреба дочекатися перезавантаження зазвичай виникає після натискання кнопки, для зручності ви можете скористатися методом `clickAndWaitForReload`:
 
 ```php
 $browser->clickAndWaitForReload('.selector')
@@ -1292,9 +1295,9 @@ $browser->clickAndWaitForReload('.selector')
 ```
 
 <a name="waiting-on-javascript-expressions"></a>
-#### Waiting on JavaScript Expressions
+#### Очікування виразів JavaScript
 
-Sometimes you may wish to pause the execution of a test until a given JavaScript expression evaluates to `true`. You may easily accomplish this using the `waitUntil` method. When passing an expression to this method, you do not need to include the `return` keyword or an ending semi-colon:
+Іноді вам може знадобитися призупинити виконання тесту, доки заданий вираз JavaScript не набуде значення `true`. Легко зробити це можна методом `waitUntil`. Передаючи цьому методу вираз, вам не треба додавати ключове слово `return` чи крапку з комою в кінці:
 
 ```php
 // Wait a maximum of five seconds for the expression to be true...
@@ -1305,9 +1308,9 @@ $browser->waitUntil('App.data.servers.length > 0', 1);
 ```
 
 <a name="waiting-on-vue-expressions"></a>
-#### Waiting on Vue Expressions
+#### Очікування виразів Vue
 
-The `waitUntilVue` and `waitUntilVueIsNot` methods may be used to wait until a [Vue component](https://vuejs.org) attribute has a given value:
+Методи `waitUntilVue` та `waitUntilVueIsNot` дозволяють дочекатися, доки атрибут [компонента Vue](https://vuejs.org) набуде заданого значення:
 
 ```php
 // Wait until the component attribute contains the given value...
@@ -1318,15 +1321,15 @@ $browser->waitUntilVueIsNot('user.name', null, '@user');
 ```
 
 <a name="waiting-for-javascript-events"></a>
-#### Waiting for JavaScript Events
+#### Очікування подій JavaScript
 
-The `waitForEvent` method can be used to pause the execution of a test until a JavaScript event occurs:
+Метод `waitForEvent` дозволяє призупинити виконання тесту, доки не станеться подія JavaScript:
 
 ```php
 $browser->waitForEvent('load');
 ```
 
-The event listener is attached to the current scope, which is the `body` element by default. When using a scoped selector, the event listener will be attached to the matching element:
+Слухач події прикріплюється до поточного обмеження, яким за замовчуванням є елемент `body`. Якщо ви користуєтеся обмеженим селектором, слухач буде прикріплено до відповідного елемента:
 
 ```php
 $browser->with('iframe', function (Browser $iframe) {
@@ -1335,13 +1338,13 @@ $browser->with('iframe', function (Browser $iframe) {
 });
 ```
 
-You may also provide a selector as the second argument to the `waitForEvent` method to attach the event listener to a specific element:
+Ви також можете передати селектор другим аргументом до методу `waitForEvent`, щоб прикріпити слухач до конкретного елемента:
 
 ```php
 $browser->waitForEvent('load', '.selector');
 ```
 
-You may also wait for events on the `document` and `window` objects:
+Ви також можете чекати на події об'єктів `document` та `window`:
 
 ```php
 // Wait until the document is scrolled...
@@ -1352,9 +1355,9 @@ $browser->waitForEvent('resize', 'window', 5);
 ```
 
 <a name="waiting-with-a-callback"></a>
-#### Waiting With a Callback
+#### Очікування з колбеком
 
-Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. You may use this method directly to wait for a given closure to return `true`. The `waitUsing` method accepts the maximum number of seconds to wait, the interval at which the closure should be evaluated, the closure, and an optional failure message:
+Багато методів очікування в Dusk спираються на метод `waitUsing`. Ви можете скористатися ним напряму, щоб дочекатися, доки задане замикання поверне `true`. Метод `waitUsing` приймає максимальну кількість секунд очікування, інтервал перевірки замикання, саме замикання та необов'язкове повідомлення про помилку:
 
 ```php
 $browser->waitUsing(10, 1, function () use ($something) {
@@ -1363,9 +1366,9 @@ $browser->waitUsing(10, 1, function () use ($something) {
 ```
 
 <a name="scrolling-an-element-into-view"></a>
-### Scrolling an Element Into View
+### Прокручування до елемента
 
-Sometimes you may not be able to click on an element because it is outside of the viewable area of the browser. The `scrollIntoView` method will scroll the browser window until the element at the given selector is within the view:
+Іноді ви не зможете клацнути по елементу, бо він поза видимою областю браузера. Метод `scrollIntoView` прокрутить вікно браузера, доки елемент за заданим селектором не потрапить у поле зору:
 
 ```php
 $browser->scrollIntoView('.selector')
@@ -1373,9 +1376,9 @@ $browser->scrollIntoView('.selector')
 ```
 
 <a name="available-assertions"></a>
-## Available Assertions
+## Доступні твердження
 
-Dusk provides a variety of assertions that you may make against your application. All of the available assertions are documented in the list below:
+Dusk надає різні твердження, які ви можете робити щодо свого застосунку. Усі доступні твердження задокументовані в списку нижче:
 
 <style>
     .collection-method-list > p {
@@ -1477,7 +1480,7 @@ Dusk provides a variety of assertions that you may make against your application
 <a name="assert-title"></a>
 #### assertTitle
 
-Assert that the page title matches the given text:
+Перевіряє, що заголовок сторінки збігається із заданим текстом:
 
 ```php
 $browser->assertTitle($title);
@@ -1486,7 +1489,7 @@ $browser->assertTitle($title);
 <a name="assert-title-contains"></a>
 #### assertTitleContains
 
-Assert that the page title contains the given text:
+Перевіряє, що заголовок сторінки містить заданий текст:
 
 ```php
 $browser->assertTitleContains($title);
@@ -1495,7 +1498,7 @@ $browser->assertTitleContains($title);
 <a name="assert-url-is"></a>
 #### assertUrlIs
 
-Assert that the current URL (without the query string) matches the given string:
+Перевіряє, що поточний URL (без рядка запиту) збігається із заданим рядком:
 
 ```php
 $browser->assertUrlIs($url);
@@ -1504,7 +1507,7 @@ $browser->assertUrlIs($url);
 <a name="assert-scheme-is"></a>
 #### assertSchemeIs
 
-Assert that the current URL scheme matches the given scheme:
+Перевіряє, що схема поточного URL збігається із заданою:
 
 ```php
 $browser->assertSchemeIs($scheme);
@@ -1513,7 +1516,7 @@ $browser->assertSchemeIs($scheme);
 <a name="assert-scheme-is-not"></a>
 #### assertSchemeIsNot
 
-Assert that the current URL scheme does not match the given scheme:
+Перевіряє, що схема поточного URL не збігається із заданою:
 
 ```php
 $browser->assertSchemeIsNot($scheme);
@@ -1522,7 +1525,7 @@ $browser->assertSchemeIsNot($scheme);
 <a name="assert-host-is"></a>
 #### assertHostIs
 
-Assert that the current URL host matches the given host:
+Перевіряє, що хост поточного URL збігається із заданим:
 
 ```php
 $browser->assertHostIs($host);
@@ -1531,7 +1534,7 @@ $browser->assertHostIs($host);
 <a name="assert-host-is-not"></a>
 #### assertHostIsNot
 
-Assert that the current URL host does not match the given host:
+Перевіряє, що хост поточного URL не збігається із заданим:
 
 ```php
 $browser->assertHostIsNot($host);
@@ -1540,7 +1543,7 @@ $browser->assertHostIsNot($host);
 <a name="assert-port-is"></a>
 #### assertPortIs
 
-Assert that the current URL port matches the given port:
+Перевіряє, що порт поточного URL збігається із заданим:
 
 ```php
 $browser->assertPortIs($port);
@@ -1549,7 +1552,7 @@ $browser->assertPortIs($port);
 <a name="assert-port-is-not"></a>
 #### assertPortIsNot
 
-Assert that the current URL port does not match the given port:
+Перевіряє, що порт поточного URL не збігається із заданим:
 
 ```php
 $browser->assertPortIsNot($port);
@@ -1558,7 +1561,7 @@ $browser->assertPortIsNot($port);
 <a name="assert-path-begins-with"></a>
 #### assertPathBeginsWith
 
-Assert that the current URL path begins with the given path:
+Перевіряє, що шлях поточного URL починається із заданого:
 
 ```php
 $browser->assertPathBeginsWith('/home');
@@ -1567,7 +1570,7 @@ $browser->assertPathBeginsWith('/home');
 <a name="assert-path-ends-with"></a>
 #### assertPathEndsWith
 
-Assert that the current URL path ends with the given path:
+Перевіряє, що шлях поточного URL закінчується заданим:
 
 ```php
 $browser->assertPathEndsWith('/home');
@@ -1576,7 +1579,7 @@ $browser->assertPathEndsWith('/home');
 <a name="assert-path-contains"></a>
 #### assertPathContains
 
-Assert that the current URL path contains the given path:
+Перевіряє, що шлях поточного URL містить заданий:
 
 ```php
 $browser->assertPathContains('/home');
@@ -1585,7 +1588,7 @@ $browser->assertPathContains('/home');
 <a name="assert-path-is"></a>
 #### assertPathIs
 
-Assert that the current path matches the given path:
+Перевіряє, що поточний шлях збігається із заданим:
 
 ```php
 $browser->assertPathIs('/home');
@@ -1594,7 +1597,7 @@ $browser->assertPathIs('/home');
 <a name="assert-path-is-not"></a>
 #### assertPathIsNot
 
-Assert that the current path does not match the given path:
+Перевіряє, що поточний шлях не збігається із заданим:
 
 ```php
 $browser->assertPathIsNot('/home');
@@ -1603,7 +1606,7 @@ $browser->assertPathIsNot('/home');
 <a name="assert-route-is"></a>
 #### assertRouteIs
 
-Assert that the current URL matches the given [named route's](/docs/{{version}}/routing#named-routes) URL:
+Перевіряє, що поточний URL збігається з URL заданого [іменованого маршруту](/docs/{{version}}/routing#named-routes):
 
 ```php
 $browser->assertRouteIs($name, $parameters);
@@ -1612,13 +1615,13 @@ $browser->assertRouteIs($name, $parameters);
 <a name="assert-query-string-has"></a>
 #### assertQueryStringHas
 
-Assert that the given query string parameter is present:
+Перевіряє, що заданий параметр рядка запиту присутній:
 
 ```php
 $browser->assertQueryStringHas($name);
 ```
 
-Assert that the given query string parameter is present and has a given value:
+Перевіряє, що заданий параметр рядка запиту присутній і має задане значення:
 
 ```php
 $browser->assertQueryStringHas($name, $value);
@@ -1627,7 +1630,7 @@ $browser->assertQueryStringHas($name, $value);
 <a name="assert-query-string-missing"></a>
 #### assertQueryStringMissing
 
-Assert that the given query string parameter is missing:
+Перевіряє, що заданого параметра рядка запиту немає:
 
 ```php
 $browser->assertQueryStringMissing($name);
@@ -1636,7 +1639,7 @@ $browser->assertQueryStringMissing($name);
 <a name="assert-fragment-is"></a>
 #### assertFragmentIs
 
-Assert that the URL's current hash fragment matches the given fragment:
+Перевіряє, що поточний хеш-фрагмент URL збігається із заданим:
 
 ```php
 $browser->assertFragmentIs('anchor');
@@ -1645,7 +1648,7 @@ $browser->assertFragmentIs('anchor');
 <a name="assert-fragment-begins-with"></a>
 #### assertFragmentBeginsWith
 
-Assert that the URL's current hash fragment begins with the given fragment:
+Перевіряє, що поточний хеш-фрагмент URL починається із заданого:
 
 ```php
 $browser->assertFragmentBeginsWith('anchor');
@@ -1654,7 +1657,7 @@ $browser->assertFragmentBeginsWith('anchor');
 <a name="assert-fragment-is-not"></a>
 #### assertFragmentIsNot
 
-Assert that the URL's current hash fragment does not match the given fragment:
+Перевіряє, що поточний хеш-фрагмент URL не збігається із заданим:
 
 ```php
 $browser->assertFragmentIsNot('anchor');
@@ -1663,7 +1666,7 @@ $browser->assertFragmentIsNot('anchor');
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert that the given encrypted cookie is present:
+Перевіряє, що заданий зашифрований cookie присутній:
 
 ```php
 $browser->assertHasCookie($name);
@@ -1672,7 +1675,7 @@ $browser->assertHasCookie($name);
 <a name="assert-has-plain-cookie"></a>
 #### assertHasPlainCookie
 
-Assert that the given unencrypted cookie is present:
+Перевіряє, що заданий незашифрований cookie присутній:
 
 ```php
 $browser->assertHasPlainCookie($name);
@@ -1681,7 +1684,7 @@ $browser->assertHasPlainCookie($name);
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the given encrypted cookie is not present:
+Перевіряє, що заданого зашифрованого cookie немає:
 
 ```php
 $browser->assertCookieMissing($name);
@@ -1690,7 +1693,7 @@ $browser->assertCookieMissing($name);
 <a name="assert-plain-cookie-missing"></a>
 #### assertPlainCookieMissing
 
-Assert that the given unencrypted cookie is not present:
+Перевіряє, що заданого незашифрованого cookie немає:
 
 ```php
 $browser->assertPlainCookieMissing($name);
@@ -1699,7 +1702,7 @@ $browser->assertPlainCookieMissing($name);
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert that an encrypted cookie has a given value:
+Перевіряє, що зашифрований cookie має задане значення:
 
 ```php
 $browser->assertCookieValue($name, $value);
@@ -1708,7 +1711,7 @@ $browser->assertCookieValue($name, $value);
 <a name="assert-plain-cookie-value"></a>
 #### assertPlainCookieValue
 
-Assert that an unencrypted cookie has a given value:
+Перевіряє, що незашифрований cookie має задане значення:
 
 ```php
 $browser->assertPlainCookieValue($name, $value);
@@ -1717,7 +1720,7 @@ $browser->assertPlainCookieValue($name, $value);
 <a name="assert-see"></a>
 #### assertSee
 
-Assert that the given text is present on the page:
+Перевіряє, що заданий текст присутній на сторінці:
 
 ```php
 $browser->assertSee($text);
@@ -1726,7 +1729,7 @@ $browser->assertSee($text);
 <a name="assert-dont-see"></a>
 #### assertDontSee
 
-Assert that the given text is not present on the page:
+Перевіряє, що заданого тексту немає на сторінці:
 
 ```php
 $browser->assertDontSee($text);
@@ -1735,7 +1738,7 @@ $browser->assertDontSee($text);
 <a name="assert-see-in"></a>
 #### assertSeeIn
 
-Assert that the given text is present within the selector:
+Перевіряє, що заданий текст присутній усередині селектора:
 
 ```php
 $browser->assertSeeIn($selector, $text);
@@ -1744,7 +1747,7 @@ $browser->assertSeeIn($selector, $text);
 <a name="assert-dont-see-in"></a>
 #### assertDontSeeIn
 
-Assert that the given text is not present within the selector:
+Перевіряє, що заданого тексту немає всередині селектора:
 
 ```php
 $browser->assertDontSeeIn($selector, $text);
@@ -1753,7 +1756,7 @@ $browser->assertDontSeeIn($selector, $text);
 <a name="assert-see-anything-in"></a>
 #### assertSeeAnythingIn
 
-Assert that any text is present within the selector:
+Перевіряє, що всередині селектора є будь-який текст:
 
 ```php
 $browser->assertSeeAnythingIn($selector);
@@ -1762,7 +1765,7 @@ $browser->assertSeeAnythingIn($selector);
 <a name="assert-see-nothing-in"></a>
 #### assertSeeNothingIn
 
-Assert that no text is present within the selector:
+Перевіряє, що всередині селектора немає жодного тексту:
 
 ```php
 $browser->assertSeeNothingIn($selector);
@@ -1771,7 +1774,7 @@ $browser->assertSeeNothingIn($selector);
 <a name="assert-count"></a>
 #### assertCount
 
-Assert that elements matching the given selector appear the specified number of times:
+Перевіряє, що елементи, які відповідають заданому селектору, трапляються вказану кількість разів:
 
 ```php
 $browser->assertCount($selector, $count);
@@ -1780,7 +1783,7 @@ $browser->assertCount($selector, $count);
 <a name="assert-script"></a>
 #### assertScript
 
-Assert that the given JavaScript expression evaluates to the given value:
+Перевіряє, що заданий вираз JavaScript обчислюється в задане значення:
 
 ```php
 $browser->assertScript('window.isLoaded')
@@ -1790,7 +1793,7 @@ $browser->assertScript('window.isLoaded')
 <a name="assert-source-has"></a>
 #### assertSourceHas
 
-Assert that the given source code is present on the page:
+Перевіряє, що заданий код присутній на сторінці:
 
 ```php
 $browser->assertSourceHas($code);
@@ -1799,7 +1802,7 @@ $browser->assertSourceHas($code);
 <a name="assert-source-missing"></a>
 #### assertSourceMissing
 
-Assert that the given source code is not present on the page:
+Перевіряє, що заданого коду немає на сторінці:
 
 ```php
 $browser->assertSourceMissing($code);
@@ -1808,7 +1811,7 @@ $browser->assertSourceMissing($code);
 <a name="assert-see-link"></a>
 #### assertSeeLink
 
-Assert that the given link is present on the page:
+Перевіряє, що задане посилання присутнє на сторінці:
 
 ```php
 $browser->assertSeeLink($linkText);
@@ -1817,7 +1820,7 @@ $browser->assertSeeLink($linkText);
 <a name="assert-dont-see-link"></a>
 #### assertDontSeeLink
 
-Assert that the given link is not present on the page:
+Перевіряє, що заданого посилання немає на сторінці:
 
 ```php
 $browser->assertDontSeeLink($linkText);
@@ -1826,7 +1829,7 @@ $browser->assertDontSeeLink($linkText);
 <a name="assert-input-value"></a>
 #### assertInputValue
 
-Assert that the given input field has the given value:
+Перевіряє, що задане поле введення має задане значення:
 
 ```php
 $browser->assertInputValue($field, $value);
@@ -1835,7 +1838,7 @@ $browser->assertInputValue($field, $value);
 <a name="assert-input-value-is-not"></a>
 #### assertInputValueIsNot
 
-Assert that the given input field does not have the given value:
+Перевіряє, що задане поле введення не має заданого значення:
 
 ```php
 $browser->assertInputValueIsNot($field, $value);
@@ -1844,7 +1847,7 @@ $browser->assertInputValueIsNot($field, $value);
 <a name="assert-checked"></a>
 #### assertChecked
 
-Assert that the given checkbox is checked:
+Перевіряє, що заданий чекбокс позначено:
 
 ```php
 $browser->assertChecked($field);
@@ -1853,7 +1856,7 @@ $browser->assertChecked($field);
 <a name="assert-not-checked"></a>
 #### assertNotChecked
 
-Assert that the given checkbox is not checked:
+Перевіряє, що заданий чекбокс не позначено:
 
 ```php
 $browser->assertNotChecked($field);
@@ -1862,7 +1865,7 @@ $browser->assertNotChecked($field);
 <a name="assert-indeterminate"></a>
 #### assertIndeterminate
 
-Assert that the given checkbox is in an indeterminate state:
+Перевіряє, що заданий чекбокс перебуває в невизначеному стані:
 
 ```php
 $browser->assertIndeterminate($field);
@@ -1871,7 +1874,7 @@ $browser->assertIndeterminate($field);
 <a name="assert-radio-selected"></a>
 #### assertRadioSelected
 
-Assert that the given radio field is selected:
+Перевіряє, що задану радіокнопку обрано:
 
 ```php
 $browser->assertRadioSelected($field, $value);
@@ -1880,7 +1883,7 @@ $browser->assertRadioSelected($field, $value);
 <a name="assert-radio-not-selected"></a>
 #### assertRadioNotSelected
 
-Assert that the given radio field is not selected:
+Перевіряє, що задану радіокнопку не обрано:
 
 ```php
 $browser->assertRadioNotSelected($field, $value);
@@ -1889,7 +1892,7 @@ $browser->assertRadioNotSelected($field, $value);
 <a name="assert-selected"></a>
 #### assertSelected
 
-Assert that the given dropdown has the given value selected:
+Перевіряє, що в заданому випадному списку обрано задане значення:
 
 ```php
 $browser->assertSelected($field, $value);
@@ -1898,7 +1901,7 @@ $browser->assertSelected($field, $value);
 <a name="assert-not-selected"></a>
 #### assertNotSelected
 
-Assert that the given dropdown does not have the given value selected:
+Перевіряє, що в заданому випадному списку не обрано заданого значення:
 
 ```php
 $browser->assertNotSelected($field, $value);
@@ -1907,7 +1910,7 @@ $browser->assertNotSelected($field, $value);
 <a name="assert-select-has-options"></a>
 #### assertSelectHasOptions
 
-Assert that the given array of values are available to be selected:
+Перевіряє, що заданий масив значень доступний для вибору:
 
 ```php
 $browser->assertSelectHasOptions($field, $values);
@@ -1916,7 +1919,7 @@ $browser->assertSelectHasOptions($field, $values);
 <a name="assert-select-missing-options"></a>
 #### assertSelectMissingOptions
 
-Assert that the given array of values are not available to be selected:
+Перевіряє, що заданий масив значень недоступний для вибору:
 
 ```php
 $browser->assertSelectMissingOptions($field, $values);
@@ -1925,7 +1928,7 @@ $browser->assertSelectMissingOptions($field, $values);
 <a name="assert-select-has-option"></a>
 #### assertSelectHasOption
 
-Assert that the given value is available to be selected on the given field:
+Перевіряє, що задане значення доступне для вибору в заданому полі:
 
 ```php
 $browser->assertSelectHasOption($field, $value);
@@ -1934,7 +1937,7 @@ $browser->assertSelectHasOption($field, $value);
 <a name="assert-select-missing-option"></a>
 #### assertSelectMissingOption
 
-Assert that the given value is not available to be selected:
+Перевіряє, що задане значення недоступне для вибору:
 
 ```php
 $browser->assertSelectMissingOption($field, $value);
@@ -1943,7 +1946,7 @@ $browser->assertSelectMissingOption($field, $value);
 <a name="assert-value"></a>
 #### assertValue
 
-Assert that the element matching the given selector has the given value:
+Перевіряє, що елемент, який відповідає заданому селектору, має задане значення:
 
 ```php
 $browser->assertValue($selector, $value);
@@ -1952,7 +1955,7 @@ $browser->assertValue($selector, $value);
 <a name="assert-value-is-not"></a>
 #### assertValueIsNot
 
-Assert that the element matching the given selector does not have the given value:
+Перевіряє, що елемент, який відповідає заданому селектору, не має заданого значення:
 
 ```php
 $browser->assertValueIsNot($selector, $value);
@@ -1961,7 +1964,7 @@ $browser->assertValueIsNot($selector, $value);
 <a name="assert-attribute"></a>
 #### assertAttribute
 
-Assert that the element matching the given selector has the given value in the provided attribute:
+Перевіряє, що елемент, який відповідає заданому селектору, має задане значення у вказаному атрибуті:
 
 ```php
 $browser->assertAttribute($selector, $attribute, $value);
@@ -1970,7 +1973,7 @@ $browser->assertAttribute($selector, $attribute, $value);
 <a name="assert-attribute-missing"></a>
 #### assertAttributeMissing
 
-Assert that the element matching the given selector is missing the provided attribute:
+Перевіряє, що в елемента, який відповідає заданому селектору, немає вказаного атрибута:
 
 ```php
 $browser->assertAttributeMissing($selector, $attribute);
@@ -1979,7 +1982,7 @@ $browser->assertAttributeMissing($selector, $attribute);
 <a name="assert-attribute-contains"></a>
 #### assertAttributeContains
 
-Assert that the element matching the given selector contains the given value in the provided attribute:
+Перевіряє, що елемент, який відповідає заданому селектору, містить задане значення у вказаному атрибуті:
 
 ```php
 $browser->assertAttributeContains($selector, $attribute, $value);
@@ -1988,7 +1991,7 @@ $browser->assertAttributeContains($selector, $attribute, $value);
 <a name="assert-attribute-doesnt-contain"></a>
 #### assertAttributeDoesntContain
 
-Assert that the element matching the given selector does not contain the given value in the provided attribute:
+Перевіряє, що елемент, який відповідає заданому селектору, не містить заданого значення у вказаному атрибуті:
 
 ```php
 $browser->assertAttributeDoesntContain($selector, $attribute, $value);
@@ -1997,13 +2000,13 @@ $browser->assertAttributeDoesntContain($selector, $attribute, $value);
 <a name="assert-aria-attribute"></a>
 #### assertAriaAttribute
 
-Assert that the element matching the given selector has the given value in the provided aria attribute:
+Перевіряє, що елемент, який відповідає заданому селектору, має задане значення у вказаному атрибуті aria:
 
 ```php
 $browser->assertAriaAttribute($selector, $attribute, $value);
 ```
 
-For example, given the markup `<button aria-label="Add"></button>`, you may assert against the `aria-label` attribute like so:
+Наприклад, для розмітки `<button aria-label="Add"></button>` ви можете зробити твердження щодо атрибута `aria-label` ось так:
 
 ```php
 $browser->assertAriaAttribute('button', 'label', 'Add')
@@ -2012,13 +2015,13 @@ $browser->assertAriaAttribute('button', 'label', 'Add')
 <a name="assert-data-attribute"></a>
 #### assertDataAttribute
 
-Assert that the element matching the given selector has the given value in the provided data attribute:
+Перевіряє, що елемент, який відповідає заданому селектору, має задане значення у вказаному атрибуті data:
 
 ```php
 $browser->assertDataAttribute($selector, $attribute, $value);
 ```
 
-For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-content` attribute like so:
+Наприклад, для розмітки `<tr id="row-1" data-content="attendees"></tr>` ви можете зробити твердження щодо атрибута `data-content` ось так:
 
 ```php
 $browser->assertDataAttribute('#row-1', 'content', 'attendees')
@@ -2027,7 +2030,7 @@ $browser->assertDataAttribute('#row-1', 'content', 'attendees')
 <a name="assert-visible"></a>
 #### assertVisible
 
-Assert that the element matching the given selector is visible:
+Перевіряє, що елемент, який відповідає заданому селектору, видимий:
 
 ```php
 $browser->assertVisible($selector);
@@ -2036,7 +2039,7 @@ $browser->assertVisible($selector);
 <a name="assert-present"></a>
 #### assertPresent
 
-Assert that the element matching the given selector is present in the source:
+Перевіряє, що елемент, який відповідає заданому селектору, присутній у коді сторінки:
 
 ```php
 $browser->assertPresent($selector);
@@ -2045,7 +2048,7 @@ $browser->assertPresent($selector);
 <a name="assert-not-present"></a>
 #### assertNotPresent
 
-Assert that the element matching the given selector is not present in the source:
+Перевіряє, що елемента, який відповідає заданому селектору, немає в коді сторінки:
 
 ```php
 $browser->assertNotPresent($selector);
@@ -2054,7 +2057,7 @@ $browser->assertNotPresent($selector);
 <a name="assert-missing"></a>
 #### assertMissing
 
-Assert that the element matching the given selector is not visible:
+Перевіряє, що елемент, який відповідає заданому селектору, не видимий:
 
 ```php
 $browser->assertMissing($selector);
@@ -2063,7 +2066,7 @@ $browser->assertMissing($selector);
 <a name="assert-input-present"></a>
 #### assertInputPresent
 
-Assert that an input with the given name is present:
+Перевіряє, що поле введення із заданим іменем присутнє:
 
 ```php
 $browser->assertInputPresent($name);
@@ -2072,7 +2075,7 @@ $browser->assertInputPresent($name);
 <a name="assert-input-missing"></a>
 #### assertInputMissing
 
-Assert that an input with the given name is not present in the source:
+Перевіряє, що поля введення із заданим іменем немає в коді сторінки:
 
 ```php
 $browser->assertInputMissing($name);
@@ -2081,7 +2084,7 @@ $browser->assertInputMissing($name);
 <a name="assert-dialog-opened"></a>
 #### assertDialogOpened
 
-Assert that a JavaScript dialog with the given message has been opened:
+Перевіряє, що діалог JavaScript із заданим повідомленням було відкрито:
 
 ```php
 $browser->assertDialogOpened($message);
@@ -2090,7 +2093,7 @@ $browser->assertDialogOpened($message);
 <a name="assert-enabled"></a>
 #### assertEnabled
 
-Assert that the given field is enabled:
+Перевіряє, що задане поле увімкнене:
 
 ```php
 $browser->assertEnabled($field);
@@ -2099,7 +2102,7 @@ $browser->assertEnabled($field);
 <a name="assert-disabled"></a>
 #### assertDisabled
 
-Assert that the given field is disabled:
+Перевіряє, що задане поле вимкнене:
 
 ```php
 $browser->assertDisabled($field);
@@ -2108,7 +2111,7 @@ $browser->assertDisabled($field);
 <a name="assert-button-enabled"></a>
 #### assertButtonEnabled
 
-Assert that the given button is enabled:
+Перевіряє, що задана кнопка увімкнена:
 
 ```php
 $browser->assertButtonEnabled($button);
@@ -2117,7 +2120,7 @@ $browser->assertButtonEnabled($button);
 <a name="assert-button-disabled"></a>
 #### assertButtonDisabled
 
-Assert that the given button is disabled:
+Перевіряє, що задана кнопка вимкнена:
 
 ```php
 $browser->assertButtonDisabled($button);
@@ -2126,7 +2129,7 @@ $browser->assertButtonDisabled($button);
 <a name="assert-focused"></a>
 #### assertFocused
 
-Assert that the given field is focused:
+Перевіряє, що задане поле у фокусі:
 
 ```php
 $browser->assertFocused($field);
@@ -2135,7 +2138,7 @@ $browser->assertFocused($field);
 <a name="assert-not-focused"></a>
 #### assertNotFocused
 
-Assert that the given field is not focused:
+Перевіряє, що задане поле не у фокусі:
 
 ```php
 $browser->assertNotFocused($field);
@@ -2144,7 +2147,7 @@ $browser->assertNotFocused($field);
 <a name="assert-authenticated"></a>
 #### assertAuthenticated
 
-Assert that the user is authenticated:
+Перевіряє, що користувач автентифікований:
 
 ```php
 $browser->assertAuthenticated();
@@ -2153,7 +2156,7 @@ $browser->assertAuthenticated();
 <a name="assert-guest"></a>
 #### assertGuest
 
-Assert that the user is not authenticated:
+Перевіряє, що користувач не автентифікований:
 
 ```php
 $browser->assertGuest();
@@ -2162,7 +2165,7 @@ $browser->assertGuest();
 <a name="assert-authenticated-as"></a>
 #### assertAuthenticatedAs
 
-Assert that the user is authenticated as the given user:
+Перевіряє, що користувач автентифікований як заданий користувач:
 
 ```php
 $browser->assertAuthenticatedAs($user);
@@ -2171,7 +2174,7 @@ $browser->assertAuthenticatedAs($user);
 <a name="assert-vue"></a>
 #### assertVue
 
-Dusk even allows you to make assertions on the state of [Vue component](https://vuejs.org) data. For example, imagine your application contains the following Vue component:
+Dusk дозволяє навіть робити твердження щодо стану даних [компонента Vue](https://vuejs.org). Уявіть, наприклад, що ваш застосунок містить такий компонент Vue:
 
     // HTML...
 
@@ -2191,7 +2194,7 @@ Dusk even allows you to make assertions on the state of [Vue component](https://
         }
     });
 
-You may assert on the state of the Vue component like so:
+Ви можете зробити твердження щодо стану компонента Vue ось так:
 
 ```php tab=Pest
 test('vue', function () {
@@ -2218,7 +2221,7 @@ public function test_vue(): void
 <a name="assert-vue-is-not"></a>
 #### assertVueIsNot
 
-Assert that a given Vue component data property does not match the given value:
+Перевіряє, що задана властивість даних компонента Vue не збігається із заданим значенням:
 
 ```php
 $browser->assertVueIsNot($property, $value, $componentSelector = null);
@@ -2227,7 +2230,7 @@ $browser->assertVueIsNot($property, $value, $componentSelector = null);
 <a name="assert-vue-contains"></a>
 #### assertVueContains
 
-Assert that a given Vue component data property is an array and contains the given value:
+Перевіряє, що задана властивість даних компонента Vue є масивом і містить задане значення:
 
 ```php
 $browser->assertVueContains($property, $value, $componentSelector = null);
@@ -2236,35 +2239,35 @@ $browser->assertVueContains($property, $value, $componentSelector = null);
 <a name="assert-vue-doesnt-contain"></a>
 #### assertVueDoesntContain
 
-Assert that a given Vue component data property is an array and does not contain the given value:
+Перевіряє, що задана властивість даних компонента Vue є масивом і не містить заданого значення:
 
 ```php
 $browser->assertVueDoesntContain($property, $value, $componentSelector = null);
 ```
 
 <a name="pages"></a>
-## Pages
+## Сторінки
 
-Sometimes, tests require several complicated actions to be performed in sequence. This can make your tests harder to read and understand. Dusk Pages allow you to define expressive actions that may then be performed on a given page via a single method. Pages also allow you to define short-cuts to common selectors for your application or for a single page.
+Іноді тести вимагають виконати послідовно кілька складних дій. Через це тести стає важче читати й розуміти. Сторінки Dusk дозволяють описати виразні дії, які потім можна виконати на заданій сторінці одним методом. Сторінки також дозволяють описати скорочення для поширених селекторів вашого застосунку або окремої сторінки.
 
 <a name="generating-pages"></a>
-### Generating Pages
+### Генерування сторінок
 
-To generate a page object, execute the `dusk:page` Artisan command. All page objects will be placed in your application's `tests/Browser/Pages` directory:
+Щоб згенерувати об'єкт сторінки, виконайте артизан-команду `dusk:page`. Усі об'єкти сторінок потраплять до каталогу `tests/Browser/Pages` вашого застосунку:
 
 ```shell
 php artisan dusk:page Login
 ```
 
 <a name="configuring-pages"></a>
-### Configuring Pages
+### Налаштування сторінок
 
-By default, pages have three methods: `url`, `assert`, and `elements`. We will discuss the `url` and `assert` methods now. The `elements` method will be [discussed in more detail below](#shorthand-selectors).
+За замовчуванням сторінки мають три методи: `url`, `assert` та `elements`. Методи `url` та `assert` ми розглянемо зараз. Метод `elements` буде [докладніше розглянуто нижче](#shorthand-selectors).
 
 <a name="the-url-method"></a>
-#### The `url` Method
+#### Метод `url`
 
-The `url` method should return the path of the URL that represents the page. Dusk will use this URL when navigating to the page in the browser:
+Метод `url` має повертати шлях URL, що представляє сторінку. Dusk використовуватиме цей URL, переходячи до сторінки у браузері:
 
 ```php
 /**
@@ -2277,9 +2280,9 @@ public function url(): string
 ```
 
 <a name="the-assert-method"></a>
-#### The `assert` Method
+#### Метод `assert`
 
-The `assert` method may make any assertions necessary to verify that the browser is actually on the given page. It is not actually necessary to place anything within this method; however, you are free to make these assertions if you wish. These assertions will be run automatically when navigating to the page:
+Метод `assert` може містити будь-які твердження, потрібні, щоб переконатися, що браузер справді на заданій сторінці. Розміщувати щось у цьому методі не обов'язково; проте ви вільні робити такі твердження за бажання. Ці твердження виконуватимуться автоматично при переході до сторінки:
 
 ```php
 /**
@@ -2292,9 +2295,9 @@ public function assert(Browser $browser): void
 ```
 
 <a name="navigating-to-pages"></a>
-### Navigating to Pages
+### Перехід до сторінок
 
-Once a page has been defined, you may navigate to it using the `visit` method:
+Коли сторінку визначено, ви можете перейти до неї методом `visit`:
 
 ```php
 use Tests\Browser\Pages\Login;
@@ -2302,7 +2305,7 @@ use Tests\Browser\Pages\Login;
 $browser->visit(new Login);
 ```
 
-Sometimes you may already be on a given page and need to "load" the page's selectors and methods into the current test context. This is common when pressing a button and being redirected to a given page without explicitly navigating to it. In this situation, you may use the `on` method to load the page:
+Іноді ви вже перебуваєте на заданій сторінці, і вам треба «завантажити» її селектори й методи до поточного контексту тесту. Так буває, коли ви натискаєте кнопку й вас перенаправляє на сторінку без явного переходу до неї. У такому разі скористайтеся методом `on`, щоб завантажити сторінку:
 
 ```php
 use Tests\Browser\Pages\CreatePlaylist;
@@ -2314,9 +2317,9 @@ $browser->visit('/dashboard')
 ```
 
 <a name="shorthand-selectors"></a>
-### Shorthand Selectors
+### Скорочені селектори
 
-The `elements` method within page classes allows you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
+Метод `elements` у класах сторінок дозволяє описати швидкі й легкі для запам'ятовування скорочення для будь-якого CSS-селектора на вашій сторінці. Наприклад, визначмо скорочення для поля «email» на сторінці входу застосунку:
 
 ```php
 /**
@@ -2332,16 +2335,16 @@ public function elements(): array
 }
 ```
 
-Once the shortcut has been defined, you may use the shorthand selector anywhere you would typically use a full CSS selector:
+Коли скорочення визначено, ви можете використовувати скорочений селектор усюди, де зазвичай використовували б повний CSS-селектор:
 
 ```php
 $browser->type('@email', 'taylor@laravel.com');
 ```
 
 <a name="global-shorthand-selectors"></a>
-#### Global Shorthand Selectors
+#### Глобальні скорочені селектори
 
-After installing Dusk, a base `Page` class will be placed in your `tests/Browser/Pages` directory. This class contains a `siteElements` method which may be used to define global shorthand selectors that should be available on every page throughout your application:
+Після встановлення Dusk базовий клас `Page` потрапить до вашого каталогу `tests/Browser/Pages`. Цей клас містить метод `siteElements`, який дозволяє описати глобальні скорочені селектори, доступні на кожній сторінці вашого застосунку:
 
 ```php
 /**
@@ -2358,9 +2361,9 @@ public static function siteElements(): array
 ```
 
 <a name="page-methods"></a>
-### Page Methods
+### Методи сторінок
 
-In addition to the default methods defined on pages, you may define additional methods which may be used throughout your tests. For example, let's imagine we are building a music management application. A common action for one page of the application might be to create a playlist. Instead of re-writing the logic to create a playlist in each test, you may define a `createPlaylist` method on a page class:
+Окрім стандартних методів сторінок, ви можете визначити додаткові методи, якими користуватиметеся у своїх тестах. Уявімо, наприклад, що ми будуємо застосунок для керування музикою. Поширеною дією на одній зі сторінок може бути створення плейлиста. Замість того щоб переписувати логіку створення плейлиста в кожному тесті, ви можете визначити метод `createPlaylist` у класі сторінки:
 
 ```php
 <?php
@@ -2386,7 +2389,7 @@ class Dashboard extends Page
 }
 ```
 
-Once the method has been defined, you may use it within any test that utilizes the page. The browser instance will automatically be passed as the first argument to custom page methods:
+Коли метод визначено, ви можете скористатися ним у будь-якому тесті, що використовує цю сторінку. Екземпляр браузера автоматично передається першим аргументом до власних методів сторінки:
 
 ```php
 use Tests\Browser\Pages\Dashboard;
@@ -2397,20 +2400,20 @@ $browser->visit(new Dashboard)
 ```
 
 <a name="components"></a>
-## Components
+## Компоненти
 
-Components are similar to Dusk's "page objects", but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
+Компоненти схожі на «об'єкти сторінок» Dusk, але призначені для частин UI та функціональності, які перевикористовуються в усьому застосунку, - наприклад, панель навігації чи вікно сповіщень. Тому компоненти не прив'язані до конкретних URL.
 
 <a name="generating-components"></a>
-### Generating Components
+### Генерування компонентів
 
-To generate a component, execute the `dusk:component` Artisan command. New components are placed in the `tests/Browser/Components` directory:
+Щоб згенерувати компонент, виконайте артизан-команду `dusk:component`. Нові компоненти потрапляють до каталогу `tests/Browser/Components`:
 
 ```shell
 php artisan dusk:component DatePicker
 ```
 
-As shown above, a "date picker" is an example of a component that might exist throughout your application on a variety of pages. It can become cumbersome to manually write the browser automation logic to select a date in dozens of tests throughout your test suite. Instead, we can define a Dusk component to represent the date picker, allowing us to encapsulate that logic within the component:
+Як показано вище, «вибір дати» - приклад компонента, який може траплятися в усьому застосунку на різних сторінках. Писати вручну логіку автоматизації браузера для вибору дати в десятках тестів стає обтяжливо. Натомість ми можемо описати компонент Dusk, який представлятиме вибір дати, і інкапсулювати цю логіку в ньому:
 
 ```php
 <?php
@@ -2473,9 +2476,9 @@ class DatePicker extends BaseComponent
 ```
 
 <a name="using-components"></a>
-### Using Components
+### Використання компонентів
 
-Once the component has been defined, we can easily select a date within the date picker from any test. And, if the logic necessary to select a date changes, we only need to update the component:
+Коли компонент визначено, ми можемо легко обрати дату у виборі дати з будь-якого тесту. І якщо логіка вибору дати зміниться, нам треба буде оновити лише компонент:
 
 ```php tab=Pest
 <?php
@@ -2525,7 +2528,7 @@ class ExampleTest extends DuskTestCase
 }
 ```
 
-The `component` method may be used to retrieve a browser instance scoped to the given component:
+Метод `component` дозволяє отримати екземпляр браузера, обмежений заданим компонентом:
 
 ```php
 $datePicker = $browser->component(new DatePickerComponent);
@@ -2536,15 +2539,15 @@ $datePicker->assertSee('January');
 ```
 
 <a name="continuous-integration"></a>
-## Continuous Integration
+## Неперервна інтеграція
 
 > [!WARNING]
-> Most Dusk continuous integration configurations expect your Laravel application to be served using the built-in PHP development server on port 8000. Therefore, before continuing, you should ensure that your continuous integration environment has an `APP_URL` environment variable value of `http://127.0.0.1:8000`.
+> Більшість конфігурацій неперервної інтеграції для Dusk очікують, що ваш застосунок Laravel віддається вбудованим сервером розробки PHP на порту 8000. Тому, перш ніж рухатися далі, переконайтеся, що у вашому середовищі неперервної інтеграції змінна оточення `APP_URL` має значення `http://127.0.0.1:8000`.
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI
 
-To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration), add the following Google Chrome buildpack and scripts to your Heroku `app.json` file:
+Щоб запускати тести Dusk на [Heroku CI](https://www.heroku.com/continuous-integration), додайте до свого файлу `app.json` для Heroku такий buildpack для Google Chrome і скрипти:
 
 ```json
 {
@@ -2566,7 +2569,7 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
 <a name="running-tests-on-travis-ci"></a>
 ### Travis CI
 
-To run your Dusk tests on [Travis CI](https://travis-ci.org), use the following `.travis.yml` configuration. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+Щоб запускати ваші тести Dusk на [Travis CI](https://travis-ci.org), скористайтеся такою конфігурацією `.travis.yml`. Оскільки Travis CI не є графічним середовищем, нам знадобиться кілька додаткових кроків, щоб запустити браузер Chrome. Крім того, ми скористаємося `php artisan serve`, щоб запустити вбудований вебсервер PHP:
 
 ```yaml
 language: php
@@ -2594,7 +2597,7 @@ script:
 <a name="running-tests-on-github-actions"></a>
 ### GitHub Actions
 
-If you are using [GitHub Actions](https://github.com/features/actions) to run your Dusk tests, you may use the following configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+Якщо ви запускаєте свої тести Dusk через [GitHub Actions](https://github.com/features/actions), можете взяти за відправну точку такий конфігураційний файл. Як і у випадку з TravisCI, ми скористаємося командою `php artisan serve`, щоб запустити вбудований вебсервер PHP:
 
 ```yaml
 name: CI
@@ -2645,7 +2648,7 @@ jobs:
 <a name="running-tests-on-chipper-ci"></a>
 ### Chipper CI
 
-If you are using [Chipper CI](https://chipperci.com) to run your Dusk tests, you may use the following configuration file as a starting point. We will use PHP's built-in server to run Laravel so we can listen for requests:
+Якщо ви запускаєте свої тести Dusk через [Chipper CI](https://chipperci.com), можете взяти за відправну точку такий конфігураційний файл. Ми скористаємося вбудованим сервером PHP, щоб запустити Laravel і слухати запити:
 
 ```yaml
 # file .chipperci.yml
@@ -2688,4 +2691,4 @@ pipeline:
       php artisan dusk --env=ci
 ```
 
-To learn more about running Dusk tests on Chipper CI, including how to use databases, consult the [official Chipper CI documentation](https://chipperci.com/docs/testing/laravel-dusk-new/).
+Щоб дізнатися більше про запуск тестів Dusk на Chipper CI, зокрема про роботу з базами даних, зверніться до [офіційної документації Chipper CI](https://chipperci.com/docs/testing/laravel-dusk-new/).
