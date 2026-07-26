@@ -1,15 +1,18 @@
-# Eloquent: Collections
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
+# Eloquent: колекції
 
-- [Introduction](#introduction)
-- [Available Methods](#available-methods)
-- [Custom Collections](#custom-collections)
+- [Вступ](#introduction)
+- [Доступні методи](#available-methods)
+- [Власні колекції](#custom-collections)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-All Eloquent methods that return more than one model result will return instances of the `Illuminate\Database\Eloquent\Collection` class, including results retrieved via the `get` method or accessed via a relationship. The Eloquent collection object extends Laravel's [base collection](/docs/{{version}}/collections), so it naturally inherits dozens of methods used to fluently work with the underlying array of Eloquent models. Be sure to review the Laravel collection documentation to learn all about these helpful methods!
+Усі методи Eloquent, що повертають більш ніж одну модель, повертають екземпляри класу `Illuminate\Database\Eloquent\Collection` - зокрема й результати методу `get` та отримані через зв'язок. Об'єкт колекції Eloquent розширює [базову колекцію](/docs/{{version}}/collections) Laravel, тож він природно успадковує десятки методів для плавної роботи з масивом моделей Eloquent, що лежить у його основі. Обов'язково перегляньте документацію з колекцій Laravel, щоб дізнатися про всі ці корисні методи!
 
-All collections also serve as iterators, allowing you to loop over them as if they were simple PHP arrays:
+Усі колекції є також ітераторами, тож ви можете обходити їх у циклі, наче звичайні PHP-масиви:
 
 ```php
 use App\Models\User;
@@ -21,7 +24,7 @@ foreach ($users as $user) {
 }
 ```
 
-However, as previously mentioned, collections are much more powerful than arrays and expose a variety of map / reduce operations that may be chained using an intuitive interface. For example, we may remove all inactive models and then gather the first name for each remaining user:
+Проте, як уже згадувалося, колекції значно потужніші за масиви й дають цілу низку операцій map / reduce, які можна зчіплювати ланцюжком через інтуїтивний інтерфейс. Наприклад, ми можемо прибрати всі неактивні моделі, а потім зібрати імена решти користувачів:
 
 ```php
 $names = User::all()->reject(function (User $user) {
@@ -32,16 +35,16 @@ $names = User::all()->reject(function (User $user) {
 ```
 
 <a name="eloquent-collection-conversion"></a>
-#### Eloquent Collection Conversion
+#### Перетворення колекцій Eloquent
 
-While most Eloquent collection methods return a new instance of an Eloquent collection, the `collapse`, `flatten`, `flip`, `keys`, `pluck`, and `zip` methods return a [base collection](/docs/{{version}}/collections) instance. Likewise, if a `map` operation returns a collection that does not contain any Eloquent models, it will be converted to a base collection instance.
+Хоча більшість методів колекції Eloquent повертають новий екземпляр колекції Eloquent, методи `collapse`, `flatten`, `flip`, `keys`, `pluck` і `zip` повертають екземпляр [базової колекції](/docs/{{version}}/collections). Так само, якщо операція `map` повертає колекцію, у якій немає жодної моделі Eloquent, її буде перетворено на екземпляр базової колекції.
 
 <a name="available-methods"></a>
-## Available Methods
+## Доступні методи
 
-All Eloquent collections extend the base [Laravel collection](/docs/{{version}}/collections#available-methods) object; therefore, they inherit all of the powerful methods provided by the base collection class.
+Усі колекції Eloquent розширюють об'єкт базової [колекції Laravel](/docs/{{version}}/collections#available-methods), тож успадковують усі потужні методи базового класу колекцій.
 
-In addition, the `Illuminate\Database\Eloquent\Collection` class provides a superset of methods to aid with managing your model collections. Most methods return `Illuminate\Database\Eloquent\Collection` instances; however, some methods, like `modelKeys`, return an `Illuminate\Support\Collection` instance.
+Крім того, клас `Illuminate\Database\Eloquent\Collection` має надмножину методів для роботи з колекціями ваших моделей. Більшість методів повертають екземпляри `Illuminate\Database\Eloquent\Collection`; проте деякі - як-от `modelKeys` - повертають екземпляр `Illuminate\Support\Collection`.
 
 <style>
     .collection-method-list > p {
@@ -95,7 +98,7 @@ In addition, the `Illuminate\Database\Eloquent\Collection` class provides a supe
 <a name="method-append"></a>
 #### `append($attributes)` {.collection-method .first-collection-method}
 
-The `append` method may be used to indicate that an attribute should be [appended](/docs/{{version}}/eloquent-serialization#appending-values-to-json) for every model in the collection. This method accepts an array of attributes or a single attribute:
+Методом `append` можна вказати, що атрибут слід [додавати](/docs/{{version}}/eloquent-serialization#appending-values-to-json) для кожної моделі в колекції. Метод приймає масив атрибутів або один атрибут:
 
 ```php
 $users->append('team');
@@ -106,7 +109,7 @@ $users->append(['team', 'is_admin']);
 <a name="method-contains"></a>
 #### `contains($key, $operator = null, $value = null)` {.collection-method}
 
-The `contains` method may be used to determine if a given model instance is contained by the collection. This method accepts a primary key or a model instance:
+Методом `contains` можна визначити, чи міститься в колекції заданий екземпляр моделі. Метод приймає первинний ключ або екземпляр моделі:
 
 ```php
 $users->contains(1);
@@ -117,7 +120,7 @@ $users->contains(User::find(1));
 <a name="method-diff"></a>
 #### `diff($items)` {.collection-method}
 
-The `diff` method returns all of the models that are not present in the given collection:
+Метод `diff` повертає всі моделі, яких немає в заданій колекції:
 
 ```php
 use App\Models\User;
@@ -128,7 +131,7 @@ $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
 <a name="method-except"></a>
 #### `except($keys)` {.collection-method}
 
-The `except` method returns all of the models that do not have the given primary keys:
+Метод `except` повертає всі моделі, які не мають заданих первинних ключів:
 
 ```php
 $users = $users->except([1, 2, 3]);
@@ -137,7 +140,7 @@ $users = $users->except([1, 2, 3]);
 <a name="method-find"></a>
 #### `find($key)` {.collection-method}
 
-The `find` method returns the model that has a primary key matching the given key. If `$key` is a model instance, `find` will attempt to return a model matching the primary key. If `$key` is an array of keys, `find` will return all models which have a primary key in the given array:
+Метод `find` повертає модель, первинний ключ якої збігається із заданим. Якщо `$key` - екземпляр моделі, `find` спробує повернути модель із таким самим первинним ключем. Якщо `$key` - масив ключів, `find` поверне всі моделі, чиї первинні ключі є в цьому масиві:
 
 ```php
 $users = User::all();
@@ -148,7 +151,7 @@ $user = $users->find(1);
 <a name="method-find-or-fail"></a>
 #### `findOrFail($key)` {.collection-method}
 
-The `findOrFail` method returns the model that has a primary key matching the given key or throws an `Illuminate\Database\Eloquent\ModelNotFoundException` exception if no matching model can be found in the collection:
+Метод `findOrFail` повертає модель, первинний ключ якої збігається із заданим, або викидає виняток `Illuminate\Database\Eloquent\ModelNotFoundException`, якщо відповідної моделі в колекції немає:
 
 ```php
 $users = User::all();
@@ -159,7 +162,7 @@ $user = $users->findOrFail(1);
 <a name="method-fresh"></a>
 #### `fresh($with = [])` {.collection-method}
 
-The `fresh` method retrieves a fresh instance of each model in the collection from the database. In addition, any specified relationships will be eager loaded:
+Метод `fresh` дістає з бази даних свіжий екземпляр кожної моделі в колекції. Крім того, будь-які вказані зв'язки буде жадібно завантажено:
 
 ```php
 $users = $users->fresh();
@@ -170,7 +173,7 @@ $users = $users->fresh('comments');
 <a name="method-intersect"></a>
 #### `intersect($items)` {.collection-method}
 
-The `intersect` method returns all of the models that are also present in the given collection:
+Метод `intersect` повертає всі моделі, які є також у заданій колекції:
 
 ```php
 use App\Models\User;
@@ -181,7 +184,7 @@ $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
 <a name="method-load"></a>
 #### `load($relations)` {.collection-method}
 
-The `load` method eager loads the given relationships for all models in the collection:
+Метод `load` жадібно завантажує задані зв'язки для всіх моделей у колекції:
 
 ```php
 $users->load(['comments', 'posts']);
@@ -194,7 +197,7 @@ $users->load(['comments', 'posts' => fn ($query) => $query->where('active', 1)])
 <a name="method-loadMissing"></a>
 #### `loadMissing($relations)` {.collection-method}
 
-The `loadMissing` method eager loads the given relationships for all models in the collection if the relationships are not already loaded:
+Метод `loadMissing` жадібно завантажує задані зв'язки для всіх моделей у колекції, якщо ці зв'язки ще не завантажено:
 
 ```php
 $users->loadMissing(['comments', 'posts']);
@@ -207,7 +210,7 @@ $users->loadMissing(['comments', 'posts' => fn ($query) => $query->where('active
 <a name="method-modelKeys"></a>
 #### `modelKeys()` {.collection-method}
 
-The `modelKeys` method returns the primary keys for all models in the collection:
+Метод `modelKeys` повертає первинні ключі всіх моделей у колекції:
 
 ```php
 $users->modelKeys();
@@ -218,7 +221,7 @@ $users->modelKeys();
 <a name="method-makeVisible"></a>
 #### `makeVisible($attributes)` {.collection-method}
 
-The `makeVisible` method [makes attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically "hidden" on each model in the collection:
+Метод `makeVisible` [робить видимими атрибути](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json), які зазвичай «приховані» в кожній моделі колекції:
 
 ```php
 $users = $users->makeVisible(['address', 'phone_number']);
@@ -227,7 +230,7 @@ $users = $users->makeVisible(['address', 'phone_number']);
 <a name="method-makeHidden"></a>
 #### `makeHidden($attributes)` {.collection-method}
 
-The `makeHidden` method [hides attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) that are typically "visible" on each model in the collection:
+Метод `makeHidden` [приховує атрибути](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json), які зазвичай «видимі» в кожній моделі колекції:
 
 ```php
 $users = $users->makeHidden(['address', 'phone_number']);
@@ -236,7 +239,7 @@ $users = $users->makeHidden(['address', 'phone_number']);
 <a name="method-mergeVisible"></a>
 #### `mergeVisible($attributes)` {.collection-method}
 
-The `mergeVisible` method [makes additional attributes visible](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing visible attributes:
+Метод `mergeVisible` [робить видимими додаткові атрибути](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json), зберігаючи наявні видимі атрибути:
 
 ```php
 $users = $users->mergeVisible(['middle_name']);
@@ -245,7 +248,7 @@ $users = $users->mergeVisible(['middle_name']);
 <a name="method-mergeHidden"></a>
 #### `mergeHidden($attributes)` {.collection-method}
 
-The `mergeHidden` method [hides additional attributes](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json) while retaining existing hidden attributes:
+Метод `mergeHidden` [приховує додаткові атрибути](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json), зберігаючи наявні приховані атрибути:
 
 ```php
 $users = $users->mergeHidden(['last_login_at']);
@@ -254,7 +257,7 @@ $users = $users->mergeHidden(['last_login_at']);
 <a name="method-only"></a>
 #### `only($keys)` {.collection-method}
 
-The `only` method returns all of the models that have the given primary keys:
+Метод `only` повертає всі моделі, які мають задані первинні ключі:
 
 ```php
 $users = $users->only([1, 2, 3]);
@@ -263,7 +266,7 @@ $users = $users->only([1, 2, 3]);
 <a name="method-partition"></a>
 #### `partition` {.collection-method}
 
-The `partition` method returns an instance of `Illuminate\Support\Collection` containing `Illuminate\Database\Eloquent\Collection` collection instances:
+Метод `partition` повертає екземпляр `Illuminate\Support\Collection`, що містить екземпляри колекцій `Illuminate\Database\Eloquent\Collection`:
 
 ```php
 $partition = $users->partition(fn ($user) => $user->age > 18);
@@ -276,7 +279,7 @@ dump($partition[1]::class); // Illuminate\Database\Eloquent\Collection
 <a name="method-setAppends"></a>
 #### `setAppends($attributes)` {.collection-method}
 
-The `setAppends` method temporarily overrides all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
+Метод `setAppends` тимчасово перевизначає всі [додані атрибути](/docs/{{version}}/eloquent-serialization#appending-values-to-json) кожної моделі в колекції:
 
 ```php
 $users = $users->setAppends(['is_admin']);
@@ -285,7 +288,7 @@ $users = $users->setAppends(['is_admin']);
 <a name="method-setVisible"></a>
 #### `setVisible($attributes)` {.collection-method}
 
-The `setVisible` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the visible attributes on each model in the collection:
+Метод `setVisible` [тимчасово перевизначає](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) всі видимі атрибути кожної моделі в колекції:
 
 ```php
 $users = $users->setVisible(['id', 'name']);
@@ -294,7 +297,7 @@ $users = $users->setVisible(['id', 'name']);
 <a name="method-setHidden"></a>
 #### `setHidden($attributes)` {.collection-method}
 
-The `setHidden` method [temporarily overrides](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) all of the hidden attributes on each model in the collection:
+Метод `setHidden` [тимчасово перевизначає](/docs/{{version}}/eloquent-serialization#temporarily-modifying-attribute-visibility) всі приховані атрибути кожної моделі в колекції:
 
 ```php
 $users = $users->setHidden(['email', 'password', 'remember_token']);
@@ -303,7 +306,7 @@ $users = $users->setHidden(['email', 'password', 'remember_token']);
 <a name="method-toquery"></a>
 #### `toQuery()` {.collection-method}
 
-The `toQuery` method returns an Eloquent query builder instance containing a `whereIn` constraint on the collection model's primary keys:
+Метод `toQuery` повертає екземпляр конструктора запитів Eloquent з обмеженням `whereIn` за первинними ключами моделей колекції:
 
 ```php
 use App\Models\User;
@@ -318,7 +321,7 @@ $users->toQuery()->update([
 <a name="method-unique"></a>
 #### `unique($key = null, $strict = false)` {.collection-method}
 
-The `unique` method returns all of the unique models in the collection. Any models with the same primary key as another model in the collection are removed:
+Метод `unique` повертає всі унікальні моделі колекції. Моделі з таким самим первинним ключем, як в іншої моделі колекції, буде прибрано:
 
 ```php
 $users = $users->unique();
@@ -327,16 +330,16 @@ $users = $users->unique();
 <a name="method-withoutAppends"></a>
 #### `withoutAppends()` {.collection-method}
 
-The `withoutAppends` method temporarily removes all of the [appended attributes](/docs/{{version}}/eloquent-serialization#appending-values-to-json) on each model in the collection:
+Метод `withoutAppends` тимчасово прибирає всі [додані атрибути](/docs/{{version}}/eloquent-serialization#appending-values-to-json) кожної моделі в колекції:
 
 ```php
 $users = $users->withoutAppends();
 ```
 
 <a name="custom-collections"></a>
-## Custom Collections
+## Власні колекції
 
-If you would like to use a custom `Collection` object when interacting with a given model, you may add the `CollectedBy` attribute to your model:
+Якщо ви хочете використовувати власний об'єкт `Collection` під час роботи з певною моделлю, додайте до неї атрибут `CollectedBy`:
 
 ```php
 <?php
@@ -354,7 +357,7 @@ class User extends Model
 }
 ```
 
-Alternatively, you may define a `newCollection` method on your model:
+Або ж ви можете описати в моделі метод `newCollection`:
 
 ```php
 <?php
@@ -386,6 +389,6 @@ class User extends Model
 }
 ```
 
-Once you have defined a `newCollection` method or added the `CollectedBy` attribute to your model, you will receive an instance of your custom collection anytime Eloquent would normally return an `Illuminate\Database\Eloquent\Collection` instance.
+Коли ви описали метод `newCollection` або додали до моделі атрибут `CollectedBy`, ви отримуватимете екземпляр власної колекції щоразу, коли Eloquent зазвичай повернув би екземпляр `Illuminate\Database\Eloquent\Collection`.
 
-If you would like to use a custom collection for every model in your application, you should define the `newCollection` method on a base model class that is extended by all of your application's models.
+Якщо ви хочете використовувати власну колекцію для кожної моделі у вашому застосунку, опишіть метод `newCollection` у базовому класі моделі, який розширюють усі моделі вашого застосунку.
