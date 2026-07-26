@@ -1,8 +1,11 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Prompts
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Available Prompts](#available-prompts)
+- [Вступ](#introduction)
+- [Встановлення](#installation)
+- [Доступні промпти](#available-prompts)
     - [Text](#text)
     - [Textarea](#textarea)
     - [Number](#number)
@@ -15,51 +18,51 @@
     - [Multi-search](#multisearch)
     - [Pause](#pause)
     - [Autocomplete](#autocomplete)
-- [Transforming Input Before Validation](#transforming-input-before-validation)
-- [Forms](#forms)
-- [Informational Messages](#informational-messages)
-- [Callouts](#callouts)
-- [Tables](#tables)
+- [Перетворення вводу перед валідацією](#transforming-input-before-validation)
+- [Форми](#forms)
+- [Інформаційні повідомлення](#informational-messages)
+- [Виноски](#callouts)
+- [Таблиці](#tables)
 - [Spin](#spin)
-- [Progress Bar](#progress)
+- [Індикатор прогресу](#progress)
 - [Task](#task)
 - [Stream](#stream)
-- [Terminal Title](#terminal-title)
-- [Clearing the Terminal](#clear)
-- [Terminal Considerations](#terminal-considerations)
-- [Unsupported Environments and Fallbacks](#fallbacks)
-- [Testing](#testing)
+- [Заголовок термінала](#terminal-title)
+- [Очищення термінала](#clear)
+- [Що врахувати щодо термінала](#terminal-considerations)
+- [Непідтримувані середовища та запасні варіанти](#fallbacks)
+- [Тестування](#testing)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-[Laravel Prompts](https://github.com/laravel/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
+[Laravel Prompts](https://github.com/laravel/prompts) - це PHP-пакет для додавання гарних і зручних форм до ваших консольних застосунків, з можливостями як у браузері - зокрема текстом-підказкою та валідацією.
 
 <img src="https://laravel.com/img/docs/prompts-example.png">
 
-Laravel Prompts is perfect for accepting user input in your [Artisan console commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project.
+Laravel Prompts чудово пасує для отримання вводу користувача у ваших [консольних командах Artisan](/docs/{{version}}/artisan#writing-commands), але його можна використовувати і в будь-якому консольному проєкті на PHP.
 
 > [!NOTE]
-> Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see our documentation on [unsupported environments & fallbacks](#fallbacks).
+> Laravel Prompts підтримує macOS, Linux і Windows із WSL. Докладніше читайте в нашій документації про [непідтримувані середовища та запасні варіанти](#fallbacks).
 
 <a name="installation"></a>
-## Installation
+## Встановлення
 
-Laravel Prompts is already included with the latest release of Laravel.
+Laravel Prompts уже входить до останнього випуску Laravel.
 
-Laravel Prompts may also be installed in your other PHP projects by using the Composer package manager:
+Laravel Prompts можна також встановити в інші ваші проєкти на PHP через менеджер пакетів Composer:
 
 ```shell
 composer require laravel/prompts
 ```
 
 <a name="available-prompts"></a>
-## Available Prompts
+## Доступні промпти
 
 <a name="text"></a>
 ### Text
 
-The `text` function will prompt the user with the given question, accept their input, and then return it:
+Функція `text` поставить користувачеві задане запитання, прийме його ввід і поверне його:
 
 ```php
 use function Laravel\Prompts\text;
@@ -67,7 +70,7 @@ use function Laravel\Prompts\text;
 $name = text('What is your name?');
 ```
 
-You may also include placeholder text, a default value, and an informational hint:
+Ви також можете додати текст-підказку, значення за замовчуванням та інформаційну підказку:
 
 ```php
 $name = text(
@@ -79,9 +82,9 @@ $name = text(
 ```
 
 <a name="text-required"></a>
-#### Required Values
+#### Обов'язкові значення
 
-If you require a value to be entered, you may pass the `required` argument:
+Якщо ви вимагаєте, щоб значення було введено, передайте аргумент `required`:
 
 ```php
 $name = text(
@@ -90,7 +93,7 @@ $name = text(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок:
 
 ```php
 $name = text(
@@ -100,9 +103,9 @@ $name = text(
 ```
 
 <a name="text-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Нарешті, якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $name = text(
@@ -115,9 +118,9 @@ $name = text(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+Замикання отримає введене значення й може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
-Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Або ж ви можете скористатися силою [валідатора](/docs/{{version}}/validation) Laravel. Для цього передайте в аргумент `validate` масив з іменем атрибута та потрібними правилами валідації:
 
 ```php
 $name = text(
@@ -129,7 +132,7 @@ $name = text(
 <a name="textarea"></a>
 ### Textarea
 
-The `textarea` function will prompt the user with the given question, accept their input via a multi-line textarea, and then return it:
+Функція `textarea` поставить користувачеві задане запитання, прийме його ввід через багаторядкове поле й поверне його:
 
 ```php
 use function Laravel\Prompts\textarea;
@@ -137,7 +140,7 @@ use function Laravel\Prompts\textarea;
 $story = textarea('Tell me a story.');
 ```
 
-You may also include placeholder text, a default value, and an informational hint:
+Ви також можете додати текст-підказку, значення за замовчуванням та інформаційну підказку:
 
 ```php
 $story = textarea(
@@ -148,9 +151,9 @@ $story = textarea(
 ```
 
 <a name="textarea-required"></a>
-#### Required Values
+#### Обов'язкові значення
 
-If you require a value to be entered, you may pass the `required` argument:
+Якщо ви вимагаєте, щоб значення було введено, передайте аргумент `required`:
 
 ```php
 $story = textarea(
@@ -159,7 +162,7 @@ $story = textarea(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок:
 
 ```php
 $story = textarea(
@@ -169,9 +172,9 @@ $story = textarea(
 ```
 
 <a name="textarea-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Нарешті, якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $story = textarea(
@@ -184,9 +187,9 @@ $story = textarea(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+Замикання отримає введене значення й може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
-Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Або ж ви можете скористатися силою [валідатора](/docs/{{version}}/validation) Laravel. Для цього передайте в аргумент `validate` масив з іменем атрибута та потрібними правилами валідації:
 
 ```php
 $story = textarea(
@@ -198,7 +201,7 @@ $story = textarea(
 <a name="number"></a>
 ### Number
 
-The `number` function will prompt the user with the given question, accept their numeric input, and then return it. The `number` function allows the user to use the up and down arrow keys to manipulate the number:
+Функція `number` поставить користувачеві задане запитання, прийме його числовий ввід і поверне його. Функція `number` дозволяє користувачеві змінювати число клавішами зі стрілками вгору й вниз:
 
 ```php
 use function Laravel\Prompts\number;
@@ -206,7 +209,7 @@ use function Laravel\Prompts\number;
 $number = number('How many copies would you like?');
 ```
 
-You may also include placeholder text, a default value, and an informational hint:
+Ви також можете додати текст-підказку, значення за замовчуванням та інформаційну підказку:
 
 ```php
 $name = number(
@@ -218,9 +221,9 @@ $name = number(
 ```
 
 <a name="number-required"></a>
-#### Required Values
+#### Обов'язкові значення
 
-If you require a value to be entered, you may pass the `required` argument:
+Якщо ви вимагаєте, щоб значення було введено, передайте аргумент `required`:
 
 ```php
 $copies = number(
@@ -229,7 +232,7 @@ $copies = number(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок:
 
 ```php
 $copies = number(
@@ -239,9 +242,9 @@ $copies = number(
 ```
 
 <a name="number-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Нарешті, якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $copies = number(
@@ -254,9 +257,9 @@ $copies = number(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+Замикання отримає введене значення й може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
-Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Або ж ви можете скористатися силою [валідатора](/docs/{{version}}/validation) Laravel. Для цього передайте в аргумент `validate` масив з іменем атрибута та потрібними правилами валідації:
 
 ```php
 $copies = number(
@@ -268,7 +271,7 @@ $copies = number(
 <a name="password"></a>
 ### Password
 
-The `password` function is similar to the `text` function, but the user's input will be masked as they type in the console. This is useful when asking for sensitive information such as passwords:
+Функція `password` схожа на функцію `text`, але ввід користувача маскується під час набору в консолі. Це стає в пригоді, коли ви запитуєте чутливу інформацію - як-от паролі:
 
 ```php
 use function Laravel\Prompts\password;
@@ -276,7 +279,7 @@ use function Laravel\Prompts\password;
 $password = password('What is your password?');
 ```
 
-You may also include placeholder text and an informational hint:
+Ви також можете додати текст-підказку та інформаційну підказку:
 
 ```php
 $password = password(
@@ -287,9 +290,9 @@ $password = password(
 ```
 
 <a name="password-required"></a>
-#### Required Values
+#### Обов'язкові значення
 
-If you require a value to be entered, you may pass the `required` argument:
+Якщо ви вимагаєте, щоб значення було введено, передайте аргумент `required`:
 
 ```php
 $password = password(
@@ -298,7 +301,7 @@ $password = password(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок:
 
 ```php
 $password = password(
@@ -308,9 +311,9 @@ $password = password(
 ```
 
 <a name="password-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Нарешті, якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $password = password(
@@ -322,9 +325,9 @@ $password = password(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+Замикання отримає введене значення й може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
-Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Або ж ви можете скористатися силою [валідатора](/docs/{{version}}/validation) Laravel. Для цього передайте в аргумент `validate` масив з іменем атрибута та потрібними правилами валідації:
 
 ```php
 $password = password(
@@ -336,7 +339,7 @@ $password = password(
 <a name="confirm"></a>
 ### Confirm
 
-If you need to ask the user for a "yes or no" confirmation, you may use the `confirm` function. Users may use the arrow keys or press `y` or `n` to select their response. This function will return either `true` or `false`.
+Якщо вам треба запитати в користувача підтвердження «так чи ні», скористайтеся функцією `confirm`. Користувачі можуть скористатися клавішами зі стрілками або натиснути `y` чи `n`, щоб обрати відповідь. Ця функція поверне `true` або `false`.
 
 ```php
 use function Laravel\Prompts\confirm;
@@ -344,7 +347,7 @@ use function Laravel\Prompts\confirm;
 $confirmed = confirm('Do you accept the terms?');
 ```
 
-You may also include a default value, customized wording for the "Yes" and "No" labels, and an informational hint:
+Ви також можете додати значення за замовчуванням, власні написи для «Yes» і «No» та інформаційну підказку:
 
 ```php
 $confirmed = confirm(
@@ -357,9 +360,9 @@ $confirmed = confirm(
 ```
 
 <a name="confirm-required"></a>
-#### Requiring "Yes"
+#### Вимога відповіді «Yes»
 
-If necessary, you may require your users to select "Yes" by passing the `required` argument:
+За потреби ви можете зобов'язати користувачів обрати «Yes», передавши аргумент `required`:
 
 ```php
 $confirmed = confirm(
@@ -368,7 +371,7 @@ $confirmed = confirm(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок:
 
 ```php
 $confirmed = confirm(
@@ -380,7 +383,7 @@ $confirmed = confirm(
 <a name="select"></a>
 ### Select
 
-If you need the user to select from a predefined set of choices, you may use the `select` function:
+Якщо вам потрібно, щоб користувач обрав із наперед визначеного набору варіантів, скористайтеся функцією `select`:
 
 ```php
 use function Laravel\Prompts\select;
@@ -391,7 +394,7 @@ $role = select(
 );
 ```
 
-You may also specify the default choice and an informational hint:
+Ви також можете вказати варіант за замовчуванням та інформаційну підказку:
 
 ```php
 $role = select(
@@ -402,7 +405,7 @@ $role = select(
 );
 ```
 
-You may also pass an associative array to the `options` argument to have the selected key returned instead of its value:
+Ви також можете передати в аргумент `options` асоціативний масив, щоб повертався ключ обраного варіанта, а не його значення:
 
 ```php
 $role = select(
@@ -416,7 +419,7 @@ $role = select(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+До п'яти варіантів буде показано, перш ніж список почне прокручуватися. Ви можете змінити це, передавши аргумент `scroll`:
 
 ```php
 $role = select(
@@ -427,9 +430,9 @@ $role = select(
 ```
 
 <a name="select-info"></a>
-#### Secondary Information
+#### Додаткова інформація
 
-The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+Аргумент `info` дозволяє показувати додаткову інформацію про поточний підсвічений варіант. Якщо передати замикання, воно отримає значення підсвіченого варіанта й має повернути рядок або `null`:
 
 ```php
 $role = select(
@@ -448,7 +451,7 @@ $role = select(
 );
 ```
 
-You may also pass a static string to the `info` argument if the information does not depend on the highlighted option:
+Ви також можете передати в аргумент `info` статичний рядок, якщо інформація не залежить від підсвіченого варіанта:
 
 ```php
 $role = select(
@@ -459,9 +462,9 @@ $role = select(
 ```
 
 <a name="select-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-Unlike other prompt functions, the `select` function doesn't accept the `required` argument because it is not possible to select nothing. However, you may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
+На відміну від інших функцій-промптів, функція `select` не приймає аргумент `required`, адже не обрати нічого неможливо. Проте ви можете передати замикання в аргумент `validate`, якщо вам треба показати варіант, але завадити його вибору:
 
 ```php
 $role = select(
@@ -478,12 +481,12 @@ $role = select(
 );
 ```
 
-If the `options` argument is an associative array, then the closure will receive the selected key, otherwise it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+Якщо аргумент `options` - асоціативний масив, замикання отримає обраний ключ, інакше - обране значення. Замикання може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
 <a name="multiselect"></a>
 ### Multi-select
 
-If you need the user to be able to select multiple options, you may use the `multiselect` function:
+Якщо вам потрібно, щоб користувач міг обрати кілька варіантів, скористайтеся функцією `multiselect`:
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -494,7 +497,7 @@ $permissions = multiselect(
 );
 ```
 
-You may also specify default choices and an informational hint:
+Ви також можете вказати варіанти за замовчуванням та інформаційну підказку:
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -507,7 +510,7 @@ $permissions = multiselect(
 );
 ```
 
-You may also pass an associative array to the `options` argument to return the selected options' keys instead of their values:
+Ви також можете передати в аргумент `options` асоціативний масив, щоб повертати ключі обраних варіантів, а не їхні значення:
 
 ```php
 $permissions = multiselect(
@@ -522,7 +525,7 @@ $permissions = multiselect(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+До п'яти варіантів буде показано, перш ніж список почне прокручуватися. Ви можете змінити це, передавши аргумент `scroll`:
 
 ```php
 $categories = multiselect(
@@ -533,9 +536,9 @@ $categories = multiselect(
 ```
 
 <a name="multiselect-info"></a>
-#### Secondary Information
+#### Додаткова інформація
 
-The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+Аргумент `info` дозволяє показувати додаткову інформацію про поточний підсвічений варіант. Якщо передати замикання, воно отримає значення підсвіченого варіанта й має повернути рядок або `null`:
 
 ```php
 $permissions = multiselect(
@@ -557,9 +560,9 @@ $permissions = multiselect(
 ```
 
 <a name="multiselect-required"></a>
-#### Requiring a Value
+#### Вимога значення
 
-By default, the user may select zero or more options. You may pass the `required` argument to enforce one or more options instead:
+За замовчуванням користувач може обрати нуль чи більше варіантів. Ви можете передати аргумент `required`, щоб вимагати щонайменше один:
 
 ```php
 $categories = multiselect(
@@ -569,7 +572,7 @@ $categories = multiselect(
 );
 ```
 
-If you would like to customize the validation message, you may provide a string to the `required` argument:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок в аргумент `required`:
 
 ```php
 $categories = multiselect(
@@ -580,9 +583,9 @@ $categories = multiselect(
 ```
 
 <a name="multiselect-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-You may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
+Ви можете передати замикання в аргумент `validate`, якщо вам треба показати варіант, але завадити його вибору:
 
 ```php
 $permissions = multiselect(
@@ -599,12 +602,12 @@ $permissions = multiselect(
 );
 ```
 
-If the `options` argument is an associative array then the closure will receive the selected keys, otherwise it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
+Якщо аргумент `options` - асоціативний масив, замикання отримає обрані ключі, інакше - обрані значення. Замикання може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
 <a name="suggest"></a>
 ### Suggest
 
-The `suggest` function can be used to provide auto-completion for possible choices. The user can still provide any answer, regardless of the auto-completion hints:
+Функція `suggest` дозволяє додати автодоповнення для можливих варіантів. Користувач і далі може ввести будь-яку відповідь, незалежно від підказок автодоповнення:
 
 ```php
 use function Laravel\Prompts\suggest;
@@ -612,7 +615,7 @@ use function Laravel\Prompts\suggest;
 $name = suggest('What is your name?', ['Taylor', 'Dayle']);
 ```
 
-Alternatively, you may pass a closure as the second argument to the `suggest` function. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far and return an array of options for auto-completion:
+Або ж ви можете передати замикання другим аргументом до функції `suggest`. Замикання викликатиметься щоразу, коли користувач вводить символ. Воно має приймати рядковий параметр із уже введеним текстом і повертати масив варіантів для автодоповнення:
 
 ```php
 $name = suggest(
@@ -622,7 +625,7 @@ $name = suggest(
 )
 ```
 
-You may also include placeholder text, a default value, and an informational hint:
+Ви також можете додати текст-підказку, значення за замовчуванням та інформаційну підказку:
 
 ```php
 $name = suggest(
@@ -635,9 +638,9 @@ $name = suggest(
 ```
 
 <a name="suggest-info"></a>
-#### Secondary Information
+#### Додаткова інформація
 
-The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+Аргумент `info` дозволяє показувати додаткову інформацію про поточний підсвічений варіант. Якщо передати замикання, воно отримає значення підсвіченого варіанта й має повернути рядок або `null`:
 
 ```php
 $name = suggest(
@@ -652,9 +655,9 @@ $name = suggest(
 ```
 
 <a name="suggest-required"></a>
-#### Required Values
+#### Обов'язкові значення
 
-If you require a value to be entered, you may pass the `required` argument:
+Якщо ви вимагаєте, щоб значення було введено, передайте аргумент `required`:
 
 ```php
 $name = suggest(
@@ -664,7 +667,7 @@ $name = suggest(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок:
 
 ```php
 $name = suggest(
@@ -675,9 +678,9 @@ $name = suggest(
 ```
 
 <a name="suggest-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Нарешті, якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $name = suggest(
@@ -691,9 +694,9 @@ $name = suggest(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+Замикання отримає введене значення й може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
-Alternatively, you may leverage the power of Laravel's [validator](/docs/{{version}}/validation). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Або ж ви можете скористатися силою [валідатора](/docs/{{version}}/validation) Laravel. Для цього передайте в аргумент `validate` масив з іменем атрибута та потрібними правилами валідації:
 
 ```php
 $name = suggest(
@@ -706,7 +709,7 @@ $name = suggest(
 <a name="search"></a>
 ### Search
 
-If you have a lot of options for the user to select from, the `search` function allows the user to type a search query to filter the results before using the arrow keys to select an option:
+Якщо у вас багато варіантів на вибір, функція `search` дозволяє користувачеві ввести пошуковий запит, щоб відфільтрувати результати, а вже потім обрати варіант клавішами зі стрілками:
 
 ```php
 use function Laravel\Prompts\search;
@@ -719,9 +722,9 @@ $id = search(
 );
 ```
 
-The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
+Замикання отримає текст, уже введений користувачем, і має повернути масив варіантів. Якщо ви повернете асоціативний масив, буде повернено ключ обраного варіанта, інакше - його значення.
 
-When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+Фільтруючи масив, коли ви маєте намір повертати значення, скористайтеся функцією `array_values` або методом колекції `values`, щоб масив не став асоціативним:
 
 ```php
 $names = collect(['Taylor', 'Abigail']);
@@ -735,7 +738,7 @@ $selected = search(
 );
 ```
 
-You may also include placeholder text and an informational hint:
+Ви також можете додати текст-підказку та інформаційну підказку:
 
 ```php
 $id = search(
@@ -748,7 +751,7 @@ $id = search(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+До п'яти варіантів буде показано, перш ніж список почне прокручуватися. Ви можете змінити це, передавши аргумент `scroll`:
 
 ```php
 $id = search(
@@ -761,9 +764,9 @@ $id = search(
 ```
 
 <a name="search-info"></a>
-#### Secondary Information
+#### Додаткова інформація
 
-The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+Аргумент `info` дозволяє показувати додаткову інформацію про поточний підсвічений варіант. Якщо передати замикання, воно отримає значення підсвіченого варіанта й має повернути рядок або `null`:
 
 ```php
 $id = search(
@@ -776,9 +779,9 @@ $id = search(
 ```
 
 <a name="search-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-If you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $id = search(
@@ -796,12 +799,12 @@ $id = search(
 );
 ```
 
-If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+Якщо замикання `options` повертає асоціативний масив, замикання валідації отримає обраний ключ, інакше - обране значення. Замикання може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
 <a name="multisearch"></a>
 ### Multi-search
 
-If you have a lot of searchable options and need the user to be able to select multiple items, the `multisearch` function allows the user to type a search query to filter the results before using the arrow keys and space-bar to select options:
+Якщо у вас багато варіантів для пошуку й користувачеві треба обрати кілька, функція `multisearch` дозволяє ввести пошуковий запит, щоб відфільтрувати результати, а вже потім обрати варіанти клавішами зі стрілками й пробілом:
 
 ```php
 use function Laravel\Prompts\multisearch;
@@ -814,9 +817,9 @@ $ids = multisearch(
 );
 ```
 
-The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected options' keys will be returned; otherwise, their values will be returned instead.
+Замикання отримає текст, уже введений користувачем, і має повернути масив варіантів. Якщо ви повернете асоціативний масив, буде повернено ключі обраних варіантів; інакше - їхні значення.
 
-When filtering an array where you intend to return the value, you should use the `array_values` function or the `values` Collection method to ensure the array doesn't become associative:
+Фільтруючи масив, коли ви маєте намір повертати значення, скористайтеся функцією `array_values` або методом колекції `values`, щоб масив не став асоціативним:
 
 ```php
 $names = collect(['Taylor', 'Abigail']);
@@ -830,7 +833,7 @@ $selected = multisearch(
 );
 ```
 
-You may also include placeholder text and an informational hint:
+Ви також можете додати текст-підказку та інформаційну підказку:
 
 ```php
 $ids = multisearch(
@@ -843,7 +846,7 @@ $ids = multisearch(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by providing the `scroll` argument:
+До п'яти варіантів буде показано, перш ніж список почне прокручуватися. Ви можете змінити це, передавши аргумент `scroll`:
 
 ```php
 $ids = multisearch(
@@ -856,9 +859,9 @@ $ids = multisearch(
 ```
 
 <a name="multisearch-info"></a>
-#### Secondary Information
+#### Додаткова інформація
 
-The `info` argument may be used to display additional information about the currently highlighted option. When a closure is provided, it will receive the value of the currently highlighted option and should return a string or `null`:
+Аргумент `info` дозволяє показувати додаткову інформацію про поточний підсвічений варіант. Якщо передати замикання, воно отримає значення підсвіченого варіанта й має повернути рядок або `null`:
 
 ```php
 $ids = multisearch(
@@ -871,9 +874,9 @@ $ids = multisearch(
 ```
 
 <a name="multisearch-required"></a>
-#### Requiring a Value
+#### Вимога значення
 
-By default, the user may select zero or more options. You may pass the `required` argument to enforce one or more options instead:
+За замовчуванням користувач може обрати нуль чи більше варіантів. Ви можете передати аргумент `required`, щоб вимагати щонайменше один:
 
 ```php
 $ids = multisearch(
@@ -885,7 +888,7 @@ $ids = multisearch(
 );
 ```
 
-If you would like to customize the validation message, you may also provide a string to the `required` argument:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок в аргумент `required`:
 
 ```php
 $ids = multisearch(
@@ -898,9 +901,9 @@ $ids = multisearch(
 ```
 
 <a name="multisearch-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-If you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $ids = multisearch(
@@ -918,12 +921,12 @@ $ids = multisearch(
 );
 ```
 
-If the `options` closure returns an associative array, then the closure will receive the selected keys; otherwise, it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
+Якщо замикання `options` повертає асоціативний масив, замикання валідації отримає обрані ключі; інакше - обрані значення. Замикання може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
 <a name="pause"></a>
 ### Pause
 
-The `pause` function may be used to display informational text to the user and wait for them to confirm their desire to proceed by pressing the Enter / Return key:
+Функція `pause` дозволяє показати користувачеві інформаційний текст і зачекати, доки він підтвердить бажання рухатися далі, натиснувши клавішу Enter / Return:
 
 ```php
 use function Laravel\Prompts\pause;
@@ -934,7 +937,7 @@ pause('Press ENTER to continue.');
 <a name="autocomplete"></a>
 ### Autocomplete
 
-The `autocomplete` function can be used to provide inline auto-completion for possible choices. As the user types, suggestions that match their input will appear as ghost text that can be accepted by pressing `Tab` or the right arrow key:
+Функція `autocomplete` дозволяє додати вбудоване автодоповнення для можливих варіантів. Поки користувач набирає текст, підказки, що відповідають його вводу, з'являтимуться як примарний текст, який можна прийняти натисканням `Tab` чи стрілки вправо:
 
 ```php
 use function Laravel\Prompts\autocomplete;
@@ -945,7 +948,7 @@ $name = autocomplete(
 );
 ```
 
-You may also include placeholder text, a default value, and an informational hint:
+Ви також можете додати текст-підказку, значення за замовчуванням та інформаційну підказку:
 
 ```php
 $name = autocomplete(
@@ -958,9 +961,9 @@ $name = autocomplete(
 ```
 
 <a name="autocomplete-closure"></a>
-#### Dynamic Options
+#### Динамічні варіанти
 
-You may also pass a closure to dynamically generate options based on the user's input. The closure will be called each time the user types a character and should return an array of options for auto-completion:
+Ви також можете передати замикання, щоб динамічно генерувати варіанти за вводом користувача. Замикання викликатиметься щоразу, коли користувач вводить символ, і має повертати масив варіантів для автодоповнення:
 
 ```php
 $file = autocomplete(
@@ -973,9 +976,9 @@ $file = autocomplete(
 ```
 
 <a name="autocomplete-required"></a>
-#### Required Values
+#### Обов'язкові значення
 
-If you require a value to be entered, you may pass the `required` argument:
+Якщо ви вимагаєте, щоб значення було введено, передайте аргумент `required`:
 
 ```php
 $name = autocomplete(
@@ -985,7 +988,7 @@ $name = autocomplete(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+Якщо ви хочете змінити повідомлення про помилку валідації, передайте рядок:
 
 ```php
 $name = autocomplete(
@@ -996,9 +999,9 @@ $name = autocomplete(
 ```
 
 <a name="autocomplete-validation"></a>
-#### Additional Validation
+#### Додаткова валідація
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+Нарешті, якщо ви хочете виконати додаткову логіку валідації, передайте замикання в аргумент `validate`:
 
 ```php
 $name = autocomplete(
@@ -1012,12 +1015,12 @@ $name = autocomplete(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+Замикання отримає введене значення й може повернути повідомлення про помилку або `null`, якщо валідація пройшла.
 
 <a name="transforming-input-before-validation"></a>
-## Transforming Input Before Validation
+## Перетворення вводу перед валідацією
 
-Sometimes you may want to transform the prompt input before validation takes place. For example, you may wish to remove white space from any provided strings. To accomplish this, many of the prompt functions provide a `transform` argument, which accepts a closure:
+Іноді вам може знадобитися перетворити ввід промпту, перш ніж відбудеться валідація. Наприклад, ви можете захотіти прибрати пробіли з переданих рядків. Для цього багато функцій-промптів надають аргумент `transform`, який приймає замикання:
 
 ```php
 $name = text(
@@ -1032,9 +1035,9 @@ $name = text(
 ```
 
 <a name="forms"></a>
-## Forms
+## Форми
 
-Often, you will have multiple prompts that will be displayed in sequence to collect information before performing additional actions. You may use the `form` function to create a grouped set of prompts for the user to complete:
+Часто у вас буде кілька промптів, які показуються послідовно, щоб зібрати інформацію перед подальшими діями. Ви можете скористатися функцією `form`, щоб створити згрупований набір промптів для заповнення:
 
 ```php
 use function Laravel\Prompts\form;
@@ -1046,7 +1049,7 @@ $responses = form()
     ->submit();
 ```
 
-The `submit` method will return a numerically indexed array containing all of the responses from the form's prompts. However, you may provide a name for each prompt via the `name` argument. When a name is provided, the named prompt's response may be accessed via that name:
+Метод `submit` поверне масив із числовими індексами, що містить усі відповіді з промптів форми. Проте ви можете дати кожному промпту ім'я через аргумент `name`. Коли ім'я задано, до відповіді цього промпту можна звертатися за цим іменем:
 
 ```php
 use App\Models\User;
@@ -1068,9 +1071,9 @@ User::create([
 ]);
 ```
 
-The primary benefit of using the `form` function is the ability for the user to return to previous prompts in the form using `CTRL + U`. This allows the user to fix mistakes or alter selections without needing to cancel and restart the entire form.
+Головна перевага функції `form` - можливість повернутися до попередніх промптів форми через `CTRL + U`. Це дозволяє користувачеві виправити помилки чи змінити вибір, не скасовуючи й не починаючи форму заново.
 
-If you need more granular control over a prompt in a form, you may invoke the `add` method instead of calling one of the prompt functions directly. The `add` method is passed all previous responses provided by the user:
+Якщо вам потрібен тонший контроль над промптом у формі, викличте метод `add` замість того, щоб напряму викликати одну з функцій-промптів. Методу `add` передаються всі попередні відповіді користувача:
 
 ```php
 use function Laravel\Prompts\form;
@@ -1088,9 +1091,9 @@ outro("Your name is {$responses['name']} and you are {$responses['age']} years o
 ```
 
 <a name="informational-messages"></a>
-## Informational Messages
+## Інформаційні повідомлення
 
-The `note`, `info`, `warning`, `error`, and `alert` functions may be used to display informational messages:
+Функції `note`, `info`, `warning`, `error` та `alert` дозволяють показувати інформаційні повідомлення:
 
 ```php
 use function Laravel\Prompts\info;
@@ -1099,9 +1102,9 @@ info('Package installed successfully.');
 ```
 
 <a name="callouts"></a>
-## Callouts
+## Виноски
 
-The `callout` function displays a boxed message with a label and content. Callouts are useful for displaying important information that should stand out, such as deployment summaries, error details, or status updates:
+Функція `callout` показує повідомлення в рамці із заголовком і вмістом. Виноски стають у пригоді, щоб показати важливу інформацію, яка має вирізнятися, - як-от підсумки розгортання, деталі помилок чи оновлення статусу:
 
 ```php
 use function Laravel\Prompts\callout;
@@ -1112,7 +1115,7 @@ callout(
 );
 ```
 
-You may pass `warning` or `error` as the `type` argument to change the callout's visual style:
+Ви можете передати `warning` чи `error` в аргумент `type`, щоб змінити візуальний стиль виноски:
 
 ```php
 callout(
@@ -1128,7 +1131,7 @@ callout(
 );
 ```
 
-The `info` argument adds a footer line to the callout, which is useful for displaying metadata like IDs or timestamps:
+Аргумент `info` додає до виноски рядок-підвал, що стає в пригоді для показу метаданих на кшталт ID чи часових міток:
 
 ```php
 callout(
@@ -1139,9 +1142,9 @@ callout(
 ```
 
 <a name="callout-rich-content"></a>
-#### Rich Content
+#### Насичений вміст
 
-Instead of passing a string, you may pass an array of strings and elements to build rich, structured callouts. The `Element` class provides factory methods for creating headings, bulleted lists, numbered lists, key-value lists, and links:
+Замість рядка ви можете передати масив рядків та елементів, щоб побудувати насичені структуровані виноски. Клас `Element` надає фабричні методи для створення заголовків, марковані та нумеровані списки, списки «ключ - значення» та посилання:
 
 ```php
 use Laravel\Prompts\Elements\Element;
@@ -1165,7 +1168,7 @@ callout('Deployment Summary', [
 ]);
 ```
 
-You may also use `Element::keyValueList` to display labeled data:
+Ви також можете скористатися `Element::keyValueList`, щоб показати дані з підписами:
 
 ```php
 callout('Database Connection Failed', [
@@ -1179,7 +1182,7 @@ callout('Database Connection Failed', [
 ], type: 'error');
 ```
 
-The `Element::link` method creates a clickable hyperlink in terminals that support [OSC 8](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda). You may provide a URL alone, or a URL with a custom label:
+Метод `Element::link` створює клікабельне гіперпосилання в терміналах, які підтримують [OSC 8](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda). Ви можете передати сам URL або URL із власним підписом:
 
 ```php
 callout('Server Health Check', [
@@ -1190,12 +1193,12 @@ callout('Server Health Check', [
 ]);
 ```
 
-If no label is provided, the URL itself will be displayed as the link text.
+Якщо підпис не задано, як текст посилання буде показано сам URL.
 
 <a name="tables"></a>
-## Tables
+## Таблиці
 
-The `table` function makes it easy to display multiple rows and columns of data. All you need to do is provide the column names and the data for the table:
+Функція `table` дозволяє легко показати кілька рядків і стовпців даних. Усе, що вам треба, - передати імена стовпців і дані таблиці:
 
 ```php
 use function Laravel\Prompts\table;
@@ -1209,7 +1212,7 @@ table(
 <a name="spin"></a>
 ## Spin
 
-The `spin` function displays a spinner along with an optional message while executing a specified callback. It serves to indicate ongoing processes and returns the callback's results upon completion:
+Функція `spin` показує спінер разом із необов'язковим повідомленням, доки виконується заданий колбек. Вона слугує індикатором тривалих процесів і повертає результати колбека після завершення:
 
 ```php
 use function Laravel\Prompts\spin;
@@ -1221,12 +1224,12 @@ $response = spin(
 ```
 
 > [!WARNING]
-> The `spin` function requires the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
+> Функція `spin` вимагає розширення PHP [PCNTL](https://www.php.net/manual/en/book.pcntl.php), щоб анімувати спінер. Коли це розширення недоступне, натомість з'явиться статична версія спінера.
 
 <a name="progress"></a>
-## Progress Bars
+## Індикатори прогресу
 
-For long running tasks, it can be helpful to show a progress bar that informs users how complete the task is. Using the `progress` function, Laravel will display a progress bar and advance its progress for each iteration over a given iterable value:
+Для тривалих завдань буває корисно показати індикатор прогресу, який повідомляє користувачам, наскільки завдання виконане. За допомогою функції `progress` Laravel покаже індикатор прогресу й просуватиме його на кожній ітерації по заданому ітерабельному значенню:
 
 ```php
 use function Laravel\Prompts\progress;
@@ -1238,9 +1241,9 @@ $users = progress(
 );
 ```
 
-The `progress` function acts like a map function and will return an array containing the return value of each iteration of your callback.
+Функція `progress` працює як функція map і поверне масив із результатами кожної ітерації вашого колбека.
 
-The callback may also accept the `Laravel\Prompts\Progress` instance, allowing you to modify the label and hint on each iteration:
+Колбек може також приймати екземпляр `Laravel\Prompts\Progress`, що дозволяє змінювати підпис і підказку на кожній ітерації:
 
 ```php
 $users = progress(
@@ -1257,7 +1260,7 @@ $users = progress(
 );
 ```
 
-Sometimes, you may need more manual control over how a progress bar is advanced. First, define the total number of steps the process will iterate through. Then, advance the progress bar via the `advance` method after processing each item:
+Іноді вам може знадобитися ручніший контроль над просуванням індикатора. Спершу задайте загальну кількість кроків, які пройде процес. Далі просувайте індикатор методом `advance` після обробки кожного елемента:
 
 ```php
 $progress = progress(label: 'Updating users', steps: 10);
@@ -1278,7 +1281,7 @@ $progress->finish();
 <a name="task"></a>
 ## Task
 
-The `task` function displays a labeled task with a spinner and a scrolling live output area while a given callback is executing. It is ideal for wrapping long-running processes such as dependency installation or deployment scripts, providing real-time visibility into what is happening:
+Функція `task` показує підписане завдання зі спінером і прокручуваною областю живого виводу, доки виконується заданий колбек. Вона ідеальна, щоб обгорнути тривалі процеси - як-от встановлення залежностей чи скрипти розгортання, - даючи змогу бачити в реальному часі, що відбувається:
 
 ```php
 use function Laravel\Prompts\task;
@@ -1291,15 +1294,15 @@ task(
 );
 ```
 
-The callback receives a `Logger` instance that you may use to display log lines, status messages, and streamed text in the task's output area.
+Колбек отримує екземпляр `Logger`, яким ви можете показувати рядки логу, повідомлення про статус і потоковий текст в області виводу завдання.
 
 > [!WARNING]
-> The `task` function requires the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) PHP extension to animate the spinner. When this extension is not available, a static version of the task will appear instead.
+> Функція `task` вимагає розширення PHP [PCNTL](https://www.php.net/manual/en/book.pcntl.php), щоб анімувати спінер. Коли це розширення недоступне, натомість з'явиться статична версія завдання.
 
 <a name="task-logging"></a>
-#### Logging Lines
+#### Запис рядків логу
 
-The `line` method writes a single log line to the task's scrolling output area:
+Метод `line` пише один рядок логу до прокручуваної області виводу завдання:
 
 ```php
 task(
@@ -1314,9 +1317,9 @@ task(
 ```
 
 <a name="task-status-messages"></a>
-#### Status Messages
+#### Повідомлення про статус
 
-You may use the `success`, `warning`, and `error` methods to display status messages. These appear as stable, highlighted messages above the scrolling log area:
+Ви можете скористатися методами `success`, `warning` та `error`, щоб показувати повідомлення про статус. Вони з'являються як стабільні підсвічені повідомлення над прокручуваною областю логу:
 
 ```php
 task(
@@ -1338,9 +1341,9 @@ task(
 ```
 
 <a name="task-label"></a>
-#### Updating the Label
+#### Оновлення підпису
 
-The `label` method allows you to update the task's label while it is running:
+Метод `label` дозволяє оновлювати підпис завдання, доки воно виконується:
 
 ```php
 task(
@@ -1357,9 +1360,9 @@ task(
 ```
 
 <a name="task-sub-label"></a>
-#### Displaying a Sub-Label
+#### Показ підпідпису
 
-The `subLabel` method displays a dim line beneath the task's main label, which is useful for communicating ephemeral status such as the step currently in progress. Pass an empty string to clear the sub-label:
+Метод `subLabel` показує притлумлений рядок під головним підписом завдання, що стає в пригоді, щоб повідомляти тимчасовий статус - як-от крок, який виконується зараз. Передайте порожній рядок, щоб очистити підпідпис:
 
 ```php
 task(
@@ -1374,7 +1377,7 @@ task(
 );
 ```
 
-You may also provide an initial sub-label via the `subLabel` argument:
+Ви також можете задати початковий підпідпис через аргумент `subLabel`:
 
 ```php
 task(
@@ -1387,9 +1390,9 @@ task(
 ```
 
 <a name="task-streaming"></a>
-#### Streaming Text
+#### Потоковий текст
 
-For processes that produce output incrementally, such as AI-generated responses, the `partial` method allows you to stream text word-by-word or chunk-by-chunk. Once the stream is complete, call `commitPartial` to finalize the output:
+Для процесів, які видають вивід поступово - як-от згенеровані AI відповіді, - метод `partial` дозволяє транслювати текст слово за словом чи порція за порцією. Коли потік завершено, викличте `commitPartial`, щоб фіналізувати вивід:
 
 ```php
 task(
@@ -1405,9 +1408,9 @@ task(
 ```
 
 <a name="task-limit"></a>
-#### Customizing the Output Limit
+#### Налаштування ліміту виводу
 
-By default, the task displays up to 10 lines of scrolling output. You may customize this via the `limit` argument:
+За замовчуванням завдання показує до 10 рядків прокручуваного виводу. Ви можете змінити це через аргумент `limit`:
 
 ```php
 task(
@@ -1420,9 +1423,9 @@ task(
 ```
 
 <a name="task-keep-summary"></a>
-#### Keeping the Summary
+#### Збереження підсумку
 
-By default, the task's output is erased once the callback finishes. If you would like to keep the status messages on screen after the task has completed, you may pass the `keepSummary` argument:
+За замовчуванням вивід завдання стирається, щойно колбек завершується. Якщо ви хочете лишити повідомлення про статус на екрані після завершення завдання, передайте аргумент `keepSummary`:
 
 ```php
 task(
@@ -1439,7 +1442,7 @@ task(
 <a name="stream"></a>
 ## Stream
 
-The `stream` function displays text that streams into the terminal, ideal for displaying AI-generated content or any text that arrives incrementally:
+Функція `stream` показує текст, який транслюється в термінал, - ідеально для показу згенерованого AI вмісту чи будь-якого тексту, що надходить поступово:
 
 ```php
 use function Laravel\Prompts\stream;
@@ -1454,12 +1457,12 @@ foreach ($words as $word) {
 $stream->close();
 ```
 
-The `append` method adds text to the stream, rendering it with a gradual fade-in effect. When all content has been streamed, call the `close` method to finalize the output and restore the cursor.
+Метод `append` додає текст до потоку, рендерячи його з ефектом поступової появи. Коли весь вміст передано, викличте метод `close`, щоб фіналізувати вивід і повернути курсор.
 
 <a name="terminal-title"></a>
-## Terminal Title
+## Заголовок термінала
 
-The `title` function updates the title of the user's terminal window or tab:
+Функція `title` оновлює заголовок вікна чи вкладки термінала користувача:
 
 ```php
 use function Laravel\Prompts\title;
@@ -1467,16 +1470,16 @@ use function Laravel\Prompts\title;
 title('Installing Dependencies');
 ```
 
-To reset the terminal title back to its default, pass an empty string:
+Щоб скинути заголовок термінала до стандартного, передайте порожній рядок:
 
 ```php
 title('');
 ```
 
 <a name="clear"></a>
-## Clearing the Terminal
+## Очищення термінала
 
-The `clear` function may be used to clear the user's terminal:
+Функція `clear` дозволяє очистити термінал користувача:
 
 ```php
 use function Laravel\Prompts\clear;
@@ -1485,32 +1488,32 @@ clear();
 ```
 
 <a name="terminal-considerations"></a>
-## Terminal Considerations
+## Що врахувати щодо термінала
 
 <a name="terminal-width"></a>
-#### Terminal Width
+#### Ширина термінала
 
-If the length of any label, option, or validation message exceeds the number of "columns" in the user's terminal, it will be automatically truncated to fit. Consider minimizing the length of these strings if your users may be using narrower terminals. A typically safe maximum length is 74 characters to support an 80-character terminal.
+Якщо довжина будь-якого підпису, варіанта чи повідомлення про помилку валідації перевищує кількість «стовпців» у терміналі користувача, її буде автоматично обрізано. Подумайте про скорочення цих рядків, якщо ваші користувачі можуть працювати у вузьких терміналах. Зазвичай безпечна максимальна довжина - 74 символи, щоб підтримати 80-символьний термінал.
 
 <a name="terminal-height"></a>
-#### Terminal Height
+#### Висота термінала
 
-For any prompts that accept the `scroll` argument, the configured value will automatically be reduced to fit the height of the user's terminal, including space for a validation message.
+Для будь-яких промптів, що приймають аргумент `scroll`, задане значення буде автоматично зменшено під висоту термінала користувача - з урахуванням місця для повідомлення про помилку валідації.
 
 <a name="fallbacks"></a>
-## Unsupported Environments and Fallbacks
+## Непідтримувані середовища та запасні варіанти
 
-Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations in the Windows version of PHP, it is not currently possible to use Laravel Prompts on Windows outside of WSL.
+Laravel Prompts підтримує macOS, Linux і Windows із WSL. Через обмеження Windows-версії PHP наразі неможливо користуватися Laravel Prompts у Windows поза WSL.
 
-For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html).
+Тому Laravel Prompts підтримує запасний варіант з альтернативною реалізацією - як-от [Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html).
 
 > [!NOTE]
-> When using Laravel Prompts with the Laravel framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.
+> Коли ви користуєтеся Laravel Prompts разом із фреймворком Laravel, запасні варіанти для кожного промпту вже налаштовані за вас і автоматично вмикатимуться в непідтримуваних середовищах.
 
 <a name="fallback-conditions"></a>
-#### Fallback Conditions
+#### Умови запасного варіанта
 
-If you are not using Laravel or need to customize when the fallback behavior is used, you may pass a boolean to the `fallbackWhen` static method on the `Prompt` class:
+Якщо ви не користуєтеся Laravel або хочете налаштувати, коли саме застосовується запасна поведінка, передайте булеве значення статичному методу `fallbackWhen` класу `Prompt`:
 
 ```php
 use Laravel\Prompts\Prompt;
@@ -1521,9 +1524,9 @@ Prompt::fallbackWhen(
 ```
 
 <a name="fallback-behavior"></a>
-#### Fallback Behavior
+#### Запасна поведінка
 
-If you are not using Laravel or need to customize the fallback behavior, you may pass a closure to the `fallbackUsing` static method on each prompt class:
+Якщо ви не користуєтеся Laravel або хочете налаштувати запасну поведінку, передайте замикання статичному методу `fallbackUsing` кожного класу промпту:
 
 ```php
 use Laravel\Prompts\TextPrompt;
@@ -1555,12 +1558,12 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
 });
 ```
 
-Fallbacks must be configured individually for each prompt class. The closure will receive an instance of the prompt class and must return an appropriate type for the prompt.
+Запасні варіанти треба налаштовувати окремо для кожного класу промпту. Замикання отримає екземпляр класу промпту й має повернути тип, відповідний для цього промпту.
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
-Laravel provides a variety of methods for testing that your command displays the expected Prompt messages:
+Laravel надає різні методи, щоб перевірити, що ваша команда показує очікувані повідомлення Prompts:
 
 ```php tab=Pest
 test('report generation', function () {
