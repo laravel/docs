@@ -1,56 +1,60 @@
-# Database: Migrations
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 
-- [Introduction](#introduction)
-- [Generating Migrations](#generating-migrations)
-    - [Squashing Migrations](#squashing-migrations)
-- [Migration Structure](#migration-structure)
-- [Running Migrations](#running-migrations)
-    - [Rolling Back Migrations](#rolling-back-migrations)
-- [Tables](#tables)
-    - [Creating Tables](#creating-tables)
-    - [Updating Tables](#updating-tables)
-    - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
-- [Columns](#columns)
-    - [Creating Columns](#creating-columns)
-    - [Available Column Types](#available-column-types)
-    - [Column Modifiers](#column-modifiers)
-    - [Modifying Columns](#modifying-columns)
-    - [Renaming Columns](#renaming-columns)
-    - [Dropping Columns](#dropping-columns)
-- [Indexes](#indexes)
-    - [Creating Indexes](#creating-indexes)
-    - [Renaming Indexes](#renaming-indexes)
-    - [Dropping Indexes](#dropping-indexes)
-    - [Foreign Key Constraints](#foreign-key-constraints)
-- [Events](#events)
+# База даних: міграції
+
+- [Вступ](#introduction)
+- [Створення міграцій](#generating-migrations)
+    - [Стискання міграцій](#squashing-migrations)
+- [Структура міграції](#migration-structure)
+- [Запуск міграцій](#running-migrations)
+    - [Відкат міграцій](#rolling-back-migrations)
+- [Таблиці](#tables)
+    - [Створення таблиць](#creating-tables)
+    - [Оновлення таблиць](#updating-tables)
+    - [Перейменування та видалення таблиць](#renaming-and-dropping-tables)
+- [Стовпці](#columns)
+    - [Створення стовпців](#creating-columns)
+    - [Доступні типи стовпців](#available-column-types)
+    - [Модифікатори стовпців](#column-modifiers)
+    - [Зміна стовпців](#modifying-columns)
+    - [Перейменування стовпців](#renaming-columns)
+    - [Видалення стовпців](#dropping-columns)
+- [Індекси](#indexes)
+    - [Створення індексів](#creating-indexes)
+    - [Перейменування індексів](#renaming-indexes)
+    - [Видалення індексів](#dropping-indexes)
+    - [Обмеження зовнішніх ключів](#foreign-key-constraints)
+- [Події](#events)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Migrations are like version control for your database, allowing your team to define and share the application's database schema definition. If you have ever had to tell a teammate to manually add a column to their local database schema after pulling in your changes from source control, you've faced the problem that database migrations solve.
+Міграції - це наче контроль версій для вашої бази даних: вони дозволяють команді описувати та спільно використовувати схему бази даних застосунку. Якщо вам колись доводилося просити колегу вручну додати стовпець до своєї локальної схеми після того, як він підтягнув ваші зміни з репозиторію, - ви стикалися саме з тією проблемою, яку розв'язують міграції.
 
-The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables across all of Laravel's supported database systems. Typically, migrations will use this facade to create and modify database tables and columns.
+[Фасад](/docs/{{version}}/facades) `Schema` в Laravel дає незалежну від бази даних підтримку створення таблиць і роботи з ними в усіх підтримуваних Laravel системах баз даних. Зазвичай міграції користуються цим фасадом, щоб створювати й змінювати таблиці та стовпці.
 
 <a name="generating-migrations"></a>
-## Generating Migrations
+## Створення міграцій
 
-You may use the `make:migration` [Artisan command](/docs/{{version}}/artisan) to generate a database migration. The new migration will be placed in your `database/migrations` directory. Each migration filename contains a timestamp that allows Laravel to determine the order of the migrations:
+Щоб згенерувати міграцію, скористайтеся [artisan-командою](/docs/{{version}}/artisan) `make:migration`. Нова міграція потрапить до каталогу `database/migrations`. Назва кожного файлу міграції містить часову позначку, за якою Laravel визначає порядок міграцій:
 
 ```shell
 php artisan make:migration create_flights_table
 ```
 
-Laravel will use the name of the migration to attempt to guess the name of the table and whether or not the migration will be creating a new table. If Laravel is able to determine the table name from the migration name, Laravel will pre-fill the generated migration file with the specified table. Otherwise, you may simply specify the table in the migration file manually.
+Laravel спробує вгадати за назвою міграції, як називається таблиця і чи створює міграція нову таблицю. Якщо Laravel зможе визначити назву таблиці з назви міграції, він заздалегідь підставить цю таблицю у згенерований файл. Інакше ви просто вкажете таблицю у файлі міграції вручну.
 
-If you would like to specify a custom path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
+Якщо ви хочете задати власний шлях для згенерованої міграції, скористайтеся опцією `--path` під час виконання команди `make:migration`. Вказаний шлях має бути відносним до базового шляху вашого застосунку.
 
 > [!NOTE]
-> Migration stubs may be customized using [stub publishing](/docs/{{version}}/artisan#stub-customization).
+> Заготовки міграцій можна налаштувати через [публікацію заготовок](/docs/{{version}}/artisan#stub-customization).
 
 <a name="squashing-migrations"></a>
-### Squashing Migrations
+### Стискання міграцій
 
-As you build your application, you may accumulate more and more migrations over time. This can lead to your `database/migrations` directory becoming bloated with potentially hundreds of migrations. If you would like, you may "squash" your migrations into a single SQL file. To get started, execute the `schema:dump` command:
+Розробляючи застосунок, ви з часом накопичуєте все більше міграцій. Через це каталог `database/migrations` може розростися до сотень файлів. За бажанням ви можете «стиснути» міграції в один SQL-файл. Для початку виконайте команду `schema:dump`:
 
 ```shell
 php artisan schema:dump
@@ -59,26 +63,26 @@ php artisan schema:dump
 php artisan schema:dump --prune
 ```
 
-When you execute this command, Laravel will write a "schema" file to your application's `database/schema` directory. The schema file's name will correspond to the database connection. Now, when you attempt to migrate your database and no other migrations have been executed, Laravel will first execute the SQL statements in the schema file of the database connection you are using. After executing the schema file's SQL statements, Laravel will execute any remaining migrations that were not part of the schema dump.
+Коли ви виконуєте цю команду, Laravel запише файл «схеми» до каталогу `database/schema` вашого застосунку. Назва файлу схеми відповідатиме підключенню до бази даних. Тепер, коли ви спробуєте виконати міграції й жодної іншої міграції ще не виконано, Laravel спершу виконає SQL-запити з файлу схеми того підключення, яке ви використовуєте. А потім виконає всі решту міграцій, які не входили до дампу схеми.
 
-If your application's tests use a different database connection than the one you typically use during local development, you should ensure you have dumped a schema file using that database connection so that your tests are able to build your database. You may wish to do this after dumping the database connection you typically use during local development:
+Якщо тести вашого застосунку працюють з іншим підключенням до бази даних, ніж те, яким ви зазвичай користуєтеся локально, переконайтеся, що ви зробили дамп схеми і для цього підключення, - інакше тести не зможуть побудувати вашу базу. Це варто зробити після дампу того підключення, яким ви зазвичай користуєтеся під час локальної розробки:
 
 ```shell
 php artisan schema:dump
 php artisan schema:dump --database=testing --prune
 ```
 
-You should commit your database schema file to source control so that other new developers on your team may quickly create your application's initial database structure.
+Файл схеми бази даних варто закомітити в репозиторій, щоб нові розробники у вашій команді могли швидко створити початкову структуру бази даних застосунку.
 
 > [!WARNING]
-> Migration squashing is only available for the MariaDB, MySQL, PostgreSQL, and SQLite databases and utilizes the database's command-line client.
+> Стискання міграцій доступне лише для баз даних MariaDB, MySQL, PostgreSQL і SQLite і використовує консольний клієнт бази даних.
 
 <a name="migration-structure"></a>
-## Migration Structure
+## Структура міграції
 
-A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should reverse the operations performed by the `up` method.
+Клас міграції містить два методи: `up` і `down`. Метод `up` додає до бази даних нові таблиці, стовпці чи індекси, а метод `down` має скасовувати те, що зробив метод `up`.
 
-Within both of these methods, you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, the following migration creates a `flights` table:
+В обох методах ви можете користуватися конструктором схеми Laravel, щоб виразно створювати та змінювати таблиці. Про всі методи конструктора `Schema` читайте в [його документації](#creating-tables). Наприклад, ця міграція створює таблицю `flights`:
 
 ```php
 <?php
@@ -113,9 +117,9 @@ return new class extends Migration
 ```
 
 <a name="setting-the-migration-connection"></a>
-#### Setting the Migration Connection
+#### Задання підключення для міграції
 
-If your migration will be interacting with a database connection other than your application's default database connection, you should set the `$connection` property of your migration:
+Якщо ваша міграція працюватиме не з підключенням до бази даних за замовчуванням, задайте властивість `$connection` вашої міграції:
 
 ```php
 /**
@@ -135,9 +139,9 @@ public function up(): void
 ```
 
 <a name="skipping-migrations"></a>
-#### Skipping Migrations
+#### Пропуск міграцій
 
-Sometimes a migration might be meant to support a feature that is not yet active and you do not want it to run yet. In this case you may define a `shouldRun` method on the migration. If the `shouldRun` method returns `false`, the migration will be skipped:
+Іноді міграція призначена для можливості, яка ще не активна, і ви поки не хочете її виконувати. У такому разі опишіть у міграції метод `shouldRun`. Якщо `shouldRun` повертає `false`, міграцію буде пропущено:
 
 ```php
 use App\Models\Flight;
@@ -153,92 +157,92 @@ public function shouldRun(): bool
 ```
 
 <a name="running-migrations"></a>
-## Running Migrations
+## Запуск міграцій
 
-To run all of your outstanding migrations, execute the `migrate` Artisan command:
+Щоб виконати всі міграції, які ще не виконано, запустіть artisan-команду `migrate`:
 
 ```shell
 php artisan migrate
 ```
 
-If you would like to see which migrations have already run and which are still pending, you may use the `migrate:status` Artisan command:
+Якщо ви хочете побачити, які міграції вже виконано, а які ще очікують, скористайтеся artisan-командою `migrate:status`:
 
 ```shell
 php artisan migrate:status
 ```
 
-If you provide the `--step` option to the `migrate` command, the command will run each migration as its own batch, allowing you to roll back individual migrations later using the `migrate:rollback` command:
+Якщо передати команді `migrate` опцію `--step`, кожна міграція виконається як окремий пакет, і згодом ви зможете відкотити окремі міграції командою `migrate:rollback`:
 
 ```shell
 php artisan migrate --step
 ```
 
-If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate` command:
+Якщо ви хочете побачити SQL-запити, які виконають міграції, не запускаючи їх насправді, передайте команді `migrate` прапорець `--pretend`:
 
 ```shell
 php artisan migrate --pretend
 ```
 
 <a name="isolating-migration-execution"></a>
-#### Isolating Migration Execution
+#### Ізоляція виконання міграцій
 
-If you are deploying your application across multiple servers and running migrations as part of your deployment process, you likely do not want two servers attempting to migrate the database at the same time. To avoid this, you may use the `isolated` option when invoking the `migrate` command.
+Якщо ви розгортаєте застосунок на кількох серверах і виконуєте міграції в межах процесу розгортання, вам навряд чи потрібно, щоб два сервери одночасно намагалися міграцію виконати. Щоб цього не сталося, скористайтеся опцією `isolated` під час виклику команди `migrate`.
 
-When the `isolated` option is provided, Laravel will acquire an atomic lock using your application's cache driver before attempting to run your migrations. All other attempts to run the `migrate` command while that lock is held will not execute; however, the command will still exit with a successful exit status code:
+Коли передано опцію `isolated`, Laravel перед спробою виконати міграції отримає атомарне блокування через драйвер кешу вашого застосунку. Усі інші спроби запустити команду `migrate`, поки блокування тримається, не виконаються; проте команда все одно завершиться з кодом успішного виходу:
 
 ```shell
 php artisan migrate --isolated
 ```
 
 > [!WARNING]
-> To utilize this feature, your application must be using the `memcached`, `redis`, `dynamodb`, `database`, `file`, or `array` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+> Щоб скористатися цією можливістю, ваш застосунок має використовувати драйвер кешу `memcached`, `redis`, `dynamodb`, `database`, `file` або `array` як драйвер за замовчуванням. Крім того, усі сервери повинні спілкуватися з одним центральним сервером кешу.
 
 <a name="forcing-migrations-to-run-in-production"></a>
-#### Forcing Migrations to Run in Production
+#### Примусовий запуск міграцій на продакшні
 
-Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
+Деякі операції міграцій руйнівні, тобто через них ви можете втратити дані. Щоб убезпечити вас від запуску таких команд на продакшн-базі, Laravel запитає підтвердження, перш ніж їх виконати. Щоб виконати команди без запитання, скористайтеся прапорцем `--force`:
 
 ```shell
 php artisan migrate --force
 ```
 
 <a name="rolling-back-migrations"></a>
-### Rolling Back Migrations
+### Відкат міграцій
 
-To roll back the latest migration operation, you may use the `rollback` Artisan command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+Щоб відкотити останню операцію міграції, скористайтеся artisan-командою `rollback`. Вона відкочує останній «пакет» міграцій, який може містити кілька файлів:
 
 ```shell
 php artisan migrate:rollback
 ```
 
-You may roll back a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will roll back the last five migrations:
+Ви можете відкотити обмежену кількість міграцій, передавши команді `rollback` опцію `step`. Наприклад, ця команда відкотить останні п'ять міграцій:
 
 ```shell
 php artisan migrate:rollback --step=5
 ```
 
-You may roll back a specific "batch" of migrations by providing the `batch` option to the `rollback` command, where the `batch` option corresponds to a batch value within your application's `migrations` database table. For example, the following command will roll back all migrations in batch three:
+Ви можете відкотити конкретний «пакет» міграцій, передавши команді `rollback` опцію `batch`, значення якої відповідає значенню batch у таблиці `migrations` вашої бази даних. Наприклад, ця команда відкотить усі міграції з пакета номер три:
 
 ```shell
 php artisan migrate:rollback --batch=3
 ```
 
-If you would like to see the SQL statements that will be executed by the migrations without actually running them, you may provide the `--pretend` flag to the `migrate:rollback` command:
+Якщо ви хочете побачити SQL-запити, які виконають міграції, не запускаючи їх насправді, передайте команді `migrate:rollback` прапорець `--pretend`:
 
 ```shell
 php artisan migrate:rollback --pretend
 ```
 
-The `migrate:reset` command will roll back all of your application's migrations:
+Команда `migrate:reset` відкотить усі міграції вашого застосунку:
 
 ```shell
 php artisan migrate:reset
 ```
 
 <a name="roll-back-migrate-using-a-single-command"></a>
-#### Roll Back and Migrate Using a Single Command
+#### Відкат і міграція однією командою
 
-The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
+Команда `migrate:refresh` відкотить усі ваші міграції, а потім виконає команду `migrate`. Фактично вона перестворює всю вашу базу даних:
 
 ```shell
 php artisan migrate:refresh
@@ -247,16 +251,16 @@ php artisan migrate:refresh
 php artisan migrate:refresh --seed
 ```
 
-You may roll back and re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will roll back and re-migrate the last five migrations:
+Ви можете відкотити й повторно виконати обмежену кількість міграцій, передавши команді `refresh` опцію `step`. Наприклад, ця команда відкотить і виконає заново останні п'ять міграцій:
 
 ```shell
 php artisan migrate:refresh --step=5
 ```
 
 <a name="drop-all-tables-migrate"></a>
-#### Drop All Tables and Migrate
+#### Видалення всіх таблиць і міграція
 
-The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
+Команда `migrate:fresh` видалить із бази даних усі таблиці, а потім виконає команду `migrate`:
 
 ```shell
 php artisan migrate:fresh
@@ -264,22 +268,22 @@ php artisan migrate:fresh
 php artisan migrate:fresh --seed
 ```
 
-By default, the `migrate:fresh` command only drops tables from the default database connection. However, you may use the `--database` option to specify the database connection that should be migrated. The database connection name should correspond to a connection defined in your application's `database` [configuration file](/docs/{{version}}/configuration):
+За замовчуванням команда `migrate:fresh` видаляє таблиці лише з підключення за замовчуванням. Втім, опцією `--database` ви можете вказати, яке підключення слід міграціювати. Назва підключення має відповідати підключенню, описаному у [файлі конфігурації](/docs/{{version}}/configuration) `database` вашого застосунку:
 
 ```shell
 php artisan migrate:fresh --database=admin
 ```
 
 > [!WARNING]
-> The `migrate:fresh` command will drop all database tables regardless of their prefix. This command should be used with caution when developing on a database that is shared with other applications.
+> Команда `migrate:fresh` видалить усі таблиці бази даних незалежно від їхнього префікса. Користуйтеся нею обережно, якщо розробляєте на базі даних, спільній з іншими застосунками.
 
 <a name="tables"></a>
-## Tables
+## Таблиці
 
 <a name="creating-tables"></a>
-### Creating Tables
+### Створення таблиць
 
-To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments: the first is the name of the table, while the second is a closure which receives a `Blueprint` object that may be used to define the new table:
+Щоб створити нову таблицю, скористайтеся методом `create` фасаду `Schema`. Метод `create` приймає два аргументи: перший - назва таблиці, другий - замикання, яке отримує об'єкт `Blueprint` для опису нової таблиці:
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
@@ -293,12 +297,12 @@ Schema::create('users', function (Blueprint $table) {
 });
 ```
 
-When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
+Створюючи таблицю, ви можете описувати її стовпці будь-якими [методами стовпців](#creating-columns) конструктора схеми.
 
 <a name="determining-table-column-existence"></a>
-#### Determining Table / Column Existence
+#### Перевірка існування таблиці чи стовпця
 
-You may determine the existence of a table, column, or index using the `hasTable`, `hasColumn`, and `hasIndex` methods:
+Перевірити, чи існує таблиця, стовпець або індекс, можна методами `hasTable`, `hasColumn` і `hasIndex`:
 
 ```php
 if (Schema::hasTable('users')) {
@@ -315,9 +319,9 @@ if (Schema::hasIndex('users', ['email'], 'unique')) {
 ```
 
 <a name="database-connection-table-options"></a>
-#### Database Connection and Table Options
+#### Підключення до бази даних та опції таблиці
 
-If you want to perform a schema operation on a database connection that is not your application's default connection, use the `connection` method:
+Якщо ви хочете виконати операцію зі схемою не на підключенні за замовчуванням, скористайтеся методом `connection`:
 
 ```php
 Schema::connection('sqlite')->create('users', function (Blueprint $table) {
@@ -325,7 +329,7 @@ Schema::connection('sqlite')->create('users', function (Blueprint $table) {
 });
 ```
 
-In addition, a few other properties and methods may be used to define other aspects of the table's creation. The `engine` property may be used to specify the table's storage engine when using MariaDB or MySQL:
+Крім того, кілька інших властивостей і методів дозволяють задати інші аспекти створення таблиці. Властивістю `engine` можна вказати рушій сховища таблиці на MariaDB чи MySQL:
 
 ```php
 Schema::create('users', function (Blueprint $table) {
@@ -335,7 +339,7 @@ Schema::create('users', function (Blueprint $table) {
 });
 ```
 
-The `charset` and `collation` properties may be used to specify the character set and collation for the created table when using MariaDB or MySQL:
+Властивостями `charset` і `collation` можна задати кодування та порядок сортування для створюваної таблиці на MariaDB чи MySQL:
 
 ```php
 Schema::create('users', function (Blueprint $table) {
@@ -346,7 +350,7 @@ Schema::create('users', function (Blueprint $table) {
 });
 ```
 
-The `temporary` method may be used to indicate that the table should be "temporary". Temporary tables are only visible to the current connection's database session and are dropped automatically when the connection is closed:
+Методом `temporary` можна вказати, що таблиця має бути «тимчасовою». Тимчасові таблиці видимі лише в межах сесії поточного підключення й автоматично видаляються, коли підключення закривається:
 
 ```php
 Schema::create('calculations', function (Blueprint $table) {
@@ -356,7 +360,7 @@ Schema::create('calculations', function (Blueprint $table) {
 });
 ```
 
-If you would like to add a "comment" to a database table, you may invoke the `comment` method on the table instance. Table comments are currently only supported by MariaDB, MySQL, and PostgreSQL:
+Якщо ви хочете додати до таблиці «коментар», викличте метод `comment` на екземплярі таблиці. Коментарі до таблиць наразі підтримують лише MariaDB, MySQL і PostgreSQL:
 
 ```php
 Schema::create('calculations', function (Blueprint $table) {
@@ -367,9 +371,9 @@ Schema::create('calculations', function (Blueprint $table) {
 ```
 
 <a name="updating-tables"></a>
-### Updating Tables
+### Оновлення таблиць
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives a `Blueprint` instance you may use to add columns or indexes to the table:
+Методом `table` фасаду `Schema` можна оновлювати наявні таблиці. Як і `create`, метод `table` приймає два аргументи: назву таблиці та замикання, яке отримує екземпляр `Blueprint` для додавання стовпців чи індексів:
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
@@ -381,9 +385,9 @@ Schema::table('users', function (Blueprint $table) {
 ```
 
 <a name="renaming-and-dropping-tables"></a>
-### Renaming / Dropping Tables
+### Перейменування та видалення таблиць
 
-To rename an existing database table, use the `rename` method:
+Щоб перейменувати наявну таблицю, скористайтеся методом `rename`:
 
 ```php
 use Illuminate\Support\Facades\Schema;
@@ -391,7 +395,7 @@ use Illuminate\Support\Facades\Schema;
 Schema::rename($from, $to);
 ```
 
-To drop an existing table, you may use the `drop` or `dropIfExists` methods:
+Щоб видалити наявну таблицю, скористайтеся методами `drop` або `dropIfExists`:
 
 ```php
 Schema::drop('users');
@@ -400,17 +404,17 @@ Schema::dropIfExists('users');
 ```
 
 <a name="renaming-tables-with-foreign-keys"></a>
-#### Renaming Tables With Foreign Keys
+#### Перейменування таблиць із зовнішніми ключами
 
-Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name.
+Перш ніж перейменовувати таблицю, переконайтеся, що всі обмеження зовнішніх ключів на ній мають у ваших файлах міграцій явну назву, а не ту, яку Laravel призначає за конвенцією. Інакше назва обмеження зовнішнього ключа посилатиметься на стару назву таблиці.
 
 <a name="columns"></a>
-## Columns
+## Стовпці
 
 <a name="creating-columns"></a>
-### Creating Columns
+### Створення стовпців
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a closure that receives an `Illuminate\Database\Schema\Blueprint` instance you may use to add columns to the table:
+Методом `table` фасаду `Schema` можна оновлювати наявні таблиці. Як і `create`, метод `table` приймає два аргументи: назву таблиці та замикання, яке отримує екземпляр `Illuminate\Database\Schema\Blueprint` для додавання стовпців:
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
@@ -422,33 +426,12 @@ Schema::table('users', function (Blueprint $table) {
 ```
 
 <a name="available-column-types"></a>
-### Available Column Types
+### Доступні типи стовпців
 
-The schema builder blueprint offers a variety of methods that correspond to the different types of columns you can add to your database tables. Each of the available methods are listed in the table below:
-
-<style>
-    .collection-method-list > p {
-        columns: 10.8em 3; -moz-columns: 10.8em 3; -webkit-columns: 10.8em 3;
-    }
-
-    .collection-method-list a {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .collection-method code {
-        font-size: 14px;
-    }
-
-    .collection-method:not(.first-collection-method) {
-        margin-top: 50px;
-    }
-</style>
+Blueprint конструктора схеми має цілу низку методів, що відповідають різним типам стовпців, які ви можете додати до таблиць. Усі доступні методи перелічено в таблиці нижче:
 
 <a name="booleans-method-list"></a>
-#### Boolean Types
+#### Логічні типи
 
 <div class="collection-method-list" markdown="1">
 
@@ -457,7 +440,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="strings-and-texts-method-list"></a>
-#### String & Text Types
+#### Рядкові та текстові типи
 
 <div class="collection-method-list" markdown="1">
 
@@ -471,7 +454,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="numbers--method-list"></a>
-#### Numeric Types
+#### Числові типи
 
 <div class="collection-method-list" markdown="1">
 
@@ -498,7 +481,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="dates-and-times-method-list"></a>
-#### Date & Time Types
+#### Типи дати й часу
 
 <div class="collection-method-list" markdown="1">
 
@@ -517,7 +500,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="binaries-method-list"></a>
-#### Binary Types
+#### Бінарні типи
 
 <div class="collection-method-list" markdown="1">
 
@@ -526,7 +509,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="object-and-jsons-method-list"></a>
-#### Object & Json Types
+#### Об'єктні типи та JSON
 
 <div class="collection-method-list" markdown="1">
 
@@ -536,7 +519,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="uuids-and-ulids-method-list"></a>
-#### UUID & ULID Types
+#### Типи UUID та ULID
 
 <div class="collection-method-list" markdown="1">
 
@@ -550,7 +533,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="spatials-method-list"></a>
-#### Spatial Types
+#### Просторові типи
 
 <div class="collection-method-list" markdown="1">
 
@@ -560,7 +543,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="relationship-method-list"></a>
-#### Relationship Types
+#### Типи для зв'язків
 
 <div class="collection-method-list" markdown="1">
 
@@ -575,7 +558,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 </div>
 
 <a name="specifics-method-list"></a>
-#### Specialty Types
+#### Спеціальні типи
 
 <div class="collection-method-list" markdown="1">
 
@@ -591,7 +574,7 @@ The schema builder blueprint offers a variety of methods that correspond to the 
 <a name="column-method-bigIncrements"></a>
 #### `bigIncrements()` {.collection-method .first-collection-method}
 
-The `bigIncrements` method creates an auto-incrementing `UNSIGNED BIGINT` (primary key) equivalent column:
+Метод `bigIncrements` створює автоінкрементний стовпець, еквівалентний `UNSIGNED BIGINT` (первинний ключ):
 
 ```php
 $table->bigIncrements('id');
@@ -600,7 +583,7 @@ $table->bigIncrements('id');
 <a name="column-method-bigInteger"></a>
 #### `bigInteger()` {.collection-method}
 
-The `bigInteger` method creates a `BIGINT` equivalent column:
+Метод `bigInteger` створює стовпець, еквівалентний `BIGINT`:
 
 ```php
 $table->bigInteger('votes');
@@ -609,13 +592,13 @@ $table->bigInteger('votes');
 <a name="column-method-binary"></a>
 #### `binary()` {.collection-method}
 
-The `binary` method creates a `BLOB` equivalent column:
+Метод `binary` створює стовпець, еквівалентний `BLOB`:
 
 ```php
 $table->binary('photo');
 ```
 
-When utilizing MySQL, MariaDB, or SQL Server, you may pass `length` and `fixed` arguments to create `VARBINARY` or `BINARY` equivalent column:
+На MySQL, MariaDB чи SQL Server ви можете передати аргументи `length` і `fixed`, щоб створити стовпець, еквівалентний `VARBINARY` або `BINARY`:
 
 ```php
 $table->binary('data', length: 16); // VARBINARY(16)
@@ -626,7 +609,7 @@ $table->binary('data', length: 16, fixed: true); // BINARY(16)
 <a name="column-method-boolean"></a>
 #### `boolean()` {.collection-method}
 
-The `boolean` method creates a `BOOLEAN` equivalent column:
+Метод `boolean` створює стовпець, еквівалентний `BOOLEAN`:
 
 ```php
 $table->boolean('confirmed');
@@ -635,7 +618,7 @@ $table->boolean('confirmed');
 <a name="column-method-char"></a>
 #### `char()` {.collection-method}
 
-The `char` method creates a `CHAR` equivalent column with of a given length:
+Метод `char` створює стовпець, еквівалентний `CHAR`, заданої довжини:
 
 ```php
 $table->char('name', length: 100);
@@ -644,7 +627,7 @@ $table->char('name', length: 100);
 <a name="column-method-dateTimeTz"></a>
 #### `dateTimeTz()` {.collection-method}
 
-The `dateTimeTz` method creates a `DATETIME` (with timezone) equivalent column with an optional fractional seconds precision:
+Метод `dateTimeTz` створює стовпець, еквівалентний `DATETIME` (з часовою зоною), з необов'язковою точністю дробових секунд:
 
 ```php
 $table->dateTimeTz('created_at', precision: 0);
@@ -653,7 +636,7 @@ $table->dateTimeTz('created_at', precision: 0);
 <a name="column-method-dateTime"></a>
 #### `dateTime()` {.collection-method}
 
-The `dateTime` method creates a `DATETIME` equivalent column with an optional fractional seconds precision:
+Метод `dateTime` створює стовпець, еквівалентний `DATETIME`, з необов'язковою точністю дробових секунд:
 
 ```php
 $table->dateTime('created_at', precision: 0);
@@ -662,7 +645,7 @@ $table->dateTime('created_at', precision: 0);
 <a name="column-method-date"></a>
 #### `date()` {.collection-method}
 
-The `date` method creates a `DATE` equivalent column:
+Метод `date` створює стовпець, еквівалентний `DATE`:
 
 ```php
 $table->date('created_at');
@@ -671,7 +654,7 @@ $table->date('created_at');
 <a name="column-method-decimal"></a>
 #### `decimal()` {.collection-method}
 
-The `decimal` method creates a `DECIMAL` equivalent column with the given precision (total digits) and scale (decimal digits):
+Метод `decimal` створює стовпець, еквівалентний `DECIMAL`, із заданою точністю (загальна кількість цифр) і масштабом (кількість цифр після коми):
 
 ```php
 $table->decimal('amount', total: 8, places: 2);
@@ -680,7 +663,7 @@ $table->decimal('amount', total: 8, places: 2);
 <a name="column-method-double"></a>
 #### `double()` {.collection-method}
 
-The `double` method creates a `DOUBLE` equivalent column:
+Метод `double` створює стовпець, еквівалентний `DOUBLE`:
 
 ```php
 $table->double('amount');
@@ -689,13 +672,13 @@ $table->double('amount');
 <a name="column-method-enum"></a>
 #### `enum()` {.collection-method}
 
-The `enum` method creates a `ENUM` equivalent column with the given valid values:
+Метод `enum` створює стовпець, еквівалентний `ENUM`, із заданими допустимими значеннями:
 
 ```php
 $table->enum('difficulty', ['easy', 'hard']);
 ```
 
-Of course, you may use the `Enum::cases()` method instead of manually defining an array of allowed values:
+Звісно, замість того щоб описувати масив допустимих значень вручну, ви можете скористатися методом `Enum::cases()`:
 
 ```php
 use App\Enums\Difficulty;
@@ -706,7 +689,7 @@ $table->enum('difficulty', Difficulty::cases());
 <a name="column-method-float"></a>
 #### `float()` {.collection-method}
 
-The `float` method creates a `FLOAT` equivalent column with the given precision:
+Метод `float` створює стовпець, еквівалентний `FLOAT`, із заданою точністю:
 
 ```php
 $table->float('amount', precision: 53);
@@ -715,7 +698,7 @@ $table->float('amount', precision: 53);
 <a name="column-method-foreignId"></a>
 #### `foreignId()` {.collection-method}
 
-The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column:
+Метод `foreignId` створює стовпець, еквівалентний `UNSIGNED BIGINT`:
 
 ```php
 $table->foreignId('user_id');
@@ -724,7 +707,7 @@ $table->foreignId('user_id');
 <a name="column-method-foreignIdFor"></a>
 #### `foreignIdFor()` {.collection-method}
 
-The `foreignIdFor` method adds a `{column}_id` equivalent column for a given model class. The column type will be `UNSIGNED BIGINT`, `CHAR(36)`, or `CHAR(26)` depending on the model key type:
+Метод `foreignIdFor` додає для заданого класу моделі стовпець, еквівалентний `{column}_id`. Тип стовпця буде `UNSIGNED BIGINT`, `CHAR(36)` або `CHAR(26)` - залежно від типу ключа моделі:
 
 ```php
 $table->foreignIdFor(User::class);
@@ -733,7 +716,7 @@ $table->foreignIdFor(User::class);
 <a name="column-method-foreignUlid"></a>
 #### `foreignUlid()` {.collection-method}
 
-The `foreignUlid` method creates a `ULID` equivalent column:
+Метод `foreignUlid` створює стовпець, еквівалентний `ULID`:
 
 ```php
 $table->foreignUlid('user_id');
@@ -742,7 +725,7 @@ $table->foreignUlid('user_id');
 <a name="column-method-foreignUuid"></a>
 #### `foreignUuid()` {.collection-method}
 
-The `foreignUuid` method creates a `UUID` equivalent column:
+Метод `foreignUuid` створює стовпець, еквівалентний `UUID`:
 
 ```php
 $table->foreignUuid('user_id');
@@ -751,7 +734,7 @@ $table->foreignUuid('user_id');
 <a name="column-method-foreignUuidFor"></a>
 #### `foreignUuidFor()` {.collection-method}
 
-The `foreignUuidFor` method adds a `{column}_id` UUID equivalent column for a given model class:
+Метод `foreignUuidFor` додає для заданого класу моделі стовпець `{column}_id`, еквівалентний UUID:
 
 ```php
 $table->foreignUuidFor(User::class);
@@ -760,31 +743,31 @@ $table->foreignUuidFor(User::class);
 <a name="column-method-geography"></a>
 #### `geography()` {.collection-method}
 
-The `geography` method creates a `GEOGRAPHY` equivalent column with the given spatial type and SRID (Spatial Reference System Identifier):
+Метод `geography` створює стовпець, еквівалентний `GEOGRAPHY`, із заданим просторовим типом і SRID (Spatial Reference System Identifier):
 
 ```php
 $table->geography('coordinates', subtype: 'point', srid: 4326);
 ```
 
 > [!NOTE]
-> Support for spatial types depends on your database driver. Please refer to your database's documentation. If your application is utilizing a PostgreSQL database, you must install the [PostGIS](https://postgis.net) extension before the `geography` method may be used.
+> Підтримка просторових типів залежить від драйвера вашої бази даних. Звіряйтеся з документацією своєї бази. Якщо ваш застосунок працює з PostgreSQL, перед використанням методу `geography` потрібно встановити розширення [PostGIS](https://postgis.net).
 
 <a name="column-method-geometry"></a>
 #### `geometry()` {.collection-method}
 
-The `geometry` method creates a `GEOMETRY` equivalent column with the given spatial type and SRID (Spatial Reference System Identifier):
+Метод `geometry` створює стовпець, еквівалентний `GEOMETRY`, із заданим просторовим типом і SRID (Spatial Reference System Identifier):
 
 ```php
 $table->geometry('positions', subtype: 'point', srid: 0);
 ```
 
 > [!NOTE]
-> Support for spatial types depends on your database driver. Please refer to your database's documentation. If your application is utilizing a PostgreSQL database, you must install the [PostGIS](https://postgis.net) extension before the `geometry` method may be used.
+> Підтримка просторових типів залежить від драйвера вашої бази даних. Звіряйтеся з документацією своєї бази. Якщо ваш застосунок працює з PostgreSQL, перед використанням методу `geometry` потрібно встановити розширення [PostGIS](https://postgis.net).
 
 <a name="column-method-id"></a>
 #### `id()` {.collection-method}
 
-The `id` method is an alias of the `bigIncrements` method. By default, the method will create an `id` column; however, you may pass a column name if you would like to assign a different name to the column:
+Метод `id` - псевдонім методу `bigIncrements`. За замовчуванням він створює стовпець `id`; втім, ви можете передати назву стовпця, якщо хочете назвати його інакше:
 
 ```php
 $table->id();
@@ -793,7 +776,7 @@ $table->id();
 <a name="column-method-increments"></a>
 #### `increments()` {.collection-method}
 
-The `increments` method creates an auto-incrementing `UNSIGNED INTEGER` equivalent column as a primary key:
+Метод `increments` створює автоінкрементний стовпець, еквівалентний `UNSIGNED INTEGER`, як первинний ключ:
 
 ```php
 $table->increments('id');
@@ -802,7 +785,7 @@ $table->increments('id');
 <a name="column-method-integer"></a>
 #### `integer()` {.collection-method}
 
-The `integer` method creates an `INTEGER` equivalent column:
+Метод `integer` створює стовпець, еквівалентний `INTEGER`:
 
 ```php
 $table->integer('votes');
@@ -811,46 +794,46 @@ $table->integer('votes');
 <a name="column-method-ipAddress"></a>
 #### `ipAddress()` {.collection-method}
 
-The `ipAddress` method creates a `VARCHAR` equivalent column:
+Метод `ipAddress` створює стовпець, еквівалентний `VARCHAR`:
 
 ```php
 $table->ipAddress('visitor');
 ```
 
-When using PostgreSQL, an `INET` column will be created.
+На PostgreSQL буде створено стовпець `INET`.
 
 <a name="column-method-json"></a>
 #### `json()` {.collection-method}
 
-The `json` method creates a `JSON` equivalent column:
+Метод `json` створює стовпець, еквівалентний `JSON`:
 
 ```php
 $table->json('options');
 ```
 
-When using SQLite, a `TEXT` column will be created.
+На SQLite буде створено стовпець `TEXT`.
 
 <a name="column-method-jsonb"></a>
 #### `jsonb()` {.collection-method}
 
-The `jsonb` method creates a `JSONB` equivalent column:
+Метод `jsonb` створює стовпець, еквівалентний `JSONB`:
 
 ```php
 $table->jsonb('options');
 ```
 
-When using SQLite, a `TEXT` column will be created.
+На SQLite буде створено стовпець `TEXT`.
 
 <a name="column-method-longText"></a>
 #### `longText()` {.collection-method}
 
-The `longText` method creates a `LONGTEXT` equivalent column:
+Метод `longText` створює стовпець, еквівалентний `LONGTEXT`:
 
 ```php
 $table->longText('description');
 ```
 
-When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `LONGBLOB` equivalent column:
+На MySQL чи MariaDB ви можете застосувати до стовпця кодування `binary`, щоб створити стовпець, еквівалентний `LONGBLOB`:
 
 ```php
 $table->longText('data')->charset('binary'); // LONGBLOB
@@ -859,7 +842,7 @@ $table->longText('data')->charset('binary'); // LONGBLOB
 <a name="column-method-macAddress"></a>
 #### `macAddress()` {.collection-method}
 
-The `macAddress` method creates a column that is intended to hold a MAC address. Some database systems, such as PostgreSQL, have a dedicated column type for this type of data. Other database systems will use a string equivalent column:
+Метод `macAddress` створює стовпець, призначений для зберігання MAC-адреси. Деякі системи баз даних, як-от PostgreSQL, мають для таких даних окремий тип стовпця. Інші використають стовпець, еквівалентний рядковому:
 
 ```php
 $table->macAddress('device');
@@ -868,7 +851,7 @@ $table->macAddress('device');
 <a name="column-method-mediumIncrements"></a>
 #### `mediumIncrements()` {.collection-method}
 
-The `mediumIncrements` method creates an auto-incrementing `UNSIGNED MEDIUMINT` equivalent column as a primary key:
+Метод `mediumIncrements` створює автоінкрементний стовпець, еквівалентний `UNSIGNED MEDIUMINT`, як первинний ключ:
 
 ```php
 $table->mediumIncrements('id');
@@ -877,7 +860,7 @@ $table->mediumIncrements('id');
 <a name="column-method-mediumInteger"></a>
 #### `mediumInteger()` {.collection-method}
 
-The `mediumInteger` method creates a `MEDIUMINT` equivalent column:
+Метод `mediumInteger` створює стовпець, еквівалентний `MEDIUMINT`:
 
 ```php
 $table->mediumInteger('votes');
@@ -886,13 +869,13 @@ $table->mediumInteger('votes');
 <a name="column-method-mediumText"></a>
 #### `mediumText()` {.collection-method}
 
-The `mediumText` method creates a `MEDIUMTEXT` equivalent column:
+Метод `mediumText` створює стовпець, еквівалентний `MEDIUMTEXT`:
 
 ```php
 $table->mediumText('description');
 ```
 
-When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `MEDIUMBLOB` equivalent column:
+На MySQL чи MariaDB ви можете застосувати до стовпця кодування `binary`, щоб створити стовпець, еквівалентний `MEDIUMBLOB`:
 
 ```php
 $table->mediumText('data')->charset('binary'); // MEDIUMBLOB
@@ -901,9 +884,9 @@ $table->mediumText('data')->charset('binary'); // MEDIUMBLOB
 <a name="column-method-morphs"></a>
 #### `morphs()` {.collection-method}
 
-The `morphs` method is a convenience method that adds a `{column}_type` `VARCHAR` equivalent column and a `{column}_id` equivalent column. The column type for the `{column}_id` will be `UNSIGNED BIGINT`, `CHAR(36)`, or `CHAR(26)` depending on the model key type.
+Метод `morphs` - це зручний метод, який додає стовпець `{column}_type`, еквівалентний `VARCHAR`, і стовпець `{column}_id`. Тип стовпця `{column}_id` буде `UNSIGNED BIGINT`, `CHAR(36)` або `CHAR(26)` - залежно від типу ключа моделі.
 
-This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships). In the following example, `taggable_type` and `taggable_id` columns would be created:
+Цей метод призначений для опису стовпців, потрібних для поліморфного [зв'язку Eloquent](/docs/{{version}}/eloquent-relationships). У прикладі нижче буде створено стовпці `taggable_type` і `taggable_id`:
 
 ```php
 $table->morphs('taggable');
@@ -912,7 +895,7 @@ $table->morphs('taggable');
 <a name="column-method-nullableMorphs"></a>
 #### `nullableMorphs()` {.collection-method}
 
-The method is similar to the [morphs](#column-method-morphs) method; however, the columns that are created will be "nullable":
+Метод схожий на [morphs](#column-method-morphs), але створені стовпці будуть «nullable»:
 
 ```php
 $table->nullableMorphs('taggable');
@@ -921,7 +904,7 @@ $table->nullableMorphs('taggable');
 <a name="column-method-nullableUlidMorphs"></a>
 #### `nullableUlidMorphs()` {.collection-method}
 
-The method is similar to the [ulidMorphs](#column-method-ulidMorphs) method; however, the columns that are created will be "nullable":
+Метод схожий на [ulidMorphs](#column-method-ulidMorphs), але створені стовпці будуть «nullable»:
 
 ```php
 $table->nullableUlidMorphs('taggable');
@@ -930,7 +913,7 @@ $table->nullableUlidMorphs('taggable');
 <a name="column-method-nullableUuidMorphs"></a>
 #### `nullableUuidMorphs()` {.collection-method}
 
-The method is similar to the [uuidMorphs](#column-method-uuidMorphs) method; however, the columns that are created will be "nullable":
+Метод схожий на [uuidMorphs](#column-method-uuidMorphs), але створені стовпці будуть «nullable»:
 
 ```php
 $table->nullableUuidMorphs('taggable');
@@ -939,7 +922,7 @@ $table->nullableUuidMorphs('taggable');
 <a name="column-method-rememberToken"></a>
 #### `rememberToken()` {.collection-method}
 
-The `rememberToken` method creates a nullable, `VARCHAR(100)` equivalent column that is intended to store the current "remember me" [authentication token](/docs/{{version}}/authentication#remembering-users):
+Метод `rememberToken` створює nullable-стовпець, еквівалентний `VARCHAR(100)`, призначений для зберігання поточного [токена автентифікації](/docs/{{version}}/authentication#remembering-users) «запам'ятати мене»:
 
 ```php
 $table->rememberToken();
@@ -948,7 +931,7 @@ $table->rememberToken();
 <a name="column-method-set"></a>
 #### `set()` {.collection-method}
 
-The `set` method creates a `SET` equivalent column with the given list of valid values:
+Метод `set` створює стовпець, еквівалентний `SET`, із заданим списком допустимих значень:
 
 ```php
 $table->set('flavors', ['strawberry', 'vanilla']);
@@ -957,7 +940,7 @@ $table->set('flavors', ['strawberry', 'vanilla']);
 <a name="column-method-smallIncrements"></a>
 #### `smallIncrements()` {.collection-method}
 
-The `smallIncrements` method creates an auto-incrementing `UNSIGNED SMALLINT` equivalent column as a primary key:
+Метод `smallIncrements` створює автоінкрементний стовпець, еквівалентний `UNSIGNED SMALLINT`, як первинний ключ:
 
 ```php
 $table->smallIncrements('id');
@@ -966,7 +949,7 @@ $table->smallIncrements('id');
 <a name="column-method-smallInteger"></a>
 #### `smallInteger()` {.collection-method}
 
-The `smallInteger` method creates a `SMALLINT` equivalent column:
+Метод `smallInteger` створює стовпець, еквівалентний `SMALLINT`:
 
 ```php
 $table->smallInteger('votes');
@@ -975,7 +958,7 @@ $table->smallInteger('votes');
 <a name="column-method-softDeletesTz"></a>
 #### `softDeletesTz()` {.collection-method}
 
-The `softDeletesTz` method adds a nullable `deleted_at` `TIMESTAMP` (with timezone) equivalent column with an optional fractional seconds precision. This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+Метод `softDeletesTz` додає nullable-стовпець `deleted_at`, еквівалентний `TIMESTAMP` (з часовою зоною), з необов'язковою точністю дробових секунд. Цей стовпець призначений для зберігання часової позначки `deleted_at`, потрібної для м'якого видалення (soft delete) в Eloquent:
 
 ```php
 $table->softDeletesTz('deleted_at', precision: 0);
@@ -984,7 +967,7 @@ $table->softDeletesTz('deleted_at', precision: 0);
 <a name="column-method-softDeletes"></a>
 #### `softDeletes()` {.collection-method}
 
-The `softDeletes` method adds a nullable `deleted_at` `TIMESTAMP` equivalent column with an optional fractional seconds precision. This column is intended to store the `deleted_at` timestamp needed for Eloquent's "soft delete" functionality:
+Метод `softDeletes` додає nullable-стовпець `deleted_at`, еквівалентний `TIMESTAMP`, з необов'язковою точністю дробових секунд. Цей стовпець призначений для зберігання часової позначки `deleted_at`, потрібної для м'якого видалення в Eloquent:
 
 ```php
 $table->softDeletes('deleted_at', precision: 0);
@@ -993,7 +976,7 @@ $table->softDeletes('deleted_at', precision: 0);
 <a name="column-method-string"></a>
 #### `string()` {.collection-method}
 
-The `string` method creates a `VARCHAR` equivalent column of the given length:
+Метод `string` створює стовпець, еквівалентний `VARCHAR`, заданої довжини:
 
 ```php
 $table->string('name', length: 100);
@@ -1002,13 +985,13 @@ $table->string('name', length: 100);
 <a name="column-method-text"></a>
 #### `text()` {.collection-method}
 
-The `text` method creates a `TEXT` equivalent column:
+Метод `text` створює стовпець, еквівалентний `TEXT`:
 
 ```php
 $table->text('description');
 ```
 
-When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `BLOB` equivalent column:
+На MySQL чи MariaDB ви можете застосувати до стовпця кодування `binary`, щоб створити стовпець, еквівалентний `BLOB`:
 
 ```php
 $table->text('data')->charset('binary'); // BLOB
@@ -1017,7 +1000,7 @@ $table->text('data')->charset('binary'); // BLOB
 <a name="column-method-timeTz"></a>
 #### `timeTz()` {.collection-method}
 
-The `timeTz` method creates a `TIME` (with timezone) equivalent column with an optional fractional seconds precision:
+Метод `timeTz` створює стовпець, еквівалентний `TIME` (з часовою зоною), з необов'язковою точністю дробових секунд:
 
 ```php
 $table->timeTz('sunrise', precision: 0);
@@ -1026,7 +1009,7 @@ $table->timeTz('sunrise', precision: 0);
 <a name="column-method-time"></a>
 #### `time()` {.collection-method}
 
-The `time` method creates a `TIME` equivalent column with an optional fractional seconds precision:
+Метод `time` створює стовпець, еквівалентний `TIME`, з необов'язковою точністю дробових секунд:
 
 ```php
 $table->time('sunrise', precision: 0);
@@ -1035,7 +1018,7 @@ $table->time('sunrise', precision: 0);
 <a name="column-method-timestampTz"></a>
 #### `timestampTz()` {.collection-method}
 
-The `timestampTz` method creates a `TIMESTAMP` (with timezone) equivalent column with an optional fractional seconds precision:
+Метод `timestampTz` створює стовпець, еквівалентний `TIMESTAMP` (з часовою зоною), з необов'язковою точністю дробових секунд:
 
 ```php
 $table->timestampTz('added_at', precision: 0);
@@ -1044,7 +1027,7 @@ $table->timestampTz('added_at', precision: 0);
 <a name="column-method-timestamp"></a>
 #### `timestamp()` {.collection-method}
 
-The `timestamp` method creates a `TIMESTAMP` equivalent column with an optional fractional seconds precision:
+Метод `timestamp` створює стовпець, еквівалентний `TIMESTAMP`, з необов'язковою точністю дробових секунд:
 
 ```php
 $table->timestamp('added_at', precision: 0);
@@ -1053,7 +1036,7 @@ $table->timestamp('added_at', precision: 0);
 <a name="column-method-timestampsTz"></a>
 #### `timestampsTz()` {.collection-method}
 
-The `timestampsTz` method creates `created_at` and `updated_at` `TIMESTAMP` (with timezone) equivalent columns with an optional fractional seconds precision:
+Метод `timestampsTz` створює стовпці `created_at` і `updated_at`, еквівалентні `TIMESTAMP` (з часовою зоною), з необов'язковою точністю дробових секунд:
 
 ```php
 $table->timestampsTz(precision: 0);
@@ -1062,7 +1045,7 @@ $table->timestampsTz(precision: 0);
 <a name="column-method-timestamps"></a>
 #### `timestamps()` {.collection-method}
 
-The `timestamps` method creates `created_at` and `updated_at` `TIMESTAMP` equivalent columns with an optional fractional seconds precision:
+Метод `timestamps` створює стовпці `created_at` і `updated_at`, еквівалентні `TIMESTAMP`, з необов'язковою точністю дробових секунд:
 
 ```php
 $table->timestamps(precision: 0);
@@ -1071,7 +1054,7 @@ $table->timestamps(precision: 0);
 <a name="column-method-tinyIncrements"></a>
 #### `tinyIncrements()` {.collection-method}
 
-The `tinyIncrements` method creates an auto-incrementing `UNSIGNED TINYINT` equivalent column as a primary key:
+Метод `tinyIncrements` створює автоінкрементний стовпець, еквівалентний `UNSIGNED TINYINT`, як первинний ключ:
 
 ```php
 $table->tinyIncrements('id');
@@ -1080,7 +1063,7 @@ $table->tinyIncrements('id');
 <a name="column-method-tinyInteger"></a>
 #### `tinyInteger()` {.collection-method}
 
-The `tinyInteger` method creates a `TINYINT` equivalent column:
+Метод `tinyInteger` створює стовпець, еквівалентний `TINYINT`:
 
 ```php
 $table->tinyInteger('votes');
@@ -1089,13 +1072,13 @@ $table->tinyInteger('votes');
 <a name="column-method-tinyText"></a>
 #### `tinyText()` {.collection-method}
 
-The `tinyText` method creates a `TINYTEXT` equivalent column:
+Метод `tinyText` створює стовпець, еквівалентний `TINYTEXT`:
 
 ```php
 $table->tinyText('notes');
 ```
 
-When utilizing MySQL or MariaDB, you may apply a `binary` character set to the column in order to create a `TINYBLOB` equivalent column:
+На MySQL чи MariaDB ви можете застосувати до стовпця кодування `binary`, щоб створити стовпець, еквівалентний `TINYBLOB`:
 
 ```php
 $table->tinyText('data')->charset('binary'); // TINYBLOB
@@ -1104,7 +1087,7 @@ $table->tinyText('data')->charset('binary'); // TINYBLOB
 <a name="column-method-unsignedBigInteger"></a>
 #### `unsignedBigInteger()` {.collection-method}
 
-The `unsignedBigInteger` method creates an `UNSIGNED BIGINT` equivalent column:
+Метод `unsignedBigInteger` створює стовпець, еквівалентний `UNSIGNED BIGINT`:
 
 ```php
 $table->unsignedBigInteger('votes');
@@ -1113,7 +1096,7 @@ $table->unsignedBigInteger('votes');
 <a name="column-method-unsignedInteger"></a>
 #### `unsignedInteger()` {.collection-method}
 
-The `unsignedInteger` method creates an `UNSIGNED INTEGER` equivalent column:
+Метод `unsignedInteger` створює стовпець, еквівалентний `UNSIGNED INTEGER`:
 
 ```php
 $table->unsignedInteger('votes');
@@ -1122,7 +1105,7 @@ $table->unsignedInteger('votes');
 <a name="column-method-unsignedMediumInteger"></a>
 #### `unsignedMediumInteger()` {.collection-method}
 
-The `unsignedMediumInteger` method creates an `UNSIGNED MEDIUMINT` equivalent column:
+Метод `unsignedMediumInteger` створює стовпець, еквівалентний `UNSIGNED MEDIUMINT`:
 
 ```php
 $table->unsignedMediumInteger('votes');
@@ -1131,7 +1114,7 @@ $table->unsignedMediumInteger('votes');
 <a name="column-method-unsignedSmallInteger"></a>
 #### `unsignedSmallInteger()` {.collection-method}
 
-The `unsignedSmallInteger` method creates an `UNSIGNED SMALLINT` equivalent column:
+Метод `unsignedSmallInteger` створює стовпець, еквівалентний `UNSIGNED SMALLINT`:
 
 ```php
 $table->unsignedSmallInteger('votes');
@@ -1140,7 +1123,7 @@ $table->unsignedSmallInteger('votes');
 <a name="column-method-unsignedTinyInteger"></a>
 #### `unsignedTinyInteger()` {.collection-method}
 
-The `unsignedTinyInteger` method creates an `UNSIGNED TINYINT` equivalent column:
+Метод `unsignedTinyInteger` створює стовпець, еквівалентний `UNSIGNED TINYINT`:
 
 ```php
 $table->unsignedTinyInteger('votes');
@@ -1149,9 +1132,9 @@ $table->unsignedTinyInteger('votes');
 <a name="column-method-ulidMorphs"></a>
 #### `ulidMorphs()` {.collection-method}
 
-The `ulidMorphs` method is a convenience method that adds a `{column}_type` `VARCHAR` equivalent column and a `{column}_id` `CHAR(26)` equivalent column.
+Метод `ulidMorphs` - це зручний метод, який додає стовпець `{column}_type`, еквівалентний `VARCHAR`, і стовпець `{column}_id`, еквівалентний `CHAR(26)`.
 
-This method is intended to be used when defining the columns necessary for a polymorphic [Eloquent relationship](/docs/{{version}}/eloquent-relationships) that use ULID identifiers. In the following example, `taggable_type` and `taggable_id` columns would be created:
+Цей метод призначений для опису стовпців, потрібних для поліморфного [зв'язку Eloquent](/docs/{{version}}/eloquent-relationships), що використовує ідентифікатори ULID. У прикладі нижче буде створено стовпці `taggable_type` і `taggable_id`:
 
 ```php
 $table->ulidMorphs('taggable');
@@ -1160,9 +1143,9 @@ $table->ulidMorphs('taggable');
 <a name="column-method-uuidMorphs"></a>
 #### `uuidMorphs()` {.collection-method}
 
-The `uuidMorphs` method is a convenience method that adds a `{column}_type` `VARCHAR` equivalent column and a `{column}_id` `CHAR(36)` equivalent column.
+Метод `uuidMorphs` - це зручний метод, який додає стовпець `{column}_type`, еквівалентний `VARCHAR`, і стовпець `{column}_id`, еквівалентний `CHAR(36)`.
 
-This method is intended to be used when defining the columns necessary for a [polymorphic Eloquent relationship](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) that use UUID identifiers. In the following example, `taggable_type` and `taggable_id` columns would be created:
+Цей метод призначений для опису стовпців, потрібних для [поліморфного зв'язку Eloquent](/docs/{{version}}/eloquent-relationships#polymorphic-relationships), що використовує ідентифікатори UUID. У прикладі нижче буде створено стовпці `taggable_type` і `taggable_id`:
 
 ```php
 $table->uuidMorphs('taggable');
@@ -1171,7 +1154,7 @@ $table->uuidMorphs('taggable');
 <a name="column-method-ulid"></a>
 #### `ulid()` {.collection-method}
 
-The `ulid` method creates a `ULID` equivalent column:
+Метод `ulid` створює стовпець, еквівалентний `ULID`:
 
 ```php
 $table->ulid('id');
@@ -1180,7 +1163,7 @@ $table->ulid('id');
 <a name="column-method-uuid"></a>
 #### `uuid()` {.collection-method}
 
-The `uuid` method creates a `UUID` equivalent column:
+Метод `uuid` створює стовпець, еквівалентний `UUID`:
 
 ```php
 $table->uuid('id');
@@ -1189,13 +1172,13 @@ $table->uuid('id');
 <a name="column-method-vector"></a>
 #### `vector()` {.collection-method}
 
-The `vector` method creates a `vector` equivalent column:
+Метод `vector` створює стовпець, еквівалентний `vector`:
 
 ```php
 $table->vector('embedding', dimensions: 100);
 ```
 
-When utilizing PostgreSQL, the `pgvector` extension must be loaded before `vector` columns can be created:
+На PostgreSQL розширення `pgvector` має бути завантажене, перш ніж можна створювати стовпці `vector`:
 
 ```php
 Schema::ensureVectorExtensionExists();
@@ -1204,16 +1187,16 @@ Schema::ensureVectorExtensionExists();
 <a name="column-method-year"></a>
 #### `year()` {.collection-method}
 
-The `year` method creates a `YEAR` equivalent column:
+Метод `year` створює стовпець, еквівалентний `YEAR`:
 
 ```php
 $table->year('birth_year');
 ```
 
 <a name="column-modifiers"></a>
-### Column Modifiers
+### Модифікатори стовпців
 
-In addition to the column types listed above, there are several column "modifiers" you may use when adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
+Крім перелічених вище типів, є кілька «модифікаторів» стовпців, якими ви можете скористатися, додаючи стовпець до таблиці. Наприклад, щоб зробити стовпець «nullable», викличте метод `nullable`:
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
@@ -1224,38 +1207,38 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-The following table contains all of the available column modifiers. This list does not include [index modifiers](#creating-indexes):
+У таблиці нижче наведено всі доступні модифікатори стовпців. Цей список не містить [модифікаторів індексів](#creating-indexes):
 
 <div class="overflow-auto">
 
-| Modifier                            | Description                                                                                    |
+| Модифікатор                         | Опис                                                                                           |
 | ----------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `->after('column')`                 | Place the column "after" another column (MariaDB / MySQL).                                     |
-| `->autoIncrement()`                 | Set `INTEGER` columns as auto-incrementing (primary key).                                      |
-| `->charset('utf8mb4')`              | Specify a character set for the column (MariaDB / MySQL).                                      |
-| `->collation('utf8mb4_unicode_ci')` | Specify a collation for the column.                                                            |
-| `->comment('my comment')`           | Add a comment to a column (MariaDB / MySQL / PostgreSQL).                                      |
-| `->default($value)`                 | Specify a "default" value for the column.                                                      |
-| `->first()`                         | Place the column "first" in the table (MariaDB / MySQL).                                       |
-| `->from($integer)`                  | Set the starting value of an auto-incrementing field (MariaDB / MySQL / PostgreSQL).           |
-| `->instant()`                       | Add or modify the column using an instant operation (MySQL).                                   |
-| `->invisible()`                     | Make the column "invisible" to `SELECT *` queries (MariaDB / MySQL).                           |
-| `->lock($mode)`                     | Specify a lock mode for the column operation (MySQL).                                          |
-| `->nullable($value = true)`         | Allow `NULL` values to be inserted into the column.                                            |
-| `->storedAs($expression)`           | Create a stored generated column (MariaDB / MySQL / PostgreSQL / SQLite).                      |
-| `->unsigned()`                      | Set `INTEGER` columns as `UNSIGNED` (MariaDB / MySQL).                                         |
-| `->useCurrent()`                    | Set `TIMESTAMP` columns to use `CURRENT_TIMESTAMP` as default value.                           |
-| `->useCurrentOnUpdate()`            | Set `TIMESTAMP` columns to use `CURRENT_TIMESTAMP` when a record is updated (MariaDB / MySQL). |
-| `->virtualAs($expression)`          | Create a virtual generated column (MariaDB / MySQL / SQLite).                                  |
-| `->generatedAs($expression)`        | Create an identity column with specified sequence options (PostgreSQL).                        |
-| `->always()`                        | Defines the precedence of sequence values over input for an identity column (PostgreSQL).      |
+| `->after('column')`                 | Розмістити стовпець «після» іншого стовпця (MariaDB / MySQL).                                   |
+| `->autoIncrement()`                 | Зробити стовпці `INTEGER` автоінкрементними (первинний ключ).                                   |
+| `->charset('utf8mb4')`              | Задати кодування для стовпця (MariaDB / MySQL).                                                 |
+| `->collation('utf8mb4_unicode_ci')` | Задати порядок сортування для стовпця.                                                          |
+| `->comment('my comment')`           | Додати коментар до стовпця (MariaDB / MySQL / PostgreSQL).                                      |
+| `->default($value)`                 | Задати значення стовпця за замовчуванням.                                                       |
+| `->first()`                         | Розмістити стовпець «першим» у таблиці (MariaDB / MySQL).                                       |
+| `->from($integer)`                  | Задати початкове значення автоінкрементного поля (MariaDB / MySQL / PostgreSQL).                |
+| `->instant()`                       | Додати або змінити стовпець миттєвою операцією (MySQL).                                         |
+| `->invisible()`                     | Зробити стовпець «невидимим» для запитів `SELECT *` (MariaDB / MySQL).                          |
+| `->lock($mode)`                     | Задати режим блокування для операції зі стовпцем (MySQL).                                       |
+| `->nullable($value = true)`         | Дозволити вставляти в стовпець значення `NULL`.                                                 |
+| `->storedAs($expression)`           | Створити збережений генерований стовпець (MariaDB / MySQL / PostgreSQL / SQLite).               |
+| `->unsigned()`                      | Зробити стовпці `INTEGER` типу `UNSIGNED` (MariaDB / MySQL).                                    |
+| `->useCurrent()`                    | Задати стовпцям `TIMESTAMP` значення за замовчуванням `CURRENT_TIMESTAMP`.                      |
+| `->useCurrentOnUpdate()`            | Задати стовпцям `TIMESTAMP` значення `CURRENT_TIMESTAMP` при оновленні запису (MariaDB / MySQL). |
+| `->virtualAs($expression)`          | Створити віртуальний генерований стовпець (MariaDB / MySQL / SQLite).                           |
+| `->generatedAs($expression)`        | Створити identity-стовпець із заданими опціями послідовності (PostgreSQL).                      |
+| `->always()`                        | Задати перевагу значень послідовності над вхідними для identity-стовпця (PostgreSQL).            |
 
 </div>
 
 <a name="default-expressions"></a>
-#### Default Expressions
+#### Вирази за замовчуванням
 
-The `default` modifier accepts a value or an `Illuminate\Database\Query\Expression` instance. Using an `Expression` instance will prevent Laravel from wrapping the value in quotes and allow you to use database specific functions. One situation where this is particularly useful is when you need to assign default values to JSON columns:
+Модифікатор `default` приймає значення або екземпляр `Illuminate\Database\Query\Expression`. Використання `Expression` не дасть Laravel узяти значення в лапки й дозволить скористатися специфічними для бази функціями. Особливо це стає в пригоді, коли потрібно задати значення за замовчуванням для стовпців JSON:
 
 ```php
 <?php
@@ -1282,12 +1265,12 @@ return new class extends Migration
 ```
 
 > [!WARNING]
-> Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+> Підтримка виразів за замовчуванням залежить від драйвера вашої бази даних, її версії та типу поля. Звіряйтеся з документацією своєї бази.
 
 <a name="column-order"></a>
-#### Column Order
+#### Порядок стовпців
 
-When using the MariaDB or MySQL database, the `after` method may be used to add columns after an existing column in the schema:
+На MariaDB чи MySQL методом `after` можна додавати стовпці після наявного стовпця в схемі:
 
 ```php
 $table->after('password', function (Blueprint $table) {
@@ -1298,22 +1281,22 @@ $table->after('password', function (Blueprint $table) {
 ```
 
 <a name="instant-column-operations"></a>
-#### Instant Column Operations
+#### Миттєві операції зі стовпцями
 
-When using MySQL, you may chain the `instant` modifier onto a column definition to indicate that the column should be added or modified using MySQL's "instant" algorithm. This algorithm allows certain schema changes to be performed without a full table rebuild, making them nearly instantaneous regardless of table size:
+На MySQL ви можете дописати до опису стовпця модифікатор `instant`, щоб вказати: стовпець слід додати чи змінити «миттєвим» алгоритмом MySQL. Цей алгоритм дозволяє виконати певні зміни схеми без повного перебудування таблиці, тож вони майже миттєві незалежно від її розміру:
 
 ```php
 $table->string('name')->nullable()->instant();
 ```
 
-Instant column additions can only append columns to the end of the table, so the `instant` modifier cannot be combined with the `after` or `first` modifiers. In addition, the algorithm does not support all column types or operations. If the requested operation is incompatible, MySQL will raise an error.
+Миттєве додавання стовпців може лише дописувати стовпці в кінець таблиці, тому модифікатор `instant` не можна поєднувати з `after` чи `first`. Крім того, алгоритм підтримує не всі типи стовпців і не всі операції. Якщо запитана операція несумісна, MySQL видасть помилку.
 
-Please refer to [MySQL's documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) to determine which operations are compatible with instant column modifications.
+Щоб дізнатися, які операції сумісні з миттєвою зміною стовпців, звіряйтеся з [документацією MySQL](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html).
 
 <a name="ddl-locking"></a>
-#### DDL Locking
+#### Блокування DDL
 
-When using MySQL, you may chain the `lock` modifier onto column, index, or foreign key definitions to control table locking during schema operations. MySQL supports several lock modes: `none` allows concurrent reads and writes, `shared` allows concurrent reads but blocks writes, `exclusive` blocks all concurrent access, and `default` lets MySQL choose the most appropriate mode:
+На MySQL ви можете дописати модифікатор `lock` до опису стовпця, індексу чи зовнішнього ключа, щоб керувати блокуванням таблиці під час операцій зі схемою. MySQL підтримує кілька режимів блокування: `none` дозволяє одночасні читання й записи, `shared` дозволяє одночасні читання, але блокує записи, `exclusive` блокує будь-який одночасний доступ, а `default` дає MySQL самому обрати найдоречніший режим:
 
 ```php
 $table->string('name')->lock('none');
@@ -1321,16 +1304,16 @@ $table->string('name')->lock('none');
 $table->index('email')->lock('shared');
 ```
 
-If the requested lock mode is incompatible with the operation, MySQL will raise an error. The `lock` modifier may be combined with the `instant` modifier to further optimize schema changes:
+Якщо запитаний режим блокування несумісний з операцією, MySQL видасть помилку. Модифікатор `lock` можна поєднувати з модифікатором `instant`, щоб додатково оптимізувати зміни схеми:
 
 ```php
 $table->string('name')->instant()->lock('none');
 ```
 
 <a name="modifying-columns"></a>
-### Modifying Columns
+### Зміна стовпців
 
-The `change` method allows you to modify the type and attributes of existing columns. For example, you may wish to increase the size of a `string` column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50. To accomplish this, we simply define the new state of the column and then call the `change` method:
+Метод `change` дозволяє змінити тип і атрибути наявних стовпців. Наприклад, ви можете захотіти збільшити розмір стовпця `string`. Щоб побачити `change` у дії, збільшимо розмір стовпця `name` з 25 до 50. Для цього ми просто описуємо новий стан стовпця й викликаємо метод `change`:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -1338,7 +1321,7 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-When modifying a column, you must explicitly include all the modifiers you want to keep on the column definition - any missing attribute will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column:
+Змінюючи стовпець, ви маєте явно вказати всі модифікатори, які хочете на ньому зберегти, - будь-який пропущений атрибут буде скинуто. Наприклад, щоб зберегти атрибути `unsigned`, `default` і `comment`, кожен модифікатор потрібно викликати явно:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -1346,7 +1329,7 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-The `change` method does not change the indexes of the column. Therefore, you may use index modifiers to explicitly add or drop an index when modifying the column:
+Метод `change` не змінює індексів стовпця. Тому, змінюючи стовпець, ви можете скористатися модифікаторами індексів, щоб явно додати чи видалити індекс:
 
 ```php
 // Add an index...
@@ -1357,9 +1340,9 @@ $table->char('postal_code', 10)->unique(false)->change();
 ```
 
 <a name="renaming-columns"></a>
-### Renaming Columns
+### Перейменування стовпців
 
-To rename a column, you may use the `renameColumn` method provided by the schema builder:
+Щоб перейменувати стовпець, скористайтеся методом `renameColumn` конструктора схеми:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -1368,9 +1351,9 @@ Schema::table('users', function (Blueprint $table) {
 ```
 
 <a name="dropping-columns"></a>
-### Dropping Columns
+### Видалення стовпців
 
-To drop a column, you may use the `dropColumn` method on the schema builder:
+Щоб видалити стовпець, скористайтеся методом `dropColumn` конструктора схеми:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -1378,7 +1361,7 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:
+Ви можете видалити з таблиці кілька стовпців, передавши методу `dropColumn` масив їхніх назв:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -1387,30 +1370,30 @@ Schema::table('users', function (Blueprint $table) {
 ```
 
 <a name="available-command-aliases"></a>
-#### Available Command Aliases
+#### Доступні псевдоніми команд
 
-Laravel provides several convenient methods related to dropping common types of columns. Each of these methods is described in the table below:
+Laravel має кілька зручних методів для видалення поширених типів стовпців. Кожен із них описано в таблиці нижче:
 
 <div class="overflow-auto">
 
-| Command                             | Description                                           |
+| Команда                             | Опис                                                  |
 | ----------------------------------- | ----------------------------------------------------- |
-| `$table->dropMorphs('morphable');`  | Drop the `morphable_type` and `morphable_id` columns. |
-| `$table->dropRememberToken();`      | Drop the `remember_token` column.                     |
-| `$table->dropSoftDeletes();`        | Drop the `deleted_at` column.                         |
-| `$table->dropSoftDeletesTz();`      | Alias of `dropSoftDeletes()` method.                  |
-| `$table->dropTimestamps();`         | Drop the `created_at` and `updated_at` columns.       |
-| `$table->dropTimestampsTz();`       | Alias of `dropTimestamps()` method.                   |
+| `$table->dropMorphs('morphable');`  | Видалити стовпці `morphable_type` і `morphable_id`.   |
+| `$table->dropRememberToken();`      | Видалити стовпець `remember_token`.                   |
+| `$table->dropSoftDeletes();`        | Видалити стовпець `deleted_at`.                       |
+| `$table->dropSoftDeletesTz();`      | Псевдонім методу `dropSoftDeletes()`.                 |
+| `$table->dropTimestamps();`         | Видалити стовпці `created_at` і `updated_at`.         |
+| `$table->dropTimestampsTz();`       | Псевдонім методу `dropTimestamps()`.                  |
 
 </div>
 
 <a name="indexes"></a>
-## Indexes
+## Індекси
 
 <a name="creating-indexes"></a>
-### Creating Indexes
+### Створення індексів
 
-The Laravel schema builder supports several types of indexes. The following example creates a new `email` column and specifies that its values should be unique. To create the index, we can chain the `unique` method onto the column definition:
+Конструктор схеми Laravel підтримує кілька типів індексів. У прикладі нижче створюється новий стовпець `email` і вказується, що його значення мають бути унікальними. Щоб створити індекс, ми дописуємо метод `unique` до опису стовпця:
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
@@ -1421,81 +1404,81 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-Alternatively, you may create the index after defining the column. To do so, you should call the `unique` method on the schema builder blueprint. This method accepts the name of the column that should receive a unique index:
+Або ж ви можете створити індекс після опису стовпця. Для цього викличте метод `unique` на blueprint конструктора схеми. Цей метод приймає назву стовпця, який має отримати унікальний індекс:
 
 ```php
 $table->unique('email');
 ```
 
-You may even pass an array of columns to an index method to create a compound (or composite) index:
+Ви можете навіть передати методу індексу масив стовпців, щоб створити складений (композитний) індекс:
 
 ```php
 $table->index(['account_id', 'created_at']);
 ```
 
-When creating an index, Laravel will automatically generate an index name based on the table, column names, and the index type, but you may pass a second argument to the method to specify the index name yourself:
+Створюючи індекс, Laravel автоматично згенерує його назву на основі таблиці, назв стовпців і типу індексу, але ви можете передати другий аргумент, щоб задати назву самостійно:
 
 ```php
 $table->unique('email', 'unique_email');
 ```
 
 <a name="available-index-types"></a>
-#### Available Index Types
+#### Доступні типи індексів
 
-Laravel's schema builder blueprint class provides methods for creating each type of index supported by Laravel. Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s) used for the index, as well as the index type. Each of the available index methods is described in the table below:
+Клас blueprint конструктора схеми Laravel має методи для створення кожного типу індексу, що його підтримує Laravel. Кожен метод індексу приймає необов'язковий другий аргумент - назву індексу. Якщо його не передати, назву буде утворено з назв таблиці й стовпців, використаних для індексу, а також типу індексу. Усі доступні методи індексів описано в таблиці нижче:
 
 <div class="overflow-auto">
 
-| Command                                          | Description                                                    |
+| Команда                                          | Опис                                                            |
 | ------------------------------------------------ | -------------------------------------------------------------- |
-| `$table->primary('id');`                         | Adds a primary key.                                            |
-| `$table->primary(['id', 'parent_id']);`          | Adds composite keys.                                           |
-| `$table->unique('email');`                       | Adds a unique index.                                           |
-| `$table->index('state');`                        | Adds an index.                                                 |
-| `$table->fullText('body');`                      | Adds a full text index (MariaDB / MySQL / PostgreSQL).         |
-| `$table->fullText('body')->language('english');` | Adds a full text index of the specified language (PostgreSQL). |
-| `$table->spatialIndex('location');`              | Adds a spatial index (except SQLite).                          |
+| `$table->primary('id');`                         | Додає первинний ключ.                                          |
+| `$table->primary(['id', 'parent_id']);`          | Додає композитні ключі.                                        |
+| `$table->unique('email');`                       | Додає унікальний індекс.                                       |
+| `$table->index('state');`                        | Додає індекс.                                                  |
+| `$table->fullText('body');`                      | Додає повнотекстовий індекс (MariaDB / MySQL / PostgreSQL).     |
+| `$table->fullText('body')->language('english');` | Додає повнотекстовий індекс заданої мови (PostgreSQL).          |
+| `$table->spatialIndex('location');`              | Додає просторовий індекс (окрім SQLite).                        |
 
 </div>
 
 <a name="online-index-creation"></a>
-#### Online Index Creation
+#### Створення індексу без блокування
 
-By default, creating an index on a large table can lock the table and block reads or writes while the index is being built. When using PostgreSQL or SQL Server, you may chain the `online` method onto an index definition to create the index without locking the table, allowing your application to continue reading and writing data during index creation:
+За замовчуванням створення індексу на великій таблиці може заблокувати її й перекрити читання чи записи, поки індекс будується. На PostgreSQL або SQL Server ви можете дописати до опису індексу метод `online`, щоб створити індекс без блокування таблиці, - і ваш застосунок зможе далі читати й писати дані під час створення індексу:
 
 ```php
 $table->string('email')->unique()->online();
 ```
 
-When using PostgreSQL, this adds the `CONCURRENTLY` option to the index creation statement. When using SQL Server, this adds the `WITH (online = on)` option.
+На PostgreSQL це додає до запиту створення індексу опцію `CONCURRENTLY`. На SQL Server - опцію `WITH (online = on)`.
 
 <a name="renaming-indexes"></a>
-### Renaming Indexes
+### Перейменування індексів
 
-To rename an index, you may use the `renameIndex` method provided by the schema builder blueprint. This method accepts the current index name as its first argument and the desired name as its second argument:
+Щоб перейменувати індекс, скористайтеся методом `renameIndex` blueprint конструктора схеми. Він приймає поточну назву індексу першим аргументом і бажану назву - другим:
 
 ```php
 $table->renameIndex('from', 'to')
 ```
 
 <a name="dropping-indexes"></a>
-### Dropping Indexes
+### Видалення індексів
 
-To drop an index, you must specify the index's name. By default, Laravel automatically assigns an index name based on the table name, the name of the indexed column, and the index type. Here are some examples:
+Щоб видалити індекс, ви маєте вказати його назву. За замовчуванням Laravel автоматично призначає назву індексу на основі назви таблиці, назви проіндексованого стовпця й типу індексу. Ось кілька прикладів:
 
 <div class="overflow-auto">
 
-| Command                                                  | Description                                                 |
+| Команда                                                  | Опис                                                        |
 | -------------------------------------------------------- | ----------------------------------------------------------- |
-| `$table->dropPrimary('users_id_primary');`               | Drop a primary key from the "users" table.                  |
-| `$table->dropUnique('users_email_unique');`              | Drop a unique index from the "users" table.                 |
-| `$table->dropIndex('geo_state_index');`                  | Drop a basic index from the "geo" table.                    |
-| `$table->dropFullText('posts_body_fulltext');`           | Drop a full text index from the "posts" table.              |
-| `$table->dropSpatialIndex('geo_location_spatialindex');` | Drop a spatial index from the "geo" table  (except SQLite). |
+| `$table->dropPrimary('users_id_primary');`               | Видалити первинний ключ із таблиці «users».                  |
+| `$table->dropUnique('users_email_unique');`              | Видалити унікальний індекс із таблиці «users».               |
+| `$table->dropIndex('geo_state_index');`                  | Видалити базовий індекс із таблиці «geo».                    |
+| `$table->dropFullText('posts_body_fulltext');`           | Видалити повнотекстовий індекс із таблиці «posts».           |
+| `$table->dropSpatialIndex('geo_location_spatialindex');` | Видалити просторовий індекс із таблиці «geo» (окрім SQLite). |
 
 </div>
 
-If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns, and index type:
+Якщо ви передасте методу видалення індексу масив стовпців, назву індексу буде згенеровано за конвенцією на основі назви таблиці, стовпців і типу індексу:
 
 ```php
 Schema::table('geo', function (Blueprint $table) {
@@ -1504,9 +1487,9 @@ Schema::table('geo', function (Blueprint $table) {
 ```
 
 <a name="foreign-key-constraints"></a>
-### Foreign Key Constraints
+### Обмеження зовнішніх ключів
 
-Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
+Laravel також підтримує створення обмежень зовнішніх ключів, які забезпечують цілісність посилань на рівні бази даних. Наприклад, опишімо в таблиці `posts` стовпець `user_id`, що посилається на стовпець `id` таблиці `users`:
 
 ```php
 use Illuminate\Database\Schema\Blueprint;
@@ -1519,7 +1502,7 @@ Schema::table('posts', function (Blueprint $table) {
 });
 ```
 
-Since this syntax is rather verbose, Laravel provides additional, terser methods that use conventions to provide a better developer experience. When using the `foreignId` method to create your column, the example above can be rewritten like so:
+Оскільки такий синтаксис досить громіздкий, Laravel має додаткові, лаконічніші методи, які спираються на конвенції й роблять роботу приємнішою. Якщо створювати стовпець методом `foreignId`, приклад вище можна переписати так:
 
 ```php
 Schema::table('posts', function (Blueprint $table) {
@@ -1527,7 +1510,7 @@ Schema::table('posts', function (Blueprint $table) {
 });
 ```
 
-The `foreignId` method creates an `UNSIGNED BIGINT` equivalent column, while the `constrained` method will use conventions to determine the table and column being referenced. If your table name does not match Laravel's conventions, you may manually provide it to the `constrained` method. In addition, the name that should be assigned to the generated index may be specified as well:
+Метод `foreignId` створює стовпець, еквівалентний `UNSIGNED BIGINT`, а метод `constrained` за конвенціями визначає таблицю й стовпець, на які йде посилання. Якщо назва вашої таблиці не відповідає конвенціям Laravel, ви можете передати її методу `constrained` вручну. Крім того, можна задати й назву згенерованого індексу:
 
 ```php
 Schema::table('posts', function (Blueprint $table) {
@@ -1537,7 +1520,7 @@ Schema::table('posts', function (Blueprint $table) {
 });
 ```
 
-You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
+Ви також можете задати бажану дію для властивостей обмеження «on delete» і «on update»:
 
 ```php
 $table->foreignId('user_id')
@@ -1546,24 +1529,24 @@ $table->foreignId('user_id')
     ->onDelete('cascade');
 ```
 
-An alternative, expressive syntax is also provided for these actions:
+Для цих дій є й альтернативний, виразніший синтаксис:
 
 <div class="overflow-auto">
 
-| Method                        | Description                                       |
+| Метод                         | Опис                                              |
 | ----------------------------- | ------------------------------------------------- |
-| `$table->cascadeOnUpdate();`  | Updates should cascade.                           |
-| `$table->restrictOnUpdate();` | Updates should be restricted.                     |
-| `$table->nullOnUpdate();`     | Updates should set the foreign key value to null. |
-| `$table->noActionOnUpdate();` | No action on updates.                             |
-| `$table->cascadeOnDelete();`  | Deletes should cascade.                           |
-| `$table->restrictOnDelete();` | Deletes should be restricted.                     |
-| `$table->nullOnDelete();`     | Deletes should set the foreign key value to null. |
-| `$table->noActionOnDelete();` | Prevents deletes if child records exist.          |
+| `$table->cascadeOnUpdate();`  | Оновлення мають каскадуватися.                     |
+| `$table->restrictOnUpdate();` | Оновлення мають бути обмежені.                     |
+| `$table->nullOnUpdate();`     | Оновлення мають задавати зовнішньому ключу null.   |
+| `$table->noActionOnUpdate();` | Жодних дій при оновленні.                          |
+| `$table->cascadeOnDelete();`  | Видалення мають каскадуватися.                     |
+| `$table->restrictOnDelete();` | Видалення мають бути обмежені.                     |
+| `$table->nullOnDelete();`     | Видалення мають задавати зовнішньому ключу null.   |
+| `$table->noActionOnDelete();` | Забороняє видалення, якщо є дочірні записи.        |
 
 </div>
 
-Any additional [column modifiers](#column-modifiers) must be called before the `constrained` method:
+Будь-які додаткові [модифікатори стовпців](#column-modifiers) слід викликати перед методом `constrained`:
 
 ```php
 $table->foreignId('user_id')
@@ -1572,24 +1555,24 @@ $table->foreignId('user_id')
 ```
 
 <a name="dropping-foreign-keys"></a>
-#### Dropping Foreign Keys
+#### Видалення зовнішніх ключів
 
-To drop a foreign key, you may use the `dropForeign` method, passing the name of the foreign key constraint to be deleted as an argument. Foreign key constraints use the same naming convention as indexes. In other words, the foreign key constraint name is based on the name of the table and the columns in the constraint, followed by a "\_foreign" suffix:
+Щоб видалити зовнішній ключ, скористайтеся методом `dropForeign`, передавши аргументом назву обмеження, яке слід видалити. Обмеження зовнішніх ключів мають ту саму конвенцію назв, що й індекси. Іншими словами, назва обмеження зовнішнього ключа складається з назви таблиці та стовпців в обмеженні, після яких додається суфікс «\_foreign»:
 
 ```php
 $table->dropForeign('posts_user_id_foreign');
 ```
 
-Alternatively, you may pass an array containing the column name that holds the foreign key to the `dropForeign` method. The array will be converted to a foreign key constraint name using Laravel's constraint naming conventions:
+Або ж ви можете передати методу `dropForeign` масив із назвою стовпця, що містить зовнішній ключ. Масив буде перетворено на назву обмеження за конвенціями Laravel:
 
 ```php
 $table->dropForeign(['user_id']);
 ```
 
 <a name="toggling-foreign-key-constraints"></a>
-#### Toggling Foreign Key Constraints
+#### Увімкнення та вимкнення обмежень зовнішніх ключів
 
-You may enable or disable foreign key constraints within your migrations by using the following methods:
+Увімкнути або вимкнути обмеження зовнішніх ключів у ваших міграціях можна такими методами:
 
 ```php
 Schema::enableForeignKeyConstraints();
@@ -1602,24 +1585,24 @@ Schema::withoutForeignKeyConstraints(function () {
 ```
 
 > [!WARNING]
-> SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations.
+> SQLite за замовчуванням вимикає обмеження зовнішніх ключів. Працюючи з SQLite, обов'язково [увімкніть підтримку зовнішніх ключів](/docs/{{version}}/database#configuration) у конфігурації бази даних, перш ніж намагатися створювати їх у міграціях.
 
 <a name="events"></a>
-## Events
+## Події
 
-For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\Database\Events\MigrationEvent` class:
+Для зручності кожна операція міграції надсилає [подію](/docs/{{version}}/events). Усі наведені нижче події розширюють базовий клас `Illuminate\Database\Events\MigrationEvent`:
 
 <div class="overflow-auto">
 
-| Class                                            | Description                                      |
+| Клас                                             | Опис                                             |
 | ------------------------------------------------ | ------------------------------------------------ |
-| `Illuminate\Database\Events\DatabaseRefreshed`   | The `migrate:refresh` command has finished.      |
-| `Illuminate\Database\Events\MigrationsStarted`   | A batch of migrations is about to be executed.   |
-| `Illuminate\Database\Events\MigrationsEnded`     | A batch of migrations has finished.              |
-| `Illuminate\Database\Events\MigrationStarted`    | A single migration is about to be executed.      |
-| `Illuminate\Database\Events\MigrationEnded`      | A single migration has finished.                 |
-| `Illuminate\Database\Events\NoPendingMigrations` | A migration command found no pending migrations. |
-| `Illuminate\Database\Events\SchemaDumped`        | A database schema dump has finished.             |
-| `Illuminate\Database\Events\SchemaLoaded`        | An existing database schema dump has loaded.     |
+| `Illuminate\Database\Events\DatabaseRefreshed`   | Команда `migrate:refresh` завершилася.           |
+| `Illuminate\Database\Events\MigrationsStarted`   | Пакет міграцій ось-ось буде виконано.            |
+| `Illuminate\Database\Events\MigrationsEnded`     | Пакет міграцій завершився.                       |
+| `Illuminate\Database\Events\MigrationStarted`    | Окрему міграцію ось-ось буде виконано.           |
+| `Illuminate\Database\Events\MigrationEnded`      | Окрема міграція завершилася.                     |
+| `Illuminate\Database\Events\NoPendingMigrations` | Команда міграції не знайшла міграцій в очікуванні. |
+| `Illuminate\Database\Events\SchemaDumped`        | Дамп схеми бази даних завершився.                |
+| `Illuminate\Database\Events\SchemaLoaded`        | Наявний дамп схеми бази даних завантажено.       |
 
 </div>
