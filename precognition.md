@@ -1,36 +1,39 @@
+---
+git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+---
 # Precognition
 
-- [Introduction](#introduction)
-- [Live Validation](#live-validation)
-    - [Using Vue](#using-vue)
-    - [Using React](#using-react)
-    - [Using Alpine and Blade](#using-alpine)
-    - [Configuring Axios](#configuring-axios)
-- [Validating Arrays](#validating-arrays)
-- [Customizing Validation Rules](#customizing-validation-rules)
-- [Handling File Uploads](#handling-file-uploads)
-- [Managing Side-Effects](#managing-side-effects)
-- [Testing](#testing)
+- [Вступ](#introduction)
+- [Жива валідація](#live-validation)
+    - [Через Vue](#using-vue)
+    - [Через React](#using-react)
+    - [Через Alpine і Blade](#using-alpine)
+    - [Налаштування Axios](#configuring-axios)
+- [Валідація масивів](#validating-arrays)
+- [Налаштування правил валідації](#customizing-validation-rules)
+- [Обробка завантаження файлів](#handling-file-uploads)
+- [Керування побічними ефектами](#managing-side-effects)
+- [Тестування](#testing)
 
 <a name="introduction"></a>
-## Introduction
+## Вступ
 
-Laravel Precognition allows you to anticipate the outcome of a future HTTP request. One of the primary use cases of Precognition is the ability to provide "live" validation for your frontend JavaScript application without having to duplicate your application's backend validation rules.
+Laravel Precognition дозволяє передбачити результат майбутнього HTTP-запиту. Одне з головних застосувань Precognition - «жива» валідація у вашому фронтенді на JavaScript без дублювання правил валідації з бекенду застосунку.
 
-When Laravel receives a "precognitive request", it will execute all of the route's middleware and resolve the route's controller dependencies, including validating [form requests](/docs/{{version}}/validation#form-request-validation) - but it will not actually execute the route's controller method.
+Коли Laravel отримує «прекогнітивний запит», він виконає все `middleware` маршруту й розв'яже залежності його контролера, зокрема провалідує [запити форм](/docs/{{version}}/validation#form-request-validation), - але не виконуватиме сам метод контролера.
 
 > [!NOTE]
-> As of Inertia 2.3, Precognition support is built-in. Please consult the [Inertia Forms documentation](https://inertiajs.com/forms) for more information. Earlier Inertia versions require Precognition 0.x.
+> Починаючи з Inertia 2.3, підтримка Precognition вбудована. Докладніше читайте в [документації Inertia про форми](https://inertiajs.com/forms). Раніші версії Inertia потребують Precognition 0.x.
 
 <a name="live-validation"></a>
-## Live Validation
+## Жива валідація
 
 <a name="using-vue"></a>
-### Using Vue
+### Через Vue
 
-Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Vue application. To illustrate how it works, let's build a form for creating new users within our application.
+За допомогою Laravel Precognition ви можете дати користувачам живу валідацію, не дублюючи правила валідації у своєму фронтенді на Vue. Щоб показати, як це працює, побудуймо форму створення нових користувачів у нашому застосунку.
 
-First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{{version}}/validation#form-request-validation) to house the route's validation rules:
+Спершу, щоб увімкнути Precognition для маршруту, додайте до його визначення `middleware` `HandlePrecognitiveRequests`. Вам також слід створити [запит форми](/docs/{{version}}/validation#form-request-validation), який міститиме правила валідації маршруту:
 
 ```php
 use App\Http\Requests\StoreUserRequest;
@@ -41,15 +44,15 @@ Route::post('/users', function (StoreUserRequest $request) {
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
 
-Next, you should install the Laravel Precognition frontend helpers for Vue via NPM:
+Далі встановіть фронтенд-хелпери Laravel Precognition для Vue через NPM:
 
 ```shell
 npm install laravel-precognition-vue
 ```
 
-With the Laravel Precognition package installed, you can now create a form object using Precognition's `useForm` function, providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
+Коли пакет Laravel Precognition встановлено, ви можете створити об'єкт форми функцією `useForm` із Precognition, передавши HTTP-метод (`post`), цільовий URL (`/users`) і початкові дані форми.
 
-Then, to enable live validation, invoke the form's `validate` method on each input's `change` event, providing the input's name:
+Далі, щоб увімкнути живу валідацію, викликайте метод форми `validate` на події `change` кожного поля, передаючи ім'я поля:
 
 ```vue
 <script setup>
@@ -93,13 +96,13 @@ const submit = () => form.submit();
 </template>
 ```
 
-Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
+Тепер, поки користувач заповнює форму, Precognition даватиме результати живої валідації на основі правил із запиту форми маршруту. Коли поля форми змінюються, до вашого застосунку Laravel надсилатиметься відкладений (debounced) «прекогнітивний» запит валідації. Ви можете налаштувати час відкладання, викликавши функцію форми `setValidationTimeout`:
 
 ```js
 form.setValidationTimeout(3000);
 ```
 
-When a validation request is in-flight, the form's `validating` property will be `true`:
+Доки запит валідації в дорозі, властивість форми `validating` дорівнюватиме `true`:
 
 ```html
 <div v-if="form.validating">
@@ -107,7 +110,7 @@ When a validation request is in-flight, the form's `validating` property will be
 </div>
 ```
 
-Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
+Будь-які помилки валідації, повернені під час запиту валідації чи надсилання форми, автоматично заповнять об'єкт форми `errors`:
 
 ```html
 <div v-if="form.invalid('email')">
@@ -115,7 +118,7 @@ Any validation errors returned during a validation request or a form submission 
 </div>
 ```
 
-You can determine if the form has any errors using the form's `hasErrors` property:
+Визначити, чи має форма помилки, можна через властивість форми `hasErrors`:
 
 ```html
 <div v-if="form.hasErrors">
@@ -123,7 +126,7 @@ You can determine if the form has any errors using the form's `hasErrors` proper
 </div>
 ```
 
-You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
+Ви також можете визначити, чи пройшло поле валідацію, передавши його ім'я до функцій форми `valid` та `invalid` відповідно:
 
 ```html
 <span v-if="form.valid('email')">
@@ -136,9 +139,9 @@ You may also determine if an input has passed or failed validation by passing th
 ```
 
 > [!WARNING]
-> A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+> Поле форми буде позначено як дійсне чи недійсне лише після того, як воно зміниться й надійде відповідь валідації.
 
-If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
+Якщо ви валідуєте через Precognition лише частину полів форми, вам може знадобитися вручну очистити помилки. Зробити це можна функцією форми `forgetError`:
 
 ```html
 <input
@@ -152,9 +155,9 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
 >
 ```
 
-As we have seen, you can hook into an input's `change` event and validate individual inputs as the user interacts with them; however, you may need to validate inputs that the user has not yet interacted with. This is common when building a "wizard", where you want to validate all visible inputs, whether the user has interacted with them or not, before moving to the next step.
+Як ми бачили, ви можете підключитися до події `change` поля й валідувати окремі поля в міру взаємодії користувача з ними; проте вам може знадобитися провалідувати поля, з якими користувач ще не взаємодіяв. Так буває при побудові «майстра», де ви хочете провалідувати всі видимі поля - незалежно від того, чи торкався їх користувач, - перш ніж переходити до наступного кроку.
 
-To do this with Precognition, you should call the `validate` method passing the field names you wish to validate to the `only` configuration key. You may handle the validation result with `onSuccess` or `onValidationError` callbacks:
+Щоб зробити це через Precognition, викличте метод `validate`, передавши імена потрібних полів у ключ конфігурації `only`. Обробити результат валідації можна колбеками `onSuccess` чи `onValidationError`:
 
 ```html
 <button
@@ -167,7 +170,7 @@ To do this with Precognition, you should call the `validate` method passing the 
 >Next Step</button>
 ```
 
-Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form inputs on successful submission, or handle a failed request:
+Звісно, ви можете виконувати код і у відповідь на результат надсилання форми. Функція форми `submit` повертає проміс запиту Axios. Це зручний спосіб дістатися даних відповіді, скинути поля форми після успішного надсилання чи обробити невдалий запит:
 
 ```js
 const submit = () => form.submit()
@@ -181,7 +184,7 @@ const submit = () => form.submit()
     });
 ```
 
-You may determine if a form submission request is in-flight by inspecting the form's `processing` property:
+Визначити, чи запит на надсилання форми в дорозі, можна за властивістю форми `processing`:
 
 ```html
 <button :disabled="form.processing">
@@ -190,11 +193,11 @@ You may determine if a form submission request is in-flight by inspecting the fo
 ```
 
 <a name="using-react"></a>
-### Using React
+### Через React
 
-Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend React application. To illustrate how it works, let's build a form for creating new users within our application.
+За допомогою Laravel Precognition ви можете дати користувачам живу валідацію, не дублюючи правила валідації у своєму фронтенді на React. Щоб показати, як це працює, побудуймо форму створення нових користувачів у нашому застосунку.
 
-First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{{version}}/validation#form-request-validation) to house the route's validation rules:
+Спершу, щоб увімкнути Precognition для маршруту, додайте до його визначення `middleware` `HandlePrecognitiveRequests`. Вам також слід створити [запит форми](/docs/{{version}}/validation#form-request-validation), який міститиме правила валідації маршруту:
 
 ```php
 use App\Http\Requests\StoreUserRequest;
@@ -205,15 +208,15 @@ Route::post('/users', function (StoreUserRequest $request) {
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
 
-Next, you should install the Laravel Precognition frontend helpers for React via NPM:
+Далі встановіть фронтенд-хелпери Laravel Precognition для React через NPM:
 
 ```shell
 npm install laravel-precognition-react
 ```
 
-With the Laravel Precognition package installed, you can now create a form object using Precognition's `useForm` function, providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
+Коли пакет Laravel Precognition встановлено, ви можете створити об'єкт форми функцією `useForm` із Precognition, передавши HTTP-метод (`post`), цільовий URL (`/users`) і початкові дані форми.
 
-To enable live validation, you should listen to each input's `change` and `blur` event. In the `change` event handler, you should set the form's data with the `setData` function, passing the input's name and new value. Then, in the `blur` event handler invoke the form's `validate` method, providing the input's name:
+Щоб увімкнути живу валідацію, слухайте події `change` і `blur` кожного поля. В обробнику `change` задавайте дані форми функцією `setData`, передаючи ім'я поля та нове значення. Далі, в обробнику `blur`, викликайте метод форми `validate`, передаючи ім'я поля:
 
 ```jsx
 import { useForm } from 'laravel-precognition-react';
@@ -258,31 +261,31 @@ export default function Form() {
 };
 ```
 
-Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
+Тепер, поки користувач заповнює форму, Precognition даватиме результати живої валідації на основі правил із запиту форми маршруту. Коли поля форми змінюються, до вашого застосунку Laravel надсилатиметься відкладений (debounced) «прекогнітивний» запит валідації. Ви можете налаштувати час відкладання, викликавши функцію форми `setValidationTimeout`:
 
 ```js
 form.setValidationTimeout(3000);
 ```
 
-When a validation request is in-flight, the form's `validating` property will be `true`:
+Доки запит валідації в дорозі, властивість форми `validating` дорівнюватиме `true`:
 
 ```jsx
 {form.validating && <div>Validating...</div>}
 ```
 
-Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
+Будь-які помилки валідації, повернені під час запиту валідації чи надсилання форми, автоматично заповнять об'єкт форми `errors`:
 
 ```jsx
 {form.invalid('email') && <div>{form.errors.email}</div>}
 ```
 
-You can determine if the form has any errors using the form's `hasErrors` property:
+Визначити, чи має форма помилки, можна через властивість форми `hasErrors`:
 
 ```jsx
 {form.hasErrors && <div><!-- ... --></div>}
 ```
 
-You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
+Ви також можете визначити, чи пройшло поле валідацію, передавши його ім'я до функцій форми `valid` та `invalid` відповідно:
 
 ```jsx
 {form.valid('email') && <span>✅</span>}
@@ -291,9 +294,9 @@ You may also determine if an input has passed or failed validation by passing th
 ```
 
 > [!WARNING]
-> A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+> Поле форми буде позначено як дійсне чи недійсне лише після того, як воно зміниться й надійде відповідь валідації.
 
-If you are validating a subset of a form's inputs with Precognition, it can be useful to manually clear errors. You may use the form's `forgetError` function to achieve this:
+Якщо ви валідуєте через Precognition лише частину полів форми, вам може знадобитися вручну очистити помилки. Зробити це можна функцією форми `forgetError`:
 
 ```jsx
 <input
@@ -307,9 +310,9 @@ If you are validating a subset of a form's inputs with Precognition, it can be u
 >
 ```
 
-As we have seen, you can hook into an input's `blur` event and validate individual inputs as the user interacts with them; however, you may need to validate inputs that the user has not yet interacted with. This is common when building a "wizard", where you want to validate all visible inputs, whether the user has interacted with them or not, before moving to the next step.
+Як ми бачили, ви можете підключитися до події `blur` поля й валідувати окремі поля в міру взаємодії користувача з ними; проте вам може знадобитися провалідувати поля, з якими користувач ще не взаємодіяв. Так буває при побудові «майстра», де ви хочете провалідувати всі видимі поля - незалежно від того, чи торкався їх користувач, - перш ніж переходити до наступного кроку.
 
-To do this with Precognition, you should call the `validate` method passing the field names you wish to validate to the `only` configuration key. You may handle the validation result with `onSuccess` or `onValidationError` callbacks:
+Щоб зробити це через Precognition, викличте метод `validate`, передавши імена потрібних полів у ключ конфігурації `only`. Обробити результат валідації можна колбеками `onSuccess` чи `onValidationError`:
 
 ```jsx
 <button
@@ -322,7 +325,7 @@ To do this with Precognition, you should call the `validate` method passing the 
 >Next Step</button>
 ```
 
-Of course, you may also execute code in reaction to the response to the form submission. The form's `submit` function returns an Axios request promise. This provides a convenient way to access the response payload, reset the form's inputs on a successful form submission, or handle a failed request:
+Звісно, ви можете виконувати код і у відповідь на результат надсилання форми. Функція форми `submit` повертає проміс запиту Axios. Це зручний спосіб дістатися даних відповіді, скинути поля форми після успішного надсилання чи обробити невдалий запит:
 
 ```js
 const submit = (e) => {
@@ -340,7 +343,7 @@ const submit = (e) => {
 };
 ```
 
-You may determine if a form submission request is in-flight by inspecting the form's `processing` property:
+Визначити, чи запит на надсилання форми в дорозі, можна за властивістю форми `processing`:
 
 ```html
 <button disabled={form.processing}>
@@ -349,11 +352,11 @@ You may determine if a form submission request is in-flight by inspecting the fo
 ```
 
 <a name="using-alpine"></a>
-### Using Alpine and Blade
+### Через Alpine і Blade
 
-Using Laravel Precognition, you can offer live validation experiences to your users without having to duplicate your validation rules in your frontend Alpine application. To illustrate how it works, let's build a form for creating new users within our application.
+За допомогою Laravel Precognition ви можете дати користувачам живу валідацію, не дублюючи правила валідації у своєму фронтенді на Alpine. Щоб показати, як це працює, побудуймо форму створення нових користувачів у нашому застосунку.
 
-First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{{version}}/validation#form-request-validation) to house the route's validation rules:
+Спершу, щоб увімкнути Precognition для маршруту, додайте до його визначення `middleware` `HandlePrecognitiveRequests`. Вам також слід створити [запит форми](/docs/{{version}}/validation#form-request-validation), який міститиме правила валідації маршруту:
 
 ```php
 use App\Http\Requests\CreateUserRequest;
@@ -364,13 +367,13 @@ Route::post('/users', function (CreateUserRequest $request) {
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
 
-Next, you should install the Laravel Precognition frontend helpers for Alpine via NPM:
+Далі встановіть фронтенд-хелпери Laravel Precognition для Alpine через NPM:
 
 ```shell
 npm install laravel-precognition-alpine
 ```
 
-Then, register the Precognition plugin with Alpine in your `resources/js/app.js` file:
+Далі зареєструйте плагін Precognition в Alpine у своєму файлі `resources/js/app.js`:
 
 ```js
 import Alpine from 'alpinejs';
@@ -382,9 +385,9 @@ Alpine.plugin(Precognition);
 Alpine.start();
 ```
 
-With the Laravel Precognition package installed and registered, you can now create a form object using Precognition's `$form` "magic", providing the HTTP method (`post`), the target URL (`/users`), and the initial form data.
+Коли пакет Laravel Precognition встановлено й зареєстровано, ви можете створити об'єкт форми через «магію» `$form` із Precognition, передавши HTTP-метод (`post`), цільовий URL (`/users`) і початкові дані форми.
 
-To enable live validation, you should bind the form's data to its relevant input and then listen to each input's `change` event. In the `change` event handler, you should invoke the form's `validate` method, providing the input's name:
+Щоб увімкнути живу валідацію, прив'яжіть дані форми до відповідного поля, а потім слухайте подію `change` кожного поля. В обробнику `change` викликайте метод форми `validate`, передаючи ім'я поля:
 
 ```html
 <form x-data="{
@@ -422,13 +425,13 @@ To enable live validation, you should bind the form's data to its relevant input
 </form>
 ```
 
-Now, as the form is filled by the user, Precognition will provide live validation output powered by the validation rules in the route's form request. When the form's inputs are changed, a debounced "precognitive" validation request will be sent to your Laravel application. You may configure the debounce timeout by calling the form's `setValidationTimeout` function:
+Тепер, поки користувач заповнює форму, Precognition даватиме результати живої валідації на основі правил із запиту форми маршруту. Коли поля форми змінюються, до вашого застосунку Laravel надсилатиметься відкладений (debounced) «прекогнітивний» запит валідації. Ви можете налаштувати час відкладання, викликавши функцію форми `setValidationTimeout`:
 
 ```js
 form.setValidationTimeout(3000);
 ```
 
-When a validation request is in-flight, the form's `validating` property will be `true`:
+Доки запит валідації в дорозі, властивість форми `validating` дорівнюватиме `true`:
 
 ```html
 <template x-if="form.validating">
@@ -436,7 +439,7 @@ When a validation request is in-flight, the form's `validating` property will be
 </template>
 ```
 
-Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
+Будь-які помилки валідації, повернені під час запиту валідації чи надсилання форми, автоматично заповнять об'єкт форми `errors`:
 
 ```html
 <template x-if="form.invalid('email')">
@@ -444,7 +447,7 @@ Any validation errors returned during a validation request or a form submission 
 </template>
 ```
 
-You can determine if the form has any errors using the form's `hasErrors` property:
+Визначити, чи має форма помилки, можна через властивість форми `hasErrors`:
 
 ```html
 <template x-if="form.hasErrors">
@@ -452,7 +455,7 @@ You can determine if the form has any errors using the form's `hasErrors` proper
 </template>
 ```
 
-You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
+Ви також можете визначити, чи пройшло поле валідацію, передавши його ім'я до функцій форми `valid` та `invalid` відповідно:
 
 ```html
 <template x-if="form.valid('email')">
@@ -465,11 +468,11 @@ You may also determine if an input has passed or failed validation by passing th
 ```
 
 > [!WARNING]
-> A form input will only appear as valid or invalid once it has changed and a validation response has been received.
+> Поле форми буде позначено як дійсне чи недійсне лише після того, як воно зміниться й надійде відповідь валідації.
 
-As we have seen, you can hook into an input's `change` event and validate individual inputs as the user interacts with them; however, you may need to validate inputs that the user has not yet interacted with. This is common when building a "wizard", where you want to validate all visible inputs, whether the user has interacted with them or not, before moving to the next step.
+Як ми бачили, ви можете підключитися до події `change` поля й валідувати окремі поля в міру взаємодії користувача з ними; проте вам може знадобитися провалідувати поля, з якими користувач ще не взаємодіяв. Так буває при побудові «майстра», де ви хочете провалідувати всі видимі поля - незалежно від того, чи торкався їх користувач, - перш ніж переходити до наступного кроку.
 
-To do this with Precognition, you should call the `validate` method passing the field names you wish to validate to the `only` configuration key. You may handle the validation result with `onSuccess` or `onValidationError` callbacks:
+Щоб зробити це через Precognition, викличте метод `validate`, передавши імена потрібних полів у ключ конфігурації `only`. Обробити результат валідації можна колбеками `onSuccess` чи `onValidationError`:
 
 ```html
 <button
@@ -482,7 +485,7 @@ To do this with Precognition, you should call the `validate` method passing the 
 >Next Step</button>
 ```
 
-You may determine if a form submission request is in-flight by inspecting the form's `processing` property:
+Визначити, чи запит на надсилання форми в дорозі, можна за властивістю форми `processing`:
 
 ```html
 <button :disabled="form.processing">
@@ -491,9 +494,9 @@ You may determine if a form submission request is in-flight by inspecting the fo
 ```
 
 <a name="repopulating-old-form-data"></a>
-#### Repopulating Old Form Data
+#### Повторне заповнення старих даних форми
 
-In the user creation example discussed above, we are using Precognition to perform live validation; however, we are performing a traditional server-side form submission to submit the form. So, the form should be populated with any "old" input and validation errors returned from the server-side form submission:
+У наведеному вище прикладі створення користувача ми використовуємо Precognition для живої валідації; проте саму форму надсилаємо традиційно, на бік сервера. Тож форму слід заповнити «старими» даними й помилками валідації, поверненими після серверного надсилання:
 
 ```html
 <form x-data="{
@@ -504,7 +507,7 @@ In the user creation example discussed above, we are using Precognition to perfo
 }">
 ```
 
-Alternatively, if you would like to submit the form via XHR you may use the form's `submit` function, which returns an Axios request promise:
+Або ж, якщо ви хочете надсилати форму через XHR, скористайтеся функцією форми `submit`, яка повертає проміс запиту Axios:
 
 ```html
 <form
@@ -530,9 +533,9 @@ Alternatively, if you would like to submit the form via XHR you may use the form
 ```
 
 <a name="configuring-axios"></a>
-### Configuring Axios
+### Налаштування Axios
 
-The Precognition validation libraries use the [Axios](https://github.com/axios/axios) HTTP client to send requests to your application's backend. For convenience, the Axios instance may be customized if required by your application. For example, when using the `laravel-precognition-vue` library, you may add additional request headers to each outgoing request in your application's `resources/js/app.js` file:
+Бібліотеки валідації Precognition використовують HTTP-клієнт [Axios](https://github.com/axios/axios), щоб надсилати запити до бекенду вашого застосунку. Для зручності екземпляр Axios можна налаштувати, якщо цього вимагає ваш застосунок. Наприклад, користуючись бібліотекою `laravel-precognition-vue`, ви можете додати додаткові заголовки до кожного вихідного запиту у файлі `resources/js/app.js` вашого застосунку:
 
 ```js
 import { client } from 'laravel-precognition-vue';
@@ -540,7 +543,7 @@ import { client } from 'laravel-precognition-vue';
 client.axios().defaults.headers.common['Authorization'] = authToken;
 ```
 
-Or, if you already have a configured Axios instance for your application, you may tell Precognition to use that instance instead:
+Або ж, якщо у вас уже є налаштований екземпляр Axios, ви можете вказати Precognition використовувати саме його:
 
 ```js
 import Axios from 'axios';
@@ -553,9 +556,9 @@ client.use(window.axios)
 ```
 
 <a name="validating-arrays"></a>
-## Validating Arrays
+## Валідація масивів
 
-You may use wildcards to validate fields within arrays or nested objects. Each `*` matches a single path segment:
+Ви можете скористатися символами підстановки, щоб валідувати поля всередині масивів чи вкладених об'єктів. Кожен `*` відповідає одному сегменту шляху:
 
 ```js
 // Validate email for all users in an array...
@@ -569,11 +572,11 @@ form.validate('users.*.*');
 ```
 
 <a name="customizing-validation-rules"></a>
-## Customizing Validation Rules
+## Налаштування правил валідації
 
-It is possible to customize the validation rules executed during a precognitive request by using the request's `isPrecognitive` method.
+Правила валідації, які виконуються під час прекогнітивного запиту, можна налаштувати методом запиту `isPrecognitive`.
 
-For example, on a user creation form, we may want to validate that a password is "uncompromised" only on the final form submission. For precognitive validation requests, we will simply validate that the password is required and has a minimum of 8 characters. Using the `isPrecognitive` method, we can customize the rules defined by our form request:
+Наприклад, у формі створення користувача ми можемо захотіти перевіряти пароль на «невикритість» лише при остаточному надсиланні форми. Для прекогнітивних запитів валідації ми просто перевірятимемо, що пароль обов'язковий і має щонайменше 8 символів. Методом `isPrecognitive` ми можемо налаштувати правила, визначені в нашому запиті форми:
 
 ```php
 <?php
@@ -606,11 +609,11 @@ class StoreUserRequest extends FormRequest
 ```
 
 <a name="handling-file-uploads"></a>
-## Handling File Uploads
+## Обробка завантаження файлів
 
-By default, Laravel Precognition does not upload or validate files during a precognitive validation request. This ensure that large files are not unnecessarily uploaded multiple times.
+За замовчуванням Laravel Precognition не завантажує й не валідує файли під час прекогнітивного запиту валідації. Це гарантує, що великі файли не завантажуватимуться зайвий раз кілька разів.
 
-Because of this behavior, you should ensure that your application [customizes the corresponding form request's validation rules](#customizing-validation-rules) to specify the field is only required for full form submissions:
+Через таку поведінку вам слід переконатися, що ваш застосунок [налаштовує відповідні правила валідації запиту форми](#customizing-validation-rules) так, щоб поле було обов'язковим лише при повному надсиланні форми:
 
 ```php
 /**
@@ -632,18 +635,18 @@ protected function rules()
 }
 ```
 
-If you would like to include files in every validation request, you may invoke the `validateFiles` function on your client-side form instance:
+Якщо ви хочете включати файли до кожного запиту валідації, викличте функцію `validateFiles` на екземплярі форми на боці клієнта:
 
 ```js
 form.validateFiles();
 ```
 
 <a name="managing-side-effects"></a>
-## Managing Side-Effects
+## Керування побічними ефектами
 
-When adding the `HandlePrecognitiveRequests` middleware to a route, you should consider if there are any side-effects in _other_ middleware that should be skipped during a precognitive request.
+Додаючи до маршруту `middleware` `HandlePrecognitiveRequests`, подумайте, чи немає в _іншому_ `middleware` побічних ефектів, які слід пропустити під час прекогнітивного запиту.
 
-For example, you may have a middleware that increments the total number of "interactions" each user has with your application, but you may not want precognitive requests to be counted as an interaction. To accomplish this, we may check the request's `isPrecognitive` method before incrementing the interaction count:
+Наприклад, у вас може бути `middleware`, яке рахує загальну кількість «взаємодій» кожного користувача з вашим застосунком, - але ви можете не хотіти, щоб прекогнітивні запити рахувалися як взаємодія. Щоб цього досягти, перевіряйте метод запиту `isPrecognitive` перед збільшенням лічильника:
 
 ```php
 <?php
@@ -671,11 +674,11 @@ class InteractionMiddleware
 ```
 
 <a name="testing"></a>
-## Testing
+## Тестування
 
-If you would like to make precognitive requests in your tests, Laravel's `TestCase` includes a `withPrecognition` helper which will add the `Precognition` request header.
+Якщо ви хочете робити прекогнітивні запити у своїх тестах, `TestCase` у Laravel містить хелпер `withPrecognition`, який додасть заголовок запиту `Precognition`.
 
-Additionally, if you would like to assert that a precognitive request was successful, e.g., did not return any validation errors, you may use the `assertSuccessfulPrecognition` method on the response:
+Крім того, якщо ви хочете перевірити, що прекогнітивний запит був успішним - тобто не повернув помилок валідації, - скористайтеся методом `assertSuccessfulPrecognition` на відповіді:
 
 ```php tab=Pest
 it('validates registration form with precognition', function () {
