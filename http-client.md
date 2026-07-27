@@ -40,7 +40,7 @@ The `get` method returns an instance of `Illuminate\Http\Client\Response`, which
 
 ```php
 $response->body() : string;
-$response->json($key = null, $default = null) : mixed;
+$response->json($key = null, $default = null, $flags = null) : mixed;
 $response->object() : object;
 $response->collect($key = null) : Illuminate\Support\Collection;
 $response->resource() : resource;
