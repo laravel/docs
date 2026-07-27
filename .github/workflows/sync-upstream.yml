@@ -1,0 +1,163 @@
+name: Sync translation with upstream
+
+# Keeps the Ukrainian translation in step with laravel/docs.
+#
+# Each page records the upstream commit it was translated from in its `git:`
+# header, so the gap is derived from the files themselves. Small routine edits
+# are translated and opened as a pull request for review; anything large, and
+# any page that does not exist here yet, is reported as an issue instead - a
+# new section wants a person, and paying for it by the token does not.
+#
+# Requires a repo secret ANTHROPIC_API_KEY. The default GITHUB_TOKEN is enough
+# for the branch, the pull request and the issue.
+
+on:
+  schedule:
+    - cron: '43 5 * * *' # daily, 05:43 UTC
+  workflow_dispatch:
+    inputs:
+      max_lines:
+        description: 'Total changed lines above which the run defers to a person'
+        required: false
+        default: '400'
+      max_file_lines:
+        description: 'Per-file changed lines above which a page waits for a person'
+        required: false
+        default: '150'
+
+permissions: {}
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history: the diff runs between the commit the translation was
+          # made from and upstream's head, and both may be far back.
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/laravel/docs.git
+          git fetch --quiet upstream 13.x
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Measure the gap
+        id: status
+        run: |
+          python3 scripts/upstream_status.py \
+            --max-lines "${{ inputs.max_lines || 400 }}" \
+            --max-file-lines "${{ inputs.max_file_lines || 150 }}"
+
+      - name: Install the SDK
+        if: steps.status.outputs.status == 'translate'
+        run: pip install --quiet anthropic
+
+      - name: Translate the changed sections
+        if: steps.status.outputs.status == 'translate'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python3 scripts/translate_diff.py ${{ steps.status.outputs.files }} \
+            --base "${{ steps.status.outputs.base }}" \
+            --head "${{ steps.status.outputs.head }}"
+
+      - name: Open a pull request
+        if: steps.status.outputs.status == 'translate'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD: ${{ steps.status.outputs.head }}
+          FILES: ${{ steps.status.outputs.files }}
+          HELD: ${{ steps.status.outputs.held }}
+        run: |
+          if git diff --quiet; then
+            echo 'Nothing changed - the sections were already up to date.'
+            exit 0
+          fi
+
+          branch="sync/upstream-${HEAD:0:8}"
+
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b "$branch"
+          git add -- '*.md'
+          git commit -m "chore(docs): підтягнути зміни апстріму ${HEAD:0:8}"
+          git push --quiet origin "$branch"
+
+          {
+            echo "Автоматичний переклад змін з [laravel/docs@${HEAD:0:8}](https://github.com/laravel/docs/commit/$HEAD)."
+            echo
+            echo "Оновлено: $FILES"
+            echo
+            if [ -n "$HELD" ]; then
+              echo "> Відкладено як завеликі для автоматики: $HELD"
+              echo
+            fi
+            echo 'Перекладено лише ті секції, яких торкнувся diff; решта сторінок не змінювалася.'
+            echo 'Структуру перевірено автоматично (кількість рядків, якорі, блоки коду), але текст потребує вичитки.'
+          } > /tmp/body.md
+
+          gh pr create \
+            --title "Підтягнути зміни апстріму ${HEAD:0:8}" \
+            --body-file /tmp/body.md \
+            --base 13.x \
+            --head "$branch"
+
+      - name: Report what needs a person
+        if: steps.status.outputs.needs_person == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD: ${{ steps.status.outputs.head }}
+          BASE: ${{ steps.status.outputs.base }}
+          HELD: ${{ steps.status.outputs.held }}
+          NEW_PAGES: ${{ steps.status.outputs.new_pages }}
+          REASON: ${{ steps.status.outputs.reason }}
+        run: |
+          title="Апстрім потребує ручного перекладу (${HEAD:0:8})"
+
+          # One open issue at a time: the daily run would otherwise file a
+          # duplicate every morning until the work is done.
+          open=$(gh issue list --state open --search "$title in:title" \
+            --json number --jq 'length')
+
+          if [ "$open" != '0' ]; then
+            echo "Issue already open ($open)."
+            exit 0
+          fi
+
+          {
+            echo "[Diff апстріму](https://github.com/laravel/docs/compare/$BASE...$HEAD)"
+            echo
+
+            if [ -n "$HELD" ]; then
+              echo 'Завеликі для автоматики:'
+              echo
+              printf -- '- %s\n' $HELD
+              echo
+            fi
+
+            if [ -n "$NEW_PAGES" ]; then
+              echo 'Нові сторінки (потрібні slug, заголовок і місце в бічній панелі):'
+              echo
+              printf -- '- %s\n' $NEW_PAGES
+              echo
+            fi
+
+            echo "_${REASON}_"
+          } > /tmp/issue.md
+
+          gh issue create --title "$title" --body-file /tmp/issue.md
