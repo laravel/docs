@@ -5,9 +5,15 @@ name: Notify the site
 # This tells it to. The site also polls daily, so a missed dispatch delays the
 # update rather than losing it.
 #
-# Requires a repo secret SITE_DISPATCH_TOKEN: a PAT with `repo` scope on
-# laravelukraine/www. The default GITHUB_TOKEN cannot trigger workflows in
-# another repository.
+# Requires two repository settings:
+#
+#   SITE_DISPATCH_TOKEN (secret)  a PAT with Contents: read and write on the
+#                                 site repository. The default GITHUB_TOKEN
+#                                 cannot reach another repository.
+#   SITE_REPOSITORY (variable)    owner/name of the site repository. A variable
+#                                 rather than a literal so moving the site
+#                                 between accounts or into the organisation is
+#                                 a settings change, not a code change.
 
 on:
   push:
@@ -25,7 +31,14 @@ jobs:
       - name: Dispatch to the site
         env:
           GH_TOKEN: ${{ secrets.SITE_DISPATCH_TOKEN }}
+          SITE: ${{ vars.SITE_REPOSITORY }}
         run: |
-          gh api repos/laravelukraine/www/dispatches \
+          if [ -z "$SITE" ]; then
+            echo 'SITE_REPOSITORY is not set - skipping.' \
+                 'The site polls daily, so the update is delayed, not lost.'
+            exit 0
+          fi
+
+          gh api "repos/$SITE/dispatches" \
             --field event_type=docs-updated \
             --field 'client_payload[commit]=${{ github.sha }}'
