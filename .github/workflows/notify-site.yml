@@ -1,0 +1,31 @@
+name: Notify the site
+
+# The translation ships inside the application image as a submodule, so a merge
+# here is not live until the site repository moves its pointer and redeploys.
+# This tells it to. The site also polls daily, so a missed dispatch delays the
+# update rather than losing it.
+#
+# Requires a repo secret SITE_DISPATCH_TOKEN: a PAT with `repo` scope on
+# laravelukraine/www. The default GITHUB_TOKEN cannot trigger workflows in
+# another repository.
+
+on:
+  push:
+    branches: [13.x]
+    paths: ['**.md']
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dispatch to the site
+        env:
+          GH_TOKEN: ${{ secrets.SITE_DISPATCH_TOKEN }}
+        run: |
+          gh api repos/laravelukraine/www/dispatches \
+            --field event_type=docs-updated \
+            --field 'client_payload[commit]=${{ github.sha }}'
