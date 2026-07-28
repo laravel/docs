@@ -5,10 +5,12 @@
 - [Server Side Installation](#server-side-installation)
     - [Reverb](#reverb)
     - [Pusher Channels](#pusher-channels)
+    - [Sockudo](#sockudo)
     - [Ably](#ably)
 - [Client Side Installation](#client-side-installation)
     - [Reverb](#client-reverb)
     - [Pusher Channels](#client-pusher-channels)
+    - [Sockudo](#client-sockudo)
     - [Ably](#client-ably)
 - [Concept Overview](#concept-overview)
     - [Using an Example Application](#using-example-application)
@@ -56,6 +58,8 @@ The core concepts behind broadcasting are simple: clients connect to named chann
 #### Supported Drivers
 
 By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com).
+
+Self-hosted servers that implement the Pusher Channels protocol, such as [Sockudo](https://github.com/sockudo/sockudo), may also be used with Laravel's Pusher driver.
 
 > [!NOTE]
 > Before diving into event broadcasting, make sure you have read Laravel's documentation on [events and listeners](/docs/{{version}}/events).
@@ -148,9 +152,6 @@ PUSHER_APP_CLUSTER="mt1"
 
 The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
 
-> [!NOTE]
-> If you prefer to self-host your broadcasting infrastructure, [Sockudo](https://github.com/sockudo/sockudo) is an open-source server that implements the Pusher Channels protocol. It works with Laravel's existing Pusher driver and Laravel Echo by pointing the Pusher host, port, scheme, and application credentials at your Sockudo instance.
-
 Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
 
 ```ini
@@ -158,6 +159,17 @@ BROADCAST_CONNECTION=pusher
 ```
 
 Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
+
+<a name="sockudo"></a>
+### Sockudo
+
+[Sockudo](https://github.com/sockudo/sockudo) is an open-source, self-hosted server that implements the Pusher Channels protocol. Laravel does not include a dedicated Sockudo driver; instead, select Pusher when running the broadcasting installer:
+
+```shell
+php artisan install:broadcasting --pusher
+```
+
+After installing Sockudo, point the Pusher host, port, scheme, and application credentials in your `.env` file at your Sockudo instance. For installation and deployment options, consult the [Sockudo documentation](https://sockudo.io/docs/getting-started/installation).
 
 <a name="ably"></a>
 ### Ably
@@ -409,6 +421,11 @@ window.Echo = new Echo({
     client: new Pusher(options.key, options)
 });
 ```
+
+<a name="client-sockudo"></a>
+### Sockudo
+
+Since Sockudo implements the Pusher Channels protocol, it uses Echo's `pusher` broadcaster. Follow the [Pusher Channels client installation instructions](#client-pusher-channels), then set the `wsHost`, `wsPort`, `wssPort`, `forceTLS`, and `enabledTransports` options to connect to your Sockudo instance.
 
 <a name="client-ably"></a>
 ### Ably
