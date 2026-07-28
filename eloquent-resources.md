@@ -9,6 +9,7 @@
     - [Pagination](#pagination)
     - [Conditional Attributes](#conditional-attributes)
     - [Conditional Relationships](#conditional-relationships)
+    - [JSON:API Resources](#json-api-resources)
     - [Adding Meta Data](#adding-meta-data)
 - [Resource Responses](#resource-responses)
 
@@ -720,6 +721,50 @@ public function toArray(Request $request): array
         'created_at' => $this->created_at,
         'updated_at' => $this->updated_at,
     ];
+}
+```
+
+<a name="json-api-resources"></a>
+### JSON:API Resources
+
+Laravel provides native support for the [JSON:API specification](https://jsonapi.org/). To create a resource that adheres to this specification, you may use the `--json-api` flag when executing the `make:resource` Artisan command:
+
+```shell
+php artisan make:resource UserResource --json-api
+```
+
+Once the resource has been generated, it will extend the Illuminate\Http\Resources\JsonApi\JsonApiResource class. This class automatically structures your JSON response according to the JSON:API standard, wrapping your attributes and identifying the resource's id and type.
+
+When defining the toArray method for a JSON:API resource, you should only return the attributes you wish to be included within the attributes member of the JSON:API response:
+
+```php
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+
+/**
+* Transform the resource into an array.
+*
+* @return array<string, mixed>
+  */
+  public function toArray(Request $request): array
+  {
+    return [
+      'name' => $this->name,
+      'email' => $this->email,
+    ];
+  }
+```
+The resulting JSON response for this resource will automatically include the id and type keys at the top level of the data object:
+
+```json
+{
+    "data": {
+        "type": "users",
+        "id": "1",
+        "attributes": {
+            "name": "Taylor Otwell",
+            "email": "taylor@laravel.com"
+        }
+    }
 }
 ```
 
