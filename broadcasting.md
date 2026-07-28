@@ -148,6 +148,9 @@ PUSHER_APP_CLUSTER="mt1"
 
 The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
 
+> [!NOTE]
+> If you prefer to self-host your broadcasting infrastructure, [Sockudo](https://github.com/sockudo/sockudo) is an open-source server that implements the Pusher Channels protocol. It works with Laravel's existing Pusher driver and Laravel Echo by pointing the Pusher host, port, scheme, and application credentials at your Sockudo instance.
+
 Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
 
 ```ini
