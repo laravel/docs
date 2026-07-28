@@ -1638,6 +1638,9 @@ $last = last($array);
 <a name="numbers"></a>
 ## Numbers
 
+> [!NOTE]
+> The `Number` class methods that format, parse, or spell values require PHP's `intl` extension.
+
 <a name="method-number-abbreviate"></a>
 #### `Number::abbreviate()` {.collection-method}
 
