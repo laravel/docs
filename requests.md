@@ -815,6 +815,8 @@ If you are using Amazon AWS or another "cloud" load balancer provider, you may n
 })
 ```
 
+If your load balancer adds its own IP address to the standard `Forwarded` header, you may use `0.0.0.0/0` to get the leftmost IP as the client IP address.
+
 <a name="configuring-trusted-hosts"></a>
 ## Configuring Trusted Hosts
 
