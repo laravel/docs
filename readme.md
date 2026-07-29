@@ -1,10 +1,17 @@
 # Українська документація Laravel
 
-Український переклад офіційної документації Laravel.
+Повний український переклад офіційної документації Laravel - **102 сторінки,
+понад 92 000 рядків**, синхронізовані з оригіналом.
 
 Читати онлайн: **[laravelukraine.com/docs](https://laravelukraine.com/docs)**
 
 Оригінал: [laravel.com/docs](https://laravel.com/docs) · [laravel/docs](https://github.com/laravel/docs)
+
+> **In English:** a complete Ukrainian translation of the official Laravel
+> documentation, kept in sync with upstream. Every page records the upstream
+> commit it was translated from, so drift is measurable rather than guessed at.
+> Read it at [laravelukraine.com/docs](https://laravelukraine.com/docs);
+> contributions are welcome - see [Як допомогти](#як-допомогти).
 
 ## Про переклад
 
@@ -39,6 +46,23 @@ diff <(git show upstream/13.x:strings.md) strings.md
 всередині цього репозиторію, потрібне для обчислення різниці, коли віддалений
 `upstream` не налаштований. Щоб підтягнути зміни оригіналу, її оновлюють і
 звіряють перекладені файли командою вище.
+
+Щодня це робиться автоматично - [workflow](.github/workflows/sync-upstream.yml)
+порівнює переклад з оригіналом і розводить зміни на два шляхи. Дрібні правки
+перекладаються та йдуть у Pull Request на рев'ю; великі зміни й нові сторінки
+потрапляють в issue, бо новий розділ потребує людини.
+
+Скрипти під цим лежать у [`scripts/`](scripts) і працюють самостійно:
+
+| Скрипт | Що робить |
+| --- | --- |
+| `upstream_status.py` | рахує відставання за `git:` хедерами сторінок |
+| `translate_diff.py` | перекладає лише ті секції, яких торкнувся diff |
+| `validate_translation.py` | звіряє структуру: рядки, якорі, блоки коду, терміни |
+
+Валідатор запускається до запису файлу. Викинутий якір ламає бічну панель і всі
+глибокі посилання на сторінку, а в diff виглядає як звичайна зміна формулювання -
+тому це перевіряється машинно, а не оком.
 
 ## Як допомогти
 
