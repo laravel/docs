@@ -1,5 +1,5 @@
 ---
-git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+git: 946622229fa1d90052b7d51614a4a14a7156b9b0
 ---
 # База даних: конструктор запитів
 
@@ -581,7 +581,7 @@ $users = DB::table('users')
 Якщо вам потрібно згрупувати умову «or» у дужках, передайте замикання першим аргументом методу `orWhere`:
 
 ```php
-use Illuminate\Database\Query\Builder; 
+use Illuminate\Database\Query\Builder;
 
 $users = DB::table('users')
     ->where('votes', '>', 100)

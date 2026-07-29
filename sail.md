@@ -1,5 +1,5 @@
 ---
-git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
+git: 946622229fa1d90052b7d51614a4a14a7156b9b0
 ---
 # Laravel Sail
 
@@ -30,8 +30,8 @@ git: b0b1c3e17c715880e0c380cd30061da6ca952c9d
 - [Версії Node](#sail-node-versions)
 - [Публічний доступ до вашого сайту](#sharing-your-site)
 - [Налагодження через Xdebug](#debugging-with-xdebug)
-  - [Xdebug у CLI](#xdebug-cli-usage)
-  - [Xdebug у браузері](#xdebug-browser-usage)
+    - [Xdebug у CLI](#xdebug-cli-usage)
+    - [Xdebug у браузері](#xdebug-browser-usage)
 - [Налаштування](#sail-customization)
 
 <a name="introduction"></a>
