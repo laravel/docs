@@ -1121,6 +1121,7 @@ Below is a list of all available validation rules and their function:
 <div class="collection-method-list" markdown="1">
 
 [Array](#rule-array)
+[Array Keys](#rule-array-keys)
 [Between](#rule-between)
 [Contains](#rule-contains)
 [Doesnt Contain](#rule-doesnt-contain)
@@ -1360,6 +1361,59 @@ Validator::make($input, [
 ```
 
 In general, you should always specify the array keys that are allowed to be present within your array.
+
+<a name="rule-array-keys"></a>
+#### array_keys:_foo_,_bar_,...
+
+The field under validation must be a PHP `array` containing only the given keys. This rule behaves like the [array](#rule-array) rule, but at least one key must always be provided:
+
+```php
+use Illuminate\Support\Facades\Validator;
+
+$input = [
+    'user' => [
+        'name' => 'Taylor Otwell',
+        'username' => 'taylorotwell',
+        'admin' => true,
+    ],
+];
+
+Validator::make($input, [
+    'user' => ['array_keys:name,username'],
+]);
+```
+
+Since the `admin` key is not one of the allowed keys, validation fails and produces the following error message:
+
+```text
+The user field must only contain the following keys: name, username.
+```
+
+The default message lists the allowed keys using the `:values` placeholder. If you would also like the message to name the keys that caused the failure, you may define a custom message containing the `:unexpected` placeholder:
+
+```php
+Validator::make($input, [
+    'user' => ['array_keys:name,username'],
+], [
+    'user.array_keys' => 'The :attribute field does not accept :unexpected. Accepted keys: :values.',
+]);
+```
+
+Given the same input, this message would read:
+
+```text
+The user field does not accept admin. Accepted keys: name, username.
+```
+
+For convenience, this rule may also be constructed using the fluent `Rule::arrayKeys` rule builder, which accepts the allowed keys as individual arguments, an array, or a collection:
+
+```php
+use Illuminate\Validation\Rule;
+
+Validator::make($input, [
+    'user' => [Rule::arrayKeys('name', 'username')],
+]);
+```
 
 <a name="rule-ascii"></a>
 #### ascii
