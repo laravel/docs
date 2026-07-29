@@ -31,6 +31,9 @@ MODEL = 'claude-sonnet-4-5'
 # (header, title, contents list) and travels as its own unit.
 SECTION = re.compile(r'(?=^<a\s+name="[^"]+"></a>$)', re.MULTILINE)
 
+# Inline base64 payloads: mcp.md carries a 35KB image on one line.
+EMBEDDED = re.compile(r'data:[a-z]+/[a-z.+-]+;base64,')
+
 SYSTEM = """\
 Ти перекладаєш документацію Laravel англійською на українську для
 laravelukraine.com.
@@ -205,6 +208,7 @@ def main() -> int:
 
         sections = split_sections(path.read_text())
         rebuilt: list[str] = []
+        deferred: list[str] = []
 
         for section in sections:
             anchor = anchor_of(section) or ''
@@ -217,6 +221,18 @@ def main() -> int:
 
             if not diff:
                 rebuilt.append(section)
+                continue
+
+            # An embedded data: URI is a single line tens of thousands of
+            # characters long - almost none of it translatable, and a model
+            # asked to echo it back may silently truncate or alter the payload,
+            # replacing a working image with a corrupt one. Left untouched and
+            # reported, so the prose around it can be updated by hand.
+            if EMBEDDED.search(section):
+                print(f'{name}: section "{anchor}" holds embedded data - left for a person',
+                      file=sys.stderr)
+                rebuilt.append(section)
+                deferred.append(anchor or '(преамбула)')
                 continue
 
             rebuilt.append(restore_edges(section, translate(client, glossary, section, diff)))
@@ -243,7 +259,9 @@ def main() -> int:
             continue
 
         path.write_text(updated)
-        print(f'{name}: {len(touched)} sections')
+
+        note = f' ({len(deferred)} left for a person)' if deferred else ''
+        print(f'{name}: {len(touched)} sections{note}')
 
     return 1 if failed else 0
 
