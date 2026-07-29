@@ -49,6 +49,9 @@ laravelukraine.com.
 - Дотримуйся глосарія, наведеного нижче.
 - Тире - звичайний дефіс, не довге тире.
 
+- Кількість рядків має точно збігатися з оригіналом фрагмента, включно з
+  порожніми рядками на початку та в кінці.
+
 Повертай ТІЛЬКИ оновлений український текст фрагмента, без пояснень і без
 огорнення у блок коду.\
 """
@@ -127,6 +130,23 @@ def translate(client, glossary: str,
     return message.content[0].text
 
 
+def restore_edges(original: str, translated: str) -> str:
+    """Put back the blank lines that separate this section from the next.
+
+    Sections end in blank lines, and a model reliably strips them: they carry
+    no meaning to read, so returning "just the text" drops them. That silently
+    shortens every translated section by two lines and fails the line-count
+    check, which is how this was found. Rather than ask the prompt to be
+    careful about invisible characters, the boundaries are reattached here.
+    """
+    body = translated.strip('\n')
+
+    leading = len(original) - len(original.lstrip('\n'))
+    trailing = len(original) - len(original.rstrip('\n'))
+
+    return ('\n' * leading) + body + ('\n' * trailing)
+
+
 def section_diff(base: str, head: str, path: str, anchor: str) -> str:
     """The diff limited to one section, for context in the prompt."""
     def find(commit: str) -> str:
@@ -199,7 +219,7 @@ def main() -> int:
                 rebuilt.append(section)
                 continue
 
-            rebuilt.append(translate(client, glossary, section, diff))
+            rebuilt.append(restore_edges(section, translate(client, glossary, section, diff)))
 
         updated = ''.join(rebuilt)
 

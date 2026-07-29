@@ -63,6 +63,10 @@ jobs:
             --max-lines "${{ inputs.max_lines || 400 }}" \
             --max-file-lines "${{ inputs.max_file_lines || 150 }}"
 
+      - name: Check section boundaries round-trip
+        if: steps.status.outputs.status == 'translate'
+        run: python3 scripts/tests/test_restore_edges.py
+
       - name: Install the SDK
         if: steps.status.outputs.status == 'translate'
         run: pip install --quiet anthropic
