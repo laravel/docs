@@ -6,6 +6,7 @@
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
     - [Dashboard Authorization](#dashboard-authorization)
+    - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
 - [Upgrading Telescope](#upgrading-telescope)
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
@@ -153,6 +154,35 @@ protected function gate(): void
 
 > [!WARNING]
 > You should ensure you change your `APP_ENV` environment variable to `production` in your production environment. Otherwise, your Telescope installation will be publicly available.
+
+<a name="content-security-policy-csp-nonce"></a>
+### Content Security Policy (CSP) Nonce
+
+If you wish to use a [nonce attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) on the script and style tags used in Telescope views as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may use the `Telescope::cspNonce` method to specify the nonce to use. This method should typically be invoked within middleware so that a new nonce is assigned for each request:
+
+```php
+use Closure;
+use Illuminate\Http\Request;
+use Laravel\Telescope\Telescope;
+use Symfony\Component\HttpFoundation\Response;
+
+public function handle(Request $request, Closure $next): Response
+{
+    Telescope::cspNonce('csp-nonce');
+
+    return $next($request);
+}
+```
+
+You may add this middleware to the `middleware` option in your application's `config/telescope.php` configuration file:
+
+```php
+'middleware' => [
+    'web',
+    App\Http\Middleware\AddTelescopeCspNonce::class,
+    Authorize::class,
+],
+```
 
 <a name="upgrading-telescope"></a>
 ## Upgrading Telescope
