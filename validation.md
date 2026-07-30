@@ -1121,6 +1121,7 @@ Below is a list of all available validation rules and their function:
 <div class="collection-method-list" markdown="1">
 
 [Array](#rule-array)
+[Array Keys](#rule-array-keys)
 [Between](#rule-between)
 [Contains](#rule-contains)
 [Doesnt Contain](#rule-doesnt-contain)
@@ -1360,6 +1361,21 @@ Validator::make($input, [
 ```
 
 In general, you should always specify the array keys that are allowed to be present within your array.
+
+<a name="rule-array-keys"></a>
+#### array_keys:_foo_,_bar_,...
+
+The field under validation must be a PHP `array` whose keys are all included in the given list. At least one key must be provided:
+
+```php
+'user' => ['array_keys:name,username'],
+```
+
+For convenience, you may use the `Rule::arrayKeys` method:
+
+```php
+'user' => [Rule::arrayKeys('name', 'username')],
+```
 
 <a name="rule-ascii"></a>
 #### ascii
