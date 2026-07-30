@@ -109,6 +109,35 @@ If desired, you may disable Telescope's data collection entirely using the `enab
 'enabled' => env('TELESCOPE_ENABLED', true),
 ```
 
+<a name="content-security-policy-csp-nonce"></a>
+#### Content Security Policy (CSP) Nonce
+
+If you would like to use a [nonce attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) on the script and style tags used in Telescope views as part of your [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), you may use the `Telescope::cspNonce` method to specify the nonce to use. This method should typically be invoked within middleware so that a new nonce is assigned for each request:
+
+```php
+use Closure;
+use Illuminate\Http\Request;
+use Laravel\Telescope\Telescope;
+use Symfony\Component\HttpFoundation\Response;
+
+public function handle(Request $request, Closure $next): Response
+{
+    Telescope::cspNonce('csp-nonce');
+
+    return $next($request);
+}
+```
+
+You may add this middleware to the `middleware` option in your application's `config/telescope.php` configuration file:
+
+```php
+'middleware' => [
+    'web',
+    App\Http\Middleware\AddTelescopeCspNonce::class,
+    Authorize::class,
+],
+```
+
 <a name="data-pruning"></a>
 ### Data Pruning
 
