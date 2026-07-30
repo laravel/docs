@@ -6,7 +6,6 @@
     - [Configuration](#configuration)
     - [Data Pruning](#data-pruning)
     - [Dashboard Authorization](#dashboard-authorization)
-    - [Content Security Policy (CSP) Nonce](#content-security-policy-csp-nonce)
 - [Upgrading Telescope](#upgrading-telescope)
 - [Filtering](#filtering)
     - [Entries](#filtering-entries)
