@@ -174,11 +174,12 @@ The `cover` method resizes and crops an image to completely cover the given dime
 $image = $image->cover(400, 400);
 ```
 
-The `contain` method resizes an image to fit within the given dimensions while preserving the entire image. If necessary, empty space will be filled using the optional background color:
+The `contain` method resizes an image to fit within the given dimensions while preserving the entire image. If necessary, empty space will be filled using the optional background color. You may pass a hex color string or `'dominant'`, which uses the image's average color:
 
 ```php
 $image = $image->contain(400, 400);
 $image = $image->contain(400, 400, '#ffffff');
+$image = $image->contain(400, 400, 'dominant');
 ```
 
 You may crop an image using the `crop` method. The first two arguments are the desired width and height, and the optional third and fourth arguments specify the crop's `x` and `y` coordinates:
@@ -197,6 +198,7 @@ Laravel also provides a variety of additional image transformation methods:
 $image = $image->orient();
 $image = $image->rotate(90);
 $image = $image->rotate(90, '#ffffff');
+$image = $image->rotate(90, 'dominant');
 $image = $image->blur(5);
 $image = $image->grayscale();
 $image = $image->sharpen(10);
@@ -300,7 +302,7 @@ If the image could not be stored, the storage methods return `false`.
 <a name="inspecting-images"></a>
 ## Inspecting Images
 
-You may retrieve the image's MIME type, extension, dimensions, width, and height using the following methods:
+You may retrieve the image's MIME type, extension, dimensions, width and height.
 
 ```php
 $mimeType = $image->mimeType();
@@ -312,6 +314,12 @@ $height = $image->height();
 ```
 
 These methods operate on the processed image. For example, calling `width` after `cover(400, 400)` will return `400`.
+
+You may also retrieve the dominant (average) color of an image as a hex string using the `dominantColor` method. The color is calculated by downsampling the image to a single pixel:
+
+```php
+$color = $image->dominantColor();
+```
 
 <a name="image-drivers"></a>
 ## Image Drivers
