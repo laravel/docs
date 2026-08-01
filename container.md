@@ -317,6 +317,52 @@ interface EventPusher
 }
 ```
 
+<a name="bind-when-attribute"></a>
+#### BindWhen Attribute
+
+If you need to conditionally bind an implementation based on arbitrary runtime logic rather than just environment names, you may use the `BindWhen` attribute. The `BindWhen` attribute accepts the concrete class name and a closure that returns a boolean condition indicating if the binding should apply. The closure receives the service container instance (`Illuminate\Contracts\Container\Container`):
+
+```php
+<?php
+
+namespace App\Contracts;
+
+use App\Services\BetaPaymentGateway;
+use App\Services\StripePaymentGateway;
+use Illuminate\Container\Attributes\Bind;
+use Illuminate\Container\Attributes\BindWhen;
+use Illuminate\Contracts\Container\Container;
+
+#[BindWhen(BetaPaymentGateway::class, static fn (Container $container) => $container->make('config')->get('features.beta_payments'))]
+#[Bind(StripePaymentGateway::class)]
+interface PaymentGateway
+{
+    // ...
+}
+```
+
+Multiple `BindWhen` and `Bind` attributes may be applied to the same interface. Attributes are evaluated in the order they are defined on the interface, and the first attribute with a matching condition or environment will be selected:
+
+```php
+use App\Services\BetaPaymentGateway;
+use App\Services\FakePaymentGateway;
+use App\Services\StripePaymentGateway;
+use Illuminate\Container\Attributes\Bind;
+use Illuminate\Container\Attributes\BindWhen;
+use Illuminate\Contracts\Container\Container;
+
+#[BindWhen(BetaPaymentGateway::class, static fn (Container $container) => $container->make('config')->get('features.beta_payments'))]
+#[Bind(FakePaymentGateway::class, environments: ['local', 'testing'])]
+#[Bind(StripePaymentGateway::class)]
+interface PaymentGateway
+{
+    // ...
+}
+```
+
+> [!NOTE]  
+> The `BindWhen` attribute requires PHP 8.5 or higher, as it relies on support for static closures within PHP attribute arguments.
+
 <a name="contextual-binding"></a>
 ### Contextual Binding
 
