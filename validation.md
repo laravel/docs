@@ -1236,6 +1236,14 @@ The field under validation must be `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"tru
 
 The field under validation must have a valid A or AAAA record according to the `dns_get_record` PHP function. The hostname of the provided URL is extracted using the `parse_url` PHP function before being passed to `dns_get_record`.
 
+When testing validation rules that perform DNS lookups, such as `active_url` and `email:dns`, you may use the `Validator::fakeDnsLookups` method. This fakes DNS lookups while preserving the rules' other validation behavior:
+
+```php
+use Illuminate\Support\Facades\Validator;
+
+Validator::fakeDnsLookups();
+```
+
 <a name="rule-after"></a>
 #### after:_date_
 

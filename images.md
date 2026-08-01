@@ -179,7 +179,10 @@ The `contain` method resizes an image to fit within the given dimensions while p
 ```php
 $image = $image->contain(400, 400);
 $image = $image->contain(400, 400, '#ffffff');
+$image = $image->contain(400, 400, 'dominant');
 ```
+
+You may specify `dominant` as the background color to fill empty space using the image's dominant color.
 
 You may crop an image using the `crop` method. The first two arguments are the desired width and height, and the optional third and fourth arguments specify the crop's `x` and `y` coordinates:
 
@@ -197,6 +200,7 @@ Laravel also provides a variety of additional image transformation methods:
 $image = $image->orient();
 $image = $image->rotate(90);
 $image = $image->rotate(90, '#ffffff');
+$image = $image->rotate(90, 'dominant');
 $image = $image->blur(5);
 $image = $image->grayscale();
 $image = $image->sharpen(10);
@@ -300,7 +304,7 @@ If the image could not be stored, the storage methods return `false`.
 <a name="inspecting-images"></a>
 ## Inspecting Images
 
-You may retrieve the image's MIME type, extension, dimensions, width, and height using the following methods:
+You may retrieve the image's MIME type, extension, dimensions, width, height, and dominant color using the following methods:
 
 ```php
 $mimeType = $image->mimeType();
@@ -309,6 +313,8 @@ $extension = $image->extension();
 [$width, $height] = $image->dimensions();
 $width = $image->width();
 $height = $image->height();
+
+$dominantColor = $image->dominantColor();
 ```
 
 These methods operate on the processed image. For example, calling `width` after `cover(400, 400)` will return `400`.

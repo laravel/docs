@@ -317,6 +317,23 @@ interface EventPusher
 }
 ```
 
+For bindings that depend on an arbitrary condition, you may use the `BindWhen` attribute. The closure may receive the container and should return `true` when the binding should be applied. `Bind` and `BindWhen` attributes are evaluated in the order they are declared:
+
+```php
+use App\Services\BetaEventPusher;
+use Illuminate\Container\Attributes\BindWhen;
+use Laravel\Pennant\Feature;
+
+#[BindWhen(BetaEventPusher::class, static fn () => Feature::active('beta-events'))]
+interface EventPusher
+{
+    // ...
+}
+```
+
+> [!NOTE]
+> The `BindWhen` attribute requires PHP 8.5 or greater.
+
 <a name="contextual-binding"></a>
 ### Contextual Binding
 

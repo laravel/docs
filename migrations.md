@@ -1244,6 +1244,7 @@ The following table contains all of the available column modifiers. This list do
 | `->nullable($value = true)`         | Allow `NULL` values to be inserted into the column.                                            |
 | `->storedAs($expression)`           | Create a stored generated column (MariaDB / MySQL / PostgreSQL / SQLite).                      |
 | `->unsigned()`                      | Set `INTEGER` columns as `UNSIGNED` (MariaDB / MySQL).                                         |
+| `->using($expression)`              | Specify a casting expression when changing the column type (PostgreSQL).                       |
 | `->useCurrent()`                    | Set `TIMESTAMP` columns to use `CURRENT_TIMESTAMP` as default value.                           |
 | `->useCurrentOnUpdate()`            | Set `TIMESTAMP` columns to use `CURRENT_TIMESTAMP` when a record is updated (MariaDB / MySQL). |
 | `->virtualAs($expression)`          | Create a virtual generated column (MariaDB / MySQL / SQLite).                                  |
@@ -1354,6 +1355,17 @@ $table->bigIncrements('id')->primary()->change();
 
 // Drop an index...
 $table->char('postal_code', 10)->unique(false)->change();
+```
+
+<a name="postgresql-column-modifications"></a>
+#### PostgreSQL Column Modifications
+
+When changing a column's type on PostgreSQL, you may use the `using` modifier to specify the expression used to cast the existing values:
+
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->date('birthday')->using('birthday::date')->change();
+});
 ```
 
 <a name="renaming-columns"></a>
