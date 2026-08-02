@@ -155,6 +155,37 @@ Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fi
 
 In addition to PHP CS Fixer rules, Pint provides custom rules prefixed with `Pint/`. These rules are not enabled by default, but you may enable them in your `pint.json` file.
 
+<a name="laravel-blade"></a>
+##### `Pint/laravel_blade`
+
+This rule formats your Blade templates, applying consistent indentation, spacing, and attribute formatting to your `.blade.php` files. By default, Pint does not format Blade files, so you must enable this rule in your `pint.json` file to opt in:
+
+```json
+{
+    "preset": "laravel",
+    "rules": {
+        "Pint/laravel_blade": true
+    }
+}
+```
+
+Once enabled, Pint will format your Blade templates in addition to your PHP files whenever it runs:
+
+```shell
+./vendor/bin/pint
+```
+
+Alternatively, if you would like to enable this rule for a single run without modifying your `pint.json` file, you may use the `--blade` option:
+
+```shell
+./vendor/bin/pint --blade
+```
+
+Under the hood, this rule uses [Prettier](https://prettier.io) along with the `prettier-plugin-blade` and `prettier-plugin-tailwindcss` plugins, so [Node.js](https://nodejs.org) must be installed on your machine. The first time you run Pint with this rule enabled, Pint will detect any missing Prettier dependencies and prompt you to install them.
+
+> [!NOTE]
+> This rule automatically skips files that typically rely on their own formatting, such as [Laravel Boost](https://github.com/laravel/boost) guidelines and email views located in the `resources/views/emails` and `resources/views/mail` directories.
+
 <a name="phpdoc-type-annotations-only"></a>
 ##### `Pint/phpdoc_type_annotations_only`
 
@@ -188,37 +219,6 @@ To enable this rule, add it to your `pint.json` file:
 
 > [!NOTE]
 > This rule automatically skips files in the `config` directory, as configuration files typically rely on comments for documentation.
-
-<a name="laravel-blade"></a>
-##### `Pint/laravel_blade`
-
-This rule formats your Blade templates, applying consistent indentation, spacing, and attribute formatting to your `.blade.php` files. By default, Pint does not format Blade files, so you must enable this rule in your `pint.json` file to opt in:
-
-```json
-{
-    "preset": "laravel",
-    "rules": {
-        "Pint/laravel_blade": true
-    }
-}
-```
-
-Once enabled, Pint will format your Blade templates in addition to your PHP files whenever it runs:
-
-```shell
-./vendor/bin/pint
-```
-
-Alternatively, if you would like to enable this rule for a single run without modifying your `pint.json` file, you may use the `--blade` option:
-
-```shell
-./vendor/bin/pint --blade
-```
-
-Under the hood, this rule uses [Prettier](https://prettier.io) along with the `prettier-plugin-blade` and `prettier-plugin-tailwindcss` plugins, so [Node.js](https://nodejs.org) must be installed on your machine. The first time you run Pint with this rule enabled, Pint will detect any missing Prettier dependencies and prompt you to install them. Pint automatically detects your project's package manager (`npm`, `yarn`, `pnpm`, or `bun`) from its lock file and installs the dependencies as development dependencies.
-
-> [!NOTE]
-> This rule automatically skips files that typically rely on their own formatting, such as [Envoy](/docs/{{version}}/envoy) task files, [Laravel Boost](https://github.com/laravel/boost) guidelines, and mail / email views located in the `resources/views/emails` and `resources/views/mail` directories.
 
 <a name="excluding-files-or-folders"></a>
 ### Excluding Files / Folders
