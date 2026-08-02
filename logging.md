@@ -90,16 +90,7 @@ The `single`, `daily`, and `monthly` channels have three optional configuration 
 
 </div>
 
-Additionally, the retention policy for the `daily` and `monthly` channels can be configured via the `days` or `max_files` configuration options. The `LOG_DAILY_DAYS` environment variable may also be used to configure retention for the `daily` channel.
-
-<div class="overflow-auto">
-
-| Name        | Description                                                             | Default                      |
-| ----------- | ----------------------------------------------------------------------- | ---------------------------- |
-| `days`      | The number of days that daily log files should be retained.             | `14`                         |
-| `max_files` | The maximum number of log files (daily or monthly) that should be retained. | `14` (daily) / `3` (monthly) |
-
-</div>
+Additionally, the retention policy for the `daily` and `monthly` channels can be configured via the `max_files` configuration option. The `LOG_DAILY_DAYS` environment variable may also be used to configure retention for the `daily` channel.
 
 <a name="configuring-the-papertrail-channel"></a>
 #### Configuring the Papertrail Channel
