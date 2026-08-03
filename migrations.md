@@ -1513,11 +1513,11 @@ Schema::create('posts', function (Blueprint $table) {
 > [!WARNING]
 > MySQL and MariaDB do not support partial indexes. Attempting to compile a partial index on those drivers will throw a `RuntimeException`. Application-level validation such as `Rule::unique()->whereNull('deleted_at')` does not replace a database unique constraint.
 
-> [!WARNING]
-> On PostgreSQL, partial unique indexes are created as indexes (not table constraints). Always drop them with `dropIndex` rather than `dropUnique` — `dropUnique` emits `DROP CONSTRAINT` and will fail for partial unique indexes:
+> [!NOTE]
+> On PostgreSQL, partial unique indexes are created as indexes (not table constraints). `dropUnique()` detects this and emits `DROP INDEX` when needed, so you can drop either form with:
 >
 > ```php
-> $table->dropIndex('posts_user_id_slug_unique');
+> $table->dropUnique('posts_user_id_slug_unique');
 > ```
 
 <a name="renaming-indexes"></a>
