@@ -1183,6 +1183,9 @@ Schema::table('flights', function (Blueprint $table) {
 
 Now, when you call the `delete` method on the model, the `deleted_at` column will be set to the current date and time. However, the model's database record will be left in the table. When querying a model that uses soft deletes, the soft deleted models will automatically be excluded from all query results.
 
+> [!WARNING]
+> Soft-deleted rows remain in the table, so a standard unique index still treats them as conflicts. If you need uniqueness only among non-deleted rows (for example, allowing an email to be reused after soft deletion), use a [partial unique index](/docs/{{version}}/migrations#partial-indexes) such as `$table->unique('email')->whereNull('deleted_at')`. Validation rules like `Rule::unique()->whereNull('deleted_at')` only protect at the application layer.
+
 To determine if a given model instance has been soft deleted, you may use the `trashed` method:
 
 ```php

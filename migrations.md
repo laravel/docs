@@ -19,6 +19,7 @@
     - [Dropping Columns](#dropping-columns)
 - [Indexes](#indexes)
     - [Creating Indexes](#creating-indexes)
+    - [Partial Indexes](#partial-indexes)
     - [Renaming Indexes](#renaming-indexes)
     - [Dropping Indexes](#dropping-indexes)
     - [Foreign Key Constraints](#foreign-key-constraints)
@@ -1480,6 +1481,42 @@ $table->string('email')->unique()->online();
 ```
 
 When using PostgreSQL, this adds the `CONCURRENTLY` option to the index creation statement. When using SQL Server, this adds the `WITH (online = on)` option.
+
+<a name="partial-indexes"></a>
+### Partial Indexes
+
+PostgreSQL, SQLite, and SQL Server support "partial" (or "filtered") indexes that only include rows matching a given predicate. You may define a partial index by chaining `where`, `whereNull`, or `whereNotNull` onto an index definition:
+
+```php
+$table->unique('email')->whereNull('deleted_at');
+
+$table->index('status')->where('active', true);
+
+$table->unique('email')->where('deleted_at is null');
+```
+
+This is especially useful when combining unique indexes with Eloquent [soft deletes](/docs/{{version}}/eloquent#soft-deleting). A normal unique index still sees soft-deleted rows, so re-creating a deleted email or business key fails. A partial unique index that excludes deleted rows allows a new active row while still enforcing uniqueness among non-deleted rows:
+
+```php
+Schema::create('posts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id');
+    $table->string('slug');
+    $table->softDeletes();
+
+    $table->unique(['user_id', 'slug'])->whereNull('deleted_at');
+});
+```
+
+> [!WARNING]
+> MySQL and MariaDB do not support partial indexes. Attempting to compile a partial index on those drivers will throw a `RuntimeException`. Application-level validation such as `Rule::unique()->whereNull('deleted_at')` does not replace a database unique constraint.
+
+> [!NOTE]
+> On PostgreSQL, partial unique indexes are created as indexes (not table constraints). Drop them with `dropIndex` rather than `dropUnique`:
+>
+> ```php
+> $table->dropIndex('posts_user_id_slug_unique');
+> ```
 
 <a name="renaming-indexes"></a>
 ### Renaming Indexes
