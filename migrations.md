@@ -1485,15 +1485,17 @@ When using PostgreSQL, this adds the `CONCURRENTLY` option to the index creation
 <a name="partial-indexes"></a>
 ### Partial Indexes
 
-PostgreSQL, SQLite, and SQL Server support "partial" (or "filtered") indexes that only include rows matching a given predicate. You may define a partial index by chaining `where`, `whereNull`, or `whereNotNull` onto an index definition:
+PostgreSQL, SQLite, and SQL Server support "partial" (or "filtered") indexes that only include rows matching a given predicate. You may define a partial index by chaining `where`, `whereNull`, `whereNotNull`, or `whereRaw` onto an `index` or `unique` definition:
 
 ```php
 $table->unique('email')->whereNull('deleted_at');
 
 $table->index('status')->where('active', true);
 
-$table->unique('email')->where('deleted_at is null');
+$table->unique('email')->whereRaw('deleted_at is null');
 ```
+
+The `where` method follows query builder semantics: a single column argument or a `null` value compiles to an `IS NULL` predicate. Use `whereRaw` when you need a raw SQL fragment.
 
 This is especially useful when combining unique indexes with Eloquent [soft deletes](/docs/{{version}}/eloquent#soft-deleting). A normal unique index still sees soft-deleted rows, so re-creating a deleted email or business key fails. A partial unique index that excludes deleted rows allows a new active row while still enforcing uniqueness among non-deleted rows:
 
@@ -1511,8 +1513,8 @@ Schema::create('posts', function (Blueprint $table) {
 > [!WARNING]
 > MySQL and MariaDB do not support partial indexes. Attempting to compile a partial index on those drivers will throw a `RuntimeException`. Application-level validation such as `Rule::unique()->whereNull('deleted_at')` does not replace a database unique constraint.
 
-> [!NOTE]
-> On PostgreSQL, partial unique indexes are created as indexes (not table constraints). Drop them with `dropIndex` rather than `dropUnique`:
+> [!WARNING]
+> On PostgreSQL, partial unique indexes are created as indexes (not table constraints). Always drop them with `dropIndex` rather than `dropUnique` — `dropUnique` emits `DROP CONSTRAINT` and will fail for partial unique indexes:
 >
 > ```php
 > $table->dropIndex('posts_user_id_slug_unique');
