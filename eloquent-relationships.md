@@ -2249,9 +2249,6 @@ $activities = ActivityFeed::with('parentable')
 <a name="automatic-eager-loading"></a>
 ### Automatic Eager Loading
 
-> [!WARNING]
-> This feature is currently in beta in order to gather community feedback. The behavior and functionality of this feature may change even on patch releases.
-
 In many cases, Laravel can automatically eager load the relationships you access. To enable automatic eager loading, you should invoke the `Model::automaticallyEagerLoadRelationships` method within the `boot` method of your application's `AppServiceProvider`:
 
 ```php
