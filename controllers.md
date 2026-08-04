@@ -581,7 +581,13 @@ Route::resource('photos', PhotoController::class);
 <a name="singleton-resource-controllers"></a>
 ### Singleton Resource Controllers
 
-Sometimes, your application will have resources that may only have a single instance. For example, a user's "profile" can be edited or updated, but a user may not have more than one "profile". Likewise, an image may have a single "thumbnail". These resources are called "singleton resources", meaning one and only one instance of the resource may exist. In these scenarios, you may register a "singleton" resource controller:
+Sometimes, your application will have resources that may only have a single instance. For example, a user's "profile" can be edited or updated, but a user may not have more than one "profile". Likewise, an image may have a single "thumbnail". These resources are called "singleton resources", meaning one and only one instance of the resource may exist. In these scenarios, you may generate a singleton resource controller using the `--singleton` option of the `make:controller` Artisan command:
+
+```shell
+php artisan make:controller ProfileController --singleton
+```
+
+Then register a "singleton" resource controller:
 
 ```php
 use App\Http\Controllers\ProfileController;
