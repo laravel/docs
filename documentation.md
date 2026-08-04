@@ -94,6 +94,7 @@
     - [Envoy](/docs/{{version}}/envoy)
     - [Fortify](/docs/{{version}}/fortify)
     - [Folio](/docs/{{version}}/folio)
+    - [Head](/docs/{{version}}/head)
     - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
     - [Mix](/docs/{{version}}/mix)
