@@ -18,6 +18,10 @@
     - [Overriding Skills](#overriding-skills)
     - [Third-Party Package Skills](#third-party-package-skills)
 - [Guidelines vs. Skills](#guidelines-vs-skills)
+- [Project Rules](#project-rules)
+    - [Recording Rules](#recording-rules)
+    - [Inferring Your Application's Conventions](#inferring-your-applications-conventions)
+    - [Disabling Project Rules](#disabling-project-rules)
 - [Documentation API](#documentation-api)
 - [Extending Boost](#extending-boost)
     - [Adding Support for Other IDEs / AI Agents](#adding-support-for-other-ides-ai-agents)
@@ -139,6 +143,7 @@ Laravel Boost provides an MCP (Model Context Protocol) server that exposes tools
 | Get Absolute URL     | Convert relative path URIs to absolute so agents generate valid URLs                                        |
 | Last Error           | Read the last error from the application's log files                                                        |
 | Read Log Entries     | Read the last N log entries                                                                                 |
+| Record Rule          | Record a durable [project rule](#project-rules) into `.ai/rules` so future agents inherit it                |
 | Search Docs          | Query the Laravel hosted documentation API service to retrieve documentation based on installed packages    |
 
 </div>
@@ -246,7 +251,7 @@ $result = PackageName::featureTwo($param1, $param2);
 
 [Agent Skills](https://agentskills.io/home) are lightweight, targeted knowledge modules that agents can activate on-demand when working on specific domains. Unlike guidelines, which are loaded upfront, skills allow detailed patterns and best practices to be loaded only when relevant, reducing context bloat and improving the relevance of AI-generated code.
 
-When you run `boost:install` and select skills as a feature, skills are automatically installed based on the packages detected in your `composer.json`. For example, if your project includes `livewire/livewire`, the `livewire-development` skill will be installed automatically.
+When you run `boost:install` and select skills as a feature, skills are automatically installed based on the packages detected in your `composer.json`. For example, if your project includes `livewire/livewire`, the `livewire-development` skill will be installed automatically. Skills included with Boost, such as `infer-conventions`, are installed regardless of which packages you have.
 
 <a name="available-skills"></a>
 ### Available Skills
@@ -257,6 +262,7 @@ When you run `boost:install` and select skills as a feature, skills are automati
 | -------------------------- | -------------- |
 | fluxui-development         | Flux UI        |
 | folio-routing              | Folio          |
+| infer-conventions          | Boost          |
 | inertia-react-development  | Inertia React  |
 | inertia-svelte-development | Inertia Svelte |
 | inertia-vue-development    | Inertia Vue    |
@@ -336,6 +342,91 @@ Laravel Boost provides two distinct ways to give AI agents context about your ap
 | **Purpose** | Core conventions & best practices | Detailed implementation patterns |
 
 </div>
+
+Both guidelines and skills describe the Laravel ecosystem. To capture the conventions of your own application, you should use [project rules](#project-rules).
+
+<a name="project-rules"></a>
+## Project Rules
+
+While guidelines and skills teach agents how to write Laravel, project rules teach them how to write your application. A rule is anything you would otherwise need to explain again in every new session:
+
+<div class="content-list" markdown="1">
+
+- Decisions made along the way by you, your agents, or your teammates.
+- Style guidelines and preferences that are difficult to get an agent to follow.
+- Traps and constraints that can't be inferred from the surrounding code.
+
+</div>
+
+Rules are stored as Markdown files within your application's `.ai/rules` directory and should be committed to source control. Unlike an agent's own memory, which is personal and session-scoped, your rules are shared with your team and with every agent that works on your application.
+
+Each rule file declares the file globs it applies to within its frontmatter:
+
+```markdown
+---
+paths:
+  - app/Http/Controllers/**
+---
+
+# Http Controllers
+
+## Extend BaseController for tenant scoping
+
+All controllers must extend `App\Http\Controllers\BaseController`, which applies the
+current tenant's query scope. Extending Laravel's base controller directly will leak
+data across tenants.
+```
+
+In addition, Boost maintains an `.ai/rules/index.md` file which maps globs to their rule files. Agents are instructed to consult this index before planning or editing any file, so a rule is only loaded when it is relevant:
+
+```markdown
+# Project Rules Index
+
+Before planning or editing, find the row whose globs match the file's path and read that rule file.
+
+| Applies to | Rule file |
+| --- | --- |
+| app/Http/Controllers/** | .ai/rules/controllers.md |
+| app/Models/** | .ai/rules/models.md |
+```
+
+> [!NOTE]
+> Unlike the `.mcp.json` and generated guideline files, the `.ai/rules` directory should be committed to source control so that your rules are shared with your team.
+
+<a name="recording-rules"></a>
+### Recording Rules
+
+To record a rule, you may simply ask your agent to remember it:
+
+```text
+Remember that all money values are stored as integer cents, never as floats.
+```
+
+The agent will invoke Boost's `record-rule` MCP tool with a `glob`, a short `title`, and a `note`. Boost will then file the rule under the matching area, creating the rule file if needed, and update the index.
+
+You should always record rules using the `record-rule` tool rather than creating rule files by hand. Boost regenerates `.ai/rules/index.md` as part of recording a rule, and agents rely on that index to discover which rules apply to the file they are working on. A rule file that is added manually will not be discovered until the index is next regenerated.
+
+<a name="inferring-your-applications-conventions"></a>
+### Inferring Your Application's Conventions
+
+Recording rules one at a time works well going forward; however, an existing application already contains years of conventions. The `infer-conventions` skill will bootstrap your rules from the code you have already written. To get started, ask your agent to use the skill:
+
+```text
+Use the infer-conventions skill
+```
+
+The skill will sweep your application across a checklist of Laravel convention dimensions, including validation, controllers, authorization, models, architecture, testing, frontend, database, and console, followed by an open-ended pass for patterns such as base classes, shared traits, and module layouts.
+
+The skill documents what your code actually does rather than what it should do. It records only well-supported, non-default conventions, skips framework defaults and anything Pint or Rector already enforces, and reports genuinely mixed patterns instead of recording them. Before writing any rules, the skill will present each convention it discovered, along with its supporting evidence, for your approval. If you would like the skill to record all discovered conventions without confirmation, you may tell it to "yolo".
+
+<a name="disabling-project-rules"></a>
+### Disabling Project Rules
+
+Project rules are enabled by default. To disable them entirely, define the following environment variable. This removes the `record-rule` MCP tool and stops Boost from managing the `.ai/rules` directory:
+
+```ini
+BOOST_RULES_ENABLED=false
+```
 
 <a name="documentation-api"></a>
 ## Documentation API
