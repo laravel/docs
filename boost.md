@@ -350,9 +350,13 @@ Both guidelines and skills describe the Laravel ecosystem. To capture the conven
 
 While guidelines and skills teach agents how to write Laravel, project rules teach them how to write your application. A rule is anything you would otherwise need to explain again in every new session:
 
+<div class="content-list" markdown="1">
+
 - Decisions made along the way by you, your agents, or your teammates.
 - Style guidelines and preferences that are difficult to get an agent to follow.
 - Traps and constraints that can't be inferred from the surrounding code.
+
+</div>
 
 Rules are stored as Markdown files within your application's `.ai/rules` directory and should be committed to source control. Unlike an agent's own memory, which is personal and session-scoped, your rules are shared with your team and with every agent that works on your application.
 
