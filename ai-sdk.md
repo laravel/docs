@@ -164,7 +164,39 @@ You may also configure a default text model for the provider so that you do not 
 ],
 ```
 
-OpenAI-compatible providers support text generation, streaming, tools, structured output, and image attachments. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
+You may add custom HTTP headers to every outgoing request for the provider by defining a `headers` array in its configuration. This is useful when an endpoint requires an additional identifying or authentication header beyond the bearer token:
+
+```php
+'local' => [
+    'driver' => 'openai-compatible',
+    'url' => env('LOCAL_AI_URL'),
+    'key' => env('LOCAL_AI_API_KEY'),
+    'headers' => [
+        'X-Tenant-Id' => env('LOCAL_AI_TENANT_ID'),
+    ],
+],
+```
+
+OpenAI-compatible providers support text generation, streaming, tools, structured output, image attachments, and embeddings. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
+
+<a name="openai-compatible-embeddings"></a>
+#### OpenAI-Compatible Embeddings
+
+Since arbitrary endpoints have no known models, you must configure a default embeddings model to use `embeddings()` with an OpenAI-compatible provider. You may also configure a fixed dimensions value; if omitted, the request is sent without a `dimensions` parameter and the model's native dimensions are used.
+
+```php
+'local' => [
+    'driver' => 'openai-compatible',
+    'url' => env('LOCAL_AI_URL'),
+    'key' => env('LOCAL_AI_API_KEY'),
+    'models' => [
+        'embeddings' => [
+            'default' => 'text-embedding-qwen3-embedding-0.6b',
+            'dimensions' => 1024, // optional
+        ],
+    ],
+],
+```
 
 <a name="provider-support"></a>
 ### Provider Support
@@ -179,7 +211,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
 | TTS | OpenAI, ElevenLabs, Gemini |
 | STT | OpenAI, ElevenLabs, Mistral, Gemini |
-| Embeddings | OpenAI, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
+| Embeddings | OpenAI, OpenAI-Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI |
 | Files | OpenAI, Anthropic, Gemini, Azure |
 
@@ -311,6 +343,30 @@ $response = (new SalesCoach)->prompt(
     timeout: 120,
 );
 ```
+
+<a name="raw-http-responses"></a>
+#### Raw HTTP Responses
+
+Every response returned from a text-generating agent exposes the raw HTTP response from the underlying provider API call via a `raw` property. This gives you access to provider-specific information that isn't part of the AI SDK's generic response - rate-limit headers, request IDs, or other exact payload fields:
+
+```php
+$response = (new SalesCoach)->prompt('Analyze this sales transcript...');
+
+$response->raw; // Illuminate\Http\Client\Response|null
+
+$response->raw->header('X-RateLimit-Remaining-Requests');
+$response->raw->json('id');
+```
+
+In a tool-call loop, each step retains the raw response of its own request:
+
+```php
+foreach ($response->steps as $step) {
+    $step->raw?->header('X-RateLimit-Remaining-Requests');
+}
+```
+
+> **Note:** The `raw` property is `null` when streaming a response, when using the Bedrock provider (which performs its API calls via the AWS SDK instead of an HTTP client), and on faked responses unless one is provided explicitly via `withRawResponse`.
 
 <a name="conversation-context"></a>
 ### Conversation Context
@@ -968,7 +1024,7 @@ Provider tools can be returned by your agent's `tools` method.
 
 The `WebSearch` provider tool allows agents to search the web for real-time information. This is useful for answering questions about current events, recent data, or topics that may have changed since the model's training cutoff.
 
-**Supported providers:** Anthropic, OpenAI, Gemini, OpenRouter
+**Supported providers:** Anthropic, OpenAI, Azure, Gemini, OpenRouter
 
 ```php
 use Laravel\Ai\Providers\Tools\WebSearch;
