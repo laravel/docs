@@ -8,7 +8,6 @@
     - [Provider Support](#provider-support)
 - [Agents](#agents)
     - [Prompting](#prompting)
-    - [Raw HTTP Responses](#raw-http-responses)
     - [Conversation Context](#conversation-context)
     - [Structured Output](#structured-output)
     - [Attachments](#attachments)
@@ -180,7 +179,10 @@ You may add custom HTTP headers to every outgoing request for the provider by de
 
 OpenAI-compatible providers support text generation, streaming, tools, structured output, image attachments, and embeddings. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
 
-> **Warning:** Since arbitrary endpoints have no known models, you must configure a default embeddings model to use `embeddings()` with an OpenAI-compatible provider. You may also configure a fixed dimensions value; if omitted, the request is sent without a `dimensions` parameter and the model's native dimensions are used.
+<a name="openai-compatible-embeddings"></a>
+#### OpenAI-Compatible Embeddings
+
+Since arbitrary endpoints have no known models, you must configure a default embeddings model to use `embeddings()` with an OpenAI-compatible provider. You may also configure a fixed dimensions value; if omitted, the request is sent without a `dimensions` parameter and the model's native dimensions are used.
 
 ```php
 'local' => [
@@ -209,7 +211,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
 | TTS | OpenAI, ElevenLabs, Gemini |
 | STT | OpenAI, ElevenLabs, Mistral, Gemini |
-| Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
+| Embeddings | OpenAI, OpenAI-Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI |
 | Files | OpenAI, Anthropic, Gemini, Azure |
 
@@ -343,7 +345,7 @@ $response = (new SalesCoach)->prompt(
 ```
 
 <a name="raw-http-responses"></a>
-### Raw HTTP Responses
+#### Raw HTTP Responses
 
 Every response returned from a text-generating agent exposes the raw HTTP response from the underlying provider API call via a `raw` property. This gives you access to provider-specific information that isn't part of the AI SDK's generic response - rate-limit headers, request IDs, or other exact payload fields:
 
@@ -352,7 +354,7 @@ $response = (new SalesCoach)->prompt('Analyze this sales transcript...');
 
 $response->raw; // Illuminate\Http\Client\Response|null
 
-$response->raw->header('x-ratelimit-remaining-requests');
+$response->raw->header('X-RateLimit-Remaining-Requests');
 $response->raw->json('id');
 ```
 
@@ -360,7 +362,7 @@ In a tool-call loop, each step retains the raw response of its own request:
 
 ```php
 foreach ($response->steps as $step) {
-    $step->raw?->header('x-ratelimit-remaining-tokens');
+    $step->raw?->header('X-RateLimit-Remaining-Requests');
 }
 ```
 
