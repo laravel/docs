@@ -396,6 +396,24 @@ Rarely, you may need your middleware to execute in a specific order but not have
 })
 ```
 
+If you would like to add middleware to the existing priority list without replacing it, you may use the `prependToPriorityList` or `appendToPriorityList` methods. The `prependToPriorityList` method inserts the given middleware before another middleware, while the `appendToPriorityList` method inserts it after another middleware:
+
+```php
+->withMiddleware(function (Middleware $middleware): void {
+    $middleware->prependToPriorityList(
+        before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        prepend: \App\Http\Middleware\EnsureTokenIsValid::class,
+    );
+
+    $middleware->appendToPriorityList(
+        after: \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        append: \App\Http\Middleware\EnsureUserIsSubscribed::class,
+    );
+})
+```
+
+The `before` and `after` arguments may also be an array of middleware classes.
+
 <a name="middleware-parameters"></a>
 ## Middleware Parameters
 
