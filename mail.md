@@ -1541,7 +1541,7 @@ class MailchimpTransport extends AbstractTransport
         $email = MessageConverter::toEmail($message->getOriginalMessage());
 
         $this->client->messages->send(['message' => [
-            'from_email' => $email->getFrom(),
+            'from_email' => collect($email->getFrom())->first()->getAddress(),
             'to' => collect($email->getTo())->map(function (Address $email) {
                 return ['email' => $email->getAddress(), 'type' => 'to'];
             })->all(),
