@@ -14,6 +14,7 @@
     - [In-Memory Cache](#in-memory-cache)
 - [Scope](#scope)
     - [Specifying the Scope](#specifying-the-scope)
+    - [Global Scope](#global-scope)
     - [Default Scope](#default-scope)
     - [Nullable Scope](#nullable-scope)
     - [Identifying Scope](#identifying-scope)
@@ -544,6 +545,17 @@ if (Feature::for($user->team)->active('billing-v2')) {
 }
 
 // ...
+```
+
+<a name="global-scope"></a>
+### Global Scope
+
+To check or interact with a feature using a global scope, regardless of the configured default scope resolver, use the `globally` method:
+
+```php
+Feature::globally()->active('new-api');
+
+Feature::globally()->activate('new-api');
 ```
 
 <a name="default-scope"></a>
