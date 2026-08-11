@@ -39,6 +39,7 @@
 - [Pagination Bootstrap View Names](#pagination-bootstrap-view-names)
 - [Polymorphic Pivot Table Name Generation](#polymorphic-pivot-table-name-generation)
 - [`QueueBusy` Event Property Rename](#queuebusy-event-property-rename)
+- [Session `serialization` Configuration](#session-serialization-configuration)
 - [`Str` Factories Reset Between Tests](#str-factories-reset-between-tests)
 
 </div>
@@ -360,6 +361,20 @@ If you maintain custom queue driver implementations of this contract, add implem
 Routes with an explicit domain are now prioritized before non-domain routes in route matching.
 
 This allows catch-all subdomain routes to behave consistently even when non-domain routes are registered earlier. If your application relied on previous registration precedence between domain and non-domain routes, review route matching behavior.
+
+<a name="session"></a>
+### Session
+
+<a name="session-serialization-configuration"></a>
+#### Session `serialization` Configuration
+
+**Likelihood Of Impact: Low**
+
+To help prevent PHP deserialization gadget chain attacks, the default application skeleton now sets the session `serialization` option to `json` in the `config/session.php` file.
+
+If you are upgrading an existing application and syncing your configuration files with the Laravel 13 skeleton, updating this value from `php` to `json` will invalidate all active user sessions.
+
+If you wish to seamlessly maintain active sessions during your upgrade, you should ensure this value remains set to `php`. However, if your application does not store PHP objects in the session and you are comfortable requiring your users to re-authenticate, we recommend updating this value to `json` for improved security.
 
 <a name="scheduling"></a>
 ### Scheduling
