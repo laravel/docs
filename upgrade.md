@@ -30,6 +30,7 @@
 <div class="content-list" markdown="1">
 
 - [Cache Prefixes and Session Cookie Names](#cache-prefixes-and-session-cookie-names)
+- [Session `serialization` Configuration](#session-serialization-configuration)
 - [Collection Model Serialization Restores Eager-Loaded Relations](#collection-model-serialization-restores-eager-loaded-relations)
 - [`Container::call` and Nullable Class Defaults](#containercall-and-nullable-class-defaults)
 - [Domain Route Registration Precedence](#domain-route-registration-precedence)
@@ -141,6 +142,20 @@ The default application `cache` configuration now includes a `serializable_class
 ```
 
 If your application previously relied on unserializing arbitrary cached objects, you will need to migrate that usage to explicit class allow-lists or to non-object cache payloads (such as arrays).
+
+<a name="cache"></a>
+### Session
+
+<a name="session-serialization-configuration"></a>
+#### Session `serialization` Configuration
+
+**Likelihood Of Impact: Low**
+
+To help prevent PHP deserialization gadget chain attacks, the default skeleton now sets the session `serialization` option to `json` in the `config/session.php` file.
+
+If you are upgrading an existing application and syncing your configuration files with the Laravel 13 skeleton, updating this value from `php` to `json` will invalidate all active user sessions.
+
+If you wish to seamlessly maintain active sessions during your upgrade, you should ensure this value remains set to `php`. However, if your application does not store PHP objects in the session and you are comfortable requiring your users to re-authenticate, we recommend updating this value to `json` for improved security.
 
 <a name="container"></a>
 ### Container
