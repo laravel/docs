@@ -288,6 +288,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\Attributes\FailOnTimeout;
 use Illuminate\Queue\Attributes\MaxExceptions;
 use Illuminate\Queue\Attributes\Timeout;
 use Illuminate\Queue\Attributes\Tries;
@@ -295,6 +296,7 @@ use Illuminate\Queue\Attributes\Tries;
 #[Tries(5)]
 #[Timeout(120)]
 #[MaxExceptions(3)]
+#[FailOnTimeout]
 class InvoicePaid extends Notification implements ShouldQueue
 {
     use Queueable;

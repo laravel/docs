@@ -2710,13 +2710,25 @@ php artisan queue:pause database:default
 
 In this example, `database` is the queue connection name and `default` is the queue name. Once a queue is paused, any workers processing jobs from that queue will continue to finish their current job, but will not pick up any new jobs until the queue is resumed.
 
+To pause job processing for every queue on every connection, use the `--all` option:
+
+```shell
+php artisan queue:pause --all
+```
+
 To resume processing jobs on a paused queue, use the `queue:continue` command:
 
 ```shell
 php artisan queue:continue database:default
 ```
 
-After resuming a queue, workers will begin processing new jobs from that queue immediately. Note that pausing a queue does not stop the worker process itself - it only prevents the worker from processing new jobs from the specified queue.
+To resume job processing for every queue on every connection, use the `--all` option with the `queue:resume` command:
+
+```shell
+php artisan queue:resume --all
+```
+
+After resuming a queue, workers will begin processing new jobs from that queue immediately. Resuming all queues does not resume queues that were paused individually. Note that pausing a queue does not stop the worker process itself - it only prevents the worker from processing new jobs from the specified queue.
 
 <a name="worker-restart-and-pause-signals"></a>
 #### Worker Restart and Pause Signals
