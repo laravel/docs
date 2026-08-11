@@ -2878,6 +2878,9 @@ The `Password` rule object allows you to easily customize the password complexit
 // Require at least 8 characters...
 Password::min(8)
 
+// Require at most 256 characters...
+Password::min(16)->max(256)
+
 // Require at least one letter...
 Password::min(8)->letters()
 
@@ -2910,6 +2913,7 @@ Of course, you may chain all the methods in the examples above:
 
 ```php
 Password::min(8)
+    ->max(256)
     ->letters()
     ->mixedCase()
     ->numbers()
