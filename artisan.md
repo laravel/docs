@@ -22,6 +22,12 @@
     - [Calling Commands From Other Commands](#calling-commands-from-other-commands)
 - [Signal Handling](#signal-handling)
 - [The Dev Command](#the-dev-command)
+    - [Dev Command Modes](#dev-command-modes)
+    - [Keyboard Shortcuts](#dev-command-keyboard-shortcuts)
+    - [Restarting Failed Processes](#restarting-failed-processes)
+    - [Timestamps](#dev-command-timestamps)
+    - [Buffer Sizes](#dev-command-buffer-sizes)
+    - [JSON Output](#dev-command-json-output)
     - [Customizing Dev Processes](#customizing-dev-processes)
     - [Filtering Dev Processes](#filtering-dev-processes)
 - [Stub Customization](#stub-customization)
@@ -923,7 +929,10 @@ The `dev` Artisan command starts all of the processes needed for local developme
 php artisan dev
 ```
 
-Under the hood, the `dev` command uses the `concurrently` npm package to manage the processes. Each process is labeled and color-coded in your terminal output so you can easily distinguish between them. If any process fails, all other processes will be stopped automatically.
+Under the hood, the `dev` command uses the `@laravel/multiplex` npm package to manage the processes, giving each process its own tab with searchable, scrollable output. Each process is labeled and color-coded so you can easily distinguish between them. If a process crashes, it will be restarted automatically, and when you quit, all of the output is written back to your terminal so nothing is lost.
+
+> [!NOTE]
+> The `dev` command requires Node 22.13 or later. On Windows, it falls back to the `concurrently` npm package and the tabbed interface is not available.
 
 The default processes are:
 
@@ -936,6 +945,124 @@ The default processes are:
 
 > [!NOTE]
 > The `vite` process automatically detects your Node package manager (npm, pnpm, Yarn, or Bun) and uses the appropriate run command.
+
+<a name="dev-command-modes"></a>
+### Dev Command Modes
+
+The `dev` command can display its output in three different modes:
+
+| Mode | Description |
+| --- | --- |
+| `tabs` | Each process is given its own tab, with a sidebar listing every process. This is the default. |
+| `stream` | All processes write to a single, scrollable feed of interleaved output. |
+| `inline` | Output is printed to your terminal as it arrives, without an interface. |
+
+The `inline` mode is used automatically when the command is not attached to an interactive terminal, such as when running in CI or piping the output to another program.
+
+You may choose a mode for a single run using the `--tabs`, `--stream`, or `--inline` options:
+
+```shell
+php artisan dev --stream
+```
+
+To change the default mode for your application, you may call the `tabs`, `stream`, or `inline` method on the `DevCommands` class, typically within the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Foundation\DevCommands;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    DevCommands::stream();
+}
+```
+
+<a name="dev-command-keyboard-shortcuts"></a>
+### Keyboard Shortcuts
+
+While the `dev` command is running in `tabs` or `stream` mode, you may navigate the output using the following keyboard shortcuts:
+
+| Key | Action |
+| --- | --- |
+| `1` - `9` | Jump to a process by number |
+| `Tab` | Toggle focus between the sidebar and the output |
+| `Left` / `Right` | Move focus to the sidebar / output |
+| `Up` / `Down` / `j` / `k` | Move between processes or scroll the output |
+| `Page Up` / `Page Down` | Scroll one page |
+| `g` / `G` | Scroll to the top / bottom |
+
+In addition, the following actions are available:
+
+| Key | Action |
+| --- | --- |
+| `t` / `s` | Switch to `tabs` / `stream` mode |
+| `r` | Restart the selected process |
+| `c` | Clear the output of the current tab or stream |
+| `f` | Choose which processes appear in the stream |
+| `/` | Search the output |
+| `q` | Quit |
+
+While searching, you may press `Enter` to confirm the search, `n` and `N` to move to the next and previous match, and `Esc` to clear the results.
+
+<a name="restarting-failed-processes"></a>
+### Restarting Failed Processes
+
+If a process crashes, Laravel will restart it after a short delay, up to five times, before marking it as failed. A process that dies within a second of starting is not restarted, since it likely never started successfully in the first place. Restarting a process manually with `r` resets the counter.
+
+You may disable this behavior for a single run using the `--no-restart` option:
+
+```shell
+php artisan dev --no-restart
+```
+
+Or, you may disable it for your entire application using the `disableAutoRestart` method:
+
+```php
+DevCommands::disableAutoRestart();
+```
+
+<a name="dev-command-timestamps"></a>
+### Timestamps
+
+To display a timestamp on every line of output, you may use the `--timestamps` option:
+
+```shell
+php artisan dev --timestamps
+```
+
+Or, you may enable timestamps for your entire application using the `withTimestamps` method:
+
+```php
+DevCommands::withTimestamps();
+```
+
+<a name="dev-command-buffer-sizes"></a>
+### Buffer Sizes
+
+The `dev` command keeps a limited number of output lines in memory for each process, as well as for the combined stream. You may adjust these limits using the `--buffer-size` and `--stream-buffer-size` options:
+
+```shell
+php artisan dev --buffer-size=5000 --stream-buffer-size=20000
+```
+
+Or, you may set them for your entire application using the `bufferSize` and `streamBufferSize` methods:
+
+```php
+DevCommands::bufferSize(5000);
+
+DevCommands::streamBufferSize(20000);
+```
+
+<a name="dev-command-json-output"></a>
+### JSON Output
+
+If another program needs to consume the output of the `dev` command, you may use the `--json` option, which prints one JSON event per line instead of formatted output. This option implies `--inline`:
+
+```shell
+php artisan dev --json
+```
 
 <a name="customizing-dev-processes"></a>
 ### Customizing Dev Processes
