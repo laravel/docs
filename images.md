@@ -258,10 +258,10 @@ $base64 = $image->toBase64();
 $dataUri = $image->toDataUri();
 ```
 
-An image instance may also be cast to a string to retrieve its processed bytes:
+An image instance may also be cast to a string to retrieve a data URI:
 
 ```php
-$bytes = (string) $image;
+$dataUri = (string) $image;
 ```
 
 <a name="storing-images"></a>
