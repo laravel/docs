@@ -29,6 +29,7 @@
 - [Carbon 3](#carbon-3)
 - [Concurrency Result Index Mapping](#concurrency-result-index-mapping)
 - [Container Class Dependency Resolution](#container-class-dependency-resolution)
+- [Dropping Foreign Key Constraints](#drop-foreign-for)
 - [Image Validation Now Excludes SVGs](#image-validation)
 - [Local Filesystem Disk Default Root Path](#local-filesystem-disk-default-root-path)
 - [Multi-Schema Database Inspecting](#multi-schema-database-inspecting)
@@ -181,6 +182,24 @@ $tables = Schema::getTableListing(schema: 'main', schemaQualified: false);
 ```
 
 The `db:table` and `db:show` commands now output the results of all schemas on MySQL, MariaDB, and SQLite, just like PostgreSQL and SQL Server.
+
+<a name="drop-foreign-for"></a>
+#### Dropping Foreign Key Constraints
+
+**Likelihood Of Impact: Low**
+
+To improve consistency the `Blueprint::dropForeignIdFor()` method now drops the column created by `Blueprint::foreignIdFor()` instead of dropping the foreign key constraint. To drop the foreign key constraint use one of the following:
+
+```php
+// Drops foreign key constraint and column
+$table->dropConstrainedForeignIdFor(User::class);
+
+// Drops just the foreign key constraint based on the column name
+$table->dropForeign(['user_id']);
+
+// Drops the foreign key constraint based on the exact index name
+$table->dropForeign('examples_user_id_index');
+```
 
 <a name="database-constructor-signature-changes"></a>
 #### Database Constructor Signature Changes
