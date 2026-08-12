@@ -923,7 +923,10 @@ The `dev` Artisan command starts all of the processes needed for local developme
 php artisan dev
 ```
 
-Under the hood, the `dev` command uses the `concurrently` npm package to manage the processes. Each process is labeled and color-coded in your terminal output so you can easily distinguish between them. If any process fails, all other processes will be stopped automatically.
+Under the hood, the `dev` command uses the `@laravel/multiplex` npm package to manage the processes, giving each process its own tab with searchable, scrollable output. Each process is labeled and color-coded so you can easily distinguish between them. If a process crashes, it will be restarted automatically, and when you quit, all of the output is written back to your terminal so nothing is lost.
+
+> [!NOTE]
+> The `dev` command requires Node 22.13 or later. On Windows, it falls back to the `concurrently` npm package and the tabbed interface is not available.
 
 The default processes are:
 
@@ -986,6 +989,23 @@ To see all registered dev processes without starting them, use the `dev:list` co
 
 ```shell
 php artisan dev:list
+```
+
+<a name="restarting-failed-processes"></a>
+#### Restarting Failed Processes
+
+If a process crashes, Laravel will restart it after a short delay, up to five times, before marking it as failed. A process that dies within a second of starting is not restarted, since it likely never started successfully in the first place. Restarting a process manually with `r` resets the counter.
+
+You may disable this behavior for a single run using the `--no-restart` option:
+
+```shell
+php artisan dev --no-restart
+```
+
+Or, you may disable it for your entire application using the `disableAutoRestart` method:
+
+```php
+DevCommands::disableAutoRestart();
 ```
 
 <a name="filtering-dev-processes"></a>
