@@ -31,6 +31,7 @@
     - [Customizing the Password Validation](#customizing-the-password-validation)
 - [Implicit Grant](#implicit-grant)
 - [Client Credentials Grant](#client-credentials-grant)
+    - [Retrieving Tokens](#retrieving-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
     - [Creating a Personal Access Client](#creating-a-personal-access-client)
     - [Customizing the User Provider](#customizing-the-user-provider-for-pat)
