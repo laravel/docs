@@ -277,6 +277,8 @@ By default, The Laravel plugin provides a common alias to help you hit the groun
 }
 ```
 
+The `'@'` alias does not conflict with scoped npm packages such as `@company/package`, which continue to resolve normally.
+
 You may overwrite the `'@'` alias by adding your own to the `vite.config.js` configuration file:
 
 ```js
