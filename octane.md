@@ -23,6 +23,7 @@
 - [Concurrent Tasks](#concurrent-tasks)
 - [Ticks and Intervals](#ticks-and-intervals)
 - [The Octane Cache](#the-octane-cache)
+    - [Cache Intervals](#cache-intervals)
 - [Tables](#tables)
 
 <a name="introduction"></a>
