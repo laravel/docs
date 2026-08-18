@@ -363,7 +363,7 @@ $orders = DB::table('orders')
 ```
 
 <a name="groupbyraw"></a>
-### `groupByRaw`
+#### `groupByRaw`
 
 The `groupByRaw` method may be used to provide a raw string as the value of the `group by` clause:
 
