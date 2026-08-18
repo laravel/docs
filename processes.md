@@ -593,6 +593,14 @@ use Illuminate\Support\Facades\Process;
 Process::assertRan('ls -la');
 ```
 
+When the process was invoked with an array of arguments, you may pass the same array to the assertion:
+
+```php
+Process::assertRan(['php', 'artisan', 'migrate']);
+```
+
+The `assertRanTimes` and `assertDidntRun` methods also accept array commands.
+
 The `assertRan` method also accepts a closure, which will receive an instance of a process and a process result, allowing you to inspect the process' configured options. If this closure returns `true`, the assertion will "pass":
 
 ```php
@@ -642,6 +650,20 @@ Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result
     return $process->command === 'ls -la';
 }, times: 3);
 ```
+
+<a name="assert-processes-ran-in-order"></a>
+#### assertRanInOrder
+
+Assert that processes were invoked in a given order:
+
+```php
+Process::assertRanInOrder([
+    'git fetch',
+    'composer install',
+]);
+```
+
+The `assertRanInOrder` method accepts command strings, arrays of command arguments, or closures like the other process assertions.
 
 <a name="preventing-stray-processes"></a>
 ### Preventing Stray Processes

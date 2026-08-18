@@ -230,6 +230,15 @@ The `retry_interval`, `max_retries`, `backoff_algorithm`, `backoff_base`, and `b
 ],
 ```
 
+Laravel automatically retries safe read commands once after a transient connection failure. You may use the `command_retries` option to configure the number of retries for all Redis commands:
+
+```php
+'default' => [
+    // ...
+    'command_retries' => env('REDIS_COMMAND_RETRIES', 0),
+],
+```
+
 Predis 3.4.0 and later supports built-in retry and backoff configuration via the `Retry` class. You may configure retries using the `max_retries` option and configure the backoff strategy using the `retry` option. The `retry` option should be an array keyed by one of the following strategy classes: `NoBackoff`, `EqualBackoff`, or `ExponentialBackoff`:
 
 ```php

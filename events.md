@@ -16,6 +16,7 @@
     - [Unique Event Listeners](#unique-event-listeners)
         - [Keeping Listeners Unique Until Processing Begins](#keeping-listeners-unique-until-processing-begins)
         - [Unique Listener Locks](#unique-listener-locks)
+    - [Debounced Event Listeners](#debounced-event-listeners)
     - [Handling Failed Jobs](#handling-failed-jobs)
 - [Dispatching Events](#dispatching-events)
     - [Dispatching Events After Database Transactions](#dispatching-events-after-database-transactions)
@@ -649,6 +650,70 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUnique
 
 > [!NOTE]
 > If you only need to limit the concurrent processing of a listener, use the [WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps) job middleware instead.
+
+<a name="debounced-event-listeners"></a>
+### Debounced Event Listeners
+
+Sometimes, you may want to handle only the latest instance of an event dispatched repeatedly within a short period. You may do so by adding the `DebounceFor` attribute to a queued listener:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\ProductUpdated;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\Attributes\DebounceFor;
+
+#[DebounceFor(30)]
+class UpdateProductSearchIndex implements ShouldQueue
+{
+    /**
+     * Handle the event.
+     */
+    public function handle(ProductUpdated $event): void
+    {
+        // Update the product's search index...
+    }
+
+    /**
+     * Get the debounce ID for the listener.
+     */
+    public function debounceId(ProductUpdated $event): string
+    {
+        return (string) $event->product->getKey();
+    }
+}
+```
+
+In the example above, repeatedly dispatching `ProductUpdated` events for the same product within `30` seconds will debounce the listener so that only the latest event is handled. Different debounce IDs are handled independently.
+
+If you would like to cap how long a frequently dispatched event can defer a listener, you may provide the `maxWait` argument to the `DebounceFor` attribute:
+
+```php
+#[DebounceFor(30, maxWait: 120)]
+class UpdateProductSearchIndex implements ShouldQueue
+{
+    // ...
+}
+```
+
+You may customize the cache store used for debounce tracking by defining a `debounceVia` method on your listener. The method receives the event instance and should return a cache repository:
+
+```php
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Cache;
+
+public function debounceVia(ProductUpdated $event): Repository
+{
+    return Cache::driver('redis');
+}
+```
+
+Debounced listeners and unique listeners are mutually exclusive. A listener using the `DebounceFor` attribute should not implement `ShouldBeUnique`.
+
+> [!WARNING]
+> If your application dispatches events from multiple web servers or containers, you should ensure that all of your servers are communicating with the same central cache server.
 
 <a name="handling-failed-jobs"></a>
 ### Handling Failed Jobs
