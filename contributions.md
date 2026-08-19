@@ -27,6 +27,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 
 <div class="content-list" markdown="1">
 
+- [Laravel AI](https://github.com/laravel/ai)
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel Boost](https://github.com/laravel/boost)
