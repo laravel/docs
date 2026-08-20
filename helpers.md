@@ -283,7 +283,7 @@ $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 
 The `Arr::array` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `array`:
 
-```
+```php
 use Illuminate\Support\Arr;
 
 $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
@@ -302,7 +302,7 @@ $value = Arr::array($array, 'name');
 
 The `Arr::boolean` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `boolean`:
 
-```
+```php
 use Illuminate\Support\Arr;
 
 $array = ['name' => 'Joe', 'available' => true];
@@ -520,7 +520,7 @@ $flattened = Arr::flatten($array);
 
 The `Arr::float` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `float`:
 
-```
+```php
 use Illuminate\Support\Arr;
 
 $array = ['name' => 'Joe', 'balance' => 123.45];
@@ -657,7 +657,7 @@ $contains = Arr::hasAny($array, ['category', 'product.discount']);
 
 The `Arr::integer` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not an `int`:
 
-```
+```php
 use Illuminate\Support\Arr;
 
 $array = ['name' => 'Joe', 'age' => 42];
@@ -1286,7 +1286,7 @@ $sorted = Arr::sortRecursiveDesc($array);
 
 The `Arr::string` method retrieves a value from a deeply nested array using "dot" notation (just as [Arr::get()](#method-array-get) does), but throws an `InvalidArgumentException` if the requested value is not a `string`:
 
-```
+```php
 use Illuminate\Support\Arr;
 
 $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];

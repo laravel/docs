@@ -584,7 +584,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 You may want to customize the default email template to better align with your application's branding. To modify this template, you should publish the email views to your application with the following command:
 
-```
+```shell
 php artisan vendor:publish --tag=laravel-mail
 ```
 
