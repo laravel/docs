@@ -218,7 +218,7 @@ Likewise, you must configure a default transcription model to use `Transcription
 ```
 
 > [!NOTE]
-> Diarization is not supported by OpenAI-compatible or Groq transcriptions. Invoking the `diarize` method when using these providers will throw an exception.
+> OpenAI-compatible and Groq providers do not support diarization. Invoking the `diarize` method when using these providers will throw an exception.
 
 <a name="provider-support"></a>
 ### Provider Support
@@ -232,8 +232,8 @@ The AI SDK supports a variety of providers across its features. The following ta
 | Text | OpenAI, OpenAI Compatible, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
 | TTS | OpenAI, ElevenLabs, Gemini |
-| STT | OpenAI, OpenAI-Compatible, ElevenLabs, Groq, Mistral, Gemini |
-| Embeddings | OpenAI, OpenAI-Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
+| STT | OpenAI, OpenAI Compatible, ElevenLabs, Groq, Mistral, Gemini |
+| Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI |
 | Files | OpenAI, Anthropic, Gemini, Azure |
 
@@ -1001,7 +1001,7 @@ When using Anthropic, the `strategy` argument may be used to determine how the p
 new ToolSearch(tools: [new SearchInvoices], strategy: 'bm25'),
 ```
 
-Additional provider-specific options may be passed to the search tool using the `withProviderOptions` method:
+When using Anthropic, additional provider-specific options may be passed to the search tool using the `withProviderOptions` method:
 
 ```php
 (new ToolSearch(tools: [new SearchInvoices]))
