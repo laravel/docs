@@ -31,7 +31,7 @@
     - [Anonymous Index Components](#anonymous-index-components)
     - [Data Properties / Attributes](#data-properties-attributes)
     - [Accessing Parent Data](#accessing-parent-data)
-    - [Anonymous Components Paths](#anonymous-component-paths)
+    - [Anonymous Component Paths](#anonymous-component-paths)
 - [Building Layouts](#building-layouts)
     - [Layouts Using Components](#layouts-using-components)
     - [Layouts Using Template Inheritance](#layouts-using-template-inheritance)
