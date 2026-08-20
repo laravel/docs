@@ -971,7 +971,7 @@ SimilaritySearch::usingModel(Document::class, 'embedding')
 <a name="deferred-tool-loading"></a>
 ### Deferred Tool Loading
 
-By default, every tool an agent exposes is sent to the provider with each request. When an agent provides a large number of tools, this consumes tokens and may reduce the accuracy of the model's tool selection. Using the `ToolSearch` provider tool, you may defer tool definitions so that the provider only loads them when they are needed:
+By default, every tool an agent exposes is sent to the provider with each request. When an agent provides a large number of tools, this consumes tokens and may reduce the accuracy of the model's tool selection. Using the `ToolSearch` provider tool with OpenAI or Anthropic, you may defer tool definitions so that the provider only loads them when they are needed:
 
 ```php
 use App\Ai\Tools\RefundOrder;
@@ -992,8 +992,6 @@ public function tools(): iterable
 ```
 
 The wrapped tools do not require any modification. The provider will search for and load them when they are relevant to the prompt, after which the agent may call them like any other tool.
-
-**Supported providers:** OpenAI, Anthropic
 
 When using Anthropic, the `strategy` argument may be used to determine how the provider should search for deferred tools. The supported strategies are `regex` (default) and `bm25`:
 
@@ -2540,11 +2538,11 @@ SalesCoach::assertPrompted(function (AgentPrompt $prompt) {
     return $prompt->contains('Analyze');
 });
 
+SalesCoach::assertPromptedTimes(3);
+
 SalesCoach::assertNotPrompted('Missing prompt');
 
 SalesCoach::assertNeverPrompted();
-
-SalesCoach::assertPromptedTimes(3);
 ```
 
 When asserting an approval continuation, you may inspect the prompt's approval decisions:
