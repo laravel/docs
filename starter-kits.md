@@ -19,6 +19,7 @@
     - [Rate Limiting](#rate-limiting)
 - [Teams](#teams)
 - [WorkOS AuthKit Authentication](#workos)
+    - [Configuring Your WorkOS Starter Kit](#configuring-your-workos-starter-kit)
 - [Inertia SSR](#inertia-ssr)
 - [Community Maintained Starter Kits](#community-maintained-starter-kits)
 - [Frequently Asked Questions](#faqs)
@@ -488,6 +489,7 @@ Using WorkOS as your authentication provider [requires a WorkOS account](https:/
 
 To use WorkOS AuthKit as your application's authentication provider, select the WorkOS option when creating your new starter kit powered application via `laravel new`.
 
+<a name="configuring-your-workos-starter-kit"></a>
 ### Configuring Your WorkOS Starter Kit
 
 After creating a new application using a WorkOS powered starter kit, you should set the `WORKOS_CLIENT_ID`, `WORKOS_API_KEY`, and `WORKOS_REDIRECT_URL` environment variables in your application's `.env` file. These variables should match the values provided to you in the WorkOS dashboard for your application:
