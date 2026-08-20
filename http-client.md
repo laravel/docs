@@ -543,25 +543,24 @@ $responses = Http::pool(fn (Pool $pool) => [
 return $responses['first']->ok();
 ```
 
-> [!WARNING]
-> If a pooled request fails at the connection level (for example, a timeout or DNS failure), the corresponding entry in the `$responses` array will be an `Illuminate\Http\Client\ConnectionException` instance instead of a `Response` instance. Since `Response` does not implement `Throwable`, you should check for this before calling response methods such as `ok` or `failed`:
->
-> ```php
-> foreach ($responses as $response) {
->     if ($response instanceof Throwable) {
->         // The request failed to connect...
->     } elseif ($response->failed()) {
->         // The request connected but received an error response...
->     }
-> }
-> ```
-
 The maximum concurrency of the request pool may be controlled by providing the `concurrency` argument to the `pool` method. This value determines the maximum number of HTTP requests that may be concurrently in-flight while processing the request pool:
 
 ```php
 $responses = Http::pool(fn (Pool $pool) => [
     // ...
 ], concurrency: 5);
+```
+
+If a pooled request fails at the connection level (for example, a timeout or DNS failure), the corresponding entry in the `$responses` array will be an `Illuminate\Http\Client\ConnectionException` instance instead of a `Response` instance:
+
+```php
+foreach ($responses as $response) {
+    if ($response instanceof Throwable) {
+        // The request failed to connect...
+    } elseif ($response->failed()) {
+        // The request connected but received an error response...
+    }
+}
 ```
 
 <a name="customizing-concurrent-requests"></a>
