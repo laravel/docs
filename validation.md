@@ -1691,6 +1691,22 @@ $request->validate([
 ]);
 ```
 
+The `dns` validator performs a real DNS lookup to confirm the address's domain has a valid MX record. It does not determine whether an individual mailbox exists.
+
+Since your tests should not rely on live DNS lookups, you may use the `Validator::fakeDnsLookups` method to [fake DNS lookups](#rule-active-url) while any other requested validations, such as `rfc`, continue to run:
+
+```php
+use Illuminate\Support\Facades\Validator;
+
+Validator::fakeDnsLookups();
+```
+
+This allows your application to keep using its existing validation rules while testing:
+
+```php
+'email' => ['required', 'email:rfc,dns'],
+```
+
 > [!WARNING]
 > The `dns` and `spoof` validators require the PHP `intl` extension.
 
