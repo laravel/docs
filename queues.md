@@ -186,6 +186,40 @@ When overflow storage is enabled, Laravel will store payloads that are at least 
 
 If the `flush_on_clear` option is `true`, the configured overflow cache store will be flushed when the `queue:clear` command clears the SQS queue. Since flushing a cache store may remove all items from that store, you should configure SQS overflow storage to use a dedicated cache store when enabling this option.
 
+<a name="sqs-credential-caching"></a>
+#### SQS Credential Caching
+
+When your SQS queue connection does not define static credentials, the AWS SDK resolves credentials dynamically from the environment, such as from an EC2 instance profile, an ECS task role, or EKS Pod Identity. The SDK caches these credentials per process, so every PHP process, including each PHP-FPM worker, performs its own credential lookup. During traffic bursts, these lookups can overwhelm the environment's credential provider and cause job dispatches to fail.
+
+To share resolved credentials across all of your application's processes, you may add a `credentials_cache` array to your SQS queue connection configuration:
+
+```php
+'sqs' => [
+    'driver' => 'sqs',
+    'prefix' => env('SQS_PREFIX', 'https://sqs.us-east-1.amazonaws.com/your-account-id'),
+    'queue' => env('SQS_QUEUE', 'default'),
+    'suffix' => env('SQS_SUFFIX'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'after_commit' => false,
+    'credentials_cache' => [
+        'enabled' => env('SQS_CREDENTIALS_CACHE_ENABLED', false),
+        'store' => env('SQS_CREDENTIALS_CACHE_STORE'),
+        'fallback_store' => env('SQS_CREDENTIALS_CACHE_FALLBACK_STORE'),
+    ],
+],
+```
+
+When credential caching is enabled, the first process to resolve credentials stores them in the configured cache store, and every other process reads them from the cache until the credentials expire. The `store` option specifies the cache store that should hold the credentials; if it is `null`, your application's default cache store will be used.
+
+The `fallback_store` option may specify a second cache store that will be consulted when the primary store is unavailable. Credentials are written to both stores, so the fallback is already populated if the primary store goes offline. For example, using the `file` store as a fallback allows credential sharing between the processes on a given server to continue even if a shared store such as Redis is down.
+
+A cache failure will never interrupt credential resolution. If a cache store is unavailable, the failure is treated as a cache miss and the credentials are fetched directly from the credential provider.
+
+Credential caching only applies when the connection does not define a static `key` and `secret` or an explicit `credentials` value. When caching is enabled alongside a `credentials` value of `ecs` or `instance`, the credentials resolved by that provider will be cached as well.
+
+> [!NOTE]
+> On [Laravel Cloud](https://cloud.laravel.com), credential caching is automatically enabled for SQS queue connections that resolve their credentials dynamically.
+
 <a name="other-driver-prerequisites"></a>
 #### Other Driver Prerequisites
 
