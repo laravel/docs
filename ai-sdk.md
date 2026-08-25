@@ -2027,7 +2027,7 @@ Document::fromUpload($request->file('report'));
 <a name="querying-embeddings"></a>
 ### Querying Embeddings
 
-Once you have generated embeddings, you will typically store them in a `vector` column in your database for later querying. Laravel provides native support for vector columns on PostgreSQL via the `pgvector` extension. To get started, define a `vector` column in your migration, specifying the number of dimensions:
+Once you have generated embeddings, you will typically store them in a `vector` column in your database for later querying. Laravel provides native support for vector columns on PostgreSQL via the `pgvector` extension and MariaDB. To get started, define a `vector` column in your migration, specifying the number of dimensions:
 
 ```php
 Schema::ensureVectorExtensionExists();
@@ -2093,7 +2093,7 @@ $documents = Document::query()
 If you would like to give an agent the ability to perform similarity searches as a tool, check out the [Similarity Search](#similarity-search) tool documentation.
 
 > [!NOTE]
-> Vector queries are currently only supported on PostgreSQL connections using the `pgvector` extension.
+> Vector queries are currently supported on PostgreSQL connections using the `pgvector` extension and MariaDB 11.7 or later.
 
 <a name="caching-embeddings"></a>
 ### Caching Embeddings

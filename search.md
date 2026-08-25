@@ -33,7 +33,7 @@ When you need keyword relevance ranking — where the database scores and sorts 
 <a name="introduction-semantic-vector-search"></a>
 #### Semantic / Vector Search
 
-For AI-powered semantic search that matches results by *meaning* rather than exact keywords, the `whereVectorSimilarTo` query builder method uses vector embeddings stored in PostgreSQL with the `pgvector` extension. For example, a search for "best wineries in Napa Valley" can surface an article titled "Top Vineyards to Visit" — even though the words don't overlap. Vector search requires PostgreSQL with the `pgvector` extension and the [Laravel AI SDK](/docs/{{version}}/ai-sdk).
+For AI-powered semantic search that matches results by *meaning* rather than exact keywords, the `whereVectorSimilarTo` query builder method uses vector embeddings stored in PostgreSQL with the `pgvector` extension or MariaDB. For example, a search for "best wineries in Napa Valley" can surface an article titled "Top Vineyards to Visit" — even though the words don't overlap. Vector search requires PostgreSQL with the `pgvector` extension or MariaDB 11.7 or later, as well as the [Laravel AI SDK](/docs/{{version}}/ai-sdk).
 
 <a name="introduction-reranking"></a>
 #### Reranking
@@ -43,7 +43,7 @@ Laravel's [AI SDK](/docs/{{version}}/ai-sdk) provides reranking capabilities tha
 <a name="introduction-scout-search-engines"></a>
 #### Laravel Scout Search
 
-For applications that want a `Searchable` trait that automatically keeps search indexes in sync with Eloquent models, [Laravel Scout](/docs/{{version}}/scout) offers both a built-in database engine and drivers for third-party services like Algolia, Meilisearch, and Typesense.
+For applications that want a `Searchable` trait that automatically keeps search indexes in sync with Eloquent models, [Laravel Scout](/docs/{{version}}/scout) offers both a built-in database engine and drivers for third-party services like Algolia, Meilisearch, Typesense, and Turbopuffer.
 
 <a name="full-text-search"></a>
 ## Full-Text Search
@@ -108,7 +108,7 @@ Full-text search relies on matching keywords — the words in the query must app
 The basic workflow for vector search is: generate an embedding (a numeric array) for each piece of content and store it alongside your data, then at search time, generate an embedding for the user's query and find the stored embeddings that are closest to it in vector space.
 
 > [!NOTE]
-> Vector search requires the [Laravel AI SDK](/docs/{{version}}/ai-sdk) and is supported by PostgreSQL (requires the `pgvector` extension) and MongoDB (requires the [Laravel MongoDB package](https://laravel.com/docs/13.x/mongodb)). All Postgres databases on [Laravel Cloud](https://laravel.com/cloud) already have `pgvector` installed.
+> Vector search requires the [Laravel AI SDK](/docs/{{version}}/ai-sdk) and is supported by PostgreSQL (requires the `pgvector` extension), MariaDB 11.7 or later, and MongoDB (requires the [Laravel MongoDB package](https://laravel.com/docs/13.x/mongodb)). All Postgres databases on [Laravel Cloud](https://laravel.com/cloud) already have `pgvector` installed.
 
 <a name="generating-embeddings"></a>
 ### Generating Embeddings
