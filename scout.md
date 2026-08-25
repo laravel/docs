@@ -962,7 +962,9 @@ $orders = Order::search('Star Trek')->raw();
 <a name="semantic-search"></a>
 ### Semantic Search
 
-The database, Meilisearch, and Turbopuffer engines support semantic search, which matches records based on the meaning of a query. After configuring embeddings for the selected engine, invoke the `semantic` method on a search query:
+The database, Meilisearch, and Turbopuffer engines support semantic search, which matches records based on the meaning of a query. When Scout generates embeddings, semantic and hybrid searches require the [Laravel AI SDK](/docs/{{version}}/ai-sdk). Turbopuffer's [native embeddings](#turbopuffer-configuration) and precomputed query vectors do not require the Laravel AI SDK.
+
+After configuring embeddings for the selected engine, invoke the `semantic` method on a search query:
 
 ```php
 $articles = Article::search('how to keep a house comfortable without electricity')
