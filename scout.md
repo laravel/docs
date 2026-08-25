@@ -967,7 +967,7 @@ The database, Meilisearch, and Turbopuffer engines support semantic search, whic
 After configuring embeddings for the selected engine, invoke the `semantic` method on a search query:
 
 ```php
-$articles = Article::search('how to keep a house comfortable without electricity')
+$articles = Article::search('staying cool in the summer')
     ->semantic()
     ->get();
 ```
