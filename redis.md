@@ -178,6 +178,52 @@ In addition to the default configuration options, Predis supports additional [co
 ],
 ```
 
+<a name="predis-sentinel"></a>
+#### Redis Sentinel
+
+If your Redis servers are managed by [Redis Sentinel](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/), Predis can discover the current primary server automatically. To configure this, set the `replication` option to `sentinel`, specify the name of the monitored service via the `service` option, and list your Sentinel servers in place of the Redis server itself. Any connection parameters for the Redis server, such as the password or database, should be defined via the `parameters` option:
+
+```php
+'redis' => [
+
+    'client' => env('REDIS_CLIENT', 'predis'),
+
+    'options' => [
+        'replication' => 'sentinel',
+        'service' => env('REDIS_SENTINEL_SERVICE', 'mymaster'),
+        'parameters' => [
+            'password' => env('REDIS_PASSWORD'),
+            'database' => env('REDIS_DB', '0'),
+        ],
+    ],
+
+    'default' => [
+        'tcp://10.0.0.1:26379',
+        'tcp://10.0.0.2:26379',
+        'tcp://10.0.0.3:26379',
+    ],
+
+],
+```
+
+> [!WARNING]
+> You should remove the `options.cluster` configuration value when using Sentinel. If it is present, Predis will treat the list of Sentinel servers as a Redis Cluster.
+
+If your Redis connections require different parameters, you may key the `parameters` array by connection name:
+
+```php
+'parameters' => [
+    'default' => [
+        'password' => env('REDIS_PASSWORD'),
+        'database' => env('REDIS_DB', '0'),
+    ],
+    'cache' => [
+        'password' => env('REDIS_PASSWORD'),
+        'database' => env('REDIS_CACHE_DB', '1'),
+    ],
+],
+```
+
 <a name="phpredis"></a>
 ### PhpRedis
 
