@@ -102,6 +102,8 @@ We appreciate every pull request submitted to Laravel. However, contributions th
 
 If you choose to use AI tools to assist with your contribution, the resulting code **must** be thoroughly reviewed, tested, and understood by you before submitting.
 
+Pull request descriptions **must** be written entirely by the contributor. Pull requests with AI-generated descriptions will be closed.
+
 **Mass opening issues or pull requests that are entirely AI-generated will not be tolerated.** Such pull requests will be closed without review, and the contributing user may be blocked from the repository.
 
 We encourage contributors to familiarize themselves with the existing codebase, engage with the community, and submit pull requests that reflect their own understanding and careful consideration of the problem they are solving.
