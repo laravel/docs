@@ -200,6 +200,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [fake](#method-fake)
 [filled](#method-filled)
 [info](#method-info)
+[lazy](#method-lazy)
 [literal](#method-literal)
 [logger](#method-logger)
 [method_field](#method-method-field)
@@ -208,6 +209,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [once](#method-once)
 [optional](#method-optional)
 [policy](#method-policy)
+[proxy](#method-proxy)
 [redirect](#method-redirect)
 [report](#method-report)
 [report_if](#method-report-if)
@@ -2714,6 +2716,46 @@ An array of contextual data may also be passed to the function:
 info('User login attempt failed.', ['id' => $user->id]);
 ```
 
+<a name="method-lazy"></a>
+#### `lazy()` {.collection-method}
+
+The `lazy` function creates a [lazy ghost object](https://www.php.net/manual/en/language.oop5.lazy-objects.php), which is an instance of the given class whose initialization is deferred until its properties or methods are first accessed. The closure given to the `lazy` function should return the arguments that will be passed to the class's constructor when the object is initialized:
+
+```php
+$report = lazy(Report::class, fn () => [$data]);
+```
+
+Constructor arguments may also be provided using named keys:
+
+```php
+$report = lazy(Report::class, fn () => ['data' => $data]);
+```
+
+If you would like to set properties on the object immediately without triggering its initialization, you may provide an `eager` argument:
+
+```php
+$report = lazy(Report::class, fn () => [$data], eager: ['createdAt' => now()]);
+```
+
+<a name="advanced-lazy-usage"></a>
+#### Advanced Lazy Usage
+
+The closure given to the `lazy` function receives the uninitialized instance as its only argument. If the closure does not return an array of constructor arguments, you are responsible for invoking the object's constructor manually, which may be useful when additional setup is required during initialization:
+
+```php
+$report = lazy(Report::class, function (Report $report) use ($data) {
+    $report->__construct($data);
+
+    $report->finalize();
+});
+```
+
+You may also omit the class name entirely. When only a closure is given, the class will be determined from the closure's first parameter type:
+
+```php
+$report = lazy(fn (Report $report) => [$data]);
+```
+
 <a name="method-literal"></a>
 #### `literal()` {.collection-method}
 
@@ -2858,6 +2900,30 @@ The `policy` method retrieves a [policy](/docs/{{version}}/authorization#creatin
 
 ```php
 $policy = policy(App\Models\User::class);
+```
+
+<a name="method-proxy"></a>
+#### `proxy()` {.collection-method}
+
+The `proxy` function creates a [lazy proxy object](https://www.php.net/manual/en/language.oop5.lazy-objects.php), deferring the creation of an object until its properties or methods are first accessed. Unlike the [lazy](#method-lazy) function, which initializes the object in place, the closure given to the `proxy` function should build and return the underlying object, making it useful when you are not in control of the class's instantiation:
+
+```php
+$report = proxy(Report::class, fn () => ReportFactory::make($data));
+```
+
+Like the `lazy` function, the `proxy` function accepts an `eager` argument for setting properties on the proxy immediately; however, eagerly set properties will not persist on the underlying object once it has been initialized:
+
+```php
+$report = proxy(Report::class, fn () => ReportFactory::make($data), eager: ['createdAt' => now()]);
+```
+
+<a name="advanced-proxy-usage"></a>
+#### Advanced Proxy Usage
+
+You may omit the class name entirely. When only a closure is given, the class will be determined from the closure's return type or, if no return type is present, the closure's first parameter type:
+
+```php
+$report = proxy(fn (): Report => ReportFactory::make($data));
 ```
 
 <a name="method-redirect"></a>
