@@ -112,6 +112,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [avg](#method-avg)
 [before](#method-before)
 [chunk](#method-chunk)
+[chunkBy](#method-chunkby)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
 [collapseWithKeys](#method-collapsewithkeys)
@@ -401,6 +402,50 @@ This method is especially useful in [views](/docs/{{version}}/views) when workin
         @endforeach
     </div>
 @endforeach
+```
+
+<a name="method-chunkby"></a>
+#### `chunkBy()` {.collection-method}
+
+The `chunkBy` method breaks the collection into multiple, smaller collections, chunking together adjacent items that share the same value for the given key:
+
+```php
+$collection = collect([
+    ['name' => 'Desk', 'category' => 'Office'],
+    ['name' => 'Chair', 'category' => 'Office'],
+    ['name' => 'Apple', 'category' => 'Fruit'],
+    ['name' => 'Pear', 'category' => 'Fruit'],
+]);
+
+$chunks = $collection->chunkBy('category');
+
+$chunks->count();
+
+// 2
+```
+
+Instead of a key, you may also pass a closure that returns the value that should be compared:
+
+```php
+$collection = collect(str_split('AABBCCCD'));
+
+$chunks = $collection->chunkBy(fn (string $value) => $value);
+
+$chunks->all();
+
+// [['A', 'A'], ['B', 'B'], ['C', 'C', 'C'], ['D']]
+```
+
+Unlike the [groupBy](#method-groupby) method, `chunkBy` only chunks together items that are adjacent within the collection. Therefore, items that share the same value but are not next to one another will be placed in separate chunks:
+
+```php
+$collection = collect([1, 1, 2, 2, 1, 1]);
+
+$chunks = $collection->chunkBy(fn (int $value) => $value);
+
+$chunks->all();
+
+// [[1, 1], [2, 2], [1, 1]]
 ```
 
 <a name="method-chunkwhile"></a>
@@ -4201,6 +4246,7 @@ Almost all methods available on the `Collection` class are also available on the
 [average](#method-average)
 [avg](#method-avg)
 [chunk](#method-chunk)
+[chunkBy](#method-chunkby)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
 [collect](#method-collect)
