@@ -1695,14 +1695,14 @@ Route::post('/chat/{conversation}', function (Request $request, Conversation $co
     Gate::authorize('view', $conversation);
 
     $validated = $request->validate([
-        'message' => ['nullable', 'string', 'required_without:decisions', 'prohibited_with:decisions'],
-        'decisions' => ['nullable', 'array', 'required_without:message', 'prohibited_with:message'],
+        'message' => ['nullable', 'string', 'required_without:decisions', 'prohibits:decisions'],
+        'decisions' => ['nullable', 'array', 'required_without:message', 'prohibits:message'],
         'decisions.*.action' => ['required_with:decisions', Rule::in(['approve', 'reject'])],
         'decisions.*.result' => ['nullable', 'string'],
     ]);
 
     $prompt = isset($validated['decisions'])
-        ? Decisions::from($validated->collect('decisions')->map(
+        ? Decisions::from(collect($validated['decisions'])->map(
             fn (array $decision) => match ($decision['action']) {
                 'approve' => Decision::approve(),
                 'reject' => Decision::reject($decision['result'] ?? null),
