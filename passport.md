@@ -20,7 +20,7 @@
     - [Creating the Client](#creating-a-auth-pkce-grant-client)
     - [Requesting Tokens](#requesting-auth-pkce-grant-tokens)
 - [Device Authorization Grant](#device-authorization-grant)
-    - [Creating a Device Code Grant Client](#creating-a-device-authorization-grant-client)
+    - [Creating a Device Authorization Grant Client](#creating-a-device-authorization-grant-client)
     - [Requesting Tokens](#requesting-device-authorization-grant-tokens)
 - [Password Grant](#password-grant)
     - [Creating a Password Grant Client](#creating-a-password-grant-client)
