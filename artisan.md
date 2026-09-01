@@ -1021,6 +1021,14 @@ DevCommands::only('server', 'vite');
 DevCommands::except('queue');
 ```
 
+You may exclude commands registered by packages or Laravel's default commands using the `withoutVendorCommands` and `withoutDefaultCommands` methods:
+
+```php
+DevCommands::withoutVendorCommands();
+
+DevCommands::withoutDefaultCommands();
+```
+
 <a name="stub-customization"></a>
 ## Stub Customization
 

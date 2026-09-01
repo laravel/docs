@@ -112,6 +112,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [avg](#method-avg)
 [before](#method-before)
 [chunk](#method-chunk)
+[chunkBy](#method-chunkby)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
 [collapseWithKeys](#method-collapsewithkeys)
@@ -401,6 +402,27 @@ This method is especially useful in [views](/docs/{{version}}/views) when workin
         @endforeach
     </div>
 @endforeach
+```
+
+<a name="method-chunkby"></a>
+#### `chunkBy()` {.collection-method}
+
+The `chunkBy` method breaks the collection into multiple, smaller collections by grouping adjacent items that have the same value for a given key or callback. For example, you may group adjacent products that share the same parent:
+
+```php
+$chunks = $products->chunkBy('parent');
+```
+
+Unlike the `groupBy` method, items with the same value that are not adjacent are placed in separate chunks:
+
+```php
+$collection = collect([1, 1, 2, 2, 1]);
+
+$chunks = $collection->chunkBy(fn (int $value) => $value);
+
+$chunks->all();
+
+// [[1, 1], [2, 2], [1]]
 ```
 
 <a name="method-chunkwhile"></a>
@@ -4201,6 +4223,7 @@ Almost all methods available on the `Collection` class are also available on the
 [average](#method-average)
 [avg](#method-avg)
 [chunk](#method-chunk)
+[chunkBy](#method-chunkby)
 [chunkWhile](#method-chunkwhile)
 [collapse](#method-collapse)
 [collect](#method-collect)
