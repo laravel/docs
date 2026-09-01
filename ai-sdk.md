@@ -511,7 +511,19 @@ $response = (new SalesCoach)
     ->prompt('Tell me more about that.');
 ```
 
-When continuing a specific conversation, pass the participant to the `continue` method:
+Conversations belong to the participant rather than to the agent, so this method resolves the participant's most recent conversation regardless of which agent started it. This allows one agent to continue where another left off, receiving the earlier messages as context:
+
+```php
+(new OnboardingAgent)
+    ->forParticipant($team)
+    ->prompt('We just finished onboarding our sales team.');
+
+(new SalesCoach)
+    ->continueLastConversation($team)
+    ->prompt('What should they focus on first?');
+```
+
+When continuing a specific conversation, or when an agent should only continue conversations it started, pass the conversation ID and the participant to the `continue` method:
 
 ```php
 $response = (new SalesCoach)
