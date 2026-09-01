@@ -846,6 +846,9 @@ public function makeSearchableUsing(Collection $models): Collection
 }
 ```
 
+> [!NOTE]
+> The model's `makeSearchableUsing` method should not be confused with the `Scout::makeSearchableUsing` method, which [determines the job class](#unique-jobs) Scout dispatches when indexing records.
+
 <a name="conditionally-updating-the-search-index"></a>
 #### Conditionally Updating the Search Index
 
