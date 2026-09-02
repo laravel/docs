@@ -24,6 +24,7 @@
     - [Anonymous Agents](#anonymous-agents)
     - [Agent Configuration](#agent-configuration)
     - [Provider Options](#provider-options)
+    - [Prompt Caching](#prompt-caching)
 - [Human Tool Approval](#human-tool-approval)
     - [Complete Approval Flow](#complete-approval-flow)
 - [Images](#images)
@@ -231,10 +232,10 @@ The AI SDK supports a variety of providers across its features. The following ta
 |---|---|
 | Text | OpenAI, OpenAI Compatible, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
-| TTS | OpenAI, ElevenLabs, Gemini |
+| TTS | OpenAI, ElevenLabs, Gemini, Mistral |
 | STT | OpenAI, OpenAI Compatible, ElevenLabs, Groq, Mistral, Gemini |
 | Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
-| Reranking | Cohere, Jina, VoyageAI |
+| Reranking | Cohere, Jina, VoyageAI, Bedrock |
 | Files | OpenAI, Anthropic, Gemini, Azure |
 
 </div>
@@ -886,6 +887,25 @@ public function tools(): iterable
 }
 ```
 
+<a name="validating-tool-arguments"></a>
+#### Validating Tool Arguments
+
+Although your tool's schema constrains the arguments a model may provide, you may validate the incoming arguments using the request's `validate` method:
+
+```php
+public function handle(Request $request): Stringable|string
+{
+    $validated = $request->validate([
+        'city' => 'required|string',
+        'days' => 'required|integer|max:7',
+    ]);
+
+    return $this->forecast($validated['city'], $validated['days']);
+}
+```
+
+When validation fails, the validation messages are returned to the model as the tool's result, allowing it to correct the arguments and call the tool again.
+
 <a name="repairing-tool-calls"></a>
 #### Repairing Tool Calls
 
@@ -1530,7 +1550,51 @@ class SalesCoach implements Agent, HasProviderOptions
 
 The `providerOptions` method receives the provider currently being used (`Lab` enum or string), allowing you to return different options per provider. This is especially useful when using [failover](#failover), since each fallback provider can receive its own configuration.
 
-The Anthropic example above also enables [prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) via `cache_control`.
+The Anthropic example above also enables [prompt caching](#prompt-caching) via `cache_control`.
+
+<a name="prompt-caching"></a>
+### Prompt Caching
+
+Most providers cache repeated prompt prefixes automatically and bill the cached portion at a discount. OpenAI, Gemini, Groq, DeepSeek, and xAI require no configuration, and you may inspect the savings via the response's usage:
+
+```php
+$response->usage->cacheReadInputTokens;
+$response->usage->cacheWriteInputTokens;
+```
+
+The `anthropic` and `bedrock` providers only cache when asked. The `CacheInstructions` and `CacheToolDefinitions` attributes place a cache breakpoint at the end of your agent's instructions and tool definitions, so every conversation reads that prefix from the cache instead of writing it again:
+
+```php
+use Laravel\Ai\Attributes\CacheInstructions;
+use Laravel\Ai\Attributes\CacheToolDefinitions;
+
+#[CacheInstructions]
+#[CacheToolDefinitions]
+class SalesCoach implements Agent
+{
+    use Promptable;
+
+    // ...
+}
+```
+
+If your instructions change on every request, such as when they embed the current date, use `CacheToolDefinitions` alone. Caching a prefix that changes every request only pays the write cost and never reads from the cache.
+
+Providers that do not support these attributes ignore them, so an agent may safely declare them while using [failover](#failover).
+
+Cached prefixes are retained for five minutes by default. Anthropic may retain them for an hour if you pass a TTL to the attribute:
+
+```php
+#[CacheInstructions('1h')]
+#[CacheToolDefinitions('1h')]
+```
+
+The hour-long cache costs more to write and the same to read, so it pays off when your agent is called regularly with gaps longer than five minutes between calls. Bedrock cache points do not support a TTL, so it is ignored there.
+
+> [!WARNING]
+> Providers build the prompt in the order tools, instructions, messages, and a one-hour breakpoint may not follow a shorter one. So, if your instructions are cached for an hour, your tool definitions must be as well. Mixing the two throws an `InvalidArgumentException`.
+
+Alternatively, Anthropic's automatic caching may be enabled via a top-level `cache_control` [provider option](#provider-options). This places a single breakpoint after the last block of the request, so the breakpoint advances as the conversation grows and each turn reads the previous turns from the cache. Both mechanisms may be combined.
 
 <a name="human-tool-approval"></a>
 ## Human Tool Approval
@@ -2107,12 +2171,15 @@ Embedding generation can be cached to avoid redundant API calls for identical in
     'embeddings' => [
         'cache' => true,
         'store' => env('CACHE_STORE', 'database'),
+        'individually' => true,
         // ...
     ],
 ],
 ```
 
 When caching is enabled, embeddings are cached for 30 days. The cache key is based on the provider, model, dimensions, and input content, ensuring that identical requests return cached results while different configurations generate fresh embeddings.
+
+By default, each input's embedding is cached under its own key, so a later request may hit the cache for inputs it has seen before even when the set of inputs or their order has changed. To instead cache the entire set of inputs under a single key, set the `ai.caching.embeddings.individually` configuration option to `false`.
 
 You may also enable caching for a specific request using the `cache` method, even when global caching is disabled:
 
@@ -2127,6 +2194,14 @@ You may specify a custom cache duration in seconds:
 ```php
 $response = Embeddings::for(['Napa Valley has great wine.'])
     ->cache(seconds: 3600) // Cache for 1 hour
+    ->generate();
+```
+
+The `individually` argument may be used to override the configured caching strategy for a single request:
+
+```php
+$response = Embeddings::for(['Napa Valley has great wine.', 'Sonoma does too.'])
+    ->cache(individually: false)
     ->generate();
 ```
 
