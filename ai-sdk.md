@@ -1578,7 +1578,7 @@ class SalesCoach implements Agent
 }
 ```
 
-If your instructions change on every request, such as when they embed the current date, use `CacheToolDefinitions` alone. Caching a prefix that changes every request only pays the write cost and never reads from the cache.
+If your instructions change on every request, such as when they embed the current date, use `CacheToolDefinitions` alone. Caching a prefix that changes on every request creates a new cache entry each time, so you pay to write it to the cache without ever reusing it.
 
 Providers that do not support these attributes ignore them, so an agent may safely declare them while using [failover](#failover).
 
@@ -1589,12 +1589,10 @@ Cached prefixes are retained for five minutes by default. Anthropic may retain t
 #[CacheToolDefinitions('1h')]
 ```
 
-The hour-long cache costs more to write and the same to read, so it pays off when your agent is called regularly with gaps longer than five minutes between calls. Bedrock cache points do not support a TTL, so it is ignored there.
+Alternatively, Anthropic's automatic caching may be enabled via a top-level `cache_control` [provider option](#provider-options). This places a single breakpoint after the last block of the request, so the breakpoint advances as the conversation grows and each turn reads the previous turns from the cache. Both mechanisms may be combined.
 
 > [!WARNING]
-> Because providers build prompts in the order tools, instructions, and messages, a one-hour breakpoint must not follow a shorter-lived breakpoint. So, if your instructions are cached for an hour, your tool definitions must be as well. Mixing the two throws an `InvalidArgumentException`.
-
-Alternatively, Anthropic's automatic caching may be enabled via a top-level `cache_control` [provider option](#provider-options). This places a single breakpoint after the last block of the request, so the breakpoint advances as the conversation grows and each turn reads the previous turns from the cache. Both mechanisms may be combined.
+> Because providers build prompts in the order tools, instructions, and messages, caching instructions for an hour also requires caching tool definitions for an hour. Mixing the two throws an `InvalidArgumentException`.
 
 <a name="human-tool-approval"></a>
 ## Human Tool Approval
@@ -2194,14 +2192,6 @@ You may specify a custom cache duration in seconds:
 ```php
 $response = Embeddings::for(['Napa Valley has great wine.'])
     ->cache(seconds: 3600) // Cache for 1 hour
-    ->generate();
-```
-
-The `individually` argument may be used to override the configured caching strategy for a single request:
-
-```php
-$response = Embeddings::for(['Napa Valley has great wine.', 'Sonoma does too.'])
-    ->cache(individually: false)
     ->generate();
 ```
 
