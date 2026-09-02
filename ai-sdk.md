@@ -1592,7 +1592,7 @@ Cached prefixes are retained for five minutes by default. Anthropic may retain t
 The hour-long cache costs more to write and the same to read, so it pays off when your agent is called regularly with gaps longer than five minutes between calls. Bedrock cache points do not support a TTL, so it is ignored there.
 
 > [!WARNING]
-> Providers build the prompt in the order tools, instructions, messages, and a one-hour breakpoint may not follow a shorter one. So, if your instructions are cached for an hour, your tool definitions must be as well. Mixing the two throws an `InvalidArgumentException`.
+> Because providers build prompts in the order tools, instructions, and messages, a one-hour breakpoint must not follow a shorter-lived breakpoint. So, if your instructions are cached for an hour, your tool definitions must be as well. Mixing the two throws an `InvalidArgumentException`.
 
 Alternatively, Anthropic's automatic caching may be enabled via a top-level `cache_control` [provider option](#provider-options). This places a single breakpoint after the last block of the request, so the breakpoint advances as the conversation grows and each turn reads the previous turns from the cache. Both mechanisms may be combined.
 
