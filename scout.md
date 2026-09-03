@@ -1055,7 +1055,19 @@ $articles = Article::search('renewable energy storage')
     ->get();
 ```
 
-When Scout generates embeddings via the AI SDK, the results are cached to avoid repeatedly generating embeddings for unchanged content. The embedding provider and model may be customized via the `provider` and `model` options of your engine's embedding configuration.
+When Scout generates embeddings via the AI SDK, your model's `toSearchableEmbedding` method should return the content that should be converted into an embedding when the model is indexed, or a precomputed embedding array:
+
+```php
+/**
+ * Get the content that should be vectorized for the model.
+ */
+public function toSearchableEmbedding(): string
+{
+    return $this->title.' '.$this->summary;
+}
+```
+
+Generated embeddings are cached to avoid repeatedly generating embeddings for unchanged content. The embedding provider and model may be customized via the `provider` and `model` options of your engine's embedding configuration.
 
 When searching, Scout will automatically convert your search query into an embedding using the AI SDK as well. Or, when using the Meilisearch or Typesense engines, you may provide a precomputed query embedding via the `vector` search option:
 
