@@ -747,6 +747,8 @@ To enable semantic and hybrid search, add an `embedding` setting and vector sche
 
 Your model's `toSearchableEmbedding` method should return the source text that Scout should embed or a precomputed embedding array. Scout generates source-text embeddings using the [Laravel AI SDK](/docs/{{version}}/ai-sdk).
 
+During hybrid searches, Turbopuffer executes the full-text and semantic queries separately and combines their results using [reciprocal rank fusion](https://turbopuffer.com/docs/hybrid), weighted by the values given to the `hybrid` method.
+
 Alternatively, you may use Turbopuffer's native embeddings without installing the Laravel AI SDK or defining a `toSearchableEmbedding` method. Set the embedding driver to `turbopuffer` and configure an `embed` schema on the searchable source attribute:
 
 ```php
@@ -769,6 +771,9 @@ Alternatively, you may use Turbopuffer's native embeddings without installing th
 ```
 
 The source attribute must be included in the model's `toSearchableArray` output.
+
+> [!WARNING]
+> The Turbopuffer engine does not support the minimum similarity threshold accepted by the `semantic` and `hybrid` methods. In addition, semantic and hybrid searches may not be combined with Scout's `orderBy` clauses when using Turbopuffer.
 
 <a name="indexing"></a>
 ## Third-Party Engine Indexing
