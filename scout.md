@@ -630,6 +630,68 @@ Todo::search('Groceries')->options([
 ])->get();
 ```
 
+<a name="typesense-semantic-and-hybrid-search"></a>
+#### Semantic and Hybrid Search
+
+To use semantic or hybrid search with Typesense, add a vector field to the model's collection schema and define the model's `embedding` configuration within your application's `config/scout.php` configuration file:
+
+```php
+use App\Models\Article;
+
+'typesense' => [
+    // ...
+    'model-settings' => [
+        Article::class => [
+            'collection-schema' => [
+                'fields' => [
+                    ['name' => 'id', 'type' => 'string'],
+                    ['name' => 'title', 'type' => 'string'],
+                    ['name' => 'embedding', 'type' => 'float[]', 'num_dim' => 1536],
+                ],
+            ],
+            'search-parameters' => [
+                'query_by' => 'title',
+            ],
+            'embedding' => [
+                'attribute' => 'embedding',
+                'dimensions' => 1536,
+                // 'provider' => 'openai',
+                // 'model' => 'text-embedding-3-small',
+            ],
+        ],
+    ],
+],
+```
+
+The `attribute` option specifies the schema field that stores each record's embedding, while hybrid searches will continue to perform keyword matching against the fields defined in the `query_by` search parameter. The model's `toSearchableEmbedding` method may return source text, which Scout embeds using the [Laravel AI SDK](/docs/{{version}}/ai-sdk), or a precomputed embedding array.
+
+Alternatively, Typesense can generate embeddings natively using its own [auto-embedding fields](https://typesense.org/docs/latest/api/vector-search.html#option-b-auto-embedding-generation-within-typesense), removing the need for the AI SDK or a `toSearchableEmbedding` method entirely. To use native embeddings, define an auto-embedding field in your collection schema and set the embedding configuration's `driver` option to `typesense`:
+
+```php
+'collection-schema' => [
+    'fields' => [
+        ['name' => 'id', 'type' => 'string'],
+        ['name' => 'title', 'type' => 'string'],
+        [
+            'name' => 'embedding',
+            'type' => 'float[]',
+            'embed' => [
+                'from' => ['title'],
+                'model_config' => [
+                    'model_name' => 'ts/all-MiniLM-L12-v2',
+                ],
+            ],
+        ],
+    ],
+],
+'embedding' => [
+    'attribute' => 'embedding',
+    'driver' => 'typesense',
+],
+```
+
+When using Typesense, the minimum similarity given to the `semantic` and `hybrid` methods is converted into a vector distance threshold and assumes the collection uses the default cosine distance metric. During hybrid searches, Typesense only applies this threshold to semantic candidates, so keyword matches are returned regardless of their similarity.
+
 <a name="turbopuffer-configuration"></a>
 ### Turbopuffer
 
@@ -685,6 +747,8 @@ To enable semantic and hybrid search, add an `embedding` setting and vector sche
 
 Your model's `toSearchableEmbedding` method should return the source text that Scout should embed or a precomputed embedding array. Scout generates source-text embeddings using the [Laravel AI SDK](/docs/{{version}}/ai-sdk).
 
+During hybrid searches, Turbopuffer executes the full-text and semantic queries separately and combines their results using [reciprocal rank fusion](https://turbopuffer.com/docs/hybrid), weighted by the values given to the `hybrid` method.
+
 Alternatively, you may use Turbopuffer's native embeddings without installing the Laravel AI SDK or defining a `toSearchableEmbedding` method. Set the embedding driver to `turbopuffer` and configure an `embed` schema on the searchable source attribute:
 
 ```php
@@ -707,6 +771,9 @@ Alternatively, you may use Turbopuffer's native embeddings without installing th
 ```
 
 The source attribute must be included in the model's `toSearchableArray` output.
+
+> [!WARNING]
+> The Turbopuffer engine does not support the minimum similarity threshold accepted by the `semantic` and `hybrid` methods. In addition, semantic and hybrid searches may not be combined with Scout's `orderBy` clauses when using Turbopuffer.
 
 <a name="indexing"></a>
 ## Third-Party Engine Indexing
@@ -962,7 +1029,7 @@ $orders = Order::search('Star Trek')->raw();
 <a name="semantic-search"></a>
 ### Semantic Search
 
-The database, Meilisearch, and Turbopuffer engines support semantic search, which matches records based on the meaning of a query. When Scout generates embeddings, semantic and hybrid searches require the [Laravel AI SDK](/docs/{{version}}/ai-sdk). Turbopuffer's [native embeddings](#turbopuffer-configuration) and precomputed query vectors do not require the Laravel AI SDK.
+The database, Meilisearch, Typesense, and Turbopuffer engines support semantic search, which matches records based on the meaning of a query. When Scout generates embeddings, semantic and hybrid searches require the [Laravel AI SDK](/docs/{{version}}/ai-sdk). [Typesense](#typesense-semantic-and-hybrid-search) and [Turbopuffer](#turbopuffer-configuration) native embeddings and precomputed query vectors do not require the Laravel AI SDK.
 
 After configuring embeddings for the selected engine, invoke the `semantic` method on a search query:
 
@@ -985,6 +1052,29 @@ To combine full-text and semantic search, use the `hybrid` method. Its first two
 ```php
 $articles = Article::search('renewable energy storage')
     ->hybrid(textWeight: 1, semanticWeight: 2)
+    ->get();
+```
+
+When Scout generates embeddings via the AI SDK, your model's `toSearchableEmbedding` method should return the content that should be converted into an embedding when the model is indexed, or a precomputed embedding array:
+
+```php
+/**
+ * Get the content that should be vectorized for the model.
+ */
+public function toSearchableEmbedding(): string
+{
+    return $this->title.' '.$this->summary;
+}
+```
+
+Generated embeddings are cached to avoid repeatedly generating embeddings for unchanged content. The embedding provider and model may be customized via the `provider` and `model` options of your engine's embedding configuration.
+
+When searching, Scout will automatically convert your search query into an embedding using the AI SDK as well. Or, when using the Meilisearch or Typesense engines, you may provide a precomputed query embedding via the `vector` search option:
+
+```php
+$articles = Article::search('renewable energy storage')
+    ->options(['vector' => $vector])
+    ->semantic()
     ->get();
 ```
 
