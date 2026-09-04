@@ -2,7 +2,6 @@
 
 - [Bug Reports](#bug-reports)
 - [Support Questions](#support-questions)
-- [Core Development Discussion](#core-development-discussion)
 - [Which Branch?](#which-branch)
 - [Compiled Assets](#compiled-assets)
 - [AI-Generated Contributions](#ai-generated-contributions)
