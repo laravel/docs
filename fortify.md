@@ -322,7 +322,7 @@ If the request to the two-factor authentication confirmation endpoint was made v
 You should also display the user's two-factor recovery codes. These recovery codes allow the user to authenticate if they lose access to their mobile device. If you are using Blade to render your application's frontend, you may access the recovery codes via the authenticated user instance:
 
 ```php
-(array) $request->user()->recoveryCodes()
+(array) $request->user()->recoveryCodes();
 ```
 
 If you are building a JavaScript powered frontend, you may make an XHR GET request to the `/user/two-factor-recovery-codes` endpoint. This endpoint will return a JSON array containing the user's recovery codes.

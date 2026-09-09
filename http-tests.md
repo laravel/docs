@@ -440,7 +440,7 @@ If you would like to inspect and make assertions against the exception that is t
 ```php
 $this->assertThrows(
     fn () => (new ProcessOrder)->execute(),
-    fn (OrderInvalid $e) => $e->orderId() === 123;
+    fn (OrderInvalid $e) => $e->orderId() === 123
 );
 ```
 

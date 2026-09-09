@@ -1596,7 +1596,7 @@ $user = User::find(1);
 
 $meterUsage = $user->meterEventSummaries($meterId);
 
-$meterUsage->first()->aggregated_value // 10
+$meterUsage->first()->aggregated_value; // 10
 ```
 
 Please refer to Stripe's [Meter Event Summary object documentation](https://docs.stripe.com/api/billing/meter-event_summary/object) for more information on meter event summaries.

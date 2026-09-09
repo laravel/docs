@@ -142,6 +142,7 @@ Occasionally, you may need to share data with all views that are rendered by you
 namespace App\Providers;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

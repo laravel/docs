@@ -475,7 +475,7 @@ Arr::first($array, function ($value) {
 
 The internal pagination view names for Bootstrap 3 defaults are now explicit:
 
-```nothing
+```text
 // Laravel <= 12.x
 pagination::default
 pagination::simple-default

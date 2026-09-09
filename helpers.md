@@ -2674,7 +2674,7 @@ The `fake` function resolves a [Faker](https://github.com/FakerPHP/Faker) single
 By default, the `fake` function will utilize the `app.faker_locale` configuration option in your `config/app.php` configuration. Typically, this configuration option is set via the `APP_FAKER_LOCALE` environment variable. You may also specify the locale by passing it to the `fake` function. Each locale will resolve an individual singleton:
 
 ```php
-fake('nl_NL')->name()
+fake('nl_NL')->name();
 ```
 
 <a name="method-filled"></a>

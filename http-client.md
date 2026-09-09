@@ -640,10 +640,10 @@ The `Illuminate\Http\Client\Batch` instance that is provided to batch completion
 ```php
 // The number of requests assigned to the batch...
 $batch->totalRequests;
- 
+
 // The number of requests that have not been processed yet...
 $batch->pendingRequests;
- 
+
 // The number of requests that have failed...
 $batch->failedRequests;
 
@@ -770,7 +770,7 @@ Http::fake([
 To test your application's behavior if a `Illuminate\Http\Client\RequestException` is thrown, you may use the `failedRequest` method:
 
 ```php
-$this->mock(GithubService::class);
+$this->mock(GithubService::class)
     ->shouldReceive('getUser')
     ->andThrow(
         Http::failedRequest(['code' => 'not_found'], 404)

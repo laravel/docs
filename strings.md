@@ -1446,7 +1446,7 @@ $replaced = Str::replaceMatches(
     pattern: '/[^A-Za-z0-9]++/',
     replace: '',
     subject: '(+1) 501-555-1000'
-)
+);
 
 // '15015551000'
 ```
@@ -1939,7 +1939,7 @@ The `Str::wordWrap` method wraps a string to a given number of characters:
 ```php
 use Illuminate\Support\Str;
 
-$text = "The quick brown fox jumped over the lazy dog."
+$text = "The quick brown fox jumped over the lazy dog.";
 
 Str::wordWrap($text, characters: 20, break: "<br />\n");
 
@@ -3278,7 +3278,7 @@ The `replaceMatches` method replaces all portions of a string matching a pattern
 ```php
 use Illuminate\Support\Str;
 
-$replaced = Str::of('(+1) 501-555-1000')->replaceMatches('/[^A-Za-z0-9]++/', '')
+$replaced = Str::of('(+1) 501-555-1000')->replaceMatches('/[^A-Za-z0-9]++/', '');
 
 // '15015551000'
 ```
@@ -3633,7 +3633,7 @@ The `transliterate` method will attempt to convert a given string into its close
 ```php
 use Illuminate\Support\Str;
 
-$email = Str::of('ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ')->transliterate()
+$email = Str::of('ⓣⓔⓢⓣ@ⓛⓐⓡⓐⓥⓔⓛ.ⓒⓞⓜ')->transliterate();
 
 // 'test@laravel.com'
 ```
