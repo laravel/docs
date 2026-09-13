@@ -33,6 +33,12 @@ To connect to a MongoDB database, the `mongodb` PHP extension is required. If yo
 pecl install mongodb
 ```
 
+Alternatively, you may install the extension using [PIE](https://github.com/php/pie), the official PHP extension installer:
+
+```shell
+pie install mongodb/mongodb-extension
+```
+
 For more information on installing the MongoDB PHP extension, check out the [MongoDB PHP extension installation instructions](https://www.php.net/manual/en/mongodb.installation.php).
 
 <a name="starting-a-mongodb-server"></a>
