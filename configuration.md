@@ -187,19 +187,19 @@ When decrypting environment files, Laravel automatically detects which format wa
 <a name="updating-readable-environment-files"></a>
 #### Updating Readable Environment Files
 
-When updating a readable encrypted environment file, Laravel automatically preserves the ciphertext of unchanged values:
+When using the `--readable` option, Laravel only encrypts values that are new or have changed:
 
 ```shell
 php artisan env:encrypt --readable --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-Laravel compares the values in your `.env` file with the decrypted values from the existing `.env.encrypted` file. New or changed values are encrypted, and variables removed from `.env` are also removed from the encrypted file. For example, changing only `DB_PASSWORD` changes only that variable's encrypted entry, making pull request diffs easier to review.
+Values that have not changed are left untouched in the encrypted file. Variables removed from your `.env` file are also removed from the encrypted file. This makes reviewing pull requests easier since only the values you have changed are updated.
 
-Readable files are updated without requiring `--force`. If the encrypted file does not exist, Laravel creates it. If the entries and their order have not changed, the existing file is left untouched.
+The `--force` option is not required to update a readable encrypted file. If the encrypted file does not exist, Laravel will create it. If the variables, their values, and their order have not changed, the existing file is left untouched.
 
-When updating an existing file, provide the same encryption key and cipher that were used to create it. The existing encrypted file must be in readable format, and Laravel will abort without overwriting it if an entry is invalid or cannot be decrypted.
+When updating an existing file, you should provide the same encryption key and cipher that were used to create it. The existing file must use the readable format. If the file contains an invalid value or a value that cannot be decrypted, the command will fail without overwriting the file.
 
-To re-encrypt all values, such as when changing the encryption key or replacing an invalid encrypted file, use `--force`. This rebuilds the file from `.env` without reading the existing encrypted file:
+To encrypt all values again, you may provide the `--force` option. Laravel will overwrite the encrypted file using the contents of your `.env` file. This allows you to change the encryption key or replace an invalid encrypted file:
 
 ```shell
 php artisan env:encrypt --readable --force --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
