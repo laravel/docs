@@ -62,9 +62,6 @@
 
 [Laravel MCP](https://github.com/laravel/mcp) provides a simple and elegant way for AI clients to interact with your Laravel application through the [Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro). It offers an expressive, fluent interface for defining servers, tools, resources, and prompts that enable AI-powered interactions with your application.
 
-> [!WARNING]
-> Laravel MCP servers only support clients that implement MCP protocol revision `2026-07-28`.
-
 <a name="installation"></a>
 ## Installation
 
