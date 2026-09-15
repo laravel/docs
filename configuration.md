@@ -182,7 +182,24 @@ Using the readable format allows you to see which environment variables exist wi
 When decrypting environment files, Laravel automatically detects which format was used, so no additional options are needed for the `env:decrypt` command.
 
 > [!NOTE]
-> When using the `--readable` option, comments, and blank lines from the original environment file are not included in the encrypted output.
+> When using the `--readable` option, comments and blank lines from the original environment file are not included in the encrypted output.
+
+<a name="updating-readable-environment-files"></a>
+#### Updating Readable Environment Files
+
+When updating a readable encrypted environment file, Laravel preserves unchanged values and removes variables that no longer exist in the source environment file:
+
+```shell
+php artisan env:encrypt --readable --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
+```
+
+The encrypted file will be created if it does not exist. When updating an existing file, provide the same encryption key and cipher used to create it. If the file cannot be decrypted, the command will fail without overwriting it.
+
+To encrypt all values again, use the `--force` option. This allows you to change the encryption key or replace an invalid encrypted file:
+
+```shell
+php artisan env:encrypt --readable --force --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
+```
 
 <a name="decryption"></a>
 #### Decryption
