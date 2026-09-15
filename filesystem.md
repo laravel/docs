@@ -526,6 +526,16 @@ Storage::copy('old/file.jpg', 'new/file.jpg');
 Storage::move('old/file.jpg', 'new/file.jpg');
 ```
 
+You may use the `copyToDisk` and `moveToDisk` methods to copy or move a file to another disk. The source file's path will be used on the destination disk unless you provide a third argument:
+
+```php
+Storage::disk('local')->copyToDisk('s3', 'reports/report.csv');
+
+Storage::disk('local')->moveToDisk(
+    's3', 'reports/report.csv', 'archive/report.csv'
+);
+```
+
 <a name="automatic-streaming"></a>
 ### Automatic Streaming
 

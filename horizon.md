@@ -362,12 +362,13 @@ For example, you may configure Horizon to maintain at least one process per queu
 ],
 ```
 
-The `autoScalingStrategy` configuration option determines how Horizon will assign more worker processes to queues. You can choose between two strategies:
+The `autoScalingStrategy` configuration option determines how Horizon will assign more worker processes to queues. You can choose between three strategies:
 
 <div class="content-list" markdown="1">
 
 - The `time` strategy will assign workers based on the total estimated amount of time it will take to clear the queue.
 - The `size` strategy will assign workers based on the total number of jobs on the queue.
+- The `log` strategy will assign workers based on the logarithm of the number of jobs on the queue. This prevents a significantly larger queue from receiving a disproportionately large share of workers.
 
 </div>
 
