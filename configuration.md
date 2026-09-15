@@ -187,19 +187,15 @@ When decrypting environment files, Laravel automatically detects which format wa
 <a name="updating-readable-environment-files"></a>
 #### Updating Readable Environment Files
 
-When using the `--readable` option, Laravel only encrypts values that are new or have changed:
+When updating a readable encrypted environment file, Laravel preserves unchanged values and removes variables that no longer exist in the source environment file:
 
 ```shell
 php artisan env:encrypt --readable --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-Values that have not changed are left untouched in the encrypted file. Variables removed from your `.env` file are also removed from the encrypted file. This makes reviewing pull requests easier since only the values you have changed are updated.
+The `--force` option is not required, and the encrypted file will be created if it does not exist. When updating an existing file, provide the same encryption key and cipher used to create it. If the file cannot be decrypted, the command will fail without overwriting it.
 
-The `--force` option is not required to update a readable encrypted file. If the encrypted file does not exist, Laravel will create it. If the variables, their values, and their order have not changed, the existing file is left untouched.
-
-When updating an existing file, you should provide the same encryption key and cipher that were used to create it. The existing file must use the readable format. If the file contains an invalid value or a value that cannot be decrypted, the command will fail without overwriting the file.
-
-To encrypt all values again, you may provide the `--force` option. Laravel will overwrite the encrypted file using the contents of your `.env` file. This allows you to change the encryption key or replace an invalid encrypted file:
+To encrypt all values again, use the `--force` option. This allows you to change the encryption key or replace an invalid encrypted file:
 
 ```shell
 php artisan env:encrypt --readable --force --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
