@@ -224,7 +224,7 @@ return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
 <a name="automatically-hydrating-parent-models-on-children"></a>
 #### Automatically Hydrating Parent Models on Children
 
-Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+Even when utilizing [Eloquent eager loading](#eager-loading), "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
 
 ```php
 $posts = Post::with('comments')->get();
