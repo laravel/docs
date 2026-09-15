@@ -1774,6 +1774,8 @@ ProcessOrder::dispatch($order)
     ->onGroup("customer-{$order->customer_id}");
 ```
 
+If you dispatch a job to an SQS FIFO queue without specifying a message group, Laravel will use the queue name as the message group ID.
+
 SQS FIFO queues support message deduplication to ensure exactly-once processing. Implement a `deduplicationId` method in your job class to provide a custom deduplication ID:
 
 ```php
