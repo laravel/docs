@@ -193,7 +193,7 @@ When updating a readable encrypted environment file, Laravel preserves unchanged
 php artisan env:encrypt --readable --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-The `--force` option is not required, and the encrypted file will be created if it does not exist. When updating an existing file, provide the same encryption key and cipher used to create it. If the file cannot be decrypted, the command will fail without overwriting it.
+The encrypted file will be created if it does not exist. When updating an existing file, provide the same encryption key and cipher used to create it. If the file cannot be decrypted, the command will fail without overwriting it.
 
 To encrypt all values again, use the `--force` option. This allows you to change the encryption key or replace an invalid encrypted file:
 
