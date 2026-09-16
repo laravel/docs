@@ -1886,7 +1886,7 @@ If you need to set additional query constraints on the count query, you may pass
 ```php
 $book->loadCount(['reviews' => function (Builder $query) {
     $query->where('rating', 5);
-}])
+}]);
 ```
 
 <a name="relationship-counting-and-custom-select-statements"></a>

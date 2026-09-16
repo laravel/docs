@@ -229,7 +229,7 @@ If you maintain a third-party package and would like Boost to include AI guideli
 
 AI guidelines should provide a short overview of what your package does, outline any required file structure or conventions, and explain how to create or use its main features (with example commands or code snippets). Keep them concise, actionable, and focused on best practices so AI can generate correct code for your users. Here is an example:
 
-```php
+```markdown
 ## Package Name
 
 This package provides [brief description of functionality].

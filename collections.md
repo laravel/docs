@@ -1459,7 +1459,7 @@ collect([1, 2, 3])->hasMany();
 collect([
     ['age' => 2],
     ['age' => 3],
-])->hasMany(fn ($item) => $item['age'] === 2)
+])->hasMany(fn ($item) => $item['age'] === 2);
 
 // false
 ```
@@ -2405,9 +2405,9 @@ You may also provide multiple items to append to the end of the collection:
 $collection = collect([1, 2, 3, 4]);
 
 $collection->push(5, 6, 7);
- 
+
 $collection->all();
- 
+
 // [1, 2, 3, 4, 5, 6, 7]
 ```
 

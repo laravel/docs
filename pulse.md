@@ -247,7 +247,7 @@ By default, entries will be grouped by key. However, you may wish to normalize o
 
 Most Pulse recorders will automatically capture entries based on framework events dispatched by Laravel. However, the [servers recorder](#servers-recorder) and some third-party cards must poll for information regularly. To use these cards, you must run the `pulse:check` daemon on all of your individual application servers:
 
-```php
+```shell
 php artisan pulse:check
 ```
 
@@ -491,7 +491,7 @@ PULSE_REDIS_CONNECTION=pulse
 
 When using the Redis ingest, you will need to run the `pulse:work` command to monitor the stream and move entries from Redis into Pulse's database tables.
 
-```php
+```shell
 php artisan pulse:work
 ```
 

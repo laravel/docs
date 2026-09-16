@@ -2003,7 +2003,7 @@ $browser->assertAriaAttribute($selector, $attribute, $value);
 For example, given the markup `<button aria-label="Add"></button>`, you may assert against the `aria-label` attribute like so:
 
 ```php
-$browser->assertAriaAttribute('button', 'label', 'Add')
+$browser->assertAriaAttribute('button', 'label', 'Add');
 ```
 
 <a name="assert-data-attribute"></a>
@@ -2018,7 +2018,7 @@ $browser->assertDataAttribute($selector, $attribute, $value);
 For example, given the markup `<tr id="row-1" data-content="attendees"></tr>`, you may assert against the `data-content` attribute like so:
 
 ```php
-$browser->assertDataAttribute('#row-1', 'content', 'attendees')
+$browser->assertDataAttribute('#row-1', 'content', 'attendees');
 ```
 
 <a name="assert-visible"></a>

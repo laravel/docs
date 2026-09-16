@@ -148,7 +148,8 @@ class NewApi
 If you would like to manually resolve an instance of a class-based feature, you may invoke the `instance` method on the `Feature` facade:
 
 ```php
-use Illuminate\Support\Facades\Feature;
+use App\Features\NewApi;
+use Laravel\Pennant\Feature;
 
 $instance = Feature::instance(NewApi::class);
 ```

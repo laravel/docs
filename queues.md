@@ -1918,7 +1918,7 @@ QUEUE_CONNECTION=failover
 
 Next, start at least one worker for each connection in your failover connection list:
 
-```bash
+```shell
 php artisan queue:work redis
 php artisan queue:work database
 ```

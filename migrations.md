@@ -1487,7 +1487,7 @@ When using PostgreSQL, this adds the `CONCURRENTLY` option to the index creation
 To rename an index, you may use the `renameIndex` method provided by the schema builder blueprint. This method accepts the current index name as its first argument and the desired name as its second argument:
 
 ```php
-$table->renameIndex('from', 'to')
+$table->renameIndex('from', 'to');
 ```
 
 <a name="dropping-indexes"></a>

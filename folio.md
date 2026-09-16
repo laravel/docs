@@ -22,7 +22,7 @@
 
 For example, to create a page that is accessible at the `/greeting` URL, just create a `greeting.blade.php` file in your application's `resources/views/pages` directory:
 
-```php
+```blade
 <div>
     Hello World
 </div>
@@ -266,7 +266,7 @@ name('users.index');
 
 Just like Laravel's named routes, you may use the `route` function to generate URLs to Folio pages that have been assigned a name:
 
-```php
+```blade
 <a href="{{ route('users.index') }}">
     All Users
 </a>

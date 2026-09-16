@@ -111,7 +111,7 @@ By default, tasks will be executed on each server serially. In other words, a ta
 
 Sometimes, you may need to execute arbitrary PHP code before running your Envoy tasks. You may use the `@setup` directive to define a block of PHP code that should execute before your tasks:
 
-```php
+```blade
 @setup
     $now = new DateTime;
 @endsetup
