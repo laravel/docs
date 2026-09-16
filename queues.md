@@ -1529,6 +1529,14 @@ Queue::route([
 ]);
 ```
 
+Since the `route` method also accepts an interface, trait, or parent class, you may route an entire category of queueable work to the same queue by targeting a framework contract instead of a concrete class. For example, routing the `ShouldBroadcast` contract sends every broadcast event to a dedicated queue:
+
+```php
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+Queue::route(ShouldBroadcast::class, queue: 'events');
+```
+
 > [!NOTE]
 > Queue routing can still be overridden by the job on a per-job basis.
 

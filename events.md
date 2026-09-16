@@ -389,6 +389,8 @@ public function withDelay(OrderShipped $event): int
 }
 ```
 
+If you would like all of your queued listeners to use the same queue without customizing each listener class, you may [route the `ShouldQueue` contract to a queue](/docs/{{version}}/queues#queue-routing) instead.
+
 <a name="conditionally-queueing-listeners"></a>
 #### Conditionally Queueing Listeners
 

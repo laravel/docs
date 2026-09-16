@@ -842,6 +842,8 @@ public function broadcastQueue(): string
 }
 ```
 
+If you would like all of your broadcast events to use the same queue without customizing each event class, you may [route the `ShouldBroadcast` contract to a queue](/docs/{{version}}/queues#queue-routing) instead.
+
 If you would like to broadcast your event using the `sync` queue instead of the default queue driver, you can implement the `ShouldBroadcastNow` interface instead of `ShouldBroadcast`:
 
 ```php
