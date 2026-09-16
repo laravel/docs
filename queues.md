@@ -1502,6 +1502,7 @@ Typically, you should call the `route` method from the `boot` method of a servic
 use App\Concerns\RequiresVideo;
 use App\Jobs\ProcessPodcast;
 use App\Jobs\ProcessVideo;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Support\Facades\Queue;
 
 /**
@@ -1511,6 +1512,7 @@ public function boot(): void
 {
     Queue::route(ProcessPodcast::class, connection: 'redis', queue: 'podcasts');
     Queue::route(RequiresVideo::class, queue: 'video');
+    Queue::route(ShouldBroadcast::class, queue: 'events');
 }
 ```
 
@@ -1527,14 +1529,6 @@ Queue::route([
     ProcessPodcast::class => ['redis', 'podcasts'], // Connection and queue
     ProcessVideo::class => 'videos', // Queue only (uses default connection)
 ]);
-```
-
-Since the `route` method also accepts an interface, trait, or parent class, you may route an entire category of queueable work to the same queue by targeting a framework contract instead of a concrete class. For example, routing the `ShouldBroadcast` contract sends every broadcast event to a dedicated queue:
-
-```php
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-
-Queue::route(ShouldBroadcast::class, queue: 'events');
 ```
 
 > [!NOTE]
