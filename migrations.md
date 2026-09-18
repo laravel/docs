@@ -1186,19 +1186,25 @@ The `uuid` method creates a `UUID` equivalent column:
 $table->uuid('id');
 ```
 
-<a name="column-method-vector"></a>
-#### `vector()` {.collection-method}
+<a name="column-method-"></a>
+#### `()` {.collection-method}
 
 The `vector` method creates a `vector` equivalent column:
 
 ```php
-$table->vector('embedding', dimensions: 100);
+$table->vector('embedding', dimensions: 1536);
 ```
 
-When utilizing PostgreSQL, the `pgvector` extension must be loaded before `vector` columns can be created:
+Vector columns are supported on PostgreSQL connections using the `pgvector` extension and MariaDB 11.7 or later. When utilizing PostgreSQL, `pgvector` must be loaded before `vector` columns can be created:
 
 ```php
 Schema::ensureVectorExtensionExists();
+```
+
+To speed up [vector similarity queries](/docs/{{version}}/queries#vector-similarity-clauses), you may add a vector index to the column. Calling the `index` method on a `vector` column creates a vector index using cosine distance:
+
+```php
+$table->vector('embedding', dimensions: 1536)->index();
 ```
 
 <a name="column-method-year"></a>
@@ -1467,6 +1473,7 @@ Laravel's schema builder blueprint class provides methods for creating each type
 | `$table->fullText('body');`                      | Adds a full text index (MariaDB / MySQL / PostgreSQL).         |
 | `$table->fullText('body')->language('english');` | Adds a full text index of the specified language (PostgreSQL). |
 | `$table->spatialIndex('location');`              | Adds a spatial index (except SQLite).                          |
+| `$table->vectorIndex('embedding');`              | Adds a vector index (MariaDB / PostgreSQL).                    |
 
 </div>
 
@@ -1497,13 +1504,14 @@ To drop an index, you must specify the index's name. By default, Laravel automat
 
 <div class="overflow-auto">
 
-| Command                                                  | Description                                                 |
-| -------------------------------------------------------- | ----------------------------------------------------------- |
-| `$table->dropPrimary('users_id_primary');`               | Drop a primary key from the "users" table.                  |
-| `$table->dropUnique('users_email_unique');`              | Drop a unique index from the "users" table.                 |
-| `$table->dropIndex('geo_state_index');`                  | Drop a basic index from the "geo" table.                    |
-| `$table->dropFullText('posts_body_fulltext');`           | Drop a full text index from the "posts" table.              |
-| `$table->dropSpatialIndex('geo_location_spatialindex');` | Drop a spatial index from the "geo" table  (except SQLite). |
+| Command                                                       | Description                                                 |
+| ------------------------------------------------------------- | ----------------------------------------------------------- |
+| `$table->dropPrimary('users_id_primary');`                    | Drop a primary key from the "users" table.                  |
+| `$table->dropUnique('users_email_unique');`                   | Drop a unique index from the "users" table.                 |
+| `$table->dropIndex('geo_state_index');`                       | Drop a basic index from the "geo" table.                    |
+| `$table->dropFullText('posts_body_fulltext');`                | Drop a full text index from the "posts" table.              |
+| `$table->dropSpatialIndex('geo_location_spatialindex');`      | Drop a spatial index from the "geo" table  (except SQLite). |
+| `$table->dropVectorIndex('documents_embedding_vectorindex');` | Drop a vector index from the "documents" table.             |
 
 </div>
 
