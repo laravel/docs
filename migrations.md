@@ -1186,13 +1186,13 @@ The `uuid` method creates a `UUID` equivalent column:
 $table->uuid('id');
 ```
 
-<a name="column-method-vector"></a>
-#### `vector()` {.collection-method}
+<a name="column-method-"></a>
+#### `()` {.collection-method}
 
 The `vector` method creates a `vector` equivalent column:
 
 ```php
-$table->vector('embedding', dimensions: 100);
+$table->vector('embedding', dimensions: 1536);
 ```
 
 Vector columns are supported on PostgreSQL connections using the `pgvector` extension and MariaDB 11.7 or later. When utilizing PostgreSQL, `pgvector` must be loaded before `vector` columns can be created:
@@ -1204,7 +1204,7 @@ Schema::ensureVectorExtensionExists();
 To speed up [vector similarity queries](/docs/{{version}}/queries#vector-similarity-clauses), you may add a vector index to the column. Calling the `index` method on a `vector` column creates a vector index using cosine distance:
 
 ```php
-$table->vector('embedding', dimensions: 100)->index();
+$table->vector('embedding', dimensions: 1536)->index();
 ```
 
 <a name="column-method-year"></a>
