@@ -1195,7 +1195,7 @@ The `vector` method creates a `vector` equivalent column:
 $table->vector('embedding', dimensions: 100);
 ```
 
-Vector columns are supported on PostgreSQL connections using the `pgvector` extension and MariaDB 11.7 or later. When utilizing PostgreSQL, the `pgvector` extension must be loaded before `vector` columns can be created:
+Vector columns are supported on PostgreSQL connections using the `pgvector` extension and MariaDB 11.7 or later. When utilizing PostgreSQL, `pgvector` must be loaded before `vector` columns can be created:
 
 ```php
 Schema::ensureVectorExtensionExists();
