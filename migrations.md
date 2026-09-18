@@ -1451,6 +1451,9 @@ When creating an index, Laravel will automatically generate an index name based 
 $table->unique('email', 'unique_email');
 ```
 
+> [!WARNING]
+> MySQL and MariaDB limit identifier names to 64 characters. Automatically generated names for composite indexes on tables or columns with long names may exceed this limit and cause the migration to fail. In that case, specify a shorter index name explicitly.
+
 <a name="available-index-types"></a>
 #### Available Index Types
 
