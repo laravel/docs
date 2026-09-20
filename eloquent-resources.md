@@ -534,6 +534,26 @@ When returning paginated collections via a resource response, Laravel will wrap 
         "current_page": 1,
         "from": 1,
         "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "page": null,
+                "active": false
+            },
+            {
+                "url": "http://example.com/users?page=1",
+                "label": "1",
+                "page": 1,
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "page": null,
+                "active": false
+            }
+        ],
         "path": "http://example.com/users",
         "per_page": 15,
         "to": 10,
@@ -588,6 +608,26 @@ Paginated responses always contain `meta` and `links` keys with information abou
         "current_page": 1,
         "from": 1,
         "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "page": null,
+                "active": false
+            },
+            {
+                "url": "http://example.com/users?page=1",
+                "label": "1",
+                "page": 1,
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "page": null,
+                "active": false
+            }
+        ],
         "path": "http://example.com/users",
         "per_page": 15,
         "to": 10,
