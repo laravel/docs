@@ -1186,8 +1186,8 @@ The `uuid` method creates a `UUID` equivalent column:
 $table->uuid('id');
 ```
 
-<a name="column-method-"></a>
-#### `()` {.collection-method}
+<a name="column-method-vector"></a>
+#### `vector()` {.collection-method}
 
 The `vector` method creates a `vector` equivalent column:
 
