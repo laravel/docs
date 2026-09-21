@@ -413,7 +413,7 @@ public function messages(): iterable
 }
 ```
 
-If your agent is not `Conversational`, the `withMessages` method hands it a history for a single run, such as one posted by the client:
+If your agent does not implement the `Conversational` interface, you may use the `withMessages` method to provide the conversation history for a single run, such as a history posted by your application's frontend:
 
 ```php
 use Laravel\Ai\Messages\Message;
@@ -426,7 +426,7 @@ $response = (new SalesCoach)
     ->prompt('What should they say next time?');
 ```
 
-A `Conversational` agent loads its own history, and combining the two throws a `LogicException`.
+Agents that implement the `Conversational` interface load their own history, so combining the two approaches will throw a `LogicException`.
 
 <a name="remembering-conversations"></a>
 #### Remembering Conversations
@@ -501,7 +501,7 @@ $response = (new SalesCoach)
     ->prompt('Tell me more about that.');
 ```
 
-The `continueOrStart` method continues the given conversation, or starts a new one when the ID is `null`:
+The `continueOrStart` method may be used to continue the given conversation, or start a new conversation if the given ID is `null`:
 
 ```php
 $response = (new SalesCoach)
@@ -509,7 +509,7 @@ $response = (new SalesCoach)
     ->prompt('Hello!');
 ```
 
-When using the `RemembersConversations` trait, previous messages are automatically loaded and included in the conversation context when prompting. New messages (both user and assistant) are automatically stored after each interaction. Each response reports the rows the turn wrote:
+When using the `RemembersConversations` trait, previous messages are automatically loaded and included in the conversation context when prompting. New messages (both user and assistant) are automatically stored after each interaction. Each response also contains the IDs of the conversation and messages that were stored:
 
 ```php
 $response->conversationId;
@@ -530,7 +530,7 @@ $response = (new SalesCoach)
 
 The participant's morph class and primary key are stored with the conversation. Therefore, models of different types that have the same primary key, such as `User` ID `1` and `Team` ID `1`, have separate conversation histories. The `forUser` method is an alias for `forParticipant`.
 
-You may continue the participant's most recent conversation with the agent using the `continueLastConversation` method. Conversations are scoped to the agent, so it only continues one it took part in:
+You may continue the participant's most recent conversation with the agent using the `continueLastConversation` method. Conversations are scoped to the agent, so only conversations that the agent participated in will be continued:
 
 ```php
 $response = (new SalesCoach)
@@ -562,7 +562,7 @@ If your application uses multiple participant model types, you should consider d
 <a name="inspecting-stored-conversations"></a>
 #### Inspecting Stored Conversations
 
-Rendering a conversation needs more than the messages the model sees. Resolve the store from the container to read the stored rows without querying the AI SDK's tables:
+When rendering a conversation, you typically need more information than the messages that are sent to the model. You may resolve the conversation store from the service container to read the stored messages without querying the AI SDK's tables directly:
 
 ```php
 use Laravel\Ai\Contracts\ConversationStore;
@@ -570,7 +570,7 @@ use Laravel\Ai\Contracts\ConversationStore;
 $store = app(ConversationStore::class);
 ```
 
-Messages paginate newest first using a cursor, as `StoredMessage` instances carrying each row's identity, timestamps, usage, metadata, and attachments:
+Messages are paginated newest first using a cursor and are returned as `StoredMessage` instances, which contain each message's ID, timestamps, usage, metadata, and attachments:
 
 ```php
 $messages = $store->paginateConversationMessages($conversationId, perPage: 25);
@@ -584,7 +584,7 @@ foreach ($messages as $message) {
 }
 ```
 
-A turn is stored as a list of steps, one per round-trip with the provider, and each tool result is recorded on the call that made it. The `toolCalls`, `providerToolCalls`, and `toolResults` methods flatten those steps in order, so a transcript may be rendered without walking the steps itself:
+Each turn is stored as a list of steps, with one step per round-trip to the provider, and each tool result is recorded on the tool call that produced it. The `toolCalls`, `providerToolCalls`, and `toolResults` methods flatten these steps in order, so you do not need to traverse them yourself:
 
 ```php
 $message->steps;
@@ -594,9 +594,9 @@ $message->providerToolCalls();
 $message->toolResults();
 ```
 
-A tool call carries a `result` once it has run. A call that has an `approval_reason` and no `result` is still waiting on a [tool approval](#human-tool-approval), and `$message->approvalRequestedAt` gives the time the turn paused.
+A tool call contains a `result` once it has been executed. Tool calls that contain an `approval_reason` but no `result` are still awaiting a [tool approval](#human-tool-approval), while the `approvalRequestedAt` property contains the time the turn was paused.
 
-Before continuing a conversation ID given by the client, verify it was stored for the participant:
+Before continuing a conversation ID provided by your application's frontend, you should verify that the conversation was stored for the given participant:
 
 ```php
 abort_unless($store->conversationBelongsTo(
@@ -604,7 +604,7 @@ abort_unless($store->conversationBelongsTo(
 ), 403);
 ```
 
-If the newest turn is paused waiting on [tool approval](#human-tool-approval), its outstanding calls may be rendered after a page reload without resuming the run:
+If the most recent turn is paused awaiting [tool approval](#human-tool-approval), you may render its pending tool calls after a page reload without resuming the run:
 
 ```php
 foreach ($store->pendingApprovalsFor($conversationId) as $approval) {
@@ -612,7 +612,7 @@ foreach ($store->pendingApprovalsFor($conversationId) as $approval) {
 }
 ```
 
-These come from the `PaginatesConversations`, `VerifiesConversationOwnership`, and `ResolvesPendingApprovals` contracts. The included database store implements all three; a custom store may implement only those you need.
+These methods are defined by the `PaginatesConversations`, `VerifiesConversationOwnership`, and `ResolvesPendingApprovals` contracts. The included database store implements all three, while a custom store may implement only the contracts it needs.
 
 <a name="structured-output"></a>
 ### Structured Output
@@ -806,7 +806,7 @@ foreach ($stream as $event) {
 }
 ```
 
-The response reports the model's reasoning and the sources it cited. Both are stored with the assistant message when using the `RemembersConversations` trait:
+The response also contains the model's reasoning and any sources it cited. Both are stored with the assistant message when using the `RemembersConversations` trait:
 
 ```php
 use Laravel\Ai\Responses\StreamedAgentResponse;
@@ -819,15 +819,15 @@ use Laravel\Ai\Responses\StreamedAgentResponse;
     });
 ```
 
-Reasoning is reported the same way on a response from the `prompt` method, so a run does not have to be streamed to read it.
+Reasoning is available on responses returned by the `prompt` method as well, so a response does not need to be streamed in order to inspect it.
 
 <a name="streaming-using-the-vercel-ai-sdk-protocol"></a>
 <a name="stream-protocols"></a>
 #### Stream Protocols
 
-A streamed response sends the AI SDK's own event shapes unless you ask it to speak a frontend protocol instead.
+By default, a streamed response emits the AI SDK's own events. However, you may instruct the response to use a frontend streaming protocol instead.
 
-The `usingVercelDataProtocol` method streams the events using the [Vercel AI SDK stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol):
+You may stream the events using the [Vercel AI SDK stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol) by invoking the `usingVercelDataProtocol` method on the streamable response:
 
 ```php
 use App\Ai\Agents\SalesCoach;
@@ -839,13 +839,13 @@ Route::get('/coach', function () {
 });
 ```
 
-Pass a message ID when your frontend assigns its own:
+You may pass a message ID if your application's frontend assigns its own:
 
 ```php
 ->usingVercelDataProtocol($request->string('messageId'));
 ```
 
-The `usingAgentUserInteractionProtocol` method streams the [Agent User Interaction (AG-UI) protocol](https://docs.ag-ui.com), spoken by clients such as CopilotKit:
+Likewise, the `usingAgentUserInteractionProtocol` method may be used to stream the [Agent User Interaction (AG-UI) protocol](https://docs.ag-ui.com), which is supported by clients such as CopilotKit:
 
 ```php
 Route::post('/coach', function (Request $request) {
@@ -856,7 +856,7 @@ Route::post('/coach', function (Request $request) {
 });
 ```
 
-Both arguments are optional, defaulting to the conversation ID and the invocation ID:
+Both of the method's arguments are optional and default to the conversation ID and the invocation ID:
 
 ```php
 ->usingAgentUserInteractionProtocol(
@@ -865,7 +865,7 @@ Both arguments are optional, defaulting to the conversation ID and the invocatio
 );
 ```
 
-To speak a protocol the AI SDK does not implement, pass your own `Laravel\Ai\Streaming\Protocols\StreamProtocol` implementation to `usingProtocol`:
+To use a protocol that the AI SDK does not implement, you may pass your own `Laravel\Ai\Streaming\Protocols\StreamProtocol` implementation to the `usingProtocol` method:
 
 ```php
 use App\Ai\Protocols\CustomProtocol;
@@ -878,7 +878,7 @@ return (new SalesCoach)
 <a name="chat-requests"></a>
 #### Chat Requests
 
-These frontends post their entire history, the newest user message, and any tool approval responses. The `Vercel` and `AgentUserInteraction` classes turn such a request into a chat the agent accepts directly:
+Frontends that use these protocols post their entire conversation history, the newest user message, and any tool approval responses. The `Vercel` and `AgentUserInteraction` classes may be used to convert such a request into a chat that agents accept directly:
 
 ```php
 use Laravel\Ai\Vercel\Vercel;
@@ -893,9 +893,9 @@ Route::post('/chat', function (Request $request) {
 });
 ```
 
-The agent resumes using the chat's [approval decisions](#human-tool-approval) when the request carries them, and otherwise prompts with its newest user message and attachments. The `protocol` method returns the protocol the client speaks. A [conversational agent](#remembering-conversations) loads its own history, so `withMessages` may be omitted.
+If the request contains [approval decisions](#human-tool-approval), the agent will resume using them. Otherwise, the agent is prompted with the request's newest user message and attachments. The `protocol` method returns the protocol used by the client. Agents that implement the `Conversational` interface load their own history, so the `withMessages` method may be omitted.
 
-`AgentUserInteraction::chat()` provides the same API for AG-UI clients, plus the request's thread and run:
+The `AgentUserInteraction::chat` method provides the same API for AG-UI clients, in addition to the request's thread and run IDs:
 
 ```php
 use Laravel\Ai\AgentUserInteraction\AgentUserInteraction;
@@ -906,7 +906,7 @@ $chat->threadId();
 $chat->runId();
 ```
 
-Stored messages may be converted back into the shape a client expects, hydrating a conversation it did not stream. `AgentUserInteraction::toClientState` also returns any open approval interrupts:
+Stored messages may also be converted back into the format a client expects, allowing you to hydrate a conversation the client did not stream. The `AgentUserInteraction::toClientState` method additionally returns any pending approval interrupts:
 
 ```php
 $messages = $conversation->messages()->oldest()->get();
@@ -1066,7 +1066,7 @@ public function tools(): iterable
 <a name="runtime-tool-overrides"></a>
 #### Runtime Tool Overrides
 
-The `withTools` method replaces an agent instance's declared tools, such as for a per-tenant or feature-flagged toolset:
+The `withTools` method may be used to replace the tools declared by an agent instance. This is useful for per-tenant or feature flagged tool sets:
 
 ```php
 $response = (new SupportAgent)
@@ -1074,7 +1074,7 @@ $response = (new SupportAgent)
     ->prompt('Where is order 12345?');
 ```
 
-A closure receives the declared tools, so they may be appended to or filtered instead:
+You may also pass a closure, which receives the agent's declared tools, allowing you to append to or filter them:
 
 ```php
 $response = (new SupportAgent)
@@ -1425,7 +1425,7 @@ new FileSearch(stores: ['store_id'], where: fn (FileSearchQuery $query) =>
 <a name="code-execution"></a>
 #### Code Execution
 
-The `CodeExecution` tool lets agents run code in a provider sandbox for calculations and data analysis.
+The `CodeExecution` provider tool allows agents to run code in a sandbox hosted by the AI provider. This is useful for performing calculations and analyzing data.
 
 **Supported providers:** Anthropic, OpenAI, Azure, Gemini, xAI
 
@@ -1438,7 +1438,7 @@ public function tools(): iterable
 }
 ```
 
-OpenAI and Azure support adding [stored files](#files) through provider options:
+When using OpenAI or Azure, you may make [stored files](#files) available to the sandbox via provider options:
 
 ```php
 (new CodeExecution)->withProviderOptions([
@@ -1520,7 +1520,7 @@ class RefundsAgent implements Agent, CanActAsTool, HasTools
 
 If a sub-agent does not implement `CanActAsTool`, Laravel will use the agent's class basename as the tool name and a generic description that asks the parent agent to pass a clear, self-contained task description. Each sub-agent invocation runs in isolation and does not receive the parent agent's conversation history.
 
-When the parent agent is [streaming](#streaming), its sub-agents stream too. The parent emits `ToolResult` events carrying the text the sub-agent has produced so far, each marked preliminary and followed by the call's final result. Skip them when iterating events yourself:
+When the parent agent is [streaming](#streaming), its sub-agents stream as well. The parent agent emits `ToolResult` events containing the text the sub-agent has produced so far. These events are marked as preliminary and are followed by the tool call's final result, so you may skip them when iterating events manually:
 
 ```php
 use Laravel\Ai\Streaming\Events\ToolResult;
@@ -1534,12 +1534,12 @@ foreach ($stream as $event) {
 }
 ```
 
-Response aggregates such as `text`, `usage`, and `toolResults` ignore preliminary events. The [Vercel protocol](#stream-protocols) renders them as native streaming tool output, so `useChat` shows the progress with no custom code, and AG-UI reports them as activity snapshots. The completed response's text, reasoning, citations, and usage include the sub-agent's own.
+Response values such as `text`, `usage`, and `toolResults` ignore preliminary events. The [Vercel protocol](#stream-protocols) renders them as native streaming tool output, so `useChat` displays the progress without any custom code, while the AG-UI protocol reports them as activity snapshots. The completed response's text, reasoning, citations, and usage include those of the sub-agent.
 
 <a name="middleware"></a>
 ### Middleware
 
-Agents support middleware that wraps each generation step before it is sent to the provider, so a run taking three steps invokes it three times. Middleware can be created using the `make:agent-middleware` Artisan command:
+Agents support middleware, allowing you to intercept and modify each generation step before it is sent to the provider. Middleware is invoked once per step, so a run that takes three steps will invoke it three times. Middleware can be created using the `make:agent-middleware` Artisan command:
 
 ```shell
 php artisan make:agent-middleware LogPrompts
@@ -1600,7 +1600,7 @@ class LogPrompts
 }
 ```
 
-Alongside the `provider`, `model`, `instructions`, `messages`, and `tools` about to be sent, the step exposes the `steps` completed so far, their `usage`, and where the run stands:
+In addition to the `provider`, `model`, `instructions`, `messages`, and `tools` that are about to be sent, the step exposes the steps that have already completed, their usage, and the progress of the run:
 
 ```php
 $step->number;
@@ -1608,7 +1608,7 @@ $step->isFirstStep();
 $step->isFinalStep;
 ```
 
-The `withModel`, `withInstructions`, `withMessages`, `withTools`, `onlyTools`, `withoutTools`, `withToolChoice`, `withMaxTokens`, and `withProviderOptions` methods each return a copy of the step. For example, to take an expensive tool away once the agent has used it:
+The `withModel`, `withInstructions`, `withMessages`, `withTools`, `onlyTools`, `withoutTools`, `withToolChoice`, `withMaxTokens`, and `withProviderOptions` methods each return a copy of the step. For example, you may remove an expensive tool once the agent has used it:
 
 ```php
 public function handle(PendingStep $step, Closure $next)
@@ -1621,7 +1621,7 @@ public function handle(PendingStep $step, Closure $next)
 }
 ```
 
-Or to keep a long tool-calling loop inside the context window by summarizing the middle of the conversation:
+Or, you may keep a long tool calling loop within the context window by summarizing the middle of the conversation:
 
 ```php
 use App\Ai\Agents\Summarizer;
@@ -1645,9 +1645,9 @@ public function handle(PendingStep $step, Closure $next)
 }
 ```
 
-Messages given to a step replace only what that step sends; the run's history still grows from the original.
+Messages given to a step only replace the messages that step sends. The run's history continues to grow from the original messages.
 
-The `then` method runs code once the model has answered the step, before its tool calls execute. This works for synchronous and streamed runs alike:
+You may use the `then` method to execute code once the model has answered the step, before its tool calls are executed. This works for both synchronous and streaming responses:
 
 ```php
 use Laravel\Ai\Gateway\StepResponse;
@@ -1660,7 +1660,7 @@ public function handle(PendingStep $step, Closure $next)
 }
 ```
 
-Middleware must return the result given by `$next`, or a `StepResponse` of its own to answer the step without calling the model, such as when serving a cached answer. Returning anything else throws a `LogicException`.
+Middleware must return the result of `$next`, or its own `StepResponse` to answer the step without invoking the model, such as when serving a cached response. Returning any other value will throw a `LogicException`.
 
 <a name="anonymous-agents"></a>
 ### Anonymous Agents
@@ -1811,7 +1811,7 @@ The `providerOptions` method receives the provider currently being used (`Lab` e
 
 The Anthropic example above also enables [prompt caching](#prompt-caching) via `cache_control`.
 
-The [image](#images), [audio](#audio), [transcription](#transcription), [embedding](#embeddings), and [reranking](#reranking) builders accept provider options too:
+The [image](#images), [audio](#audio), [transcription](#transcription), [embedding](#embeddings), and [reranking](#reranking) builders accept provider options as well:
 
 ```php
 use Laravel\Ai\Audio;
@@ -1821,12 +1821,12 @@ $audio = Audio::of('I love coding with Laravel.')
     ->generate();
 ```
 
-A closure may be given instead of an array, receiving the provider currently being used.
+You may also pass a closure instead of an array, which will receive the provider currently being used.
 
 <a name="custom-http-headers"></a>
 #### Custom HTTP Headers
 
-Headers configured for a provider in `config/ai.php` are sent with every request it makes. To send them per request, such as the metadata an AI gateway tags calls with, use `withHeaders`, available on the image, audio, transcription, embedding, and reranking builders and on [file uploads](#files):
+Headers configured for a provider within your application's `config/ai.php` configuration file are sent with every request that provider makes. To send headers on a per request basis, such as metadata used by an AI gateway, you may use the `withHeaders` method, which is available on the image, audio, transcription, embedding, and reranking builders, as well as on [file uploads](#files):
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -1837,7 +1837,7 @@ $embeddings = Embeddings::for($chunks)
     ->generate();
 ```
 
-Headers may also be a closure receiving the provider. They are never sent as request parameters and never affect [embedding cache keys](#caching-embeddings).
+Headers may also be given as a closure, which receives the provider currently being used. Headers are never sent as request parameters and never affect [embedding cache keys](#caching-embeddings).
 
 <a name="prompt-caching"></a>
 ### Prompt Caching
@@ -1849,7 +1849,7 @@ $response->usage->cacheReadInputTokens;
 $response->usage->cacheWriteInputTokens;
 ```
 
-Both counts are subsets of the input total, which is covered in more detail in the [usage documentation](#usage).
+Both of these counts are subsets of the input token total, which is discussed further in the [usage documentation](#usage).
 
 The `anthropic` and `bedrock` providers only cache when asked. The `CacheInstructions` and `CacheToolDefinitions` attributes place a cache breakpoint at the end of your agent's instructions and tool definitions, so every conversation reads that prefix from the cache instead of writing it again:
 
@@ -1887,7 +1887,7 @@ Alternatively, Anthropic's automatic caching may be enabled via a top-level `cac
 ## Human Tool Approval
 
 > [!WARNING]
-> Tool approval requires the paused turn's history to be available when the run resumes. Either use a `Conversational` agent, such as one using the `RemembersConversations` trait, or replay the history from the client with the [`withMessages` method](#conversation-context). An agent with neither throws an `ApprovalNotResumableException` when a tool pauses.
+> Tool approval requires the paused turn's history to be available when the run is resumed. You should either use a `Conversational` agent, such as one using the `RemembersConversations` trait, or provide the history from your application's frontend using the [`withMessages` method](#conversation-context). Agents that do neither will throw an `ApprovalNotResumableException` when a tool pauses.
 
 Tools that perform sensitive or irreversible actions may require human approval before they are executed. To make a tool approvable, implement the `Approvable` contract and use the `InteractsWithApprovals` trait. Approvable tools require approval by default:
 
@@ -1998,7 +1998,7 @@ $response = (new FileAssistant)
 ```
 
 > [!IMPORTANT]
-> A paused turn is matched by its conversation and its pending tool calls, not by the participant that paused it. Anyone who can reach the route may otherwise approve another participant's paused tool. Authorize the conversation before you resume it, as the [complete approval flow](#complete-approval-flow) does, or verify it with the store's `conversationBelongsTo` method.
+> Paused turns are matched by their conversation and pending tool calls, not by the participant that paused them. Therefore, your application should authorize access to the conversation before resuming it, as demonstrated in the [complete approval flow](#complete-approval-flow), or verify access using the conversation store's `conversationBelongsTo` method.
 
 The boolean values `true` and `false` may be used as shorthand for approval and rejection. Every pending tool call must receive a decision. Unknown, missing, or previously resolved tool call IDs will cause an `ApprovalMismatchException` to be thrown. You may provide a default for calls without an explicit decision using the `approveRemaining` or `rejectRemaining` methods:
 
@@ -2018,7 +2018,7 @@ Tool approval is supported by the `prompt`, `stream`, `queue`, `broadcast`, `bro
 
 During streaming and broadcasting, a pause is represented by a `tool_approval_request` event. When using the [Vercel AI SDK stream protocol](#stream-protocols), approval requests and results are emitted using the protocol's native tool approval parts, and the Agent User Interaction protocol reports them as interrupts.
 
-Clients speaking either protocol post their decisions with the rest of the conversation, so a [chat request](#chat-requests) may be handed straight to the agent:
+Clients that use either protocol post their decisions along with the rest of the conversation, so a [chat request](#chat-requests) may be passed directly to the agent:
 
 ```php
 $chat = Vercel::chat($request);
@@ -2029,7 +2029,7 @@ return (new FileAssistant)
     ->usingProtocol($chat->protocol());
 ```
 
-A resumed run is folded into the turn it paused on, so one turn is one stored assistant message. The response's `assistantMessageId` is the id of the paused row, and that row's usage covers the pause and the resume together.
+A resumed run is merged into the turn that it paused on, so each turn is stored as a single assistant message. The response's `assistantMessageId` contains the ID of the paused message, and that message's usage includes both the pause and the resume.
 
 For queued agents, the resulting response is passed to the `then` callback, and Laravel also dispatches a `ToolApprovalRequested` event.
 
@@ -2082,7 +2082,7 @@ Route::post('/chat/{conversation}', function (Request $request, Conversation $co
 })->middleware('auth');
 ```
 
-When the response status is `awaiting_approval`, the chat screen should render the pending approvals and submit the user's choices to the same endpoint using the tool call ID as each decision's key. Otherwise, it submits a plain `message` value:
+When the response status is `awaiting_approval`, the chat screen should render the pending approvals and submit the user's choices to the same endpoint using the tool call ID as each decision's key. Otherwise, the screen may submit a plain `message` value:
 
 ```json
 {
@@ -2140,7 +2140,7 @@ $image = Image::of('Update this photo of me to be in the style of an impressioni
     ->generate();
 ```
 
-Some providers generate several images in one request. OpenAI, Azure, and xAI accept an `n` [provider option](#provider-options), and the response holds every image that was returned:
+Some providers may generate multiple images in a single request. OpenAI, Azure, and xAI accept an `n` [provider option](#provider-options), and the response will contain every image that was returned:
 
 ```php
 $response = Image::of('A donut sitting on the kitchen counter')
@@ -2528,7 +2528,7 @@ $response->first()->score;    // 0.95
 $response->first()->index;    // 1 (original position)
 ```
 
-The `limit` method restricts the number of results, while `timeout` sets the HTTP timeout in seconds, which defaults to 30:
+The `limit` method may be used to restrict the number of results returned, while the `timeout` method may be used to specify the HTTP timeout in seconds, which defaults to 30:
 
 ```php
 $response = Reranking::of($documents)
@@ -2575,7 +2575,7 @@ $reranked = $posts->rerank(
 > [!WARNING]
 > Classification is currently experimental and its API may change in future minor releases of the AI SDK.
 
-Classification allows you to ask a fixed set of questions about a given string or array of data and receive a typed, probability-backed answer for each one instead of free-form text. This is useful for routing, moderation, and scoring, where a decision needs to be thresholded and tested.
+Classification allows you to ask a fixed set of questions about a given string or array of data and receive a typed answer, backed by a probability, for each question instead of free-form text. This is useful for routing, moderation, and scoring, where decisions need to be thresholded and tested.
 
 The `Laravel\Ai\Classification` class may be used to classify content. Each question is given a key, and the corresponding answer may be retrieved from the response using that key:
 
@@ -2621,7 +2621,7 @@ $result['department']->probabilities;               // ['billing' => 0.08, 'tech
 $result['department']->confidence;                  // 0.82
 ```
 
-`Score` questions return a position on the ordered levels that were given. The `score` property is probability-weighted and may fall between two levels, while the `level` and `label` methods describe the most probable level:
+`Score` questions return a position on the ordered levels that were provided. The `score` property is probability-weighted and may fall between two levels, while the `level` and `label` methods describe the most probable level:
 
 ```php
 $result['frustration']->score;          // 1.24, the probability-weighted level
@@ -2873,7 +2873,7 @@ $document->fileId;
 
 > **Note:** Typically, when adding previously stored files to vector stores, the returned document ID will match the file's previously assigned ID; however, some vector storage providers may return a new, different "document ID". Therefore, it's recommended that you always store both IDs in your database for future reference.
 
-Adding a file to a Gemini store waits for the import to finish, so the document is searchable once the call returns, and throws a `Laravel\Ai\Exceptions\AiException` if it fails or exceeds five minutes. Consider adding Gemini files from a [queued job](/docs/{{version}}/queues).
+When adding a file to a Gemini store, Laravel waits for the import to finish so that the document is searchable once the call returns. A `Laravel\Ai\Exceptions\AiException` will be thrown if the import fails or exceeds five minutes, so you may wish to add Gemini files from a [queued job](/docs/{{version}}/queues).
 
 You may attach metadata to files when adding them to a store. This metadata can later be used to filter search results when using the [file search provider tool](#file-search):
 
@@ -2900,7 +2900,7 @@ $store->remove('file_abc123', deleteFile: true);
 <a name="usage"></a>
 ## Usage
 
-Every response reports what the request consumed on its `usage` property. The input and output counts are totals, so a token counted as cached or as reasoning is also counted in the total it belongs to:
+Every response contains a `usage` property describing what the request consumed. The input and output counts are totals, so tokens counted as cached or reasoning tokens are also included in the total they belong to:
 
 ```php
 $response = (new SalesCoach)->prompt('Analyze this sales transcript...');
@@ -2910,7 +2910,7 @@ $response->usage->outputTokens;
 $response->usage->totalTokens();
 ```
 
-Text generation reports a `Laravel\Ai\Responses\Data\TextUsage`, which breaks the totals down further. Each detail is `null` when the provider does not report it, which keeps "not reported" distinct from zero:
+Text generation returns a `Laravel\Ai\Responses\Data\TextUsage` instance, which breaks these totals down further. Each of these values will be `null` when the provider does not report it, distinguishing an unreported count from zero:
 
 ```php
 $response->usage->cacheReadInputTokens;   // Subset of the input tokens read from a prompt cache...
@@ -2920,9 +2920,9 @@ $response->usage->reasoningTokens;        // Subset of the output tokens spent o
 $response->usage->uncachedInputTokens();  // Input tokens that were neither read from nor written to the cache...
 ```
 
-Because cache reads, cache writes, and uncached input are billed at different rates, pricing a text request means pricing those three counts separately rather than the input total alone.
+Cache reads, cache writes, and uncached input are billed at different rates, so you should price these three counts separately instead of using the input total alone.
 
-The other capabilities report a usage object that adds the counts specific to them:
+The remaining capabilities return a usage object containing the counts specific to them:
 
 <div class="overflow-auto">
 
@@ -2936,7 +2936,7 @@ The other capabilities report a usage object that adds the counts specific to th
 
 </div>
 
-Not every provider reports every count. Image and transcription models that a provider routes through its chat models report cache and reasoning counts, while the rest leave them `null`:
+Not every provider reports every count. Image and transcription models that a provider routes through its chat models report cache and reasoning counts, while other providers leave them `null`:
 
 ```php
 use Laravel\Ai\Image;
@@ -3041,7 +3041,7 @@ $response = (new FileAssistant)->prompt('Delete the invoice.');
 $response->hasPendingApprovals(); // true
 ```
 
-You may fake a response that reasoned before answering. The fake emits reasoning events, so the reasoning is reported on a streamed run:
+You may also fake a response that includes reasoning. The fake emits reasoning events, so the reasoning is reported on streamed runs as well:
 
 ```php
 use Laravel\Ai\Responses\AgentResponse;
@@ -3389,7 +3389,7 @@ Reranking::assertNothingReranked();
 <a name="testing-classification"></a>
 ### Classification
 
-Classification may be faked by invoking the `fake` method on the `Classification` class. Without custom responses, Laravel generates answers that match the shape of each question:
+Classification may be faked by invoking the `fake` method on the `Classification` class. If no custom responses are provided, Laravel will automatically generate answers that match the shape of each question:
 
 ```php
 use Laravel\Ai\Classification;
@@ -3418,7 +3418,7 @@ Classification::fake(fn (ClassificationPrompt $prompt) => [
 ]);
 ```
 
-Questions left out of a fake response still receive a generated answer, so a test may pin only the answers it asserts against.
+Questions that are omitted from a fake response will still receive a generated answer, so your tests only need to provide the answers they make assertions against.
 
 After classifying, you may make assertions about the operations that were performed:
 
