@@ -40,6 +40,7 @@
 - [Files](#files)
 - [Vector Stores](#vector-stores)
     - [Adding Files to Stores](#adding-files-to-stores)
+- [Usage](#usage)
 - [Failover](#failover)
 - [Testing](#testing)
     - [Agents](#testing-agents)
@@ -240,7 +241,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI, Bedrock, OpenRouter |
 | Classification | TypeSafe, OpenRouter |
-| Files | OpenAI, Anthropic, Gemini, Azure |
+| Files | OpenAI, Anthropic, Gemini, Azure, OpenRouter |
 
 </div>
 
@@ -569,7 +570,7 @@ use Laravel\Ai\Contracts\ConversationStore;
 $store = app(ConversationStore::class);
 ```
 
-Messages paginate newest first using a cursor, as `StoredMessage` instances carrying each row's identity, timestamps, tool calls, tool results, usage, metadata, and attachments:
+Messages paginate newest first using a cursor, as `StoredMessage` instances carrying each row's identity, timestamps, usage, metadata, and attachments:
 
 ```php
 $messages = $store->paginateConversationMessages($conversationId, perPage: 25);
@@ -579,10 +580,21 @@ foreach ($messages as $message) {
     $message->role;
     $message->content;
     $message->createdAt;
-    $message->toolCalls;
-    $message->toolResults;
+    $message->usage;
 }
 ```
+
+A turn is stored as a list of steps, one per round-trip with the provider, and each tool result is recorded on the call that made it. The `toolCalls`, `providerToolCalls`, and `toolResults` methods flatten those steps in order, so a transcript may be rendered without walking the steps itself:
+
+```php
+$message->steps;
+
+$message->toolCalls();
+$message->providerToolCalls();
+$message->toolResults();
+```
+
+A tool call carries a `result` once it has run. A call that has an `approval_reason` and no `result` is still waiting on a [tool approval](#human-tool-approval), and `$message->approvalRequestedAt` gives the time the turn paused.
 
 Before continuing a conversation ID given by the client, verify it was stored for the participant:
 
@@ -794,7 +806,7 @@ foreach ($stream as $event) {
 }
 ```
 
-Once streamed, the response reports the model's reasoning and the sources it cited. Both are stored with the assistant message when using the `RemembersConversations` trait:
+The response reports the model's reasoning and the sources it cited. Both are stored with the assistant message when using the `RemembersConversations` trait:
 
 ```php
 use Laravel\Ai\Responses\StreamedAgentResponse;
@@ -802,10 +814,12 @@ use Laravel\Ai\Responses\StreamedAgentResponse;
 (new SalesCoach)
     ->stream('Analyze this sales transcript...')
     ->then(function (StreamedAgentResponse $response) {
-        $response->reasoning; // '' unless the model streamed reasoning text...
+        $response->reasoning; // '' unless the model returned reasoning text...
         $response->meta->citations;
     });
 ```
+
+Reasoning is reported the same way on a response from the `prompt` method, so a run does not have to be streamed to read it.
 
 <a name="streaming-using-the-vercel-ai-sdk-protocol"></a>
 <a name="stream-protocols"></a>
@@ -1835,6 +1849,8 @@ $response->usage->cacheReadInputTokens;
 $response->usage->cacheWriteInputTokens;
 ```
 
+Both counts are subsets of the input total, which is covered in more detail in the [usage documentation](#usage).
+
 The `anthropic` and `bedrock` providers only cache when asked. The `CacheInstructions` and `CacheToolDefinitions` attributes place a cache breakpoint at the end of your agent's instructions and tool definitions, so every conversation reads that prefix from the cache instead of writing it again:
 
 ```php
@@ -1981,6 +1997,9 @@ $response = (new FileAssistant)
     ]));
 ```
 
+> [!IMPORTANT]
+> A paused turn is matched by its conversation and its pending tool calls, not by the participant that paused it. Anyone who can reach the route may otherwise approve another participant's paused tool. Authorize the conversation before you resume it, as the [complete approval flow](#complete-approval-flow) does, or verify it with the store's `conversationBelongsTo` method.
+
 The boolean values `true` and `false` may be used as shorthand for approval and rejection. Every pending tool call must receive a decision. Unknown, missing, or previously resolved tool call IDs will cause an `ApprovalMismatchException` to be thrown. You may provide a default for calls without an explicit decision using the `approveRemaining` or `rejectRemaining` methods:
 
 ```php
@@ -1999,7 +2018,7 @@ Tool approval is supported by the `prompt`, `stream`, `queue`, `broadcast`, `bro
 
 During streaming and broadcasting, a pause is represented by a `tool_approval_request` event. When using the [Vercel AI SDK stream protocol](#stream-protocols), approval requests and results are emitted using the protocol's native tool approval parts, and the Agent User Interaction protocol reports them as interrupts.
 
-Clients speaking either protocol post their decisions with the rest of the conversation, so a [chat request](#chat-requests) may be handed straight to the agent, which resumes the paused run when the request carries decisions:
+Clients speaking either protocol post their decisions with the rest of the conversation, so a [chat request](#chat-requests) may be handed straight to the agent:
 
 ```php
 $chat = Vercel::chat($request);
@@ -2009,6 +2028,8 @@ return (new FileAssistant)
     ->stream($chat)
     ->usingProtocol($chat->protocol());
 ```
+
+A resumed run is folded into the turn it paused on, so one turn is one stored assistant message. The response's `assistantMessageId` is the id of the paused row, and that row's usage covers the pause and the resume together.
 
 For queued agents, the resulting response is passed to the `then` callback, and Laravel also dispatches a `ToolApprovalRequested` event.
 
@@ -2117,6 +2138,18 @@ $image = Image::of('Update this photo of me to be in the style of an impressioni
     ])
     ->landscape()
     ->generate();
+```
+
+Some providers generate several images in one request. OpenAI, Azure, and xAI accept an `n` [provider option](#provider-options), and the response holds every image that was returned:
+
+```php
+$response = Image::of('A donut sitting on the kitchen counter')
+    ->withProviderOptions(['n' => 4])
+    ->generate();
+
+count($response);           // 4
+$response->images;          // A collection of generated images...
+$response->firstImage();    // The first generated image...
 ```
 
 Generated images may be easily stored on the default disk configured in your application's `config/filesystems.php` configuration file:
@@ -2869,6 +2902,56 @@ Removing a file from a vector store does not remove it from the provider's [file
 
 ```php
 $store->remove('file_abc123', deleteFile: true);
+```
+
+<a name="usage"></a>
+## Usage
+
+Every response reports what the request consumed on its `usage` property. The input and output counts are totals, so a token counted as cached or as reasoning is also counted in the total it belongs to:
+
+```php
+$response = (new SalesCoach)->prompt('Analyze this sales transcript...');
+
+$response->usage->inputTokens;
+$response->usage->outputTokens;
+$response->usage->totalTokens();
+```
+
+Text generation reports a `Laravel\Ai\Responses\Data\TextUsage`, which breaks the totals down further. Each detail is `null` when the provider does not report it, which keeps "not reported" distinct from zero:
+
+```php
+$response->usage->cacheReadInputTokens;   // Subset of the input tokens read from a prompt cache...
+$response->usage->cacheWriteInputTokens;  // Subset of the input tokens written to a prompt cache...
+$response->usage->reasoningTokens;        // Subset of the output tokens spent on reasoning...
+
+$response->usage->uncachedInputTokens();  // Input tokens that were neither read from nor written to the cache...
+```
+
+Because cache reads, cache writes, and uncached input are billed at different rates, pricing a text request means pricing those three counts separately rather than the input total alone.
+
+The other capabilities report a usage object that adds the counts specific to them:
+
+<div class="overflow-auto">
+
+| Capability | Usage object | Adds |
+|---|---|---|
+| Text, classification | `TextUsage` | Cache read, cache write, and reasoning tokens |
+| Images | `ImageUsage` | `imageInputTokens` and `imageOutputTokens` |
+| Transcription | `TranscriptionUsage` | `audioSeconds`, the duration of the transcribed audio |
+| Reranking | `RerankingUsage` | `searchUnits`, which some providers bill instead of tokens |
+| Audio, embeddings | `Usage` | |
+
+</div>
+
+Not every provider reports every count. Image and transcription models that a provider routes through its chat models report cache and reasoning counts, while the rest leave them `null`:
+
+```php
+use Laravel\Ai\Image;
+use Laravel\Ai\Transcription;
+
+Image::of('A donut sitting on the kitchen counter')->generate()->usage->imageOutputTokens;
+
+Transcription::fromPath('/home/laravel/meeting.mp3')->generate()->usage->audioSeconds;
 ```
 
 <a name="failover"></a>
