@@ -2573,11 +2573,11 @@ $reranked = $posts->rerank(
 ## Classification
 
 > [!WARNING]
-> Classification is experimental. Its API may change in minor releases of the AI SDK.
+> Classification is currently experimental and its API may change in future minor releases of the AI SDK.
 
-Classification answers a fixed set of questions about some text and returns a probability for each answer instead of free-form output. This suits routing, moderation, and scoring, where the decision must be typed, thresholded, and testable.
+Classification allows you to ask a fixed set of questions about a given string or array of data and receive a typed, probability-backed answer for each one instead of free-form text. This is useful for routing, moderation, and scoring, where a decision needs to be thresholded and tested.
 
-The `Laravel\Ai\Classification` class may be used to classify a string or an array of data. Each question is given a key, and the response holds the answer for that key:
+The `Laravel\Ai\Classification` class may be used to classify content. Each question is given a key, and the corresponding answer may be retrieved from the response using that key:
 
 ```php
 use Laravel\Ai\Classification;
@@ -2605,14 +2605,14 @@ $result = Classification::of($supportRequest)
     ->classify();
 ```
 
-A `Boolean` question returns the probability that the answer is "true". The `isTrue` method compares that probability against a threshold, which defaults to `0.5`:
+`Boolean` questions return the probability that the answer is "true". The `isTrue` method may be used to determine whether that probability meets a given threshold, which defaults to `0.5`:
 
 ```php
 $result['urgent']->probability;             // 0.94
 $result['urgent']->isTrue(threshold: 0.8);  // true
 ```
 
-A `Choice` question returns one of the given options, along with the probability of each. The `confidence` property is `null` when the provider cannot measure it:
+`Choice` questions return one of the given options along with the probability of each option. The `confidence` property will be `null` when the provider is unable to measure it:
 
 ```php
 $result['department']->choice;                      // 'technical'
@@ -2621,7 +2621,7 @@ $result['department']->probabilities;               // ['billing' => 0.08, 'tech
 $result['department']->confidence;                  // 0.82
 ```
 
-A `Score` question returns a position on the ordered levels it was given. The `score` is probability-weighted, so it may fall between two levels, while `level` and `label` describe the most probable one:
+`Score` questions return a position on the ordered levels that were given. The `score` property is probability-weighted and may fall between two levels, while the `level` and `label` methods describe the most probable level:
 
 ```php
 $result['frustration']->score;          // 1.24, the probability-weighted level
@@ -2631,26 +2631,19 @@ $result['frustration']->normalized();   // 0.62, the score as a fraction of the 
 $result['frustration']->probabilities;  // [0.12, 0.52, 0.36]
 ```
 
-The criteria on a `Boolean` question, the descriptions on a `Choice` question, and the levels on a `Score` question may each be given as an array when a single sentence is not enough. A `Choice` question requires at least two options, and a `Score` question requires at least two levels.
+The criteria given to a `Boolean` question, the option descriptions given to a `Choice` question, and the levels given to a `Score` question may each be an array when a single sentence is not sufficient. `Choice` questions require at least two options, while `Score` questions require at least two levels.
 
-<a name="classification-responses"></a>
-### Classification Responses
-
-The response may be iterated, counted, and accessed as an array. The `answer` method throws an `InvalidArgumentException` when no answer was returned for the given key, while `collect` returns the answers as a [collection](/docs/{{version}}/collections):
+The response may be iterated, counted, and accessed as an array. In addition, the `answer` method may be used to retrieve a single answer, while the `collect` method returns all of the answers as a [collection](/docs/{{version}}/collections):
 
 ```php
 $result->answer('urgent');
-$result->collect()->map->toArray();
+$result->collect();
 
 $result->usage;
 $result->meta->provider;
-$result->meta->model;
 ```
 
-<a name="classification-providers"></a>
-### Classification Providers
-
-Classification is performed by [TypeSafe](https://typesafe.ai) by default, which you may change using the `default_for_classification` option of your application's `config/ai.php` configuration file. A provider and model may also be given when classifying:
+By default, classification is performed by [TypeSafe](https://typesafe.ai). You may change this using the `default_for_classification` option within your application's `config/ai.php` configuration file. You may also specify the provider and model when classifying:
 
 ```php
 use Laravel\Ai\Enums\Lab;
@@ -2660,7 +2653,7 @@ $result = Classification::of($supportRequest)
     ->classify(Lab::OpenRouter, 'model-name');
 ```
 
-The `timeout` method sets the HTTP timeout in seconds, which defaults to 30, and provider options and headers may be given as they are for [other features](#provider-options):
+The `timeout` method may be used to specify the HTTP timeout in seconds, which defaults to 30. [Provider options](#provider-options) and custom headers may be given as well:
 
 ```php
 $result = Classification::of($supportRequest)
