@@ -36,6 +36,7 @@
     - [Querying Embeddings](#querying-embeddings)
     - [Caching Embeddings](#caching-embeddings)
 - [Reranking](#reranking)
+- [Classification](#classification)
 - [Files](#files)
 - [Vector Stores](#vector-stores)
     - [Adding Files to Stores](#adding-files-to-stores)
@@ -47,6 +48,7 @@
     - [Transcriptions](#testing-transcriptions)
     - [Embeddings](#testing-embeddings)
     - [Reranking](#testing-reranking)
+    - [Classification](#testing-classification)
     - [Files](#testing-files)
     - [Vector Stores](#testing-vector-stores)
 - [Events](#events)
@@ -97,6 +99,7 @@ OPENAI_COMPATIBLE_API_KEY=
 OPENAI_COMPATIBLE_URL=
 OPENROUTER_API_KEY=
 JINA_API_KEY=
+TYPESAFE_API_KEY=
 VOYAGEAI_API_KEY=
 XAI_API_KEY=
 ```
@@ -236,6 +239,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | STT | OpenAI, OpenAI Compatible, ElevenLabs, Groq, Mistral, Gemini |
 | Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI, Bedrock, OpenRouter |
+| Classification | TypeSafe, OpenRouter |
 | Files | OpenAI, Anthropic, Gemini, Azure |
 
 </div>
@@ -2532,6 +2536,107 @@ $reranked = $posts->rerank(
 );
 ```
 
+<a name="classification"></a>
+## Classification
+
+> [!WARNING]
+> Classification is experimental. Its API may change in minor releases of the AI SDK.
+
+Classification answers a fixed set of questions about some text and returns a probability for each answer instead of free-form output. This suits routing, moderation, and scoring, where the decision must be typed, thresholded, and testable.
+
+The `Laravel\Ai\Classification` class may be used to classify a string or an array of data. Each question is given a key, and the response holds the answer for that key:
+
+```php
+use Laravel\Ai\Classification;
+use Laravel\Ai\Classification\Boolean;
+use Laravel\Ai\Classification\Choice;
+use Laravel\Ai\Classification\Score;
+
+$result = Classification::of($supportRequest)
+    ->questions([
+        'urgent' => new Boolean('Does this request need an immediate response?', [
+            'true' => 'Explicitly time-sensitive',
+            'false' => 'No urgency expressed',
+        ]),
+        'department' => new Choice('Which team should handle this request?', [
+            'billing' => 'Payments, invoices, and refunds',
+            'technical' => 'Bugs, outages, and integrations',
+            'sales' => 'Pricing, plans, and upgrades',
+        ]),
+        'frustration' => new Score('How frustrated is the customer?', [
+            'Calm',
+            'Frustrated',
+            'Very angry',
+        ]),
+    ])
+    ->classify();
+```
+
+A `Boolean` question returns the probability that the answer is "true". The `isTrue` method compares that probability against a threshold, which defaults to `0.5`:
+
+```php
+$result['urgent']->probability;             // 0.94
+$result['urgent']->isTrue(threshold: 0.8);  // true
+```
+
+A `Choice` question returns one of the given options, along with the probability of each. The `confidence` property is `null` when the provider cannot measure it:
+
+```php
+$result['department']->choice;                      // 'technical'
+$result['department']->probabilityOf('technical');  // 0.87
+$result['department']->probabilities;               // ['billing' => 0.08, 'technical' => 0.87, 'sales' => 0.05]
+$result['department']->confidence;                  // 0.82
+```
+
+A `Score` question returns a position on the ordered levels it was given. The `score` is probability-weighted, so it may fall between two levels, while `level` and `label` describe the most probable one:
+
+```php
+$result['frustration']->score;          // 1.24, the probability-weighted level
+$result['frustration']->level();        // 1, the most probable level
+$result['frustration']->label();        // 'Frustrated'
+$result['frustration']->normalized();   // 0.62, the score as a fraction of the highest level
+$result['frustration']->probabilities;  // [0.12, 0.52, 0.36]
+```
+
+The criteria on a `Boolean` question, the descriptions on a `Choice` question, and the levels on a `Score` question may each be given as an array when a single sentence is not enough. A `Choice` question requires at least two options, and a `Score` question requires at least two levels.
+
+<a name="classification-responses"></a>
+### Classification Responses
+
+The response may be iterated, counted, and accessed as an array. The `answer` method throws an `InvalidArgumentException` when no answer was returned for the given key, while `collect` returns the answers as a [collection](/docs/{{version}}/collections):
+
+```php
+$result->answer('urgent');
+$result->collect()->map->toArray();
+
+$result->usage;
+$result->meta->provider;
+$result->meta->model;
+```
+
+<a name="classification-providers"></a>
+### Classification Providers
+
+Classification is performed by [TypeSafe](https://typesafe.ai) by default, which you may change using the `default_for_classification` option of your application's `config/ai.php` configuration file. A provider and model may also be given when classifying:
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+$result = Classification::of($supportRequest)
+    ->questions($questions)
+    ->classify(Lab::OpenRouter, 'model-name');
+```
+
+The `timeout` method sets the HTTP timeout in seconds, which defaults to 30, and provider options and headers may be given as they are for [other features](#provider-options):
+
+```php
+$result = Classification::of($supportRequest)
+    ->questions($questions)
+    ->timeout(60)
+    ->withProviderOptions(['temperature' => 0])
+    ->classify();
+```
+
 <a name="files"></a>
 ## Files
 
@@ -3205,6 +3310,54 @@ Reranking::assertNotReranked(
 Reranking::assertNothingReranked();
 ```
 
+<a name="testing-classification"></a>
+### Classification
+
+Classification may be faked by invoking the `fake` method on the `Classification` class. Without custom responses, Laravel generates answers that match the shape of each question:
+
+```php
+use Laravel\Ai\Classification;
+use Laravel\Ai\Prompts\ClassificationPrompt;
+use Laravel\Ai\Responses\Data\BooleanAnswer;
+use Laravel\Ai\Responses\Data\ChoiceAnswer;
+
+// Automatically generate fake answers...
+Classification::fake();
+
+// Provide answers for specific questions...
+Classification::fake([
+    [
+        'urgent' => new BooleanAnswer(0.94),
+        'department' => new ChoiceAnswer('technical', [
+            'billing' => 0.08,
+            'technical' => 0.87,
+            'sales' => 0.05,
+        ], confidence: 0.82),
+    ],
+]);
+
+// Build answers from the prompt...
+Classification::fake(fn (ClassificationPrompt $prompt) => [
+    'urgent' => new BooleanAnswer($prompt->contains('ASAP') ? 1.0 : 0.0),
+]);
+```
+
+Questions left out of a fake response still receive a generated answer, so a test may pin only the answers it asserts against.
+
+After classifying, you may make assertions about the operations that were performed:
+
+```php
+Classification::assertClassified(function (ClassificationPrompt $prompt) {
+    return $prompt->contains('refund') && $prompt->asks('department');
+});
+
+Classification::assertNotClassified(
+    fn (ClassificationPrompt $prompt) => $prompt->asks('sentiment')
+);
+
+Classification::assertNothingClassified();
+```
+
 <a name="testing-files"></a>
 ### Files
 
@@ -3329,6 +3482,8 @@ The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), i
 - `AgentPrompted`
 - `AgentStreamed`
 - `AudioGenerated`
+- `Classified`
+- `Classifying`
 - `CreatingStore`
 - `EmbeddingsGenerated`
 - `FileAddedToStore`
