@@ -407,9 +407,14 @@ If your agent implements the `Conversational` interface, you may use the `messag
  */
 public function messages(): iterable
 {
-    return $this->user->history->map(fn ($message) => new Message(
-        $message->role, $message->content,
-    ))->all();
+    return $this->user->history()
+        ->latest()
+        ->limit(50)
+        ->get()
+        ->reverse()
+        ->map(fn ($message) => new Message(
+            $message->role, $message->content,
+        ))->all();
 }
 ```
 
@@ -599,7 +604,7 @@ A tool call contains a `result` once it has been executed. Tool calls that conta
 
 The `status` property contains a `Laravel\Ai\Enums\MessageStatus` instance. A turn that failed partway through is stored as `Failed` along with the steps it had already completed, so tool calls that ran before the failure remain in the history. Calls the turn never answered are replayed to the model as interrupted, since they may or may not have run.
 
-Before continuing a conversation ID provided by your application's frontend, you should verify that the conversation was stored for the given participant:
+Before continuing a conversation via an ID provided by your application's frontend, you should verify that the conversation was stored for the given participant:
 
 ```php
 abort_unless($store->conversationBelongsTo(
@@ -828,7 +833,7 @@ Reasoning is available on responses returned by the `prompt` method as well, so 
 <a name="stream-protocols"></a>
 #### Stream Protocols
 
-By default, a streamed response emits the AI SDK's own events. However, you may instruct the response to use a frontend streaming protocol instead, allowing you to pair your agent with an existing chat interface instead of building your own.
+By default, a streamed response emits events following the Laravel AI SDK's own protocol conventions. However, you may instruct the response to use a frontend streaming protocol instead, allowing you to pair your agent with an existing chat interface instead of building your own.
 
 You may stream the events using the [Vercel AI SDK stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol) by invoking the `usingVercelDataProtocol` method on the streamable response:
 
@@ -848,7 +853,7 @@ You may pass a message ID if your application's frontend assigns its own:
 ->usingVercelDataProtocol($request->string('messageId'));
 ```
 
-Likewise, the `usingAgentUserInteractionProtocol` method may be used to stream the [Agent User Interaction (AG-UI) protocol](https://docs.ag-ui.com), which is supported by clients such as CopilotKit:
+Alternatively, the `usingAgentUserInteractionProtocol` method may be used to stream using the [Agent User Interaction (AG-UI) protocol](https://docs.ag-ui.com):
 
 ```php
 Route::post('/coach', function (Request $request) {
@@ -899,7 +904,7 @@ Route::post('/chat', function (Request $request) {
 });
 ```
 
-If the request contains [approval decisions](#human-tool-approval), the agent will resume using them. Otherwise, the agent is prompted with the request's newest user message and attachments. The `protocol` method returns the protocol used by the client.
+If the request contains [approval decisions](#human-tool-approval), the agent will resume using those decisions. Otherwise, the agent is prompted with the request's newest user message and attachments. The `protocol` method returns the protocol used by the client.
 
 > [!NOTE]
 > Agents that implement the `Conversational` interface load their own history, so the `withMessages` method may be omitted.
@@ -1079,7 +1084,7 @@ public function tools(): iterable
 <a name="runtime-tool-overrides"></a>
 #### Runtime Tool Overrides
 
-The `withTools` method may be used to replace the tools declared by an agent instance. This is useful for per-tenant or feature flagged tool sets:
+The `withTools` method may be used to replace the tools declared by an agent instance. This is useful for per-tenant or feature-flagged tool sets:
 
 ```php
 $response = (new SupportAgent)
@@ -2656,7 +2661,7 @@ $result->usage;
 $result->meta->provider;
 ```
 
-For a single yes or no decision, you may use the `decide` method available via Laravel's `Stringable` class, which returns a boolean instead of a full response. You may describe what a yes and a no mean, and specify the probability the answer must reach, which defaults to `0.5`:
+For a single yes or no decision, you may use the `decide` method available via Laravel's `Stringable` class, which returns a boolean instead of a full response. You may describe what a "yes" and a "no" mean, and specify the probability the answer must reach, which defaults to `0.5`:
 
 ```php
 use Illuminate\Support\Str;
@@ -2669,22 +2674,6 @@ $spam = Str::of($message)->decide('Is this spam?', criteria: [
     'true' => 'Unsolicited bulk mail.',
     'false' => 'A genuine message from a customer.',
 ], threshold: 0.9);
-```
-
-The provider, model, and timeout may be specified as well. The `Str` class also offers a static version of the method:
-
-```php
-use Laravel\Ai\Enums\Lab;
-
-$spam = Str::of($message)->decide(
-    'Is this spam?',
-    threshold: 0.9,
-    provider: Lab::OpenRouter,
-    model: 'model-name',
-    timeout: 60,
-);
-
-$spam = Str::decide($message, 'Is this spam?', threshold: 0.9);
 ```
 
 By default, classification is performed by [TypeSafe](https://typesafe.ai). You may change this using the `default_for_classification` option within your application's `config/ai.php` configuration file. You may also specify the provider and model when classifying:
@@ -2957,11 +2946,11 @@ $response->usage->totalTokens();
 Text generation returns a `Laravel\Ai\Responses\Data\TextUsage` instance, which breaks these totals down further. Each of these values will be `null` when the provider does not report it, distinguishing an unreported count from zero:
 
 ```php
-$response->usage->cacheReadInputTokens;   // Subset of the input tokens read from a prompt cache...
-$response->usage->cacheWriteInputTokens;  // Subset of the input tokens written to a prompt cache...
-$response->usage->reasoningTokens;        // Subset of the output tokens spent on reasoning...
+$response->usage->cacheReadInputTokens; // Subset of the input tokens read from a prompt cache...
+$response->usage->cacheWriteInputTokens; // Subset of the input tokens written to a prompt cache...
+$response->usage->reasoningTokens; // Subset of the output tokens spent on reasoning...
 
-$response->usage->uncachedInputTokens();  // Input tokens that were neither read from nor written to the cache...
+$response->usage->uncachedInputTokens(); // Input tokens that were neither read from nor written to the cache...
 ```
 
 Cache reads, cache writes, and uncached input are billed at different rates, so you should price these three counts separately instead of using the input total alone.
@@ -3085,7 +3074,7 @@ $response = (new FileAssistant)->prompt('Delete the invoice.');
 $response->hasPendingApprovals(); // true
 ```
 
-You may also fake a response that includes reasoning. The fake emits reasoning events, so the reasoning is reported on streamed runs as well:
+In addition, you can fake a response that includes reasoning. The fake emits reasoning events, so the reasoning is reported on streamed runs as well:
 
 ```php
 use Laravel\Ai\Responses\AgentResponse;
