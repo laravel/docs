@@ -581,6 +581,7 @@ foreach ($messages as $message) {
     $message->content;
     $message->createdAt;
     $message->usage;
+    $message->status;
 }
 ```
 
@@ -596,17 +597,7 @@ $message->toolResults();
 
 A tool call contains a `result` once it has been executed. Tool calls that contain an `approval_reason` but no `result` are still awaiting a [tool approval](#human-tool-approval).
 
-The `status` property contains a `Laravel\Ai\Enums\MessageStatus` instance describing how the turn ended. A turn that is awaiting a tool approval is `Paused`, while a run that threw partway through is stored as `Failed` along with the steps it had already completed, including any tools that already ran:
-
-```php
-use Laravel\Ai\Enums\MessageStatus;
-
-$message->status === MessageStatus::Completed;
-$message->status === MessageStatus::Paused;
-$message->status === MessageStatus::Failed;
-```
-
-Tool calls that a failed turn never answered are replayed to the model as interrupted, since they may or may not have run.
+The `status` property contains a `Laravel\Ai\Enums\MessageStatus` instance. A turn that failed partway through is stored as `Failed` along with the steps it had already completed, so tool calls that ran before the failure remain in the history. Calls the turn never answered are replayed to the model as interrupted, since they may or may not have run.
 
 Before continuing a conversation ID provided by your application's frontend, you should verify that the conversation was stored for the given participant:
 
