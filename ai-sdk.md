@@ -236,8 +236,8 @@ The AI SDK supports a variety of providers across its features. The following ta
 |---|---|
 | Text | OpenAI, OpenAI Compatible, Anthropic, Gemini, Azure, Bedrock, Groq, xAI, DeepSeek, Mistral, Ollama, OpenRouter |
 | Images | OpenAI, Gemini, xAI, Azure, Bedrock, OpenRouter |
-| TTS | OpenAI, ElevenLabs, Gemini, Mistral |
-| STT | OpenAI, OpenAI Compatible, ElevenLabs, Groq, Mistral, Gemini |
+| TTS | OpenAI, ElevenLabs, Gemini, Mistral, OpenRouter |
+| STT | OpenAI, OpenAI Compatible, ElevenLabs, Groq, Mistral, Gemini, OpenRouter |
 | Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI, Bedrock, OpenRouter |
 | Classification | TypeSafe, OpenRouter |
@@ -828,7 +828,7 @@ Reasoning is available on responses returned by the `prompt` method as well, so 
 <a name="stream-protocols"></a>
 #### Stream Protocols
 
-By default, a streamed response emits the AI SDK's own events. However, you may instruct the response to use a frontend streaming protocol instead.
+By default, a streamed response emits the AI SDK's own events. However, you may instruct the response to use a frontend streaming protocol instead, allowing you to pair your agent with an existing chat interface instead of building your own.
 
 You may stream the events using the [Vercel AI SDK stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol) by invoking the `usingVercelDataProtocol` method on the streamable response:
 
@@ -879,9 +879,12 @@ return (new SalesCoach)
 ```
 
 <a name="chat-requests"></a>
-#### Chat Requests
+<a name="frontend-integration"></a>
+#### Frontend Integration
 
-Frontends that use these protocols post their entire conversation history, the newest user message, and any tool approval responses. The `Vercel` and `AgentUserInteraction` classes may be used to convert such a request into a chat that agents accept directly:
+Chat interfaces built with libraries such as Vercel's `useChat` or CopilotKit already render messages, tool calls, and approval prompts, so your application only needs to answer their requests. Each request contains the conversation history, the newest user message, and any tool approval responses.
+
+The `Vercel` and `AgentUserInteraction` classes may be used to convert such a request into a chat that agents accept directly:
 
 ```php
 use Laravel\Ai\Vercel\Vercel;
@@ -896,7 +899,10 @@ Route::post('/chat', function (Request $request) {
 });
 ```
 
-If the request contains [approval decisions](#human-tool-approval), the agent will resume using them. Otherwise, the agent is prompted with the request's newest user message and attachments. The `protocol` method returns the protocol used by the client. Agents that implement the `Conversational` interface load their own history, so the `withMessages` method may be omitted.
+If the request contains [approval decisions](#human-tool-approval), the agent will resume using them. Otherwise, the agent is prompted with the request's newest user message and attachments. The `protocol` method returns the protocol used by the client.
+
+> [!NOTE]
+> Agents that implement the `Conversational` interface load their own history, so the `withMessages` method may be omitted.
 
 The `AgentUserInteraction::chat` method provides the same API for AG-UI clients, in addition to the request's thread and run IDs:
 
@@ -909,13 +915,17 @@ $chat->threadId();
 $chat->runId();
 ```
 
-Stored messages may also be converted back into the format a client expects, allowing you to hydrate a conversation the client did not stream. The `AgentUserInteraction::toClientState` method additionally returns any pending approval interrupts:
+You may also convert stored messages back into the format a client expects, allowing you to hydrate a conversation that the client did not stream:
 
 ```php
 $messages = $conversation->messages()->oldest()->get();
 
 return ['messages' => Vercel::toUiMessages($messages)];
+```
 
+The `AgentUserInteraction::toClientState` method performs the same conversion for AG-UI clients, in addition to returning any pending approval interrupts:
+
+```php
 return AgentUserInteraction::toClientState($messages);
 ```
 
@@ -2021,7 +2031,7 @@ Tool approval is supported by the `prompt`, `stream`, `queue`, `broadcast`, `bro
 
 During streaming and broadcasting, a pause is represented by a `tool_approval_request` event. When using the [Vercel AI SDK stream protocol](#stream-protocols), approval requests and results are emitted using the protocol's native tool approval parts, and the Agent User Interaction protocol reports them as interrupts.
 
-Clients that use either protocol post their decisions along with the rest of the conversation, so a [chat request](#chat-requests) may be passed directly to the agent:
+Clients that use either protocol post their decisions along with the rest of the conversation, so a [chat request](#frontend-integration) may be passed directly to the agent:
 
 ```php
 $chat = Vercel::chat($request);
