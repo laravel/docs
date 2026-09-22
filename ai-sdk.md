@@ -567,7 +567,7 @@ If your application uses multiple participant model types, you should consider d
 <a name="inspecting-stored-conversations"></a>
 #### Inspecting Stored Conversations
 
-When rendering a conversation, you typically need more information than the messages that are sent to the model. You may resolve the conversation store from the service container to read the stored messages without querying the AI SDK's tables directly:
+When displaying a conversation to your users, you often need details such as message IDs, timestamps, and tool calls. You may resolve the conversation store from the service container to read the stored messages without querying the AI SDK's tables directly:
 
 ```php
 use Laravel\Ai\Contracts\ConversationStore;
@@ -590,7 +590,7 @@ foreach ($messages as $message) {
 }
 ```
 
-Each turn is stored as a list of steps, with one step per round-trip to the provider, and each tool result is recorded on the tool call that produced it. The `toolCalls`, `providerToolCalls`, and `toolResults` methods flatten these steps in order, so you do not need to traverse them yourself:
+Each turn, which consists of a user prompt and the assistant's reply, is stored as a list of steps. A step is a single request to the provider, so a turn in which the model calls tools will contain several steps. Each tool result is recorded on the tool call that produced it. The `toolCalls`, `providerToolCalls`, and `toolResults` methods flatten these steps in order, so you do not need to traverse them yourself:
 
 ```php
 $message->steps;
@@ -602,7 +602,7 @@ $message->toolResults();
 
 A tool call contains a `result` once it has been executed. Tool calls that contain an `approval_reason` but no `result` are still awaiting a [tool approval](#human-tool-approval).
 
-The `status` property contains a `Laravel\Ai\Enums\MessageStatus` instance. A turn that failed partway through is stored as `Failed` along with the steps it had already completed, so tool calls that ran before the failure remain in the history. Calls the turn never answered are replayed to the model as interrupted, since they may or may not have run.
+The `status` property contains a `Laravel\Ai\Enums\MessageStatus` instance. A turn that failed partway through is stored as `Failed` along with the steps it had already completed, so tool calls that ran before the failure remain in the history. When the conversation continues, any tool call without a recorded result is sent to the model marked as interrupted, since Laravel cannot determine whether it ran.
 
 Before continuing a conversation via an ID provided by your application's frontend, you should verify that the conversation was stored for the given participant:
 
@@ -827,13 +827,13 @@ use Laravel\Ai\Responses\StreamedAgentResponse;
     });
 ```
 
-Reasoning is available on responses returned by the `prompt` method as well, so a response does not need to be streamed in order to inspect it.
+Reasoning is also available on responses returned by the `prompt` method.
 
 <a name="streaming-using-the-vercel-ai-sdk-protocol"></a>
 <a name="stream-protocols"></a>
 #### Stream Protocols
 
-By default, a streamed response emits events following the Laravel AI SDK's own protocol conventions. However, you may instruct the response to use a frontend streaming protocol instead, allowing you to pair your agent with an existing chat interface instead of building your own.
+By default, streamed responses use the AI SDK's own event format. However, you may use a frontend streaming protocol instead, which allows you to pair your agent with an existing chat interface rather than building your own.
 
 You may stream the events using the [Vercel AI SDK stream protocol](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol) by invoking the `usingVercelDataProtocol` method on the streamable response:
 
@@ -864,7 +864,7 @@ Route::post('/coach', function (Request $request) {
 });
 ```
 
-Both of the method's arguments are optional and default to the conversation ID and the invocation ID:
+The `threadId` and `runId` arguments are optional and default to the conversation ID and the invocation ID:
 
 ```php
 ->usingAgentUserInteractionProtocol(
@@ -887,9 +887,9 @@ return (new SalesCoach)
 <a name="frontend-integration"></a>
 #### Frontend Integration
 
-Chat interfaces built with libraries such as Vercel's `useChat` or CopilotKit already render messages, tool calls, and approval prompts, so your application only needs to answer their requests. Each request contains the conversation history, the newest user message, and any tool approval responses.
+Chat interfaces built with libraries such as Vercel's `useChat` or CopilotKit already render messages, tool calls, and approval prompts, so your application only needs to handle the requests they send. Each request contains the conversation history, the newest user message, and any tool approval responses.
 
-The `Vercel` and `AgentUserInteraction` classes may be used to convert such a request into a chat that agents accept directly:
+The `Vercel::chat` and `AgentUserInteraction::chat` methods convert such a request into an object that may be passed directly to an agent's `stream` method:
 
 ```php
 use Laravel\Ai\Vercel\Vercel;
@@ -920,7 +920,7 @@ $chat->threadId();
 $chat->runId();
 ```
 
-You may also convert stored messages back into the format a client expects, allowing you to hydrate a conversation that the client did not stream:
+You may also convert stored messages back into the format a client expects, allowing the client to display a previous conversation, such as after a page reload:
 
 ```php
 $messages = $conversation->messages()->oldest()->get();
@@ -1618,9 +1618,12 @@ class LogPrompts
 }
 ```
 
-In addition to the `provider`, `model`, `instructions`, `messages`, and `tools` that are about to be sent, the step exposes the steps that have already completed, their usage, and the progress of the run:
+In addition to the `provider`, `model`, `instructions`, `messages`, and `tools` that are about to be sent, the step exposes the steps that have already completed, their combined usage, and the progress of the run:
 
 ```php
+$step->steps;
+$step->usage;
+
 $step->number;
 $step->isFirstStep();
 $step->isFinalStep;
@@ -1663,7 +1666,7 @@ public function handle(PendingStep $step, Closure $next)
 }
 ```
 
-Messages given to a step only replace the messages that step sends. The run's history continues to grow from the original messages.
+Messages passed to the `withMessages` method only change what is sent for the current step. Later steps and the stored conversation continue to use the full, unsummarized history.
 
 You may use the `then` method to execute code once the model has answered the step, before its tool calls are executed. This works for both synchronous and streaming responses:
 
@@ -1844,7 +1847,7 @@ You may also pass a closure instead of an array, which will receive the provider
 <a name="custom-http-headers"></a>
 #### Custom HTTP Headers
 
-Headers configured for a provider within your application's `config/ai.php` configuration file are sent with every request that provider makes. To send headers on a per request basis, such as metadata used by an AI gateway, you may use the `withHeaders` method, which is available on the image, audio, transcription, embedding, and reranking builders, as well as on [file uploads](#files):
+Headers configured for a provider within your application's `config/ai.php` configuration file are sent with every request that provider makes. To send headers on a per-request basis, such as metadata used by an AI gateway, you may use the `withHeaders` method, which is available on the image, audio, transcription, embedding, and reranking builders, as well as on [file uploads](#files):
 
 ```php
 use Laravel\Ai\Embeddings;
@@ -1855,7 +1858,7 @@ $embeddings = Embeddings::for($chunks)
     ->generate();
 ```
 
-Headers may also be given as a closure, which receives the provider currently being used. Headers are never sent as request parameters and never affect [embedding cache keys](#caching-embeddings).
+Headers may also be given as a closure, which receives the provider currently being used. Headers are not included in the request body and do not affect [embedding cache keys](#caching-embeddings).
 
 <a name="prompt-caching"></a>
 ### Prompt Caching
@@ -2047,7 +2050,7 @@ return (new FileAssistant)
     ->usingProtocol($chat->protocol());
 ```
 
-A resumed run is merged into the turn that it paused on, so each turn is stored as a single assistant message. The response's `assistantMessageId` contains the ID of the paused message, and that message's usage includes both the pause and the resume.
+When a paused turn is resumed, the resumed steps are merged into that turn, so each turn is stored as a single assistant message. The response's `assistantMessageId` contains the ID of the paused message, and that message's usage includes both the pause and the resume.
 
 For queued agents, the resulting response is passed to the `then` callback, and Laravel also dispatches a `ToolApprovalRequested` event.
 
@@ -2593,7 +2596,7 @@ $reranked = $posts->rerank(
 > [!WARNING]
 > Classification is currently experimental and its API may change in future minor releases of the AI SDK.
 
-Classification allows you to ask a fixed set of questions about a given string or array of data and receive a typed answer, backed by a probability, for each question instead of free-form text. This is useful for routing, moderation, and scoring, where decisions need to be thresholded and tested.
+Classification allows you to ask a fixed set of questions about a given string or array of data and receive a typed answer, backed by a probability, for each question instead of free-form text. This is useful for routing, moderation, and scoring, where you need to compare an answer against a threshold or make assertions about it in your tests.
 
 The `Laravel\Ai\Classification` class may be used to classify content. Each question is given a key, and the corresponding answer may be retrieved from the response using that key:
 
@@ -2630,7 +2633,7 @@ $result['urgent']->probability;             // 0.94
 $result['urgent']->isTrue(threshold: 0.8);  // true
 ```
 
-`Choice` questions return one of the given options along with the probability of each option. The `confidence` property will be `null` when the provider is unable to measure it:
+`Choice` questions return one of the given options along with the probability of each option. The `confidence` property indicates how certain the provider is across the full set of probabilities, and will be `null` when the provider is unable to measure it:
 
 ```php
 $result['department']->choice;                      // 'technical'
@@ -2933,7 +2936,7 @@ $store->remove('file_abc123', deleteFile: true);
 <a name="usage"></a>
 ## Usage
 
-Every response contains a `usage` property describing what the request consumed. The input and output counts are totals, so tokens counted as cached or reasoning tokens are also included in the total they belong to:
+Every response contains a `usage` property containing the token counts reported by the provider. The input and output counts are totals, so tokens counted as cached or reasoning tokens are also included in the total they belong to:
 
 ```php
 $response = (new SalesCoach)->prompt('Analyze this sales transcript...');
@@ -2943,7 +2946,7 @@ $response->usage->outputTokens;
 $response->usage->totalTokens();
 ```
 
-Text generation returns a `Laravel\Ai\Responses\Data\TextUsage` instance, which breaks these totals down further. Each of these values will be `null` when the provider does not report it, distinguishing an unreported count from zero:
+Text generation returns a `Laravel\Ai\Responses\Data\TextUsage` instance, which breaks these totals down further. Each of these values will be `null`, rather than `0`, when the provider does not report it:
 
 ```php
 $response->usage->cacheReadInputTokens; // Subset of the input tokens read from a prompt cache...
@@ -2969,7 +2972,7 @@ The remaining capabilities return a usage object containing the counts specific 
 
 </div>
 
-Not every provider reports every count. Image and transcription models that a provider routes through its chat models report cache and reasoning counts, while other providers leave them `null`:
+Not every provider reports every count, and counts that a provider does not report will be `null`:
 
 ```php
 use Laravel\Ai\Image;
