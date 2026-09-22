@@ -594,7 +594,19 @@ $message->providerToolCalls();
 $message->toolResults();
 ```
 
-A tool call contains a `result` once it has been executed. Tool calls that contain an `approval_reason` but no `result` are still awaiting a [tool approval](#human-tool-approval), while the `approvalRequestedAt` property contains the time the turn was paused.
+A tool call contains a `result` once it has been executed. Tool calls that contain an `approval_reason` but no `result` are still awaiting a [tool approval](#human-tool-approval).
+
+The `status` property contains a `Laravel\Ai\Enums\MessageStatus` instance describing how the turn ended. A turn that is awaiting a tool approval is `Paused`, while a run that threw partway through is stored as `Failed` along with the steps it had already completed, including any tools that already ran:
+
+```php
+use Laravel\Ai\Enums\MessageStatus;
+
+$message->status === MessageStatus::Completed;
+$message->status === MessageStatus::Paused;
+$message->status === MessageStatus::Failed;
+```
+
+Tool calls that a failed turn never answered are replayed to the model as interrupted, since they may or may not have run.
 
 Before continuing a conversation ID provided by your application's frontend, you should verify that the conversation was stored for the given participant:
 
@@ -2641,6 +2653,37 @@ $result->collect();
 
 $result->usage;
 $result->meta->provider;
+```
+
+For a single yes or no decision, you may use the `decide` method available via Laravel's `Stringable` class, which returns a boolean instead of a full response. You may describe what a yes and a no mean, and specify the probability the answer must reach, which defaults to `0.5`:
+
+```php
+use Illuminate\Support\Str;
+
+if (Str::of($message)->decide('Is this spam?')) {
+    // ...
+}
+
+$spam = Str::of($message)->decide('Is this spam?', criteria: [
+    'true' => 'Unsolicited bulk mail.',
+    'false' => 'A genuine message from a customer.',
+], threshold: 0.9);
+```
+
+The provider, model, and timeout may be specified as well. The `Str` class also offers a static version of the method:
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+$spam = Str::of($message)->decide(
+    'Is this spam?',
+    threshold: 0.9,
+    provider: Lab::OpenRouter,
+    model: 'model-name',
+    timeout: 60,
+);
+
+$spam = Str::decide($message, 'Is this spam?', threshold: 0.9);
 ```
 
 By default, classification is performed by [TypeSafe](https://typesafe.ai). You may change this using the `default_for_classification` option within your application's `config/ai.php` configuration file. You may also specify the provider and model when classifying:
