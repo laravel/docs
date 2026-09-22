@@ -9,6 +9,7 @@
     - [Timestamps](#timestamps)
     - [Database Connections](#database-connections)
     - [Default Attribute Values](#default-attribute-values)
+    - [Refreshing Attributes After Writes](#refreshing-attributes-after-writes)
     - [Configuring Eloquent Strictness](#configuring-eloquent-strictness)
 - [Retrieving Models](#retrieving-models)
     - [Collections](#collections)
@@ -417,6 +418,29 @@ class Flight extends Model
     ];
 }
 ```
+
+<a name="refreshing-attributes-after-writes"></a>
+### Refreshing Attributes After Writes
+
+If your database contains generated columns, you may configure Eloquent to refresh specific attributes after a model is inserted or updated. To do so, define the `Refreshes` attribute on your model:
+
+```php
+use Illuminate\Database\Eloquent\Attributes\Refreshes;
+
+#[Refreshes('name')]
+class User extends Model
+{
+    // ...
+}
+```
+
+You may specify multiple attributes as an array:
+
+```php
+#[Refreshes(['name', 'slug'])]
+```
+
+After the model is written, the configured attributes will be refreshed from the database.
 
 <a name="configuring-eloquent-strictness"></a>
 ### Configuring Eloquent Strictness

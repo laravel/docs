@@ -1488,6 +1488,24 @@ $table->string('email')->unique()->online();
 
 When using PostgreSQL, this adds the `CONCURRENTLY` option to the index creation statement. When using SQL Server, this adds the `WITH (online = on)` option.
 
+When using MySQL, you may chain the `inplace` modifier onto an index or foreign key definition to specify that the operation should use the `INPLACE` algorithm:
+
+```php
+$table->index('email')->inplace();
+
+$table->foreign('user_id')->references('id')->on('users')->inplace();
+```
+
+The `inplace` modifier may be combined with the `lock` modifier to control table locking during the operation:
+
+```php
+$table->index('email')->inplace()->lock('none');
+```
+
+When using the `inplace` modifier for a foreign key operation, foreign key checks must be disabled.
+
+Refer to [MySQL's documentation](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) to determine which operations support the `INPLACE` algorithm and lock modes.
+
 <a name="renaming-indexes"></a>
 ### Renaming Indexes
 
