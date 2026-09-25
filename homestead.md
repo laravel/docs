@@ -381,7 +381,7 @@ You may specify a supported version of Elasticsearch, which must be an exact ver
 <a name="mariadb"></a>
 #### MariaDB
 
-Enabling MariaDB will remove MySQL and install MariaDB. MariaDB typically serves as a drop-in replacement for MySQL, so you should still use the `mysql` database driver in your application's database configuration.
+Enabling MariaDB will remove MySQL and install MariaDB. Your application should use the `mariadb` database driver rather than `mysql`: both will connect, but only the `mariadb` driver emits MariaDB-specific SQL, such as vector distance queries.
 
 <a name="mongodb"></a>
 #### MongoDB
