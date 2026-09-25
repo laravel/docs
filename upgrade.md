@@ -213,7 +213,7 @@ Although the MariaDB and MySQL database drivers ignore the `uniqueBy` value and 
 
 Laravel now compiles full `DELETE ... JOIN` queries including `ORDER BY` and `LIMIT` for MySQL grammar.
 
-In previous versions, `ORDER BY` / `LIMIT` clauses could be silently ignored on joined deletes. In Laravel 13, these clauses are included in the generated SQL. As a result, database engines that do not support this syntax (such as standard MySQL / MariaDB variants) may now throw a `QueryException` instead of executing an unbounded delete.
+In previous versions, `ORDER BY` / `LIMIT` clauses could be silently ignored on joined deletes. In Laravel 13, these clauses are included in the generated SQL. As a result, database engines that do not support this syntax (MySQL, and MariaDB before 11.8.1) may now throw a `QueryException` instead of executing an unbounded delete.
 
 <a name="eloquent"></a>
 ### Eloquent
