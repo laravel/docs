@@ -3032,6 +3032,18 @@ The `queue:flush` command removes all failed job records from your queue, no mat
 php artisan queue:flush --hours=48
 ```
 
+You may also flush all of the failed jobs for a particular queue using the `--queue` option:
+
+```shell
+php artisan queue:flush --queue=name
+```
+
+If both options are provided, only failed jobs on the given queue that are older than the specified number of hours will be deleted:
+
+```shell
+php artisan queue:flush --queue=emails --hours=48
+```
+
 <a name="ignoring-missing-models"></a>
 ### Ignoring Missing Models
 
