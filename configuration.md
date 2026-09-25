@@ -126,6 +126,16 @@ if (App::environment(['local', 'staging'])) {
 }
 ```
 
+The `environment` method also accepts enums:
+
+```php
+use App\Enums\Environment;
+
+if (App::environment(Environment::Staging)) {
+    // The environment is staging...
+}
+```
+
 > [!NOTE]
 > The current application environment detection can be overridden by defining a server-level `APP_ENV` environment variable.
 
