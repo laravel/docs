@@ -4,6 +4,7 @@
     - [The Default Route Files](#the-default-route-files)
     - [Redirect Routes](#redirect-routes)
     - [View Routes](#view-routes)
+    - [Static Routes](#static-routes)
     - [Listing Your Routes](#listing-your-routes)
     - [Routing Customization](#routing-customization)
 - [Route Parameters](#route-parameters)
@@ -176,6 +177,63 @@ Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
 > [!WARNING]
 > When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
+
+<a name="static-routes"></a>
+### Static Routes
+
+Some pages in your application may be fully public and safe to cache in a shared cache such as Cloudflare, Fastly, or another CDN. For example, marketing pages, pricing pages, documentation pages, and public blog posts often return the same HTML to every visitor.
+
+You may mark a route as static by invoking the `static` method on the route definition:
+
+```php
+Route::get('/about', AboutController::class)->static();
+
+Route::get('/pricing', PricingController::class)->static(ttl: 600);
+
+Route::get('/blog/{post:slug}', [BlogController::class, 'show'])
+    ->static(ttl: 3600, browserTtl: 60);
+```
+
+Static routes skip session, queued cookie, and request forgery middleware for cacheable requests, strip outgoing cookies from the response, and add cache headers such as `Cache-Control`, `CDN-Cache-Control`, and `Vary`. This helps prevent per-user session state from being included in responses that may be cached by a CDN.
+
+By default, static routes are configured by the `static` key in your application's `config/cache.php` configuration file. You may customize the shared cache lifetime, browser cache lifetime, cookies that should be stripped, middleware that should be skipped, and additional `Vary` headers:
+
+```php
+'static' => [
+    'ttl' => 3600,
+    'browser_ttl' => 0,
+    'strip_cookies' => null,
+    'strip_middleware' => [
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
+    ],
+    'vary' => ['X-Inertia'],
+    'cdn_cache_control' => true,
+],
+```
+
+You may override these values for an individual route using named arguments:
+
+```php
+Route::get('/landing', LandingPageController::class)->static(
+    ttl: 1800,
+    browserTtl: 60,
+    stripCookies: ['XSRF-TOKEN'],
+    vary: ['Accept-Encoding'],
+);
+```
+
+> [!WARNING]
+> Static routes should only be used for responses that are identical for every visitor. Do not use static routes for authenticated dashboards, routes that render per-user data, routes that depend on flash data or validation errors, or pages containing forms that require CSRF protection.
+
+When using [Inertia](/docs/{{version}}/frontend#inertia), Laravel automatically varies static responses by the `X-Inertia` request header. The initial HTML response may be cached, while Inertia JSON visits and partial reloads bypass static response mutation and continue through the route's normal middleware stack.
+
+Livewire's initial page render may be cached when the rendered page is public and user-independent. Livewire update requests, such as requests to `/livewire/update`, are separate dynamic requests and are not made static by marking the initial page route as static.
+
+> [!NOTE]
+> Emitting cache headers does not necessarily cause every CDN to cache HTML responses. For example, Cloudflare typically requires a Cache Rule before HTML pages are stored at the edge. Cache purging and invalidation should be configured in your CDN.
 
 <a name="listing-your-routes"></a>
 ### Listing Your Routes
