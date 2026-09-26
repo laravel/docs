@@ -5,6 +5,7 @@
     - [Configuration](#configuration)
     - [Custom Base URLs](#custom-base-urls)
     - [OpenAI-Compatible Providers](#openai-compatible-providers)
+    - [On-Demand Providers](#on-demand-providers)
     - [Provider Support](#provider-support)
 - [Agents](#agents)
     - [Prompting](#prompting)
@@ -224,6 +225,70 @@ Likewise, you must configure a default transcription model to use `Transcription
 
 > [!NOTE]
 > OpenAI-compatible and Groq providers do not support diarization. Invoking the `diarize` method when using these providers will throw an exception.
+
+<a name="on-demand-providers"></a>
+### On-Demand Providers
+
+Sometimes you may need to create a provider from configuration that is not defined in your application's `config/ai.php` file, such as when each tenant of your application stores their own API credentials. You may use the `Ai::build` method to create a provider from a configuration array that has the same shape as an entry in your `config/ai.php` file:
+
+```php
+use Laravel\Ai\Ai;
+
+$response = (new SalesCoach)->prompt('Analyze this sales transcript...', provider: [
+    Ai::build([
+        'driver' => 'anthropic',
+        'key' => $tenant->anthropic_key,
+        'url' => $tenant->anthropic_url,
+    ]),
+]);
+```
+
+You should always pass on-demand providers within an array. This also allows you to [fail over](#failover) between them. Per-provider models may be defined using the `models` configuration option. Images, audio, embeddings, transcription, reranking, and classification accept on-demand providers in the same way:
+
+```php
+$response = (new SalesCoach)->prompt('Analyze this sales transcript...', provider: [
+    Ai::build(['driver' => 'anthropic', 'key' => $tenant->anthropic_key]),
+    Ai::build([
+        'driver' => 'openai',
+        'key' => $tenant->openai_key,
+        'models' => ['text' => ['default' => 'gpt-6']],
+    ]),
+]);
+```
+
+When [queueing](#queueing) an agent, you should return the on-demand provider from the agent's `provider` method instead of building it where the agent is prompted. The queued job then serializes the agent and its tenant rather than the API key, and the queue worker builds the provider again:
+
+```php
+use Laravel\Ai\Ai;
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Promptable;
+use Laravel\Ai\Providers\Provider;
+
+class SupportAgent implements Agent
+{
+    use Promptable;
+
+    public function __construct(public Tenant $tenant) {}
+
+    /**
+     * Get the provider the agent should use.
+     */
+    public function provider(): Provider
+    {
+        return Ai::build([
+            'driver' => 'anthropic',
+            'key' => $this->tenant->anthropic_key,
+        ]);
+    }
+}
+
+(new SupportAgent($tenant))->queue('Summarize the ticket.');
+```
+
+On-demand providers are flushed between queue jobs and Octane requests, so they do not carry over into later jobs or requests. If you give an on-demand provider a `name`, it must not match a configured or built-in provider, and building the same name again replaces its earlier configuration.
+
+> [!WARNING]
+> Queued images, audio, embeddings, and transcriptions do not support on-demand providers.
 
 <a name="provider-support"></a>
 ### Provider Support
