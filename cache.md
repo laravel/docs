@@ -716,6 +716,7 @@ class MongoStore implements Store
     public function increment($key, $value = 1) {}
     public function decrement($key, $value = 1) {}
     public function forever($key, $value) {}
+    public function touch($key, $seconds) {}
     public function forget($key) {}
     public function flush() {}
     public function getPrefix() {}
