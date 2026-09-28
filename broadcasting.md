@@ -198,7 +198,22 @@ Finally, you are ready to install and configure [Laravel Echo](#client-side-inst
 <a name="mercure"></a>
 ### Mercure
 
-[Mercure](https://mercure.rocks) is a real-time protocol that uses server-sent events. To broadcast events through a Mercure hub, configure the `mercure` connection in your application's `.env` file:
+To quickly enable support for Laravel's broadcasting features while using Mercure as your event broadcaster, invoke the `install:broadcasting` Artisan command with the `--mercure` option. This Artisan command will prompt you for your Mercure credentials, install the Mercure PHP and JavaScript SDKs, and update your application's `.env` file with the appropriate variables:
+
+```shell
+php artisan install:broadcasting --mercure
+```
+
+<a name="mercure-manual-installation"></a>
+#### Manual Installation
+
+To install Mercure support manually, you should install the Symfony Mercure component and the JWT library:
+
+```shell
+composer require symfony/mercure:^0.8 web-token/jwt-library:^4.1
+```
+
+Next, you should configure the Mercure connection in your application's `.env` file:
 
 ```ini
 BROADCAST_CONNECTION=mercure
@@ -215,6 +230,8 @@ To use end-to-end encrypted private channels, configure a 32-byte `MERCURE_ENCRY
 ```ini
 MERCURE_ENCRYPTION_KEY=<your-32-byte-encryption-key>
 ```
+
+Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
 <a name="client-side-installation"></a>
 ## Client Side Installation
