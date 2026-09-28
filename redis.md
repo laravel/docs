@@ -35,7 +35,7 @@ You may configure your application's Redis settings via the `config/database.php
 
     'options' => [
         'cluster' => env('REDIS_CLUSTER', 'redis'),
-        'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
     ],
 
     'default' => [
@@ -68,7 +68,7 @@ Each Redis server defined in your configuration file is required to have a name,
 
     'options' => [
         'cluster' => env('REDIS_CLUSTER', 'redis'),
-        'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
     ],
 
     'default' => [
@@ -111,7 +111,7 @@ If your application is utilizing a cluster of Redis servers, you should define t
 
     'options' => [
         'cluster' => env('REDIS_CLUSTER', 'redis'),
-        'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
     ],
 
     'clusters' => [
@@ -302,7 +302,7 @@ The PhpRedis extension may also be configured to use a variety of serializers an
 
     'options' => [
         'cluster' => env('REDIS_CLUSTER', 'redis'),
-        'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
         'serializer' => Redis::SERIALIZER_MSGPACK,
         'compression' => Redis::COMPRESSION_LZ4,
     ],
