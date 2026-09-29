@@ -2753,7 +2753,9 @@ $spam = Str::of($message)->decide('Is this spam?', criteria: [
 <a name="choosing-from-collections"></a>
 ### Choosing From Collections
 
-To choose a single item from a list of options, you may use the `decide` method available on Laravel's `Collection` class. The method accepts a question and the text to classify, and returns the chosen item from the collection. Collections of strings and enums may be used directly, while other items should be named using the `by` argument. You may also provide a field, array of fields, or closure via the `describe` argument to give the model more detail about each option:
+To quickly choose a single item from a list of options, you may use the `decide` method available on Laravel's `Collection` class. The method accepts a question and the text to classify, and returns the chosen item from the collection.
+
+Collections of strings and enums may be used directly, while other items should be named using the `by` argument. You may also provide a field, array of fields, or closure via the `describe` argument to give the model more detail about each option:
 
 ```php
 $department = collect(['billing', 'technical', 'sales'])
