@@ -2770,6 +2770,16 @@ $department = Department::all()->decide(
 );
 ```
 
+When a closure is given to the `describe` argument, it receives each item and should return that item's description:
+
+```php
+$priority = collect(Priority::cases())->decide(
+    'How urgent is this request?',
+    $ticket->body,
+    describe: fn (Priority $priority) => $priority->description(),
+);
+```
+
 When a collection of strings is keyed by strings, its keys are used as the options and its values as their descriptions, and the chosen key is returned. If a `threshold` is given and the probability of the chosen option is below it, `null` is returned:
 
 ```php
