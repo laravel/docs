@@ -1142,7 +1142,7 @@ JsonApiResource::maxRelationshipDepth(3);
 <a name="jsonapi-resource-type-and-id"></a>
 ### Resource Type and ID
 
-By default, the resource's `type` is derived from the resource class name. For example, `PostResource` produces the type `posts` and `BlogPostResource` produces `blog-posts`. The resource's `id` is resolved from the model's primary key.
+By default, the resource's `type` is derived from the resource class name. For example, `PostResource` produces the type `posts` and `BlogPostResource` produces `blog_posts`. The resource's `id` is resolved from the model's primary key.
 
 If you need to customize these values, you may override the `toType` and `toId` methods on your resource:
 
