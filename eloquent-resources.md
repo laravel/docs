@@ -327,7 +327,7 @@ Once a resource has been defined, it may be returned directly from a route or co
 use App\Models\User;
 
 Route::get('/user/{id}', function (string $id) {
-    return User::findOrFail($id)->toUserResource();
+    return User::findOrFail($id)->toResource();
 });
 ```
 

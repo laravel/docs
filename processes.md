@@ -402,7 +402,7 @@ return $results['first']->output();
 Since the process pool's `running` method provides a collection of all invoked processes within the pool, you may easily access the underlying pool process IDs:
 
 ```php
-$processIds = $pool->running()->each->id();
+$processIds = $pool->running()->map->id();
 ```
 
 And, for convenience, you may invoke the `signal` method on a process pool to send a signal to every process within the pool:
