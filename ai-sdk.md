@@ -2772,7 +2772,7 @@ $department = Department::all()->decide(
 );
 ```
 
-When a closure is given to the `describe` argument, it receives each item and should return that item's description:
+Each option is sent to the provider using its name, along with its description when one is given. The description serves as the criteria the model uses to determine whether the text matches that option, which is helpful when an option's name alone is ambiguous. Descriptions only guide the decision; the `decide` method always returns the original item. When an array of fields is given, the fields are sent together as structured data. When a closure is given, it receives each item and should return a string or array describing it:
 
 ```php
 $priority = collect(Priority::cases())->decide(
