@@ -238,7 +238,7 @@ use Laravel\Ai\Ai;
 $response = (new SalesCoach)->prompt('Analyze this sales transcript...', provider: [
     Ai::build([
         'driver' => 'anthropic',
-        'key' => $tenant->anthropic_key,
+        'key' => $user->anthropic_key,
     ]),
 ]);
 ```
@@ -247,10 +247,10 @@ On-demand providers may be used anywhere a provider is accepted, including [fail
 
 ```php
 $response = (new SalesCoach)->prompt('Analyze this sales transcript...', provider: [
-    Ai::build(['driver' => 'anthropic', 'key' => $tenant->anthropic_key]),
+    Ai::build(['driver' => 'anthropic', 'key' => $user->anthropic_key]),
     Ai::build([
         'driver' => 'openai',
-        'key' => $tenant->openai_key,
+        'key' => $user->openai_key,
         'models' => ['text' => ['default' => 'gpt-6']],
     ]),
 ]);
@@ -264,7 +264,7 @@ use Laravel\Ai\Providers\Provider;
 
 public function provider(): Provider
 {
-    return Ai::build($this->tenant->aiConfiguration());
+    return Ai::build($this->user->aiConfiguration());
 }
 ```
 
