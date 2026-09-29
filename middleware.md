@@ -474,7 +474,7 @@ Sometimes a middleware may need to do some work after the HTTP response has been
 ```php
 <?php
 
-namespace Illuminate\Session\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
