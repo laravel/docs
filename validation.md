@@ -1932,7 +1932,7 @@ The field under validation must contain a valid color value in [hexadecimal](htt
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
+The file under validation must be an image (jpg, jpeg, png, bmp, gif, webp, avif, heic, or heif).
 
 > [!WARNING]
 > By default, the image rule does not allow SVG files due to the possibility of XSS vulnerabilities. If you need to allow SVG files, you may provide the `allow_svg` directive to the `image` rule (`image:allow_svg`).
@@ -2829,7 +2829,7 @@ File::types(['mp3', 'wav'])
 <a name="validating-files-image-files"></a>
 #### Validating Image Files
 
-If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to ensure that the file under validation is an image (jpg, jpeg, png, bmp, gif, or webp).
+If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to ensure that the file under validation is an image (jpg, jpeg, png, bmp, gif, webp, avif, heic, or heif).
 
 In addition, the `dimensions` rule may be used to limit the dimensions of the image:
 
