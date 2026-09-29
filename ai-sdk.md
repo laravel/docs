@@ -5,6 +5,7 @@
     - [Configuration](#configuration)
     - [Custom Base URLs](#custom-base-urls)
     - [OpenAI-Compatible Providers](#openai-compatible-providers)
+    - [On-Demand Providers](#on-demand-providers)
     - [Provider Support](#provider-support)
 - [Agents](#agents)
     - [Prompting](#prompting)
@@ -37,6 +38,8 @@
     - [Caching Embeddings](#caching-embeddings)
 - [Reranking](#reranking)
 - [Classification](#classification)
+    - [Yes or No Decisions](#yes-or-no-decisions)
+    - [Choosing From Collections](#choosing-from-collections)
 - [Files](#files)
 - [Vector Stores](#vector-stores)
     - [Adding Files to Stores](#adding-files-to-stores)
@@ -224,6 +227,51 @@ Likewise, you must configure a default transcription model to use `Transcription
 
 > [!NOTE]
 > OpenAI-compatible and Groq providers do not support diarization. Invoking the `diarize` method when using these providers will throw an exception.
+
+<a name="on-demand-providers"></a>
+### On-Demand Providers
+
+Sometimes you may need to use provider credentials that are not defined in your application's configuration file, such as API keys that are stored in your database for each tenant of a multi-tenant application. You may use the `Ai::build` method to create a provider from a configuration array. The array should have the same structure as a provider entry in your application's `config/ai.php` configuration file:
+
+```php
+use App\Ai\Agents\SalesCoach;
+use Laravel\Ai\Ai;
+
+$response = (new SalesCoach)->prompt('Analyze this sales transcript...', provider: [
+    Ai::build([
+        'driver' => 'anthropic',
+        'key' => $user->anthropic_key,
+    ]),
+]);
+```
+
+On-demand providers may be used anywhere a provider is accepted, including [failover](#failover) lists and when generating images, audio, transcriptions, and embeddings. To specify a model for an on-demand provider, include a `models` array in its configuration:
+
+```php
+$response = (new SalesCoach)->prompt('Analyze this sales transcript...', provider: [
+    Ai::build(['driver' => 'anthropic', 'key' => $user->anthropic_key]),
+    Ai::build([
+        'driver' => 'openai',
+        'key' => $user->openai_key,
+        'models' => ['text' => ['default' => 'gpt-6']],
+    ]),
+]);
+```
+
+When an agent should always use an on-demand provider, you may return the provider from the agent's `provider` method. Since the provider is rebuilt when the agent is used, this approach also works well for [queued](#queueing) agents:
+
+```php
+use Laravel\Ai\Ai;
+use Laravel\Ai\Providers\Provider;
+
+public function provider(): Provider
+{
+    return Ai::build($this->user->aiConfiguration());
+}
+```
+
+> [!NOTE]
+> You should pass on-demand providers within an array, as shown in the examples above. If you give an on-demand provider a `name` in its configuration array, the name may not match a built-in provider or a provider defined in your `config/ai.php` configuration file.
 
 <a name="provider-support"></a>
 ### Provider Support
@@ -2664,6 +2712,9 @@ $result->usage;
 $result->meta->provider;
 ```
 
+<a name="yes-or-no-decisions"></a>
+### Yes or No Decisions
+
 For a single yes or no decision, you may use the `decide` method available via Laravel's `Stringable` class, which returns a boolean instead of a full response. You may describe what a "yes" and a "no" mean, and specify the probability the answer must reach, which defaults to `0.5`:
 
 ```php
@@ -2679,24 +2730,45 @@ $spam = Str::of($message)->decide('Is this spam?', criteria: [
 ], threshold: 0.9);
 ```
 
-By default, classification is performed by [TypeSafe](https://typesafe.ai). You may change this using the `default_for_classification` option within your application's `config/ai.php` configuration file. You may also specify the provider and model when classifying:
+<a name="choosing-from-collections"></a>
+### Choosing From Collections
+
+To quickly choose a single item from a list of options, you may use the `decide` method available on Laravel's `Collection` class. The method accepts a question and the text to classify, and returns the chosen item from the collection.
+
+Collections of strings and enums may be used directly, while other items should be named using the `by` argument. You may also provide a field, array of fields, or closure via the `describe` argument to give the model more detail about each option:
 
 ```php
-use Laravel\Ai\Enums\Lab;
+$department = collect(['billing', 'technical', 'sales'])
+    ->decide('Which team should handle this request?', $ticket->body);
 
-$result = Classification::of($supportRequest)
-    ->questions($questions)
-    ->classify(Lab::OpenRouter, 'model-name');
+$priority = collect(Priority::cases())
+    ->decide('How urgent is this request?', $ticket->body);
+
+$department = Department::all()->decide(
+    'Which department should handle this request?',
+    $ticket->body,
+    by: 'name',
+    describe: 'description',
+);
 ```
 
-The `timeout` method may be used to specify the HTTP timeout in seconds, which defaults to 30. [Provider options](#provider-options) and custom headers may be given as well:
+The description defined via the `describe` argument serves as the criteria the model uses to determine whether the text matches that option, which is helpful when an option's name alone is ambiguous. When a closure is provided to the `describe` argument, it receives each item and should return a string or array describing it:
 
 ```php
-$result = Classification::of($supportRequest)
-    ->questions($questions)
-    ->timeout(60)
-    ->withProviderOptions(['temperature' => 0])
-    ->classify();
+$priority = collect(Priority::cases())->decide(
+    'How urgent is this request?',
+    $ticket->body,
+    describe: fn (Priority $priority) => $priority->description(),
+);
+```
+
+When a collection of strings is keyed by strings, its keys are used as the options and its values as their descriptions, and the chosen key is returned. If a `threshold` is given and the probability of the chosen option is below it, `null` is returned:
+
+```php
+$department = collect([
+    'billing' => 'Payments, invoices, and refunds',
+    'technical' => 'Bugs, outages, and integrations',
+])->decide('Which team should handle this request?', $ticket->body, threshold: 0.6) ?? 'triage';
 ```
 
 <a name="files"></a>
