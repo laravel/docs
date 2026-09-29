@@ -2712,26 +2712,6 @@ $result->usage;
 $result->meta->provider;
 ```
 
-By default, classification is performed by [TypeSafe](https://typesafe.ai). You may change this using the `default_for_classification` option within your application's `config/ai.php` configuration file. You may also specify the provider and model when classifying:
-
-```php
-use Laravel\Ai\Enums\Lab;
-
-$result = Classification::of($supportRequest)
-    ->questions($questions)
-    ->classify(Lab::OpenRouter, 'model-name');
-```
-
-The `timeout` method may be used to specify the HTTP timeout in seconds, which defaults to 30. [Provider options](#provider-options) and custom headers may be given as well:
-
-```php
-$result = Classification::of($supportRequest)
-    ->questions($questions)
-    ->timeout(60)
-    ->withProviderOptions(['temperature' => 0])
-    ->classify();
-```
-
 <a name="yes-or-no-decisions"></a>
 ### Yes or No Decisions
 
@@ -2772,7 +2752,7 @@ $department = Department::all()->decide(
 );
 ```
 
-Each option is sent to the provider using its name, along with its description when one is given. The description serves as the criteria the model uses to determine whether the text matches that option, which is helpful when an option's name alone is ambiguous. Descriptions only guide the decision; the `decide` method always returns the original item. When an array of fields is given, the fields are sent together as structured data. When a closure is given, it receives each item and should return a string or array describing it:
+The description defined via the `describe` argument serves as the criteria the model uses to determine whether the text matches that option, which is helpful when an option's name alone is ambiguous. When a closure is provided to the `describe` argument, it receives each item and should return a string or array describing it:
 
 ```php
 $priority = collect(Priority::cases())->decide(
