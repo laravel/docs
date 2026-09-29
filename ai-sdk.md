@@ -38,6 +38,8 @@
     - [Caching Embeddings](#caching-embeddings)
 - [Reranking](#reranking)
 - [Classification](#classification)
+    - [Yes or No Decisions](#yes-or-no-decisions)
+    - [Choosing From Collections](#choosing-from-collections)
 - [Files](#files)
 - [Vector Stores](#vector-stores)
     - [Adding Files to Stores](#adding-files-to-stores)
@@ -2710,6 +2712,29 @@ $result->usage;
 $result->meta->provider;
 ```
 
+By default, classification is performed by [TypeSafe](https://typesafe.ai). You may change this using the `default_for_classification` option within your application's `config/ai.php` configuration file. You may also specify the provider and model when classifying:
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+$result = Classification::of($supportRequest)
+    ->questions($questions)
+    ->classify(Lab::OpenRouter, 'model-name');
+```
+
+The `timeout` method may be used to specify the HTTP timeout in seconds, which defaults to 30. [Provider options](#provider-options) and custom headers may be given as well:
+
+```php
+$result = Classification::of($supportRequest)
+    ->questions($questions)
+    ->timeout(60)
+    ->withProviderOptions(['temperature' => 0])
+    ->classify();
+```
+
+<a name="yes-or-no-decisions"></a>
+### Yes or No Decisions
+
 For a single yes or no decision, you may use the `decide` method available via Laravel's `Stringable` class, which returns a boolean instead of a full response. You may describe what a "yes" and a "no" mean, and specify the probability the answer must reach, which defaults to `0.5`:
 
 ```php
@@ -2724,6 +2749,9 @@ $spam = Str::of($message)->decide('Is this spam?', criteria: [
     'false' => 'A genuine message from a customer.',
 ], threshold: 0.9);
 ```
+
+<a name="choosing-from-collections"></a>
+### Choosing From Collections
 
 To choose a single item from a list of options, you may use the `decide` method available on Laravel's `Collection` class. The method accepts a question and the text to classify, and returns the chosen item from the collection. Collections of strings and enums may be used directly, while other items should be named using the `by` argument. You may also provide a field, array of fields, or closure via the `describe` argument to give the model more detail about each option:
 
@@ -2749,26 +2777,6 @@ $department = collect([
     'billing' => 'Payments, invoices, and refunds',
     'technical' => 'Bugs, outages, and integrations',
 ])->decide('Which team should handle this request?', $ticket->body, threshold: 0.6) ?? 'triage';
-```
-
-By default, classification is performed by [TypeSafe](https://typesafe.ai). You may change this using the `default_for_classification` option within your application's `config/ai.php` configuration file. You may also specify the provider and model when classifying:
-
-```php
-use Laravel\Ai\Enums\Lab;
-
-$result = Classification::of($supportRequest)
-    ->questions($questions)
-    ->classify(Lab::OpenRouter, 'model-name');
-```
-
-The `timeout` method may be used to specify the HTTP timeout in seconds, which defaults to 30. [Provider options](#provider-options) and custom headers may be given as well:
-
-```php
-$result = Classification::of($supportRequest)
-    ->questions($questions)
-    ->timeout(60)
-    ->withProviderOptions(['temperature' => 0])
-    ->classify();
 ```
 
 <a name="files"></a>
