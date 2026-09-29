@@ -3616,7 +3616,7 @@ it('checks if ready three times', function () {
         Sleep::for(2)->seconds(),
         Sleep::for(3)->seconds(),
     ]);
-}
+});
 ```
 
 ```php tab=PHPUnit
