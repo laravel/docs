@@ -1413,7 +1413,7 @@ Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) 
            $mail->hasReplyTo('...') &&
            $mail->hasFrom('...') &&
            $mail->hasSubject('...') &&
-           $mail->hasMetadata('order_id', $mail->order->id);
+           $mail->hasMetadata('order_id', $mail->order->id) &&
            $mail->usesMailer('ses');
 });
 ```

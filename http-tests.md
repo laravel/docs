@@ -753,7 +753,7 @@ Route::get('/users', function () {
         'meta' => [...],
         'users' => User::all(),
     ];
-})
+});
 ```
 
 When testing these routes, you may use the `has` method to assert against the number of items in the collection. In addition, you may use the `has` method to scope a chain of assertions:

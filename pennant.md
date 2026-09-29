@@ -340,7 +340,7 @@ Of course, the `features` method provides access to many other convenient method
 
 ```php
 // Values...
-$value = $user->features()->value('purchase-button')
+$value = $user->features()->value('purchase-button');
 $values = $user->features()->values(['new-api', 'purchase-button']);
 
 // State...
