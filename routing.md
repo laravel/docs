@@ -25,6 +25,9 @@
 - [Rate Limiting](#rate-limiting)
     - [Defining Rate Limiters](#defining-rate-limiters)
     - [Attaching Rate Limiters to Routes](#attaching-rate-limiters-to-routes)
+- [Idempotent Requests](#idempotent-requests)
+    - [Idempotency Key Options](#idempotency-key-options)
+    - [Idempotency Errors](#idempotency-errors)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing the Current Route](#accessing-the-current-route)
 - [Cross-Origin Resource Sharing (CORS)](#cors)
@@ -996,6 +999,75 @@ By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middl
     // ...
 })
 ```
+
+<a name="idempotent-requests"></a>
+## Idempotent Requests
+
+Network requests can fail in ways that leave a client unsure whether the server actually processed them. For example, a mobile application may submit a payment, lose its connection before receiving a response, and then retry the request. Without any protection, the customer would be charged twice.
+
+Laravel solves this problem using the `idempotent` [middleware](/docs/{{version}}/middleware), which implements the [`Idempotency-Key` HTTP header](https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/). Clients send a unique key, such as a UUID, with each `POST` or `PATCH` request. When a request is retried using the same key, Laravel returns the original response instead of executing your route a second time:
+
+```php
+Route::post('/payments', function () {
+    // ...
+})->middleware('idempotent');
+```
+
+Clients should generate a new key for each operation and reuse that same key whenever the operation is retried. For example, when calling an idempotent route using Laravel's [HTTP client](/docs/{{version}}/http-client), the same key will be sent with every retry attempt:
+
+```php
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+
+$response = Http::withHeaders(['Idempotency-Key' => (string) Str::uuid()])
+    ->retry(3, 100)
+    ->post('https://example.com/payments', [
+        'amount' => 1000,
+    ]);
+```
+
+Successful and redirect responses are stored in your application's default [cache](/docs/{{version}}/cache) for 24 hours. Replayed responses include an `Idempotent-Replayed` header with a value of `true`. Server errors, validation errors, and other failed responses are never stored, so clients may correct the problem and retry the request using the same key.
+
+Idempotency keys are scoped to the authenticated user, or to the client's IP address for guests, so a key used by one user will never replay a response that was generated for another user. Requests using methods that are already idempotent, such as `GET`, `PUT`, and `DELETE`, are never affected by the middleware.
+
+> [!WARNING]
+> To use the `idempotent` middleware, your application's default cache driver must support [atomic locks](/docs/{{version}}/cache#atomic-locks).
+
+<a name="idempotency-key-options"></a>
+### Idempotency Key Options
+
+By default, requests without an `Idempotency-Key` header are processed normally. If you would like to require the header, you may pass the `required` option to the middleware. You may also specify the number of seconds that responses should be stored:
+
+```php
+Route::post('/payments', function () {
+    // ...
+})->middleware('idempotent:3600,required');
+```
+
+For convenience, you may also use the `HandleIdempotencyKeys` middleware's `using` method to define these options:
+
+```php
+use Illuminate\Http\Middleware\HandleIdempotencyKeys;
+
+Route::post('/payments', function () {
+    // ...
+})->middleware(HandleIdempotencyKeys::using(ttl: 3600, required: true));
+```
+
+<a name="idempotency-errors"></a>
+### Idempotency Errors
+
+When an idempotency key can not be honored, Laravel will automatically return an error response:
+
+<div class="overflow-auto">
+
+| Status | Reason |
+| --- | --- |
+| `400` | The `Idempotency-Key` header is missing on a route that requires it, or the key is empty or longer than 255 characters. |
+| `409` | A request using the same key is still being processed. The client may retry the request once it completes. |
+| `422` | The key was already used for a request with a different payload or URI. |
+
+</div>
 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
