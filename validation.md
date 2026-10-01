@@ -286,11 +286,11 @@ Below, you can review an example of the JSON response format for validation erro
 
 ```json
 {
-    "message": "The team name must be a string. (and 4 more errors)",
+    "message": "The team name field must be a string. (and 4 more errors)",
     "errors": {
         "team_name": [
-            "The team name must be a string.",
-            "The team name must be at least 1 characters."
+            "The team name field must be a string.",
+            "The team name field must be at least 1 characters."
         ],
         "authorization.role": [
             "The selected authorization.role is invalid."
@@ -299,7 +299,7 @@ Below, you can review an example of the JSON response format for validation erro
             "The users.0.email field is required."
         ],
         "users.2.email": [
-            "The users.2.email must be a valid email address."
+            "The users.2.email field must be a valid email address."
         ]
     }
 }

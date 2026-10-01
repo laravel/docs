@@ -138,6 +138,7 @@ If you would like to manage Laravel's global middleware stack manually, you may 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
     $middleware->use([
+        \Illuminate\Http\Middleware\ValidatePathEncoding::class,
         \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
         // \Illuminate\Http\Middleware\TrustHosts::class,
         \Illuminate\Http\Middleware\TrustProxies::class,
