@@ -2108,6 +2108,15 @@ php artisan mcp:inspector weather
 
 This command launches the MCP Inspector and provides the client settings that you may copy into your MCP client to ensure everything is configured correctly. If your web server is protected by an authentication middleware, make sure to include the required headers, such as an `Authorization` bearer token, when connecting.
 
+If you need to customize the host and port the inspector binds to, you may use the `--host` and `--port` options:
+
+```shell
+php artisan mcp:inspector weather --host=127.0.0.1 --port=8080
+```
+
+> [!NOTE]
+> Newer versions of the MCP Inspector do not allow binding to `0.0.0.0` unless the `DANGEROUSLY_BIND_ALL_INTERFACES` environment variable is set to `true` in your application's `.env` file.
+
 <a name="unit-tests"></a>
 ### Unit Tests
 
