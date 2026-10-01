@@ -2335,7 +2335,7 @@ $result = Str::of('The   Laravel   Framework')->deduplicate();
 // The Laravel Framework
 ```
 
-You may specify a different character to deduplicate by passing it in as the second argument to the method:
+You may specify a different character to deduplicate by passing it in as the first argument to the method:
 
 ```php
 use Illuminate\Support\Str;
@@ -2936,7 +2936,7 @@ $string = Str::of('taylor@example.com')->mask('*', 3);
 // tay***************
 ```
 
-If needed, you may provide negative numbers as the third or fourth argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
+If needed, you may provide negative numbers as the second or third argument to the `mask` method, which will instruct the method to begin masking at the given distance from the end of the string:
 
 ```php
 $string = Str::of('taylor@example.com')->mask('*', -15, 3);
