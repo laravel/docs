@@ -1188,7 +1188,7 @@ $padded = Str::padRight('James', 10);
 <a name="method-str-password"></a>
 #### `Str::password()` {.collection-method}
 
-The `Str::password` method may be used to generate a secure, random password of a given length. The password will consist of a combination of letters, numbers, symbols, and spaces. By default, passwords are 32 characters long:
+The `Str::password` method may be used to generate a secure, random password of a given length. The password will consist of a combination of letters, numbers, and symbols. By default, passwords are 32 characters long:
 
 ```php
 use Illuminate\Support\Str;
@@ -1991,7 +1991,7 @@ $string = str('Taylor')->append(' Otwell');
 // 'Taylor Otwell'
 ```
 
-If no argument is provided to the `str` function, the function returns an instance of `Illuminate\Support\Str`:
+If no argument is provided to the `str` function, the function returns an object that proxies method calls to `Illuminate\Support\Str`:
 
 ```php
 $snake = str()->snake('FooBar');

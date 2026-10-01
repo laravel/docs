@@ -1050,7 +1050,7 @@ $array = [
 
 Arr::query($array);
 
-// name=Taylor&order[column]=created_at&order[direction]=desc
+// name=Taylor&order%5Bcolumn%5D=created_at&order%5Bdirection%5D=desc
 ```
 
 <a name="method-array-random"></a>

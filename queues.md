@@ -194,7 +194,7 @@ The following dependencies are needed for the listed queue drivers. These depend
 <div class="content-list" markdown="1">
 
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
-- Beanstalkd: `pda/pheanstalk ~5.0`
+- Beanstalkd: `pda/pheanstalk ^7.0|^8.0`
 - Redis: `predis/predis ~3.0` or phpredis PHP extension
 - [MongoDB](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/queues/): `mongodb/laravel-mongodb`
 
@@ -1858,12 +1858,15 @@ class ProcessOrder implements ShouldQueue
 
 When utilizing FIFO queues, you will also need to define message groups on listeners, mail, and notifications. Alternatively, you can dispatch queued instances of these objects to a non-FIFO queue.
 
-To define the message group for a [queued event listener](/docs/{{version}}/events#queued-event-listeners), define a `messageGroup` method on the listener. You may also optionally define a `deduplicationId` method:
+To define the message group for a [queued event listener](/docs/{{version}}/events#queued-event-listeners), define a `messageGroup` method on the listener. You may also optionally define a `deduplicator` method, which receives the event and should return a closure that generates the deduplication ID:
 
 ```php
 <?php
 
 namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Closure;
 
 class SendShipmentNotification
 {
@@ -1878,11 +1881,11 @@ class SendShipmentNotification
     }
 
     /**
-     * Get the job's deduplication ID.
+     * Get the job's deduplicator.
      */
-    public function deduplicationId(): string
+    public function deduplicator(OrderShipped $event): Closure
     {
-        return "shipment-notification-{$this->shipment->id}";
+        return fn () => "shipment-notification-{$event->order->id}";
     }
 }
 ```

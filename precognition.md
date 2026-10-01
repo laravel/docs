@@ -590,7 +590,7 @@ class StoreUserRequest extends FormRequest
      *
      * @return array
      */
-    protected function rules()
+    public function rules()
     {
         return [
             'password' => [
@@ -618,7 +618,7 @@ Because of this behavior, you should ensure that your application [customizes th
  *
  * @return array
  */
-protected function rules()
+public function rules()
 {
     return [
         'avatar' => [

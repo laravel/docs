@@ -195,7 +195,7 @@ php artisan route:list -v
 php artisan route:list -vv
 ```
 
-You may also instruct Laravel to only show routes that begin with a given URI:
+You may also instruct Laravel to only show routes whose URI contains a given string:
 
 ```shell
 php artisan route:list --path=api
