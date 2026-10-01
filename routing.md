@@ -1028,7 +1028,7 @@ $response = Http::withHeaders(['Idempotency-Key' => (string) Str::uuid()])
 
 Successful and redirect responses are stored in your application's default [cache](/docs/{{version}}/cache) for 24 hours. Replayed responses include an `Idempotent-Replayed` header with a value of `true`. Server errors, validation errors, and other failed responses are never stored, so clients may correct the problem and retry the request using the same key.
 
-Idempotency keys are scoped to the authenticated user, or to the client's IP address for guests, so a key used by one user will never replay a response that was generated for another user. Requests using methods that are already idempotent, such as `GET`, `PUT`, and `DELETE`, are never affected by the middleware.
+Idempotency keys are scoped to the request's method and URL, as well as to the authenticated user, or to the client's IP address for guests. So, a key used by one user will never replay a response that was generated for another user. Requests using methods that are already idempotent, such as `GET`, `PUT`, and `DELETE`, are never affected by the middleware.
 
 > [!WARNING]
 > To use the `idempotent` middleware, your application's default cache driver must support [atomic locks](/docs/{{version}}/cache#atomic-locks).
@@ -1044,6 +1044,14 @@ Route::post('/payments', function () {
 })->middleware('idempotent:3600,required');
 ```
 
+While a request is being processed, its idempotency key is locked for up to 60 seconds. If your route may take longer to execute, you may specify a longer lock duration, in seconds, as the second option:
+
+```php
+Route::post('/reports', function () {
+    // ...
+})->middleware('idempotent:3600,300');
+```
+
 For convenience, you may also use the `HandleIdempotencyKeys` middleware's `using` method to define these options:
 
 ```php
@@ -1051,7 +1059,7 @@ use Illuminate\Http\Middleware\HandleIdempotencyKeys;
 
 Route::post('/payments', function () {
     // ...
-})->middleware(HandleIdempotencyKeys::using(ttl: 3600, required: true));
+})->middleware(HandleIdempotencyKeys::using(ttl: 3600, lock: 300, required: true));
 ```
 
 <a name="idempotency-errors"></a>
@@ -1065,7 +1073,7 @@ When an idempotency key can not be honored, Laravel will automatically return an
 | --- | --- |
 | `400` | The `Idempotency-Key` header is missing on a route that requires it, or the key is empty or longer than 255 characters. |
 | `409` | A request using the same key is still being processed. The client may retry the request once it completes. |
-| `422` | The key was already used for a request with a different payload or URI. |
+| `422` | The key was already used for a request with a different payload, such as a different body, query string, or uploaded file. |
 
 </div>
 
