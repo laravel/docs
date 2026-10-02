@@ -151,6 +151,17 @@ PUSHER_APP_CLUSTER="mt1"
 
 The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
 
+Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
+
+```ini
+BROADCAST_CONNECTION=pusher
+```
+
+Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
+
+<a name="pusher-manual-installation-encrypted-private-channels"></a>
+#### Encrypted Private Channels
+
 If you plan to use [end-to-end encrypted private channels](#encrypted-private-channels), you should add an `encryption_master_key_base64` option containing a base64 encoded, 32-byte key to the `pusher` connection's `options` array:
 
 ```php
@@ -165,14 +176,6 @@ You may generate a suitable key using the `openssl` command:
 ```shell
 openssl rand -base64 32
 ```
-
-Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
-
-```ini
-BROADCAST_CONNECTION=pusher
-```
-
-Finally, you are ready to install and configure [Laravel Echo](#client-side-installation), which will receive the broadcast events on the client-side.
 
 <a name="ably"></a>
 ### Ably
