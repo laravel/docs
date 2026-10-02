@@ -48,7 +48,6 @@ Each log channel is powered by a "driver". The driver determines how and where t
 | `monthly`    | A `RotatingFileHandler` based Monolog driver which rotates monthly.  |
 | `errorlog`   | An `ErrorLogHandler` based Monolog driver.                           |
 | `monolog`    | A Monolog factory driver that may use any supported Monolog handler. |
-| `papertrail` | A `SyslogUdpHandler` based Monolog driver.                           |
 | `single`     | A single file or path based logger channel (`StreamHandler`).        |
 | `slack`      | A `SlackWebhookHandler` based Monolog driver.                        |
 | `stack`      | A wrapper to facilitate creating "multi-channel" channels.           |

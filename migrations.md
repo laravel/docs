@@ -1645,13 +1645,13 @@ Schema::withoutForeignKeyConstraints(function () {
 <a name="events"></a>
 ## Events
 
-For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). All of the following events extend the base `Illuminate\Database\Events\MigrationEvent` class:
+For convenience, each migration operation will dispatch an [event](/docs/{{version}}/events). With the exception of `SchemaDumped` and `SchemaLoaded`, all of the following events implement the `Illuminate\Contracts\Database\Events\MigrationEvent` interface:
 
 <div class="overflow-auto">
 
 | Class                                            | Description                                      |
 | ------------------------------------------------ | ------------------------------------------------ |
-| `Illuminate\Database\Events\DatabaseRefreshed`   | The `migrate:refresh` command has finished.      |
+| `Illuminate\Database\Events\DatabaseRefreshed`   | The `migrate:fresh` or `migrate:refresh` command has finished. |
 | `Illuminate\Database\Events\MigrationsStarted`   | A batch of migrations is about to be executed.   |
 | `Illuminate\Database\Events\MigrationsEnded`     | A batch of migrations has finished.              |
 | `Illuminate\Database\Events\MigrationStarted`    | A single migration is about to be executed.      |
