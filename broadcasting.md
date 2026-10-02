@@ -37,6 +37,7 @@
     - [Authorizing Presence Channels](#authorizing-presence-channels)
     - [Joining Presence Channels](#joining-presence-channels)
     - [Broadcasting to Presence Channels](#broadcasting-to-presence-channels)
+- [Encrypted Private Channels](#encrypted-private-channels)
 - [Model Broadcasting](#model-broadcasting)
     - [Model Broadcasting Conventions](#model-broadcasting-conventions)
     - [Listening for Model Broadcasts](#listening-for-model-broadcasts)
@@ -150,6 +151,21 @@ PUSHER_APP_CLUSTER="mt1"
 
 The `config/broadcasting.php` file's `pusher` configuration also allows you to specify additional `options` that are supported by Channels, such as the cluster.
 
+If you plan to use [end-to-end encrypted private channels](#encrypted-private-channels), you should add an `encryption_master_key_base64` option containing a base64 encoded, 32-byte key to the `pusher` connection's `options` array:
+
+```php
+'options' => [
+    // ...
+    'encryption_master_key_base64' => env('PUSHER_ENCRYPTION_MASTER_KEY'),
+],
+```
+
+You may generate a suitable key using the `openssl` command:
+
+```shell
+openssl rand -base64 32
+```
+
 Then, set the `BROADCAST_CONNECTION` environment variable to `pusher` in your application's `.env` file:
 
 ```ini
@@ -225,7 +241,7 @@ MERCURE_JWT_SECRET=<your-mercure-jwt-secret>
 
 The `MERCURE_URL` value is the URL Laravel uses to publish updates, while `MERCURE_PUBLIC_URL` is the URL that browser clients use to subscribe. Your Mercure hub must be configured with the same JWT secret.
 
-To use end-to-end encrypted private channels, configure a 32-byte `MERCURE_ENCRYPTION_KEY` environment variable:
+To use [end-to-end encrypted private channels](#encrypted-private-channels), configure a 32-byte `MERCURE_ENCRYPTION_KEY` environment variable:
 
 ```ini
 MERCURE_ENCRYPTION_KEY=<your-32-byte-encryption-key>
@@ -1655,6 +1671,47 @@ Echo.join(`chat.${roomId}`)
     .listen('NewMessage', (e) => {
         // ...
     });
+```
+
+<a name="encrypted-private-channels"></a>
+## Encrypted Private Channels
+
+Private channels ensure that only authorized users may listen on a channel. However, the event data itself still passes through your broadcasting service in plain text. When using Pusher Channels or Mercure, you may use end-to-end encrypted private channels so that only your application and its authorized clients are able to read the event's data.
+
+To get started, configure an encryption key for [Pusher Channels](#pusher-manual-installation) or [Mercure](#mercure-manual-installation). Then, return an instance of `EncryptedPrivateChannel` from your event's `broadcastOn` method:
+
+```php
+use Illuminate\Broadcasting\EncryptedPrivateChannel;
+
+/**
+ * Get the channels the event should broadcast on.
+ *
+ * @return array<int, \Illuminate\Broadcasting\Channel>
+ */
+public function broadcastOn(): array
+{
+    return [
+        new EncryptedPrivateChannel('orders.'.$this->order->id),
+    ];
+}
+```
+
+Encrypted private channels are authorized exactly like private channels, so an `orders.{orderId}` authorization callback in your application's `routes/channels.php` file will also authorize the encrypted `orders.1` channel.
+
+In your JavaScript application, you may subscribe to the channel using Echo's `encryptedPrivate` method:
+
+```js
+Echo.encryptedPrivate(`orders.${orderId}`)
+    .listen('OrderShipmentStatusUpdated', (e) => {
+        console.log(e.order);
+    });
+```
+
+When using Pusher Channels, the default `pusher-js` build does not include the code needed to decrypt messages. Instead, you should import the `with-encryption` build when [configuring Echo](#pusher-client-manual-installation):
+
+```js
+import Pusher from 'pusher-js/with-encryption';
+window.Pusher = Pusher;
 ```
 
 <a name="model-broadcasting"></a>
