@@ -19,6 +19,7 @@
     - [Deferred Tool Loading](#deferred-tool-loading)
     - [File Storage Tools](#file-storage-tools)
     - [MCP Tools](#mcp-tools)
+    - [Skills](#skills)
     - [Provider Tools](#provider-tools)
     - [Sub-Agents](#sub-agents)
     - [Middleware](#middleware)
@@ -1377,6 +1378,110 @@ public function tools(): iterable
 ```
 
 For more information on creating and authenticating MCP clients, including bearer tokens and OAuth, consult the [MCP client documentation](/docs/{{version}}/mcp#client).
+
+<a name="skills"></a>
+### Skills
+
+[Agent Skills](https://agentskills.io) are folders of instructions and supporting files that teach an agent how to perform a specific task. Because skills follow an open standard, the same skill may be shared between your application's agents and the coding agents you use to build your application.
+
+Each skill is a directory within your application's `resources/skills` directory that contains a `SKILL.md` file. Any other files in the directory, such as reference documents, are bundled with the skill:
+
+```text
+resources/skills/
+└── refund-policy/
+    ├── SKILL.md
+    └── references/EDGE-CASES.md
+```
+
+The `SKILL.md` file begins with YAML frontmatter containing the skill's `name` and a `description` of when the skill should be used, followed by the skill's instructions:
+
+```markdown
+---
+name: refund-policy
+description: Use when a customer asks for a refund or disputes a charge.
+---
+
+# Refund Policy
+
+Customers may request a full refund within 30 days of purchase...
+```
+
+If the `name` is omitted, the name of the skill's directory will be used. Skills without a `description` are ignored.
+
+To give an agent access to your skills, return the `LoadSkill` tool from your agent's `tools` method:
+
+```php
+use Laravel\Ai\Tools\LoadSkill;
+
+/**
+ * Get the tools available to the agent.
+ *
+ * @return Tool[]
+ */
+public function tools(): iterable
+{
+    return [
+        new LoadSkill,
+    ];
+}
+```
+
+The `LoadSkill` tool describes each available skill to the agent using its name and description, and the agent loads a skill's full instructions only when a prompt calls for it. After loading a skill, the agent may also read the skill's bundled files. Only text files are readable by the agent; binary files and files larger than 256 KB will not be returned.
+
+<a name="skill-directories"></a>
+#### Skill Directories
+
+By default, the `LoadSkill` tool discovers skills within your application's `resources/skills` directory. You may pass an array of directories to the tool to load skills from other locations, such as the skills you share with your coding agent:
+
+```php
+new LoadSkill([
+    resource_path('skills'),
+    base_path('.agents/skills'),
+]);
+```
+
+When two skills share the same name, the skill from the source listed first takes precedence.
+
+<a name="dynamic-skills"></a>
+#### Dynamic Skills
+
+When a skill needs values from your application, you may define it in PHP using the `Skill` class. Files may be bundled with the skill using the `files` argument, which accepts an array of file contents keyed by path:
+
+```php
+use Laravel\Ai\Skills\Skill;
+use Laravel\Ai\Tools\LoadSkill;
+
+new LoadSkill([
+    resource_path('skills'),
+    new Skill(
+        name: 'house-style',
+        description: 'Use when you write copy for a customer.',
+        instructions: view('skills.house-style', ['brand' => $brand]),
+        files: ['tone.md' => $tone],
+    ),
+]);
+```
+
+You may also provide a closure that returns an array or collection of skills. The closure is invoked each time the agent is prompted, making it a convenient way to load skills stored in your database:
+
+```php
+use Laravel\Ai\Skills\Skill;
+use Laravel\Ai\Tools\LoadSkill;
+
+public function tools(): iterable
+{
+    return [
+        new LoadSkill([
+            resource_path('skills'),
+            fn () => $this->user->team->skills->map(fn ($skill) => new Skill(
+                name: $skill->name,
+                description: $skill->description,
+                instructions: $skill->instructions,
+            )),
+        ]),
+    ];
+}
+```
 
 <a name="provider-tools"></a>
 ### Provider Tools
