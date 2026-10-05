@@ -1408,80 +1408,33 @@ Customers may request a full refund within 30 days of purchase...
 
 If the `name` is omitted, the name of the skill's directory will be used. Skills without a `description` are ignored.
 
-To give an agent access to your skills, return the `LoadSkill` tool from your agent's `tools` method:
+To give an agent access to your skills, implement the `HasSkills` interface and return your skill sources from the `skills` method:
 
 ```php
-use Laravel\Ai\Tools\LoadSkill;
-
-/**
- * Get the tools available to the agent.
- *
- * @return Tool[]
- */
-public function tools(): iterable
-{
-    return [
-        new LoadSkill,
-    ];
-}
-```
-
-The `LoadSkill` tool describes each available skill to the agent using its name and description, and the agent loads a skill's full instructions only when a prompt calls for it. After loading a skill, the agent may also read the skill's bundled files. Only text files are readable by the agent; binary files and files larger than 256 KB will not be returned.
-
-<a name="skill-directories"></a>
-#### Skill Directories
-
-By default, the `LoadSkill` tool discovers skills within your application's `resources/skills` directory. You may pass an array of directories to the tool to load skills from other locations, such as the skills you share with your coding agent:
-
-```php
-new LoadSkill([
-    resource_path('skills'),
-    base_path('.agents/skills'),
-]);
-```
-
-When two skills share the same name, the skill from the source listed first takes precedence.
-
-<a name="dynamic-skills"></a>
-#### Dynamic Skills
-
-When a skill needs values from your application, you may define it in PHP using the `Skill` class. Files may be bundled with the skill using the `files` argument, which accepts an array of file contents keyed by path:
-
-```php
+use Laravel\Ai\Contracts\HasSkills;
 use Laravel\Ai\Skills\Skill;
-use Laravel\Ai\Tools\LoadSkill;
 
-new LoadSkill([
-    resource_path('skills'),
-    new Skill(
-        name: 'house-style',
-        description: 'Use when you write copy for a customer.',
-        instructions: view('skills.house-style', ['brand' => $brand]),
-        files: ['tone.md' => $tone],
-    ),
-]);
-```
-
-You may also provide a closure that returns an array or collection of skills. The closure is invoked each time the agent is prompted, making it a convenient way to load skills stored in your database:
-
-```php
-use Laravel\Ai\Skills\Skill;
-use Laravel\Ai\Tools\LoadSkill;
-
-public function tools(): iterable
+class SupportAgent implements Agent, HasSkills
 {
-    return [
-        new LoadSkill([
+    use Promptable;
+
+    public function skills(): iterable
+    {
+        return [
             resource_path('skills'),
-            fn () => $this->user->team->skills->map(fn ($skill) => new Skill(
-                name: $skill->name,
-                description: $skill->description,
-                instructions: $skill->instructions,
-            )),
-        ]),
-    ];
+            base_path('.agents/skills'),
+            new Skill('house-style', 'Use when you write copy for a customer.', view('skills.house-style')),
+            fn () => $this->user->team->skills->map(
+                fn ($skill) => new Skill($skill->name, $skill->description, $skill->instructions)
+            ),
+        ];
+    }
 }
 ```
+
+Sources may be directories, `Skill` instances, or closures returning skills, which are only invoked once the agent needs them. When two skills share a name, the source listed first takes precedence.
+
+The agent receives a `LoadSkill` tool that lists each skill's name and description, loading a skill's full instructions and bundled text files only when a prompt calls for it. Binary files and files larger than 256 KB are not returned.
 
 <a name="provider-tools"></a>
 ### Provider Tools
