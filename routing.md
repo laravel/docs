@@ -97,9 +97,12 @@ Route::put($uri, $callback);
 Route::patch($uri, $callback);
 Route::delete($uri, $callback);
 Route::options($uri, $callback);
+Route::query($uri, $callback);
 ```
 
-Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs using the `any` method:
+The `query` method registers a route that responds to the `QUERY` HTTP verb, allowing clients to send a request body for a query. `QUERY` routes in the `web` middleware group are subject to [CSRF protection](/docs/{{version}}/csrf).
+
+Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs, including `QUERY`, using the `any` method:
 
 ```php
 Route::match(['get', 'post'], '/', function () {
@@ -112,7 +115,7 @@ Route::any('/', function () {
 ```
 
 > [!NOTE]
-> When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
+> When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, `options`, and `query` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
 
 <a name="dependency-injection"></a>
 #### Dependency Injection

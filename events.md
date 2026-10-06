@@ -1217,6 +1217,14 @@ Event::assertDispatched(function (OrderShipped $event) use ($order) {
 });
 ```
 
+Alternatively, you may pass an array of expected property values as the second argument to `assertDispatched` or `assertNotDispatched`:
+
+```php
+Event::assertDispatched(OrderShipped::class, ['order' => $order]);
+```
+
+All specified properties must match. Values are compared using strict equality, while Eloquent models are compared using their `is` method.
+
 If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
 
 ```php

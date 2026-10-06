@@ -1851,6 +1851,14 @@ Notification::assertSentTo(
 );
 ```
 
+Alternatively, you may pass an array of expected property values as the third argument to `assertSentTo` or `assertNotSentTo`:
+
+```php
+Notification::assertSentTo($user, OrderShipped::class, ['order' => $order]);
+```
+
+All specified properties must match. Values are compared using strict equality, while Eloquent models are compared using their `is` method. You may also pass an array of expected property values as the second argument to `assertSentOnDemand`.
+
 <a name="testing-on-demand-notifications"></a>
 #### On-Demand Notifications
 
