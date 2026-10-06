@@ -133,7 +133,7 @@ composer require algolia/algoliasearch-client-php
 <a name="meilisearch"></a>
 ### Meilisearch
 
-[Meilisearch](https://www.meilisearch.com) is a fast, open source search engine. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment.
+[Meilisearch](https://www.meilisearch.com) is a fast, open source search engine that supports full-text, semantic, and hybrid search. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/docs/{{version}}/sail#meilisearch), Laravel's officially supported Docker development environment. For production, you can [self-host](https://www.meilisearch.com/docs/learn/self_hosted/getting_started_with_self_hosted_meilisearch) Meilisearch or use [Meilisearch Cloud](https://www.meilisearch.com/cloud).
 
 When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
 
@@ -149,12 +149,7 @@ MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=masterKey
 ```
 
-For more information regarding Meilisearch, please consult the [Meilisearch documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
-
-In addition, you should ensure that you install a version of `meilisearch/meilisearch-php` that is compatible with your Meilisearch binary version by reviewing [Meilisearch's documentation regarding binary compatibility](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
-
-> [!WARNING]
-> When upgrading Scout on an application that utilizes Meilisearch, you should always [review any additional breaking changes](https://github.com/meilisearch/Meilisearch/releases) to the Meilisearch service itself.
+For more information regarding Meilisearch, please consult the [Meilisearch documentation](https://www.meilisearch.com/docs/getting_started/overview).
 
 <a name="typesense"></a>
 ### Typesense
@@ -584,7 +579,9 @@ Alternatively, you may use Meilisearch's native embeddings by setting the embedd
 ],
 ```
 
-When using native embeddings, Scout will not generate or add vectors to indexed documents. You may still provide a precomputed query vector using the `vector` search option.
+When using native embeddings, Scout will not generate or add vectors to indexed documents. You may still provide a precomputed query vector using the `vector` search option. As with other index settings, run the `scout:sync-index-settings` command after updating the embedder configuration.
+
+For more information regarding the available embedder sources and their options, please consult the [Meilisearch hybrid search documentation](https://www.meilisearch.com/docs/capabilities/hybrid_search/getting_started).
 
 <a name="meilisearch-data-types"></a>
 #### Searchable Data Types
