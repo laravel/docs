@@ -581,8 +581,7 @@ Alternatively, you may use Meilisearch's native embeddings by setting the embedd
 
 When using native embeddings, Scout will not generate or add vectors to indexed documents. You may still provide a precomputed query vector using the `vector` search option. As with other index settings, run the `scout:sync-index-settings` command after updating the embedder configuration.
 
-For more information regarding the available embedder sources and their options, please consult the [Meilisearch hybrid search documentation](https://www.meilisearch.com/docs/capabilities/hybrid_search/getting_started) and the [Meilisearch Laravel Scout guide](https://www.meilisearch.com/docs/getting_started/frameworks/laravel).
-
+For more information regarding the available embedder sources and their options, please consult the [Meilisearch hybrid search documentation](https://www.meilisearch.com/docs/capabilities/hybrid_search/getting_started).
 <a name="meilisearch-data-types"></a>
 #### Searchable Data Types
 
