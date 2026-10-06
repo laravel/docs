@@ -19,6 +19,7 @@
     - [Deferred Tool Loading](#deferred-tool-loading)
     - [File Storage Tools](#file-storage-tools)
     - [MCP Tools](#mcp-tools)
+    - [Skills](#skills)
     - [Provider Tools](#provider-tools)
     - [Sub-Agents](#sub-agents)
     - [Middleware](#middleware)
@@ -1377,6 +1378,63 @@ public function tools(): iterable
 ```
 
 For more information on creating and authenticating MCP clients, including bearer tokens and OAuth, consult the [MCP client documentation](/docs/{{version}}/mcp#client).
+
+<a name="skills"></a>
+### Skills
+
+[Agent Skills](https://agentskills.io) are folders of instructions and supporting files that teach an agent how to perform a specific task. Because skills follow an open standard, the same skill may be shared between your application's agents and the coding agents you use to build your application.
+
+Each skill is a directory within your application's `resources/skills` directory that contains a `SKILL.md` file. Any other files in the directory, such as reference documents, are bundled with the skill:
+
+```text
+resources/skills/
+└── refund-policy/
+    ├── SKILL.md
+    └── references/EDGE-CASES.md
+```
+
+The `SKILL.md` file begins with YAML frontmatter containing the skill's `name` and a `description` of when the skill should be used, followed by the skill's instructions:
+
+```markdown
+---
+name: refund-policy
+description: Use when a customer asks for a refund or disputes a charge.
+---
+
+# Refund Policy
+
+Customers may request a full refund within 30 days of purchase...
+```
+
+If the `name` is omitted, the name of the skill's directory will be used. Skills without a `description` are ignored.
+
+To give an agent access to your skills, implement the `HasSkills` interface and return your skill sources from the `skills` method:
+
+```php
+use Laravel\Ai\Contracts\HasSkills;
+use Laravel\Ai\Skills\Skill;
+
+class SupportAgent implements Agent, HasSkills
+{
+    use Promptable;
+
+    public function skills(): iterable
+    {
+        return [
+            resource_path('skills'),
+            base_path('.agents/skills'),
+            new Skill('house-style', 'Use when you write copy for a customer.', view('skills.house-style')),
+            fn () => $this->user->team->skills->map(
+                fn ($skill) => new Skill($skill->name, $skill->description, $skill->instructions)
+            ),
+        ];
+    }
+}
+```
+
+Sources may be directories, `Skill` instances, or closures returning skills, which are only invoked once the agent needs them. When two skills share a name, the source listed first takes precedence.
+
+The agent receives a `LoadSkill` tool that lists each skill's name and description, loading a skill's full instructions and bundled text files only when a prompt calls for it. Binary files and files larger than 256 KB are not returned.
 
 <a name="provider-tools"></a>
 ### Provider Tools
