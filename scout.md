@@ -149,7 +149,7 @@ MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=masterKey
 ```
 
-For more information regarding Meilisearch, please consult the [Meilisearch documentation](https://www.meilisearch.com/docs/getting_started/first_project).
+For more information regarding Meilisearch, please consult the [Meilisearch documentation](https://www.meilisearch.com/docs/getting_started/overview).
 
 <a name="typesense"></a>
 ### Typesense
