@@ -1899,9 +1899,6 @@ class ComplexReasoner implements Agent
 > [!NOTE]
 > The underlying model selected by `UseCheapestModel` and `UseSmartestModel` may change between releases of the Laravel AI SDK as providers release new models. Switching models can introduce behavioral changes, deprecated parameters, and significant cost differences. If you need a stable, predictable model and pricing, specify the model explicitly using the `Model` attribute.
 
-> [!NOTE]
-> Anthropic's Claude 4.7 and later models do not accept custom sampling parameters, so the `Temperature` and `TopP` attributes are ignored when using these models.
-
 <a name="provider-options"></a>
 ### Provider Options
 
@@ -2796,8 +2793,6 @@ $result = Classification::of('Inspect the product in this photo.', [
     ->question('damaged', new Boolean('Does the product have visible damage?'))
     ->classify(provider: 'openai');
 ```
-
-OpenAI accepts JPEG, PNG, GIF, and WebP images. Remote images are downloaded and sent to OpenAI inline. Other attachment types, and attachments sent to providers other than OpenAI, will throw an exception.
 
 <a name="yes-or-no-decisions"></a>
 ### Yes or No Decisions
