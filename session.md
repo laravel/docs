@@ -150,6 +150,62 @@ $data = $request->session()->only(['username', 'email']);
 $data = $request->session()->except(['username', 'email']);
 ```
 
+<a name="retrieving-typed-session-data"></a>
+#### Retrieving Typed Session Data
+
+The `get` method returns session values exactly as they were stored, so neither your IDE nor static analysis tools can know what type of value you will receive. Instead, you may use the session's typed retrieval methods, which guarantee that the value you receive is of the expected type:
+
+```php
+// The type of $count is unknown...
+$count = $request->session()->get('cart.count');
+
+// $count is guaranteed to be an integer...
+$count = $request->session()->integer('cart.count');
+```
+
+The following typed retrieval methods are available:
+
+```php
+$request->session()->string('key');
+$request->session()->integer('key');
+$request->session()->float('key');
+$request->session()->boolean('key');
+$request->session()->array('key');
+$request->session()->collection('key');
+```
+
+If the session value does not match the expected type, an `InvalidArgumentException` will be thrown instead of the value being silently converted. This helps you catch bugs, such as a value being stored with the wrong type, as early as possible:
+
+```php
+$request->session()->put('name', 123);
+
+// Throws: Session value for key [name] must be a string, integer given.
+$name = $request->session()->string('name');
+```
+
+For convenience, the `integer` method will also accept whole number strings such as `"5"`, while the `float` method will accept numeric strings such as `"1.5"` as well as integers. The `string`, `boolean`, and `array` methods require the stored value to already be of the matching type. The `collection` method requires an array and returns it as an [Illuminate\Support\Collection](/docs/{{version}}/collections) instance.
+
+Because `null` is not a string, integer, float, boolean, or array, an exception will also be thrown if the requested key does not exist in the session. You may provide a default value as the second argument to any of these methods. Like the `get` method, the default value may be a closure, which will only be executed if the key does not exist:
+
+```php
+$count = $request->session()->integer('cart.count', 0);
+
+$theme = $request->session()->string('theme', function () {
+    return 'light';
+});
+```
+
+> [!WARNING]
+> The session's typed retrieval methods are stricter than the [typed input methods](/docs/{{version}}/requests#retrieving-integer-input-values) offered by the `Request` instance. Request input always arrives as strings, so methods such as `$request->boolean('archived')` convert the input to the requested type. Session data is stored by your application with its original type, so the session's typed retrieval methods throw an exception rather than converting mismatched values.
+
+The typed retrieval methods are also available via the global `session` helper and the `Session` facade:
+
+```php
+$count = session()->integer('cart.count', 0);
+
+$count = Session::integer('cart.count', 0);
+```
+
 <a name="determining-if-an-item-exists-in-the-session"></a>
 #### Determining if an Item Exists in the Session
 
