@@ -49,10 +49,7 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
-- [Laravel Livewire Starter Kit](https://github.com/laravel/livewire-starter-kit)
-- [Laravel React Starter Kit](https://github.com/laravel/react-starter-kit)
-- [Laravel Svelte Starter Kit](https://github.com/laravel/svelte-starter-kit)
-- [Laravel Vue Starter Kit](https://github.com/laravel/vue-starter-kit)
+- [Laravel Starter Kits (Maestro)](https://github.com/laravel/maestro)
 
 </div>
 
