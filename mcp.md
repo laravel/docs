@@ -1710,6 +1710,8 @@ Icons defined via the attribute and the `icons` method are combined automaticall
 
 Just like routes, you can authenticate web MCP servers with middleware. Adding authentication to your MCP server will require a user to authenticate before using any capability of the server.
 
+This section covers external AI clients accessing **your application's MCP servers**. To connect your application to another service's MCP server using a user's credentials, see [client authentication](#client-authentication) instead.
+
 There are two ways to authenticate access to your MCP server: simple, token based authentication via [Laravel Sanctum](/docs/{{version}}/sanctum) or any token which is passed via the `Authorization` HTTP header. Or, you may authenticate via OAuth using [Laravel Passport](/docs/{{version}}/passport).
 
 <a name="oauth"></a>
@@ -1819,6 +1821,8 @@ public function handle(Request $request): Response
 
 In addition to building servers, Laravel MCP includes a client for connecting to other MCP servers, whether first-party or third-party. The client lets your application discover and call the tools exposed by an MCP server, which is especially useful for giving your [AI agents](/docs/{{version}}/ai-sdk#mcp-tools) access to capabilities provided by external MCP servers.
 
+For example, a chat application may connect to GitHub's MCP server using each user's GitHub token, allowing its agent to answer questions about that user's repositories. In this scenario, your application is the MCP client; you do not need to create an MCP server or register `Mcp::web` routes.
+
 <a name="client-connecting"></a>
 ### Connecting to Servers
 
@@ -1860,7 +1864,7 @@ $client = Client::web('https://api.githubcopilot.com/mcp/')->withTimeout(30);
 <a name="named-clients"></a>
 ### Named Clients
 
-Instead of constructing a client each time you need it, you may register reusable, named clients. This is typically done in the `boot` method of a service provider using the `Mcp` facade:
+Instead of constructing a client each time you need it, you may optionally register reusable, named clients. The `registerClient` method names an outgoing connection; it does not expose an MCP server or authorize a user. Registration is typically done in the `boot` method of a service provider using the `Mcp` facade:
 
 ```php
 use Laravel\Mcp\Client;
@@ -1877,10 +1881,13 @@ use Laravel\Mcp\Facades\Mcp;
 $client = Mcp::client('github');
 ```
 
-Named clients are resolved once per request and automatically disconnected at the end of the request lifecycle.
+Named clients are resolved once per request and automatically disconnect at the end of the request lifecycle.
 
 <a name="client-authentication"></a>
 ### Client Authentication
+
+<a name="client-bearer-tokens"></a>
+#### Bearer Tokens
 
 To connect to a web MCP server that is protected by a bearer token, use the `withToken` method. You may pass a token string or a closure that lazily resolves the token:
 
@@ -1897,16 +1904,26 @@ $client = Client::web('https://api.githubcopilot.com/mcp/')->withToken(
 );
 ```
 
-For servers protected by [OAuth 2.1](#oauth), configure the client using the `withOAuth` method. This is the client-side counterpart to protecting your own servers with OAuth:
+If you already obtained a suitable token through [Socialite](/docs/{{version}}/socialite) or another account-linking flow, pass that token to `withToken`; you do not need to register MCP OAuth routes.
+
+<a name="client-oauth"></a>
+#### Linking User Accounts With OAuth
+
+Imagine a chat application where users connect a project management service, then ask an agent questions such as "Which of my tasks are overdue?" The external project management service exposes an OAuth-protected MCP server. Your application must redirect each user to the service's consent screen, exchange their approval for a token, and store that token for future tool calls.
+
+Laravel MCP handles this account-linking flow using `withOAuth` and `Mcp::oAuthRoutesFor`. First, register a named client in a service provider. The OAuth client credentials identify your application to the service, while `withToken` supplies the connected user's saved access token when calling tools:
 
 ```php
+use Illuminate\Support\Facades\Auth;
 use Laravel\Mcp\Client;
 use Laravel\Mcp\Facades\Mcp;
 
-Mcp::registerClient('github', fn () => Client::web('https://api.githubcopilot.com/mcp/')->withOAuth(
-    clientId: config('services.github_mcp.client_id'),
-    clientSecret: config('services.github_mcp.client_secret'),
-));
+Mcp::registerClient('projects', fn () => Client::web('https://projects.example.com/mcp')
+    ->withOAuth(
+        clientId: config('services.projects.client_id'),
+        clientSecret: config('services.projects.client_secret'),
+    )
+    ->withToken(fn () => Auth::user()->projects_token));
 ```
 
 > [!NOTE]
@@ -1914,23 +1931,50 @@ Mcp::registerClient('github', fn () => Client::web('https://api.githubcopilot.co
 
 The authorization server must advertise support for the `S256` PKCE code challenge method in its authorization server metadata. Laravel will reject the authorization attempt if PKCE support is not advertised.
 
-Next, register the OAuth routes for the named client in your `routes/ai.php` file using the `oAuthRoutesFor` method. The closure you provide receives the client name and resulting `TokenSet` after the authorization code has been exchanged for an access token:
+Next, register the account-linking routes in your `routes/ai.php` file. The callback receives the client name and resulting `TokenSet`, allowing you to save the token for the signed-in user:
 
 ```php
 use Illuminate\Support\Facades\Auth;
 use Laravel\Mcp\Client\OAuth\TokenSet;
 use Laravel\Mcp\Facades\Mcp;
 
-Mcp::oAuthRoutesFor('github', function (string $client, TokenSet $token) {
+Mcp::oAuthRoutesFor('projects', function (string $client, TokenSet $token) {
     Auth::user()->update([
-        'github_mcp_token' => $token->accessToken,
+        'projects_token' => $token->accessToken,
     ]);
 
-    return redirect('/dashboard');
-});
+    return redirect('/chat');
+}, middleware: ['web', 'auth']);
 ```
 
-This registers three named routes: a connect route (`mcp.oauth.{client}.connect`) that redirects the user to the authorization server, a callback route (`mcp.oauth.{client}.callback`) that exchanges the authorization code and invokes your handler, and a public Client ID Metadata Document route (`mcp.oauth.{client}.client-metadata`). The connect and callback routes use the `web` middleware group by default, which you may override using the `middleware` argument. The metadata route does not use this middleware because the authorization server must be able to retrieve it.
+The `oAuthRoutesFor` method registers three named routes: a connect route (`mcp.oauth.{client}.connect`) that redirects the user to the authorization server, a callback route (`mcp.oauth.{client}.callback`) that exchanges the authorization code and invokes your handler, and a public Client ID Metadata Document route (`mcp.oauth.{client}.client-metadata`).
+
+The connect and callback routes use the `web` middleware group by default; the account-linking example above adds `auth` to require a signed-in user. The metadata route does not use this middleware because the authorization server must be able to retrieve it.
+
+Your "Connect Project Service" button should send the user to the connect route:
+
+```php
+return redirect()->route('mcp.oauth.projects.connect');
+```
+
+Laravel redirects the user to the service to approve access, exchanges the authorization code on their return, and invokes your callback. On subsequent chat requests, the named client uses the saved token. For example, an [AI SDK agent](/docs/{{version}}/ai-sdk#mcp-tools) may expose the service's tools:
+
+```php
+public function tools(): iterable
+{
+    return [
+        ...Mcp::client('projects')->tools(),
+    ];
+}
+```
+
+Store tokens using [encrypted casts](/docs/{{version}}/eloquent-mutators#encrypted-casting) and hide them from model serialization. If the service issues expiring tokens, also persist the refresh token and expiry information from the `TokenSet` and handle renewal before making tool calls. For queued agents, resolve credentials from an explicitly provided user instead of `Auth::user()`.
+
+> [!NOTE]
+> `Mcp::oAuthRoutesFor` connects your users to an external service. In contrast, `Mcp::oauthRoutes` allows external AI clients to authenticate to your own MCP servers using Passport. You do not need Passport or `Mcp::oauthRoutes` for the account-linking flow above.
+
+<a name="client-metadata"></a>
+#### Client Metadata
 
 The metadata document describes your application as a public OAuth client and uses your application's `APP_URL` to generate the client ID and callback URL. Therefore, you should ensure the `APP_URL` environment variable is set correctly in production. You may customize the metadata route and provide additional metadata using the `clientMetadataUri` and `clientMetadata` arguments:
 
@@ -1939,24 +1983,18 @@ use Laravel\Mcp\Client\OAuth\TokenSet;
 use Laravel\Mcp\Facades\Mcp;
 
 Mcp::oAuthRoutesFor(
-    'github',
+    'projects',
     function (string $client, TokenSet $token) {
         // Store the token...
 
         return redirect('/dashboard');
     },
-    clientMetadataUri: 'oauth/github/client.json',
+    clientMetadataUri: 'oauth/projects/client.json',
     clientMetadata: [
         'client_name' => 'Acme Dashboard',
         'logo_uri' => 'https://acme.com/logo.png',
     ],
 );
-```
-
-To begin the authorization flow, redirect the user to the connect route:
-
-```php
-return redirect()->route('mcp.oauth.github.connect');
 ```
 
 <a name="client-tools"></a>
