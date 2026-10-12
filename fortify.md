@@ -660,7 +660,7 @@ If the request was not successful, the user will be redirected back to the reset
 <a name="customizing-password-resets"></a>
 ### Customizing Password Resets
 
-The password reset process may be customized by modifying the `App\Actions\ResetUserPassword` action that was generated when you installed Laravel Fortify.
+The password reset process may be customized by modifying the `App\Actions\Fortify\ResetUserPassword` action that was generated when you installed Laravel Fortify.
 
 <a name="email-verification"></a>
 ## Email Verification

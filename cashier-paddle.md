@@ -1075,7 +1075,7 @@ In the example above, the customer will have two prices attached to their `defau
 ```php
 $user = User::find(1);
 
-$checkout = $user->subscribe('default', ['price_monthly', 'price_chat' => 5]);
+$checkout = $user->subscribe(['price_monthly', 'price_chat' => 5]);
 ```
 
 If you would like to add another price to an existing subscription, you must use the subscription's `swap` method. When invoking the `swap` method, you should also include the subscription's current prices and quantities as well:
