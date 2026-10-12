@@ -48,7 +48,7 @@ Next, install the MCP server and coding guidelines:
 php artisan boost:install
 ```
 
-The `boost:install` command will generate the relevant agent guideline and skill files for the coding agents you selected during the installation process.
+The `boost:install` command will generate the relevant agent guideline and skill files for the coding agents you selected during the installation process. If a guideline file such as `CLAUDE.md` or `AGENTS.md` already exists, Boost only replaces the content inside its `<laravel-boost-guidelines>` block, so anything you have written outside of that block is preserved.
 
 Once Laravel Boost has been installed, you're ready to start coding with Cursor, Claude Code, or your AI agent of choice.
 
@@ -74,12 +74,6 @@ claude mcp add -s local -t stdio laravel-boost php artisan boost:mcp
 Codex support is typically enabled automatically. If you find it isn't, open a shell in the project's directory and run the following command:
 
 codex mcp add laravel-boost -- php "artisan" "boost:mcp"
-```
-
-```text tab=Gemini CLI
-Gemini CLI support is typically enabled automatically. If you find it isn't, open a shell in the project's directory and run the following command:
-
-gemini mcp add -s project -t stdio laravel-boost php artisan boost:mcp
 ```
 
 ```text tab=GitHub Copilot (VS Code)
@@ -117,10 +111,10 @@ You may also automate this process by adding it to your Composer "post-update-cm
 }
 ```
 
-By default, the `boost:update` command will only update the existing Boost resources already published within your application. If you would like Boost to scan your application for any newly installed packages and offer to publish their corresponding guidelines and skills, you may use the `--discover` option:
+By default, the `boost:update` command will also scan your application for any newly installed packages and offer to publish their corresponding guidelines and skills. This prompt is skipped when the command runs non-interactively, such as from a Composer script. If you would like Boost to only update the existing Boost resources already published within your application, you may use the `--no-discover` option:
 
 ```shell
-php artisan boost:update --discover
+php artisan boost:update --no-discover
 ```
 
 <a name="mcp-server"></a>
