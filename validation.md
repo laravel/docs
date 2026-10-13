@@ -25,6 +25,7 @@
     - [Specifying Attributes in Language Files](#specifying-attribute-in-language-files)
     - [Specifying Values in Language Files](#specifying-values-in-language-files)
 - [Available Validation Rules](#available-validation-rules)
+    - [Rule Builders](#rule-builders)
 - [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Validating Arrays](#validating-arrays)
     - [Validating Nested Array Input](#validating-nested-array-input)
@@ -1221,6 +1222,38 @@ Below is a list of all available validation rules and their function:
 
 </div>
 
+<a name="rule-builders"></a>
+### Rule Builders
+
+In addition to strings, many validation rules may be defined using methods on the `Illuminate\Validation\Rule` class. These methods offer IDE autocompletion and may be combined with string rules:
+
+```php
+use Illuminate\Validation\Rule;
+
+'name' => [Rule::required(), Rule::string()->max(255)],
+'terms' => [Rule::accepted()],
+'enabled' => [Rule::boolean()],
+'website' => [Rule::nullable(), Rule::activeUrl()],
+```
+
+Method names use camel case, such as `Rule::hexColor()`, `Rule::macAddress()`, and `Rule::requiredArrayKeys(['name', 'email'])`. Rules that depend on other fields accept the field names or comparison values as arguments:
+
+```php
+'terms' => [Rule::acceptedIf('account_type', ['personal', 'business'])],
+'nickname' => [Rule::excludeWith('name')],
+'email' => [Rule::requiredWithout(['phone', 'mobile'])],
+'settings' => [Rule::presentIf('account_type', 'business')],
+```
+
+The `acceptedIf`, `declinedIf`, `missingIf`, `missingUnless`, `presentIf`, and `presentUnless` methods accept a comparison value or an array of comparison values. Methods such as `requiredWith`, `requiredWithAll`, `requiredWithout`, `requiredWithoutAll`, `missingWith`, `missingWithAll`, `presentWith`, `presentWithAll`, and `prohibits` accept an array of field names or multiple field name arguments.
+
+Regular expressions may also be defined using the `regex` and `notRegex` methods:
+
+```php
+'username' => [Rule::required(), Rule::regex('/^[a-z]+$/i')],
+'code' => [Rule::notRegex('/^test-/i')],
+```
+
 <a name="rule-accepted"></a>
 #### accepted
 
@@ -1460,12 +1493,24 @@ You may use the `strict` parameter to only consider the field valid if its value
 'foo' => ['boolean:strict']
 ```
 
+Alternatively, you may use the `Rule::boolean` method, passing `true` to enable strict validation:
+
+```php
+'foo' => [Rule::boolean(true)],
+```
+
 <a name="rule-confirmed"></a>
 #### confirmed
 
 The field under validation must have a matching field of `{field}_confirmation`. For example, if the field under validation is `password`, a matching `password_confirmation` field must be present in the input.
 
 You may also pass a custom confirmation field name. For example, `confirmed:repeat_username` will expect the field `repeat_username` to match the field under validation.
+
+You may also use the `Rule::confirmed` method, specifying a custom confirmation field via the `customField` method:
+
+```php
+'username' => [Rule::confirmed()->customField('repeat_username')],
+```
 
 <a name="rule-contains"></a>
 #### contains:_foo_,_bar_,...
@@ -1512,6 +1557,12 @@ The field under validation must match the authenticated user's password. You may
 'password' => ['current_password:api']
 ```
 
+Alternatively, you may use the `Rule::currentPassword` method and specify the authentication guard via the `guard` method:
+
+```php
+'password' => [Rule::currentPassword()->guard('api')],
+```
+
 <a name="rule-date"></a>
 #### date
 
@@ -1521,6 +1572,16 @@ The field under validation must be a valid, non-relative date according to the `
 #### date_equals:_date_
 
 The field under validation must be equal to the given date. The dates will be passed into the PHP `strtotime` function in order to be converted into a valid `DateTime` instance.
+
+For convenience, date-based rules may be constructed using the fluent `date` rule builder:
+
+```php
+use Illuminate\Validation\Rule;
+
+'start_date' => [Rule::date()->equals('2026-01-01')],
+```
+
+The `equals` method accepts a date string, a `DateTimeInterface` instance, or the name of another field to compare against.
 
 <a name="rule-date-format"></a>
 #### date_format:_format_,...
@@ -1641,6 +1702,12 @@ You may add `ignore_case` to the validation rule's arguments to make the rule ig
 
 ```php
 'foo.*.id' => ['distinct:ignore_case']
+```
+
+Alternatively, you may use the `Rule::distinct` method, chaining the `strict` and `ignoreCase` methods as needed:
+
+```php
+'foo.*.id' => [Rule::distinct()->strict()->ignoreCase()],
 ```
 
 <a name="rule-doesnt-start-with"></a>
@@ -2005,6 +2072,14 @@ You may use the `strict` parameter to only consider the field valid if its type 
 #### ip
 
 The field under validation must be an IP address.
+
+You may also use the `Rule::ip` method, optionally restricting the IP version to `4` or `6`:
+
+```php
+'ip_address' => [Rule::ip()],
+'ipv4_address' => [Rule::ip()->version(4)],
+'ipv6_address' => [Rule::ip()->version(6)],
+```
 
 <a name="ipv4"></a>
 #### ipv4
@@ -2447,6 +2522,12 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
 'timezone' => ['required', 'timezone:per_country,US'];
 ```
 
+Alternatively, you may use the `Rule::timezone` method, passing any `listIdentifiers` arguments as an array:
+
+```php
+'timezone' => [Rule::timezone(['per_country', 'US'])],
+```
+
 <a name="rule-unique"></a>
 #### unique:_table_,_column_
 
@@ -2553,6 +2634,12 @@ If you would like to specify the URL protocols that should be considered valid, 
 'game' => ['url:minecraft,steam'],
 ```
 
+Alternatively, you may use the `Rule::url` method, specifying the allowed protocols via the `protocols` method:
+
+```php
+'url' => [Rule::url()->protocols(['http', 'https'])],
+```
+
 <a name="rule-ulid"></a>
 #### ulid
 
@@ -2567,6 +2654,12 @@ You may also validate that the given UUID matches a UUID specification by versio
 
 ```php
 'uuid' => ['uuid:4']
+```
+
+Alternatively, you may use the `Rule::uuid` method and specify the UUID version via the `version` method:
+
+```php
+'uuid' => [Rule::uuid()->version(4)],
 ```
 
 <a name="conditionally-adding-rules"></a>

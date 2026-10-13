@@ -6,6 +6,7 @@
     - [Pooled PostgreSQL Connections](#pooled-postgresql-connections)
 - [Running SQL Queries](#running-queries)
     - [Using Multiple Database Connections](#using-multiple-database-connections)
+    - [Running Analytical Queries on Vitess](#running-analytical-queries-on-vitess)
     - [Listening for Query Events](#listening-for-query-events)
     - [Monitoring Cumulative Query Time](#monitoring-cumulative-query-time)
 - [Database Transactions](#database-transactions)
@@ -326,6 +327,29 @@ You may access the raw, underlying PDO instance of a connection using the `getPd
 
 ```php
 $pdo = DB::connection()->getPdo();
+```
+
+<a name="running-analytical-queries-on-vitess"></a>
+### Running Analytical Queries on Vitess
+
+When using a Vitess database, such as PlanetScale, you may use the `olap` method to execute analytical queries using the OLAP workload:
+
+```php
+use Illuminate\Support\Facades\DB;
+
+$totals = DB::connection('mysql')->olap(fn ($connection) => $connection->table('orders')
+    ->selectRaw('customer_id, sum(total) as total')
+    ->groupBy('customer_id')
+    ->get()
+);
+```
+
+Laravel sets the workload on both the read and write connections, then resets it to OLTP when the callback finishes, even if an exception is thrown. The `olap` method returns the callback's result. On MySQL connections that are not using Vitess, the callback is executed without changing the workload.
+
+You may determine whether a MySQL connection is using Vitess via the `isVitess` method:
+
+```php
+$isVitess = DB::connection('mysql')->isVitess();
 ```
 
 <a name="listening-for-query-events"></a>
