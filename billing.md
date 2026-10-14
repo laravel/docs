@@ -1933,7 +1933,7 @@ By default, the created webhook will point to the URL defined by the `APP_URL` e
 php artisan cashier:webhook --url "https://example.com/stripe/webhook"
 ```
 
-The webhook that is created will use the Stripe API version that your version of Cashier is compatible with. If you would like to use a different Stripe version, you may provide the `--api-version` option:
+The webhook that is created will use the same Stripe API version as Cashier, which is determined by your installed version of `stripe/stripe-php`. If you would like to use a different Stripe version, you may provide the `--api-version` option:
 
 ```shell
 php artisan cashier:webhook --api-version="2019-12-03"
