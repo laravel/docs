@@ -1881,6 +1881,8 @@ You may push to a stack as many times as needed. To render the complete stack co
 </head>
 ```
 
+The `@stack` directive renders the content that has been pushed at the moment it is reached. Content pushed afterwards, such as from a component rendered below the `@stack` directive in the same layout component, will not be included. If you need to push from such components, place the `@stack` directive after them, for example at the end of the `<body>` tag.
+
 If you would like to prepend content onto the beginning of a stack, you should use the `@prepend` directive:
 
 ```blade
