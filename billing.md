@@ -82,7 +82,7 @@
 When upgrading to a new version of Cashier, it's important that you carefully review [the upgrade guide](https://github.com/laravel/cashier-stripe/blob/16.x/UPGRADE.md).
 
 > [!WARNING]
-> To prevent breaking changes, Cashier uses a fixed Stripe API version. Cashier 16 utilizes Stripe API version `2025-06-30.basil`. The Stripe API version will be updated on minor releases in order to make use of new Stripe features and improvements.
+> Cashier uses the Stripe API version pinned by your installed version of the `stripe/stripe-php` SDK. For example, `stripe/stripe-php` 21.x uses Stripe API version `2026-08-26.dahlia`. Since a new major version of the Stripe SDK typically targets a new Stripe API version, you should review [Stripe's API changelog](https://docs.stripe.com/changelog) before upgrading `stripe/stripe-php` to a new major version.
 
 <a name="installation"></a>
 ## Installation
