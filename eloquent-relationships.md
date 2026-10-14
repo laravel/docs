@@ -2187,6 +2187,37 @@ $users = User::with(['posts' => function ($query) {
 }])->get();
 ```
 
+<a name="constraining-nested-eager-loads"></a>
+#### Constraining Nested Eager Loads
+
+If you need to constrain both a relationship and one of its nested relationships, pass both of them to the same `with()` call:
+
+```php
+$users = User::with([
+    'posts' => function ($query) {
+        $query->where('published', true);
+    },
+    'posts.comments' => function ($query) {
+        $query->where('approved', true);
+    },
+])->get();
+```
+
+In this example, Eloquent will eager load the user's published posts and the approved comments for those posts.
+
+A nested name such as `posts.comments` also registers the parent relationship, `posts`. When that `with()` call does not include its own constraint for `posts`, Eloquent registers `posts` with an empty constraint. A later call to `with()` merges into the relationships already registered on the query, so the empty `posts` constraint replaces the constraint you defined earlier:
+
+```php
+$users = User::with(['posts' => function ($query) {
+    $query->where('published', true);
+}])->with('posts.comments')->get();
+```
+
+The query above eager loads every post, not only the published posts. `posts.comments` is still eager loaded. The same replacement occurs when the second call passes `posts.comments` in an array, or when the two `with()` calls are separate statements on the same query.
+
+> [!WARNING]
+> Do not call `with()` again to add a nested relationship after you have constrained its parent. Pass the parent and the nested relationship to the same `with()` call.
+
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
 #### Constraining Eager Loading of `morphTo` Relationships
 
