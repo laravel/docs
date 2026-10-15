@@ -707,6 +707,26 @@ $flight = Flight::where('active', 1)->first();
 $flight = Flight::firstWhere('active', 1);
 ```
 
+The above methods will return `null` if no matching records were found, and if there are multiple matches will return the first one retrieved from the database, which could be non-deterministic. Sometimes you want to ensure that there is **exactly** one match. Using `sole` and `findSole` will throw an exception if zero or multiple records are found:
+
+```php
+use App\Models\Flight;
+use Illuminate\Database\MultipleRecordsFoundException;
+use Illuminate\Database\RecordNotFoundException;
+
+try {
+    $flight = Flight::findSole(1);
+} catch (RecordNotFoundException $e) {
+    // No record exists, but we were expecting exactly one
+}
+
+try {
+    $flight = Flight::where('active', 1)->sole();
+} catch (MultipleRecordsFoundException $e) {
+    // Multiple records found, but we were expecting exactly one
+}
+```
+
 Sometimes you may wish to perform some other action if no results are found. The `findOr` and `firstOr` methods will return a single model instance or, if no results are found, execute the given closure. The value returned by the closure will be considered the result of the method:
 
 ```php
