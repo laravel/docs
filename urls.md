@@ -233,6 +233,9 @@ Route::post('/unsubscribe/{user}', function (Request $request) {
 })->name('unsubscribe')->middleware('signed:relative');
 ```
 
+> [!WARNING]
+> A signature only covers the URL's path and query string. Any other request input, such as a form or JSON request body, is not signed and can be freely modified by the user. Since Laravel merges these input sources together and gives the request body precedence over the query string, retrieving input with any method other than `query`, such as `input`, `all`, or a dynamic request property, may return unsigned values that override your signed query string values. Therefore, you should always retrieve signed values using the `query` method, such as `$request->query('email')`. This includes `GET` requests, as a specially crafted `GET` request can still contain a JSON request body.
+
 <a name="responding-to-invalid-signed-routes"></a>
 #### Responding to Invalid Signed Routes
 
