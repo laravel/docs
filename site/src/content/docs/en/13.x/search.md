@@ -35,17 +35,17 @@ When you need keyword relevance ranking — where the database scores and sorts 
 <a id="introduction-semantic-vector-search"></a>
 #### Semantic / Vector Search
 
-For AI-powered semantic search that matches results by *meaning* rather than exact keywords, the `whereVectorSimilarTo` query builder method uses vector embeddings stored in PostgreSQL with the `pgvector` extension or MariaDB. For example, a search for "best wineries in Napa Valley" can surface an article titled "Top Vineyards to Visit" — even though the words don't overlap. Vector search requires PostgreSQL with the `pgvector` extension or MariaDB 11.7 or later, as well as the [Laravel AI SDK](../ai-sdk/).
+For AI-powered semantic search that matches results by *meaning* rather than exact keywords, the `whereVectorSimilarTo` query builder method uses vector embeddings stored in PostgreSQL with the `pgvector` extension or MariaDB. For example, a search for "best wineries in Napa Valley" can surface an article titled "Top Vineyards to Visit" — even though the words don't overlap. Vector search requires PostgreSQL with the `pgvector` extension or MariaDB 11.7 or later, as well as the [Laravel AI SDK](/en/ai-sdk/).
 
 <a id="introduction-reranking"></a>
 #### Reranking
 
-Laravel's [AI SDK](../ai-sdk/) provides reranking capabilities that use AI models to reorder any set of results by semantic relevance to a query. Reranking is especially powerful as a second stage after a fast initial retrieval step like full-text search — giving you both speed and semantic accuracy.
+Laravel's [AI SDK](/en/ai-sdk/) provides reranking capabilities that use AI models to reorder any set of results by semantic relevance to a query. Reranking is especially powerful as a second stage after a fast initial retrieval step like full-text search — giving you both speed and semantic accuracy.
 
 <a id="introduction-scout-search-engines"></a>
 #### Laravel Scout Search
 
-For applications that want a `Searchable` trait that automatically keeps search indexes in sync with Eloquent models, [Laravel Scout](../scout/) offers both a built-in database engine and drivers for third-party services like Algolia, Meilisearch, Typesense, and Turbopuffer.
+For applications that want a `Searchable` trait that automatically keeps search indexes in sync with Eloquent models, [Laravel Scout](/en/scout/) offers both a built-in database engine and drivers for third-party services like Algolia, Meilisearch, Typesense, and Turbopuffer.
 
 <a id="full-text-search"></a>
 ## Full-Text Search
@@ -79,7 +79,7 @@ On PostgreSQL, you may specify a language configuration for the index, which con
 $table->fullText('body')->language('english');
 ```
 
-For more information on creating indexes, consult the [migration documentation](../migrations/#available-index-types).
+For more information on creating indexes, consult the [migration documentation](/en/migrations/#available-index-types).
 
 <a id="running-full-text-queries"></a>
 ### Running Full-Text Queries
@@ -100,7 +100,7 @@ $articles = Article::whereFullText(
 )->get();
 ```
 
-The `orWhereFullText` method may be used to add a full-text search clause as an "or" condition. For complete details, consult the [query builder documentation](../queries/#full-text-where-clauses).
+The `orWhereFullText` method may be used to add a full-text search clause as an "or" condition. For complete details, consult the [query builder documentation](/en/queries/#full-text-where-clauses).
 
 <a id="semantic-vector-search"></a>
 ## Semantic / Vector Search
@@ -110,7 +110,7 @@ Full-text search relies on matching keywords — the words in the query must app
 The basic workflow for vector search is: generate an embedding (a numeric array) for each piece of content and store it alongside your data, then at search time, generate an embedding for the user's query and find the stored embeddings that are closest to it in vector space.
 
 > **Note:**
-> Vector search requires the [Laravel AI SDK](../ai-sdk/) and is supported by PostgreSQL (requires the `pgvector` extension), MariaDB 11.7 or later, and MongoDB (requires the [Laravel MongoDB package](https://laravel.com/docs/13.x/mongodb)). All Postgres databases on [Laravel Cloud](https://laravel.com/cloud) already have `pgvector` installed.
+> Vector search requires the [Laravel AI SDK](/en/ai-sdk/) and is supported by PostgreSQL (requires the `pgvector` extension), MariaDB 11.7 or later, and MongoDB (requires the [Laravel MongoDB package](https://laravel.com/docs/13.x/mongodb)). All Postgres databases on [Laravel Cloud](https://laravel.com/cloud) already have `pgvector` installed.
 
 <a id="generating-embeddings"></a>
 ### Generating Embeddings
@@ -136,7 +136,7 @@ $response = Embeddings::for([
 $response->embeddings; // [[0.123, 0.456, ...], [0.789, 0.012, ...]]
 ```
 
-For more details on configuring embedding providers, customizing dimensions, and caching, consult the [AI SDK documentation](../ai-sdk/#embeddings).
+For more details on configuring embedding providers, customizing dimensions, and caching, consult the [AI SDK documentation](/en/ai-sdk/#embeddings).
 
 <a id="storing-and-indexing-vectors"></a>
 ### Storing and Indexing Vectors
@@ -170,7 +170,7 @@ protected function casts(): array
 }
 ```
 
-For more details on vector columns and indexes, consult the [migration documentation](../migrations/#available-column-types).
+For more details on vector columns and indexes, consult the [migration documentation](/en/migrations/#available-column-types).
 
 <a id="querying-by-similarity"></a>
 ### Querying by Similarity
@@ -193,7 +193,7 @@ $documents = Document::query()
     ->get();
 ```
 
-For lower-level control over vector queries, the `whereVectorDistanceLessThan`, `selectVectorDistance`, and `orderByVectorDistance` methods are also available. These methods let you work directly with distance values rather than similarity scores, select the computed distance as a column in your results, or manually control the ordering. For complete details, consult the [query builder documentation](../queries/#vector-similarity-clauses) and the [AI SDK documentation](../ai-sdk/#querying-embeddings).
+For lower-level control over vector queries, the `whereVectorDistanceLessThan`, `selectVectorDistance`, and `orderByVectorDistance` methods are also available. These methods let you work directly with distance values rather than similarity scores, select the computed distance as a column in your results, or manually control the ordering. For complete details, consult the [query builder documentation](/en/queries/#vector-similarity-clauses) and the [AI SDK documentation](/en/ai-sdk/#querying-embeddings).
 
 <a id="reranking-results"></a>
 ## Reranking Results
@@ -223,12 +223,12 @@ $articles = Article::all()
     ->rerank('body', 'Laravel tutorials');
 ```
 
-For complete details on configuring reranking providers and available options, consult the [AI SDK documentation](../ai-sdk/#reranking).
+For complete details on configuring reranking providers and available options, consult the [AI SDK documentation](/en/ai-sdk/#reranking).
 
 <a id="laravel-scout"></a>
 ## Laravel Scout
 
-The search techniques described above are all query builder methods that you call directly in your code. [Laravel Scout](../scout/) takes a different approach: it provides a `Searchable` trait that you add to your Eloquent models, and Scout automatically keeps your search indexes in sync as records are created, updated, and deleted. This is particularly convenient when you want your models to always be searchable without manually managing index updates.
+The search techniques described above are all query builder methods that you call directly in your code. [Laravel Scout](/en/scout/) takes a different approach: it provides a `Searchable` trait that you add to your Eloquent models, and Scout automatically keeps your search indexes in sync as records are created, updated, and deleted. This is particularly convenient when you want your models to always be searchable without manually managing index updates.
 
 <a id="database-engine"></a>
 ### Database Engine
@@ -265,7 +265,7 @@ class Article extends Model
 ```
 
 > **Warning:**
-> Before specifying that a column should use full-text query constraints, ensure that the column has been assigned a [full-text index](../migrations/#available-index-types).
+> Before specifying that a column should use full-text query constraints, ensure that the column has been assigned a [full-text index](/en/migrations/#available-index-types).
 
 Once the trait is added, you may search your model using Scout's `search` method. Scout's database engine will automatically order results by relevance, even on PostgreSQL:
 
@@ -273,7 +273,7 @@ Once the trait is added, you may search your model using Scout's `search` method
 $articles = Article::search('Laravel')->get();
 ```
 
-The database engine is a great choice when your search needs are moderate and you want the convenience of Scout's automatic index syncing without deploying an external service. It handles the most common search use cases well, including filtering, pagination, and soft-deleted record handling. For complete details, consult the [Scout documentation](../scout/#database-engine).
+The database engine is a great choice when your search needs are moderate and you want the convenience of Scout's automatic index syncing without deploying an external service. It handles the most common search use cases well, including filtering, pagination, and soft-deleted record handling. For complete details, consult the [Scout documentation](/en/scout/#database-engine).
 
 <a id="third-party-engines"></a>
 ### Third-Party Engines
@@ -282,7 +282,7 @@ Scout also supports third-party search engines such as [Algolia](https://www.alg
 
 Since Scout provides a unified API across all of its drivers, switching from the database engine to a third-party engine later requires minimal code changes. You may start with the database engine and migrate to a third-party service only if your application's needs outgrow what the database can provide.
 
-For complete details on configuring third-party engines, consult the [Scout documentation](../scout/).
+For complete details on configuring third-party engines, consult the [Scout documentation](/en/scout/).
 
 > **Note:**
 > Many applications never need an external search engine. The built-in techniques described on this page cover the vast majority of use cases.

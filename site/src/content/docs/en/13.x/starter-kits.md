@@ -29,14 +29,14 @@ title: "Starter Kits"
 <a id="introduction"></a>
 ## Introduction
 
-To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users. The starter kits use [Laravel Fortify](../fortify/) to provide authentication.
+To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users. The starter kits use [Laravel Fortify](/en/fortify/) to provide authentication.
 
 While you are welcome to use these starter kits, they are not required. You are free to build your own application from the ground up by simply installing a fresh copy of Laravel. Either way, we know you will build something great!
 
 <a id="creating-an-application"></a>
 ## Creating an Application Using a Starter Kit
 
-To create a new Laravel application using one of our starter kits, you should first [install PHP and the Laravel CLI tool](../installation/#installing-php). If you already have PHP and Composer installed, you may install the Laravel installer CLI tool via Composer:
+To create a new Laravel application using one of our starter kits, you should first [install PHP and the Laravel CLI tool](/en/installation/#installing-php). If you already have PHP and Composer installed, you may install the Laravel installer CLI tool via Composer:
 
 ```shell
 composer global require laravel/installer
@@ -353,7 +353,7 @@ To change your authentication layout, modify the layout that is used by your app
 <a id="authentication"></a>
 ## Authentication
 
-All starter kits use [Laravel Fortify](../fortify/) to handle authentication. Fortify provides routes, controllers, and logic for login, registration, password reset, email verification, and more.
+All starter kits use [Laravel Fortify](/en/fortify/) to handle authentication. Fortify provides routes, controllers, and logic for login, registration, password reset, email verification, and more.
 
 Fortify automatically registers the following authentication routes based on the features that are enabled in your application's `config/fortify.php` configuration file:
 
@@ -446,7 +446,7 @@ public function create(array $input): User
 
 Starter kits include built-in two-factor authentication (2FA), allowing users to secure their accounts using any TOTP-compatible authenticator app. 2FA is enabled by default via `Features::twoFactorAuthentication()` in your application's `config/fortify.php` configuration file.
 
-The `confirm` option requires users to verify a code before 2FA is fully enabled, while `confirmPassword` requires password confirmation before enabling or disabling 2FA. For more details, see [Fortify's two-factor authentication documentation](../fortify/#two-factor-authentication).
+The `confirm` option requires users to verify a code before 2FA is fully enabled, while `confirmPassword` requires password confirmation before enabling or disabling 2FA. For more details, see [Fortify's two-factor authentication documentation](/en/fortify/#two-factor-authentication).
 
 <a id="rate-limiting"></a>
 ### Rate Limiting

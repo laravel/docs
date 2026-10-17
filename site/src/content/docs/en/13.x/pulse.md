@@ -29,7 +29,7 @@ title: "Laravel Pulse"
 
 [Laravel Pulse](https://github.com/laravel/pulse) delivers at-a-glance insights into your application's performance and usage. With Pulse, you can track down bottlenecks like slow jobs and endpoints, find your most active users, and more.
 
-For in-depth debugging of individual events, check out [Laravel Telescope](../telescope/).
+For in-depth debugging of individual events, check out [Laravel Telescope](/en/telescope/).
 
 <a id="installation"></a>
 ## Installation
@@ -161,7 +161,7 @@ public function boot(): void
 ```
 
 > **Note:**
-> You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](../container/#binding-a-singleton).
+> You may completely customize how the authenticated user is captured and retrieved by implementing the `Laravel\Pulse\Contracts\ResolvesUsers` contract and binding it in Laravel's [service container](/en/container/#binding-a-singleton).
 
 <a id="dashboard-cards"></a>
 ### Cards
@@ -233,7 +233,7 @@ See the [slow queries recorder](#slow-queries-recorder) documentation for more i
 <a id="slow-outgoing-requests-card"></a>
 #### Slow Outgoing Requests
 
-The `<livewire:pulse.slow-outgoing-requests />` card shows outgoing requests made using Laravel's [HTTP client](../http-client/) that exceed the configured threshold, which is 1,000ms by default.
+The `<livewire:pulse.slow-outgoing-requests />` card shows outgoing requests made using Laravel's [HTTP client](/en/http-client/) that exceed the configured threshold, which is 1,000ms by default.
 
 By default, entries will be grouped by the full URL. However, you may wish to normalize or group similar outgoing requests using regular expressions. See the [slow outgoing requests recorder](#slow-outgoing-requests-recorder) documentation for more information.
 
@@ -263,7 +263,7 @@ php artisan pulse:restart
 ```
 
 > **Note:**
-> Pulse uses the [cache](../cache/) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
+> Pulse uses the [cache](/en/cache/) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a id="recorders"></a>
 ### Recorders
@@ -273,7 +273,7 @@ Recorders are responsible for capturing entries from your application to be reco
 <a id="cache-interactions-recorder"></a>
 #### Cache Interactions
 
-The `CacheInteractions` recorder captures information about the [cache](../cache/) hits and misses occurring in your application for display on the [Cache](#cache-card) card.
+The `CacheInteractions` recorder captures information about the [cache](/en/cache/) hits and misses occurring in your application for display on the [Cache](#cache-card) card.
 
 You may optionally adjust the [sample rate](#sampling) and ignored key patterns.
 
@@ -328,7 +328,7 @@ If no regular expression patterns match the job's classname, then the `'default'
 <a id="slow-outgoing-requests-recorder"></a>
 #### Slow Outgoing Requests
 
-The `SlowOutgoingRequests` recorder captures information about outgoing HTTP requests made using Laravel's [HTTP client](../http-client/) that exceed the configured threshold for display on the [Slow Outgoing Requests](#slow-outgoing-requests-card) card.
+The `SlowOutgoingRequests` recorder captures information about outgoing HTTP requests made using Laravel's [HTTP client](/en/http-client/) that exceed the configured threshold for display on the [Slow Outgoing Requests](#slow-outgoing-requests-card) card.
 
 You may optionally adjust the slow outgoing request threshold, [sample rate](#sampling), and ignored URL patterns.
 
@@ -464,7 +464,7 @@ Pulse has been designed to drop into an existing application without requiring a
 
 For high-traffic applications, you may prefer to use a dedicated database connection for Pulse to avoid impacting your application database.
 
-You may customize the [database connection](../database/#configuration) used by Pulse by setting the `PULSE_DB_CONNECTION` environment variable.
+You may customize the [database connection](/en/database/#configuration) used by Pulse by setting the `PULSE_DB_CONNECTION` environment variable.
 
 ```env
 PULSE_DB_CONNECTION=pulse
@@ -482,7 +482,7 @@ By default, Pulse will store entries directly to the [configured database connec
 PULSE_INGEST_DRIVER=redis
 ```
 
-Pulse will use your default [Redis connection](../redis/#configuration) by default, but you may customize this via the `PULSE_REDIS_CONNECTION` environment variable:
+Pulse will use your default [Redis connection](/en/redis/#configuration) by default, but you may customize this via the `PULSE_REDIS_CONNECTION` environment variable:
 
 ```ini
 PULSE_REDIS_CONNECTION=pulse
@@ -507,7 +507,7 @@ php artisan pulse:restart
 ```
 
 > **Note:**
-> Pulse uses the [cache](../cache/) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
+> Pulse uses the [cache](/en/cache/) to store restart signals, so you should verify that a cache driver is properly configured for your application before using this feature.
 
 <a id="sampling"></a>
 ### Sampling
@@ -609,7 +609,7 @@ If your card requires additional styling beyond the classes and components inclu
 <a id="custom-card-styling-vite"></a>
 #### Laravel Vite Integration
 
-If your custom card lives within your application's code base and you are using Laravel's [Vite integration](../vite/), you may update your `vite.config.js` file to include a dedicated CSS entry point for your card:
+If your custom card lives within your application's code base and you are using Laravel's [Vite integration](/en/vite/), you may update your `vite.config.js` file to include a dedicated CSS entry point for your card:
 
 ```js
 laravel({

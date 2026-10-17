@@ -166,7 +166,7 @@ Mcp::web('/mcp/weather', WeatherServer::class)
 <a id="local-servers"></a>
 ### Local Servers
 
-Local servers run as Artisan commands, perfect for building local AI assistant integrations like [Laravel Boost](../installation/#installing-laravel-boost). Register a local server using the `local` method:
+Local servers run as Artisan commands, perfect for building local AI assistant integrations like [Laravel Boost](/en/installation/#installing-laravel-boost). Register a local server using the `local` method:
 
 ```php
 use App\Mcp\Servers\WeatherServer;
@@ -450,7 +450,7 @@ class CurrentWeatherTool extends Tool
 
 JSON Schema definitions provide a basic structure for tool arguments, but you may also want to enforce more complex validation rules.
 
-Laravel MCP integrates seamlessly with Laravel's [validation features](../validation/). You may validate incoming tool arguments within your tool's `handle` method:
+Laravel MCP integrates seamlessly with Laravel's [validation features](/en/validation/). You may validate incoming tool arguments within your tool's `handle` method:
 
 ```php
 <?php
@@ -493,7 +493,7 @@ $validated = $request->validate([
 <a id="tool-dependency-injection"></a>
 #### Tool Dependency Injection
 
-The Laravel [service container](../container/) is used to resolve all tools. As a result, you are able to type-hint any dependencies your tool may need in its constructor. The declared dependencies will automatically be resolved and injected into the tool instance:
+The Laravel [service container](/en/container/) is used to resolve all tools. As a result, you are able to type-hint any dependencies your tool may need in its constructor. The declared dependencies will automatically be resolved and injected into the tool instance:
 
 ```php
 <?php
@@ -872,7 +872,7 @@ class DescribeWeatherPrompt extends Prompt
 
 Prompt arguments are automatically validated based on their definition, but you may also want to enforce more complex validation rules.
 
-Laravel MCP integrates seamlessly with Laravel's [validation features](../validation/). You may validate incoming prompt arguments within your prompt's `handle` method:
+Laravel MCP integrates seamlessly with Laravel's [validation features](/en/validation/). You may validate incoming prompt arguments within your prompt's `handle` method:
 
 ```php
 <?php
@@ -914,7 +914,7 @@ $validated = $request->validate([
 <a id="prompt-dependency-injection"></a>
 ### Prompt Dependency Injection
 
-The Laravel [service container](../container/) is used to resolve all prompts. As a result, you are able to type-hint any dependencies your prompt may need in its constructor. The declared dependencies will automatically be resolved and injected into the prompt instance:
+The Laravel [service container](/en/container/) is used to resolve all prompts. As a result, you are able to type-hint any dependencies your prompt may need in its constructor. The declared dependencies will automatically be resolved and injected into the prompt instance:
 
 ```php
 <?php
@@ -1257,7 +1257,7 @@ class WeatherGuidelinesResource extends Resource
 <a id="resource-dependency-injection"></a>
 ### Resource Dependency Injection
 
-The Laravel [service container](../container/) is used to resolve all resources. As a result, you are able to type-hint any dependencies your resource may need in its constructor. The declared dependencies will automatically be resolved and injected into the resource instance:
+The Laravel [service container](/en/container/) is used to resolve all resources. As a result, you are able to type-hint any dependencies your resource may need in its constructor. The declared dependencies will automatically be resolved and injected into the resource instance:
 
 ```php
 <?php
@@ -1597,7 +1597,7 @@ For computed or dynamic configuration, override the `appMeta` method on your res
 <a id="building-apps-with-boost"></a>
 ### Building Apps With Boost
 
-Laravel MCP includes a dedicated [Boost](../boost/) skill reference for building MCP Apps. If you have [Laravel Boost](../boost/) installed, your AI coding agent can invoke the `mcp-development` skill and ask it to scaffold an app resource, Blade view, and linked tool for you.
+Laravel MCP includes a dedicated [Boost](/en/boost/) skill reference for building MCP Apps. If you have [Laravel Boost](/en/boost/) installed, your AI coding agent can invoke the `mcp-development` skill and ask it to scaffold an app resource, Blade view, and linked tool for you.
 
 For the complete protocol reference, including the full client-side API and schema details, see the official [MCP Apps documentation](https://modelcontextprotocol.io/extensions/apps/overview).
 
@@ -1714,12 +1714,12 @@ Just like routes, you can authenticate web MCP servers with middleware. Adding a
 
 This section covers external AI clients accessing **your application's MCP servers**. To connect your application to another service's MCP server using a user's credentials, see [client authentication](#client-authentication) instead.
 
-There are two ways to authenticate access to your MCP server: simple, token based authentication via [Laravel Sanctum](../sanctum/) or any token which is passed via the `Authorization` HTTP header. Or, you may authenticate via OAuth using [Laravel Passport](../passport/).
+There are two ways to authenticate access to your MCP server: simple, token based authentication via [Laravel Sanctum](/en/sanctum/) or any token which is passed via the `Authorization` HTTP header. Or, you may authenticate via OAuth using [Laravel Passport](/en/passport/).
 
 <a id="oauth"></a>
 ### OAuth 2.1
 
-The most robust way to protect your web-based MCP servers is with OAuth using [Laravel Passport](../passport/).
+The most robust way to protect your web-based MCP servers is with OAuth using [Laravel Passport](/en/passport/).
 
 When authenticating your MCP server via OAuth, invoke the `Mcp::oauthRoutes` method in your `routes/ai.php` file to register the required OAuth2 discovery and client registration routes. Then, apply Passport's `auth:api` middleware to your `Mcp::web` route in your `routes/ai.php` file:
 
@@ -1735,7 +1735,7 @@ Mcp::web('/mcp/weather', WeatherExample::class)
 
 #### New Passport Installation
 
-If your application is not already using Laravel Passport, follow Passport's [installation and deployment guide](../passport/#installation) to add Passport to your application. You should have an `OAuthenticatable` model, new authentication guard, and passport keys before moving on.
+If your application is not already using Laravel Passport, follow Passport's [installation and deployment guide](/en/passport/#installation) to add Passport to your application. You should have an `OAuthenticatable` model, new authentication guard, and passport keys before moving on.
 
 Next, you should publish Laravel MCP's provided Passport authorization view:
 
@@ -1776,12 +1776,12 @@ Laravel MCP, via the `Mcp::oauthRoutes` method discussed above, adds, advertises
 
 OAuth2.1 is the documented authentication mechanism in the Model Context Protocol specification, and is the most widely supported among MCP clients. For that reason, we recommend using Passport when possible.
 
-If your application is already using [Sanctum](../sanctum/) then adding Passport may be cumbersome. In this instance, we recommend using Sanctum without Passport until you have a clear, necessary requirement to use an MCP client that only supports OAuth.
+If your application is already using [Sanctum](/en/sanctum/) then adding Passport may be cumbersome. In this instance, we recommend using Sanctum without Passport until you have a clear, necessary requirement to use an MCP client that only supports OAuth.
 
 <a id="sanctum"></a>
 ### Sanctum
 
-If you would like to protect your MCP server using [Sanctum](../sanctum/), simply add Sanctum's authentication middleware to your server in your `routes/ai.php` file. Then, ensure your MCP clients provide an `Authorization: Bearer <token>` header to ensure successful authentication:
+If you would like to protect your MCP server using [Sanctum](/en/sanctum/), simply add Sanctum's authentication middleware to your server in your `routes/ai.php` file. Then, ensure your MCP clients provide an `Authorization: Bearer <token>` header to ensure successful authentication:
 
 ```php
 use App\Mcp\Servers\WeatherExample;
@@ -1799,7 +1799,7 @@ If your application issues its own custom API tokens, you may authenticate your 
 <a id="authorization"></a>
 ## Authorization
 
-You may access the currently authenticated user via the `$request->user()` method, allowing you to perform [authorization checks](../authorization/) within your MCP tools and resources:
+You may access the currently authenticated user via the `$request->user()` method, allowing you to perform [authorization checks](/en/authorization/) within your MCP tools and resources:
 
 ```php
 use Laravel\Mcp\Request;
@@ -1821,7 +1821,7 @@ public function handle(Request $request): Response
 <a id="client"></a>
 ## MCP Client
 
-In addition to building servers, Laravel MCP includes a client for connecting to other MCP servers, whether first-party or third-party. The client lets your application discover and call the tools exposed by an MCP server, which is especially useful for giving your [AI agents](../ai-sdk/#mcp-tools) access to capabilities provided by external MCP servers.
+In addition to building servers, Laravel MCP includes a client for connecting to other MCP servers, whether first-party or third-party. The client lets your application discover and call the tools exposed by an MCP server, which is especially useful for giving your [AI agents](/en/ai-sdk/#mcp-tools) access to capabilities provided by external MCP servers.
 
 For example, a chat application may connect to GitHub's MCP server using each user's GitHub token, allowing its agent to answer questions about that user's repositories. In this scenario, your application is the MCP client; you do not need to create an MCP server or register `Mcp::web` routes.
 
@@ -1906,7 +1906,7 @@ $client = Client::web('https://api.githubcopilot.com/mcp/')->withToken(
 );
 ```
 
-If you already obtained a suitable token through [Socialite](../socialite/) or another account-linking flow, pass that token to `withToken`; you do not need to register MCP OAuth routes.
+If you already obtained a suitable token through [Socialite](/en/socialite/) or another account-linking flow, pass that token to `withToken`; you do not need to register MCP OAuth routes.
 
 <a id="client-oauth"></a>
 #### Linking User Accounts With OAuth
@@ -1959,7 +1959,7 @@ Your "Connect Project Service" button should send the user to the connect route:
 return redirect()->route('mcp.oauth.projects.connect');
 ```
 
-Laravel redirects the user to the service to approve access, exchanges the authorization code on their return, and invokes your callback. On subsequent chat requests, the named client uses the saved token. For example, an [AI SDK agent](../ai-sdk/#mcp-tools) may expose the service's tools:
+Laravel redirects the user to the service to approve access, exchanges the authorization code on their return, and invokes your callback. On subsequent chat requests, the named client uses the saved token. For example, an [AI SDK agent](/en/ai-sdk/#mcp-tools) may expose the service's tools:
 
 ```php
 public function tools(): iterable
@@ -1970,7 +1970,7 @@ public function tools(): iterable
 }
 ```
 
-Store tokens using [encrypted casts](../eloquent-mutators/#encrypted-casting) and hide them from model serialization. If the service issues expiring tokens, also persist the refresh token and expiry information from the `TokenSet` and handle renewal before making tool calls. For queued agents, resolve credentials from an explicitly provided user instead of `Auth::user()`.
+Store tokens using [encrypted casts](/en/eloquent-mutators/#encrypted-casting) and hide them from model serialization. If the service issues expiring tokens, also persist the refresh token and expiry information from the `TokenSet` and handle renewal before making tool calls. For queued agents, resolve credentials from an explicitly provided user instead of `Auth::user()`.
 
 > **Note:**
 > `Mcp::oAuthRoutesFor` connects your users to an external service. In contrast, `Mcp::oauthRoutes` allows external AI clients to authenticate to your own MCP servers using Passport. You do not need Passport or `Mcp::oauthRoutes` for the account-linking flow above.
@@ -2050,7 +2050,7 @@ $result = $tools['list_issues']->call([
 ]);
 ```
 
-If you are building agents with the [Laravel AI SDK](../ai-sdk/), you may also provide tools from an MCP client directly to an agent, allowing the model to call them while responding to a prompt. See the [MCP Tools](../ai-sdk/#mcp-tools) section of the AI SDK documentation for more information.
+If you are building agents with the [Laravel AI SDK](/en/ai-sdk/), you may also provide tools from an MCP client directly to an agent, allowing the model to call them while responding to a prompt. See the [MCP Tools](/en/ai-sdk/#mcp-tools) section of the AI SDK documentation for more information.
 
 <a id="client-prompts"></a>
 ### Prompts

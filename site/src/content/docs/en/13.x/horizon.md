@@ -28,9 +28,9 @@ title: "Laravel Horizon"
 ## Introduction
 
 > **Note:**
-> Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](../queues/). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
+> Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/en/queues/). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
 
-[Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](../queues/). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
+[Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](/en/queues/). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
 
 When using Horizon, all of your queue worker configuration is stored in a single, simple configuration file. By defining your application's worker configuration in a version controlled file, you may easily scale or modify your application's queue workers when deploying your application.
 
@@ -127,10 +127,10 @@ You may also define a wildcard environment (`*`) which will be used when no othe
 ],
 ```
 
-When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](../configuration/#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
+When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/en/configuration/#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
 
 > **Warning:**
-> You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](../configuration/#environment-configuration) on which you plan to run Horizon.
+> You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/en/configuration/#environment-configuration) on which you plan to run Horizon.
 
 <a id="supervisors"></a>
 #### Supervisors
@@ -142,7 +142,7 @@ You may add additional supervisors to a given environment if you would like to d
 <a id="maintenance-mode"></a>
 #### Maintenance Mode
 
-While your application is in [maintenance mode](../configuration/#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
+While your application is in [maintenance mode](/en/configuration/#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
 
 ```php
 'environments' => [
@@ -163,7 +163,7 @@ Within Horizon's default configuration file, you will notice a `defaults` config
 <a id="dashboard-authorization"></a>
 ### Dashboard Authorization
 
-The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](../authorization/#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
+The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/en/authorization/#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
 
 ```php
 /**
@@ -190,7 +190,7 @@ Remember that Laravel automatically injects the authenticated user into the gate
 ### Max Job Attempts
 
 > **Note:**
-> Before refining these options, make sure you are familiar with Laravel's default [queue services](../queues/#max-job-attempts-and-timeout) and the concept of 'attempts'.
+> Before refining these options, make sure you are familiar with Laravel's default [queue services](/en/queues/#max-job-attempts-and-timeout) and the concept of 'attempts'.
 
 You can define the maximum number of attempts a job can consume within a supervisor's configuration:
 
@@ -731,7 +731,7 @@ class SendRenderNotifications implements ShouldQueue
 ## Notifications
 
 > **Warning:**
-> When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](../notifications/).
+> When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/en/notifications/).
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:
 

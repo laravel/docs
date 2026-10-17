@@ -21,7 +21,7 @@ When referencing the Laravel framework or its components from your application o
 <a id="support-policy"></a>
 ## Support Policy
 
-For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, only the latest major release receives bug fixes. In addition, please review the database versions [supported by Laravel](../database/#introduction).
+For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, only the latest major release receives bug fixes. In addition, please review the database versions [supported by Laravel](/en/database/#introduction).
 
 <div class="overflow-auto">
 
@@ -114,19 +114,19 @@ $embeddings = Str::of('Napa Valley has great wine.')->toEmbeddings();
 <a id="json-api"></a>
 ### JSON:API Resources
 
-Laravel now includes first-party [JSON:API resources](../eloquent-resources/#jsonapi-resources), making it straightforward to return responses compliant with the JSON:API specification.
+Laravel now includes first-party [JSON:API resources](/en/eloquent-resources/#jsonapi-resources), making it straightforward to return responses compliant with the JSON:API specification.
 
 JSON:API resources handle resource object serialization, relationship inclusion, sparse fieldsets, links, and JSON:API-compliant response headers.
 
 <a id="request-forgery-protection"></a>
 ### Request Forgery Protection
 
-For security, Laravel's [request forgery protection](../csrf/#preventing-csrf-requests) middleware has been enhanced and formalized as `PreventRequestForgery`, adding origin-aware request verification while preserving compatibility with token-based CSRF protection.
+For security, Laravel's [request forgery protection](/en/csrf/#preventing-csrf-requests) middleware has been enhanced and formalized as `PreventRequestForgery`, adding origin-aware request verification while preserving compatibility with token-based CSRF protection.
 
 <a id="queue-routing"></a>
 ### Queue Routing
 
-Laravel 13 adds [queue routing by class](../queues/#queue-routing) via `Queue::route(...)`, allowing you to define default queue / connection routing rules for specific jobs in a central place:
+Laravel 13 adds [queue routing by class](/en/queues/#queue-routing) via `Queue::route(...)`, allowing you to define default queue / connection routing rules for specific jobs in a central place:
 
 ```php
 Queue::route(ProcessPodcast::class, connection: 'redis', queue: 'podcasts');
@@ -137,7 +137,7 @@ Queue::route(ProcessPodcast::class, connection: 'redis', queue: 'podcasts');
 
 Laravel 13 continues to expand first-party PHP attribute support across the framework, making common configuration and behavioral concerns more declarative and colocated with your classes and methods.
 
-Notable additions include controller and authorization attributes like [`#[Middleware]`](../controllers/#controller-middleware) and [`#[Authorize]`](../controllers/#authorization-attributes), as well as queue-oriented job controls like [`#[Tries]`](../queues/#max-job-attempts-and-timeout), [`#[Backoff]`](../queues/#dealing-with-failed-jobs), [`#[Timeout]`](../queues/#max-job-attempts-and-timeout), and [`#[FailOnTimeout]`](../queues/#failing-on-timeout).
+Notable additions include controller and authorization attributes like [`#[Middleware]`](/en/controllers/#controller-middleware) and [`#[Authorize]`](/en/controllers/#authorization-attributes), as well as queue-oriented job controls like [`#[Tries]`](/en/queues/#max-job-attempts-and-timeout), [`#[Backoff]`](/en/queues/#dealing-with-failed-jobs), [`#[Timeout]`](/en/queues/#max-job-attempts-and-timeout), and [`#[FailOnTimeout]`](/en/queues/#failing-on-timeout).
 
 For example, controller middleware and policy checks can now be declared directly on classes and methods:
 
@@ -168,12 +168,12 @@ Additional attributes have also been introduced across Eloquent, events, notific
 <a id="cache-touch"></a>
 ### Cache TTL Extension
 
-Laravel now includes [`Cache::touch(...)`](../cache/), which lets you extend an existing cache item's TTL without retrieving and re-storing its value.
+Laravel now includes [`Cache::touch(...)`](/en/cache/), which lets you extend an existing cache item's TTL without retrieving and re-storing its value.
 
 <a id="semantic-search"></a>
 ### Semantic / Vector Search
 
-Laravel 13 deepens its semantic search story with native vector query support, embedding workflows, and related APIs documented across [search](../search/#semantic-vector-search), [queries](../queries/#vector-similarity-clauses), and the [AI SDK](../ai-sdk/#embeddings).
+Laravel 13 deepens its semantic search story with native vector query support, embedding workflows, and related APIs documented across [search](/en/search/#semantic-vector-search), [queries](/en/queries/#vector-similarity-clauses), and the [AI SDK](/en/ai-sdk/#embeddings).
 
 These features make it straightforward to build AI-powered search experiences using PostgreSQL + `pgvector`, including similarity search against embeddings generated directly from strings.
 

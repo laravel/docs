@@ -197,7 +197,7 @@ Route::get('/orders', function () {
 
 For convenience, the `tokenCan` method will always return `true` if the incoming authenticated request was from your first-party SPA and you are using Sanctum's built-in [SPA authentication](#spa-authentication).
 
-However, this does not necessarily mean that your application has to allow the user to perform the action. Typically, your application's [authorization policies](../authorization/#creating-policies) will determine if the token has been granted the permission to perform the abilities as well as check that the user instance itself should be allowed to perform the action.
+However, this does not necessarily mean that your application has to allow the user to perform the action. Typically, your application's [authorization policies](/en/authorization/#creating-policies) will determine if the token has been granted the permission to perform the abilities as well as check that the user instance itself should be allowed to perform the action.
 
 For example, if we imagine an application that manages servers, this might mean checking that the token is authorized to update servers **and** that the server belongs to the user:
 
@@ -256,7 +256,7 @@ return $user->createToken(
 )->plainTextToken;
 ```
 
-If you have configured a token expiration time for your application, you may also wish to [schedule a task](../scheduling/) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled task to delete all expired token database records that have been expired for at least 24 hours:
+If you have configured a token expiration time for your application, you may also wish to [schedule a task](/en/scheduling/) to prune your application's expired tokens. Thankfully, Sanctum includes a `sanctum:prune-expired` Artisan command that you may use to accomplish this. For example, you may configure a scheduled task to delete all expired token database records that have been expired for at least 24 hours:
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -343,16 +343,16 @@ During this request, Laravel will set an `XSRF-TOKEN` cookie containing the curr
 <a id="logging-in"></a>
 #### Logging In
 
-Once CSRF protection has been initialized, you should make a `POST` request to your Laravel application's `/login` route. This `/login` route may be [implemented manually](../authentication/#authenticating-users) or using a headless authentication package like [Laravel Fortify](../fortify/).
+Once CSRF protection has been initialized, you should make a `POST` request to your Laravel application's `/login` route. This `/login` route may be [implemented manually](/en/authentication/#authenticating-users) or using a headless authentication package like [Laravel Fortify](/en/fortify/).
 
 If the login request is successful, you will be authenticated and subsequent requests to your application's routes will automatically be authenticated via the session cookie that the Laravel application issued to your client. In addition, since your application already made a request to the `/sanctum/csrf-cookie` route, subsequent requests should automatically receive CSRF protection as long as your JavaScript HTTP client sends the value of the `XSRF-TOKEN` cookie in the `X-XSRF-TOKEN` header.
 
 Of course, if your user's session expires due to lack of activity, subsequent requests to the Laravel application may receive a 401 or 419 HTTP error response. In this case, you should redirect the user to your SPA's login page.
 
-Since this approach to SPA authentication is session based, you may use Laravel's standard authentication services, including ["remember me"](../authentication/#remembering-users) functionality.
+Since this approach to SPA authentication is session based, you may use Laravel's standard authentication services, including ["remember me"](/en/authentication/#remembering-users) functionality.
 
 > **Warning:**
-> You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](../authentication/#authenticating-users). Typically, this means using the `web` authentication guard.
+> You are free to write your own `/login` endpoint; however, you should ensure that it authenticates the user using the standard, [session based authentication services that Laravel provides](/en/authentication/#authenticating-users). Typically, this means using the `web` authentication guard.
 
 <a id="protecting-spa-routes"></a>
 ### Protecting Routes
@@ -370,7 +370,7 @@ Route::get('/user', function (Request $request) {
 <a id="authorizing-private-broadcast-channels"></a>
 ### Authorizing Private Broadcast Channels
 
-If your SPA needs to authenticate with [private / presence broadcast channels](../broadcasting/#authorizing-channels), you should remove the `channels` entry from the `withRouting` method contained in your application's `bootstrap/app.php` file. Instead, you should invoke the `withBroadcasting` method so that you may specify the correct middleware for your application's broadcasting routes:
+If your SPA needs to authenticate with [private / presence broadcast channels](/en/broadcasting/#authorizing-channels), you should remove the `channels` entry from the `withRouting` method contained in your application's `bootstrap/app.php` file. Instead, you should invoke the `withBroadcasting` method so that you may specify the correct middleware for your application's broadcasting routes:
 
 ```php
 return Application::configure(basePath: dirname(__DIR__))
@@ -385,7 +385,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->create();
 ```
 
-Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](../broadcasting/#client-side-installation). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
+Next, in order for Pusher's authorization requests to succeed, you will need to provide a custom Pusher `authorizer` when initializing [Laravel Echo](/en/broadcasting/#client-side-installation). This allows your application to configure Pusher to use the `axios` instance that is [properly configured for cross-domain requests](#cors-and-cookies):
 
 ```js
 window.Echo = new Echo({

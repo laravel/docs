@@ -70,7 +70,7 @@ php artisan schedule:list
 <a id="scheduling-artisan-commands"></a>
 ### Scheduling Artisan Commands
 
-In addition to scheduling closures, you may also schedule [Artisan commands](../artisan/) and system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class.
+In addition to scheduling closures, you may also schedule [Artisan commands](/en/artisan/) and system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class.
 
 When scheduling Artisan commands using the command's class name, you may pass an array of additional command-line arguments that should be provided to the command when it is invoked:
 
@@ -105,7 +105,7 @@ Artisan::command('emails:send {user} {--force}', function ($user) {
 <a id="scheduling-queued-jobs"></a>
 ### Scheduling Queued Jobs
 
-The `job` method may be used to schedule a [queued job](../queues/). This method provides a convenient way to schedule queued jobs without using the `call` method to define closures to queue the job:
+The `job` method may be used to schedule a [queued job](/en/queues/). This method provides a convenient way to schedule queued jobs without using the `call` method to define closures to queue the job:
 
 ```php
 use App\Jobs\Heartbeat;
@@ -294,7 +294,7 @@ When using chained `when` methods, the scheduled command will only execute if al
 <a id="environment-constraints"></a>
 #### Environment Constraints
 
-The `environments` method may be used to execute tasks only on the given environments (as defined by the `APP_ENV` [environment variable](../configuration/#environment-configuration)):
+The `environments` method may be used to execute tasks only on the given environments (as defined by the `APP_ENV` [environment variable](/en/configuration/#environment-configuration)):
 
 ```php
 Schedule::command('emails:send')
@@ -337,7 +337,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('emails:send')->withoutOverlapping();
 ```
 
-In this example, the `emails:send` [Artisan command](../artisan/) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
+In this example, the `emails:send` [Artisan command](/en/artisan/) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
 
 If needed, you may specify how many minutes must pass before the "without overlapping" lock expires. By default, the lock will expire after 24 hours:
 
@@ -345,7 +345,7 @@ If needed, you may specify how many minutes must pass before the "without overla
 Schedule::command('emails:send')->withoutOverlapping(10);
 ```
 
-Behind the scenes, the `withoutOverlapping` method utilizes your application's [cache](../cache/) to obtain locks. If necessary, you can clear these cache locks using the `schedule:clear-cache` Artisan command. This is typically only necessary if a task becomes stuck due to an unexpected server problem.
+Behind the scenes, the `withoutOverlapping` method utilizes your application's [cache](/en/cache/) to obtain locks. If necessary, you can clear these cache locks using the `schedule:clear-cache` Artisan command. This is typically only necessary if a task becomes stuck due to an unexpected server problem.
 
 <a id="running-tasks-on-one-server"></a>
 ### Running Tasks on One Server
@@ -430,7 +430,7 @@ Schedule::command('analytics:report')
 <a id="maintenance-mode"></a>
 ### Maintenance Mode
 
-Your application's scheduled tasks will not run when the application is in [maintenance mode](../configuration/#maintenance-mode), since we don't want your tasks to interfere with any unfinished maintenance you may be performing on your server. However, if you would like to force a task to run even in maintenance mode, you may call the `evenInMaintenanceMode` method when defining the task:
+Your application's scheduled tasks will not run when the application is in [maintenance mode](/en/configuration/#maintenance-mode), since we don't want your tasks to interfere with any unfinished maintenance you may be performing on your server. However, if you would like to force a task to run even in maintenance mode, you may call the `evenInMaintenanceMode` method when defining the task:
 
 ```php
 Schedule::command('emails:send')->evenInMaintenanceMode();
@@ -553,7 +553,7 @@ Schedule::command('emails:send')
     ->appendOutputTo($filePath);
 ```
 
-Using the `emailOutputTo` method, you may email the output to an email address of your choice. Before emailing the output of a task, you should configure Laravel's [email services](../mail/):
+Using the `emailOutputTo` method, you may email the output to an email address of your choice. Before emailing the output of a task, you should configure Laravel's [email services](/en/mail/):
 
 ```php
 Schedule::command('report:generate')
@@ -657,7 +657,7 @@ Schedule::command('emails:send')
 <a id="events"></a>
 ## Events
 
-Laravel dispatches a variety of [events](../events/) during the scheduling process. You may [define listeners](../events/) for any of the following events:
+Laravel dispatches a variety of [events](/en/events/) during the scheduling process. You may [define listeners](/en/events/) for any of the following events:
 
 <div class="overflow-auto">
 

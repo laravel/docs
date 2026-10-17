@@ -613,7 +613,7 @@ $conversations = $team->conversations;
 $participant = $conversation->participant;
 ```
 
-If your application uses multiple participant model types, you should consider defining an [Eloquent morph map](../eloquent-relationships/#custom-polymorphic-types) so that stored participant types are not coupled to your model class names.
+If your application uses multiple participant model types, you should consider defining an [Eloquent morph map](/en/eloquent-relationships/#custom-polymorphic-types) so that stored participant types are not coupled to your model class names.
 
 > **Warning:**
 > The `continue` and `continueOrStart` methods do not verify that the given participant owns the conversation. Your application should authorize access to the conversation before continuing it.
@@ -1299,7 +1299,7 @@ When using Anthropic, additional provider-specific options may be passed to the 
 <a id="file-storage-tools"></a>
 ### File Storage Tools
 
-The `FileStorage` tool factory allows you to give agents access to a Laravel [filesystem disk](../filesystem/). The `all` method returns tools that allow the agent to list, read, inspect, generate URLs for, write, delete, copy, and move files on the given disk:
+The `FileStorage` tool factory allows you to give agents access to a Laravel [filesystem disk](/en/filesystem/). The `all` method returns tools that allow the agent to list, read, inspect, generate URLs for, write, delete, copy, and move files on the given disk:
 
 ```php
 use Laravel\Ai\Tools\FileStorage;
@@ -1328,10 +1328,10 @@ return FileStorage::all('s3')
 <a id="mcp-tools"></a>
 ### MCP Tools
 
-If your application uses [Laravel MCP](../mcp/), you may give your agents tools exposed by [Model Context Protocol](https://modelcontextprotocol.io) servers. Using the [Laravel MCP client](../mcp/#client), you may connect to a remote or local MCP server and pass its tools directly to your agent.
+If your application uses [Laravel MCP](/en/mcp/), you may give your agents tools exposed by [Model Context Protocol](https://modelcontextprotocol.io) servers. Using the [Laravel MCP client](/en/mcp/#client), you may connect to a remote or local MCP server and pass its tools directly to your agent.
 
 > **Note:**
-> MCP tools require the [Laravel MCP](../mcp/) package to be installed in your application.
+> MCP tools require the [Laravel MCP](/en/mcp/) package to be installed in your application.
 
 Because an MCP client's `tools` method returns a collection, spread it into your agent's `tools` array using the `...` operator:
 
@@ -1356,7 +1356,7 @@ public function tools(): iterable
 }
 ```
 
-The AI SDK automatically wraps each MCP tool so the agent can call it like any other tool. You may also use a [named MCP client](../mcp/#named-clients):
+The AI SDK automatically wraps each MCP tool so the agent can call it like any other tool. You may also use a [named MCP client](/en/mcp/#named-clients):
 
 ```php
 use Laravel\Mcp\Facades\Mcp;
@@ -1369,7 +1369,7 @@ public function tools(): iterable
 }
 ```
 
-Or connect to a [local MCP server](../mcp/#client-connecting):
+Or connect to a [local MCP server](/en/mcp/#client-connecting):
 
 ```php
 use Laravel\Mcp\Client;
@@ -1382,7 +1382,7 @@ public function tools(): iterable
 }
 ```
 
-For more information on creating and authenticating MCP clients, including bearer tokens and OAuth, consult the [MCP client documentation](../mcp/#client).
+For more information on creating and authenticating MCP clients, including bearer tokens and OAuth, consult the [MCP client documentation](/en/mcp/#client).
 
 <a id="skills"></a>
 ### Skills
@@ -2771,7 +2771,7 @@ $result['frustration']->probabilities;  // [0.12, 0.52, 0.36]
 
 The criteria given to a `Boolean` question, the option descriptions given to a `Choice` question, and the levels given to a `Score` question may each be an array when a single sentence is not sufficient. `Choice` questions require at least two options, while `Score` questions require at least two levels.
 
-The response may be iterated, counted, and accessed as an array. In addition, the `answer` method may be used to retrieve a single answer, while the `collect` method returns all of the answers as a [collection](../collections/):
+The response may be iterated, counted, and accessed as an array. In addition, the `answer` method may be used to retrieve a single answer, while the `collect` method returns all of the answers as a [collection](/en/collections/):
 
 ```php
 $result->answer('urgent');
@@ -3067,7 +3067,7 @@ $document->fileId;
 
 > **Note:** Typically, when adding previously stored files to vector stores, the returned document ID will match the file's previously assigned ID; however, some vector storage providers may return a new, different "document ID". Therefore, it's recommended that you always store both IDs in your database for future reference.
 
-When adding a file to a Gemini store, Laravel waits for the import to finish so that the document is searchable once the call returns. A `Laravel\Ai\Exceptions\AiException` will be thrown if the import fails or exceeds five minutes, so you may wish to add Gemini files from a [queued job](../queues/).
+When adding a file to a Gemini store, Laravel waits for the import to finish so that the document is searchable once the call returns. A `Laravel\Ai\Exceptions\AiException` will be thrown if the import fails or exceeds five minutes, so you may wish to add Gemini files from a [queued job](/en/queues/).
 
 You may attach metadata to files when adding them to a store. This metadata can later be used to filter search results when using the [file search provider tool](#file-search):
 
@@ -3744,7 +3744,7 @@ $store->assertAdded(fn (StorableFile $file) => $file->content() === 'Hello, Worl
 <a id="events"></a>
 ## Events
 
-The Laravel AI SDK dispatches a variety of [events](../events/), including:
+The Laravel AI SDK dispatches a variety of [events](/en/events/), including:
 
 - `AddingFileToStore`
 - `AgentFailed`

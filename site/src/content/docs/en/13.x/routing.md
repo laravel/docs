@@ -48,7 +48,7 @@ Route::get('/greeting', function () {
 <a id="the-default-route-files"></a>
 ### The Default Route Files
 
-All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` [middleware group](../middleware/#laravels-default-middleware-groups), which provides features like session state and CSRF protection.
+All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` [middleware group](/en/middleware/#laravels-default-middleware-groups), which provides features like session state and CSRF protection.
 
 For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
 
@@ -67,7 +67,7 @@ If your application will also offer a stateless API, you may enable API routing 
 php artisan install:api
 ```
 
-The `install:api` command installs [Laravel Sanctum](../sanctum/), which provides a robust, yet simple API token authentication guard which can be used to authenticate third-party API consumers, SPAs, or mobile applications. In addition, the `install:api` command creates the `routes/api.php` file:
+The `install:api` command installs [Laravel Sanctum](/en/sanctum/), which provides a robust, yet simple API token authentication guard which can be used to authenticate third-party API consumers, SPAs, or mobile applications. In addition, the `install:api` command creates the `routes/api.php` file:
 
 ```php
 Route::get('/user', function (Request $request) {
@@ -77,7 +77,7 @@ Route::get('/user', function (Request $request) {
 
 Of course, you are free to omit the `auth:sanctum` middleware on routes that should be publicly accessible.
 
-The routes in `routes/api.php` are stateless and are assigned to the `api` [middleware group](../middleware/#laravels-default-middleware-groups). Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
+The routes in `routes/api.php` are stateless and are assigned to the `api` [middleware group](/en/middleware/#laravels-default-middleware-groups). Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
 
 ```php
 ->withRouting(
@@ -102,7 +102,7 @@ Route::options($uri, $callback);
 Route::query($uri, $callback);
 ```
 
-The `query` method registers a route that responds to the `QUERY` HTTP verb, allowing clients to send a request body for a query. `QUERY` routes in the `web` middleware group are subject to [CSRF protection](../csrf/).
+The `query` method registers a route that responds to the `QUERY` HTTP verb, allowing clients to send a request body for a query. `QUERY` routes in the `web` middleware group are subject to [CSRF protection](/en/csrf/).
 
 Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs, including `QUERY`, using the `any` method:
 
@@ -122,7 +122,7 @@ Route::any('/', function () {
 <a id="dependency-injection"></a>
 #### Dependency Injection
 
-You may type-hint any dependencies required by your route in your route's callback signature. The declared dependencies will automatically be resolved and injected into the callback by the Laravel [service container](../container/). For example, you may type-hint the `Illuminate\Http\Request` class to have the current HTTP request automatically injected into your route callback:
+You may type-hint any dependencies required by your route in your route's callback signature. The declared dependencies will automatically be resolved and injected into the callback by the Laravel [service container](/en/container/). For example, you may type-hint the `Illuminate\Http\Request` class to have the current HTTP request automatically injected into your route callback:
 
 ```php
 use Illuminate\Http\Request;
@@ -135,7 +135,7 @@ Route::get('/users', function (Request $request) {
 <a id="csrf-protection"></a>
 #### CSRF Protection
 
-Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](../csrf/):
+Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/en/csrf/):
 
 ```blade
 <form method="POST" action="/profile">
@@ -171,7 +171,7 @@ Route::permanentRedirect('/here', '/there');
 <a id="view-routes"></a>
 ### View Routes
 
-If your route only needs to return a [view](../views/), you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
+If your route only needs to return a [view](/en/views/), you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
 
 ```php
 Route::view('/welcome', 'welcome');
@@ -473,7 +473,7 @@ $url = route('profile', ['id' => 1, 'photos' => 'yes']);
 ```
 
 > **Note:**
-> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [URL::defaults method](../urls/#default-values).
+> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [URL::defaults method](/en/urls/#default-values).
 
 <a id="inspecting-the-current-route"></a>
 #### Inspecting the Current Route
@@ -510,7 +510,7 @@ Nested groups attempt to intelligently "merge" attributes with their parent grou
 <a id="route-group-middleware"></a>
 ### Middleware
 
-To assign [middleware](../middleware/) to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
+To assign [middleware](/en/middleware/) to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
 
 ```php
 Route::middleware(['first', 'second'])->group(function () {
@@ -527,7 +527,7 @@ Route::middleware(['first', 'second'])->group(function () {
 <a id="route-group-controllers"></a>
 ### Controllers
 
-If a group of routes all utilize the same [controller](../controllers/), you may use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
+If a group of routes all utilize the same [controller](/en/controllers/), you may use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
 
 ```php
 use App\Http\Controllers\OrderController;
@@ -616,7 +616,7 @@ public function show(User $user)
 <a id="implicit-soft-deleted-models"></a>
 #### Soft Deleted Models
 
-Typically, implicit model binding will not retrieve models that have been [soft deleted](../eloquent/#soft-deleting). However, you may instruct the implicit binding to retrieve these models by chaining the `withTrashed` method onto your route's definition:
+Typically, implicit model binding will not retrieve models that have been [soft deleted](/en/eloquent/#soft-deleting). However, you may instruct the implicit binding to retrieve these models by chaining the `withTrashed` method onto your route's definition:
 
 ```php
 use App\Models\User;
@@ -976,7 +976,7 @@ RateLimiter::for('resource-not-found', function (Request $request) {
 <a id="attaching-rate-limiters-to-routes"></a>
 ### Attaching Rate Limiters to Routes
 
-Rate limiters may be attached to routes or route groups using the `throttle` [middleware](../middleware/). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
+Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/en/middleware/). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
 
 ```php
 Route::middleware(['throttle:uploads'])->group(function () {
@@ -1014,7 +1014,7 @@ HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining
 </form>
 ```
 
-For convenience, you may use the `@method` [Blade directive](../blade/) to generate the `_method` input field:
+For convenience, you may use the `@method` [Blade directive](/en/blade/) to generate the `_method` input field:
 
 ```blade
 <form action="/example" method="POST">
@@ -1041,7 +1041,7 @@ You may refer to the API documentation for both the [underlying class of the Rou
 <a id="cors"></a>
 ## Cross-Origin Resource Sharing (CORS)
 
-Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](../middleware/) that is automatically included in your application's global middleware stack.
+Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/en/middleware/) that is automatically included in your application's global middleware stack.
 
 Sometimes, you may need to customize the CORS configuration values for your application. You may do so by publishing the `cors` configuration file using the `config:publish` Artisan command:
 

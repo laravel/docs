@@ -29,7 +29,7 @@ title: "Authorization"
 <a id="introduction"></a>
 ## Introduction
 
-In addition to providing built-in [authentication](../authentication/) services, Laravel also provides a simple way to authorize user actions against a given resource. For example, even though a user is authenticated, they may not be authorized to update or delete certain Eloquent models or database records managed by your application. Laravel's authorization features provide an easy, organized way of managing these types of authorization checks.
+In addition to providing built-in [authentication](/en/authentication/) services, Laravel also provides a simple way to authorize user actions against a given resource. For example, even though a user is authenticated, they may not be authorized to update or delete certain Eloquent models or database records managed by your application. Laravel's authorization features provide an easy, organized way of managing these types of authorization checks.
 
 Laravel provides two primary ways of authorizing actions: [gates](#gates) and [policies](#creating-policies). Think of gates and policies like routes and controllers. Gates provide a simple, closure-based approach to authorization while policies, like controllers, group logic around a particular model or resource. In this documentation, we'll explore gates first and then examine policies.
 
@@ -398,7 +398,7 @@ You may continue to define additional methods on the policy as needed for the va
 If you used the `--model` option when generating your policy via the Artisan console, it will already contain methods for the `viewAny`, `view`, `create`, `update`, `delete`, `restore`, and `forceDelete` actions.
 
 > **Note:**
-> All policies are resolved via the Laravel [service container](../container/), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected.
+> All policies are resolved via the Laravel [service container](/en/container/), allowing you to type-hint any needed dependencies in the policy's constructor to have them automatically injected.
 
 <a id="policy-responses"></a>
 ### Policy Responses
@@ -681,7 +681,7 @@ public function create(Request $request): RedirectResponse
 <a id="via-middleware"></a>
 ### Via Middleware
 
-Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` [middleware alias](../middleware/#middleware-aliases), which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
+Laravel includes a middleware that can authorize actions before the incoming request even reaches your routes or controllers. By default, the `Illuminate\Auth\Middleware\Authorize` middleware may be attached to a route using the `can` [middleware alias](/en/middleware/#middleware-aliases), which is automatically registered by Laravel. Let's explore an example of using the `can` middleware to authorize that a user can update a post:
 
 ```php
 use App\Models\Post;
@@ -691,7 +691,7 @@ Route::put('/post/{post}', function (Post $post) {
 })->middleware('can:update,post');
 ```
 
-In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](../routing/#implicit-binding), an `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
+In this example, we're passing the `can` middleware two arguments. The first is the name of the action we wish to authorize and the second is the route parameter we wish to pass to the policy method. In this case, since we are using [implicit model binding](/en/routing/#implicit-binding), an `App\Models\Post` model will be passed to the policy method. If the user is not authorized to perform the given action, an HTTP response with a 403 status code will be returned by the middleware.
 
 For convenience, you may also attach the `can` middleware to your route using the `can` method:
 
@@ -703,7 +703,7 @@ Route::put('/post/{post}', function (Post $post) {
 })->can('update', 'post');
 ```
 
-If you are using [controller middleware attributes](../controllers/#middleware-attributes), you may apply the `can` middleware via the `Authorize` attribute:
+If you are using [controller middleware attributes](/en/controllers/#middleware-attributes), you may apply the `can` middleware via the `Authorize` attribute:
 
 ```php
 use Illuminate\Routing\Attributes\Controllers\Authorize;
@@ -833,7 +833,7 @@ public function update(Request $request, Post $post): RedirectResponse
 
 Although authorization must always be handled on the server, it can often be convenient to provide your frontend application with authorization data in order to properly render your application's UI. Laravel does not define a required convention for exposing authorization information to an Inertia powered frontend.
 
-However, if you are using one of Laravel's Inertia-based [starter kits](../starter-kits/), your application already contains a `HandleInertiaRequests` middleware. Within this middleware's `share` method, you may return shared data that will be provided to all Inertia pages in your application. This shared data can serve as a convenient location to define authorization information for the user:
+However, if you are using one of Laravel's Inertia-based [starter kits](/en/starter-kits/), your application already contains a `HandleInertiaRequests` middleware. Within this middleware's `share` method, you may return shared data that will be provided to all Inertia pages in your application. This shared data can serve as a convenient location to define authorization information for the user:
 
 ```php
 <?php

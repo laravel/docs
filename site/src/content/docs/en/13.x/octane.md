@@ -59,7 +59,7 @@ php artisan octane:install
 <a id="frankenphp-via-laravel-sail"></a>
 #### FrankenPHP via Laravel Sail
 
-If you plan to develop your application using [Laravel Sail](../sail/), you should run the following commands to install Octane and FrankenPHP:
+If you plan to develop your application using [Laravel Sail](/en/sail/), you should run the following commands to install Octane and FrankenPHP:
 
 ```shell
 ./vendor/bin/sail up
@@ -159,7 +159,7 @@ This allows you to customize FrankenPHP's configuration beyond the default setti
 <a id="roadrunner-via-laravel-sail"></a>
 #### RoadRunner via Laravel Sail
 
-If you plan to develop your application using [Laravel Sail](../sail/), you should run the following commands to install Octane and RoadRunner:
+If you plan to develop your application using [Laravel Sail](/en/sail/), you should run the following commands to install Octane and RoadRunner:
 
 ```shell
 ./vendor/bin/sail up
@@ -219,7 +219,7 @@ Using Laravel Octane with Open Swoole grants the same functionality provided by 
 > **Warning:**
 > Before serving an Octane application via Sail, ensure you have the latest version of Laravel Sail and execute `./vendor/bin/sail build --no-cache` within your application's root directory.
 
-Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](../sail/), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `docker-compose.yml` file used by Sail.
+Alternatively, you may develop your Swoole based Octane application using [Laravel Sail](/en/sail/), the official Docker based development environment for Laravel. Laravel Sail includes the Swoole extension by default. However, you will still need to adjust the `docker-compose.yml` file used by Sail.
 
 To get started, add a `SUPERVISOR_PHP_COMMAND` environment variable to the `laravel.test` service definition in your application's `docker-compose.yml` file. This environment variable will contain the command that Sail will use to serve your application using Octane instead of the PHP development server:
 

@@ -47,12 +47,12 @@ Route::get('/', function () {
 ```
 
 > **Note:**
-> Did you know you can also return [Eloquent collections](../eloquent-collections/) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
+> Did you know you can also return [Eloquent collections](/en/eloquent-collections/) from your routes or controllers? They will automatically be converted to JSON. Give it a shot!
 
 <a id="response-objects"></a>
 #### Response Objects
 
-Typically, you won't just be returning simple strings or arrays from your route actions. Instead, you will be returning full `Illuminate\Http\Response` instances or [views](../views/).
+Typically, you won't just be returning simple strings or arrays from your route actions. Instead, you will be returning full `Illuminate\Http\Response` instances or [views](/en/views/).
 
 Returning a full `Response` instance allows you to customize the response's HTTP status code and headers. A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Response` class, which provides a variety of methods for building HTTP responses:
 
@@ -66,7 +66,7 @@ Route::get('/home', function () {
 <a id="eloquent-models-and-collections"></a>
 #### Eloquent Models and Collections
 
-You may also return [Eloquent ORM](../eloquent/) models and collections directly from your routes and controllers. When you do, Laravel will automatically convert the models and collections to JSON responses while respecting the model's [hidden attributes](../eloquent-serialization/#hiding-attributes-from-json):
+You may also return [Eloquent ORM](/en/eloquent/) models and collections directly from your routes and controllers. When you do, Laravel will automatically convert the models and collections to JSON responses while respecting the model's [hidden attributes](/en/eloquent-serialization/#hiding-attributes-from-json):
 
 ```php
 use App\Models\User;
@@ -210,7 +210,7 @@ Route::get('/dashboard', function () {
 });
 ```
 
-Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](../session/), make sure the route calling the `back` function is using the `web` middleware group:
+Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](/en/session/), make sure the route calling the `back` function is using the `web` middleware group:
 
 ```php
 Route::post('/user/profile', function () {
@@ -263,7 +263,7 @@ public function getRouteKey(): mixed
 <a id="redirecting-controller-actions"></a>
 ### Redirecting to Controller Actions
 
-You may also generate redirects to [controller actions](../controllers/). To do so, pass the controller and action name to the `action` method:
+You may also generate redirects to [controller actions](/en/controllers/). To do so, pass the controller and action name to the `action` method:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -291,7 +291,7 @@ return redirect()->away('https://www.google.com');
 <a id="redirecting-with-flashed-session-data"></a>
 ### Redirecting With Flashed Session Data
 
-Redirecting to a new URL and [flashing data to the session](../session/#flash-data) are usually done at the same time. Typically, this is done after successfully performing an action when you flash a success message to the session. For convenience, you may create a `RedirectResponse` instance and flash data to the session in a single, fluent method chain:
+Redirecting to a new URL and [flashing data to the session](/en/session/#flash-data) are usually done at the same time. Typically, this is done after successfully performing an action when you flash a success message to the session. For convenience, you may create a `RedirectResponse` instance and flash data to the session in a single, fluent method chain:
 
 ```php
 Route::post('/user/profile', function () {
@@ -301,7 +301,7 @@ Route::post('/user/profile', function () {
 });
 ```
 
-After the user is redirected, you may display the flashed message from the [session](../session/). For example, using [Blade syntax](../blade/):
+After the user is redirected, you may display the flashed message from the [session](/en/session/). For example, using [Blade syntax](/en/blade/):
 
 ```blade
 @if (session('status'))
@@ -314,7 +314,7 @@ After the user is redirected, you may display the flashed message from the [sess
 <a id="redirecting-with-input"></a>
 #### Redirecting With Input
 
-You may use the `withInput` method provided by the `RedirectResponse` instance to flash the current request's input data to the session before redirecting the user to a new location. This is typically done if the user has encountered a validation error. Once the input has been flashed to the session, you may easily [retrieve it](../requests/#retrieving-old-input) during the next request to repopulate the form:
+You may use the `withInput` method provided by the `RedirectResponse` instance to flash the current request's input data to the session before redirecting the user to a new location. This is typically done if the user has encountered a validation error. Once the input has been flashed to the session, you may easily [retrieve it](/en/requests/#retrieving-old-input) during the next request to repopulate the form:
 
 ```php
 return back()->withInput();
@@ -323,12 +323,12 @@ return back()->withInput();
 <a id="other-response-types"></a>
 ## Other Response Types
 
-The `response` helper may be used to generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](../contracts/) is returned. This contract provides several helpful methods for generating responses.
+The `response` helper may be used to generate other types of response instances. When the `response` helper is called without arguments, an implementation of the `Illuminate\Contracts\Routing\ResponseFactory` [contract](/en/contracts/) is returned. This contract provides several helpful methods for generating responses.
 
 <a id="view-responses"></a>
 ### View Responses
 
-If you need control over the response's status and headers but also need to return a [view](../views/) as the response's content, you should use the `view` method:
+If you need control over the response's status and headers but also need to return a [view](/en/views/) as the response's content, you should use the `view` method:
 
 ```php
 return response()
@@ -523,7 +523,7 @@ const sendMessage = () => {
 When sending data back to the stream via `send`, the active connection to the stream is canceled before sending the new data. All requests are sent as JSON `POST` requests.
 
 > **Warning:**
-> Since the `useStream` hook makes a `POST` request to your application, a valid CSRF token is required. The easiest way to provide the CSRF token is to [include it via a meta tag in your application layout's head](../csrf/#csrf-x-csrf-token).
+> Since the `useStream` hook makes a `POST` request to your application, a valid CSRF token is required. The easiest way to provide the CSRF token is to [include it via a meta tag in your application layout's head](/en/csrf/#csrf-x-csrf-token).
 
 The second argument given to `useStream` is an options object that you may use to customize the stream consumption behavior. The default values for this object are shown below:
 
@@ -1077,7 +1077,7 @@ return response()->streamDownload(function () {
 <a id="response-macros"></a>
 ## Response Macros
 
-If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on the `Response` facade. Typically, you should call this method from the `boot` method of one of your application's [service providers](../providers/), such as the `App\Providers\AppServiceProvider` service provider:
+If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `macro` method on the `Response` facade. Typically, you should call this method from the `boot` method of one of your application's [service providers](/en/providers/), such as the `App\Providers\AppServiceProvider` service provider:
 
 ```php
 <?php

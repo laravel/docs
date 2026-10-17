@@ -66,7 +66,7 @@ Database tables are often related to one another. For example, a blog post may h
 <a id="defining-relationships"></a>
 ## Defining Relationships
 
-Eloquent relationships are defined as methods on your Eloquent model classes. Since relationships also serve as powerful [query builders](../queries/), defining relationships as methods provides powerful method chaining and querying capabilities. For example, we may chain additional query constraints on this `posts` relationship:
+Eloquent relationships are defined as methods on your Eloquent model classes. Since relationships also serve as powerful [query builders](/en/queries/), defining relationships as methods provides powerful method chaining and querying capabilities. For example, we may chain additional query constraints on this `posts` relationship:
 
 ```php
 $user->posts()->where('active', 1)->get();
@@ -195,7 +195,7 @@ class Post extends Model
 
 Remember, Eloquent will automatically determine the proper foreign key column for the `Comment` model. By convention, Eloquent will take the "snake case" name of the parent model and suffix it with `_id`. So, in this example, Eloquent will assume the foreign key column on the `Comment` model is `post_id`.
 
-Once the relationship method has been defined, we can access the [collection](../eloquent-collections/) of related comments by accessing the `comments` property. Remember, since Eloquent provides "dynamic relationship properties", we can access relationship methods as if they were defined as properties on the model:
+Once the relationship method has been defined, we can access the [collection](/en/eloquent-collections/) of related comments by accessing the `comments` property. Remember, since Eloquent provides "dynamic relationship properties", we can access relationship methods as if they were defined as properties on the model:
 
 ```php
 use App\Models\Post;
@@ -391,7 +391,7 @@ However, you may find it more convenient to use the `whereBelongsTo` method, whi
 $posts = Post::whereBelongsTo($user)->get();
 ```
 
-You may also provide a [collection](../eloquent-collections/) instance to the `whereBelongsTo` method. When doing so, Laravel will retrieve models that belong to any of the parent models within the collection:
+You may also provide a [collection](/en/eloquent-collections/) instance to the `whereBelongsTo` method. When doing so, Laravel will retrieve models that belong to any of the parent models within the collection:
 
 ```php
 $users = User::where('vip', true)->get();
@@ -1535,7 +1535,7 @@ $class = Relation::getMorphedModel($alias);
 
 You may use the `resolveRelationUsing` method to define relations between Eloquent models at runtime. While not typically recommended for normal application development, this may occasionally be useful when developing Laravel packages.
 
-The `resolveRelationUsing` method accepts the desired relationship name as its first argument. The second argument passed to the method should be a closure that accepts the model instance and returns a valid Eloquent relationship definition. Typically, you should configure dynamic relationships within the boot method of a [service provider](../providers/):
+The `resolveRelationUsing` method accepts the desired relationship name as its first argument. The second argument passed to the method should be a closure that accepts the model instance and returns a valid Eloquent relationship definition. Typically, you should configure dynamic relationships within the boot method of a [service provider](/en/providers/):
 
 ```php
 use App\Models\Order;
@@ -1552,7 +1552,7 @@ Order::resolveRelationUsing('customer', function (Order $orderModel) {
 <a id="querying-relations"></a>
 ## Querying Relations
 
-Since all Eloquent relationships are defined via methods, you may call those methods to obtain an instance of the relationship without actually executing a query to load the related models. In addition, all types of Eloquent relationships also serve as [query builders](../queries/), allowing you to continue to chain constraints onto the relationship query before finally executing the SQL query against your database.
+Since all Eloquent relationships are defined via methods, you may call those methods to obtain an instance of the relationship without actually executing a query to load the related models. In addition, all types of Eloquent relationships also serve as [query builders](/en/queries/), allowing you to continue to chain constraints onto the relationship query before finally executing the SQL query against your database.
 
 For example, imagine a blog application in which a `User` model has many associated `Post` models:
 
@@ -1586,7 +1586,7 @@ $user = User::find(1);
 $user->posts()->where('active', 1)->get();
 ```
 
-You are able to use any of the Laravel [query builder's](../queries/) methods on the relationship, so be sure to explore the query builder documentation to learn about all of the methods that are available to you.
+You are able to use any of the Laravel [query builder's](/en/queries/) methods on the relationship, so be sure to explore the query builder documentation to learn about all of the methods that are available to you.
 
 <a id="chaining-orwhere-clauses-after-relationships"></a>
 #### Chaining `orWhere` Clauses After Relationships
@@ -1608,7 +1608,7 @@ from posts
 where user_id = ? and active = 1 or votes >= 100
 ```
 
-In most situations, you should use [logical groups](../queries/#logical-grouping) to group the conditional checks between parentheses:
+In most situations, you should use [logical groups](/en/queries/#logical-grouping) to group the conditional checks between parentheses:
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
@@ -1700,7 +1700,7 @@ The `whereAttachedTo` method may be used to query for models that have a many to
 $users = User::whereAttachedTo($role)->get();
 ```
 
-You may also provide a [collection](../eloquent-collections/) instance to the `whereAttachedTo` method. When doing so, Laravel will retrieve models that are attached to any of the models within the collection:
+You may also provide a [collection](/en/eloquent-collections/) instance to the `whereAttachedTo` method. When doing so, Laravel will retrieve models that are attached to any of the models within the collection:
 
 ```php
 $tags = Tag::whereLike('name', '%laravel%')->get();
@@ -2181,7 +2181,7 @@ $users = User::with(['posts' => function ($query) {
 }])->get();
 ```
 
-In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](../queries/) methods to further customize the eager loading operation:
+In this example, Eloquent will only eager load posts where the post's `title` column contains the word `code`. You may call other [query builder](/en/queries/) methods to further customize the eager loading operation:
 
 ```php
 $users = User::with(['posts' => function ($query) {
@@ -2470,10 +2470,10 @@ $user->posts()->createManyQuietly([
 ]);
 ```
 
-You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](../eloquent/#upserts).
+You may also use the `findOrNew`, `firstOrNew`, `firstOrCreate`, and `updateOrCreate` methods to [create and update models on relationships](/en/eloquent/#upserts).
 
 > **Note:**
-> Before using the `create` method, be sure to review the [mass assignment](../eloquent/#mass-assignment) documentation.
+> Before using the `create` method, be sure to review the [mass assignment](/en/eloquent/#mass-assignment) documentation.
 
 <a id="updating-belongs-to-relationships"></a>
 ### Belongs To Relationships

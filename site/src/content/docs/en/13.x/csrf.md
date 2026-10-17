@@ -38,13 +38,13 @@ To prevent this vulnerability, we need to inspect every incoming `POST`, `PUT`, 
 <a id="preventing-csrf-requests"></a>
 ## Preventing CSRF Requests
 
-The `Illuminate\Foundation\Http\Middleware\PreventRequestForgery` [middleware](../middleware/), which is included in the `web` middleware group by default, protects your application from cross-site request forgeries using a two-layer approach.
+The `Illuminate\Foundation\Http\Middleware\PreventRequestForgery` [middleware](/en/middleware/), which is included in the `web` middleware group by default, protects your application from cross-site request forgeries using a two-layer approach.
 
 First, the middleware checks the browser's `Sec-Fetch-Site` header. Modern browsers automatically set this header on every request, indicating whether it originated from the same origin, the same site, or a cross-site source. If the header indicates the request came from the same origin, the request is allowed immediately without any token verification.
 
 If origin verification does not pass — for example, because the request comes from an older browser that doesn't send the `Sec-Fetch-Site` header or because the connection is not secure — the middleware falls back to traditional CSRF token validation.
 
-Laravel automatically generates a CSRF "token" for each active [user session](../session/) managed by the application. This token is used to verify that the authenticated user is the person actually making the requests to the application. Since this token is stored in the user's session and changes each time the session is regenerated, a malicious application is unable to access it.
+Laravel automatically generates a CSRF "token" for each active [user session](/en/session/) managed by the application. This token is used to verify that the authenticated user is the person actually making the requests to the application. Since this token is stored in the user's session and changes each time the session is regenerated, a malicious application is unable to access it.
 
 The current session's CSRF token can be accessed via the request's session or via the `csrf_token` helper function:
 
@@ -74,7 +74,7 @@ Anytime you define a "POST", "PUT", "PATCH", or "DELETE" HTML form in your appli
 <a id="csrf-tokens-and-spas"></a>
 #### CSRF Tokens & SPAs
 
-If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](../sanctum/) for information on authenticating with your API and protecting against CSRF vulnerabilities.
+If you are building an SPA that is utilizing Laravel as an API backend, you should consult the [Laravel Sanctum documentation](/en/sanctum/) for information on authenticating with your API and protecting against CSRF vulnerabilities.
 
 <a id="origin-verification"></a>
 ### Origin Verification
@@ -120,7 +120,7 @@ Typically, you should place these kinds of routes outside of the `web` middlewar
 ```
 
 > **Note:**
-> For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](../testing/).
+> For convenience, the CSRF middleware is automatically disabled for all routes when [running tests](/en/testing/).
 
 <a id="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN

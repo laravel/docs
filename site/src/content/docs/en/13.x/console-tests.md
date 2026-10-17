@@ -10,7 +10,7 @@ title: "Console Tests"
 <a id="introduction"></a>
 ## Introduction
 
-In addition to simplifying HTTP testing, Laravel provides a simple API for testing your application's [custom console commands](../artisan/).
+In addition to simplifying HTTP testing, Laravel provides a simple API for testing your application's [custom console commands](/en/artisan/).
 
 <a id="success-failure-expectations"></a>
 ## Success / Failure Expectations
@@ -94,7 +94,7 @@ public function test_console_command(): void
 }
 ```
 
-If you are utilizing the `search` or `multisearch` functions provided by [Laravel Prompts](../prompts/), you may use the `expectsSearch` assertion to mock the user's input, search results, and selection:
+If you are utilizing the `search` or `multisearch` functions provided by [Laravel Prompts](/en/prompts/), you may use the `expectsSearch` assertion to mock the user's input, search results, and selection:
 
 ```php tab=Pest
 test('console command', function () {

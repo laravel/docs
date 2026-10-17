@@ -61,9 +61,9 @@ title: "Laravel Passport"
 <a id="passport-or-sanctum"></a>
 ### Passport or Sanctum?
 
-Before getting started, you may wish to determine if your application would be better served by Laravel Passport or [Laravel Sanctum](../sanctum/). If your application absolutely needs to support OAuth2, then you should use Laravel Passport.
+Before getting started, you may wish to determine if your application would be better served by Laravel Passport or [Laravel Sanctum](/en/sanctum/). If your application absolutely needs to support OAuth2, then you should use Laravel Passport.
 
-However, if you are attempting to authenticate a single-page application, mobile application, or issue API tokens, you should use [Laravel Sanctum](../sanctum/). Laravel Sanctum does not support OAuth2; however, it provides a much simpler API authentication development experience.
+However, if you are attempting to authenticate a single-page application, mobile application, or issue API tokens, you should use [Laravel Sanctum](/en/sanctum/). Laravel Sanctum does not support OAuth2; however, it provides a much simpler API authentication development experience.
 
 <a id="installation"></a>
 ## Installation
@@ -527,7 +527,7 @@ php artisan passport:purge --revoked
 php artisan passport:purge --expired
 ```
 
-You may also configure a [scheduled job](../scheduling/) in your application's `routes/console.php` file to automatically prune your tokens on a schedule:
+You may also configure a [scheduled job](/en/scheduling/) in your application's `routes/console.php` file to automatically prune your tokens on a schedule:
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -837,7 +837,7 @@ $response = Http::asForm()->post('https://passport-app.test/oauth/token', [
 <a id="customizing-the-user-provider"></a>
 ### Customizing the User Provider
 
-If your application uses more than one [authentication user provider](../authentication/#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
+If your application uses more than one [authentication user provider](/en/authentication/#introduction), you may specify which user provider the password grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --password` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
 
 <a id="customizing-the-username-field"></a>
 ### Customizing the Username Field
@@ -1003,7 +1003,7 @@ return $response->json()['access_token'];
 Sometimes, your users may want to issue access tokens to themselves without going through the typical authorization code redirect flow. Allowing users to issue tokens to themselves via your application's UI can be useful for allowing users to experiment with your API or may serve as a simpler approach to issuing access tokens in general.
 
 > **Note:**
-> If your application is using Passport primarily to issue personal access tokens, consider using [Laravel Sanctum](../sanctum/), Laravel's light-weight first-party library for issuing API access tokens.
+> If your application is using Passport primarily to issue personal access tokens, consider using [Laravel Sanctum](/en/sanctum/), Laravel's light-weight first-party library for issuing API access tokens.
 
 <a id="creating-a-personal-access-client"></a>
 ### Creating a Personal Access Client
@@ -1017,7 +1017,7 @@ php artisan passport:client --personal
 <a id="customizing-the-user-provider-for-pat"></a>
 ### Customizing the User Provider
 
-If your application uses more than one [authentication user provider](../authentication/#introduction), you may specify which user provider the personal access grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --personal` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
+If your application uses more than one [authentication user provider](/en/authentication/#introduction), you may specify which user provider the personal access grant client uses by providing a `--provider` option when creating the client via the `artisan passport:client --personal` command. The given provider name should match a valid provider defined in your application's `config/auth.php` configuration file. You can then [protect your route using middleware](#multiple-authentication-guards) to ensure that only users from the guard's specified provider are authorized.
 
 <a id="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
@@ -1055,7 +1055,7 @@ $tokens = $user->tokens()
 <a id="via-middleware"></a>
 ### Via Middleware
 
-Passport includes an [authentication guard](../authentication/#adding-custom-guards) that will validate access tokens on incoming requests. Once you have configured the `api` guard to use the `passport` driver, you only need to specify the `auth:api` middleware on any routes that should require a valid access token:
+Passport includes an [authentication guard](/en/authentication/#adding-custom-guards) that will validate access tokens on incoming requests. Once you have configured the `api` guard to use the `passport` driver, you only need to specify the `auth:api` middleware on any routes that should require a valid access token:
 
 ```php
 Route::get('/user', function () {
@@ -1220,7 +1220,7 @@ Route::get('/orders', function () {
 <a id="scope-attributes"></a>
 #### Scope Attributes
 
-If your application uses [controller middleware attributes](../controllers/#middleware-attributes), you may use the `Laravel\Passport\Attributes\AuthorizeToken` attribute as a convenient shortcut for Passport's scope middleware:
+If your application uses [controller middleware attributes](/en/controllers/#middleware-attributes), you may use the `Laravel\Passport\Attributes\AuthorizeToken` attribute as a convenient shortcut for Passport's scope middleware:
 
 ```php
 <?php
@@ -1347,7 +1347,7 @@ When using this method of authentication, you will need to ensure a valid CSRF t
 <a id="events"></a>
 ## Events
 
-Passport raises events when issuing access tokens and refresh tokens. You may [listen for these events](../events/) to prune or revoke other access tokens in your database:
+Passport raises events when issuing access tokens and refresh tokens. You may [listen for these events](/en/events/) to prune or revoke other access tokens in your database:
 
 <div class="overflow-auto">
 

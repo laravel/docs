@@ -40,7 +40,7 @@ There are a variety of tools and frameworks available to you when building a web
 
 We like to call Laravel a "progressive" framework. By that, we mean that Laravel grows with you. If you're just taking your first steps into web development, Laravel's vast library of documentation, guides, and [video tutorials](https://laracasts.com) will help you learn the ropes without becoming overwhelmed.
 
-If you're a senior developer, Laravel gives you robust tools for [dependency injection](../container/), [unit testing](../testing/), [queues](../queues/), [real-time events](../broadcasting/), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise workloads.
+If you're a senior developer, Laravel gives you robust tools for [dependency injection](/en/container/), [unit testing](/en/testing/), [queues](/en/queues/), [real-time events](/en/broadcasting/), and more. Laravel is fine-tuned for building professional web applications and ready to handle enterprise workloads.
 
 #### A Scalable Framework
 
@@ -50,11 +50,11 @@ Need extreme scaling? Platforms like [Laravel Cloud](https://cloud.laravel.com) 
 
 #### An Agent Ready Framework
 
-Laravel's opinionated conventions and well-defined structure make it an ideal framework for [AI assisted development](../ai/) using tools like Cursor and Claude Code. When you ask an AI agent to add a controller, it knows exactly where to place it. When you need a new migration, the naming conventions and file locations are predictable. This consistency eliminates the guesswork that often trips up AI tools in more flexible frameworks.
+Laravel's opinionated conventions and well-defined structure make it an ideal framework for [AI assisted development](/en/ai/) using tools like Cursor and Claude Code. When you ask an AI agent to add a controller, it knows exactly where to place it. When you need a new migration, the naming conventions and file locations are predictable. This consistency eliminates the guesswork that often trips up AI tools in more flexible frameworks.
 
 Beyond file organization, Laravel's expressive syntax and comprehensive documentation give AI agents the context they need to generate accurate, idiomatic code. Features like Eloquent relationships, form requests, and middleware follow patterns that agents can reliably understand and replicate. The result is AI-generated code that looks like it was written by a seasoned Laravel developer, not stitched together from generic PHP snippets.
 
-To learn more about why Laravel is the perfect choice for AI assisted development, check out our documentation on [agentic development](../ai/).
+To learn more about why Laravel is the perfect choice for AI assisted development, check out our documentation on [agentic development](/en/ai/).
 
 #### A Community Framework
 
@@ -129,7 +129,7 @@ composer run dev
 Once you have started the development server, you can access your application in your web browser at [http://localhost:8000](http://localhost:8000). Next, you're ready to [start taking your next steps into the Laravel ecosystem](#next-steps). Of course, you may also want to [configure a database](#databases-and-migrations) and run the necessary migrations.
 
 > **Note:**
-> If you would like a head start when developing your Laravel application, consider using one of our [starter kits](../starter-kits/). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
+> If you would like a head start when developing your Laravel application, consider using one of our [starter kits](/en/starter-kits/). Laravel's starter kits provide backend and frontend authentication scaffolding for your new Laravel application.
 
 <a id="initial-configuration"></a>
 ## Initial Configuration
@@ -146,7 +146,7 @@ Since many of Laravel's configuration option values may vary depending on whethe
 Your `.env` file should not be committed to your application's source control, since each developer / server using your application could require a different environment configuration. Furthermore, this would be a security risk in the event an intruder gains access to your source control repository, since any sensitive credentials would be exposed.
 
 > **Note:**
-> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](../configuration/#environment-configuration).
+> For more information about the `.env` file and environment based configuration, check out the full [configuration documentation](/en/configuration/#environment-configuration).
 
 <a id="databases-and-migrations"></a>
 ### Databases and Migrations
@@ -166,7 +166,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-If you choose to use a database other than SQLite, you will need to create the database and run your application's [database migrations](../migrations/):
+If you choose to use a database other than SQLite, you will need to create the database and run your application's [database migrations](/en/migrations/):
 
 ```shell
 php artisan migrate
@@ -290,12 +290,12 @@ Now that you have created your Laravel application, you may be wondering what to
 
 <div class="content-list" markdown="1">
 
-- [Request Lifecycle](../lifecycle/)
-- [Configuration](../configuration/)
-- [Directory Structure](../structure/)
-- [Frontend](../frontend/)
-- [Service Container](../container/)
-- [Facades](../facades/)
+- [Request Lifecycle](/en/lifecycle/)
+- [Configuration](/en/configuration/)
+- [Directory Structure](/en/structure/)
+- [Frontend](/en/frontend/)
+- [Service Container](/en/container/)
+- [Facades](/en/facades/)
 
 </div>
 
@@ -304,18 +304,18 @@ How you want to use Laravel will also dictate the next steps on your journey. Th
 <a id="laravel-the-fullstack-framework"></a>
 ### Laravel the Full Stack Framework
 
-Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](../blade/) or a single-page application hybrid technology like [Inertia](https://inertiajs.com). This is the most common way to use the Laravel framework, and, in our opinion, the most productive way to use Laravel.
+Laravel may serve as a full stack framework. By "full stack" framework we mean that you are going to use Laravel to route requests to your application and render your frontend via [Blade templates](/en/blade/) or a single-page application hybrid technology like [Inertia](https://inertiajs.com). This is the most common way to use the Laravel framework, and, in our opinion, the most productive way to use Laravel.
 
-If this is how you plan to use Laravel, you may want to check out our documentation on [frontend development](../frontend/), [routing](../routing/), [views](../views/), or the [Eloquent ORM](../eloquent/). In addition, you might be interested in learning about community packages like [Livewire](https://livewire.laravel.com) and [Inertia](https://inertiajs.com). These packages allow you to use Laravel as a full-stack framework while enjoying many of the UI benefits provided by single-page JavaScript applications.
+If this is how you plan to use Laravel, you may want to check out our documentation on [frontend development](/en/frontend/), [routing](/en/routing/), [views](/en/views/), or the [Eloquent ORM](/en/eloquent/). In addition, you might be interested in learning about community packages like [Livewire](https://livewire.laravel.com) and [Inertia](https://inertiajs.com). These packages allow you to use Laravel as a full-stack framework while enjoying many of the UI benefits provided by single-page JavaScript applications.
 
-If you are using Laravel as a full stack framework, we also strongly encourage you to learn how to compile your application's CSS and JavaScript using [Vite](../vite/).
+If you are using Laravel as a full stack framework, we also strongly encourage you to learn how to compile your application's CSS and JavaScript using [Vite](/en/vite/).
 
 > **Note:**
-> If you want to get a head start building your application, check out one of our official [application starter kits](../starter-kits/).
+> If you want to get a head start building your application, check out one of our official [application starter kits](/en/starter-kits/).
 
 <a id="laravel-the-api-backend"></a>
 ### Laravel the API Backend
 
-Laravel may also serve as an API backend to a JavaScript single-page application or mobile application. For example, you might use Laravel as an API backend for your [Next.js](https://nextjs.org) application. In this context, you may use Laravel to provide [authentication](../sanctum/) and data storage / retrieval for your application, while also taking advantage of Laravel's powerful services such as queues, emails, notifications, and more.
+Laravel may also serve as an API backend to a JavaScript single-page application or mobile application. For example, you might use Laravel as an API backend for your [Next.js](https://nextjs.org) application. In this context, you may use Laravel to provide [authentication](/en/sanctum/) and data storage / retrieval for your application, while also taking advantage of Laravel's powerful services such as queues, emails, notifications, and more.
 
-If this is how you plan to use Laravel, you may want to check out our documentation on [routing](../routing/), [Laravel Sanctum](../sanctum/), and the [Eloquent ORM](../eloquent/).
+If this is how you plan to use Laravel, you may want to check out our documentation on [routing](/en/routing/), [Laravel Sanctum](/en/sanctum/), and the [Eloquent ORM](/en/eloquent/).

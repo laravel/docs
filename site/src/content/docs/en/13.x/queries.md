@@ -92,7 +92,7 @@ foreach ($users as $user) {
 ```
 
 > **Note:**
-> Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel collections, check out the [collection documentation](../collections/).
+> Laravel collections provide a variety of extremely powerful methods for mapping and reducing data. For more information on Laravel collections, check out the [collection documentation](/en/collections/).
 
 <a id="retrieving-a-single-row-column-from-a-table"></a>
 #### Retrieving a Single Row / Column From a Table
@@ -207,7 +207,7 @@ DB::table('users')->where(function ($query) {
 <a id="streaming-results-lazily"></a>
 ### Streaming Results Lazily
 
-The `lazy` method works similarly to [the chunk method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [LazyCollection](../collections/#lazy-collections), which lets you interact with the results as a single stream:
+The `lazy` method works similarly to [the chunk method](#chunking-results) in the sense that it executes the query in chunks. However, instead of passing each chunk into a callback, the `lazy()` method returns a [LazyCollection](/en/collections/#lazy-collections), which lets you interact with the results as a single stream:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -1154,7 +1154,7 @@ $incomes = Income::where('amount', '<', function (Builder $query) {
 > **Warning:**
 > Full text where clauses are currently supported by MariaDB, MySQL, and PostgreSQL.
 
-The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](../migrations/#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MariaDB or MySQL:
+The `whereFullText` and `orWhereFullText` methods may be used to add full text "where" clauses to a query for columns that have [full text indexes](/en/migrations/#available-index-types). These methods will be transformed into the appropriate SQL for the underlying database system by Laravel. For example, a `MATCH AGAINST` clause will be generated for applications utilizing MariaDB or MySQL:
 
 ```php
 $users = DB::table('users')
@@ -1166,7 +1166,7 @@ $users = DB::table('users')
 ### Vector Similarity Clauses
 
 > **Note:**
-> Vector similarity clauses are currently supported on PostgreSQL connections using the `pgvector` extension and MariaDB 11.7 or later. For information on defining vector columns and indexes, consult the [migration documentation](../migrations/#available-column-types).
+> Vector similarity clauses are currently supported on PostgreSQL connections using the `pgvector` extension and MariaDB 11.7 or later. For information on defining vector columns and indexes, consult the [migration documentation](/en/migrations/#available-column-types).
 
 The `whereVectorSimilarTo` method filters results by cosine similarity to a given vector and orders the results by relevance. The `minSimilarity` threshold should be a value between `0.0` and `1.0`, where `1.0` is identical:
 
@@ -1177,7 +1177,7 @@ $documents = DB::table('documents')
     ->get();
 ```
 
-When a plain string is given as the vector argument, Laravel will automatically generate embeddings for it using the [Laravel AI SDK](../ai-sdk/#embeddings):
+When a plain string is given as the vector argument, Laravel will automatically generate embeddings for it using the [Laravel AI SDK](/en/ai-sdk/#embeddings):
 
 ```php
 $documents = DB::table('documents')
@@ -1575,7 +1575,7 @@ DB::table('users')
     ->get();
 ```
 
-While not obligatory, it is recommended to wrap pessimistic locks within a [transaction](../database/#database-transactions). This ensures that the data retrieved remains unaltered in the database until the entire operation completes. In case of a failure, the transaction will roll back any changes and release the locks automatically:
+While not obligatory, it is recommended to wrap pessimistic locks within a [transaction](/en/database/#database-transactions). This ensures that the data retrieved remains unaltered in the database until the entire operation completes. In case of a failure, the transaction will roll back any changes and release the locks automatically:
 
 ```php
 DB::transaction(function () {
@@ -1694,7 +1694,7 @@ DB::table('flights')
 
 The `tap` method will always return the query builder. If you would like to extract an object that executes the query and returns another value, you may use the `pipe` method instead.
 
-Consider the following query object that contains shared [pagination](../pagination/) logic used throughout an application. Unlike the `DestinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
+Consider the following query object that contains shared [pagination](/en/pagination/) logic used throughout an application. Unlike the `DestinationFilter`, which applies query conditions to the query, the `Paginate` object executes the query and returns a paginator instance:
 
 ```php
 <?php

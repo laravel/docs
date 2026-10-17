@@ -63,7 +63,7 @@ As you can see, if the given `token` does not match our secret token, the middle
 It's best to envision middleware as a series of "layers" HTTP requests must pass through before they hit your application. Each layer can examine the request and even reject it entirely.
 
 > **Note:**
-> All middleware are resolved via the [service container](../container/), so you may type-hint any dependencies you need within a middleware's constructor.
+> All middleware are resolved via the [service container](/en/container/), so you may type-hint any dependencies you need within a middleware's constructor.
 
 <a id="middleware-and-responses"></a>
 #### Middleware and Responses
@@ -193,7 +193,7 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
 });
 ```
 
-You may also exclude a given set of middleware from an entire [group](../routing/#route-groups) of route definitions:
+You may also exclude a given set of middleware from an entire [group](/en/routing/#route-groups) of route definitions:
 
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -507,7 +507,7 @@ class TerminatingMiddleware
 
 The `terminate` method should receive both the request and the response. Once you have defined a terminable middleware, you should add it to the list of routes or global middleware in your application's `bootstrap/app.php` file.
 
-When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](../container/). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:
+When calling the `terminate` method on your middleware, Laravel will resolve a fresh instance of the middleware from the [service container](/en/container/). If you would like to use the same middleware instance when the `handle` and `terminate` methods are called, register the middleware with the container using the container's `singleton` method. Typically this should be done in the `register` method of your `AppServiceProvider`:
 
 ```php
 use App\Http\Middleware\TerminatingMiddleware;

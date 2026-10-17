@@ -28,7 +28,7 @@ title: "Authentication"
     - [The User Provider Contract](#the-user-provider-contract)
     - [The Authenticatable Contract](#the-authenticatable-contract)
 - [Automatic Password Rehashing](#automatic-password-rehashing)
-- [Social Authentication](../socialite/)
+- [Social Authentication](/en/socialite/)
 - [Events](#events)
 
 <a id="introduction"></a>
@@ -38,24 +38,24 @@ Many web applications provide a way for their users to authenticate with the app
 
 At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how users are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies.
 
-Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using [Eloquent](../eloquent/) and the database query builder. However, you are free to define additional providers as needed for your application.
+Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using [Eloquent](/en/eloquent/) and the database query builder. However, you are free to define additional providers as needed for your application.
 
 Your application's authentication configuration file is located at `config/auth.php`. This file contains several well-documented options for tweaking the behavior of Laravel's authentication services.
 
 > **Note:**
-> Guards and providers should not be confused with "roles" and "permissions". To learn more about authorizing user actions via permissions, please refer to the [authorization](../authorization/) documentation.
+> Guards and providers should not be confused with "roles" and "permissions". To learn more about authorizing user actions via permissions, please refer to the [authorization](/en/authorization/) documentation.
 
 <a id="starter-kits"></a>
 ### Starter Kits
 
-Want to get started fast? Install a [Laravel application starter kit](../starter-kits/) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. The starter kits will take care of scaffolding your entire authentication system!
+Want to get started fast? Install a [Laravel application starter kit](/en/starter-kits/) in a fresh Laravel application. After migrating your database, navigate your browser to `/register` or any other URL that is assigned to your application. The starter kits will take care of scaffolding your entire authentication system!
 
-**Even if you choose not to use a starter kit in your final Laravel application, installing a [starter kit](../starter-kits/) can be a wonderful opportunity to learn how to implement all of Laravel's authentication functionality in an actual Laravel project.** Since the Laravel starter kits contain authentication controllers, routes, and views for you, you can examine the code within these files to learn how Laravel's authentication features may be implemented.
+**Even if you choose not to use a starter kit in your final Laravel application, installing a [starter kit](/en/starter-kits/) can be a wonderful opportunity to learn how to implement all of Laravel's authentication functionality in an actual Laravel project.** Since the Laravel starter kits contain authentication controllers, routes, and views for you, you can examine the code within these files to learn how Laravel's authentication features may be implemented.
 
 <a id="introduction-database-considerations"></a>
 ### Database Considerations
 
-By default, Laravel includes an `App\Models\User` [Eloquent model](../eloquent/) in your `app/Models` directory. This model may be used with the default Eloquent authentication driver.
+By default, Laravel includes an `App\Models\User` [Eloquent model](/en/eloquent/) in your `app/Models` directory. This model may be used with the default Eloquent authentication driver.
 
 If your application is not using Eloquent, you may use the `database` authentication provider which uses the Laravel query builder. If your application is using MongoDB, check out MongoDB's official [Laravel user authentication documentation](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/user-authentication/).
 
@@ -68,7 +68,7 @@ Also, you should verify that your `users` (or equivalent) table contains a nulla
 
 Laravel offers several packages related to authentication. Before continuing, we'll review the general authentication ecosystem in Laravel and discuss each package's intended purpose.
 
-First, consider how authentication works. When using a web browser, a user will provide their username and password via a login form. If these credentials are correct, the application will store information about the authenticated user in the user's [session](../session/). A cookie issued to the browser contains the session ID so that subsequent requests to the application can associate the user with the correct session. After the session cookie is received, the application will retrieve the session data based on the session ID, note that the authentication information has been stored in the session, and will consider the user as "authenticated".
+First, consider how authentication works. When using a web browser, a user will provide their username and password via a login form. If these credentials are correct, the application will store information about the authenticated user in the user's [session](/en/session/). A cookie issued to the browser contains the session ID so that subsequent requests to the application can associate the user with the correct session. After the session cookie is received, the application will retrieve the session data based on the session ID, note that the authentication information has been stored in the session, and will consider the user as "authenticated".
 
 When a remote service needs to authenticate to access an API, cookies are not typically used for authentication because there is no web browser. Instead, the remote service sends an API token to the API on each request. The application may validate the incoming token against a table of valid API tokens and "authenticate" the request as being performed by the user associated with that API token.
 
@@ -79,12 +79,12 @@ Laravel includes built-in authentication and session services which are typicall
 
 **Application Starter Kits**
 
-As discussed in this documentation, you can interact with these authentication services manually to build your application's own authentication layer. However, to help you get started more quickly, we have released [free starter kits](../starter-kits/) that provide robust, modern scaffolding of the entire authentication layer.
+As discussed in this documentation, you can interact with these authentication services manually to build your application's own authentication layer. However, to help you get started more quickly, we have released [free starter kits](/en/starter-kits/) that provide robust, modern scaffolding of the entire authentication layer.
 
 <a id="laravels-api-authentication-services"></a>
 #### Laravel's API Authentication Services
 
-Laravel provides two optional packages to assist you in managing API tokens and authenticating requests made with API tokens: [Passport](../passport/) and [Sanctum](../sanctum/). Please note that these libraries and Laravel's built-in cookie based authentication libraries are not mutually exclusive. These libraries primarily focus on API token authentication while the built-in authentication services focus on cookie based browser authentication. Many applications will use both Laravel's built-in cookie based authentication services and one of Laravel's API authentication packages.
+Laravel provides two optional packages to assist you in managing API tokens and authenticating requests made with API tokens: [Passport](/en/passport/) and [Sanctum](/en/sanctum/). Please note that these libraries and Laravel's built-in cookie based authentication libraries are not mutually exclusive. These libraries primarily focus on API token authentication while the built-in authentication services focus on cookie based browser authentication. Many applications will use both Laravel's built-in cookie based authentication services and one of Laravel's API authentication packages.
 
 **Passport**
 
@@ -92,33 +92,33 @@ Passport is an OAuth2 authentication provider, offering a variety of OAuth2 "gra
 
 **Sanctum**
 
-In response to the complexity of OAuth2 and developer confusion, we set out to build a simpler, more streamlined authentication package that could handle both first-party web requests from a web browser and API requests via tokens. This goal was realized with the release of [Laravel Sanctum](../sanctum/), which should be considered the preferred and recommended authentication package for applications that will be offering a first-party web UI in addition to an API, or will be powered by a single-page application (SPA) that exists separately from the backend Laravel application, or applications that offer a mobile client.
+In response to the complexity of OAuth2 and developer confusion, we set out to build a simpler, more streamlined authentication package that could handle both first-party web requests from a web browser and API requests via tokens. This goal was realized with the release of [Laravel Sanctum](/en/sanctum/), which should be considered the preferred and recommended authentication package for applications that will be offering a first-party web UI in addition to an API, or will be powered by a single-page application (SPA) that exists separately from the backend Laravel application, or applications that offer a mobile client.
 
-Laravel Sanctum is a hybrid web / API authentication package that can manage your application's entire authentication process. This is possible because when Sanctum based applications receive a request, Sanctum will first determine if the request includes a session cookie that references an authenticated session. Sanctum accomplishes this by calling Laravel's built-in authentication services which we discussed earlier. If the request is not being authenticated via a session cookie, Sanctum will inspect the request for an API token. If an API token is present, Sanctum will authenticate the request using that token. To learn more about this process, please consult Sanctum's ["how it works"](../sanctum/#how-it-works) documentation.
+Laravel Sanctum is a hybrid web / API authentication package that can manage your application's entire authentication process. This is possible because when Sanctum based applications receive a request, Sanctum will first determine if the request includes a session cookie that references an authenticated session. Sanctum accomplishes this by calling Laravel's built-in authentication services which we discussed earlier. If the request is not being authenticated via a session cookie, Sanctum will inspect the request for an API token. If an API token is present, Sanctum will authenticate the request using that token. To learn more about this process, please consult Sanctum's ["how it works"](/en/sanctum/#how-it-works) documentation.
 
 <a id="summary-choosing-your-stack"></a>
 #### Summary and Choosing Your Stack
 
 In summary, if your application will be accessed using a browser and you are building a monolithic Laravel application, your application will use Laravel's built-in authentication services.
 
-Next, if your application offers an API that will be consumed by third parties, you will choose between [Passport](../passport/) or [Sanctum](../sanctum/) to provide API token authentication for your application. In general, Sanctum should be preferred when possible since it is a simple, complete solution for API authentication, SPA authentication, and mobile authentication, including support for "scopes" or "abilities".
+Next, if your application offers an API that will be consumed by third parties, you will choose between [Passport](/en/passport/) or [Sanctum](/en/sanctum/) to provide API token authentication for your application. In general, Sanctum should be preferred when possible since it is a simple, complete solution for API authentication, SPA authentication, and mobile authentication, including support for "scopes" or "abilities".
 
-If you are building a single-page application (SPA) that will be powered by a Laravel backend, you should use [Laravel Sanctum](../sanctum/). When using Sanctum, you will either need to [manually implement your own backend authentication routes](#authenticating-users) or utilize [Laravel Fortify](../fortify/) as a headless authentication backend service that provides routes and controllers for features such as registration, password reset, email verification, and more.
+If you are building a single-page application (SPA) that will be powered by a Laravel backend, you should use [Laravel Sanctum](/en/sanctum/). When using Sanctum, you will either need to [manually implement your own backend authentication routes](#authenticating-users) or utilize [Laravel Fortify](/en/fortify/) as a headless authentication backend service that provides routes and controllers for features such as registration, password reset, email verification, and more.
 
-Passport may be chosen when your application absolutely needs all of the features provided by the OAuth2 specification. Additionally, if you are building an [MCP server](../mcp/) that will be accessed by AI clients, you should use Passport, as MCP clients typically expect to [authenticate using OAuth](../mcp/#oauth).
+Passport may be chosen when your application absolutely needs all of the features provided by the OAuth2 specification. Additionally, if you are building an [MCP server](/en/mcp/) that will be accessed by AI clients, you should use Passport, as MCP clients typically expect to [authenticate using OAuth](/en/mcp/#oauth).
 
-And, if you would like to get started quickly, we are pleased to recommend [our application starter kits](../starter-kits/) as a quick way to start a new Laravel application that already uses our preferred authentication stack of Laravel's built-in authentication services.
+And, if you would like to get started quickly, we are pleased to recommend [our application starter kits](/en/starter-kits/) as a quick way to start a new Laravel application that already uses our preferred authentication stack of Laravel's built-in authentication services.
 
 <a id="authentication-quickstart"></a>
 ## Authentication Quickstart
 
 > **Warning:**
-> This portion of the documentation discusses authenticating users via the [Laravel application starter kits](../starter-kits/), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
+> This portion of the documentation discusses authenticating users via the [Laravel application starter kits](/en/starter-kits/), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
 
 <a id="install-a-starter-kit"></a>
 ### Install a Starter Kit
 
-First, you should [install a Laravel application starter kit](../starter-kits/). Our starter kits offer beautifully designed starting points for incorporating authentication into your fresh Laravel application.
+First, you should [install a Laravel application starter kit](/en/starter-kits/). Our starter kits offer beautifully designed starting points for incorporating authentication into your fresh Laravel application.
 
 <a id="retrieving-the-authenticated-user"></a>
 ### Retrieving the Authenticated User
@@ -175,12 +175,12 @@ if (Auth::check()) {
 ```
 
 > **Note:**
-> Even though it is possible to determine if a user is authenticated using the `check` method, you will typically use a middleware to verify that the user is authenticated before allowing the user access to certain routes / controllers. To learn more about this, check out the documentation on [protecting routes](../authentication/#protecting-routes).
+> Even though it is possible to determine if a user is authenticated using the `check` method, you will typically use a middleware to verify that the user is authenticated before allowing the user access to certain routes / controllers. To learn more about this, check out the documentation on [protecting routes](/en/authentication/#protecting-routes).
 
 <a id="protecting-routes"></a>
 ### Protecting Routes
 
-[Route middleware](../middleware/) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which is a [middleware alias](../middleware/#middleware-aliases) for the `Illuminate\Auth\Middleware\Authenticate` class. Since this middleware is already aliased internally by Laravel, all you need to do is attach the middleware to a route definition:
+[Route middleware](/en/middleware/) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which is a [middleware alias](/en/middleware/#middleware-aliases) for the `Illuminate\Auth\Middleware\Authenticate` class. Since this middleware is already aliased internally by Laravel, all you need to do is attach the middleware to a route definition:
 
 ```php
 Route::get('/flights', function () {
@@ -191,7 +191,7 @@ Route::get('/flights', function () {
 <a id="redirecting-unauthenticated-users"></a>
 #### Redirecting Unauthenticated Users
 
-When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](../routing/#named-routes). You may modify this behavior using the `redirectGuestsTo` method within your application's `bootstrap/app.php` file:
+When the `auth` middleware detects an unauthenticated user, it will redirect the user to the `login` [named route](/en/routing/#named-routes). You may modify this behavior using the `redirectGuestsTo` method within your application's `bootstrap/app.php` file:
 
 ```php
 use Illuminate\Http\Request;
@@ -234,17 +234,17 @@ Route::get('/flights', function () {
 <a id="login-throttling"></a>
 ### Login Throttling
 
-If you are using one of our [application starter kits](../starter-kits/), rate limiting will automatically be applied to login attempts. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / email address and their IP address.
+If you are using one of our [application starter kits](/en/starter-kits/), rate limiting will automatically be applied to login attempts. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / email address and their IP address.
 
 > **Note:**
-> If you would like to rate limit other routes in your application, check out the [rate limiting documentation](../routing/#rate-limiting).
+> If you would like to rate limit other routes in your application, check out the [rate limiting documentation](/en/routing/#rate-limiting).
 
 <a id="authenticating-users"></a>
 ## Manually Authenticating Users
 
-You are not required to use the authentication scaffolding included with Laravel's [application starter kits](../starter-kits/). If you choose not to use this scaffolding, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
+You are not required to use the authentication scaffolding included with Laravel's [application starter kits](/en/starter-kits/). If you choose not to use this scaffolding, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
 
-We will access Laravel's authentication services via the `Auth` [facade](../facades/), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method. The `attempt` method is normally used to handle authentication attempts from your application's "login" form. If authentication is successful, you should regenerate the user's [session](../session/) to prevent [session fixation](https://en.wikipedia.org/wiki/Session_fixation):
+We will access Laravel's authentication services via the `Auth` [facade](/en/facades/), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method. The `attempt` method is normally used to handle authentication attempts from your application's "login" form. If authentication is successful, you should regenerate the user's [session](/en/session/) to prevent [session fixation](https://en.wikipedia.org/wiki/Session_fixation):
 
 ```php
 <?php
@@ -373,7 +373,7 @@ if (Auth::viaRemember()) {
 <a id="authenticate-a-user-instance"></a>
 #### Authenticate a User Instance
 
-If you need to set an existing user instance as the currently authenticated user, you may pass the user instance to the `Auth` facade's `login` method. The given user instance must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](../contracts/). The `App\Models\User` model included with Laravel already implements this interface. This method of authentication is useful when you already have a valid user instance, such as directly after a user registers with your application:
+If you need to set an existing user instance as the currently authenticated user, you may pass the user instance to the `Auth` facade's `login` method. The given user instance must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/en/contracts/). The `App\Models\User` model included with Laravel already implements this interface. This method of authentication is useful when you already have a valid user instance, such as directly after a user registers with your application:
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -422,7 +422,7 @@ if (Auth::once($credentials)) {
 <a id="http-basic-authentication"></a>
 ## HTTP Basic Authentication
 
-[HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](../middleware/) to a route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
+[HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/en/middleware/) to a route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
 
 ```php
 Route::get('/profile', function () {
@@ -445,7 +445,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 <a id="stateless-http-basic-authentication"></a>
 ### Stateless HTTP Basic Authentication
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session. This is primarily helpful if you choose to use HTTP Authentication to authenticate requests to your application's API. To accomplish this, [define a middleware](../middleware/) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
+You may also use HTTP Basic Authentication without setting a user identifier cookie in the session. This is primarily helpful if you choose to use HTTP Authentication to authenticate requests to your application's API. To accomplish this, [define a middleware](/en/middleware/) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
 
 ```php
 <?php
@@ -485,7 +485,7 @@ Route::get('/api/user', function () {
 
 To manually log users out of your application, you may use the `logout` method provided by the `Auth` facade. This will remove the authentication information from the user's session so that subsequent requests are not authenticated.
 
-In addition to calling the `logout` method, it is recommended that you invalidate the user's session and regenerate their [CSRF token](../csrf/). After logging the user out, you would typically redirect the user to the root of your application:
+In addition to calling the `logout` method, it is recommended that you invalidate the user's session and regenerate their [CSRF token](/en/csrf/). After logging the user out, you would typically redirect the user to the root of your application:
 
 ```php
 use Illuminate\Http\Request;
@@ -512,7 +512,7 @@ public function logout(Request $request): RedirectResponse
 
 Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. This feature is typically utilized when a user is changing or updating their password and you would like to invalidate sessions on other devices while keeping the current device authenticated.
 
-Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` [middleware alias](../middleware/#middleware-aliases):
+Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` [middleware alias](/en/middleware/#middleware-aliases):
 
 ```php
 Route::middleware(['auth', 'auth.session'])->group(function () {
@@ -538,7 +538,7 @@ When the `logoutOtherDevices` method is invoked, the user's other sessions will 
 While building your application, you may occasionally have actions that should require the user to confirm their password before the action is performed or before the user is redirected to a sensitive area of the application. Laravel includes built-in middleware to make this process a breeze. Implementing this feature will require you to define two routes: one route to display a view asking the user to confirm their password and another route to confirm that the password is valid and redirect the user to their intended destination.
 
 > **Note:**
-> The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel application starter kits](../starter-kits/) include support for this feature!
+> The following documentation discusses how to integrate with Laravel's password confirmation features directly; however, if you would like to get started more quickly, the [Laravel application starter kits](/en/starter-kits/) include support for this feature!
 
 <a id="password-confirmation-configuration"></a>
 ### Configuration
@@ -588,7 +588,7 @@ Before moving on, let's examine this route in more detail. First, the request's 
 <a id="password-confirmation-protecting-routes"></a>
 ### Protecting Routes
 
-You should ensure that any route that performs an action which requires recent password confirmation is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password. After storing the user's intended destination in the session, the middleware will redirect the user to the `password.confirm` [named route](../routing/#named-routes):
+You should ensure that any route that performs an action which requires recent password confirmation is assigned the `password.confirm` middleware. This middleware is included with the default installation of Laravel and will automatically store the user's intended destination in the session so that the user may be redirected to that location after confirming their password. After storing the user's intended destination in the session, the middleware will redirect the user to the `password.confirm` [named route](/en/routing/#named-routes):
 
 ```php
 Route::get('/settings', function () {
@@ -603,7 +603,7 @@ Route::post('/settings', function () {
 <a id="adding-custom-guards"></a>
 ## Adding Custom Guards
 
-You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place your call to the `extend` method within a [service provider](../providers/). Since Laravel already ships with an `AppServiceProvider`, we can place the code in that provider:
+You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place your call to the `extend` method within a [service provider](/en/providers/). Since Laravel already ships with an `AppServiceProvider`, we can place the code in that provider:
 
 ```php
 <?php
@@ -822,7 +822,7 @@ Once the configuration file has been published, you may set the `rehash_on_login
 <a id="events"></a>
 ## Events
 
-Laravel dispatches a variety of [events](../events/) during the authentication process. You may [define listeners](../events/) for any of the following events:
+Laravel dispatches a variety of [events](/en/events/) during the authentication process. You may [define listeners](/en/events/) for any of the following events:
 
 <div class="overflow-auto">
 

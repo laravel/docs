@@ -39,9 +39,9 @@ title: "Laravel Scout"
 <a id="introduction"></a>
 ## Introduction
 
-[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver-based solution for adding full-text search to your [Eloquent models](../eloquent/). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
+[Laravel Scout](https://github.com/laravel/scout) provides a simple, driver-based solution for adding full-text search to your [Eloquent models](/en/eloquent/). Using model observers, Scout will automatically keep your search indexes in sync with your Eloquent records.
 
-Scout ships with a built-in `database` engine that uses MySQL / PostgreSQL full-text indexes and `LIKE` clauses to search your existing database — no external service required. For most applications, this is all you need. For an overview of all search options available in Laravel, consult the [search documentation](../search/).
+Scout ships with a built-in `database` engine that uses MySQL / PostgreSQL full-text indexes and `LIKE` clauses to search your existing database — no external service required. For most applications, this is all you need. For an overview of all search options available in Laravel, consult the [search documentation](/en/search/).
 
 Scout also includes drivers for [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), [Typesense](https://typesense.org), and [Turbopuffer](https://turbopuffer.com) when you need features like typo tolerance, faceted filtering, vector search, or geo-search at massive scale. A "collection" driver is also available for local development, and you are free to write [custom engines](#custom-engines) as well.
 
@@ -79,7 +79,7 @@ class Post extends Model
 <a id="queueing"></a>
 ### Queueing
 
-When using an engine that is not the `database` or `collection` engine, you should strongly consider configuring a [queue driver](../queues/) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
+When using an engine that is not the `database` or `collection` engine, you should strongly consider configuring a [queue driver](/en/queues/) before using the library. Running a queue worker will allow Scout to queue all operations that sync your model information to your search indexes, providing much better response times for your application's web interface.
 
 Once you have configured a queue driver, set the value of the `queue` option in your `config/scout.php` configuration file to `true`:
 
@@ -118,7 +118,7 @@ Scout::makeSearchableUsing(MakeSearchableUniquely::class);
 Scout::removeFromSearchUsing(RemoveFromSearchUniquely::class);
 ```
 
-These jobs use Laravel's [unique job locks](../queues/#unique-jobs) to avoid dispatching duplicate queued indexing operations for the same searchable model records while a matching job is already queued.
+These jobs use Laravel's [unique job locks](/en/queues/#unique-jobs) to avoid dispatching duplicate queued indexing operations for the same searchable model records while a matching job is already queued.
 
 <a id="driver-prerequisites"></a>
 ## Driver Prerequisites
@@ -135,7 +135,7 @@ composer require algolia/algoliasearch-client-php
 <a id="meilisearch"></a>
 ### Meilisearch
 
-[Meilisearch](https://www.meilisearch.com) is a fast, open source search engine that supports full-text, semantic, and hybrid search. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](../sail/#meilisearch), Laravel's officially supported Docker development environment. For production, you can [self-host](https://www.meilisearch.com/docs/learn/self_hosted/getting_started_with_self_hosted_meilisearch) Meilisearch or use [Meilisearch Cloud](https://www.meilisearch.com/cloud).
+[Meilisearch](https://www.meilisearch.com) is a fast, open source search engine that supports full-text, semantic, and hybrid search. If you aren't sure how to install Meilisearch on your local machine, you may use [Laravel Sail](/en/sail/#meilisearch), Laravel's officially supported Docker development environment. For production, you can [self-host](https://www.meilisearch.com/docs/learn/self_hosted/getting_started_with_self_hosted_meilisearch) Meilisearch or use [Meilisearch Cloud](https://www.meilisearch.com/cloud).
 
 When using the Meilisearch driver you will need to install the Meilisearch PHP SDK via the Composer package manager:
 
@@ -174,7 +174,7 @@ TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost
 ```
 
-If you are using [Laravel Sail](../sail/), you may need to adjust the `TYPESENSE_HOST` environment variable to match the Docker container name. You may also optionally specify your installation's port, path, and protocol:
+If you are using [Laravel Sail](/en/sail/), you may need to adjust the `TYPESENSE_HOST` environment variable to match the Docker container name. You may also optionally specify your installation's port, path, and protocol:
 
 ```ini
 TYPESENSE_PORT=8108
@@ -329,7 +329,7 @@ public function toSearchableArray(): array
 ```
 
 > **Warning:**
-> Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](../migrations/#available-index-types).
+> Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/en/migrations/#available-index-types).
 
 <a id="collection-engine"></a>
 ### Collection Engine
@@ -552,7 +552,7 @@ To use semantic or hybrid search with Meilisearch, configure an embedder in the 
 ],
 ```
 
-The model's `toSearchableEmbedding` method may return source text, which Scout embeds using the [Laravel AI SDK](../ai-sdk/), or a precomputed embedding array. After updating the configuration, run the `scout:sync-index-settings` command.
+The model's `toSearchableEmbedding` method may return source text, which Scout embeds using the [Laravel AI SDK](/en/ai-sdk/), or a precomputed embedding array. After updating the configuration, run the `scout:sync-index-settings` command.
 
 Alternatively, you may use Meilisearch's native embeddings by setting the embedding `driver` to `meilisearch`. In this mode, Meilisearch generates document and query embeddings using the configured embedder, so the `dimensions` option and `toSearchableEmbedding` method are not required:
 
@@ -648,7 +648,7 @@ User::class => [
 <a id="typesense-embeddings"></a>
 #### Embeddings
 
-To enable semantic and hybrid search, define an `embedding` setting and vector field in the model's Typesense configuration. By default, Scout uses the [Laravel AI SDK](../ai-sdk/) to generate embeddings:
+To enable semantic and hybrid search, define an `embedding` setting and vector field in the model's Typesense configuration. By default, Scout uses the [Laravel AI SDK](/en/ai-sdk/) to generate embeddings:
 
 ```php
 use App\Models\Article;
@@ -745,7 +745,7 @@ To enable semantic and hybrid search, add an `embedding` setting and vector sche
 ],
 ```
 
-Your model's `toSearchableEmbedding` method should return the source text that Scout should embed or a precomputed embedding array. Scout generates source-text embeddings using the [Laravel AI SDK](../ai-sdk/).
+Your model's `toSearchableEmbedding` method should return the source text that Scout should embed or a precomputed embedding array. Scout generates source-text embeddings using the [Laravel AI SDK](/en/ai-sdk/).
 
 Alternatively, you may use Turbopuffer's native embeddings without installing the Laravel AI SDK or defining a `toSearchableEmbedding` method. Set the embedding driver to `turbopuffer` and configure an `embed` schema on the searchable source attribute:
 
@@ -785,7 +785,7 @@ If you are installing Scout into an existing project, you may already have datab
 php artisan scout:import "App\Models\Post"
 ```
 
-The `scout:queue-import` command may be used to import all of your existing records using [queued jobs](../queues/):
+The `scout:queue-import` command may be used to import all of your existing records using [queued jobs](/en/queues/):
 
 ```shell
 php artisan scout:queue-import "App\Models\Post" --chunk=500
@@ -815,7 +815,7 @@ protected function makeAllSearchableUsing(Builder $query): Builder
 ```
 
 > **Warning:**
-> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](../queues/#handling-relationships) when model collections are processed by jobs.
+> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/en/queues/#handling-relationships) when model collections are processed by jobs.
 
 <a id="adding-records"></a>
 ### Adding Records
@@ -835,7 +835,7 @@ $order->save();
 <a id="adding-records-via-query"></a>
 #### Adding Records via Query
 
-If you would like to add a collection of models to your search index via an Eloquent query, you may chain the `searchable` method onto the Eloquent query. The `searchable` method will [chunk the results](../eloquent/#chunking-results) of the query and add the records to your search index. Again, if you have configured Scout to use queues, all of the chunks will be imported in the background by your queue workers:
+If you would like to add a collection of models to your search index via an Eloquent query, you may chain the `searchable` method onto the Eloquent query. The `searchable` method will [chunk the results](/en/eloquent/#chunking-results) of the query and add the records to your search index. Again, if you have configured Scout to use queues, all of the chunks will be imported in the background by your queue workers:
 
 ```php
 use App\Models\Order;
@@ -926,7 +926,7 @@ public function searchIndexShouldBeUpdated(): bool
 <a id="removing-records"></a>
 ### Removing Records
 
-To remove a record from your index you may simply `delete` the model from the database. This may be done even if you are using [soft deleted](../eloquent/#soft-deleting) models:
+To remove a record from your index you may simply `delete` the model from the database. This may be done even if you are using [soft deleted](/en/eloquent/#soft-deleting) models:
 
 ```php
 use App\Models\Order;
@@ -1024,7 +1024,7 @@ $orders = Order::search('Star Trek')->raw();
 <a id="semantic-search"></a>
 ### Semantic Search
 
-The database, Meilisearch, Typesense, and Turbopuffer engines support semantic search, which matches records based on the meaning of a query. When Scout generates embeddings, semantic and hybrid searches require the [Laravel AI SDK](../ai-sdk/). [Typesense's native embeddings](#typesense-embeddings), [Turbopuffer's native embeddings](#turbopuffer-configuration), and precomputed query vectors do not require the Laravel AI SDK.
+The database, Meilisearch, Typesense, and Turbopuffer engines support semantic search, which matches records based on the meaning of a query. When Scout generates embeddings, semantic and hybrid searches require the [Laravel AI SDK](/en/ai-sdk/). [Typesense's native embeddings](#typesense-embeddings), [Turbopuffer's native embeddings](#turbopuffer-configuration), and precomputed query vectors do not require the Laravel AI SDK.
 
 After configuring embeddings for the selected engine, invoke the `semantic` method on a search query:
 
@@ -1123,7 +1123,7 @@ When using a third-party engine, this callback is invoked after the relevant mod
 <a id="pagination"></a>
 ### Pagination
 
-In addition to retrieving a collection of models, you may paginate your search results using the `paginate` method. This method will return an `Illuminate\Pagination\LengthAwarePaginator` instance just as if you had [paginated a traditional Eloquent query](../pagination/):
+In addition to retrieving a collection of models, you may paginate your search results using the `paginate` method. This method will return an `Illuminate\Pagination\LengthAwarePaginator` instance just as if you had [paginated a traditional Eloquent query](/en/pagination/):
 
 ```php
 use App\Models\Order;
@@ -1143,7 +1143,7 @@ When using the database engine, you may also use the `simplePaginate` method. Un
 $orders = Order::search('Star Trek')->simplePaginate(15);
 ```
 
-Once you have retrieved the results, you may display the results and render the page links using [Blade](../blade/) just as if you had paginated a traditional Eloquent query:
+Once you have retrieved the results, you may display the results and render the page links using [Blade](/en/blade/) just as if you had paginated a traditional Eloquent query:
 
 ```html
 <div class="container">
@@ -1172,7 +1172,7 @@ Route::get('/orders', function (Request $request) {
 <a id="soft-deleting"></a>
 ### Soft Deleting
 
-If your indexed models are [soft deleting](../eloquent/#soft-deleting) and you need to search your soft deleted models, set the `soft_delete` option of the `config/scout.php` configuration file to `true`:
+If your indexed models are [soft deleting](/en/eloquent/#soft-deleting) and you need to search your soft deleted models, set the `soft_delete` option of the `config/scout.php` configuration file to `true`:
 
 ```php
 'soft_delete' => true,

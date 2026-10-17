@@ -19,7 +19,7 @@ title: "Views"
 
 Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files.
 
-Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. When using Laravel, view templates are usually written using the [Blade templating language](../blade/). A simple view might look something like this:
+Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. When using Laravel, view templates are usually written using the [Blade templating language](/en/blade/). A simple view might look something like this:
 
 ```blade
 <!-- View stored in resources/views/greeting.blade.php -->
@@ -40,14 +40,14 @@ Route::get('/', function () {
 ```
 
 > **Note:**
-> Looking for more information on how to write Blade templates? Check out the full [Blade documentation](../blade/) to get started.
+> Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/en/blade/) to get started.
 
 <a id="writing-views-in-react-svelte-or-vue"></a>
 ### Writing Views in React / Svelte / Vue
 
 Instead of writing their frontend templates in PHP via Blade, many developers have begun to prefer to write their templates using React, Svelte, or Vue. Laravel makes this painless thanks to [Inertia](https://inertiajs.com/), a library that makes it a cinch to tie your React / Svelte / Vue frontend to your Laravel backend without the typical complexities of building an SPA.
 
-Our [React, Svelte, and Vue application starter kits](../starter-kits/) give you a great starting point for your next Laravel application powered by Inertia.
+Our [React, Svelte, and Vue application starter kits](/en/starter-kits/) give you a great starting point for your next Laravel application powered by Inertia.
 
 <a id="creating-and-rendering-views"></a>
 ## Creating and Rendering Views
@@ -58,7 +58,7 @@ You may create a view by placing a file with the `.blade.php` extension in your 
 php artisan make:view greeting
 ```
 
-The `.blade.php` extension informs the framework that the file contains a [Blade template](../blade/). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create "if" statements, iterate over data, and more.
+The `.blade.php` extension informs the framework that the file contains a [Blade template](/en/blade/). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create "if" statements, iterate over data, and more.
 
 Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:
 
@@ -76,7 +76,7 @@ use Illuminate\Support\Facades\View;
 return View::make('greeting', ['name' => 'James']);
 ```
 
-As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](../blade/).
+As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/en/blade/).
 
 <a id="nested-view-directories"></a>
 ### Nested View Directories
@@ -171,7 +171,7 @@ class AppServiceProvider extends ServiceProvider
 
 View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer can help you organize that logic into a single location. View composers may prove particularly useful if the same view is returned by multiple routes or controllers within your application and always needs a particular piece of data.
 
-Typically, view composers will be registered within one of your application's [service providers](../providers/). In this example, we'll assume that the `App\Providers\AppServiceProvider` will house this logic.
+Typically, view composers will be registered within one of your application's [service providers](/en/providers/). In this example, we'll assume that the `App\Providers\AppServiceProvider` will house this logic.
 
 We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class-based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
 
@@ -244,7 +244,7 @@ class ProfileComposer
 }
 ```
 
-As you can see, all view composers are resolved via the [service container](../container/), so you may type-hint any dependencies you need within a composer's constructor.
+As you can see, all view composers are resolved via the [service container](/en/container/), so you may type-hint any dependencies you need within a composer's constructor.
 
 <a id="attaching-a-composer-to-multiple-views"></a>
 #### Attaching a Composer to Multiple Views

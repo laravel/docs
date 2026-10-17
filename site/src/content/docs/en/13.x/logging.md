@@ -185,7 +185,7 @@ Log::emergency('The system is down!');
 <a id="writing-log-messages"></a>
 ## Writing Log Messages
 
-You may write information to the logs using the `Log` [facade](../facades/). As previously mentioned, the logger provides the eight logging levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**:
+You may write information to the logs using the `Log` [facade](/en/facades/). As previously mentioned, the logger provides the eight logging levels defined in the [RFC 5424 specification](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** and **debug**:
 
 ```php
 use Illuminate\Support\Facades\Log;
@@ -309,7 +309,7 @@ class AssignRequestId
 ```
 
 > **Note:**
-> If you need to share log context while processing queued jobs, you may utilize [job middleware](../queues/#job-middleware).
+> If you need to share log context while processing queued jobs, you may utilize [job middleware](/en/queues/#job-middleware).
 
 <a id="writing-to-specific-channels"></a>
 ### Writing to Specific Channels
@@ -402,7 +402,7 @@ class CustomizeFormatter
 ```
 
 > **Note:**
-> All of your "tap" classes are resolved by the [service container](../container/), so any constructor dependencies they require will automatically be injected.
+> All of your "tap" classes are resolved by the [service container](/en/container/), so any constructor dependencies they require will automatically be injected.
 
 <a id="creating-monolog-handler-channels"></a>
 ### Creating Monolog Handler Channels

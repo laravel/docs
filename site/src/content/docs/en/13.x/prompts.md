@@ -39,7 +39,7 @@ title: "Prompts"
 
 <img src="https://laravel.com/img/docs/prompts-example.png">
 
-Laravel Prompts is perfect for accepting user input in your [Artisan console commands](../artisan/#writing-commands), but it may also be used in any command-line PHP project.
+Laravel Prompts is perfect for accepting user input in your [Artisan console commands](/en/artisan/#writing-commands), but it may also be used in any command-line PHP project.
 
 > **Note:**
 > Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see our documentation on [unsupported environments & fallbacks](#fallbacks).
@@ -119,7 +119,7 @@ $name = text(
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
-Alternatively, you may leverage the power of Laravel's [validator](../validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Alternatively, you may leverage the power of Laravel's [validator](/en/validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
 
 ```php
 $name = text(
@@ -188,7 +188,7 @@ $story = textarea(
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
-Alternatively, you may leverage the power of Laravel's [validator](../validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Alternatively, you may leverage the power of Laravel's [validator](/en/validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
 
 ```php
 $story = textarea(
@@ -258,7 +258,7 @@ $copies = number(
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
-Alternatively, you may leverage the power of Laravel's [validator](../validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Alternatively, you may leverage the power of Laravel's [validator](/en/validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
 
 ```php
 $copies = number(
@@ -326,7 +326,7 @@ $password = password(
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
-Alternatively, you may leverage the power of Laravel's [validator](../validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Alternatively, you may leverage the power of Laravel's [validator](/en/validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
 
 ```php
 $password = password(
@@ -695,7 +695,7 @@ $name = suggest(
 
 The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
 
-Alternatively, you may leverage the power of Laravel's [validator](../validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
+Alternatively, you may leverage the power of Laravel's [validator](/en/validation/). To do so, provide an array containing the name of the attribute and the desired validation rules to the `validate` argument:
 
 ```php
 $name = suggest(

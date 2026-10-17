@@ -1366,7 +1366,7 @@ $classes = Arr::toCssStyles($array);
 */
 ```
 
-This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](../blade/#conditionally-merge-classes) as well as the `@class` [Blade directive](../blade/#conditional-classes).
+This method powers Laravel's functionality allowing [merging classes with a Blade component's attribute bag](/en/blade/#conditionally-merge-classes) as well as the `@class` [Blade directive](/en/blade/#conditional-classes).
 
 <a id="method-array-undot"></a>
 #### `Arr::undot()` {.collection-method}
@@ -2191,7 +2191,7 @@ $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
 <a id="method-route"></a>
 #### `route()` {.collection-method}
 
-The `route` function generates a URL for a given [named route](../routing/#named-routes):
+The `route` function generates a URL for a given [named route](/en/routing/#named-routes):
 
 ```php
 $url = route('route.name');
@@ -2232,7 +2232,7 @@ $url = secure_url('user/profile', [1]);
 <a id="method-to-action"></a>
 #### `to_action()` {.collection-method}
 
-The `to_action` function generates a [redirect HTTP response](../responses/#redirects) for a given controller action:
+The `to_action` function generates a [redirect HTTP response](/en/responses/#redirects) for a given controller action:
 
 ```php
 use App\Http\Controllers\UserController;
@@ -2254,7 +2254,7 @@ return to_action(
 <a id="method-to-route"></a>
 #### `to_route()` {.collection-method}
 
-The `to_route` function generates a [redirect HTTP response](../responses/#redirects) for a given [named route](../routing/#named-routes):
+The `to_route` function generates a [redirect HTTP response](/en/responses/#redirects) for a given [named route](/en/routing/#named-routes):
 
 ```php
 return to_route('users.show', ['user' => 1]);
@@ -2293,7 +2293,7 @@ use App\Http\Controllers\UserIndexController;
 $uri = uri(UserIndexController::class);
 ```
 
-If the value given to the `uri` function matches the name of a [named route](../routing/#named-routes), a `Uri` instance will be generated for that route's path:
+If the value given to the `uri` function matches the name of a [named route](/en/routing/#named-routes), a `Uri` instance will be generated for that route's path:
 
 ```php
 $uri = uri('users.show', ['user' => $user]);
@@ -2320,7 +2320,7 @@ $full = url()->full();
 $previous = url()->previous();
 ```
 
-For more information on working with the `url` function, consult the [URL generation documentation](../urls/#generating-urls).
+For more information on working with the `url` function, consult the [URL generation documentation](/en/urls/#generating-urls).
 
 <a id="miscellaneous"></a>
 ## Miscellaneous
@@ -2328,7 +2328,7 @@ For more information on working with the `url` function, consult the [URL genera
 <a id="method-abort"></a>
 #### `abort()` {.collection-method}
 
-The `abort` function throws [an HTTP exception](../errors/#http-exceptions) which will be rendered by the [exception handler](../errors/#handling-exceptions):
+The `abort` function throws [an HTTP exception](/en/errors/#http-exceptions) which will be rendered by the [exception handler](/en/errors/#handling-exceptions):
 
 ```php
 abort(403);
@@ -2365,7 +2365,7 @@ Like the `abort` method, you may also provide the exception's response text as t
 <a id="method-app"></a>
 #### `app()` {.collection-method}
 
-The `app` function returns the [service container](../container/) instance:
+The `app` function returns the [service container](/en/container/) instance:
 
 ```php
 $container = app();
@@ -2380,7 +2380,7 @@ $api = app('HelpSpot\API');
 <a id="method-auth"></a>
 #### `auth()` {.collection-method}
 
-The `auth` function returns an [authenticator](../authentication/) instance. You may use it as an alternative to the `Auth` facade:
+The `auth` function returns an [authenticator](/en/authentication/) instance. You may use it as an alternative to the `Auth` facade:
 
 ```php
 $user = auth()->user();
@@ -2395,7 +2395,7 @@ $user = auth('admin')->user();
 <a id="method-back"></a>
 #### `back()` {.collection-method}
 
-The `back` function generates a [redirect HTTP response](../responses/#redirects) to the user's previous location:
+The `back` function generates a [redirect HTTP response](/en/responses/#redirects) to the user's previous location:
 
 ```php
 return back($status = 302, $headers = [], $fallback = '/');
@@ -2406,7 +2406,7 @@ return back();
 <a id="method-bcrypt"></a>
 #### `bcrypt()` {.collection-method}
 
-The `bcrypt` function [hashes](../hashing/) the given value using Bcrypt. You may use this function as an alternative to the `Hash` facade:
+The `bcrypt` function [hashes](/en/hashing/) the given value using Bcrypt. You may use this function as an alternative to the `Hash` facade:
 
 ```php
 $password = bcrypt('my-secret-password');
@@ -2437,7 +2437,7 @@ For the inverse of `blank`, see the [filled](#method-filled) function.
 <a id="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
 
-The `broadcast` function [broadcasts](../broadcasting/) the given [event](../events/) to its listeners:
+The `broadcast` function [broadcasts](/en/broadcasting/) the given [event](/en/events/) to its listeners:
 
 ```php
 broadcast(new UserRegistered($user));
@@ -2448,7 +2448,7 @@ broadcast(new UserRegistered($user))->toOthers();
 <a id="method-broadcast-if"></a>
 #### `broadcast_if()` {.collection-method}
 
-The `broadcast_if` function [broadcasts](../broadcasting/) the given [event](../events/) to its listeners if a given boolean expression evaluates to `true`:
+The `broadcast_if` function [broadcasts](/en/broadcasting/) the given [event](/en/events/) to its listeners if a given boolean expression evaluates to `true`:
 
 ```php
 broadcast_if($user->isActive(), new UserRegistered($user));
@@ -2459,7 +2459,7 @@ broadcast_if($user->isActive(), new UserRegistered($user))->toOthers();
 <a id="method-broadcast-unless"></a>
 #### `broadcast_unless()` {.collection-method}
 
-The `broadcast_unless` function [broadcasts](../broadcasting/) the given [event](../events/) to its listeners if a given boolean expression evaluates to `false`:
+The `broadcast_unless` function [broadcasts](/en/broadcasting/) the given [event](/en/events/) to its listeners if a given boolean expression evaluates to `false`:
 
 ```php
 broadcast_unless($user->isBanned(), new UserRegistered($user));
@@ -2470,7 +2470,7 @@ broadcast_unless($user->isBanned(), new UserRegistered($user))->toOthers();
 <a id="method-cache"></a>
 #### `cache()` {.collection-method}
 
-The `cache` function may be used to get values from the [cache](../cache/). If the given key does not exist in the cache, an optional default value will be returned:
+The `cache` function may be used to get values from the [cache](/en/cache/). If the given key does not exist in the cache, an optional default value will be returned:
 
 ```php
 $value = cache('key');
@@ -2498,7 +2498,7 @@ $traits = class_uses_recursive(App\Models\User::class);
 <a id="method-collect"></a>
 #### `collect()` {.collection-method}
 
-The `collect` function creates a [collection](../collections/) instance from the given value:
+The `collect` function creates a [collection](/en/collections/) instance from the given value:
 
 ```php
 $collection = collect(['Taylor', 'Abigail']);
@@ -2507,7 +2507,7 @@ $collection = collect(['Taylor', 'Abigail']);
 <a id="method-config"></a>
 #### `config()` {.collection-method}
 
-The `config` function gets the value of a [configuration](../configuration/) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. You may also provide a default value that will be returned if the configuration option does not exist:
+The `config` function gets the value of a [configuration](/en/configuration/) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. You may also provide a default value that will be returned if the configuration option does not exist:
 
 ```php
 $value = config('app.timezone');
@@ -2524,7 +2524,7 @@ config(['app.debug' => true]);
 <a id="method-context"></a>
 #### `context()` {.collection-method}
 
-The `context` function gets the value from the current [context](../context/). You may also provide a default value that will be returned if the context key does not exist:
+The `context` function gets the value from the current [context](/en/context/). You may also provide a default value that will be returned if the context key does not exist:
 
 ```php
 $value = context('trace_id');
@@ -2543,7 +2543,7 @@ context(['trace_id' => Str::uuid()->toString()]);
 <a id="method-cookie"></a>
 #### `cookie()` {.collection-method}
 
-The `cookie` function creates a new [cookie](../requests/#cookies) instance:
+The `cookie` function creates a new [cookie](/en/requests/#cookies) instance:
 
 ```php
 $cookie = cookie('name', 'value', $minutes);
@@ -2552,7 +2552,7 @@ $cookie = cookie('name', 'value', $minutes);
 <a id="method-csrf-field"></a>
 #### `csrf_field()` {.collection-method}
 
-The `csrf_field` function generates an HTML `hidden` input field containing the value of the CSRF token. For example, using [Blade syntax](../blade/):
+The `csrf_field` function generates an HTML `hidden` input field containing the value of the CSRF token. For example, using [Blade syntax](/en/blade/):
 
 ```blade
 {{ csrf_field() }}
@@ -2570,7 +2570,7 @@ $token = csrf_token();
 <a id="method-decrypt"></a>
 #### `decrypt()` {.collection-method}
 
-The `decrypt` function [decrypts](../encryption/) the given value. You may use this function as an alternative to the `Crypt` facade:
+The `decrypt` function [decrypts](/en/encryption/) the given value. You may use this function as an alternative to the `Crypt` facade:
 
 ```php
 $password = decrypt($value);
@@ -2594,7 +2594,7 @@ If you do not want to halt the execution of your script, use the [dump](#method-
 <a id="method-dispatch"></a>
 #### `dispatch()` {.collection-method}
 
-The `dispatch` function pushes the given [job](../queues/#creating-jobs) onto the Laravel [job queue](../queues/):
+The `dispatch` function pushes the given [job](/en/queues/#creating-jobs) onto the Laravel [job queue](/en/queues/):
 
 ```php
 dispatch(new App\Jobs\SendEmails);
@@ -2603,7 +2603,7 @@ dispatch(new App\Jobs\SendEmails);
 <a id="method-dispatch-sync"></a>
 #### `dispatch_sync()` {.collection-method}
 
-The `dispatch_sync` function pushes the given job to the [sync](../queues/#synchronous-dispatching) queue so that it is processed immediately:
+The `dispatch_sync` function pushes the given job to the [sync](/en/queues/#synchronous-dispatching) queue so that it is processed immediately:
 
 ```php
 dispatch_sync(new App\Jobs\SendEmails);
@@ -2625,7 +2625,7 @@ If you want to stop executing the script after dumping the variables, use the [d
 <a id="method-encrypt"></a>
 #### `encrypt()` {.collection-method}
 
-The `encrypt` function [encrypts](../encryption/) the given value. You may use this function as an alternative to the `Crypt` facade:
+The `encrypt` function [encrypts](/en/encryption/) the given value. You may use this function as an alternative to the `Crypt` facade:
 
 ```php
 $secret = encrypt('my-secret-value');
@@ -2636,7 +2636,7 @@ For the inverse of `encrypt`, see the [decrypt](#method-decrypt) function.
 <a id="method-env"></a>
 #### `env()` {.collection-method}
 
-The `env` function retrieves the value of an [environment variable](../configuration/#environment-configuration) or returns a default value:
+The `env` function retrieves the value of an [environment variable](/en/configuration/#environment-configuration) or returns a default value:
 
 ```php
 $env = env('APP_ENV');
@@ -2650,7 +2650,7 @@ $env = env('APP_ENV', 'production');
 <a id="method-event"></a>
 #### `event()` {.collection-method}
 
-The `event` function dispatches the given [event](../events/) to its listeners:
+The `event` function dispatches the given [event](/en/events/) to its listeners:
 
 ```php
 event(new UserRegistered($user));
@@ -2704,7 +2704,7 @@ For the inverse of `filled`, see the [blank](#method-blank) function.
 <a id="method-info"></a>
 #### `info()` {.collection-method}
 
-The `info` function will write information to your application's [log](../logging/):
+The `info` function will write information to your application's [log](/en/logging/):
 
 ```php
 info('Some helpful information!');
@@ -2734,7 +2734,7 @@ $obj->languages; // ['PHP', 'Ruby']
 <a id="method-logger"></a>
 #### `logger()` {.collection-method}
 
-The `logger` function can be used to write a `debug` level message to the [log](../logging/):
+The `logger` function can be used to write a `debug` level message to the [log](/en/logging/):
 
 ```php
 logger('Debug message');
@@ -2746,7 +2746,7 @@ An array of contextual data may also be passed to the function:
 logger('User has logged in.', ['id' => $user->id]);
 ```
 
-A [logger](../logging/) instance will be returned if no value is passed to the function:
+A [logger](/en/logging/) instance will be returned if no value is passed to the function:
 
 ```php
 logger()->error('You are not allowed here.');
@@ -2755,7 +2755,7 @@ logger()->error('You are not allowed here.');
 <a id="method-method-field"></a>
 #### `method_field()` {.collection-method}
 
-The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form's HTTP verb. For example, using [Blade syntax](../blade/):
+The `method_field` function generates an HTML `hidden` input field containing the spoofed value of the form's HTTP verb. For example, using [Blade syntax](/en/blade/):
 
 ```blade
 <form method="POST">
@@ -2775,7 +2775,7 @@ $now = now();
 <a id="method-old"></a>
 #### `old()` {.collection-method}
 
-The `old` function [retrieves](../requests/#retrieving-input) an [old input](../requests/#old-input) value flashed into the session:
+The `old` function [retrieves](/en/requests/#retrieving-input) an [old input](/en/requests/#old-input) value flashed into the session:
 
 ```php
 $value = old('value');
@@ -2856,7 +2856,7 @@ return optional(User::find($id), function (User $user) {
 <a id="method-policy"></a>
 #### `policy()` {.collection-method}
 
-The `policy` method retrieves a [policy](../authorization/#creating-policies) instance for a given class:
+The `policy` method retrieves a [policy](/en/authorization/#creating-policies) instance for a given class:
 
 ```php
 $policy = policy(App\Models\User::class);
@@ -2865,7 +2865,7 @@ $policy = policy(App\Models\User::class);
 <a id="method-redirect"></a>
 #### `redirect()` {.collection-method}
 
-The `redirect` function returns a [redirect HTTP response](../responses/#redirects), or returns the redirector instance if called with no arguments:
+The `redirect` function returns a [redirect HTTP response](/en/responses/#redirects), or returns the redirector instance if called with no arguments:
 
 ```php
 return redirect($to = null, $status = 302, $headers = [], $secure = null);
@@ -2878,7 +2878,7 @@ return redirect()->route('route.name');
 <a id="method-report"></a>
 #### `report()` {.collection-method}
 
-The `report` function will report an exception using your [exception handler](../errors/#handling-exceptions):
+The `report` function will report an exception using your [exception handler](/en/errors/#handling-exceptions):
 
 ```php
 report($e);
@@ -2893,7 +2893,7 @@ report('Something went wrong.');
 <a id="method-report-if"></a>
 #### `report_if()` {.collection-method}
 
-The `report_if` function will report an exception using your [exception handler](../errors/#handling-exceptions) if a given boolean expression evaluates to `true`:
+The `report_if` function will report an exception using your [exception handler](/en/errors/#handling-exceptions) if a given boolean expression evaluates to `true`:
 
 ```php
 report_if($shouldReport, $e);
@@ -2904,7 +2904,7 @@ report_if($shouldReport, 'Something went wrong.');
 <a id="method-report-unless"></a>
 #### `report_unless()` {.collection-method}
 
-The `report_unless` function will report an exception using your [exception handler](../errors/#handling-exceptions) if a given boolean expression evaluates to `false`:
+The `report_unless` function will report an exception using your [exception handler](/en/errors/#handling-exceptions) if a given boolean expression evaluates to `false`:
 
 ```php
 report_unless($reportingDisabled, $e);
@@ -2915,7 +2915,7 @@ report_unless($reportingDisabled, 'Something went wrong.');
 <a id="method-request"></a>
 #### `request()` {.collection-method}
 
-The `request` function returns the current [request](../requests/) instance or obtains an input field's value from the current request:
+The `request` function returns the current [request](/en/requests/) instance or obtains an input field's value from the current request:
 
 ```php
 $request = request();
@@ -2926,7 +2926,7 @@ $value = request('key', $default);
 <a id="method-rescue"></a>
 #### `rescue()` {.collection-method}
 
-The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](../errors/#handling-exceptions); however, the request will continue processing:
+The `rescue` function executes the given closure and catches any exceptions that occur during its execution. All exceptions that are caught will be sent to your [exception handler](/en/errors/#handling-exceptions); however, the request will continue processing:
 
 ```php
 return rescue(function () {
@@ -2961,7 +2961,7 @@ return rescue(function () {
 <a id="method-resolve"></a>
 #### `resolve()` {.collection-method}
 
-The `resolve` function resolves a given class or interface name to an instance using the [service container](../container/):
+The `resolve` function resolves a given class or interface name to an instance using the [service container](/en/container/):
 
 ```php
 $api = resolve('HelpSpot\API');
@@ -2970,7 +2970,7 @@ $api = resolve('HelpSpot\API');
 <a id="method-response"></a>
 #### `response()` {.collection-method}
 
-The `response` function creates a [response](../responses/) instance or obtains an instance of the response factory:
+The `response` function creates a [response](/en/responses/) instance or obtains an instance of the response factory:
 
 ```php
 return response('Hello World', 200, $headers);
@@ -3035,7 +3035,7 @@ return retry(5, function () {
 <a id="method-session"></a>
 #### `session()` {.collection-method}
 
-The `session` function may be used to get or set [session](../session/) values:
+The `session` function may be used to get or set [session](/en/session/) values:
 
 ```php
 $value = session('key');
@@ -3159,7 +3159,7 @@ $result = transform(null, $callback, 'The value is blank');
 <a id="method-validator"></a>
 #### `validator()` {.collection-method}
 
-The `validator` function creates a new [validator](../validation/) instance with the given arguments. You may use it as an alternative to the `Validator` facade:
+The `validator` function creates a new [validator](/en/validation/) instance with the given arguments. You may use it as an alternative to the `Validator` facade:
 
 ```php
 $validator = validator($data, $rules, $messages);
@@ -3195,7 +3195,7 @@ $result = value(function (string $name) {
 <a id="method-view"></a>
 #### `view()` {.collection-method}
 
-The `view` function retrieves a [view](../views/) instance:
+The `view` function retrieves a [view](/en/views/) instance:
 
 ```php
 return view('auth.login');
@@ -3326,7 +3326,7 @@ Cache::put('metrics', $metrics, minutes(10));
 <a id="deferred-functions"></a>
 ### Deferred Functions
 
-While Laravel's [queued jobs](../queues/) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
+While Laravel's [queued jobs](/en/queues/) allow you to queue tasks for background processing, sometimes you may have simple tasks you would like to defer without configuring or maintaining a long-running queue worker.
 
 Deferred functions allow you to defer the execution of a closure until after the HTTP response has been sent to the user, keeping your application feeling fast and responsive. To defer the execution of a closure, simply pass the closure to the `Illuminate\Support\defer` function:
 
@@ -3484,11 +3484,11 @@ $user = Pipeline::send($user)
     ->then(fn (User $user) => $user);
 ```
 
-As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](../middleware/).
+As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/en/middleware/).
 
 When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input. For convenience, if you simply want to return the input after it has been processed, you may use the `thenReturn` method.
 
-Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](../container/), allowing dependencies to be injected into the invokable class:
+Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](/en/container/), allowing dependencies to be injected into the invokable class:
 
 ```php
 $user = Pipeline::send($user)
@@ -3657,7 +3657,7 @@ Sleep::assertNeverSlept();
 Sleep::assertInsomniac();
 ```
 
-Sometimes it may be useful to perform an action whenever a fake sleep occurs. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](../mocking/#interacting-with-time) to instantly progress time by the duration of each sleep:
+Sometimes it may be useful to perform an action whenever a fake sleep occurs. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/en/mocking/#interacting-with-time) to instantly progress time by the duration of each sleep:
 
 ```php
 use Carbon\CarbonInterval as Duration;

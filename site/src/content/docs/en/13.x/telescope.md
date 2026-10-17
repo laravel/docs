@@ -88,7 +88,7 @@ public function register(): void
 }
 ```
 
-Finally, you should also prevent the Telescope package from being [auto-discovered](../packages/#package-discovery) by adding the following to your `composer.json` file:
+Finally, you should also prevent the Telescope package from being [auto-discovered](/en/packages/#package-discovery) by adding the following to your `composer.json` file:
 
 ```json
 "extra": {
@@ -143,7 +143,7 @@ You may add this middleware to the `middleware` option in your application's `co
 <a id="data-pruning"></a>
 ### Data Pruning
 
-Without pruning, the `telescope_entries` table can accumulate records very quickly. To mitigate this, you should [schedule](../scheduling/) the `telescope:prune` Artisan command to run daily:
+Without pruning, the `telescope_entries` table can accumulate records very quickly. To mitigate this, you should [schedule](/en/scheduling/) the `telescope:prune` Artisan command to run daily:
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -162,7 +162,7 @@ Schedule::command('telescope:prune --hours=48')->daily();
 <a id="dashboard-authorization"></a>
 ### Dashboard Authorization
 
-The Telescope dashboard may be accessed via the `/telescope` route. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is an [authorization gate](../authorization/#gates) definition. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
+The Telescope dashboard may be accessed via the `/telescope` route. By default, you will only be able to access this dashboard in the `local` environment. Within your `app/Providers/TelescopeServiceProvider.php` file, there is an [authorization gate](/en/authorization/#gates) definition. This authorization gate controls access to Telescope in **non-local** environments. You are free to modify this gate as needed to restrict access to your Telescope installation:
 
 ```php
 use App\Models\User;
@@ -327,7 +327,7 @@ Some watchers also allow you to provide additional customization options:
 <a id="batch-watcher"></a>
 ### Batch Watcher
 
-The batch watcher records information about queued [batches](../queues/#job-batching), including the job and connection information.
+The batch watcher records information about queued [batches](/en/queues/#job-batching), including the job and connection information.
 
 <a id="cache-watcher"></a>
 ### Cache Watcher
@@ -357,7 +357,7 @@ The dump watcher records and displays your variable dumps in Telescope. When usi
 <a id="event-watcher"></a>
 ### Event Watcher
 
-The event watcher records the payload, listeners, and broadcast data for any [events](../events/) dispatched by your application. The Laravel framework's internal events are ignored by the Event watcher.
+The event watcher records the payload, listeners, and broadcast data for any [events](/en/events/) dispatched by your application. The Laravel framework's internal events are ignored by the Event watcher.
 
 <a id="exception-watcher"></a>
 ### Exception Watcher
@@ -367,7 +367,7 @@ The exception watcher records the data and stack trace for any reportable except
 <a id="gate-watcher"></a>
 ### Gate Watcher
 
-The gate watcher records the data and result of [gate and policy](../authorization/) checks by your application. If you would like to exclude certain abilities from being recorded by the watcher, you may specify those in the `ignore_abilities` option in your `config/telescope.php` file:
+The gate watcher records the data and result of [gate and policy](/en/authorization/) checks by your application. If you would like to exclude certain abilities from being recorded by the watcher, you may specify those in the `ignore_abilities` option in your `config/telescope.php` file:
 
 ```php
 'watchers' => [
@@ -382,17 +382,17 @@ The gate watcher records the data and result of [gate and policy](../authorizati
 <a id="http-client-watcher"></a>
 ### HTTP Client Watcher
 
-The HTTP client watcher records outgoing [HTTP client requests](../http-client/) made by your application.
+The HTTP client watcher records outgoing [HTTP client requests](/en/http-client/) made by your application.
 
 <a id="job-watcher"></a>
 ### Job Watcher
 
-The job watcher records the data and status of any [jobs](../queues/) dispatched by your application.
+The job watcher records the data and status of any [jobs](/en/queues/) dispatched by your application.
 
 <a id="log-watcher"></a>
 ### Log Watcher
 
-The log watcher records the [log data](../logging/) for any logs written by your application.
+The log watcher records the [log data](/en/logging/) for any logs written by your application.
 
 By default, Telescope will only record logs at the `error` level and above. However, you can modify the `level` option in your application's `config/telescope.php` configuration file to modify this behavior:
 
@@ -410,12 +410,12 @@ By default, Telescope will only record logs at the `error` level and above. Howe
 <a id="mail-watcher"></a>
 ### Mail Watcher
 
-The mail watcher allows you to view an in-browser preview of [emails](../mail/) sent by your application along with their associated data. You may also download the email as an `.eml` file.
+The mail watcher allows you to view an in-browser preview of [emails](/en/mail/) sent by your application along with their associated data. You may also download the email as an `.eml` file.
 
 <a id="model-watcher"></a>
 ### Model Watcher
 
-The model watcher records model changes whenever an Eloquent [model event](../eloquent/#events) is dispatched. You may specify which model events should be recorded via the watcher's `events` option:
+The model watcher records model changes whenever an Eloquent [model event](/en/eloquent/#events) is dispatched. You may specify which model events should be recorded via the watcher's `events` option:
 
 ```php
 'watchers' => [
@@ -443,7 +443,7 @@ If you would like to record the number of models hydrated during a given request
 <a id="notification-watcher"></a>
 ### Notification Watcher
 
-The notification watcher records all [notifications](../notifications/) sent by your application. If the notification triggers an email and you have the mail watcher enabled, the email will also be available for preview on the mail watcher screen.
+The notification watcher records all [notifications](/en/notifications/) sent by your application. If the notification triggers an email and you have the mail watcher enabled, the email will also be available for preview on the mail watcher screen.
 
 <a id="query-watcher"></a>
 ### Query Watcher
@@ -463,7 +463,7 @@ The query watcher records the raw SQL, bindings, and execution time for all quer
 <a id="redis-watcher"></a>
 ### Redis Watcher
 
-The Redis watcher records all [Redis](../redis/) commands executed by your application. If you are using Redis for caching, cache commands will also be recorded by the Redis watcher.
+The Redis watcher records all [Redis](/en/redis/) commands executed by your application. If you are using Redis for caching, cache commands will also be recorded by the Redis watcher.
 
 <a id="request-watcher"></a>
 ### Request Watcher
@@ -483,12 +483,12 @@ The request watcher records the request, headers, session, and response data ass
 <a id="schedule-watcher"></a>
 ### Schedule Watcher
 
-The schedule watcher records the command and output of any [scheduled tasks](../scheduling/) run by your application.
+The schedule watcher records the command and output of any [scheduled tasks](/en/scheduling/) run by your application.
 
 <a id="view-watcher"></a>
 ### View Watcher
 
-The view watcher records the [view](../views/) name, path, data, and "composers" used when rendering views.
+The view watcher records the [view](/en/views/) name, path, data, and "composers" used when rendering views.
 
 <a id="displaying-user-avatars"></a>
 ## Displaying User Avatars

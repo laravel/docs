@@ -370,7 +370,7 @@ We can even easily determine if a user is subscribed to specific product or pric
 <a id="quickstart-building-a-subscribed-middleware"></a>
 #### Building a Subscribed Middleware
 
-For convenience, you may wish to create a [middleware](../middleware/) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
+For convenience, you may wish to create a [middleware](/en/middleware/) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
 
 ```php
 <?php
@@ -463,7 +463,7 @@ Route::get('/buy', function (Request $request) {
 });
 ```
 
-Cashier includes a `paddle-button` [Blade component](../blade/#components). You may pass the checkout session to this component as a "prop". Then, when this button is clicked, Paddle's checkout widget will be displayed:
+Cashier includes a `paddle-button` [Blade component](/en/blade/#components). You may pass the checkout session to this component as a "prop". Then, when this button is clicked, Paddle's checkout widget will be displayed:
 
 ```html
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
@@ -796,7 +796,7 @@ if ($user->subscribed('default')) {
 }
 ```
 
-The `subscribed` method also makes a great candidate for a [route middleware](../middleware/), allowing you to filter access to routes and controllers based on the user's subscription status:
+The `subscribed` method also makes a great candidate for a [route middleware](/en/middleware/), allowing you to filter access to routes and controllers based on the user's subscription status:
 
 ```php
 <?php
@@ -1353,12 +1353,12 @@ To ensure your application can handle Paddle webhooks, be sure to [configure the
 - Subscription Canceled
 
 > **Warning:**
-> Make sure you protect incoming requests with Cashier's included [webhook signature verification](../cashier-paddle/#verifying-webhook-signatures) middleware.
+> Make sure you protect incoming requests with Cashier's included [webhook signature verification](/en/cashier-paddle/#verifying-webhook-signatures) middleware.
 
 <a id="webhooks-csrf-protection"></a>
 #### Webhooks and CSRF Protection
 
-Since Paddle webhooks need to bypass Laravel's [CSRF protection](../csrf/), you should ensure that Laravel does not attempt to verify the CSRF token for incoming Paddle webhooks. To accomplish this, you should exclude `paddle/*` from CSRF protection in your application's `bootstrap/app.php` file:
+Since Paddle webhooks need to bypass Laravel's [CSRF protection](/en/csrf/), you should ensure that Laravel does not attempt to verify the CSRF token for incoming Paddle webhooks. To accomplish this, you should exclude `paddle/*` from CSRF protection in your application's `bootstrap/app.php` file:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -1371,7 +1371,7 @@ Since Paddle webhooks need to bypass Laravel's [CSRF protection](../csrf/), you 
 <a id="webhooks-local-development"></a>
 #### Webhooks and Local Development
 
-For Paddle to be able to send your application webhooks during local development, you will need to expose your application via a site sharing service such as [Ngrok](https://ngrok.com/) or [Expose](https://expose.dev/docs/introduction). If you are developing your application locally using [Laravel Sail](../sail/), you may use Sail's [site sharing command](../sail/#sharing-your-site).
+For Paddle to be able to send your application webhooks during local development, you will need to expose your application via a site sharing service such as [Ngrok](https://ngrok.com/) or [Expose](https://expose.dev/docs/introduction). If you are developing your application locally using [Laravel Sail](/en/sail/), you may use Sail's [site sharing command](/en/sail/#sharing-your-site).
 
 <a id="defining-webhook-event-handlers"></a>
 ### Defining Webhook Event Handlers
@@ -1381,7 +1381,7 @@ Cashier automatically handles subscription cancelation on failed charges and oth
 - `Laravel\Paddle\Events\WebhookReceived`
 - `Laravel\Paddle\Events\WebhookHandled`
 
-Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `transaction.billed` webhook, you may register a [listener](../events/#defining-listeners) that will handle the event:
+Both events contain the full payload of the Paddle webhook. For example, if you wish to handle the `transaction.billed` webhook, you may register a [listener](/en/events/#defining-listeners) that will handle the event:
 
 ```php
 <?php
@@ -1582,4 +1582,4 @@ Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->forma
 
 While testing, you should manually test your billing flow to make sure your integration works as expected.
 
-For automated tests, including those executed within a CI environment, you may use [Laravel's HTTP Client](../http-client/#testing) to fake HTTP calls made to Paddle. Although this does not test the actual responses from Paddle, it does provide a way to test your application without actually calling Paddle's API.
+For automated tests, including those executed within a CI environment, you may use [Laravel's HTTP Client](/en/http-client/#testing) to fake HTTP calls made to Paddle. Although this does not test the actual responses from Paddle, it does provide a way to test your application without actually calling Paddle's API.

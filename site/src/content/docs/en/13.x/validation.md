@@ -179,7 +179,7 @@ $request->validate([
 <a id="quick-displaying-the-validation-errors"></a>
 ### Displaying the Validation Errors
 
-So, what if the incoming request fields do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors and [request input](../requests/#retrieving-old-input) will automatically be [flashed to the session](../session/#flash-data).
+So, what if the incoming request fields do not pass the given validation rules? As mentioned previously, Laravel will automatically redirect the user back to their previous location. In addition, all of the validation errors and [request input](/en/requests/#retrieving-old-input) will automatically be [flashed to the session](/en/session/#flash-data).
 
 An `$errors` variable is shared with all of your application's views by the `Illuminate\View\Middleware\ShareErrorsFromSession` middleware, which is provided by the `web` middleware group. When this middleware is applied an `$errors` variable will always be available in your views, allowing you to conveniently assume the `$errors` variable is always defined and can be safely used. The `$errors` variable will be an instance of `Illuminate\Support\MessageBag`. For more information on working with this object, [check out its documentation](#working-with-error-messages).
 
@@ -210,7 +210,7 @@ Laravel's built-in validation rules each have an error message that is located i
 
 Within the `lang/en/validation.php` file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
 
-In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](../localization/).
+In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/en/localization/).
 
 > **Warning:**
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
@@ -223,7 +223,7 @@ In this example, we used a traditional form to send data to the application. How
 <a id="the-at-error-directive"></a>
 #### The `@error` Directive
 
-You may use the `@error` [Blade](../blade/) directive to quickly determine if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+You may use the `@error` [Blade](/en/blade/) directive to quickly determine if validation error messages exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
 ```blade
 <!-- /resources/views/post/create.blade.php -->
@@ -251,15 +251,15 @@ If you are using [named error bags](#named-error-bags), you may pass the name of
 <a id="repopulating-forms"></a>
 ### Repopulating Forms
 
-When Laravel generates a redirect response due to a validation error, the framework will automatically [flash all of the request's input to the session](../session/#flash-data). This is done so that you may conveniently access the input during the next request and repopulate the form that the user attempted to submit.
+When Laravel generates a redirect response due to a validation error, the framework will automatically [flash all of the request's input to the session](/en/session/#flash-data). This is done so that you may conveniently access the input during the next request and repopulate the form that the user attempted to submit.
 
-To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\Http\Request`. The `old` method will pull the previously flashed input data from the [session](../session/):
+To retrieve flashed input from the previous request, invoke the `old` method on an instance of `Illuminate\Http\Request`. The `old` method will pull the previously flashed input data from the [session](/en/session/):
 
 ```php
 $title = $request->old('title');
 ```
 
-Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](../blade/), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:
+Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/en/blade/), it is more convenient to use the `old` helper to repopulate the form. If no old input exists for the given field, `null` will be returned:
 
 ```blade
 <input type="text" name="title" value="{{ old('title') }}">
@@ -340,7 +340,7 @@ public function rules(): array
 ```
 
 > **Note:**
-> You may type-hint any dependencies you require within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](../container/).
+> You may type-hint any dependencies you require within the `rules` method's signature. They will automatically be resolved via the Laravel [service container](/en/container/).
 
 So, how are the validation rules evaluated? All you need to do is type-hint the request on your controller method. The incoming form request is validated before the controller method is called, meaning you do not need to clutter your controller with any validation logic:
 
@@ -368,7 +368,7 @@ public function store(StorePostRequest $request): RedirectResponse
 If validation fails, a redirect response will be generated to send the user back to their previous location. The errors will also be flashed to the session so they are available for display. If the request was an XHR request, an HTTP response with a 422 status code will be returned to the user including a [JSON representation of the validation errors](#validation-error-response-format).
 
 > **Note:**
-> Need to add real-time form request validation to your Inertia powered Laravel frontend? Check out [Laravel Precognition](../precognition/).
+> Need to add real-time form request validation to your Inertia powered Laravel frontend? Check out [Laravel Precognition](/en/precognition/).
 
 <a id="performing-additional-validation-on-form-requests"></a>
 #### Performing Additional Validation
@@ -552,7 +552,7 @@ class LoginRequest extends FormRequest
 <a id="authorizing-form-requests"></a>
 ### Authorizing Form Requests
 
-The form request class also contains an `authorize` method. Within this method, you may determine if the authenticated user actually has the authority to update a given resource. For example, you may determine if a user actually owns a blog comment they are attempting to update. Most likely, you will interact with your [authorization gates and policies](../authorization/) within this method:
+The form request class also contains an `authorize` method. Within this method, you may determine if the authenticated user actually has the authority to update a given resource. For example, you may determine if a user actually owns a blog comment they are attempting to update. Most likely, you will interact with your [authorization gates and policies](/en/authorization/) within this method:
 
 ```php
 use App\Models\Comment;
@@ -574,7 +574,7 @@ Since all form requests extend the base Laravel request class, we may use the `u
 Route::post('/comment/{comment}');
 ```
 
-Therefore, if your application is taking advantage of [route model binding](../routing/#route-model-binding), your code may be made even more succinct by accessing the resolved model as a property of the request:
+Therefore, if your application is taking advantage of [route model binding](/en/routing/#route-model-binding), your code may be made even more succinct by accessing the resolved model as a property of the request:
 
 ```php
 return $this->user()->can('update', $this->comment);
@@ -595,7 +595,7 @@ public function authorize(): bool
 ```
 
 > **Note:**
-> You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](../container/).
+> You may type-hint any dependencies you need within the `authorize` method's signature. They will automatically be resolved via the Laravel [service container](/en/container/).
 
 <a id="customizing-the-error-messages"></a>
 ### Customizing the Error Messages
@@ -670,7 +670,7 @@ protected function passedValidation(): void
 <a id="manually-creating-validators"></a>
 ## Manually Creating Validators
 
-If you do not want to use the `validate` method on the request, you may create a validator instance manually using the `Validator` [facade](../facades/). The `make` method on the facade generates a new validator instance:
+If you do not want to use the `validate` method on the request, you may create a validator instance manually using the `Validator` [facade](/en/facades/). The `make` method on the facade generates a new validator instance:
 
 ```php
 <?php
@@ -886,7 +886,7 @@ If you would like to add additional fields to the validated data, you may call t
 $validated = $request->safe()->merge(['name' => 'Taylor Otwell']);
 ```
 
-If you would like to retrieve the validated data as a [collection](../collections/) instance, you may call the `collect` method:
+If you would like to retrieve the validated data as a [collection](/en/collections/) instance, you may call the `collect` method:
 
 ```php
 $collection = $request->safe()->collect();
@@ -956,7 +956,7 @@ Laravel's built-in validation rules each have an error message that is located i
 
 Within the `lang/en/validation.php` file, you will find a translation entry for each validation rule. You are free to change or modify these messages based on the needs of your application.
 
-In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](../localization/).
+In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/en/localization/).
 
 > **Warning:**
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
@@ -1553,7 +1553,7 @@ Validator::make($data, [
 <a id="rule-current-password"></a>
 #### current_password
 
-The field under validation must match the authenticated user's password. You may specify an [authentication guard](../authentication/) using the rule's first parameter:
+The field under validation must match the authenticated user's password. You may specify an [authentication guard](/en/authentication/) using the rule's first parameter:
 
 ```php
 'password' => ['current_password:api']
@@ -3132,7 +3132,7 @@ $request->validate([
 
 #### Translating Validation Messages
 
-Instead of providing a literal error message to the `$fail` closure, you may also provide a [translation string key](../localization/) and instruct Laravel to translate the error message:
+Instead of providing a literal error message to the `$fail` closure, you may also provide a [translation string key](/en/localization/) and instruct Laravel to translate the error message:
 
 ```php
 if (strtoupper($value) !== $value) {

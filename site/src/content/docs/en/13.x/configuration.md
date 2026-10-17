@@ -108,7 +108,7 @@ The second value passed to the `env` function is the "default value". This value
 <a id="determining-the-current-environment"></a>
 ### Determining the Current Environment
 
-The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](../facades/):
+The current application environment is determined via the `APP_ENV` variable from your `.env` file. You may access this value via the `environment` method on the `App` [facade](/en/facades/):
 
 ```php
 use Illuminate\Support\Facades\App;
@@ -152,7 +152,7 @@ php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
 > **Note:**
-> The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](../encryption/) by passing the `--cipher` option when invoking the command.
+> The length of the key provided should match the key length required by the encryption cipher being used. By default, Laravel will use the `AES-256-CBC` cipher which requires a 32 character key. You are free to use any cipher supported by Laravel's [encrypter](/en/encryption/) by passing the `--cipher` option when invoking the command.
 
 If your application has multiple environment files, such as `.env` and `.env.staging`, you may specify the environment file that should be encrypted by providing the environment name via the `--env` option:
 
@@ -410,7 +410,7 @@ php artisan up
 <a id="maintenance-mode-queues"></a>
 #### Maintenance Mode and Queues
 
-While your application is in maintenance mode, no [queued jobs](../queues/) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
+While your application is in maintenance mode, no [queued jobs](/en/queues/) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
 
 <a id="alternatives-to-maintenance-mode"></a>
 #### Alternatives to Maintenance Mode

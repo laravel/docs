@@ -7,7 +7,7 @@ hero:
   tagline: Explore the Laravel documentation. Community translations are coming next.
   actions:
     - text: Read the documentation
-      link: installation/
+      link: /en/installation/
       icon: right-arrow
     - text: View on GitHub
       link: https://github.com/MathHRM/docs

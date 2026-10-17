@@ -326,7 +326,7 @@ php artisan make:mail OrderShipped
 
 Once you have generated a mailable class, open it up so we can explore its contents. Mailable class configuration is done in several methods, including the `envelope`, `content`, and `attachments` methods.
 
-The `envelope` method returns an `Illuminate\Mail\Mailables\Envelope` object that defines the subject and, sometimes, the recipients of the message. The `content` method returns an `Illuminate\Mail\Mailables\Content` object that defines the [Blade template](../blade/) that will be used to generate the message content.
+The `envelope` method returns an `Illuminate\Mail\Mailables\Envelope` object that defines the subject and, sometimes, the recipients of the message. The `content` method returns an `Illuminate\Mail\Mailables\Content` object that defines the [Blade template](/en/blade/) that will be used to generate the message content.
 
 <a id="configuring-the-sender"></a>
 ### Configuring the Sender
@@ -388,7 +388,7 @@ In addition, you may define a global "reply_to" address within your `config/mail
 <a id="configuring-the-view"></a>
 ### Configuring the View
 
-Within a mailable class's `content` method, you may define the `view`, or which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](../blade/) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
+Within a mailable class's `content` method, you may define the `view`, or which template should be used when rendering the email's contents. Since each email typically uses a [Blade template](/en/blade/) to render its contents, you have the full power and convenience of the Blade templating engine when building your email's HTML:
 
 ```php
 /**
@@ -575,7 +575,7 @@ public function attachments(): array
 <a id="attaching-files-from-disk"></a>
 #### Attaching Files From Disk
 
-If you have stored a file on one of your [filesystem disks](../filesystem/), you may attach it to the email using the `fromStorage` attachment method:
+If you have stored a file on one of your [filesystem disks](/en/filesystem/), you may attach it to the email using the `fromStorage` attachment method:
 
 ```php
 /**
@@ -718,7 +718,7 @@ public function attachments(): array
 }
 ```
 
-Of course, attachment data may be stored on a remote file storage service such as Amazon S3. So, Laravel also allows you to generate attachment instances from data that is stored on one of your application's [filesystem disks](../filesystem/):
+Of course, attachment data may be stored on a remote file storage service such as Amazon S3. So, Laravel also allows you to generate attachment instances from data that is stored on one of your application's [filesystem disks](/en/filesystem/):
 
 ```php
 // Create an attachment from a file on your default disk...
@@ -824,7 +824,7 @@ public function envelope(): Envelope
 <a id="markdown-mailables"></a>
 ## Markdown Mailables
 
-Markdown mailable messages allow you to take advantage of the pre-built templates and components of [mail notifications](../notifications/#mail-notifications) in your mailables. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart.
+Markdown mailable messages allow you to take advantage of the pre-built templates and components of [mail notifications](/en/notifications/#mail-notifications) in your mailables. Since the messages are written in Markdown, Laravel is able to render beautiful, responsive HTML templates for the messages while also automatically generating a plain-text counterpart.
 
 <a id="generating-markdown-mailables"></a>
 ### Generating Markdown Mailables
@@ -936,7 +936,7 @@ To customize the theme for an individual mailable, you may set the `$theme` prop
 <a id="sending-mail"></a>
 ## Sending Mail
 
-To send a message, use the `to` method on the `Mail` [facade](../facades/). The `to` method accepts an email address, a user instance, or a collection of users. If you pass an object or collection of objects, the mailer will automatically use their `email` and `name` properties when determining the email's recipients, so make sure these attributes are available on your objects. Once you have specified your recipients, you may pass an instance of your mailable class to the `send` method:
+To send a message, use the `to` method on the `Mail` [facade](/en/facades/). The `to` method accepts an email address, a user instance, or a collection of users. If you pass an object or collection of objects, the mailer will automatically use their `email` and `name` properties when determining the email's recipients, so make sure these attributes are available on your objects. Once you have specified your recipients, you may pass an instance of your mailable class to the `send` method:
 
 ```php
 <?php
@@ -1004,7 +1004,7 @@ Mail::mailer('postmark')
 <a id="queueing-a-mail-message"></a>
 #### Queueing a Mail Message
 
-Since sending email messages can negatively impact the response time of your application, many developers choose to queue email messages for background sending. Laravel makes this easy using its built-in [unified queue API](../queues/). To queue a mail message, use the `queue` method on the `Mail` facade after specifying the message's recipients:
+Since sending email messages can negatively impact the response time of your application, many developers choose to queue email messages for background sending. Laravel makes this easy using its built-in [unified queue API](/en/queues/). To queue a mail message, use the `queue` method on the `Mail` facade after specifying the message's recipients:
 
 ```php
 Mail::to($request->user())
@@ -1013,7 +1013,7 @@ Mail::to($request->user())
     ->queue(new OrderShipped($order));
 ```
 
-This method will automatically take care of pushing a job onto the queue so the message is sent in the background. You will need to [configure your queues](../queues/) before using this feature.
+This method will automatically take care of pushing a job onto the queue so the message is sent in the background. You will need to [configure your queues](/en/queues/) before using this feature.
 
 <a id="delayed-message-queueing"></a>
 #### Delayed Message Queueing
@@ -1111,7 +1111,7 @@ class OrderShipped extends Mailable implements ShouldQueue
 ```
 
 > **Note:**
-> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](../queues/#jobs-and-database-transactions).
+> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/en/queues/#jobs-and-database-transactions).
 
 <a id="queued-email-failures"></a>
 #### Queued Email Failures
@@ -1464,14 +1464,14 @@ When developing an application that sends email, you probably don't want to actu
 <a id="log-driver"></a>
 #### Log Driver
 
-Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. Typically, this driver would only be used during local development. For more information on configuring your application per environment, check out the [configuration documentation](../configuration/#environment-configuration).
+Instead of sending your emails, the `log` mail driver will write all email messages to your log files for inspection. Typically, this driver would only be used during local development. For more information on configuring your application per environment, check out the [configuration documentation](/en/configuration/#environment-configuration).
 
 <a id="mailtrap"></a>
 #### HELO / Mailtrap / Mailpit
 
 Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap](https://mailtrap.io) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap's message viewer.
 
-If you are using [Laravel Sail](../sail/), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`.
+If you are using [Laravel Sail](/en/sail/), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`.
 
 <a id="using-a-global-to-address"></a>
 #### Using a Global `to` Address
@@ -1497,7 +1497,7 @@ When using the `alwaysTo` method, any additional "cc" or "bcc" addresses on mail
 <a id="events"></a>
 ## Events
 
-Laravel dispatches two events while sending mail messages. The `MessageSending` event is dispatched prior to a message being sent, while the `MessageSent` event is dispatched after a message has been sent. Remember, these events are dispatched when the mail is being *sent*, not when it is queued. You may create [event listeners](../events/) for these events within your application:
+Laravel dispatches two events while sending mail messages. The `MessageSending` event is dispatched prior to a message being sent, while the `MessageSent` event is dispatched after a message has been sent. Remember, these events are dispatched when the mail is being *sent*, not when it is queued. You may create [event listeners](/en/events/) for these events within your application:
 
 ```php
 use Illuminate\Mail\Events\MessageSending;

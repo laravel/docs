@@ -15,7 +15,7 @@ title: "Frontend"
 <a id="introduction"></a>
 ## Introduction
 
-Laravel is a backend framework that provides all of the features you need to build modern web applications, such as [routing](../routing/), [validation](../validation/), [caching](../cache/), [queues](../queues/), [file storage](../filesystem/), and more. However, we believe it's important to offer developers a beautiful full-stack experience, including powerful approaches for building your application's frontend.
+Laravel is a backend framework that provides all of the features you need to build modern web applications, such as [routing](/en/routing/), [validation](/en/validation/), [caching](/en/cache/), [queues](/en/queues/), [file storage](/en/filesystem/), and more. However, we believe it's important to offer developers a beautiful full-stack experience, including powerful approaches for building your application's frontend.
 
 There are two primary ways to tackle frontend development when building an application with Laravel, and which approach you choose is determined by whether you would like to build your frontend by leveraging PHP or by using JavaScript frameworks such as React, Svelte, and Vue. We'll discuss both of these options below so that you can make an informed decision regarding the best approach to frontend development for your application.
 
@@ -35,7 +35,7 @@ In the past, most PHP applications rendered HTML to the browser using simple HTM
 </div>
 ```
 
-In Laravel, this approach to rendering HTML can still be achieved using [views](../views/) and [Blade](../blade/). Blade is an extremely light-weight templating language that provides convenient, short syntax for displaying data, iterating over data, and more:
+In Laravel, this approach to rendering HTML can still be achieved using [views](/en/views/) and [Blade](/en/blade/). Blade is an extremely light-weight templating language that provides convenient, short syntax for displaying data, iterating over data, and more:
 
 ```blade
 <div>
@@ -90,12 +90,12 @@ As you can see, Livewire enables you to write new HTML attributes such as `wire:
 
 For many, Livewire has revolutionized frontend development with Laravel, allowing them to stay within the comfort of Laravel while constructing modern, dynamic web applications. Typically, developers using Livewire will also utilize [Alpine.js](https://alpinejs.dev/) to "sprinkle" JavaScript onto their frontend only where it is needed, such as in order to render a dialog window.
 
-If you're new to Laravel, we recommend getting familiar with the basic usage of [views](../views/) and [Blade](../blade/). Then, consult the official [Laravel Livewire documentation](https://livewire.laravel.com/docs) to learn how to take your application to the next level with interactive Livewire components.
+If you're new to Laravel, we recommend getting familiar with the basic usage of [views](/en/views/) and [Blade](/en/blade/). Then, consult the official [Laravel Livewire documentation](https://livewire.laravel.com/docs) to learn how to take your application to the next level with interactive Livewire components.
 
 <a id="php-starter-kits"></a>
 ### Starter Kits
 
-If you would like to build your frontend using PHP and Livewire, you can leverage our [Livewire starter kit](../starter-kits/) to jump-start your application's development.
+If you would like to build your frontend using PHP and Livewire, you can leverage our [Livewire starter kit](/en/starter-kits/) to jump-start your application's development.
 
 <a id="using-react-svelte-or-vue"></a>
 ## Using React, Svelte, or Vue
@@ -162,16 +162,16 @@ If you're concerned about diving into Inertia because your application requires 
 <a id="inertia-starter-kits"></a>
 ### Starter Kits
 
-If you would like to build your frontend using Inertia and React / Svelte / Vue, you can leverage our [React, Svelte, or Vue application starter kits](../starter-kits/) to jump-start your application's development. All of these starter kits scaffold your application's backend and frontend authentication flow using Inertia, React / Svelte / Vue, [Tailwind](https://tailwindcss.com), and [Vite](https://vitejs.dev) so that you can start building your next big idea.
+If you would like to build your frontend using Inertia and React / Svelte / Vue, you can leverage our [React, Svelte, or Vue application starter kits](/en/starter-kits/) to jump-start your application's development. All of these starter kits scaffold your application's backend and frontend authentication flow using Inertia, React / Svelte / Vue, [Tailwind](https://tailwindcss.com), and [Vite](https://vitejs.dev) so that you can start building your next big idea.
 
 <a id="bundling-assets"></a>
 ## Bundling Assets
 
 Regardless of whether you choose to develop your frontend using Blade and Livewire or React / Svelte / Vue and Inertia, you will likely need to bundle your application's CSS into production-ready assets. Of course, if you choose to build your application's frontend with React, Svelte, or Vue, you will also need to bundle your components into browser ready JavaScript assets.
 
-By default, Laravel utilizes [Vite](https://vitejs.dev) to bundle your assets. Vite provides lightning-fast build times and near instantaneous Hot Module Replacement (HMR) during local development. In all new Laravel applications, including those using our [starter kits](../starter-kits/), you will find a `vite.config.js` file that loads our light-weight Laravel Vite plugin that makes Vite a joy to use with Laravel applications.
+By default, Laravel utilizes [Vite](https://vitejs.dev) to bundle your assets. Vite provides lightning-fast build times and near instantaneous Hot Module Replacement (HMR) during local development. In all new Laravel applications, including those using our [starter kits](/en/starter-kits/), you will find a `vite.config.js` file that loads our light-weight Laravel Vite plugin that makes Vite a joy to use with Laravel applications.
 
-The fastest way to get started with Laravel and Vite is by beginning your application's development using [our application starter kits](../starter-kits/), which jump-starts your application by providing frontend and backend authentication scaffolding.
+The fastest way to get started with Laravel and Vite is by beginning your application's development using [our application starter kits](/en/starter-kits/), which jump-starts your application by providing frontend and backend authentication scaffolding.
 
 > **Note:**
-> For more detailed documentation on utilizing Vite with Laravel, please see our [dedicated documentation on bundling and compiling your assets](../vite/).
+> For more detailed documentation on utilizing Vite with Laravel, please see our [dedicated documentation on bundling and compiling your assets](/en/vite/).

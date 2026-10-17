@@ -24,7 +24,7 @@ title: "Image Manipulation"
 
 Laravel provides a fluent image manipulation API that allows you to resize, crop, encode, and store images using the same expressive conventions found throughout the framework. Laravel's image features are powered by [Intervention Image](https://image.intervention.io/) and support the GD and Imagick PHP extensions.
 
-The image API is useful when working with uploaded files, files stored on Laravel [filesystem disks](../filesystem/), local files, remote URLs, or raw image bytes:
+The image API is useful when working with uploaded files, files stored on Laravel [filesystem disks](/en/filesystem/), local files, remote URLs, or raw image bytes:
 
 ```php
 use Illuminate\Support\Facades\Image;
@@ -37,7 +37,7 @@ $path = Image::fromStorage('avatars/photo.jpg', 'public')
 ```
 
 > **Warning:**
-> Image manipulation can be CPU and memory-intensive. Consider performing large image processing workloads on a [queued job](../queues/) instead of during the HTTP request that receives the upload.
+> Image manipulation can be CPU and memory-intensive. Consider performing large image processing workloads on a [queued job](/en/queues/) instead of during the HTTP request that receives the upload.
 
 <a id="installation"></a>
 ## Installation
@@ -107,7 +107,7 @@ $file = $image->file();
 <a id="storage-files"></a>
 ### Storage Files
 
-You may create an image instance from a file stored on one of your application's [filesystem disks](../filesystem/) using the `fromStorage` method. The first argument is the path to the file, while the second argument is the disk name:
+You may create an image instance from a file stored on one of your application's [filesystem disks](/en/filesystem/) using the `fromStorage` method. The first argument is the path to the file, while the second argument is the disk name:
 
 ```php
 use Illuminate\Support\Facades\Image;

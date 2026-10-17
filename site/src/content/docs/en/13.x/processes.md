@@ -338,7 +338,7 @@ while ($process->running()) {
 
 Laravel also makes it a breeze to manage a pool of concurrent, asynchronous processes, allowing you to easily execute many tasks simultaneously. To get started, invoke the `pool` method, which accepts a closure that receives an instance of `Illuminate\Process\Pool`.
 
-Within this closure, you may define the processes that belong to the pool. Once a process pool is started via the `start` method, you may access the [collection](../collections/) of running processes via the `running` method:
+Within this closure, you may define the processes that belong to the pool. Once a process pool is started via the `start` method, you may access the [collection](/en/collections/) of running processes via the `running` method:
 
 ```php
 use Illuminate\Process\Pool;

@@ -19,7 +19,7 @@ title: "Database: Getting Started"
 <a id="introduction"></a>
 ## Introduction
 
-Almost every modern web application interacts with a database. Laravel makes interacting with databases extremely simple across a variety of supported databases using raw SQL, a [fluent query builder](../queries/), and the [Eloquent ORM](../eloquent/). Currently, Laravel provides first-party support for five databases:
+Almost every modern web application interacts with a database. Laravel makes interacting with databases extremely simple across a variety of supported databases using raw SQL, a [fluent query builder](/en/queries/), and the [Eloquent ORM](/en/eloquent/). Currently, Laravel provides first-party support for five databases:
 
 <div class="content-list" markdown="1">
 
@@ -38,7 +38,7 @@ Additionally, MongoDB is supported via the `mongodb/laravel-mongodb` package, wh
 
 The configuration for Laravel's database services is located in your application's `config/database.php` configuration file. In this file, you may define all of your database connections, as well as specify which connection should be used by default. Most of the configuration options within this file are driven by the values of your application's environment variables. Examples for most of Laravel's supported database systems are provided in this file.
 
-By default, Laravel's sample [environment configuration](../configuration/#environment-configuration) is ready to use with [Laravel Sail](../sail/), which is a Docker configuration for developing Laravel applications on your local machine. However, you are free to modify your database configuration as needed for your local database.
+By default, Laravel's sample [environment configuration](/en/configuration/#environment-configuration) is ready to use with [Laravel Sail](/en/sail/), which is a Docker configuration for developing Laravel applications on your local machine. However, you are free to modify your database configuration as needed for your local database.
 
 <a id="sqlite-configuration"></a>
 #### SQLite Configuration
@@ -57,7 +57,7 @@ DB_FOREIGN_KEYS=false
 ```
 
 > **Note:**
-> If you use the [Laravel installer](../installation/#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](../migrations/) for you.
+> If you use the [Laravel installer](/en/installation/#creating-a-laravel-project) to create your Laravel application and select SQLite as your database, Laravel will automatically create a `database/database.sqlite` file and run the default [database migrations](/en/migrations/) for you.
 
 <a id="mssql-configuration"></a>
 #### Microsoft SQL Server Configuration
@@ -357,7 +357,7 @@ $isVitess = DB::connection('mysql')->isVitess();
 <a id="listening-for-query-events"></a>
 ### Listening for Query Events
 
-If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](../providers/):
+If you would like to specify a closure that is invoked for each SQL query executed by your application, you may use the `DB` facade's `listen` method. This method can be useful for logging queries or debugging. You may register your query listener closure in the `boot` method of a [service provider](/en/providers/):
 
 ```php
 <?php
@@ -396,7 +396,7 @@ class AppServiceProvider extends ServiceProvider
 <a id="monitoring-cumulative-query-time"></a>
 ### Monitoring Cumulative Query Time
 
-A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](../providers/):
+A common performance bottleneck of modern web applications is the amount of time they spend querying databases. Thankfully, Laravel can invoke a closure or callback of your choice when it spends too much time querying the database during a single request. To get started, provide a query time threshold (in milliseconds) and closure to the `whenQueryingForLongerThan` method. You may invoke this method in the `boot` method of a [service provider](/en/providers/):
 
 ```php
 <?php
@@ -484,7 +484,7 @@ DB::commit();
 ```
 
 > **Note:**
-> The `DB` facade's transaction methods control the transactions for both the [query builder](../queries/) and [Eloquent ORM](../eloquent/).
+> The `DB` facade's transaction methods control the transactions for both the [query builder](/en/queries/) and [Eloquent ORM](/en/eloquent/).
 
 <a id="connecting-to-the-database-cli"></a>
 ## Connecting to the Database CLI
@@ -554,7 +554,7 @@ php artisan db:table users
 
 Using the `db:monitor` Artisan command, you can instruct Laravel to dispatch an `Illuminate\Database\Events\DatabaseBusy` event if your database is managing more than a specified number of open connections.
 
-To get started, you should schedule the `db:monitor` command to [run every minute](../scheduling/). The command accepts the names of the database connection configurations that you wish to monitor as well as the maximum number of open connections that should be tolerated before dispatching an event:
+To get started, you should schedule the `db:monitor` command to [run every minute](/en/scheduling/). The command accepts the names of the database connection configurations that you wish to monitor as well as the maximum number of open connections that should be tolerated before dispatching an event:
 
 ```shell
 php artisan db:monitor --databases=mysql,pgsql --max=100

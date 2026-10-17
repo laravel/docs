@@ -82,7 +82,7 @@ The `redirect` method provided by the `Socialite` facade takes care of redirecti
 <a id="authentication-and-storage"></a>
 ### Authentication and Storage
 
-Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](../authentication/#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:
+Once the user has been retrieved from the OAuth provider, you may determine if the user exists in your application's database and [authenticate the user](/en/authentication/#authenticate-a-user-instance). If the user does not exist in your application's database, you will typically create a new record in your database to represent the user:
 
 ```php
 use App\Models\User;
@@ -160,7 +160,7 @@ In addition, you must invoke the `asBotUser` method before invoking the `user` m
 $user = Socialite::driver('slack')->asBotUser()->user();
 ```
 
-When generating a bot token, the `user` method will still return a `Laravel\Socialite\Two\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](../notifications/#notifying-external-slack-workspaces).
+When generating a bot token, the `user` method will still return a `Laravel\Socialite\Two\User` instance; however, only the `token` property will be hydrated. This token may be stored in order to [send notifications to the authenticated user's Slack workspaces](/en/notifications/#notifying-external-slack-workspaces).
 
 <a id="optional-parameters"></a>
 ### Optional Parameters

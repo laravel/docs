@@ -54,7 +54,7 @@ title: "Blade Templates"
 
 Blade is the simple, yet powerful templating engine that is included with Laravel. Unlike some PHP templating engines, Blade does not restrict you from using plain PHP code in your templates. In fact, all Blade templates are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade template files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
-Blade views may be returned from routes or controllers using the global `view` helper. Of course, as mentioned in the documentation on [views](../views/), data may be passed to the Blade view using the `view` helper's second argument:
+Blade views may be returned from routes or controllers using the global `view` helper. Of course, as mentioned in the documentation on [views](/en/views/), data may be passed to the Blade view using the `view` helper's second argument:
 
 ```php
 Route::get('/', function () {
@@ -239,7 +239,7 @@ In addition to the conditional directives already discussed, the `@isset` and `@
 <a id="authentication-directives"></a>
 #### Authentication Directives
 
-The `@auth` and `@guest` directives may be used to quickly determine if the current user is [authenticated](../authentication/) or is a guest:
+The `@auth` and `@guest` directives may be used to quickly determine if the current user is [authenticated](/en/authentication/) or is a guest:
 
 ```blade
 @auth
@@ -314,7 +314,7 @@ You may use the `sectionMissing` directive to determine if a section does not ha
 <a id="session-directives"></a>
 #### Session Directives
 
-The `@session` directive may be used to determine if a [session](../session/) value exists. If the session value exists, the template contents within the `@session` and `@endsession` directives will be evaluated. Within the `@session` directive's contents, you may echo the `$value` variable to display the session value:
+The `@session` directive may be used to determine if a [session](/en/session/) value exists. If the session value exists, the template contents within the `@session` and `@endsession` directives will be evaluated. Within the `@session` directive's contents, you may echo the `$value` variable to display the session value:
 
 ```blade
 @session('status')
@@ -327,7 +327,7 @@ The `@session` directive may be used to determine if a [session](../session/) va
 <a id="context-directives"></a>
 #### Context Directives
 
-The `@context` directive may be used to determine if a [context](../context/) value exists. If the context value exists, the template contents within the `@context` and `@endcontext` directives will be evaluated. Within the `@context` directive's contents, you may echo the `$value` variable to display the context value:
+The `@context` directive may be used to determine if a [context](/en/context/) value exists. If the context value exists, the template contents within the `@context` and `@endcontext` directives will be evaluated. Within the `@context` directive's contents, you may echo the `$value` variable to display the context value:
 
 ```blade
 @context('canonical')
@@ -716,7 +716,7 @@ Grouped imports are also supported with both function and const modifiers, allow
 <a id="fonts"></a>
 ### Fonts
 
-When using [Laravel's Vite font optimization](../vite/#working-with-fonts), you may use the `@fonts` directive to render your configured font preload links and inline font CSS in your application's layout:
+When using [Laravel's Vite font optimization](/en/vite/#working-with-fonts), you may use the `@fonts` directive to render your configured font preload links and inline font CSS in your application's layout:
 
 ```blade
 <!doctype html>
@@ -1038,7 +1038,7 @@ The closure should return a string. If the returned string corresponds to an exi
 <a id="additional-dependencies"></a>
 #### Additional Dependencies
 
-If your component requires dependencies from Laravel's [service container](../container/), you may list them before any of the component's data attributes and they will automatically be injected by the container:
+If your component requires dependencies from Laravel's [service container](/en/container/), you may list them before any of the component's data attributes and they will automatically be injected by the container:
 
 ```php
 use App\Services\AlertCreator;
@@ -1606,7 +1606,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 
 As previously discussed, anonymous components are typically defined by placing a Blade template within your `resources/views/components` directory. However, you may occasionally want to register other anonymous component paths with Laravel in addition to the default path.
 
-The `anonymousComponentPath` method accepts the "path" to the anonymous component location as its first argument and an optional "namespace" that components should be placed under as its second argument. Typically, this method should be called from the `boot` method of one of your application's [service providers](../providers/):
+The `anonymousComponentPath` method accepts the "path" to the anonymous component location as its first argument and an optional "namespace" that components should be placed under as its second argument. Typically, this method should be called from the `boot` method of one of your application's [service providers](/en/providers/):
 
 ```php
 /**
@@ -1778,7 +1778,7 @@ The `@yield` directive also accepts a default value as its second parameter. Thi
 <a id="csrf-field"></a>
 ### CSRF Field
 
-Anytime you define an HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](../csrf/) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+Anytime you define an HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](/en/csrf/) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
 
 ```blade
 <form method="POST" action="/profile">
@@ -1804,7 +1804,7 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 <a id="validation-errors"></a>
 ### Validation Errors
 
-The `@error` directive may be used to quickly check if [validation error messages](../validation/#quick-displaying-the-validation-errors) exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
+The `@error` directive may be used to quickly check if [validation error messages](/en/validation/#quick-displaying-the-validation-errors) exist for a given attribute. Within an `@error` directive, you may echo the `$message` variable to display the error message:
 
 ```blade
 <!-- /resources/views/post/create.blade.php -->
@@ -1836,7 +1836,7 @@ Since the `@error` directive compiles to an "if" statement, you may use the `@el
 />
 ```
 
-You may pass [the name of a specific error bag](../validation/#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
+You may pass [the name of a specific error bag](/en/validation/#named-error-bags) as the second parameter to the `@error` directive to retrieve validation error messages on pages containing multiple forms:
 
 ```blade
 <!-- /resources/views/auth.blade.php -->
@@ -1912,7 +1912,7 @@ The `@hasstack` directive may be used to determine if a stack is empty:
 <a id="service-injection"></a>
 ## Service Injection
 
-The `@inject` directive may be used to retrieve a service from the Laravel [service container](../container/). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class or interface name of the service you wish to resolve:
+The `@inject` directive may be used to retrieve a service from the Laravel [service container](/en/container/). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class or interface name of the service you wish to resolve:
 
 ```blade
 @inject('metrics', 'App\Services\MetricsService')

@@ -254,14 +254,14 @@ To connect to your application's Valkey database from your local machine, you ma
 <a id="meilisearch"></a>
 ### Meilisearch
 
-If you chose to install the [Meilisearch](https://www.meilisearch.com) service when installing Sail, your application's `compose.yaml` file will contain an entry for this powerful search engine that is integrated with [Laravel Scout](../scout/). Once you have started your containers, you may connect to the Meilisearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`.
+If you chose to install the [Meilisearch](https://www.meilisearch.com) service when installing Sail, your application's `compose.yaml` file will contain an entry for this powerful search engine that is integrated with [Laravel Scout](/en/scout/). Once you have started your containers, you may connect to the Meilisearch instance within your application by setting your `MEILISEARCH_HOST` environment variable to `http://meilisearch:7700`.
 
 From your local machine, you may access Meilisearch's web based administration panel by navigating to `http://localhost:7700` in your web browser.
 
 <a id="typesense"></a>
 ### Typesense
 
-If you chose to install the [Typesense](https://typesense.org) service when installing Sail, your application's `compose.yaml` file will contain an entry for this lightning fast, open-source search engine that is natively integrated with [Laravel Scout](../scout/#typesense). Once you have started your containers, you may connect to the Typesense instance within your application by setting the following environment variables:
+If you chose to install the [Typesense](https://typesense.org) service when installing Sail, your application's `compose.yaml` file will contain an entry for this lightning fast, open-source search engine that is natively integrated with [Laravel Scout](/en/scout/#typesense). Once you have started your containers, you may connect to the Typesense instance within your application by setting the following environment variables:
 
 ```ini
 TYPESENSE_HOST=typesense
@@ -292,7 +292,7 @@ AWS_USE_PATH_STYLE_ENDPOINT=true
 <a id="running-tests"></a>
 ## Running Tests
 
-Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](../testing/). Any CLI options that are accepted by Pest / PHPUnit may also be passed to the `test` command:
+Laravel provides amazing testing support out of the box, and you may use Sail's `test` command to run your applications [feature and unit tests](/en/testing/). Any CLI options that are accepted by Pest / PHPUnit may also be passed to the `test` command:
 
 ```shell
 sail test
@@ -315,7 +315,7 @@ By default, Sail will create a dedicated `testing` database so that your tests d
 <a id="laravel-dusk"></a>
 ### Laravel Dusk
 
-[Laravel Dusk](../dusk/) provides an expressive, easy-to-use browser automation and testing API. Thanks to Sail, you may run these tests without ever installing Selenium or other tools on your local computer. To get started, uncomment the Selenium service in your application's `compose.yaml` file:
+[Laravel Dusk](/en/dusk/) provides an expressive, easy-to-use browser automation and testing API. Thanks to Sail, you may run these tests without ever installing Selenium or other tools on your local computer. To get started, uncomment the Selenium service in your application's `compose.yaml` file:
 
 ```yaml
 selenium:

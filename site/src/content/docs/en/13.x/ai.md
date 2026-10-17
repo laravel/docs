@@ -108,4 +108,4 @@ When an agent needs to understand how a feature works, it can search Boost's doc
 <a id="agents-integration"></a>
 ### Agents Integration
 
-Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. For detailed setup instructions for Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot, and Junie, see the [Set Up Your Agents](../boost/#set-up-your-agents) section of the Boost documentation.
+Boost integrates with popular IDEs and AI tools that support the Model Context Protocol. For detailed setup instructions for Cursor, Claude Code, Codex, Gemini CLI, GitHub Copilot, and Junie, see the [Set Up Your Agents](/en/boost/#set-up-your-agents) section of the Boost documentation.

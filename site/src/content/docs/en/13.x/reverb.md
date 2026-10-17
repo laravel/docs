@@ -25,7 +25,7 @@ title: "Laravel Reverb"
 <a id="introduction"></a>
 ## Introduction
 
-[Laravel Reverb](https://github.com/laravel/reverb) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel's existing suite of [event broadcasting tools](../broadcasting/).
+[Laravel Reverb](https://github.com/laravel/reverb) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel's existing suite of [event broadcasting tools](/en/broadcasting/).
 
 <a id="installation"></a>
 ## Installation
@@ -92,7 +92,7 @@ For example, you may wish to maintain a single Laravel application which, via Re
 
 In most cases, secure WebSocket connections are handled by the upstream web server (Nginx, etc.) before the request is proxied to your Reverb server.
 
-However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd's](https://herd.laravel.com) secure site feature or you are using [Laravel Valet](../valet/) and have run the [secure command](../valet/#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
+However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd's](https://herd.laravel.com) secure site feature or you are using [Laravel Valet](/en/valet/) and have run the [secure command](/en/valet/#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
 
 ```shell
 php artisan reverb:start --host="0.0.0.0" --port=8080 --hostname="laravel.test"
@@ -162,9 +162,9 @@ php artisan reverb:restart
 <a id="monitoring"></a>
 ## Monitoring
 
-Reverb may be monitored via an integration with [Laravel Pulse](../pulse/). By enabling Reverb's Pulse integration, you may track the number of connections and messages being handled by your server.
+Reverb may be monitored via an integration with [Laravel Pulse](/en/pulse/). By enabling Reverb's Pulse integration, you may track the number of connections and messages being handled by your server.
 
-To enable the integration, you should first ensure you have [installed Pulse](../pulse/#installation). Then, add any of Reverb's recorders to your application's `config/pulse.php` configuration file:
+To enable the integration, you should first ensure you have [installed Pulse](/en/pulse/#installation). Then, add any of Reverb's recorders to your application's `config/pulse.php` configuration file:
 
 ```php
 use Laravel\Reverb\Pulse\Recorders\ReverbConnections;
@@ -183,7 +183,7 @@ use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
 ],
 ```
 
-Next, add the Pulse cards for each recorder to your [Pulse dashboard](../pulse/#dashboard-customization):
+Next, add the Pulse cards for each recorder to your [Pulse dashboard](/en/pulse/#dashboard-customization):
 
 ```blade
 <x-pulse>
@@ -316,14 +316,14 @@ To enable horizontal scaling, you should set the `REVERB_SCALING_ENABLED` enviro
 REVERB_SCALING_ENABLED=true
 ```
 
-Next, you should have a dedicated, central Redis server to which all of the Reverb servers will communicate. Reverb will use the [default Redis connection configured for your application](../redis/#configuration) to publish messages to all of your Reverb servers.
+Next, you should have a dedicated, central Redis server to which all of the Reverb servers will communicate. Reverb will use the [default Redis connection configured for your application](/en/redis/#configuration) to publish messages to all of your Reverb servers.
 
 Once you have enabled Reverb's scaling option and configured a Redis server, you may simply invoke the `reverb:start` command on multiple servers that are able to communicate with your Redis server. These Reverb servers should be placed behind a load balancer that distributes incoming requests evenly among the servers.
 
 <a id="events"></a>
 ## Events
 
-Reverb dispatches internal events during the lifecycle of a connection and message handling. You may [listen for these events](../events/) to perform actions when connections are managed or messages are exchanged.
+Reverb dispatches internal events during the lifecycle of a connection and message handling. You may [listen for these events](/en/events/) to perform actions when connections are managed or messages are exchanged.
 
 The following events are dispatched by Reverb:
 

@@ -112,12 +112,12 @@ php artisan make:controller ProvisionServer --invokable
 ```
 
 > **Note:**
-> Controller stubs may be customized using [stub publishing](../artisan/#stub-customization).
+> Controller stubs may be customized using [stub publishing](/en/artisan/#stub-customization).
 
 <a id="controller-middleware"></a>
 ## Controller Middleware
 
-[Middleware](../middleware/) may be assigned to the controller's routes in your route files:
+[Middleware](/en/middleware/) may be assigned to the controller's routes in your route files:
 
 ```php
 Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
@@ -250,7 +250,7 @@ class UserController
 }
 ```
 
-Class-level `WithoutMiddleware` attributes are inherited by child controllers. The attribute can only remove route middleware and does not apply to [global middleware](../middleware/#global-middleware).
+Class-level `WithoutMiddleware` attributes are inherited by child controllers. The attribute can only remove route middleware and does not apply to [global middleware](/en/middleware/#global-middleware).
 
 <a id="authorization-attributes"></a>
 ### Authorization Attributes
@@ -359,7 +359,7 @@ Route::resource('photos', PhotoController::class)
 <a id="soft-deleted-models"></a>
 #### Soft Deleted Models
 
-Typically, implicit model binding will not retrieve models that have been [soft deleted](../eloquent/#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
+Typically, implicit model binding will not retrieve models that have been [soft deleted](/en/eloquent/#soft-deleting), and will instead return a 404 HTTP response. However, you can instruct the framework to allow soft deleted models by invoking the `withTrashed` method when defining your resource route:
 
 ```php
 use App\Http\Controllers\PhotoController;
@@ -376,7 +376,7 @@ Route::resource('photos', PhotoController::class)->withTrashed(['show']);
 <a id="specifying-the-resource-model"></a>
 #### Specifying the Resource Model
 
-If you are using [route model binding](../routing/#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
+If you are using [route model binding](/en/routing/#route-model-binding) and would like the resource controller's methods to type-hint a model instance, you may use the `--model` option when generating the controller:
 
 ```shell
 php artisan make:controller PhotoController --model=Photo --resource
@@ -385,7 +385,7 @@ php artisan make:controller PhotoController --model=Photo --resource
 <a id="generating-form-requests"></a>
 #### Generating Form Requests
 
-You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](../validation/#form-request-validation) for the controller's storage and update methods:
+You may provide the `--requests` option when generating a resource controller to instruct Artisan to generate [form request classes](/en/validation/#form-request-validation) for the controller's storage and update methods:
 
 ```shell
 php artisan make:controller PhotoController --model=Photo --resource --requests
@@ -457,7 +457,7 @@ This route will register a nested resource that may be accessed with URIs like t
 <a id="scoping-nested-resources"></a>
 #### Scoping Nested Resources
 
-Laravel's [implicit model binding](../routing/#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by. For more information on how to accomplish this, please see the documentation on [scoping resource routes](#restful-scoping-resource-routes).
+Laravel's [implicit model binding](/en/routing/#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by. For more information on how to accomplish this, please see the documentation on [scoping resource routes](#restful-scoping-resource-routes).
 
 <a id="shallow-nesting"></a>
 #### Shallow Nesting
@@ -521,7 +521,7 @@ The example above generates the following URI for the resource's `show` route:
 <a id="restful-scoping-resource-routes"></a>
 ### Scoping Resource Routes
 
-Laravel's [scoped implicit model binding](../routing/#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
+Laravel's [scoped implicit model binding](/en/routing/#implicit-model-binding-scoping) feature can automatically scope nested bindings such that the resolved child model is confirmed to belong to the parent model. By using the `scoped` method when defining your nested resource, you may enable automatic scoping as well as instruct Laravel which field the child resource should be retrieved by:
 
 ```php
 use App\Http\Controllers\PhotoCommentController;
@@ -557,7 +557,7 @@ public function boot(): void
 }
 ```
 
-Laravel's pluralizer supports [several different languages which you may configure based on your needs](../localization/#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
+Laravel's pluralizer supports [several different languages which you may configure based on your needs](/en/localization/#pluralization-language). Once the verbs and pluralization language have been customized, a resource route registration such as `Route::resource('publicacion', PublicacionController::class)` will produce the following URIs:
 
 ```text
 /publicacion/crear
@@ -731,7 +731,7 @@ Route::middleware(['auth', 'verified', 'subscribed'])->group(function () {
 <a id="constructor-injection"></a>
 #### Constructor Injection
 
-The Laravel [service container](../container/) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
+The Laravel [service container](/en/container/) is used to resolve all Laravel controllers. As a result, you are able to type-hint any dependencies your controller may need in its constructor. The declared dependencies will automatically be resolved and injected into the controller instance:
 
 ```php
 <?php

@@ -397,7 +397,7 @@ We can even easily determine if a user is subscribed to specific product or pric
 <a id="quickstart-building-a-subscribed-middleware"></a>
 #### Building a Subscribed Middleware
 
-For convenience, you may wish to create a [middleware](../middleware/) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
+For convenience, you may wish to create a [middleware](/en/middleware/) which determines if the incoming request is from a subscribed user. Once this middleware has been defined, you may easily assign it to a route to prevent users that are not subscribed from accessing the route:
 
 ```php
 <?php
@@ -1099,7 +1099,7 @@ if ($user->subscribed('default')) {
 }
 ```
 
-The `subscribed` method also makes a great candidate for a [route middleware](../middleware/), allowing you to filter access to routes and controllers based on the user's subscription status:
+The `subscribed` method also makes a great candidate for a [route middleware](/en/middleware/), allowing you to filter access to routes and controllers based on the user's subscription status:
 
 ```php
 <?php
@@ -1847,7 +1847,7 @@ $user = User::create([
 ```
 
 > **Warning:**
-> Be sure to add a [date cast](../eloquent-mutators/#date-casting) for the `trial_ends_at` attribute within your billable model's class definition.
+> Be sure to add a [date cast](/en/eloquent-mutators/#date-casting) for the `trial_ends_at` attribute within your billable model's class definition.
 
 Cashier refers to this type of trial as a "generic trial", since it is not attached to any existing subscription. The `onTrial` method on the billable model instance will return `true` if the current date is not past the value of `trial_ends_at`:
 
@@ -1953,7 +1953,7 @@ php artisan cashier:webhook --disabled
 <a id="webhooks-csrf-protection"></a>
 #### Webhooks and CSRF Protection
 
-Since Stripe webhooks need to bypass Laravel's [CSRF protection](../csrf/), you should ensure that Laravel does not attempt to validate the CSRF token for incoming Stripe webhooks. To accomplish this, you should exclude `stripe/*` from CSRF protection in your application's `bootstrap/app.php` file:
+Since Stripe webhooks need to bypass Laravel's [CSRF protection](/en/csrf/), you should ensure that Laravel does not attempt to validate the CSRF token for incoming Stripe webhooks. To accomplish this, you should exclude `stripe/*` from CSRF protection in your application's `bootstrap/app.php` file:
 
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
@@ -1971,7 +1971,7 @@ Cashier automatically handles subscription cancellations for failed charges and 
 - `Laravel\Cashier\Events\WebhookReceived`
 - `Laravel\Cashier\Events\WebhookHandled`
 
-Both events contain the full payload of the Stripe webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](../events/#defining-listeners) that will handle the event:
+Both events contain the full payload of the Stripe webhook. For example, if you wish to handle the `invoice.payment_succeeded` webhook, you may register a [listener](/en/events/#defining-listeners) that will handle the event:
 
 ```php
 <?php

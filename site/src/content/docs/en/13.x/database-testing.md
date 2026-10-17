@@ -63,9 +63,9 @@ If you would like to totally reset the database, you may use the `Illuminate\Fou
 <a id="model-factories"></a>
 ## Model Factories
 
-When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](../eloquent/) using [model factories](../eloquent-factories/).
+When testing, you may need to insert a few records into your database before executing your test. Instead of manually specifying the value of each column when you create this test data, Laravel allows you to define a set of default attributes for each of your [Eloquent models](/en/eloquent/) using [model factories](/en/eloquent-factories/).
 
-To learn more about creating and utilizing model factories to create models, please consult the complete [model factory documentation](../eloquent-factories/). Once you have defined a model factory, you may utilize the factory within your test to create models:
+To learn more about creating and utilizing model factories to create models, please consult the complete [model factory documentation](/en/eloquent-factories/). Once you have defined a model factory, you may utilize the factory within your test to create models:
 
 ```php tab=Pest
 use App\Models\User;
@@ -91,7 +91,7 @@ public function test_models_can_be_instantiated(): void
 <a id="running-seeders"></a>
 ## Running Seeders
 
-If you would like to use [database seeders](../seeding/) to populate your database during a feature test, you may invoke the `seed` method. By default, the `seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
+If you would like to use [database seeders](/en/seeding/) to populate your database during a feature test, you may invoke the `seed` method. By default, the `seed` method will execute the `DatabaseSeeder`, which should execute all of your other seeders. Alternatively, you pass a specific seeder class name to the `seed` method:
 
 ```php tab=Pest
 <?php
