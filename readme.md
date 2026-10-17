@@ -1,7 +1,23 @@
-# Laravel Documentation
+# Laravel Translations
 
-You can find the online version of the Laravel documentation at [https://laravel.com/docs](https://laravel.com/docs)
+Community Laravel documentation and translations, published with Astro Starlight.
 
-## Contribution Guidelines
+All maintained Laravel versions and languages live together on `main`:
 
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 12 would be submitted to the `12.x` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
+```text
+site/src/content/docs/
+├── en/13.x/       # English source documentation
+└── pt-br/13.x/    # Brazilian Portuguese translations
+```
+
+Pages use `/<language>/<version>/<page>/`, for example
+`/pt-br/13.x/installation/`. English content is shown with a translation notice
+when a translated page is missing.
+
+Submit contributions to `main` using a short-lived branch. Edit the appropriate
+language and Laravel major version folder. Do not submit changes to a separate
+language or version branch.
+
+See [the site guide](site/README.md) for development, deployment, adding languages
+and versions, and tracking translation updates. This is an independent community
+project; the official Laravel documentation is at https://laravel.com/docs.

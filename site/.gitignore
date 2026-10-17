@@ -2,5 +2,5 @@ node_modules/
 dist/
 .astro/
 .vercel/
-src/content/docs/en/
 src/sidebar.generated.json
+src/pages.generated.json

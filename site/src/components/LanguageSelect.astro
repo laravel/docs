@@ -2,16 +2,15 @@
 import config from 'virtual:starlight/user-config';
 import Dropdown from './Dropdown.astro';
 import VersionSelect from './VersionSelect.astro';
+import { docsPath, routeParts } from '../utils/docs-routes';
 
-const currentLocale = Astro.locals.starlightRoute.locale;
+const currentLocale = Astro.locals.starlightRoute.locale || 'en';
 const locales = Object.entries(config.locales);
 const currentLabel = locales.find(([code]) => code === currentLocale)?.[1]?.label || '';
-const segments = Astro.url.pathname.split('/').filter(Boolean);
-if (locales.some(([code]) => code === segments[0])) segments.shift();
-const pagePath = segments.join('/');
+const { version, page } = routeParts(Astro.url.pathname);
 const items = locales.map(([code, locale]) => ({
   label: locale!.label,
-  href: `/${code === 'root' ? '' : `${code}/`}${pagePath}${pagePath ? '/' : ''}`,
+  href: docsPath(code, version, page),
   lang: locale!.lang,
   current: code === currentLocale,
 }));

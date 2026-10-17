@@ -1,17 +1,19 @@
 ---
 import Dropdown from './Dropdown.astro';
-import { current, versions } from '../versions.json';
+import { versions } from '../versions.json';
+import { docsPath, routeParts } from '../utils/docs-routes';
 
+const { locale, version: selected, page } = routeParts(Astro.url.pathname);
 const portuguese = Astro.locals.starlightRoute.locale === 'pt-br';
-const items = versions.map(({ label, version, url }) => ({
+const items = versions.map(({ label, version }) => ({
   label,
-  href: url || Astro.url.pathname,
-  current: version === current,
+  href: docsPath(locale, version, page),
+  current: version === selected,
 }));
 ---
 
 <Dropdown
-  label={`v${current}`}
+  label={`v${selected}`}
   accessibleLabel={portuguese ? 'Versão do Laravel' : 'Laravel version'}
   items={items}
 />

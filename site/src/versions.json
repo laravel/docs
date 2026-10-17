@@ -1,6 +1,9 @@
 {
   "current": "13.x",
   "versions": [
-    { "label": "13.x", "version": "13.x", "url": null }
+    {
+      "label": "13.x",
+      "version": "13.x"
+    }
   ]
 }

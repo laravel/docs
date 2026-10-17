@@ -1,3 +1,4 @@
 ---
-return Astro.redirect('/en/');
+import { current } from '../versions.json';
+return Astro.redirect(`/en/${current}/`);
 ---
