@@ -40,7 +40,13 @@ hostname for sitemap generation. Set `SITE_URL` to the full canonical origin
 
 ## Future translations
 
-English routes use `/en/`. Add future locale entries to `astro.config.mjs` and
-place translated Markdown in `src/content/docs/<locale>/`. The importer only
-replaces the generated `en` folder, preserving other languages. Update sidebar
-labels/translations when enabling a locale. No untranslated locale is advertised.
+The header language selector switches between English (`/en/`) and Português
+(Brasil) (`/pt-br/`), preserving the current page. English remains the default.
+Until Portuguese pages are added, Starlight serves English fallback content with
+a notice that the page has not been translated. No automatic translation runs.
+
+Add Portuguese Markdown in `src/content/docs/pt-br/`, using the same filename as
+the English page (for example, `installation.md`) and a `title` frontmatter.
+The next build replaces the fallback for that page with the published translation.
+The importer only replaces the generated `en` folder, preserving translations.
+Add other locale entries to `astro.config.mjs` when supporting more languages.

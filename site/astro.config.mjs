@@ -7,7 +7,10 @@ export default defineConfig({
   integrations: [starlight({
     title: 'Laravel Translations',
     description: 'Community documentation and translations for Laravel.',
-    locales: { en: { label: 'English', lang: 'en' } },
+    locales: {
+      en: { label: 'English', lang: 'en' },
+      'pt-br': { label: 'Português (Brasil)', lang: 'pt-BR' },
+    },
     defaultLocale: 'en',
     sidebar,
     expressiveCode: { shiki: { langAlias: { env: 'dotenv' } } },
