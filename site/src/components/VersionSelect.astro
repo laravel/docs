@@ -1,0 +1,17 @@
+---
+import Dropdown from './Dropdown.astro';
+import { current, versions } from '../versions.json';
+
+const portuguese = Astro.locals.starlightRoute.locale === 'pt-br';
+const items = versions.map(({ label, version, url }) => ({
+  label,
+  href: url || Astro.url.pathname,
+  current: version === current,
+}));
+---
+
+<Dropdown
+  label={`v${current}`}
+  accessibleLabel={portuguese ? 'Versão do Laravel' : 'Laravel version'}
+  items={items}
+/>

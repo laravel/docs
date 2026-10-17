@@ -40,6 +40,13 @@ hostname for sitemap generation. Set `SITE_URL` to the full canonical origin
 
 ## Future translations
 
+The version dropdown beside the language dropdown is configured in
+`src/versions.json`. Only Laravel 13.x is currently hosted. Set `current` to
+the version served by this build and add entries with a `label`, `version`,
+and `url` pointing to an existing version deployment or documentation site.
+The current version uses `url: null` to keep the current page. Adding a menu
+entry does not import or publish that version's documentation.
+
 The header language selector switches between English (`/en/`) and Português
 (Brasil) (`/pt-br/`), preserving the current page. English remains the default.
 Until Portuguese pages are added, Starlight serves English fallback content with
