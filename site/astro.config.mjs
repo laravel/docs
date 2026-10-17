@@ -12,6 +12,7 @@ export default defineConfig({
       'pt-br': { label: 'Português (Brasil)', lang: 'pt-BR' },
     },
     defaultLocale: 'en',
+    components: { LanguageSelect: './src/components/LanguageSelect.astro' },
     sidebar,
     expressiveCode: { shiki: { langAlias: { env: 'dotenv' } } },
     social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/MathHRM/docs' }],
