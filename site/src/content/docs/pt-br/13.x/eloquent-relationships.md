@@ -2221,7 +2221,7 @@ use App\Models\User;
 
 $users = User::withWhereHas('posts', function ($query) {
     $query->where('featured', true);
-}])->get();
+})->get();
 ```
 
 <a id="lazy-eager-loading"></a>
