@@ -139,7 +139,7 @@ You may configure custom base URLs by adding a `url` parameter to your provider 
 
 This is useful when routing requests through a proxy service (such as LiteLLM or Azure OpenAI Gateway) or using alternative endpoints.
 
-Custom base URLs are supported for the following providers: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI, and OpenRouter.
+Custom base URLs are supported for the following providers: OpenAI, Anthropic, Gemini, Groq, Cohere, DeepSeek, xAI, OpenRouter, and TypeSafe.
 
 <a name="openai-compatible-providers"></a>
 ### OpenAI-Compatible Providers
@@ -232,6 +232,24 @@ Likewise, you must configure a default transcription model to use `Transcription
 > [!NOTE]
 > OpenAI-compatible and Groq providers do not support diarization. Invoking the `diarize` method when using these providers will throw an exception.
 
+<a name="openai-compatible-classification"></a>
+#### OpenAI-Compatible Classification
+
+Likewise, if your endpoint implements OpenAI's decisions endpoint, you may use [classification](#classification) with an OpenAI-compatible provider. The questions are sent to the endpoint's `decisions` route, and [image attachments](#classifying-images) are supported. Since arbitrary endpoints have no known models, you must configure a default classification model or pass a model to the `classify` method explicitly:
+
+```php
+'local' => [
+    'driver' => 'openai-compatible',
+    'url' => env('LOCAL_AI_URL'),
+    'key' => env('LOCAL_AI_API_KEY'),
+    'models' => [
+        'classification' => [
+            'default' => env('LOCAL_AI_MODEL'),
+        ],
+    ],
+],
+```
+
 <a name="on-demand-providers"></a>
 ### On-Demand Providers
 
@@ -292,7 +310,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | STT | OpenAI, OpenAI Compatible, ElevenLabs, Groq, Mistral, Gemini, OpenRouter |
 | Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI, Bedrock, OpenRouter |
-| Classification | OpenAI, TypeSafe, OpenRouter |
+| Classification | OpenAI, OpenAI Compatible, TypeSafe, OpenRouter |
 | Files | OpenAI, Anthropic, Gemini, Azure, OpenRouter |
 
 </div>
@@ -1653,7 +1671,7 @@ class RefundsAgent implements Agent, CanActAsTool, HasTools
 
 If a sub-agent does not implement `CanActAsTool`, Laravel will use the agent's class basename as the tool name and a generic description that asks the parent agent to pass a clear, self-contained task description. Each sub-agent invocation runs in isolation and does not receive the parent agent's conversation history.
 
-When the parent agent is [streaming](#streaming), its sub-agents stream as well. The parent agent emits `ToolResult` events containing the text the sub-agent has produced so far. These events are marked as preliminary and are followed by the tool call's final result, so you may skip them when iterating events manually:
+When the parent agent is [streaming](#streaming), its sub-agents stream as well. However, sub-agents that produce [structured output](#structured-output) run without streaming. The parent agent emits `ToolResult` events containing the text the sub-agent has produced so far. These events are marked as preliminary and are followed by the tool call's final result, so you may skip them when iterating events manually:
 
 ```php
 use Laravel\Ai\Streaming\Events\ToolResult;
@@ -1796,7 +1814,43 @@ public function handle(PendingStep $step, Closure $next)
 }
 ```
 
-Middleware must return the result of `$next`, or its own `StepResponse` to answer the step without invoking the model, such as when serving a cached response. Returning any other value will throw a `LogicException`.
+Middleware must return the result of `$next`, its own `StepResponse` to answer the step without invoking the model, such as when serving a cached response, or `StepResult::stop()` to end the run. Returning any other value will throw a `LogicException`.
+
+<a name="stopping-runs"></a>
+#### Stopping Runs
+
+Sometimes you may need to end an agent's run before it takes its next step, such as when a user presses a "stop" button or a token budget has been exhausted. The `Stop` middleware ends the run before the next model call, keeping the steps the run has already completed along with their combined usage:
+
+```php
+use Illuminate\Support\Facades\Cache;
+use Laravel\Ai\Contracts\HasMiddleware;
+use Laravel\Ai\Middleware\Stop;
+use Laravel\Ai\PendingStep;
+
+public function middleware(): array
+{
+    return [
+        // Stop when the user has pressed the "stop" button...
+        Stop::when(fn (PendingStep $step) => Cache::has("chat:{$this->user->id}:stopped")),
+
+        // Stop when the run has exceeded its token budget...
+        Stop::unless(fn (PendingStep $step) => $step->usage->inputTokens < 50_000),
+    ];
+}
+```
+
+The `when` method stops the run before any step for which the given condition is true, while the `unless` method stops the run before any step for which the given condition is false. When streaming, a stopped run finishes with a `cancelled` finish reason.
+
+Custom middleware may also end the run by returning `StepResult::stop()` instead of the result of `$next`:
+
+```php
+use Laravel\Ai\Gateway\StepResult;
+
+public function handle(PendingStep $step, Closure $next)
+{
+    return $this->cancelled($step) ? StepResult::stop() : $next($step);
+}
+```
 
 <a name="anonymous-agents"></a>
 ### Anonymous Agents
@@ -2782,7 +2836,7 @@ $result->meta->provider;
 <a name="classifying-images"></a>
 ### Classifying Images
 
-When using OpenAI, images may be classified alongside the given content by passing them as the second argument to the `of` method. Images may be created using the same [file classes used for attachments](#attachments):
+When using the OpenAI, OpenAI-compatible, TypeSafe, or OpenRouter providers, images may be classified alongside the given content by passing them as the second argument to the `of` method. Images may be created using the same [file classes used for attachments](#attachments):
 
 ```php
 use Laravel\Ai\Classification;
@@ -2794,6 +2848,17 @@ $result = Classification::of('Inspect the product in this photo.', [
 ])
     ->question('damaged', new Boolean('Does the product have visible damage?'))
     ->classify(provider: 'openai');
+```
+
+To allow your questions to refer to a particular image, you may attach the images using string keys. Each image's key is sent to the provider as its name:
+
+```php
+$result = Classification::of('Inspect the products in these photos.', [
+    'front' => Image::fromPath($front),
+    'back' => Image::fromPath($back),
+])
+    ->question('damaged', new Boolean('Is the product in `front` or `back` damaged?'))
+    ->classify();
 ```
 
 <a name="yes-or-no-decisions"></a>
@@ -3745,14 +3810,19 @@ $store->assertAdded(fn (StorableFile $file) => $file->content() === 'Hello, Worl
 The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), including:
 
 - `AddingFileToStore`
+- `AddingFileToStoreFailed`
 - `AgentFailed`
 - `AgentFailedOver`
 - `AgentPrompted`
 - `AgentStreamed`
+- `AudioFailed`
 - `AudioGenerated`
+- `ClassificationFailed`
 - `Classified`
 - `Classifying`
 - `CreatingStore`
+- `CreatingStoreFailed`
+- `EmbeddingsFailed`
 - `EmbeddingsGenerated`
 - `FileAddedToStore`
 - `FileDeleted`
@@ -3762,24 +3832,29 @@ The Laravel AI SDK dispatches a variety of [events](/docs/{{version}}/events), i
 - `GeneratingEmbeddings`
 - `GeneratingImage`
 - `GeneratingTranscription`
+- `ImageFailed`
 - `ImageGenerated`
 - `InvokingTool`
 - `PromptingAgent`
 - `ProviderFailedOver`
 - `RemovingFileFromStore`
+- `RemovingFileFromStoreFailed`
 - `Reranked`
 - `Reranking`
+- `RerankingFailed`
 - `StartingStep`
 - `StepCompleted`
 - `StepFailed`
 - `StoreCreated`
 - `StoreDeleted`
 - `StoringFile`
+- `StoringFileFailed`
 - `StreamingAgent`
 - `ToolApprovalRequested`
 - `ToolApprovalResolved`
 - `ToolFailed`
 - `ToolInvoked`
+- `TranscriptionFailed`
 - `TranscriptionGenerated`
 
 You can listen to any of these events to log or store AI SDK usage information.
