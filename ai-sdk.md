@@ -1671,6 +1671,9 @@ class RefundsAgent implements Agent, CanActAsTool, HasTools
 
 If a sub-agent does not implement `CanActAsTool`, Laravel will use the agent's class basename as the tool name and a generic description that asks the parent agent to pass a clear, self-contained task description. Each sub-agent invocation runs in isolation and does not receive the parent agent's conversation history.
 
+> [!WARNING]
+> Tools that require [human approval](#human-tool-approval) are not currently supported within sub-agents. If a tool inside a sub-agent requires approval, the sub-agent pauses, but the pause is not surfaced to the parent agent: the parent receives a normal tool result and continues its run, so the approval is never presented to your application. Tools that require approval should be registered on the top-level agent.
+
 When the parent agent is [streaming](#streaming), its sub-agents stream as well. However, sub-agents that produce [structured output](#structured-output) run without streaming. The parent agent emits `ToolResult` events containing the text the sub-agent has produced so far. These events are marked as preliminary and are followed by the tool call's final result, so you may skip them when iterating events manually:
 
 ```php
