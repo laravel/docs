@@ -1731,6 +1731,7 @@ Mcp::web('/mcp/weather', WeatherExample::class)
     ->middleware('auth:api');
 ```
 
+<a name="new-passport-installation"></a>
 #### New Passport Installation
 
 If your application is not already using Laravel Passport, follow Passport's [installation and deployment guide](/docs/{{version}}/passport#installation) to add Passport to your application. You should have an `OAuthenticatable` model, new authentication guard, and passport keys before moving on.
@@ -1775,6 +1776,26 @@ Laravel MCP, via the `Mcp::oauthRoutes` method discussed above, adds, advertises
 OAuth2.1 is the documented authentication mechanism in the Model Context Protocol specification, and is the most widely supported among MCP clients. For that reason, we recommend using Passport when possible.
 
 If your application is already using [Sanctum](/docs/{{version}}/sanctum) then adding Passport may be cumbersome. In this instance, we recommend using Sanctum without Passport until you have a clear, necessary requirement to use an MCP client that only supports OAuth.
+
+<a name="rate-limiting-oauth-routes"></a>
+#### Rate Limiting OAuth Routes
+
+As expected by the MCP specification and RFC 7591, the dynamic client registration route registered by `Mcp::oauthRoutes` is publicly accessible, allowing any MCP client to register itself without authentication. Since each registration creates a new OAuth client in your database, you should protect these routes using rate limiting that fits your application's traffic. You may do so by registering the routes within a route group that applies Laravel's `throttle` middleware:
+
+```php
+use Illuminate\Support\Facades\Route;
+use Laravel\Mcp\Facades\Mcp;
+
+Route::middleware('throttle:10,1')->group(function () {
+    Mcp::oauthRoutes();
+});
+```
+
+If your MCP clients do not need to register themselves dynamically, you may disable the client registration route entirely by passing `false` to the `registration` argument:
+
+```php
+Mcp::oauthRoutes(registration: false);
+```
 
 <a name="sanctum"></a>
 ### Sanctum
