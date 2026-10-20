@@ -1731,6 +1731,7 @@ Mcp::web('/mcp/weather', WeatherExample::class)
     ->middleware('auth:api');
 ```
 
+<a name="rate-limiting-oauth-routes"></a>
 #### Rate Limiting OAuth Routes
 
 As expected by the MCP specification and RFC 7591, the dynamic client registration route registered by `Mcp::oauthRoutes` is publicly accessible, allowing any MCP client to register itself without authentication. Since each registration creates a new OAuth client in your database, you should protect these routes using rate limiting that fits your application's traffic. You may do so by registering the routes within a route group that applies Laravel's `throttle` middleware:
@@ -1750,6 +1751,7 @@ If your MCP clients do not need to register themselves dynamically, you may disa
 Mcp::oauthRoutes(registration: false);
 ```
 
+<a name="new-passport-installation"></a>
 #### New Passport Installation
 
 If your application is not already using Laravel Passport, follow Passport's [installation and deployment guide](/docs/{{version}}/passport#installation) to add Passport to your application. You should have an `OAuthenticatable` model, new authentication guard, and passport keys before moving on.
