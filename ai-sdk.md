@@ -190,7 +190,7 @@ You may add custom HTTP headers to every outgoing request for the provider by de
 ],
 ```
 
-OpenAI-compatible providers support text generation, streaming, tools, structured output, image attachments, embeddings, and transcription. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
+OpenAI-compatible providers support text generation, streaming, tools, structured output, image attachments, embeddings, transcription, and classification. If your endpoint requires additional request body fields, provide them using [provider options](#provider-options).
 
 <a name="openai-compatible-embeddings"></a>
 #### OpenAI-Compatible Embeddings
@@ -235,7 +235,7 @@ Likewise, you must configure a default transcription model to use `Transcription
 <a name="openai-compatible-classification"></a>
 #### OpenAI-Compatible Classification
 
-Likewise, if your endpoint implements OpenAI's decisions endpoint, you may use [classification](#classification) with an OpenAI-compatible provider. The questions are sent to the endpoint's `decisions` route, and [image attachments](#classifying-images) are supported. Since arbitrary endpoints have no known models, you must configure a default classification model or pass a model to the `classify` method explicitly:
+If your endpoint implements OpenAI's decisions endpoint, you may use [classification](#classification) with an OpenAI-compatible provider. The SDK sends questions to the endpoint's `/decisions` route and supports [image attachments](#classifying-images). Since the SDK does not know which models your endpoint supports, configure a default classification model or pass a model to the `classify` method:
 
 ```php
 'local' => [
@@ -1672,9 +1672,9 @@ class RefundsAgent implements Agent, CanActAsTool, HasTools
 If a sub-agent does not implement `CanActAsTool`, Laravel will use the agent's class basename as the tool name and a generic description that asks the parent agent to pass a clear, self-contained task description. Each sub-agent invocation runs in isolation and does not receive the parent agent's conversation history.
 
 > [!WARNING]
-> Tools that require [human approval](#human-tool-approval) are not currently supported within sub-agents. If a tool inside a sub-agent requires approval, the sub-agent pauses, but the pause is not surfaced to the parent agent: the parent receives a normal tool result and continues its run, so the approval is never presented to your application. Tools that require approval should be registered on the top-level agent.
+> Sub-agents do not currently support tools that require [human approval](#human-tool-approval). If a sub-agent's tool requires approval, the sub-agent pauses. However, the parent agent receives a normal tool result and continues its run without notifying your application of the pending approval. Register tools that require approval on the top-level agent.
 
-When the parent agent is [streaming](#streaming), its sub-agents stream as well. However, sub-agents that produce [structured output](#structured-output) run without streaming. The parent agent emits `ToolResult` events containing the text the sub-agent has produced so far. These events are marked as preliminary and are followed by the tool call's final result, so you may skip them when iterating events manually:
+When the parent agent is [streaming](#streaming), its sub-agents stream as well, unless they produce [structured output](#structured-output). For streaming sub-agents, the parent agent emits preliminary `ToolResult` events containing the text the sub-agent has produced so far. The tool call's final result follows these events, so you may skip preliminary events when iterating events manually:
 
 ```php
 use Laravel\Ai\Streaming\Events\ToolResult;
@@ -1817,12 +1817,12 @@ public function handle(PendingStep $step, Closure $next)
 }
 ```
 
-Middleware must return the result of `$next`, its own `StepResponse` to answer the step without invoking the model, such as when serving a cached response, or `StepResult::stop()` to end the run. Returning any other value will throw a `LogicException`.
+Middleware must return the result of `$next`, a `StepResponse`, or `StepResult::stop()`. Return a `StepResponse` to answer the step without invoking the model, such as when serving a cached response. Return `StepResult::stop()` to end the run. Any other return value causes a `LogicException`.
 
 <a name="stopping-runs"></a>
 #### Stopping Runs
 
-Sometimes you may need to end an agent's run before it takes its next step, such as when a user presses a "stop" button or a token budget has been exhausted. The `Stop` middleware ends the run before the next model call, keeping the steps the run has already completed along with their combined usage:
+To end an agent's run before its next model call, use the `Stop` middleware. For example, you may stop a run when a user presses a "stop" button or the run reaches an input-token budget. The response retains the completed steps and their combined usage:
 
 ```php
 use Illuminate\Support\Facades\Cache;
@@ -1836,13 +1836,13 @@ public function middleware(): array
         // Stop when the user has pressed the "stop" button...
         Stop::when(fn (PendingStep $step) => Cache::has("chat:{$this->user->id}:stopped")),
 
-        // Stop when the run has exceeded its token budget...
+        // Stop when the run has used at least 50,000 input tokens...
         Stop::unless(fn (PendingStep $step) => $step->usage->inputTokens < 50_000),
     ];
 }
 ```
 
-The `when` method stops the run before any step for which the given condition is true, while the `unless` method stops the run before any step for which the given condition is false. When streaming, a stopped run finishes with a `cancelled` finish reason.
+Before each step, `when` stops the run if the condition is true, and `unless` stops the run if the condition is false. A stopped streaming run has a `cancelled` finish reason.
 
 Custom middleware may also end the run by returning `StepResult::stop()` instead of the result of `$next`:
 
@@ -2853,7 +2853,7 @@ $result = Classification::of('Inspect the product in this photo.', [
     ->classify(provider: 'openai');
 ```
 
-To allow your questions to refer to a particular image, you may attach the images using string keys. Each image's key is sent to the provider as its name:
+To refer to a specific image in a question, attach images with string keys. The SDK sends each image's key to the provider as its name:
 
 ```php
 $result = Classification::of('Inspect the products in these photos.', [
