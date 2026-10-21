@@ -169,7 +169,7 @@ Laravel's Flysystem integrations work great with SFTP; however, a sample configu
     // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
     // 'maxTries' => 4,
     // 'passphrase' => env('SFTP_PASSPHRASE'),
-    // 'port' => env('SFTP_PORT', 22),
+    // 'port' => (int) env('SFTP_PORT', 22),
     // 'root' => env('SFTP_ROOT', ''),
     // 'timeout' => 30,
     // 'useAgent' => true,
