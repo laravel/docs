@@ -2465,7 +2465,7 @@ The given _field_ must match the field under validation.
 <a name="rule-size"></a>
 #### size:_value_
 
-The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value (the attribute must also have the `numeric` or `integer` rule). For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kilobytes. Let's look at some examples:
+The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value (the attribute must also have the `numeric` or `integer` rule). For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kibibytes. Let's look at some examples:
 
 ```php
 // Validate that a string is exactly 12 characters long...
@@ -2477,7 +2477,7 @@ The field under validation must have a size matching the given _value_. For stri
 // Validate that an array has exactly 5 elements...
 'tags' => ['array', 'size:5'];
 
-// Validate that an uploaded file is exactly 512 kilobytes...
+// Validate that an uploaded file is exactly 512 kibibytes...
 'image' => ['file', 'size:512'];
 ```
 
