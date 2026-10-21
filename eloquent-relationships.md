@@ -333,6 +333,56 @@ public function post(): BelongsTo
 }
 ```
 
+<a name="keeping-parent-relationships-in-sync"></a>
+#### Keeping Parent Relationships in Sync
+
+If you would like Eloquent to keep the inverse relationship on the parent model in sync with the child, you may invoke the `chaperone` method when defining a `belongsTo` relationship:
+
+```php
+/**
+ * Get the post that owns the comment.
+ */
+public function post(): BelongsTo
+{
+    return $this->belongsTo(Post::class)->chaperone();
+}
+```
+
+When the parent's inverse relationship is already loaded, the `associate` and `dissociate` methods will add the child to it or remove the child from it, so the loaded relationship stays accurate without another query:
+
+```php
+$post->comments; // Loads the post's comments...
+
+$comment->post()->associate($post);
+
+$post->comments->contains($comment); // true
+```
+
+When the inverse relationship is a `hasOne`, such as a `User` model's `phone` relationship, retrieving the parent will also set the child on the parent, so both models refer to the same instance:
+
+```php
+public function user(): BelongsTo
+{
+    return $this->belongsTo(User::class)->chaperone();
+}
+
+$phone->user->phone === $phone; // true
+```
+
+A `hasMany` relationship is never populated this way, since a single child does not represent all of the parent's children. Likewise, a `hasOne` relationship with additional query constraints, such as one defined using `latestOfMany`, is not populated.
+
+Eloquent will attempt to infer the name of the inverse relationship from the child model's class name. If the inverse relationship uses a different name, you may pass its name to the `chaperone` method:
+
+```php
+return $this->belongsTo(Post::class)->chaperone('replies');
+```
+
+A `morphTo` relationship cannot infer the name, so you must always pass it:
+
+```php
+return $this->morphTo()->chaperone('comments');
+```
+
 <a name="default-models"></a>
 #### Default Models
 
