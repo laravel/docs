@@ -54,6 +54,9 @@ php artisan octane:install
 
 [FrankenPHP](https://frankenphp.dev) is a PHP application server, written in Go, that supports modern web features like early hints, Brotli, and Zstandard compression. When you install Octane and choose FrankenPHP as your server, Octane will automatically download and install the FrankenPHP binary for you.
 
+> [!WARNING]
+> The FrankenPHP static binary includes its own copy of PHP, so updating your system's PHP installation will not update the PHP version used by Octane. You may check the bundled PHP version using the `./frankenphp version` command. To apply PHP security updates, delete the `frankenphp` binary from your project's root directory and run the `php artisan octane:install --server=frankenphp` Artisan command to download the latest release, then restart Octane. If FrankenPHP is installed system-wide, update it using the method you used to install it.
+
 <a name="frankenphp-via-laravel-sail"></a>
 #### FrankenPHP via Laravel Sail
 
