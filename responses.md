@@ -396,9 +396,6 @@ return response()->file($pathToFile);
 return response()->file($pathToFile, $headers);
 ```
 
-> [!WARNING]
-> Never derive `$pathToFile` from user-supplied input without validating the path. Both `response()->download()` and `response()->file()` call `is_file()` on the path internally when constructing the response. If an attacker can cause a `phar://` URI to be passed as the path, PHP will deserialize the PHAR archive's metadata at that point, potentially executing arbitrary code through gadget chains in your vendor directory before the file is ever sent to the browser. Validate that user-influenced path segments do not contain unexpected stream-wrapper schemes such as `phar://`.
-
 <a name="streamed-responses"></a>
 ## Streamed Responses
 
