@@ -626,6 +626,9 @@ $path = Storage::putFileAs(
 ```
 
 > [!WARNING]
+> Never derive the filename argument of `storeAs` or `putFileAs` from user-supplied input. An attacker could supply a name such as `shell.php`, causing the stored file to be executed as PHP if it is web-accessible. Use `hashName()` or a system-generated identifier for the stored filename, and persist the original name separately if you need to display it.
+
+> [!WARNING]
 > Unprintable and invalid unicode characters will automatically be removed from file paths. Therefore, you may wish to sanitize your file paths before passing them to Laravel's file storage methods. File paths are normalized using the `League\Flysystem\WhitespacePathNormalizer::normalizePath` method.
 
 <a name="specifying-a-disk"></a>
