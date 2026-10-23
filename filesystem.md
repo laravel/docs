@@ -298,6 +298,9 @@ if (Storage::disk('s3')->missing('file.jpg')) {
 }
 ```
 
+> [!WARNING]
+> If you use the `File` facade (`Illuminate\Support\Facades\File`) to check or read files, be aware that its methods call PHP filesystem functions directly. Unlike `Storage::`, which routes through Flysystem, `File::exists()`, `File::get()`, and similar methods will deserialize a PHAR archive's metadata if given a `phar://` URI. An attacker who can upload a file and then control the path passed to one of these methods can exploit this behavior to execute arbitrary code through PHP gadget chains present in your vendor directory. Never pass user-supplied input directly to `File::` methods without validating that the path does not begin with `phar://` or another unexpected stream-wrapper scheme.
+
 <a name="downloading-files"></a>
 ### Downloading Files
 
