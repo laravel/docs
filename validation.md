@@ -2162,6 +2162,9 @@ Even though you only need to specify the extensions, this rule actually validate
 
 This validation rule does not verify agreement between the MIME type and the extension the user assigned to the file. For example, the `mimes:png` validation rule would consider a file containing valid PNG content to be a valid PNG image, even if the file is named `photo.txt`. If you would like to validate the user-assigned extension of the file, you may use the [extensions](#rule-extensions) rule.
 
+> [!WARNING]
+> Passing image validation does not prevent a file from being executed as PHP if it is stored with a `.php` extension. A file that begins with GIF or JPEG magic bytes can pass `mimes:gif` or `mimes:jpg` validation while also containing a PHP payload. Always use a system-generated filename (e.g. `hashName()`) when storing uploaded files, and configure your web server to deny PHP execution inside storage directories.
+
 <a name="rule-min"></a>
 #### min:_value_
 
