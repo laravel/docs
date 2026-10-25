@@ -132,7 +132,7 @@ You may configure custom base URLs by adding a `url` parameter to your provider 
     'anthropic' => [
         'driver' => 'anthropic',
         'key' => env('ANTHROPIC_API_KEY'),
-        'url' => env('ANTHROPIC_BASE_URL'),
+        'url' => env('ANTHROPIC_URL'),
     ],
 ],
 ```
