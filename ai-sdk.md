@@ -322,7 +322,7 @@ use Laravel\Ai\Enums\Lab;
 
 Lab::Anthropic;
 Lab::OpenAI;
-Lab::OpenAiCompatible;
+Lab::OpenAICompatible;
 Lab::Gemini;
 // ...
 ```
