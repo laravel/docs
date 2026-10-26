@@ -88,6 +88,10 @@ server {
         fastcgi_hide_header X-Powered-By;
     }
 
+    location ~ \.php$ {
+        return 404;
+    }
+
     location ~ /\.(?!well-known).* {
         deny all;
     }
