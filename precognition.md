@@ -532,24 +532,24 @@ Alternatively, if you would like to submit the form via XHR you may use the form
 <a name="configuring-axios"></a>
 ### Configuring Axios
 
-The Precognition validation libraries use the [Axios](https://github.com/axios/axios) HTTP client to send requests to your application's backend. For convenience, the Axios instance may be customized if required by your application. For example, when using the `laravel-precognition-vue` library, you may add additional request headers to each outgoing request in your application's `resources/js/app.js` file:
+By default, the Precognition validation libraries use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) to send requests to your application's backend. However, you may instruct Precognition to use the [Axios](https://github.com/axios/axios) HTTP client instead via the `axiosAdapter` function. For example, when using the `laravel-precognition-vue` library, you may configure this in your application's `resources/js/app.js` file:
 
 ```js
-import { client } from 'laravel-precognition-vue';
+import { client, axiosAdapter } from 'laravel-precognition-vue';
 
-client.axios().defaults.headers.common['Authorization'] = authToken;
+client.useHttpClient(axiosAdapter());
 ```
 
-Or, if you already have a configured Axios instance for your application, you may tell Precognition to use that instance instead:
+You may also pass your own configured Axios instance to `axiosAdapter`. For example, you may add additional request headers to each outgoing request:
 
 ```js
-import Axios from 'axios';
-import { client } from 'laravel-precognition-vue';
+import { client, axiosAdapter } from 'laravel-precognition-vue';
+import axios from 'axios';
 
-window.axios = Axios.create()
-window.axios.defaults.headers.common['Authorization'] = authToken;
+const instance = axios.create();
+instance.defaults.headers.common['Authorization'] = authToken;
 
-client.use(window.axios)
+client.useHttpClient(axiosAdapter(instance));
 ```
 
 <a name="validating-arrays"></a>
