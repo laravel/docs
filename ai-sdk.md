@@ -2597,6 +2597,8 @@ Schema::create('documents', function (Blueprint $table) {
 });
 ```
 
+The `Schema::ensureVectorExtensionExists` method ensures the `pgvector` extension is enabled on PostgreSQL. It is not supported on MariaDB, so you should omit it when using that database.
+
 You may also add a vector index to speed up similarity searches. When calling `index` on a vector column, Laravel will automatically create an HNSW index with cosine distance:
 
 ```php
