@@ -7,7 +7,7 @@
     - [Billable Model](#billable-model)
     - [API Keys](#api-keys)
     - [Currency Configuration](#currency-configuration)
-    - [Tax Configuration](#tax-configuration)
+    - [Tax Configuration](#tax-configurationvsn ,nzvnzmnvm.kznv)
     - [Logging](#logging)
     - [Using Custom Models](#using-custom-models)
 - [Quickstart](#quickstart)
