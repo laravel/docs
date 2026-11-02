@@ -82,6 +82,22 @@ Each Redis server defined in your configuration file is required to have a name,
 ],
 ```
 
+<a name="key-prefixes"></a>
+#### Key Prefixes
+
+Laravel prefixes every key it stores in Redis using the `prefix` option of your Redis configuration. By default, this prefix is derived from your application's name. If several instances of the same application share a Redis server, such as a production and a staging environment hosted on the same machine, they will use the same prefix and read each other's data. For example, the queue worker of one instance may process jobs that were dispatched by another instance.
+
+To avoid this, give each instance a unique prefix using the `REDIS_PREFIX` environment variable, or point each instance to its own Redis databases using the `REDIS_DB` and `REDIS_CACHE_DB` environment variables:
+
+```ini
+REDIS_PREFIX=laravel-staging-database-
+```
+
+If your application uses [Horizon](/docs/{{version}}/horizon), Horizon stores its own data under a separate prefix, which may be configured using the `HORIZON_PREFIX` environment variable.
+
+> [!WARNING]
+> Changing the prefix of an existing application will cause any queued jobs and cached values stored under the previous prefix to be ignored.
+
 <a name="configuring-the-connection-scheme"></a>
 #### Configuring the Connection Scheme
 
