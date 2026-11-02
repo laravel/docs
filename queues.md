@@ -117,6 +117,8 @@ php artisan migrate
 
 In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
 
+If multiple instances of your application share a Redis server, each instance should use its own [key prefix](/docs/{{version}}/redis#key-prefixes) or Redis database. Otherwise, the queue worker of one instance may process jobs dispatched by another instance.
+
 > [!WARNING]
 > The `serializer` and `compression` Redis options are not supported by the `redis` queue driver.
 
