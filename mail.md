@@ -1467,7 +1467,7 @@ Instead of sending your emails, the `log` mail driver will write all email messa
 <a name="mailtrap"></a>
 #### HELO / Mailtrap Email Sandbox / Mailpit
 
-Alternatively, use a service like [HELO](https://usehelo.com) or [Mailtrap Email Sandbox](https://mailtrap.io/email-sandbox/) with the `smtp` driver to capture test emails. These services capture messages instead of delivering them to recipients. The message viewer in Mailtrap Email Sandbox lets you inspect the captured emails.
+Alternatively, you may use a service like [HELO](https://usehelo.com) or [Mailtrap Email Sandbox](https://mailtrap.io/email-sandbox/) and the `smtp` driver to send your email messages to a "dummy" mailbox where you may view them in a true email client. This approach has the benefit of allowing you to actually inspect the final emails in Mailtrap Email Sandbox's message viewer.
 
 If you are using [Laravel Sail](/docs/{{version}}/sail), you may preview your messages using [Mailpit](https://github.com/axllent/mailpit). When Sail is running, you may access the Mailpit interface at: `http://localhost:8025`.
 
