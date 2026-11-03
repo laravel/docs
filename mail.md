@@ -32,7 +32,7 @@
 - [Events](#events)
 - [Custom Transports](#custom-transports)
     - [Additional Symfony Transports](#additional-symfony-transports)
-    - [Mailtrap Email Sending](#mailtrap-email-sending)
+    - [Mailtrap Live Sending](#mailtrap-live-sending)
 
 <a name="introduction"></a>
 ## Introduction
@@ -46,7 +46,7 @@ Laravel's email services may be configured via your application's `config/mail.p
 
 Within your `mail` configuration file, you will find a `mailers` configuration array. This array contains a sample configuration entry for each of the major mail drivers / transports supported by Laravel, while the `default` configuration value determines which mailer will be used by default when your application needs to send an email message.
 
-For [Mailtrap Email Sending](#mailtrap-email-sending), configure the Mailtrap PHP package for the Email API or use Laravel's `smtp` transport.
+For [Mailtrap Live Sending](#mailtrap-live-sending), configure the Mailtrap PHP package for the Email API or use Laravel's `smtp` transport.
 
 <a name="driver-prerequisites"></a>
 ### Driver / Transport Prerequisites
@@ -1652,10 +1652,10 @@ Once your transport has been registered, you may create a mailer definition with
 ],
 ```
 
-<a name="mailtrap-email-sending"></a>
-### Mailtrap Email Sending
+<a name="mailtrap-live-sending"></a>
+### Mailtrap Live Sending
 
-[Mailtrap Email Sending](https://mailtrap.io/email-api/) delivers production emails through its Email API or SMTP. Mailtrap maintains the PHP package that supplies the API transport. SMTP uses Laravel's existing `smtp` transport.
+[Mailtrap Live Sending](https://mailtrap.io/email-api/) delivers production emails through its Email API or SMTP. Mailtrap maintains the PHP package that supplies the API transport. SMTP uses Laravel's existing `smtp` transport.
 
 Before you configure either method, [set up a sending domain](https://docs.mailtrap.io/email-api-smtp/setup/sending-domain) in Mailtrap. Make sure that Mailtrap shows the domain as Verified. Select the Transactional Stream for your domain in [Sending Setup](https://mailtrap.io/api-smtp/sending-setup).
 
@@ -1715,4 +1715,4 @@ After you configure either method, clear Laravel's configuration cache:
 php artisan config:clear
 ```
 
-Send your existing mailables through the `Mail` facade as described in [Sending Mail](#sending-mail). Mailtrap Email Sending delivers these messages to their recipients. Use [Mailtrap Email Sandbox](https://mailtrap.io/email-sandbox/) to capture test emails for inspection.
+Send your existing mailables through the `Mail` facade as described in [Sending Mail](#sending-mail). Mailtrap Live Sending delivers these messages to their recipients. Use [Mailtrap Email Sandbox](https://mailtrap.io/email-sandbox/) to capture test emails for inspection.
