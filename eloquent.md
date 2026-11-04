@@ -34,6 +34,7 @@
     - [Global Scopes](#global-scopes)
     - [Local Scopes](#local-scopes)
     - [Pending Attributes](#pending-attributes)
+    - [After Query Callbacks](#after-query-callbacks)
 - [Comparing Models](#comparing-models)
 - [Events](#events)
     - [Using Closures](#events-using-closures)
@@ -1730,6 +1731,22 @@ To instruct the `withAttributes` method to not add `where` conditions to the que
 $query->withAttributes([
     'hidden' => true,
 ], asConditions: false);
+```
+
+<a name="after-query-callbacks"></a>
+### After Query Callbacks
+
+The `afterQuery` method allows you to register a closure that will be invoked with the results of the query after it has been executed. This is particularly useful within [local scopes](#local-scopes), since it allows a scope to modify the models it retrieves:
+
+```php
+#[Scope]
+protected function matching(Builder $query, string $term): void
+{
+    // Add a blog post excerpt property on each Post in the resulting collection...
+    $query->whereFullText('body', $term)->afterQuery(function (Collection $posts) use ($term) {
+        $posts->each(fn (Post $post) => $post->excerpt = Str::excerpt($post->body, $term));
+    });
+}
 ```
 
 <a name="comparing-models"></a>
