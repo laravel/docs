@@ -43,6 +43,11 @@ The session `driver` configuration option defines where session data will be sto
 > [!NOTE]
 > The array driver is primarily used during [testing](/docs/{{version}}/testing) and prevents the data stored in the session from being persisted.
 
+The name of the session cookie may be customized using the `SESSION_COOKIE` environment variable or the `cookie` option within your `config/session.php` configuration file. By default, the cookie name is derived from your `APP_NAME` environment variable.
+
+> [!NOTE]
+> You typically do not need to change the session cookie name. However, if you host multiple Laravel applications on the same domain, giving each application a unique `SESSION_COOKIE` value prevents their session cookies from overwriting one another.
+
 <a name="driver-prerequisites"></a>
 ### Driver Prerequisites
 
