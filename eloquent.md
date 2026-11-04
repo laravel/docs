@@ -1736,7 +1736,7 @@ $query->withAttributes([
 <a name="after-query-callbacks"></a>
 ### After Query Callbacks
 
-The `afterQuery` method allows you to register a closure that will be invoked with the results of the query after it has been executed. This is particularly useful within [local scopes](#local-scopes), since it allows a scope to modify the models it retrieves:
+The `afterQuery` method allows you to register a closure that will be invoked with the results of the query after it has been executed. This is particularly useful within [local scopes](#local-scopes), as it allows the scope to modify the models it retrieves:
 
 ```php
 #[Scope]
