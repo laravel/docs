@@ -1272,7 +1272,7 @@ use App\Jobs\ProcessPodcast;
 ProcessPodcast::dispatch($podcast)->afterCommit();
 ```
 
-Likewise, if the `after_commit` configuration option is set to `true`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:
+Likewise, if the `after_commit` configuration option is set to `false`, you may indicate that a specific job should be dispatched immediately without waiting for any open database transactions to commit:
 
 ```php
 ProcessPodcast::dispatch($podcast)->beforeCommit();
