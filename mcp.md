@@ -1837,6 +1837,8 @@ public function handle(Request $request): Response
 }
 ```
 
+For guidance on securing MCP clients and servers, see the MCP [Security Best Practices](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices).
+
 <a name="client"></a>
 ## MCP Client
 
