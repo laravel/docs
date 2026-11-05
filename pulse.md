@@ -67,6 +67,17 @@ Many of Pulse's configuration options can be controlled using environment variab
 php artisan vendor:publish --tag=pulse-config
 ```
 
+If your cache configuration defines a `serializable_classes` array, you will need to add these classes to that array to support the default Pulse cards:
+
+```php
+'serializable_classes' => [
+    // ...
+    Carbon\CarbonImmutable::class,
+    Illuminate\Support\Collection::class,
+    stdClass::class,
+],
+```
+
 <a name="dashboard"></a>
 ## Dashboard
 
