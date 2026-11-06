@@ -1029,6 +1029,21 @@ Or, you can invoke an agent's `broadcastOnQueue` method to queue the agent opera
 );
 ```
 
+Each event is broadcast under its type, such as `stream_start`, `text_delta`, `tool_call`, `tool_result`, and `stream_end`. Errors returned by the provider are always broadcast as `error`, and the provider's own error code is available in the payload's `type` key. When a queued broadcast fails, a `stream_failed` event is broadcast so your frontend can stop waiting for the response. Since these are [custom broadcast names](/docs/{{version}}/broadcasting#broadcast-name), you should prefix them with a `.` when [listening with Laravel Echo](/docs/{{version}}/broadcasting#listening-for-events):
+
+```js
+Echo.channel('channel-name')
+    .listen('.text_delta', (event) => {
+        // event.delta...
+    })
+    .listen('.error', (event) => {
+        // event.type, event.message...
+    })
+    .listen('.stream_failed', (event) => {
+        // ...
+    });
+```
+
 <a name="skipping-oversized-events"></a>
 #### Skipping Oversized Events
 
