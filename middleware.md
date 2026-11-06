@@ -364,6 +364,7 @@ For convenience, some of Laravel's built-in middleware are aliased by default. F
 | `cache.headers`    | `Illuminate\Http\Middleware\SetCacheHeaders`                                                                  |
 | `can`              | `Illuminate\Auth\Middleware\Authorize`                                                                        |
 | `guest`            | `Illuminate\Auth\Middleware\RedirectIfAuthenticated`                                                          |
+| `idempotent`       | `Illuminate\Http\Middleware\HandleIdempotencyKeys`                                                            |
 | `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword`                                                                  |
 | `precognitive`     | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests`                                            |
 | `signed`           | `Illuminate\Routing\Middleware\ValidateSignature`                                                             |
