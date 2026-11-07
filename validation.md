@@ -1795,6 +1795,19 @@ Validator::validate($input, [
 ]);
 ```
 
+String values may use the fluent `Rule::string()` rule builder instead:
+
+```php
+use Illuminate\Validation\Rule;
+
+Validator::validate($input, [
+    'name' => [
+        'required',
+        Rule::string()->encoding('utf-8'),
+    ],
+]);
+```
+
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...
 
