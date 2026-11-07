@@ -43,10 +43,12 @@ $executed = RateLimiter::attempt(
     }
 );
 
-if (! $executed) {
+if ($executed === false) {
     return 'Too many messages sent!';
 }
 ```
+
+Because the callback's return value is preserved, use a strict comparison with `false` to avoid treating other falsy values, such as an empty string or zero, as a rate-limited attempt. If the callback itself returns `false`, its result cannot be distinguished from a rate-limited attempt; return a different value when this distinction is needed.
 
 If necessary, you may provide a fourth argument to the `attempt` method, which is the "decay rate", or the number of seconds until the available attempts are reset. For example, we can modify the example above to allow five attempts every two minutes:
 
