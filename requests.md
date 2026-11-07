@@ -465,6 +465,17 @@ $orderId = $request->uuid('order_id');
 
 If the input value is present but is not a valid UUID, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `uuid` method.
 
+<a name="retrieving-ulid-input-values"></a>
+#### Retrieving ULID Input Values
+
+Input values containing ULIDs may be retrieved as `Symfony\Component\Uid\Ulid` instances using the `ulid` method. If the request does not contain an input value with the given name, `null` will be returned:
+
+```php
+$orderId = $request->ulid('order_id');
+```
+
+If the input value is present but is not a valid ULID, an `InvalidArgumentException` will be thrown; therefore, it is recommended that you validate the input before invoking the `ulid` method.
+
 <a name="retrieving-enum-input-values"></a>
 #### Retrieving Enum Input Values
 
