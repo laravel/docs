@@ -6,6 +6,7 @@
     - [FrankenPHP](#frankenphp)
     - [RoadRunner](#roadrunner)
     - [Swoole](#swoole)
+    - [PAM](#pam)
 - [Serving Your Application](#serving-your-application)
     - [Serving Your Application via HTTPS](#serving-your-application-via-https)
     - [Serving Your Application via Nginx](#serving-your-application-via-nginx)
@@ -29,7 +30,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [FrankenPHP](https://frankenphp.dev/), [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
+[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [FrankenPHP](https://frankenphp.dev/), [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), [RoadRunner](https://roadrunner.dev), and [PAM](https://github.com/push-in/pam). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
 
 <a name="installation"></a>
 ## Installation
@@ -249,6 +250,26 @@ Swoole supports a few additional configuration options that you may add to your 
         'package_max_length' => 10 * 1024 * 1024,
     ],
 ],
+```
+
+<a name="pam"></a>
+### PAM
+
+[PAM](https://github.com/push-in/pam) is a PHP application server, written in Rust, that embeds its own copy of PHP. PAM handles the network, worker supervision, and request timeouts, and reloads workers without dropping requests. When you install Octane and choose PAM as your server, Octane will use the `pam` binary installed on your system or offer to install it for you using PAM's official install script:
+
+```shell
+curl -fsSL https://github.com/push-in/pam/releases/latest/download/install.sh | sh
+```
+
+> [!WARNING]
+> Like FrankenPHP, PAM includes its own copy of PHP, so updating your system's PHP installation will not update the PHP version used by Octane. You may check the bundled PHP version using the `pam -r "echo PHP_VERSION;"` command and update PAM using the `pam self-update` command.
+
+When a request exceeds the [maximum execution time](#specifying-the-max-execution-time), PAM responds with a `504 Gateway Timeout` status code and replaces the worker. To serve your application via HTTPS, define the `PAM_TLS_CERT` and `PAM_TLS_KEY` environment variables with the paths to your certificate and private key.
+
+PAM's workers share the listening port using `SO_REUSEPORT`. On Linux 5.14 or later, we recommend enabling the `net.ipv4.tcp_migrate_req` kernel setting so that connections waiting on a worker that is being reloaded are handed to another worker instead of being reset:
+
+```shell
+sudo sysctl -w net.ipv4.tcp_migrate_req=1
 ```
 
 <a name="serving-your-application"></a>
