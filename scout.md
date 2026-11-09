@@ -329,6 +329,79 @@ public function toSearchableArray(): array
 > [!WARNING]
 > Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
 
+<a name="postgresql-full-text-search"></a>
+#### PostgreSQL Full-Text Search
+
+When using PostgreSQL, the database engine can search a stored `tsvector` column, rank results by relevance, and match misspelled queries using the `pg_trgm` extension. To get started, add a searchable column to your table using the `searchable` migration helper, which creates a generated `tsvector` column and a GIN index:
+
+```php
+Schema::table('posts', function (Blueprint $table) {
+    $table->searchable(
+        columns: ['title' => 'A', 'body' => 'D'],
+        language: 'english',
+        trigram: ['title'],
+        tsvector: 'search_vector',
+    );
+});
+```
+
+Each column may be given a weight from `A` to `D`, with `A` ranking highest. Columns without a weight receive `D`. The `trigram` argument lists the columns that should receive a trigram index for typo-tolerant matching and will also create the `pg_trgm` extension. When rolling back the migration, you may use the `dropSearchable` method:
+
+```php
+$table->dropSearchable(trigram: ['title'], tsvector: 'search_vector');
+```
+
+Next, point the `SearchUsingFullText` attribute at the `tsvector` column and enable the `vector` option. Your `toSearchableArray` method should return only the vector column, since any other column adds an `ILIKE` clause that prevents PostgreSQL from using the index:
+
+```php
+use Laravel\Scout\Attributes\SearchUsingFullText;
+
+#[SearchUsingFullText(['search_vector'], ['vector' => true, 'trigram' => ['title']])]
+public function toSearchableArray(): array
+{
+    return ['search_vector' => null];
+}
+```
+
+Searches will now be ordered by relevance unless you provide your own `orderBy` clause, and misspelled queries will still match the `title` column:
+
+```php
+$posts = Post::search('godfathr')->paginate();
+```
+
+The `SearchUsingFullText` attribute accepts the following options on PostgreSQL:
+
+<div class="overflow-auto">
+
+| Option | Description | Default |
+| --- | --- | --- |
+| `vector` | Whether the columns are stored `tsvector` columns. | `false` |
+| `language` | The text search configuration, such as `english` or `public.english_unaccent`. | `english` |
+| `mode` | The query parser: `plain`, `phrase`, `websearch`, or `raw`. | `plain` |
+| `rank` | The ranking function: `ts_rank` or `ts_rank_cd`. | `ts_rank` |
+| `trigram` | The columns used for typo-tolerant matching. | None |
+| `trigram_mode` | How trigram matching is applied: `fallback` or `blend`. | `fallback` |
+
+</div>
+
+The `language` option should match the configuration used to build your `tsvector` column. The `raw` mode passes the search string directly to PostgreSQL's `to_tsquery` function, so input that is not valid `tsquery` syntax will cause a query exception. For user-provided input, the `websearch` mode is usually a better choice. You may also override the `mode`, `language`, `rank`, `trigram`, and `trigram_mode` options for a single search using the `options` method:
+
+```php
+$posts = Post::search('"the godfather"')
+    ->options(['mode' => 'websearch'])
+    ->get();
+```
+
+<a name="postgresql-trigram-performance"></a>
+#### Trigram Performance
+
+Typo-tolerant matching adds overhead, so you should choose the `trigram_mode` that fits your application. The default `fallback` mode only runs a trigram search when the full-text search finds no results, so misspelled queries are slower while other searches are unaffected. The `blend` mode includes trigram matches in every search and can be several times slower. If you do not need typo tolerance, omit the `trigram` option entirely for the fastest searches.
+
+Each trigram index also adds storage and write overhead, so you should only index columns where typo tolerance is useful, such as titles or names. The minimum similarity required for a match is controlled by PostgreSQL's `pg_trgm.similarity_threshold` setting, which defaults to `0.3`.
+
+> [!WARNING]
+> The `searchable` migration helper creates the `pg_trgm` extension, so your database user must have permission to create extensions. If the extension is missing, any search on a model using the `trigram` option will throw a `RuntimeException`, even in `fallback` mode.
+
 <a name="collection-engine"></a>
 ### Collection Engine
 
