@@ -177,6 +177,19 @@ You may generate a suitable key using the `openssl` command:
 openssl rand -base64 32
 ```
 
+<a name="pusher-compatible-servers"></a>
+#### Pusher Compatible Servers
+
+Self-hosted servers that implement the Pusher Channels protocol, such as [Sockudo](https://sockudo.io), may be used with the `pusher` broadcaster without any additional packages. Point the `PUSHER_HOST`, `PUSHER_PORT`, and `PUSHER_SCHEME` environment variables at your server:
+
+```ini
+PUSHER_HOST=127.0.0.1
+PUSHER_PORT=6001
+PUSHER_SCHEME="http"
+```
+
+On the client, configure Echo's `pusher` broadcaster with the matching `wsHost`, `wsPort`, `wssPort`, and `forceTLS` options. For installation and deployment instructions, consult the [Sockudo documentation](https://sockudo.io/docs/getting-started/installation).
+
 <a name="ably"></a>
 ### Ably
 
