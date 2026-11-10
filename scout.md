@@ -329,6 +329,96 @@ public function toSearchableArray(): array
 > [!WARNING]
 > Before specifying that a column should use full text query constraints, ensure that the column has been assigned a [full text index](/docs/{{version}}/migrations#available-index-types).
 
+<a name="postgresql-full-text-search"></a>
+#### PostgreSQL Full-Text Search
+
+When using PostgreSQL, Scout can search stored `tsvector` columns for indexed, weighted full-text search. To get started, use the `searchable` method in a migration to add a generated `search_vector` column and its GIN index:
+
+```php
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+Schema::table('posts', function (Blueprint $table) {
+    $table->searchable(['title' => 'A', 'body' => 'D']);
+});
+```
+
+Column weights range from `A` (highest) to `D` (lowest). You may also pass a list of column names without weights, such as `['title', 'body']`, to assign each column the default weight of `D`. PostgreSQL automatically updates the generated column when the source columns change.
+
+Next, apply the `SearchUsingFullText` attribute to your model's `toSearchableArray` method, setting the `vector` option to `true`:
+
+```php
+use Laravel\Scout\Attributes\SearchUsingFullText;
+
+/**
+ * Get the indexable data array for the model.
+ *
+ * @return array<string, mixed>
+ */
+#[SearchUsingFullText(['search_vector'], ['vector' => true])]
+public function toSearchableArray(): array
+{
+    return ['search_vector' => null];
+}
+```
+
+Only the column name is needed; Scout searches the stored value directly. Return only the vector column to avoid adding `LIKE` clauses for other attributes, which can prevent PostgreSQL from using the GIN index.
+
+The `searchable` method also accepts a text search configuration, columns for trigram indexes, and a custom vector column name:
+
+```php
+$table->searchable(
+    columns: ['title' => 'A', 'body' => 'D'],
+    language: 'english',
+    trigram: ['title'],
+    tsvector: 'search_vector',
+);
+```
+
+To remove the generated column and its indexes when rolling back a migration, use the `dropSearchable` method, passing the same trigram columns and vector column name:
+
+```php
+Schema::table('posts', function (Blueprint $table) {
+    $table->dropSearchable(trigram: ['title'], tsvector: 'search_vector');
+});
+```
+
+#### PostgreSQL Search Options
+
+You may customize PostgreSQL full-text search using the second argument to the `SearchUsingFullText` attribute:
+
+| Option | Description | Default |
+| --- | --- | --- |
+| `vector` | Whether the full-text columns are stored `tsvector` columns. | `false` |
+| `language` | The text search configuration, such as `english` or `public.english_unaccent`. | `english` |
+| `mode` | The query syntax: `plain`, `phrase`, `websearch`, or `raw`. | `plain` |
+| `rank` | The ranking function: `ts_rank` or `ts_rank_cd`. | `ts_rank` |
+| `trigram` | A column name or array of columns for typo-tolerant matching. | None |
+| `trigram_mode` | Whether trigram matching is used as a `fallback` or blended with full-text matches using `blend`. | `fallback` |
+
+The `plain` mode searches for all query terms, while `phrase` matches terms in order. The `websearch` mode supports web search syntax, such as quoted phrases and excluded terms, and `raw` accepts PostgreSQL `tsquery` syntax. When searching a stored vector column, the `language` must match the text search configuration used to generate the column.
+
+To enable typo tolerance, specify trigram columns in both the migration and the attribute options:
+
+```php
+#[SearchUsingFullText(['search_vector'], ['vector' => true, 'trigram' => ['title']])]
+public function toSearchableArray(): array
+{
+    return ['search_vector' => null];
+}
+```
+
+By default, Scout retries searches using trigram matching only when the initial search returns no results. Set `trigram_mode` to `blend` to include trigram matches alongside full-text matches and incorporate trigram similarity into relevance ranking.
+
+> [!WARNING]
+> Trigram matching requires the `pg_trgm` extension to be available on the connection's search path. When trigram columns are provided, the `searchable` migration method creates the extension, so the database user running migrations must have permission to create it.
+
+You may override the `mode`, `language`, `rank`, `trigram`, and `trigram_mode` options for an individual search using the `options` method:
+
+```php
+$posts = Post::search('"laravel scout"')->options(['mode' => 'websearch'])->get();
+```
+
 <a name="collection-engine"></a>
 ### Collection Engine
 

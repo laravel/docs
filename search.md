@@ -23,7 +23,7 @@
 
 Almost every application needs search. Whether your users are searching a knowledge base for relevant articles, exploring a product catalog, or asking natural-language questions against a corpus of documents, Laravel provides built-in tools to handle each of these scenarios — and you often don't need any external services to get there.
 
-Most applications will find that the built-in database-powered options provided by Laravel are more than sufficient — external search services are only necessary when you need features like typo tolerance, faceted filtering, or geo-search at massive scale.
+Most applications will find that the built-in database-powered options provided by Laravel are more than sufficient — external search services are only necessary when you need features like faceted filtering or geo-search at massive scale.
 
 <a name="introduction-full-text-search"></a>
 #### Full-Text Search
@@ -272,6 +272,8 @@ $articles = Article::search('Laravel')->get();
 ```
 
 The database engine is a great choice when your search needs are moderate and you want the convenience of Scout's automatic index syncing without deploying an external service. It handles the most common search use cases well, including filtering, pagination, and soft-deleted record handling. For complete details, consult the [Scout documentation](/docs/{{version}}/scout#database-engine).
+
+On PostgreSQL, Scout also supports [weighted full-text search and typo tolerance](/docs/{{version}}/scout#postgresql-full-text-search) using stored `tsvector` columns and the `pg_trgm` extension.
 
 <a name="third-party-engines"></a>
 ### Third-Party Engines

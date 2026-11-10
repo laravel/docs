@@ -2240,6 +2240,51 @@ You may assert that a response contains specific text using the `assertSee` meth
 $response->assertSee('The current weather in New York City is 72°F and sunny.');
 ```
 
+For tools that return [structured content](#structured-responses), you may assert counts, values at specific paths, and the structure of the response:
+
+```php
+$response
+    ->assertStructuredContentCount(2, 'data')
+    ->assertStructuredContentPath('data.0.location', 'New York City')
+    ->assertStructuredContentPaths([
+        'data.0.temperature' => 72,
+        'data.1.temperature' => 68,
+    ])
+    ->assertStructuredContentStructure([
+        'data' => [
+            '*' => ['location', 'temperature'],
+        ],
+    ]);
+```
+
+Paths support "dot" notation. The `assertStructuredContentPath` method also accepts a closure to determine if the value passes a given truth test:
+
+```php
+$response->assertStructuredContentPath('data.0.temperature', fn (int $temperature): bool => $temperature > 70);
+```
+
+The following structured content assertions are available:
+
+| Method | Description |
+| --- | --- |
+| `assertExactStructuredContent($data)` | Assert that the structured content matches the given array exactly. |
+| `assertSimilarStructuredContent($data)` | Assert that the structured content matches the given array, ignoring order. |
+| `assertStructuredContentCount($count, $key = null)` | Assert the number of items, optionally at a given key. |
+| `assertStructuredContentPath($path, $expect)` | Assert the value at a given path. |
+| `assertStructuredContentPaths($paths)` | Assert multiple path / value pairs. |
+| `assertStructuredContentPathCanonicalizing($path, $expect)` | Assert the values at a given path, ignoring order. |
+| `assertStructuredContentPathsCanonicalizing($paths)` | Assert multiple path / value pairs, ignoring order. |
+| `assertStructuredContentFragment($data)` | Assert that a fragment appears anywhere in the structured content. |
+| `assertStructuredContentFragments($data)` | Assert that each given fragment appears in the structured content. |
+| `assertStructuredContentMissing($data)` | Assert that a fragment does not appear in the structured content. |
+| `assertStructuredContentMissingExact($data)` | Assert that an exact fragment does not appear in the structured content. |
+| `assertStructuredContentMissingPath($path)` | Assert that a path does not exist. |
+| `assertStructuredContentMissingPaths($paths)` | Assert that multiple paths do not exist. |
+| `assertStructuredContentStructure($structure)` | Assert that the given keys exist, allowing additional keys. |
+| `assertExactStructuredContentStructure($structure)` | Assert that only the given keys exist. |
+| `assertStructuredContentIsArray($key = null)` | Assert that the structured content, optionally at a given key, is a JSON array. |
+| `assertStructuredContentIsObject($key = null)` | Assert that the structured content, optionally at a given key, is a JSON object. |
+
 You may assert that a response contains an error using the `assertHasErrors` method:
 
 ```php
