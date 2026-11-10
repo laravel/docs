@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Server Requirements](#server-requirements)
+    - [Laravel PHP Requirements](#laravel-php-requirements)
 - [Server Configuration](#server-configuration)
     - [Nginx](#nginx)
     - [FrankenPHP](#frankenphp)
@@ -24,11 +25,23 @@ When you're ready to deploy your Laravel application to production, there are so
 <a name="server-requirements"></a>
 ## Server Requirements
 
-The Laravel framework has a few system requirements. You should ensure that your web server has the following minimum PHP version and extensions:
+<a name="laravel-php-requirements"></a>
+### Laravel PHP Requirements
+
+Laravel 13 requires PHP 8.3 or higher. Your server must be running a supported version of PHP and have the PHP extensions required by the Laravel framework.
+
+For Laravel 13, the minimum PHP requirement is:
 
 <div class="content-list" markdown="1">
 
 - PHP >= 8.3
+
+</div>
+
+Laravel also requires the following PHP extensions:
+
+<div class="content-list" markdown="1">
+
 - Ctype PHP Extension
 - cURL PHP Extension
 - DOM PHP Extension
@@ -44,6 +57,14 @@ The Laravel framework has a few system requirements. You should ensure that your
 - XML PHP Extension
 
 </div>
+
+You can check the PHP version installed on your server with:
+
+```shell
+php -v
+```
+
+Your PHP version must be 8.3 or higher to run Laravel 13.
 
 <a name="server-configuration"></a>
 ## Server Configuration
