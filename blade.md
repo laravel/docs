@@ -125,7 +125,7 @@ By default, Blade `{{ }}` statements are automatically sent through PHP's `htmls
 Hello, {!! $name !!}.
 ```
 
-Alternatively, you may wrap a string in an instance of `Illuminate\Support\HtmlString`. Blade will not escape these instances, even when using the `{{ }}` statement:
+Alternatively, you may wrap a string in an instance of `Illuminate\Support\HtmlString`. Blade will not escape these instances, even when displayed using the `{{ }}` statement:
 
 ```php
 use Illuminate\Support\HtmlString;
