@@ -464,6 +464,18 @@ foreach ($response->steps as $step) {
 }
 ```
 
+[Image](#images), [transcription](#transcription), [embeddings](#embeddings), [reranking](#reranking), and [classification](#classification) responses, as well as the responses returned when storing or retrieving [files](#files), also expose a `raw` property when it is available for the provider. For example, OpenRouter reports the cost of each request in its response body:
+
+```php
+use Laravel\Ai\Embeddings;
+use Laravel\Ai\Enums\Lab;
+
+$response = Embeddings::for(['Napa Valley has great wine.'])
+    ->generate(Lab::OpenRouter, 'openai/text-embedding-3-small');
+
+$response->raw?->json('usage.cost');
+```
+
 > **Note:** The `raw` property is `null` when streaming a response, when using the Bedrock provider (which performs its API calls via the AWS SDK instead of an HTTP client), and on faked responses unless one is provided explicitly via `withRawResponse`.
 
 <a name="conversation-context"></a>
