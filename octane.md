@@ -266,12 +266,6 @@ curl -fsSL https://github.com/push-in/pam/releases/latest/download/install.sh | 
 
 When a request exceeds the [maximum execution time](#specifying-the-max-execution-time), PAM responds with a `504 Gateway Timeout` status code and replaces the worker. To serve your application via HTTPS, define the `PAM_TLS_CERT` and `PAM_TLS_KEY` environment variables with the paths to your certificate and private key.
 
-PAM's workers share the listening port using `SO_REUSEPORT`. On Linux 5.14 or later, we recommend enabling the `net.ipv4.tcp_migrate_req` kernel setting so that connections waiting on a worker that is being reloaded are handed to another worker instead of being reset:
-
-```shell
-sudo sysctl -w net.ipv4.tcp_migrate_req=1
-```
-
 <a name="serving-your-application"></a>
 ## Serving Your Application
 
