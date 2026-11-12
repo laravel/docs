@@ -56,6 +56,7 @@
     - [Failed Job Events](#failed-job-events)
 - [Clearing Jobs From Queues](#clearing-jobs-from-queues)
 - [Monitoring Your Queues](#monitoring-your-queues)
+    - [Monitoring Long-Running Jobs](#monitoring-long-running-jobs)
 - [Testing](#testing)
     - [Faking a Subset of Jobs](#faking-a-subset-of-jobs)
     - [Testing Job Chains](#testing-job-chains)
@@ -3226,6 +3227,30 @@ public function boot(): void
     });
 }
 ```
+
+<a name="monitoring-long-running-jobs"></a>
+### Monitoring Long-Running Jobs
+
+Laravel can also let you know when a single job takes longer than expected to run. To get started, pass a threshold and a closure to the `Queue` facade's `whenJobRunsLongerThan` method. The threshold may be a number of milliseconds or a `CarbonInterval` instance. The closure receives the job and the number of milliseconds the job took to run. Typically, you should call this method from the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Carbon\CarbonInterval;
+use Illuminate\Contracts\Queue\Job;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Queue::whenJobRunsLongerThan(CarbonInterval::seconds(90), function (Job $job, float $duration) {
+        Log::warning("Job [{$job->resolveName()}] took {$duration}ms to run.");
+    });
+}
+```
+
+The closure is invoked for every job attempt that exceeds the threshold, including attempts that throw an exception. So, a slow job that is retried may invoke the closure more than once.
 
 <a name="testing"></a>
 ## Testing

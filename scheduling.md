@@ -19,6 +19,7 @@
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
 - [Events](#events)
+    - [Monitoring Long-Running Tasks](#monitoring-long-running-tasks)
 
 <a name="introduction"></a>
 ## Introduction
@@ -668,3 +669,21 @@ Laravel dispatches a variety of [events](/docs/{{version}}/events) during the sc
 | `Illuminate\Console\Events\ScheduledTaskFailed`             |
 
 </div>
+
+<a name="monitoring-long-running-tasks"></a>
+### Monitoring Long-Running Tasks
+
+If you would like to be notified when a scheduled task runs longer than expected, you may use the `whenTaskRunsLongerThan` method. This method accepts a threshold, given as a number of seconds or a `CarbonInterval` instance, and a closure that receives the task and its runtime in seconds. You may call this method alongside your task definitions in your application's `routes/console.php` file:
+
+```php
+use Carbon\CarbonInterval;
+use Illuminate\Console\Scheduling\Event;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::whenTaskRunsLongerThan(CarbonInterval::minutes(5), function (Event $task, float $runtime) {
+    Log::warning("Scheduled task [{$task->getSummaryForDisplay()}] took {$runtime} seconds to run.");
+});
+```
+
+The closure is invoked for tasks that finish as well as tasks that fail. Tasks that [run in the background](#background-tasks) are only timed until they have been started, so they will not invoke the closure.
