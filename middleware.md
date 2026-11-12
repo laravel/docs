@@ -130,6 +130,23 @@ use App\Http\Middleware\EnsureTokenIsValid;
 
 The `$middleware` object provided to the `withMiddleware` closure is an instance of `Illuminate\Foundation\Configuration\Middleware` and is responsible for managing the middleware assigned to your application's routes. The `append` method adds the middleware to the end of the list of global middleware. If you would like to add a middleware to the beginning of the list, you should use the `prepend` method.
 
+If a middleware needs to run at a specific point in Laravel's default global middleware stack, you may use the `insertBefore` and `insertAfter` methods. Both methods accept the middleware already in the stack that you want to position against, followed by the middleware you want to insert:
+
+```php
+use App\Http\Middleware\SanitizeInput;
+use App\Http\Middleware\StripCrossOriginReferer;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
+use Illuminate\Http\Middleware\TrustProxies;
+
+->withMiddleware(function (Middleware $middleware): void {
+    $middleware->insertAfter(TrustProxies::class, StripCrossOriginReferer::class);
+
+    $middleware->insertBefore(TrimStrings::class, SanitizeInput::class);
+})
+```
+
+You may also pass an array of middleware as the second argument to either method. If the middleware you are positioning against is not part of the global middleware stack, nothing will be inserted.
+
 <a name="manually-managing-laravels-default-global-middleware"></a>
 #### Manually Managing Laravel's Default Global Middleware
 
@@ -299,6 +316,15 @@ Or, you may remove a middleware entirely:
 $middleware->web(remove: [
     StartSession::class,
 ]);
+```
+
+If you need a middleware to run at a particular position within a group, you may use the `insertBeforeInGroup` and `insertAfterInGroup` methods:
+
+```php
+use App\Http\Middleware\EnsureUserIsSubscribed;
+use Illuminate\Session\Middleware\StartSession;
+
+$middleware->insertAfterInGroup('web', StartSession::class, EnsureUserIsSubscribed::class);
 ```
 
 <a name="manually-managing-laravels-default-middleware-groups"></a>
