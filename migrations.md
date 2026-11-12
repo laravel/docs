@@ -1662,17 +1662,3 @@ For convenience, each migration operation will dispatch an [event](/docs/{{versi
 | `Illuminate\Database\Events\SchemaLoaded`        | An existing database schema dump has loaded.     |
 
 </div>
-
-The `MigrationFailed` event is dispatched when a migration throws an exception, right before the exception is re-thrown. The event's `exception` property contains the exception that caused the failure, which makes it a good place to alert your team, since some databases can't roll back schema changes that already ran:
-
-```php
-use Illuminate\Database\Events\MigrationFailed;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
-
-Event::listen(function (MigrationFailed $event) {
-    Log::critical("Migration [{$event->name}] failed.", [
-        'exception' => $event->exception->getMessage(),
-    ]);
-});
-```
