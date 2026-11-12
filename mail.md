@@ -875,6 +875,28 @@ Thanks,<br>
 > [!NOTE]
 > Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks.
 
+<a name="escaping-markdown"></a>
+#### Escaping Markdown
+
+Blade's `{{ }}` echo statements escape HTML, but they do not escape Markdown. Since Markdown mail templates are converted to HTML after Blade renders them, Markdown syntax within user-supplied data, such as links and images, will be rendered in the resulting email.
+
+To escape link and image syntax within echoed data, you may invoke the `withSecuredEncoding` method of the `Illuminate\Mail\Markdown` class. Typically, this method should be invoked from the `boot` method of your application's `AppServiceProvider`. This setting also applies to [Markdown mail notifications](/docs/{{version}}/notifications#markdown-mail-notifications):
+
+```php
+use Illuminate\Mail\Markdown;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Markdown::withSecuredEncoding();
+}
+```
+
+> [!WARNING]
+> Secured encoding does not escape all Markdown syntax. Other syntax, such as headings and emphasis, will still be rendered, so you should always validate user input that is displayed within your emails.
+
 <a name="button-component"></a>
 #### Button Component
 
