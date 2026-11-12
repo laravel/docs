@@ -145,7 +145,10 @@ use Illuminate\Http\Middleware\TrustProxies;
 })
 ```
 
-You may also pass an array of middleware as the second argument to either method. If the middleware you are positioning against is not part of the global middleware stack, nothing will be inserted.
+You may also pass an array of middleware as the second argument to either method.
+
+> [!WARNING]
+> If the middleware you are positioning against is not part of the global middleware stack, nothing will be inserted.
 
 <a name="manually-managing-laravels-default-global-middleware"></a>
 #### Manually Managing Laravel's Default Global Middleware
