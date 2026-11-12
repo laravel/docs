@@ -875,6 +875,9 @@ Thanks,<br>
 > [!NOTE]
 > Do not use excess indentation when writing Markdown emails. Per Markdown standards, Markdown parsers will render indented content as code blocks.
 
+> [!WARNING]
+> Blade's `{{ }}` echo statements escape HTML but not Markdown, so Markdown syntax within user-supplied data, such as links and images, will be rendered in the email. To escape link and image syntax, invoke `Illuminate\Mail\Markdown::withSecuredEncoding()` in the `boot` method of your `AppServiceProvider`.
+
 <a name="button-component"></a>
 #### Button Component
 
