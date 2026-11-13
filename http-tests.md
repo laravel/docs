@@ -931,7 +931,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-The `TestView` class provides the following assertion methods: `assertSee`, `assertSeeInOrder`, `assertSeeText`, `assertSeeTextInOrder`, `assertDontSee`, and `assertDontSeeText`.
+The `TestView` class provides the following assertion methods: `assertSee`, `assertSeeHtml`, `assertSeeHtmlInOrder`, `assertSeeInOrder`, `assertSeeText`, `assertSeeTextInOrder`, `assertDontSee`, `assertDontSeeHtml`, and `assertDontSeeText`.
 
 If needed, you may get the raw, rendered view contents by casting the `TestView` instance to a string:
 
@@ -1052,6 +1052,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertCookieMissing](#assert-cookie-missing)
 [assertCreated](#assert-created)
 [assertDontSee](#assert-dont-see)
+[assertDontSeeHtml](#assert-dont-see-html)
 [assertDontSeeText](#assert-dont-see-text)
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
@@ -1099,6 +1100,8 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
 [assertRequestTimeout](#assert-request-timeout)
 [assertSee](#assert-see)
+[assertSeeHtml](#assert-see-html)
+[assertSeeHtmlInOrder](#assert-see-html-in-order)
 [assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
@@ -1216,6 +1219,15 @@ Assert that the given string is not contained within the response returned by th
 
 ```php
 $response->assertDontSee($value, $escape = true);
+```
+
+<a name="assert-dont-see-html"></a>
+#### assertDontSeeHtml
+
+Assert that the given HTML string is not contained within the response returned by the application. This assertion is an alias to `assertDontSee` with its escape argument set to `false`:
+
+```php
+$response->assertDontSeeHtml($value);
 ```
 
 <a name="assert-dont-see-text"></a>
@@ -1768,6 +1780,24 @@ Assert that the given string is contained within the response. This assertion wi
 
 ```php
 $response->assertSee($value, $escape = true);
+```
+
+<a name="assert-see-html"></a>
+#### assertSeeHtml
+
+Assert that the given HTML string or array of HTML strings are contained within the response. This assertion is an alias to `assertSee` with its escape argument set to `false`:
+
+```php
+$response->assertSeeHtml($value);
+```
+
+<a name="assert-see-html-in-order"></a>
+#### assertSeeHtmlInOrder
+
+Assert that the given HTML strings are contained in order within the response. This assertion is an alias to `assertSeeInOrder` with its escape argument set to `false`:
+
+```php
+$response->assertSeeHtmlInOrder(array $values);
 ```
 
 <a name="assert-see-in-order"></a>
