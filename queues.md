@@ -1637,8 +1637,37 @@ public function retryUntil(): DateTime
 
 If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
 
+Alternatively, you may define a relative retry window using the `RetryFor` attribute on your job class:
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Attributes\RetryFor;
+
+#[RetryFor(hours: 1)]
+class ProcessPodcast implements ShouldQueue
+{
+    use Queueable;
+}
+```
+
+The first argument specifies the duration in seconds, or you may pass named `minutes` and `hours` arguments:
+
+```php
+#[RetryFor(90)]
+#[RetryFor(minutes: 10)]
+#[RetryFor(hours: 4)]
+#[RetryFor(hours: 1, minutes: 30)]
+```
+
+If a `retryUntil` method or property is defined on the job class, it takes precedence over the `RetryFor` attribute.
+
 > [!NOTE]
-> You may also define a `Tries` attribute or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners) and [queued notifications](/docs/{{version}}/notifications#queueing-notifications).
+> You may also define a `Tries` or `RetryFor` attribute or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners) and [queued notifications](/docs/{{version}}/notifications#queueing-notifications).
 
 <a name="max-exceptions"></a>
 #### Max Exceptions
