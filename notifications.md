@@ -325,7 +325,7 @@ class InvoicePaid extends Notification implements ShouldQueue, ShouldBeEncrypted
 }
 ```
 
-In addition to defining these attributes directly on your notification class, you may also define `backoff` and `retryUntil` methods to specify the backoff strategy and retry timeout for the queued notification job:
+In addition to defining these attributes directly on your notification class, you may also define the `RetryFor` attribute or define `backoff` and `retryUntil` methods to specify the backoff strategy and retry timeout for the queued notification job:
 
 ```php
 use DateTime;

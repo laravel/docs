@@ -796,6 +796,18 @@ public function retryUntil(): DateTimeInterface
 
 If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
 
+Alternatively, you may define a relative retry window using the `RetryFor` attribute on your listener class:
+
+```php
+use Illuminate\Queue\Attributes\RetryFor;
+
+#[RetryFor(minutes: 5)]
+class SendShipmentNotification implements ShouldQueue
+{
+    // ...
+}
+```
+
 <a name="specifying-queued-listener-backoff"></a>
 #### Specifying Queued Listener Backoff
 
