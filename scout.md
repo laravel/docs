@@ -474,7 +474,7 @@ class Post extends Model
 <a name="configuring-the-model-id"></a>
 #### Configuring the Model ID
 
-By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior when using a third-party engine, you may override the `getScoutKey` and the `getScoutKeyName` methods on the model:
+By default, Scout will use the primary key of the model as the model's unique ID / key that is stored in the search index. If you need to customize this behavior when using a third-party engine, you may override the `getScoutKey`, `getScoutKeyName`, and `getScoutKeyType` methods on the model. The `getScoutKeyType` method tells Scout how to query for the models matching your search results, so it should return `string` when your custom key is not an integer:
 
 ```php
 <?php
@@ -503,11 +503,19 @@ class User extends Model
     {
         return 'email';
     }
+
+    /**
+     * Get the key type used to query the model.
+     */
+    public function getScoutKeyType(): string
+    {
+        return 'string';
+    }
 }
 ```
 
 > [!NOTE]
-> The `getScoutKey` and `getScoutKeyName` methods have no effect when using the database engine, which always uses the model's primary key.
+> The `getScoutKey`, `getScoutKeyName`, and `getScoutKeyType` methods have no effect when using the database engine, which always uses the model's primary key.
 
 <a name="algolia-configuration"></a>
 ### Algolia
