@@ -1400,7 +1400,7 @@ php artisan make:component Alert --inline
 ```
 
 <a name="using-attributes-slots-within-component-class"></a>
-#### Accessing Attributes and Slots Within Component Classes
+#### Accessing Attributes and Slots in Inline Views
 
 If you need the component name, attributes, or slot inside the class's `render` method, you may return a closure instead. The closure receives a `$data` array as its only argument:
 
