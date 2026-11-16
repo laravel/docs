@@ -1388,7 +1388,7 @@ public function render(): RawTemplate
 ```
 
 > [!WARNING]
-> `RawTemplate` markup is compiled and executed as Blade, so injected content could allow remote code execution. Never build the markup from untrusted data. Instead, pass the data to the component and display it using Blade's escaped `{{ }}` syntax.
+> A `RawTemplate` is compiled and executed as Blade, so injected content could allow remote code execution. Never build the template from untrusted data. Instead, pass the data to the component and display it using Blade's escaped `{{ }}` syntax.
 
 <a name="generating-inline-view-components"></a>
 #### Generating Inline View Components
@@ -1432,7 +1432,7 @@ The `componentName` is equal to the name used in the HTML tag after the `x-` pre
 The closure should return either the name of a view or a `RawTemplate` instance.
 
 > [!WARNING]
-> The elements in the `$data` array should be treated as untrusted data, since they contain the attributes and slot content passed to the component. Never embed them into the `RawTemplate` markup returned by your closure, as doing so could allow remote code execution.
+> The elements in the `$data` array should be treated as untrusted data, since they contain the attributes and slot content passed to the component. Never embed them into the template returned by your closure, as doing so could allow remote code execution.
 
 <a name="dynamic-components"></a>
 ### Dynamic Components
