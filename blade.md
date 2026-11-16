@@ -1388,7 +1388,7 @@ public function render(): RawTemplate
 ```
 
 > [!WARNING]
-> Inline component markup is compiled and executed as a Blade template. Never build it from user input, such as a user's name, since any Blade syntax in that input will be executed. Pass the data to the component and output it with `{{ }}` instead.
+> `RawTemplate` markup is compiled and executed as Blade, so injected content could allow remote code execution. Never build the markup from untrusted data. Instead, pass the data to the component and display it using Blade's escaped `{{ }}` syntax.
 
 <a name="generating-inline-view-components"></a>
 #### Generating Inline View Components
@@ -1425,10 +1425,10 @@ public function render(): Closure
 
 The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is an `Illuminate\View\ComponentSlot` instance with the contents of the component's slot.
 
-The closure may return a `RawTemplate` instance or the name of a view to render.
+The closure should return either the name of a view or a `RawTemplate` instance.
 
 > [!WARNING]
-> The elements in the `$data` array should never be embedded into the template returned by your closure, as doing so could allow remote code execution via malicious attribute content.
+> The elements in the `$data` array should be treated as untrusted data, since they contain the attributes and slot content passed to the component. Never embed them into the `RawTemplate` markup returned by your closure, as doing so could allow remote code execution.
 
 <a name="dynamic-components"></a>
 ### Dynamic Components
@@ -1940,6 +1940,9 @@ use Illuminate\Support\Facades\Blade;
 
 return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);
 ```
+
+> [!WARNING]
+> The template string passed to the `render` method is compiled and executed as Blade, so injected content could allow remote code execution. Never build the template from untrusted data. Instead, pass the data using the method's second argument and display it using Blade's escaped `{{ }}` syntax.
 
 Laravel renders inline Blade templates by writing them to the `storage/framework/views` directory. If you would like Laravel to remove these temporary files after rendering the Blade template, you may provide the `deleteCachedView` argument to the method:
 
