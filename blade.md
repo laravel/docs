@@ -1418,7 +1418,11 @@ public function render(): Closure
         // $data['attributes'];
         // $data['slot'];
 
-        return new RawTemplate('<div {{ $attributes }}>Components content</div>');
+        if ($data['slot']->isEmpty()) {
+            return new RawTemplate('<div {{ $attributes }}>No content provided.</div>');
+        }
+
+        return new RawTemplate('<div {{ $attributes }}>{{ $slot }}</div>');
     };
 }
 ```
