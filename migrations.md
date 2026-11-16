@@ -1288,7 +1288,7 @@ return new class extends Migration
 };
 ```
 
-> [!WARNING]
+> [!NOTE]
 > Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
 
 <a name="column-order"></a>

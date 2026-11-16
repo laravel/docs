@@ -427,7 +427,7 @@ $value = Redis::eval(<<<'LUA'
 LUA, 2, 'first-counter', 'second-counter');
 ```
 
-> [!WARNING]
+> [!NOTE]
 > Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
 
 <a name="pipelining-commands"></a>

@@ -1158,7 +1158,7 @@ If you are utilizing [soft deleting models](#soft-deleting), you may permanently
 Flight::forceDestroy(1);
 ```
 
-> [!WARNING]
+> [!NOTE]
 > The `destroy` method loads each model individually and calls the `delete` method so that the `deleting` and `deleted` events are properly dispatched for each model.
 
 <a name="deleting-models-using-queries"></a>

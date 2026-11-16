@@ -839,7 +839,7 @@ select * from comments where user_id in (
 )
 ```
 
-> [!WARNING]
+> [!NOTE]
 > If you are adding a large array of integer bindings to your query, the `whereIntegerInRaw` or `whereIntegerNotInRaw` methods may be used to greatly reduce your memory usage.
 
 **whereBetween / orWhereBetween**

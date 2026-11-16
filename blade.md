@@ -1451,7 +1451,7 @@ Sometimes you may need to render a component but not know which component should
 <a name="manually-registering-components"></a>
 ### Manually Registering Components
 
-> [!WARNING]
+> [!NOTE]
 > The following documentation on manually registering components is primarily applicable to those who are writing Laravel packages that include view components. If you are not writing a package, this portion of the component documentation may not be relevant to you.
 
 When writing components for your own application, components are automatically discovered within the `app/View/Components` directory and `resources/views/components` directory.

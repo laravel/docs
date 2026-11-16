@@ -526,7 +526,7 @@ $service->method($request->input('name'));
 
 The global `request` helper will always return the request the application is currently handling and is therefore safe to use within your application.
 
-> [!WARNING]
+> [!NOTE]
 > It is acceptable to type-hint the `Illuminate\Http\Request` instance on your controller methods and route closures.
 
 <a name="configuration-repository-injection"></a>
