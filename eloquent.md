@@ -720,6 +720,27 @@ $flight = Flight::where('legs', '>', 3)->firstOr(function () {
 });
 ```
 
+<a name="retrieving-single-column-values"></a>
+#### Retrieving Single Column Values
+
+If you don't need an entire model, you may retrieve the value of a single column from the first model matching the query using the `value` method. If no matching model is found, `null` is returned:
+
+```php
+$name = Flight::where('active', 1)->value('name');
+```
+
+The `valueOrFail` method behaves like `value`; however, if no result is found, an `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown:
+
+```php
+$name = Flight::where('active', 1)->valueOrFail('name');
+```
+
+The `soleValue` method retrieves the column's value only if exactly one model matches the query. If no result is found, an `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown. If more than one model matches, an `Illuminate\Database\MultipleRecordsFoundException` will be thrown:
+
+```php
+$name = Flight::where('number', 'FR 900')->soleValue('name');
+```
+
 <a name="not-found-exceptions"></a>
 #### Not Found Exceptions
 
