@@ -115,6 +115,12 @@ If you don't need an entire row, you may extract a single value from a record us
 $email = DB::table('users')->where('name', 'John')->value('email');
 ```
 
+The `soleValue` method retrieves the column's value only if exactly one row matches the query. If no matching row is found, an `Illuminate\Database\RecordsNotFoundException` will be thrown. If more than one row matches, an `Illuminate\Database\MultipleRecordsFoundException` will be thrown:
+
+```php
+$email = DB::table('users')->where('name', 'John')->soleValue('email');
+```
+
 To retrieve a single row by its `id` column value, use the `find` method:
 
 ```php
