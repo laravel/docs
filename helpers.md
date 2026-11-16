@@ -3748,6 +3748,7 @@ $uri = Uri::of('https://example.com')
 The `Uri` class also allows you to easily inspect the various components of the underlying URI:
 
 ```php
+$origin = $uri->origin();
 $scheme = $uri->scheme();
 $authority = $uri->authority();
 $host = $uri->host();
