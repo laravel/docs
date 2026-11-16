@@ -1945,9 +1945,6 @@ use Illuminate\Support\Facades\Blade;
 return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);
 ```
 
-> [!WARNING]
-> The template string passed to the `render` method is compiled and executed as Blade, so injected content could allow remote code execution. Never build the template from untrusted data. Instead, pass the data using the method's second argument and display it using Blade's escaped `{{ }}` syntax.
-
 Laravel renders inline Blade templates by writing them to the `storage/framework/views` directory. If you would like Laravel to remove these temporary files after rendering the Blade template, you may provide the `deleteCachedView` argument to the method:
 
 ```php
@@ -1957,6 +1954,9 @@ return Blade::render(
     deleteCachedView: true
 );
 ```
+
+> [!WARNING]
+> The template string passed to the `render` method is compiled and executed as Blade, so injected content could allow remote code execution. Never build the template from untrusted data. Instead, pass the data using the method's second argument and display it using Blade's escaped `{{ }}` syntax.
 
 <a name="rendering-blade-fragments"></a>
 ## Rendering Blade Fragments
