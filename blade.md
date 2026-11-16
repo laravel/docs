@@ -1407,21 +1407,26 @@ To interact with slot attributes, you may access the `attributes` property of th
 <a name="inline-component-views"></a>
 ### Inline Component Views
 
-For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may return the component's markup directly from the `render` method:
+For very small components, it may feel cumbersome to manage both the component class and the component's view template. For this reason, you may return the component's markup directly from the `render` method by wrapping it in an `Illuminate\View\RawTemplate` instance:
 
 ```php
+use Illuminate\View\RawTemplate;
+
 /**
  * Get the view / contents that represent the component.
  */
-public function render(): string
+public function render(): RawTemplate
 {
-    return <<<'blade'
+    return new RawTemplate(<<<'blade'
         <div class="alert alert-danger">
             {{ $slot }}
         </div>
-    blade;
+    blade);
 }
 ```
+
+> [!WARNING]
+> Inline component markup is compiled and executed as a Blade template. Never build it from user input, such as a user's name, since any Blade syntax in that input will be executed. Pass the data to the component and output it with `{{ }}` instead.
 
 <a name="generating-inline-view-components"></a>
 #### Generating Inline View Components
