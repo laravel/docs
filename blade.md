@@ -1007,44 +1007,6 @@ You may execute this method from your component template by invoking the variabl
 </option>
 ```
 
-<a name="using-attributes-slots-within-component-class"></a>
-#### Accessing Attributes and Slots Within Component Classes
-
-Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method:
-
-```php
-use Closure;
-
-/**
- * Get the view / contents that represent the component.
- */
-public function render(): Closure
-{
-    return function () {
-        return '<div {{ $attributes }}>Components content</div>';
-    };
-}
-```
-
-The closure returned by your component's `render` method may also receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
-
-```php
-return function (array $data) {
-    // $data['componentName'];
-    // $data['attributes'];
-    // $data['slot'];
-
-    return '<div {{ $attributes }}>Components content</div>';
-};
-```
-
-> [!WARNING]
-> The elements in the `$data` array should never be directly embedded into the Blade string returned by your `render` method, as doing so could allow remote code execution via malicious attribute content.
-
-The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is an `Illuminate\View\ComponentSlot` instance with the contents of the component's slot.
-
-The closure should return a string. If the returned string corresponds to an existing view, that view will be rendered; otherwise, the returned string will be evaluated as an inline Blade view.
-
 <a name="additional-dependencies"></a>
 #### Additional Dependencies
 
@@ -1426,7 +1388,7 @@ public function render(): RawTemplate
 ```
 
 > [!WARNING]
-> Inline component markup is compiled and executed as a Blade template. Never build it from user input, such as a user's name, since any Blade syntax in that input will be executed. Pass the data to the component and output it with `{{ }}` instead.
+> A `RawTemplate` is compiled and executed as Blade, so injected content could allow remote code execution. Never build the template from untrusted data. Instead, pass the data to the component and display it using Blade's escaped `{{ }}` syntax.
 
 <a name="generating-inline-view-components"></a>
 #### Generating Inline View Components
@@ -1436,6 +1398,41 @@ To create a component that renders an inline view, you may use the `inline` opti
 ```shell
 php artisan make:component Alert --inline
 ```
+
+<a name="using-attributes-slots-within-component-class"></a>
+#### Accessing Attributes and Slots in Inline Views
+
+If you need the component name, attributes, or slot inside the class's `render` method, you may return a closure instead. The closure receives a `$data` array as its only argument:
+
+```php
+use Closure;
+use Illuminate\View\RawTemplate;
+
+/**
+ * Get the view / contents that represent the component.
+ */
+public function render(): Closure
+{
+    return function (array $data) {
+        // $data['componentName'];
+        // $data['attributes'];
+        // $data['slot'];
+
+        if ($data['slot']->isEmpty()) {
+            return new RawTemplate('<div {{ $attributes }}>No content provided.</div>');
+        }
+
+        return new RawTemplate('<div {{ $attributes }}>{{ $slot }}</div>');
+    };
+}
+```
+
+The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is an `Illuminate\View\ComponentSlot` instance with the contents of the component's slot.
+
+The closure should return either the name of a view or a `RawTemplate` instance.
+
+> [!WARNING]
+> The elements in the `$data` array should be treated as untrusted, since they contain the attributes and slot content passed to the component. Never embed them into the template returned by your closure, as doing so could allow remote code execution.
 
 <a name="dynamic-components"></a>
 ### Dynamic Components
@@ -1957,6 +1954,9 @@ return Blade::render(
     deleteCachedView: true
 );
 ```
+
+> [!WARNING]
+> The template string passed to the `render` method is compiled and executed as Blade, so injected content could allow remote code execution. Never build the template from untrusted data. Instead, pass the data using the method's second argument and display it using Blade's escaped `{{ }}` syntax.
 
 <a name="rendering-blade-fragments"></a>
 ## Rendering Blade Fragments
