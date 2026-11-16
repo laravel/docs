@@ -1612,7 +1612,7 @@ $user->meters();
 <a name="subscription-taxes"></a>
 ### Subscription Taxes
 
-> [!WARNING]
+> [!NOTE]
 > Instead of calculating Tax Rates manually, you can [automatically calculate taxes using Stripe Tax](#tax-configuration)
 
 To specify the tax rates a user pays on a subscription, you should implement the `taxRates` method on your billable model and return an array containing the Stripe tax rate IDs. You can define these tax rates in [your Stripe dashboard](https://dashboard.stripe.com/test/tax-rates):
@@ -2445,7 +2445,7 @@ $checkout = $user->collectTaxIds()->checkout('price_tshirt');
 
 When this method is invoked, a new checkbox will be available to the customer that allows them to indicate if they're purchasing as a company. If so, they will have the opportunity to provide their Tax ID number.
 
-> [!WARNING]
+> [!NOTE]
 > If you have already configured [automatic tax collection](#tax-configuration) in your application's service provider then this feature will be enabled automatically and there is no need to invoke the `collectTaxIds` method.
 
 <a name="guest-checkouts"></a>
@@ -2573,7 +2573,7 @@ You may consult the [Stripe API documentation](https://stripe.com/docs/api/payme
 
 If your business or one of your customers is based in Europe you will need to abide by the EU's Strong Customer Authentication (SCA) regulations. These regulations were imposed in September 2019 by the European Union to prevent payment fraud. Luckily, Stripe and Cashier are prepared for building SCA compliant applications.
 
-> [!WARNING]
+> [!NOTE]
 > Before getting started, review [Stripe's guide on PSD2 and SCA](https://stripe.com/guides/strong-customer-authentication) as well as their [documentation on the new SCA APIs](https://stripe.com/docs/strong-customer-authentication).
 
 <a name="payments-requiring-additional-confirmation"></a>

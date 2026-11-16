@@ -1742,7 +1742,7 @@ window.Pusher = Pusher;
 <a name="model-broadcasting"></a>
 ## Model Broadcasting
 
-> [!WARNING]
+> [!NOTE]
 > Before reading the following documentation about model broadcasting, we recommend you become familiar with the general concepts of Laravel's model broadcasting services as well as how to manually create and listen to broadcast events.
 
 It is common to broadcast events when your application's [Eloquent models](/docs/{{version}}/eloquent) are created, updated, or deleted. Of course, this can easily be accomplished by manually [defining custom events for Eloquent model state changes](/docs/{{version}}/eloquent#events) and marking those events with the `ShouldBroadcast` interface.

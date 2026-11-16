@@ -620,7 +620,7 @@ stopwaitsecs=3600
 
 When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
 
-> [!WARNING]
+> [!NOTE]
 > While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information.
 
 <a name="starting-supervisor"></a>
@@ -728,7 +728,7 @@ class SendRenderNotifications implements ShouldQueue
 <a name="notifications"></a>
 ## Notifications
 
-> [!WARNING]
+> [!NOTE]
 > When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/{{version}}/notifications).
 
 If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:

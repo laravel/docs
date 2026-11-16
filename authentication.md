@@ -110,7 +110,7 @@ And, if you would like to get started quickly, we are pleased to recommend [our 
 <a name="authentication-quickstart"></a>
 ## Authentication Quickstart
 
-> [!WARNING]
+> [!NOTE]
 > This portion of the documentation discusses authenticating users via the [Laravel application starter kits](/docs/{{version}}/starter-kits), which includes UI scaffolding to help you get started quickly. If you would like to integrate with Laravel's authentication systems directly, check out the documentation on [manually authenticating users](#authenticating-users).
 
 <a name="install-a-starter-kit"></a>
@@ -311,7 +311,7 @@ if (Auth::attempt([
 }
 ```
 
-> [!WARNING]
+> [!NOTE]
 > In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database table.
 
 The `attemptWhen` method, which receives a closure as its second argument, may be used to perform more extensive inspection of the potential user before actually authenticating the user. The closure receives the potential user and should return `true` or `false` to indicate if the user may be authenticated:
