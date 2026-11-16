@@ -911,7 +911,7 @@ protected function makeAllSearchableUsing(Builder $query): Builder
 ```
 
 > [!WARNING]
-> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/docs/{{version}}/queues#handling-relationships) when model collections are processed by jobs.
+> When using a queue to batch import models, relationships eager loaded by the `makeAllSearchableUsing` method are [retrieved again in their entirety](/docs/{{version}}/queues#handling-relationships) when the job is processed, so any constraints applied to them are lost. If you need to constrain a relationship, eager load it in the [`makeSearchableUsing`](#modifying-records-before-importing) method instead, which runs within the job.
 
 <a name="adding-records"></a>
 ### Adding Records
