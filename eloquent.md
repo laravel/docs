@@ -741,6 +741,21 @@ Route::get('/api/flights/{id}', function (string $id) {
 });
 ```
 
+<a name="retrieving-primary-key-values"></a>
+#### Retrieving Primary Key Values
+
+Sometimes you may only need the primary key of the first model matching a query instead of the entire model. The `keyValue` method selects only the model's primary key column and returns its value. If no matching model is found, `null` is returned:
+
+```php
+$id = Flight::where('name', 'London to Paris')->keyValue();
+```
+
+The `keyValueOrFail` method behaves like `keyValue`; however, if no result is found, an `Illuminate\Database\Eloquent\ModelNotFoundException` will be thrown:
+
+```php
+$id = Flight::where('name', 'London to Paris')->keyValueOrFail();
+```
+
 <a name="retrieving-or-creating-models"></a>
 ### Retrieving or Creating Models
 
