@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
     - [Resetting the Database After Each Test](#resetting-the-database-after-each-test)
+    - [Disabling Migration Events](#disabling-migration-events)
 - [Model Factories](#model-factories)
 - [Running Seeders](#running-seeders)
 - [Available Assertions](#available-assertions)
@@ -57,6 +58,37 @@ class ExampleTest extends TestCase
 The `Illuminate\Foundation\Testing\RefreshDatabase` trait does not migrate your database if your schema is up to date. Instead, it will only execute the test within a database transaction. Therefore, any records added to the database by test cases that do not use this trait may still exist in the database.
 
 If you would like to totally reset the database, you may use the `Illuminate\Foundation\Testing\DatabaseMigrations` or `Illuminate\Foundation\Testing\DatabaseTruncation` traits instead. However, both of these options are significantly slower than the `RefreshDatabase` trait.
+
+<a name="disabling-migration-events"></a>
+### Disabling Migration Events
+
+When using the `RefreshDatabase` trait, database events are dispatched while executing your migrations by default. If your tests listen for database events or count executed queries (such as via `$this->expectsDatabaseQueryCount()`), the migration queries may interfere with your test assertions when migrations execute during the test.
+
+You may prevent database events from being dispatched during migrations by adding the `WithoutMigrationEvents` attribute to your test class or test method:
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\Attributes\WithoutMigrationEvents;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[WithoutMigrationEvents]
+    public function test_only_user_queries_are_counted(): void
+    {
+        $this->expectsDatabaseQueryCount(1);
+
+        User::first();
+    }
+}
+```
 
 <a name="model-factories"></a>
 ## Model Factories
