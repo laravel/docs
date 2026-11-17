@@ -32,7 +32,7 @@
     - [Error Message Indexes and Positions](#error-message-indexes-and-positions)
 - [Validating Files](#validating-files)
 - [Validating Passwords](#validating-passwords)
-- [Deriving Rules From JSON Schema](#deriving-rules-from-json-schema)
+- [Deriving Rules From JSON Schemas](#deriving-rules-from-json-schemas)
 - [Custom Validation Rules](#custom-validation-rules)
     - [Using Rule Objects](#using-rule-objects)
     - [Using Closures](#using-closures)
@@ -3086,8 +3086,8 @@ Password::defaults(function () {
 });
 ```
 
-<a name="deriving-rules-from-json-schema"></a>
-## Deriving Rules From JSON Schema
+<a name="deriving-rules-from-json-schemas"></a>
+## Deriving Rules From JSON Schemas
 
 If your application describes data schemas using Laravel's [JSON Schema](/docs/{{version}}/ai-sdk#tool-input-schemas) builder or raw JSON Schema definitions (such as tool inputs in [Laravel MCP](/docs/{{version}}/mcp#tool-input-schemas)), you may use the `JsonSchema::rules` method to automatically derive Laravel validation rules from an object schema:
 
