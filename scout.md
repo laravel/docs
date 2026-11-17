@@ -532,9 +532,6 @@ class User extends Model
 }
 ```
 
-> [!NOTE]
-> The `getScoutKey`, `getScoutKeyName`, and `getScoutKeyType` methods have no effect when using the database engine, which always uses the model's primary key.
-
 <a name="algolia-configuration"></a>
 ### Algolia
 
