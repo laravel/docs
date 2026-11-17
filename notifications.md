@@ -1964,6 +1964,28 @@ public function handle(NotificationSent $event): void
 }
 ```
 
+<a name="notification-skipped-event"></a>
+#### Notification Skipped Event
+
+When a notification is not sent because its [`shouldSend` method](#determining-if-the-queued-notification-should-be-sent) returned `false` or a listener for the `NotificationSending` event returned `false`, the `Illuminate\Notifications\Events\NotificationSkipped` [event](/docs/{{version}}/events) is dispatched by the notification system. You may listen for this event to log or trace notifications that were skipped:
+
+```php
+use Illuminate\Notifications\Events\NotificationSkipped;
+
+class LogSkippedNotification
+{
+    /**
+     * Handle the event.
+     */
+    public function handle(NotificationSkipped $event): void
+    {
+        // $event->channel
+        // $event->notifiable
+        // $event->notification
+    }
+}
+```
+
 <a name="custom-channels"></a>
 ## Custom Channels
 
