@@ -936,6 +936,16 @@ return $this->belongsToMany(Podcast::class)
     ->wherePivotNotNull('expired_at');
 ```
 
+You may also pass a closure to the `wherePivot` and `orWherePivot` methods. The closure receives a query builder for the intermediate table's model, so you may group several conditions or call query scopes defined on a [custom intermediate table model](#defining-custom-intermediate-table-models). The conditions are added to the relationship query as a nested group:
+
+```php
+return $this->belongsToMany(Role::class)
+    ->using(RoleUser::class)
+    ->wherePivot(function (Builder $query) {
+        $query->approved()->where('priority', '>', 1);
+    });
+```
+
 The `wherePivot` adds a where clause constraint to the query, but does not add the specified value when creating new models via the defined relationship. If you need to both query and create relationships with a particular pivot value, you may use the `withPivotValue` method:
 
 ```php
