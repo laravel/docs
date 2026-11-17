@@ -468,8 +468,26 @@ class Post extends Model
 }
 ```
 
+Alternatively, you may specify the model's index using the `SearchableAs` attribute. When using this attribute, the `prefix` defined in your application's `scout` configuration file will still be prepended to the index name:
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Attributes\SearchableAs;
+use Laravel\Scout\Searchable;
+
+#[SearchableAs('posts_index')]
+class Post extends Model
+{
+    use Searchable;
+}
+```
+
 > [!NOTE]
-> The `searchableAs` method has no effect when using the database engine, which always searches the model's database table directly.
+> The `searchableAs` method and `SearchableAs` attribute have no effect when using the database engine, which always searches the model's database table directly.
 
 <a name="configuring-the-model-id"></a>
 #### Configuring the Model ID
