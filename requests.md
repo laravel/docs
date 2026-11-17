@@ -407,6 +407,23 @@ When dealing with HTML elements like checkboxes, your application may receive "t
 $archived = $request->boolean('archived');
 ```
 
+<a name="retrieving-input-values-strictly"></a>
+#### Retrieving Input Values Strictly
+
+The `string`, `integer`, `float`, and `boolean` methods cast whatever input they receive. For example, `?count=abc` is cast to `0` by the `integer` method, while `?name[]=taylor` causes the `string` method to trigger an "Array to string conversion" error. If you would rather receive the default value when the input does not have the expected type, you may pass `strict: true` to these methods:
+
+```php
+$count = $request->integer('count', 5, strict: true);
+
+$price = $request->float('price', strict: true);
+
+$name = $request->string('name', 'Guest', strict: true);
+
+$archived = $request->boolean('archived', strict: true);
+```
+
+When strict, the `integer` and `float` methods return the default unless the input is a valid integer or number, the `string` method returns the default unless the input is a string or a number, and the `boolean` method returns the default unless the input is one of `1`, `true`, `on`, `yes`, `0`, `false`, `off`, or `no`.
+
 <a name="retrieving-array-input-values"></a>
 #### Retrieving Array Input Values
 
