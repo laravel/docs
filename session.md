@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
     - [Configuration](#configuration)
     - [Driver Prerequisites](#driver-prerequisites)
+    - [Pruning Expired Sessions](#pruning-expired-sessions)
 - [Interacting With the Session](#interacting-with-the-session)
     - [Retrieving Data](#retrieving-data)
     - [Storing Data](#storing-data)
@@ -64,6 +65,21 @@ Before using Redis sessions with Laravel, you will need to either install the Ph
 
 > [!NOTE]
 > The `SESSION_CONNECTION` environment variable, or the `connection` option in the `session.php` configuration file, may be used to specify which Redis connection is used for session storage.
+
+<a name="pruning-expired-sessions"></a>
+### Pruning Expired Sessions
+
+Some session drivers, such as `file` and `database`, must manually remove expired sessions from storage. By default, Laravel does this on a small percentage of requests, as determined by the `lottery` option in your application's `config/session.php` configuration file.
+
+If you would rather not prune sessions while handling a request, you may instead schedule the `session:garbage-collect` Artisan command to run periodically:
+
+```php
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('session:garbage-collect')->hourly();
+```
+
+When scheduling this command, you may disable the request lottery by setting the `lottery` option to `[0, 100]`.
 
 <a name="interacting-with-the-session"></a>
 ## Interacting With the Session
