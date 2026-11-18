@@ -315,6 +315,29 @@ You may pass image MIME types as `ImageType` enum cases anywhere the API accepts
 > [!NOTE]
 > Document `title` and `description` automatically fill missing `og:title` and `og:description` values.
 
+When a page renders Open Graph tags without a `url`, Laravel Head uses the page's [canonical URL](#defaults) as the `og:url` value. Since the canonical URL is resolved for each request, you may register both in your defaults:
+
+```php
+use Laravel\Head\Enums\OgType;
+use Laravel\Head\Facades\Head;
+use Laravel\Head\HeadBuilder;
+
+Head::defaults(fn (HeadBuilder $head) => $head
+    ->canonical()
+    ->og(siteName: 'Laravel', type: OgType::Website));
+```
+
+For a request to `/pricing`, this renders:
+
+```html
+<link rel="canonical" href="https://example.com/pricing">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Laravel">
+<meta property="og:url" content="https://example.com/pricing">
+```
+
+If no canonical URL is set, `og:url` is omitted. An explicit `url` passed to the `og` method always takes precedence over the canonical URL.
+
 For a single Open Graph image with no other attributes, you may pass the `image` named argument to the `og` method:
 
 ```php
