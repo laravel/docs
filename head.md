@@ -315,6 +315,19 @@ You may pass image MIME types as `ImageType` enum cases anywhere the API accepts
 > [!NOTE]
 > Document `title` and `description` automatically fill missing `og:title` and `og:description` values.
 
+For a single Open Graph image with no other attributes, you may pass the `image` named argument to the `og` method:
+
+```php
+Head::og(
+    type: OgType::Website,
+    title: $page->title,
+    description: $page->description,
+    image: $page->og_image_url,
+);
+```
+
+The `og(image: ...)` and `ogImage(...)` calls write to the same underlying image list, so you may use whichever is more expressive at the call site. You may use the [`meta`](#custom-tags) method for custom Open Graph extensions such as product or article properties.
+
 When a page renders Open Graph tags without a `url`, Laravel Head uses the page's [canonical URL](#defaults) as the `og:url` value. Since the canonical URL is resolved for each request, you may register both in your defaults:
 
 ```php
@@ -337,19 +350,6 @@ For a request to `/pricing`, this renders:
 ```
 
 If no canonical URL is set, `og:url` is omitted. An explicit `url` passed to the `og` method always takes precedence over the canonical URL.
-
-For a single Open Graph image with no other attributes, you may pass the `image` named argument to the `og` method:
-
-```php
-Head::og(
-    type: OgType::Website,
-    title: $page->title,
-    description: $page->description,
-    image: $page->og_image_url,
-);
-```
-
-The `og(image: ...)` and `ogImage(...)` calls write to the same underlying image list, so you may use whichever is more expressive at the call site. You may use the [`meta`](#custom-tags) method for custom Open Graph extensions such as product or article properties.
 
 <a name="twitter-cards"></a>
 ### X / Twitter Cards
