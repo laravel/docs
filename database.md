@@ -81,6 +81,21 @@ driver://username:password@host:port/database?options
 
 For convenience, Laravel supports these URLs as an alternative to configuring your database with multiple configuration options. If the `url` (or corresponding `DB_URL` environment variable) configuration option is present, it will be used to extract the database connection and credential information.
 
+<a name="masking-query-bindings-in-exception-messages"></a>
+#### Masking Query Bindings in Exception Messages
+
+When a query fails, Laravel includes the query's SQL in the exception message, with the bound values in place of their `?` placeholders. Since bindings may contain sensitive data such as email addresses or personal information, that data can end up in your logs, your `failed_jobs` table, or your error tracking service. To keep the placeholders in the message instead, you may set the `mask_bindings_in_exception_messages` option to `true` for the connection:
+
+```php
+'mysql' => [
+    'driver' => 'mysql',
+    // ...
+    'mask_bindings_in_exception_messages' => env('DB_MASK_BINDINGS', false),
+],
+```
+
+The bindings remain available through the exception's `getBindings` method.
+
 <a name="read-and-write-connections"></a>
 ### Read and Write Connections
 
