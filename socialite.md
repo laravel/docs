@@ -300,3 +300,8 @@ $fakeUser = User::fake([
 ```
 
 OAuth 1 users may be faked using the `Laravel\Socialite\One\User` class.
+
+<a name="testing-against-a-mock-provider"></a>
+#### Testing Against a Mock Provider
+
+The `fake` method bypasses the OAuth provider entirely. To exercise the full redirect, login, and consent flow in a browser test, you may point a custom Socialite driver at a hosted mock provider such as [Mockatoo](https://mockatoo.globalunderdog.com) in your testing environment. The [Mockatoo Laravel example](https://github.com/mockatoo/examples/tree/main/socialite-laravel) includes the drivers and a browser test.
