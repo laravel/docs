@@ -341,7 +341,7 @@ Route::get('/user/{id}/{name}', function (string $id, string $name) {
 })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 ```
 
-For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
+For convenience, the `whereNumber`, `whereAlpha`, `whereAlphaNumeric`, `whereUuid`, `whereUlid`, and `whereIn` methods add common pattern constraints to your routes:
 
 ```php
 Route::get('/user/{id}/{name}', function (string $id, string $name) {
