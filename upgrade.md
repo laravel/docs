@@ -35,6 +35,7 @@
 
 - [Doctrine DBAL Removal](#doctrine-dbal-removal)
 - [Eloquent Model `casts` Method](#eloquent-model-casts-method)
+- [Array `where` Clause Boolean](#array-where-clause-boolean)
 - [Spatial Types](#spatial-types)
 - [The `Enumerable` Contract](#the-enumerable-contract)
 - [The `UserProvider` Contract](#the-user-provider-contract)
@@ -236,6 +237,35 @@ If your application is utilizing an SQLite database, SQLite 3.26.0 or greater is
 **Likelihood Of Impact: Low**
 
 The base Eloquent model class now defines a `casts` method in order to support the definition of attribute casts. If one of your application's models is defining a `casts` relationship, it may conflict with the `casts` method now present on the base Eloquent model class.
+
+<a name="array-where-clause-boolean"></a>
+#### Array `where` Clause Boolean
+
+**Likelihood Of Impact: Low**
+
+Starting in Laravel 11.28.0, the `where` and `orWhere` methods respect the boolean operator given as their second argument when the conditions are passed as a list of arrays. Previously, the conditions inside the list were always joined with `AND` and the operator was applied to the resulting group.
+
+```php
+User::orWhere([
+    ['name', 'Tim'],
+    ['verified', true],
+]);
+
+// Laravel <= 11.27
+// select * from users where (name = 'Tim' and verified = 1) or ...
+
+// Laravel >= 11.28
+// select * from users where (name = 'Tim' or verified = 1) or ...
+```
+
+If your application relies on the previous behavior, wrap the conditions in a closure so they remain grouped with `AND`:
+
+```php
+User::orWhere(function ($query) {
+    $query->where('name', 'Tim')
+          ->where('verified', true);
+});
+```
 
 <a name="modifying-columns"></a>
 #### Modifying Columns
