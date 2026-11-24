@@ -402,6 +402,19 @@ public function boot(): void
 }
 ```
 
+> [!NOTE]
+> The `image` binding is scoped. Queue workers and Octane discard it between jobs and requests, so a driver registered during `boot` is missing afterward. Register it on each new manager:
+
+```php
+use App\Images\VipsDriver;
+use Illuminate\Image\ImageManager;
+use Illuminate\Support\Facades\Image;
+
+Image::resolved(static function (ImageManager $images): void {
+    $images->extend('vips', static fn () => new VipsDriver);
+});
+```
+
 After registering the driver, you may use it for a specific image using the `using` method:
 
 ```php
@@ -449,6 +462,8 @@ Image::transformUsing('gd', Pixelate::class, function (ImageInterface $image, Pi
     return $image->pixelate($transformation->size);
 });
 ```
+
+When the handler must be available in a queue worker or under Octane, register it inside `Image::resolved()`, as shown above.
 
 Once the transformation handler has been registered, you may apply the transformation to an image:
 
