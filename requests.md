@@ -509,6 +509,44 @@ use App\Enums\Product;
 $products = $request->enums('products', Product::class);
 ```
 
+<a name="retrieving-model-input-values"></a>
+#### Retrieving Model Input Values
+
+When using [form requests](/docs/{{version}}/validation#form-request-validation), you may retrieve Eloquent models using the identifiers present in the request's input. The `model` method returns `null` if the input is empty or no matching record exists, while the `modelOrFail` method throws an `Illuminate\Database\Eloquent\ModelNotFoundException`. If the input value is an array of identifiers, you may use the `models` method to retrieve an Eloquent collection of the matching records:
+
+```php
+use App\Models\User;
+
+$user = $request->model('user_id', User::class);
+
+$user = $request->modelOrFail('user_id', User::class);
+
+$users = $request->models('user_ids', User::class);
+```
+
+If you omit the model class, Laravel will guess it from the input key by removing any `_id` or `_ids` suffix and converting the remaining name to its singular, "studly" case form. The model is resolved from your application's `Models` namespace, falling back to the application's root namespace if no such model exists:
+
+```php
+$user = $request->model('user_id'); // App\Models\User
+
+$users = $request->models('user_ids'); // Collection<App\Models\User>
+```
+
+You may also pass a closure to constrain the query used to retrieve the models. The closure receives an Eloquent query builder instance, and its conditions are grouped together before the identifiers from the request input are applied. The closure may be given as the second argument, or as the third argument after an explicit model class:
+
+```php
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+
+$user = $request->model('user_id', function (Builder $query) use ($request) {
+    $query->where('team_id', $request->user()->team_id);
+});
+
+$author = $request->modelOrFail('author_id', User::class, function (Builder $query) use ($request) {
+    $query->where('team_id', $request->user()->team_id);
+});
+```
+
 <a name="retrieving-input-via-dynamic-properties"></a>
 #### Retrieving Input via Dynamic Properties
 
