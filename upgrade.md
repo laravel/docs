@@ -33,6 +33,7 @@
 - [Collection Model Serialization Restores Eager-Loaded Relations](#collection-model-serialization-restores-eager-loaded-relations)
 - [`Container::call` and Nullable Class Defaults](#containercall-and-nullable-class-defaults)
 - [Domain Route Registration Precedence](#domain-route-registration-precedence)
+- [Global Scope Removal in Nested Where Conditions](#global-scope-removal-in-nested-where-conditions)
 - [`JobAttempted` Event Exception Payload](#jobattempted-event-exception-payload)
 - [Manager `extend` Callback Binding](#manager-extend-callback-binding)
 - [MySQL `DELETE` Queries With `JOIN`, `ORDER BY`, and `LIMIT`](#mysql-delete-queries-with-join-order-by-and-limit)
@@ -486,6 +487,27 @@ pagination::simple-bootstrap-3
 ```
 
 If your application references the old pagination view names directly, update those references.
+
+<a name="eloquent-global-scopes"></a>
+### Eloquent Global Scopes
+
+<a name="global-scope-removal-in-nested-where-conditions"></a>
+#### Global Scope Removal in Nested Where Conditions
+
+**Likelihood Of Impact: Low**
+
+Global scopes removed inside a nested `where` closure now apply to the whole query. In previous versions, Laravel silently ignored them and still applied the scope to the outer query. This affects closures passed to `where`, `orWhere`, `whereNot`, and `orWhereNot` that call `withoutGlobalScope`, `withoutGlobalScopes`, or a local scope that removes a global scope, such as `onlyTrashed`:
+
+```php
+User::where(function ($query) {
+    $query->withoutGlobalScope('active');
+})->get();
+
+// Laravel <= 12.x: the "active" scope is still applied
+// Laravel >= 13.x: the "active" scope is removed from the entire query
+```
+
+Because the scope is no longer applied to the outer query, these queries may now return records they previously excluded. If your application relied on the old behavior, remove the scope removal from the nested closure. If you meant to remove the scope, call it on the outer builder instead, for example `User::withoutGlobalScope('active')->where(...)`.
 
 <a name="miscellaneous"></a>
 ### Miscellaneous
