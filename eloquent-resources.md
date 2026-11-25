@@ -1131,7 +1131,7 @@ GET /api/posts/1?include=comments.author
 <a name="jsonapi-relationship-depth"></a>
 #### Relationship Depth
 
-By default, nested relationship includes are limited to a maximum depth. You may customize this limit using the `maxRelationshipDepth` method, typically in one of you application's service provider:
+By default, nested relationship includes are limited to a maximum depth. You may customize this limit using the `maxRelationshipDepth` method, typically in one of your application's service provider:
 
 ```php
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
