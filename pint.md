@@ -183,19 +183,6 @@ Alternatively, if you would like to enable this rule for a single run without mo
 
 Under the hood, this rule uses [Prettier](https://prettier.io) along with the `prettier-plugin-blade` and `prettier-plugin-tailwindcss` plugins, so [Node.js](https://nodejs.org) must be installed on your machine. The first time you run Pint with this rule enabled, Pint will detect any missing Prettier dependencies and prompt you to install them.
 
-By default, this rule sorts the Tailwind CSS classes in your templates. If you would like to keep your classes in their original order, you may disable the `sort_tailwind_classes` option. When this option is disabled, the `prettier-plugin-tailwindcss` plugin is not required:
-
-```json
-{
-    "preset": "laravel",
-    "rules": {
-        "Pint/laravel_blade": {
-            "sort_tailwind_classes": false
-        }
-    }
-}
-```
-
 > [!NOTE]
 > This rule automatically skips files that typically rely on their own formatting, such as [Laravel Boost](https://github.com/laravel/boost) guidelines and email views located in the `resources/views/emails` and `resources/views/mail` directories.
 
