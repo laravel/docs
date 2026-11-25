@@ -1,5 +1,6 @@
 # Upgrade Guide
 
+- [Upgrading To 13.38.0](#upgrade-13.38.0)
 - [Upgrading To 13.0 From 12.x](#upgrade-13.0)
     - [Upgrading Using AI](#upgrading-using-ai)
 
@@ -44,6 +45,26 @@
 - [`Str` Factories Reset Between Tests](#str-factories-reset-between-tests)
 
 </div>
+
+<a name="upgrade-13.38.0"></a>
+## Upgrading To 13.38.0
+
+<a name="eloquent-relationship-cloning"></a>
+### Eloquent Relationship Cloning
+
+Starting with Laravel 13.38.0, calling `clone` on an Eloquent relationship returns a clone of the relationship rather than a clone of its underlying Eloquent query builder. This preserves relationship-specific behavior, including column selection for many-to-many and through relationships.
+
+If your application relies on the previous return type, explicitly retrieve and clone the underlying Eloquent query builder instead:
+
+```php
+$query = $user->posts()->getQuery()->clone();
+```
+
+If you intend to clone the relationship itself, you may continue to call `clone` directly on the relationship:
+
+```php
+$relation = $user->posts()->clone();
+```
 
 <a name="upgrade-13.0"></a>
 ## Upgrading To 13.0 From 12.x
