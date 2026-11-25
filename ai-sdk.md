@@ -310,7 +310,7 @@ The AI SDK supports a variety of providers across its features. The following ta
 | STT | OpenAI, OpenAI Compatible, ElevenLabs, Groq, Mistral, Gemini, OpenRouter |
 | Embeddings | OpenAI, OpenAI Compatible, Gemini, Azure, Bedrock, Cohere, Mistral, Jina, VoyageAI, Ollama, OpenRouter |
 | Reranking | Cohere, Jina, VoyageAI, Bedrock, OpenRouter |
-| Classification | OpenAI, OpenAI Compatible, TypeSafe, OpenRouter |
+| Classification | OpenAI, OpenAI Compatible, Gemini, TypeSafe, OpenRouter |
 | Files | OpenAI, Anthropic, Gemini, Azure, OpenRouter |
 
 </div>
@@ -464,7 +464,17 @@ foreach ($response->steps as $step) {
 }
 ```
 
-> **Note:** The `raw` property is `null` when streaming a response, when using the Bedrock provider (which performs its API calls via the AWS SDK instead of an HTTP client), and on faked responses unless one is provided explicitly via `withRawResponse`.
+Image, transcription, embeddings, reranking, classification, and file responses expose the same `raw` property. For example, you may read the cost that OpenRouter reports for a request:
+
+```php
+use Laravel\Ai\Embeddings;
+
+$response = Embeddings::for(['Hello world'])->generate(provider: 'openrouter');
+
+$response->raw?->json('usage.cost');
+```
+
+> **Note:** The `raw` property is `null` when streaming a response, when using the Bedrock provider (which performs its API calls via the AWS SDK instead of an HTTP client), on embeddings that were entirely served from the [cache](#caching-embeddings), on serialized responses, and on faked responses unless one is provided explicitly via `withRawResponse`.
 
 <a name="conversation-context"></a>
 ### Conversation Context
@@ -1225,6 +1235,17 @@ class SupportAgent implements Agent, HasTools
 ```
 
 When Laravel derives the maximum number of steps automatically, this attribute adds one step for the repaired call. Explicit `MaxSteps` limits are unchanged.
+
+<a name="handling-tool-failures"></a>
+#### Handling Tool Failures
+
+When a tool throws an exception, the agent's run continues. The exception is reported to your application's exception handler, a `ToolFailed` [event](#events) is dispatched, and the model receives the failure as the tool's result, allowing it to explain what went wrong or try another approach. For example, if a tool throws an exception with the message "Order 1234 can no longer be refunded.", the model receives:
+
+```text
+The tool call failed: Order 1234 can no longer be refunded.
+```
+
+The failed result is available through the response's `toolResults`, and streamed responses emit it as a failed `tool_result` event. [Sub-agents](#sub-agents) used as tools are handled the same way when they throw.
 
 <a name="similarity-search"></a>
 #### Similarity Search
@@ -2853,7 +2874,7 @@ $result->meta->provider;
 <a name="classifying-images"></a>
 ### Classifying Images
 
-When using the OpenAI, OpenAI-compatible, TypeSafe, or OpenRouter providers, images may be classified alongside the given content by passing them as the second argument to the `of` method. Images may be created using the same [file classes used for attachments](#attachments):
+When using the OpenAI, OpenAI-compatible, Gemini, TypeSafe, or OpenRouter providers, images may be classified alongside the given content by passing them as the second argument to the `of` method. Images may be created using the same [file classes used for attachments](#attachments):
 
 ```php
 use Laravel\Ai\Classification;
