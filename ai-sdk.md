@@ -1247,8 +1247,6 @@ The tool call failed: Order 1234 can no longer be refunded.
 
 The failed result is available through the response's `toolResults`, and streamed responses emit it as a failed `tool_result` event. [Sub-agents](#sub-agents) used as tools are handled the same way when they throw.
 
-> **Note:** Only exceptions thrown by the tool itself are recovered. An exception thrown by an event listener still fails the run.
-
 <a name="similarity-search"></a>
 #### Similarity Search
 
