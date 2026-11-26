@@ -1724,7 +1724,9 @@ The field under validation must not end with one of the given values.
 <a name="rule-email"></a>
 #### email
 
-The field under validation must be formatted as an email address. This validation rule utilizes the [egulias/email-validator](https://github.com/egulias/EmailValidator) package for validating the email address. By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:
+The field under validation must be formatted as an email address. This validation rule utilizes the [egulias/email-validator](https://github.com/egulias/EmailValidator) package for validating the email address. Laravel rejects values longer than 254 bytes before running any of the selected validation styles. Multibyte characters count by their encoded byte length.
+
+By default, the `RFCValidation` validator is applied, but you can apply other validation styles as well:
 
 ```php
 'email' => ['email:rfc,dns']
