@@ -955,3 +955,19 @@ If you need to access your application's configuration files or database to dete
     $middleware->trustHosts(at: fn () => config('app.trusted_hosts'));
 })
 ```
+
+If you only need to trust your application's own host, you may omit the `at` argument. Laravel will then trust the host defined by your application's `app.url` configuration value, along with all of its subdomains:
+
+```php
+->withMiddleware(function (Middleware $middleware): void {
+    $middleware->trustHosts(subdomains: true);
+})
+```
+
+If you would like to trust only the host defined by your application's `app.url` configuration value, without any of its subdomains, you may pass `false` to the `subdomains` argument:
+
+```php
+->withMiddleware(function (Middleware $middleware): void {
+    $middleware->trustHosts(subdomains: false);
+})
+```
