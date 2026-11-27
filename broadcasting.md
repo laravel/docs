@@ -197,8 +197,11 @@ php artisan install:broadcasting --ably
 To install Ably support manually, you should install the Ably PHP SDK using the Composer package manager:
 
 ```shell
-composer require ably/ably-php
+composer require ably/pubsub-server
 ```
+
+> [!NOTE]
+> The `ably/pubsub-server` package supersedes the `ably/ably-php` package. If your application is currently using `ably/ably-php`, you should replace it with `ably/pubsub-server`. If your Ably configuration includes the `environment` or `restHost` options, you should replace them with the `endpoint` option, as these options are ignored by `ably/pubsub-server`. For more information, please consult Ably's [upgrade guide](https://github.com/ably/ably-pubsub-php/blob/main/UPDATING.md).
 
 Next, you should configure your Ably credentials in the `config/broadcasting.php` configuration file. An example Ably configuration is already included in this file, allowing you to quickly specify your key. Typically, this value should be set via the `ABLY_KEY` [environment variable](/docs/{{version}}/configuration#environment-configuration):
 
