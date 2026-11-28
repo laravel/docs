@@ -122,6 +122,8 @@ php=php@8.2
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.
 
+Alternatively Valet listens to the php requirement in your `composer.json`, executing the `valet use` or `valet isolate` command will determine the site's preferred PHP version using the php require.
+
 > [!WARNING]
 > Valet only serves one PHP version at a time, even if you have multiple PHP versions installed.
 
